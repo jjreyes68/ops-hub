@@ -26,7 +26,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
-
+ 
 /* NAV */
 .nav{display:flex;align-items:center;gap:2px;padding:0 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:nowrap;height:48px;position:sticky;top:0;z-index:50;box-shadow:var(--shadow-sm);}
 .nav-brand{display:flex;align-items:center;gap:8px;margin-right:12px;}
@@ -37,11 +37,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .nav-tab.active{background:var(--bg3);color:var(--text);box-shadow:var(--shadow-sm);border:1px solid var(--border);}
 .nav-spacer{flex:1;}
 .nav-time{font-family:var(--mono);font-size:11px;color:var(--text3);white-space:nowrap;}
-
+ 
 /* VIEWS */
 .view{display:none;padding:16px;}
 .view.active{display:block;}
-
+ 
 /* TIMER STRIP */
 .timer-strip{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:14px;flex-wrap:wrap;box-shadow:var(--shadow-sm);}
 .timer-big{font-family:var(--mono);font-size:26px;font-weight:500;color:var(--green);min-width:70px;}
@@ -51,16 +51,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .timer-bar-fill{height:100%;background:var(--green-mid);border-radius:3px;transition:width 1s linear;}
 .timer-bar-fill.urgent{background:var(--red);}
 .cycles-badge{font-family:var(--mono);font-size:11px;color:var(--text3);white-space:nowrap;background:var(--bg3);padding:3px 9px;border-radius:10px;}
-
+ 
 /* COLS */
 .cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
 @media(max-width:800px){.cols3{grid-template-columns:1fr 1fr;}}
 @media(max-width:500px){.cols3{grid-template-columns:1fr;}}
-
+ 
 /* CARD */
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px;box-shadow:var(--shadow-sm);}
 .card-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px;}
-
+ 
 /* BUTTONS */
 .tbtn{padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;font-family:var(--font);font-weight:500;transition:all .15s;box-shadow:var(--shadow-sm);}
 .tbtn:hover{border-color:var(--green);color:var(--green);background:var(--green-bg);}
@@ -73,7 +73,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .btn-danger:hover{background:var(--red-bg);border-color:var(--red);}
 .btn-amber{padding:6px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--amber);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .15s;}
 .btn-amber:hover{background:var(--amber-bg);}
-
+ 
 /* TASK ITEMS */
 .task-item{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;background:var(--bg3);margin-bottom:5px;border:1px solid transparent;transition:all .15s;}
 .task-item:hover{border-color:var(--border2);}
@@ -86,14 +86,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .rec-badge.done{background:var(--bg4);color:var(--text3);}
 .task-timer-badge{font-family:var(--mono);font-size:11px;color:var(--amber);background:var(--amber-bg);padding:2px 7px;border-radius:10px;white-space:nowrap;}
 .task-timer-badge.expired{color:var(--red);background:var(--red-bg);}
-
+ 
 /* ADD ROW */
 .add-row{display:flex;gap:6px;margin-top:9px;}
 .add-row input,.add-inp{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--font);font-size:13px;transition:border-color .15s;}
 .add-row input:focus,.add-inp:focus{outline:none;border-color:var(--green-mid);background:var(--bg2);}
 .add-row button{padding:6px 12px;background:var(--green-bg);border:1px solid var(--green);border-radius:6px;color:var(--green);font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all .15s;}
 .add-row button:hover{background:var(--green);color:#fff;}
-
+ 
 /* ADHOC TIMER */
 .adhoc-add-row{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap;}
 .adhoc-add-row input{flex:1;min-width:100px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--font);font-size:13px;transition:border-color .15s;}
@@ -102,7 +102,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .adhoc-add-row .add-btn{padding:6px 12px;background:var(--green-bg);border:1px solid var(--green);border-radius:6px;color:var(--green);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font);white-space:nowrap;transition:all .15s;}
 .adhoc-add-row .add-btn:hover{background:var(--green);color:#fff;}
 .adhoc-timer-label{font-size:11px;color:var(--text3);padding:7px 0 7px 2px;white-space:nowrap;align-self:center;}
-
+ 
 /* CHECKLIST REDESIGN */
 .cl-header{display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
 .cl-list-select-wrap{flex:1;position:relative;}
@@ -123,7 +123,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .cl-add-item-row input:focus{outline:none;border-color:var(--green-mid);background:var(--bg2);}
 .cl-add-item-row button{padding:6px 13px;background:var(--green-bg);border:1px solid var(--green);border-radius:6px;color:var(--green);font-size:13px;font-weight:600;cursor:pointer;}
 .cl-add-item-row button:hover{background:var(--green);color:#fff;}
-
+ 
 /* NOTES */
 .notes-layout{display:grid;grid-template-columns:220px 1fr;gap:12px;}
 @media(max-width:600px){.notes-layout{grid-template-columns:1fr;}}
@@ -140,7 +140,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .note-editor-card textarea:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
 .note-title-input{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-family:var(--font);font-size:15px;font-weight:600;width:100%;}
 .note-title-input:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
-
+ 
 /* TEMPLATES */
 .tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-bottom:14px;}
 .tpl-btn{padding:9px 11px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--font);text-align:left;transition:all .15s;box-shadow:var(--shadow-sm);}
@@ -148,14 +148,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .tpl-icon{font-size:16px;display:block;margin-bottom:4px;}
 .tpl-name{font-weight:600;display:block;color:var(--text);font-size:12px;}
 .tpl-desc{font-size:11px;color:var(--text3);margin-top:2px;display:block;}
-
+ 
 /* TAGS */
 .tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;margin-right:3px;}
 .tag-incident{background:var(--red-bg);color:var(--red);}
 .tag-response{background:var(--purple-bg);color:var(--purple);}
 .tag-obs{background:var(--bg4);color:var(--text2);}
 .tag-task{background:var(--green-bg);color:var(--green);}
-
+ 
 /* LOG */
 .log-entry{display:flex;gap:10px;padding:9px 11px;border-radius:7px;background:var(--bg2);margin-bottom:5px;border-left:3px solid var(--border2);box-shadow:var(--shadow-sm);transition:all .15s;}
 .log-entry:hover{border-color:var(--border2);box-shadow:0 2px 8px rgba(0,0,0,.08);}
@@ -168,7 +168,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .log-body{flex:1;}
 .log-title{font-size:13px;color:var(--text);font-weight:500;}
 .log-detail{font-size:12px;color:var(--text2);margin-top:2px;line-height:1.5;}
-
+ 
 /* SCAN SITES */
 .sites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:10px;}
 .site-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px;box-shadow:var(--shadow-sm);transition:all .15s;}
@@ -197,7 +197,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .stat-chip{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;box-shadow:var(--shadow-sm);}
 .stat-chip .s-val{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--text);display:block;}
 .stat-chip .s-lbl{font-size:11px;color:var(--text3);}
-
+ 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:100;padding:14px;backdrop-filter:blur(3px);}
 .modal-overlay.hidden{display:none;}
@@ -209,10 +209,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .modal textarea{min-height:80px;resize:vertical;font-family:var(--mono);}
 .modal select option{background:var(--bg2);}
 .modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;}
-
+ 
 /* HANDOFF */
 .handoff-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;font-family:var(--mono);font-size:12px;line-height:1.9;color:var(--text2);white-space:pre-wrap;max-height:420px;overflow-y:auto;}
-
+ 
 /* SITE TOOLTIP */
 .site-card{position:relative;}
 .site-ref-tip{display:none;position:absolute;bottom:calc(100% + 8px);left:0;right:0;background:#1a1917;color:#fff;border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.75;z-index:300;box-shadow:0 4px 20px rgba(0,0,0,.25);pointer-events:none;white-space:pre-wrap;font-family:var(--mono);}
@@ -222,18 +222,18 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 .nerc-sep{display:flex;align-items:center;gap:10px;margin:14px 0 4px;grid-column:1/-1;}
 .nerc-sep-line{flex:1;height:1px;background:var(--border);}
 .nerc-sep-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
-
+ 
 .toast{position:fixed;bottom:20px;right:20px;background:var(--text);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;z-index:200;font-family:var(--mono);box-shadow:0 4px 20px rgba(0,0,0,.2);}
 .toast.show{opacity:1;}
 .empty{font-size:12px;color:var(--text3);text-align:center;padding:16px 0;}
-
+ 
 select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--font);font-size:13px;}
 select option{background:var(--bg2);}
-
+ 
 /* PAGE HEADER */
 .page-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
 .page-title{font-size:17px;font-weight:600;color:var(--text);letter-spacing:-.02em;}
-
+ 
 /* INTEL PAGE */
 .intel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
 .intel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:10px;}
@@ -281,7 +281,7 @@ select option{background:var(--bg2);}
 </style>
 </head>
 <body>
-
+ 
 <div class="nav">
   <div class="nav-brand">
     <svg class="nav-brand-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -297,7 +297,7 @@ select option{background:var(--bg2);}
   <div class="nav-spacer"></div>
   <div class="nav-time" id="nav-clock"></div>
 </div>
-
+ 
 <!-- NOTEPAD VIEW -->
 <div class="view active" id="view-notes">
   <div class="tpl-grid" id="tpl-grid"></div>
@@ -327,7 +327,7 @@ select option{background:var(--bg2);}
     </div>
   </div>
 </div>
-
+ 
 <!-- SCANS VIEW -->
 <div class="view" id="view-scans">
   <div class="timer-strip">
@@ -352,7 +352,7 @@ select option{background:var(--bg2);}
   </div>
   <div class="sites-grid" id="sites-grid"></div>
 </div>
-
+ 
 <!-- OPS VIEW -->
 <div class="view" id="view-ops">
   <div class="cols3">
@@ -400,7 +400,7 @@ select option{background:var(--bg2);}
     </div>
   </div>
 </div>
-
+ 
 <!-- LOG VIEW -->
 <div class="view" id="view-log">
   <div class="stat-row" id="log-stats"></div>
@@ -418,7 +418,7 @@ select option{background:var(--bg2);}
   </div>
   <div id="log-list" style="max-height:520px;overflow-y:auto;"></div>
 </div>
-
+ 
 <!-- FIELD INTEL VIEW -->
 <div class="view" id="view-intel">
   <div class="page-header">
@@ -426,7 +426,7 @@ select option{background:var(--bg2);}
     <span style="font-size:12px;color:var(--text3);">Situational awareness tools for field operators</span>
   </div>
   <div class="intel-grid">
-
+ 
     <!-- Weather & Wind Conditions -->
     <div class="intel-card">
       <div class="intel-card-header">
@@ -466,7 +466,7 @@ select option{background:var(--bg2);}
         </div>
       </div>
     </div>
-
+ 
     <!-- Crew Status Board -->
     <div class="intel-card">
       <div class="intel-card-header">
@@ -485,7 +485,7 @@ select option{background:var(--bg2);}
         </div>
       </div>
     </div>
-
+ 
     <!-- Escalation Quick-Dial -->
     <div class="intel-card">
       <div class="intel-card-header">
@@ -510,7 +510,7 @@ select option{background:var(--bg2);}
         </div>
       </div>
     </div>
-
+ 
     <!-- Pre-Shift Safety Check -->
     <div class="intel-card">
       <div class="intel-card-header">
@@ -529,7 +529,7 @@ select option{background:var(--bg2);}
         </div>
       </div>
     </div>
-
+ 
     <!-- Equipment Status Tracker -->
     <div class="intel-card">
       <div class="intel-card-header">
@@ -553,7 +553,7 @@ select option{background:var(--bg2);}
         </div>
       </div>
     </div>
-
+ 
     <!-- Observation Quick-Log -->
     <div class="intel-card">
       <div class="intel-card-header">
@@ -572,10 +572,10 @@ select option{background:var(--bg2);}
         </div>
       </div>
     </div>
-
+ 
   </div>
 </div>
-
+ 
 <!-- HANDOFF MODAL -->
 <div class="modal-overlay hidden" id="modal-handoff">
   <div class="modal" style="width:520px;">
@@ -587,7 +587,7 @@ select option{background:var(--bg2);}
     </div>
   </div>
 </div>
-
+ 
 <!-- ADD SITE MODAL -->
 <div class="modal-overlay hidden" id="modal-add-site">
   <div class="modal">
@@ -611,7 +611,7 @@ select option{background:var(--bg2);}
     </div>
   </div>
 </div>
-
+ 
 <!-- SCAN NOTE MODAL -->
 <div class="modal-overlay hidden" id="modal-scan-note">
   <div class="modal">
@@ -625,7 +625,7 @@ select option{background:var(--bg2);}
     </div>
   </div>
 </div>
-
+ 
 <!-- INCIDENT MODAL -->
 <div class="modal-overlay hidden" id="modal-incident">
   <div class="modal">
@@ -648,7 +648,7 @@ select option{background:var(--bg2);}
     </div>
   </div>
 </div>
-
+ 
 <!-- RESPONSE MODAL -->
 <div class="modal-overlay hidden" id="modal-response">
   <div class="modal">
@@ -669,7 +669,7 @@ select option{background:var(--bg2);}
     </div>
   </div>
 </div>
-
+ 
 <!-- ADHOC TIMER MODAL -->
 <div class="modal-overlay hidden" id="modal-task-timer">
   <div class="modal" style="width:320px;">
@@ -684,9 +684,9 @@ select option{background:var(--bg2);}
     </div>
   </div>
 </div>
-
+ 
 <div class="toast" id="toast"></div>
-
+ 
 <script>
 const SK = 'ctrlroom_v5';
 let S = {
@@ -699,7 +699,7 @@ let S = {
   crewMembers:[], equipmentLog:[],
   escalationContacts:{tier1:'',tier2:'',tier3:''}
 };
-
+ 
 function save() {
   try { localStorage.setItem(SK, JSON.stringify(S)); } catch(e) {}
   try { window.storage && window.storage.set(SK, JSON.stringify(S)); } catch(e) {}
@@ -740,13 +740,13 @@ async function load() {
     if(inp) inp.value = S.escalationContacts[tiers[i]]||'';
   });
 }
-
+ 
 // CLOCK
 function updateClock() {
   document.getElementById('nav-clock').textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
 }
 setInterval(updateClock,1000); updateClock();
-
+ 
 // VIEW SWITCH
 function switchView(v, el) {
   document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
@@ -756,7 +756,7 @@ function switchView(v, el) {
   if(v==='log') renderLog();
   if(v==='scans') { refreshScanStatuses(); renderSites(); }
 }
-
+ 
 // TIMER (now on scans page)
 let timerInt=null;
 const TOTAL=30*60;
@@ -790,7 +790,7 @@ function updateTimerUI(){
   fill.classList.toggle('urgent',urgent);
   document.getElementById('cycles-badge').textContent=S.timerCycles+' cycle'+(S.timerCycles!==1?'s':'');
 }
-
+ 
 // RECURRING
 function addRec(){const v=document.getElementById('rec-inp').value.trim();if(!v)return;S.recTasks.push({id:Date.now(),name:v,done:false});document.getElementById('rec-inp').value='';save();renderRec();}
 function toggleRec(id){const t=S.recTasks.find(x=>x.id===id);if(t)t.done=!t.done;save();renderRec();}
@@ -805,7 +805,7 @@ function renderRec(){
     <button class="task-del" onclick="delRec(${t.id})">✕</button>
   </div>`).join('');
 }
-
+ 
 // ADHOC with optional timer
 let adhocTimerIntervals={};
 function addAdhoc(){
@@ -882,7 +882,7 @@ function renderAdhoc(){
     </div>`;
   }).join('');
 }
-
+ 
 // CHECKLISTS — redesigned: dropdown selector, separate delete button
 function addClList(){
   const v=document.getElementById('cl-list-inp').value.trim();
@@ -941,7 +941,7 @@ function renderCl(){
     <button class="task-del" onclick="delCl(${t.id})">✕</button>
   </div>`).join('');
 }
-
+ 
 // SITES
 function siteStatus(site) {
   if(!site.lastScan) return 'never';
@@ -996,7 +996,7 @@ function renderSites(){
   sites.sort((a,b)=>(order[siteStatus(a)]||0)-(order[siteStatus(b)]||0));
   const el=document.getElementById('sites-grid');
   if(!sites.length){el.innerHTML='<div class="empty" style="grid-column:1/-1;">No sites'+(f!=='all'?' matching filter':' added yet')+'</div>';return;}
-
+ 
   function cardHTML(site){
     const status=siteStatus(site);
     const lastStr=site.lastScan?timeSince(site.lastScan):'—';
@@ -1017,7 +1017,7 @@ function renderSites(){
       </div>
     </div>`;
   }
-
+ 
   // If showing all, split into NERC and non-NERC groups with separator
   if(f==='all'){
     const nerc=sites.filter(s=>s.nerc);
@@ -1085,7 +1085,7 @@ function editSite(id){
   openModal('modal-add-site');
 }
 function deleteSite(id){if(confirm('Delete this site?')){S.sites=S.sites.filter(s=>s.id!==id);save();renderSites();}}
-
+ 
 // TEMPLATES
 const TEMPLATES=[
   {id:'incident',icon:'🚨',name:'Incident report',desc:'Location, severity, action',tag:'incident'},
@@ -1105,7 +1105,7 @@ function useTemplate(id){
   const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   newNote(tpl.name+' — '+now, tpl.quick.replace('{time}',now), tpl.tag);
 }
-
+ 
 // NOTES
 function newBlankNote(){newNote('New note','','obs');}
 function newNote(title,body,tag){
@@ -1152,7 +1152,7 @@ function renderNotes(){
     <div style="margin-top:2px;"><span class="tag ${TAG_CLS[n.tag]||'tag-obs'}">${TAG_LABELS[n.tag]||n.tag}</span></div>
   </div>`).join('');
 }
-
+ 
 // INCIDENT / RESPONSE
 function saveIncident(){
   const loc=document.getElementById('inc-location').value;
@@ -1187,7 +1187,7 @@ function saveResponse(){
   showToast('Response logged');
   switchView('notes',document.querySelectorAll('.nav-tab')[0]);
 }
-
+ 
 // HANDOFF
 function buildHandoffText(){
   const now=new Date();
@@ -1231,7 +1231,7 @@ function buildHandoffText(){
 function openHandoffAsNote(){const text=buildHandoffText();const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});newNote('Shift handoff — '+now,text,'obs');switchView('notes',document.querySelectorAll('.nav-tab')[0]);}
 function openHandoff(){document.getElementById('handoff-content').textContent=buildHandoffText();openModal('modal-handoff');}
 function copyHandoff(){try{navigator.clipboard.writeText(document.getElementById('handoff-content').textContent);showToast('Copied!');}catch(e){showToast('Select and copy manually');}}
-
+ 
 // LOG
 function addLog(entry){S.logEntries.unshift({...entry,ts:Date.now(),id:Date.now()});if(S.logEntries.length>500)S.logEntries=S.logEntries.slice(0,500);save();}
 function renderLog(){
@@ -1255,19 +1255,19 @@ function renderLog(){
     <div class="stat-chip"><span class="s-val" style="color:var(--amber)">${scn}</span><span class="s-lbl">Scans</span></div>`;
 }
 function clearLog(){if(confirm('Clear all log entries?')){S.logEntries=[];save();renderLog();}}
-
+ 
 // MODAL
 function openModal(id){document.getElementById(id).classList.remove('hidden');}
 function closeModal(id){document.getElementById(id).classList.add('hidden');}
-
+ 
 // UTILS
 function fireAlert(msg){showToast(msg);try{const ctx=new AudioContext();[880,660].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;g.gain.setValueAtTime(.25,ctx.currentTime+i*.15);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+i*.15+.4);o.start(ctx.currentTime+i*.15);o.stop(ctx.currentTime+i*.15+.4);});}catch(e){}}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function renderAll(){renderRec();renderAdhoc();renderCl();renderNotes();renderTemplates();updateTimerUI();renderSites();}
-
+ 
 // ── FIELD INTEL FEATURES ──────────────────────────────────────────
-
+ 
 // Weather
 async function fetchWeather(){
   const loc=document.getElementById('wx-location').value.trim();
@@ -1308,7 +1308,7 @@ function logWeather(){
   switchView('notes',document.querySelectorAll('.nav-tab')[0]);
   showToast('Weather logged to Notepad');
 }
-
+ 
 // Crew
 function addCrewMember(){
   const name=document.getElementById('crew-name-inp').value.trim();if(!name)return;
@@ -1335,7 +1335,7 @@ function renderCrewList(){
     <button class="task-del" onclick="removeCrewMember(${m.id})">✕</button>
   </div>`).join('');
 }
-
+ 
 // Equipment
 function addEquipment(){
   const name=document.getElementById('equip-name-inp').value.trim();if(!name)return;
@@ -1357,7 +1357,7 @@ function renderEquipmentList(){
     <button class="task-del" onclick="removeEquipment(${e.id})">✕</button>
   </div>`).join('');
 }
-
+ 
 // Safety check
 const SAFETY_ITEMS=['Hard hat worn','High-vis vest on','Safety glasses','Steel-toe boots','Gloves available','First aid kit accessible','Buddy check complete','Radio/comms operational','Weather conditions acceptable','Site hazards reviewed'];
 let safetyState={};
@@ -1382,7 +1382,7 @@ function completeSafetyCheck(){
   showToast('Safety check logged');
 }
 function resetSafetyCheck(){SAFETY_ITEMS.forEach(i=>safetyState[i]=false);renderSafetyCheck();}
-
+ 
 // NERC Checklist
 const NERC_ITEMS=['Physical access log reviewed','Electronic access controls verified','Security perimeter inspected','Unauthorized access attempts checked','Backup communications tested','SCADA/EMS communication verified','Protection relay status confirmed','Transmission constraint monitoring active','Outage coordination reviewed','Operator log current and complete'];
 let nercState={};
@@ -1404,7 +1404,7 @@ function completeNERCCheck(){
   showToast('NERC check submitted');
 }
 function resetNERCCheck(){NERC_ITEMS.forEach(i=>nercState[i]=false);renderNERCCheck();}
-
+ 
 // Escalation contacts save
 function logEscalationContacts(){
   const rows=document.querySelectorAll('#escalation-tbody tr');
@@ -1414,7 +1414,7 @@ function logEscalationContacts(){
   addLog({type:'task',title:'Escalation contacts updated',detail:'Tier 1: '+S.escalationContacts.tier1});
   showToast('Contacts saved');
 }
-
+ 
 // DEFAULT SITES — seeded on first use, fully editable after
 function seedDefaultSites(){
   const D=[
@@ -1456,7 +1456,7 @@ function seedDefaultSites(){
   S.sites=D.map((d,i)=>({id:i+1,name:d.n,nerc:d.l,interval:30,threshold:5,lastScan:null,location:d.loc,notes:d.ref}));
   save();renderSites();
 }
-
+ 
 // Weather site search
 function wxFilterSites(){
   const q=document.getElementById('wx-site-search').value.toLowerCase().trim();
@@ -1475,7 +1475,7 @@ function wxPickSite(id){
   document.getElementById('wx-location').value=site.location||site.name;
   document.getElementById('wx-site-matches').style.display='none';
 }
-
+ 
 load();
 </script>
 </body>
