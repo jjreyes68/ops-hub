@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -214,7 +213,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14
 /* HANDOFF */
 .handoff-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;font-family:var(--mono);font-size:12px;line-height:1.9;color:var(--text2);white-space:pre-wrap;max-height:420px;overflow-y:auto;}
 
-/* TOAST */
+/* SITE TOOLTIP */
+.site-card{position:relative;}
+.site-ref-tip{display:none;position:absolute;bottom:calc(100% + 8px);left:0;right:0;background:#1a1917;color:#fff;border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.75;z-index:300;box-shadow:0 4px 20px rgba(0,0,0,.25);pointer-events:none;white-space:pre-wrap;font-family:var(--mono);}
+.site-card:hover .site-ref-tip{display:block;}
+.site-ref-tip-title{font-weight:600;font-size:12px;margin-bottom:5px;color:#fff;font-family:var(--font);}
+/* NERC SEPARATOR */
+.nerc-sep{display:flex;align-items:center;gap:10px;margin:14px 0 4px;grid-column:1/-1;}
+.nerc-sep-line{flex:1;height:1px;background:var(--border);}
+.nerc-sep-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
+
 .toast{position:fixed;bottom:20px;right:20px;background:var(--text);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;z-index:200;font-family:var(--mono);box-shadow:0 4px 20px rgba(0,0,0,.2);}
 .toast.show{opacity:1;}
 .empty{font-size:12px;color:var(--text3);text-align:center;padding:16px 0;}
@@ -283,7 +291,7 @@ select option{background:var(--bg2);}
   </div>
   <button class="nav-tab active" onclick="switchView('notes',this)">Notepad</button>
   <button class="nav-tab" onclick="switchView('scans',this)">Scans</button>
-  <button class="nav-tab" onclick="switchView('ops',this)">Ops</button>
+  <button class="nav-tab" onclick="switchView('ops',this)">Tasks</button>
   <button class="nav-tab" onclick="switchView('log',this)">Log</button>
   <button class="nav-tab" onclick="switchView('intel',this)">Field Intel</button>
   <div class="nav-spacer"></div>
@@ -431,8 +439,13 @@ select option{background:var(--bg2);}
       </div>
       <div class="intel-card-content">
         <div class="intel-field">
-          <label>Site / Location</label>
-          <input id="wx-location" placeholder="e.g. Site Alpha, GPS coords..." value="">
+          <label>Search site name</label>
+          <input id="wx-site-search" placeholder="Type site name to match..." oninput="wxFilterSites()">
+          <div id="wx-site-matches" style="display:none;margin-top:4px;border:1px solid var(--border);border-radius:6px;overflow:hidden;"></div>
+        </div>
+        <div class="intel-field" style="margin-top:6px;">
+          <label>Location (auto-filled or manual)</label>
+          <input id="wx-location" placeholder="e.g. Tehachapi, CA or GPS coords...">
         </div>
         <div id="wx-display" style="margin-top:8px;">
           <div class="weather-section">
@@ -588,8 +601,10 @@ select option{background:var(--bg2);}
     <input id="site-interval" type="number" value="30" min="1">
     <label>Due-soon threshold (minutes before overdue)</label>
     <input id="site-threshold" type="number" value="5" min="1">
-    <label>Reference notes</label>
-    <textarea id="site-notes" placeholder="Baseline values, what to check, key contacts..."></textarea>
+    <label>Location (city/state for weather search)</label>
+    <input id="site-location" placeholder="e.g. Tehachapi, CA">
+    <label>Reference info (NP, voltage, band — shown on hover)</label>
+    <textarea id="site-notes" placeholder="NP: 818MWh / 200MW&#10;V SET POINT: 115kV&#10;BAND: 109.25kV–120.75kV"></textarea>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-add-site')">Cancel</button>
       <button class="btn-primary" onclick="saveSite()">Save site</button>
@@ -702,13 +717,13 @@ async function load() {
       if(!S.logEntries) S.logEntries=[];
       if(!S.sites) S.sites=[];
       if(!S.timerCycles) S.timerCycles=0;
-      if(!S.shiftStart) S.shiftStart=Date.now();
       if(!S.crewMembers) S.crewMembers=[];
       if(!S.equipmentLog) S.equipmentLog=[];
       if(!S.escalationContacts) S.escalationContacts={tier1:'',tier2:'',tier3:''};
     } catch(e) {}
   }
   renderAll();
+  if(!S.sites||S.sites.length===0) seedDefaultSites();
   if (S.timerRunning) startTimerInterval();
   setInterval(refreshScanStatuses, 30000);
   refreshScanStatuses();
@@ -981,11 +996,14 @@ function renderSites(){
   sites.sort((a,b)=>(order[siteStatus(a)]||0)-(order[siteStatus(b)]||0));
   const el=document.getElementById('sites-grid');
   if(!sites.length){el.innerHTML='<div class="empty" style="grid-column:1/-1;">No sites'+(f!=='all'?' matching filter':' added yet')+'</div>';return;}
-  el.innerHTML=sites.map(site=>{
+
+  function cardHTML(site){
     const status=siteStatus(site);
     const lastStr=site.lastScan?timeSince(site.lastScan):'—';
     const intervalStr=(site.interval||30)+'min interval';
+    const refText=site.notes?`<div class="site-ref-tip"><div class="site-ref-tip-title">${esc(site.name)}</div>${esc(site.notes)}</div>`:'';
     return `<div class="site-card ${status}">
+      ${refText}
       <div class="site-header">
         <span class="site-name">${esc(site.name)}</span>
         ${site.nerc?'<span class="site-badge badge-nerc">NERC</span>':''}
@@ -997,9 +1015,26 @@ function renderSites(){
         <button class="tbtn" style="font-size:11px;padding:3px 9px;" onclick="editSite(${site.id})">Edit</button>
         <button class="tbtn" style="font-size:11px;padding:3px 9px;color:var(--red);border-color:var(--red);" onclick="deleteSite(${site.id})">Del</button>
       </div>
-      ${site.notes?`<div class="site-note-preview">${esc(site.notes.substring(0,80))}${site.notes.length>80?'…':''}</div>`:''}
     </div>`;
-  }).join('');
+  }
+
+  // If showing all, split into NERC and non-NERC groups with separator
+  if(f==='all'){
+    const nerc=sites.filter(s=>s.nerc);
+    const nonNerc=sites.filter(s=>!s.nerc);
+    let html='';
+    if(nerc.length){
+      html+=`<div class="nerc-sep"><div class="nerc-sep-line"></div><span class="nerc-sep-label">NERC Sites</span><div class="nerc-sep-line"></div></div>`;
+      html+=nerc.map(cardHTML).join('');
+    }
+    if(nonNerc.length){
+      html+=`<div class="nerc-sep"><div class="nerc-sep-line"></div><span class="nerc-sep-label">Non-NERC Sites</span><div class="nerc-sep-line"></div></div>`;
+      html+=nonNerc.map(cardHTML).join('');
+    }
+    el.innerHTML=html;
+  } else {
+    el.innerHTML=sites.map(cardHTML).join('');
+  }
 }
 function timeSince(ts){
   const m=Math.floor((Date.now()-ts)/60000);
@@ -1032,7 +1067,7 @@ function scanAll(){
 function saveSite(){
   const name=document.getElementById('site-name').value.trim();if(!name)return;
   const editId=document.getElementById('site-edit-id').value;
-  const siteData={name,nerc:document.getElementById('site-nerc').value==='1',interval:parseInt(document.getElementById('site-interval').value)||30,threshold:parseInt(document.getElementById('site-threshold').value)||5,notes:document.getElementById('site-notes').value.trim()};
+  const siteData={name,nerc:document.getElementById('site-nerc').value==='1',interval:parseInt(document.getElementById('site-interval').value)||30,threshold:parseInt(document.getElementById('site-threshold').value)||5,location:document.getElementById('site-location').value.trim(),notes:document.getElementById('site-notes').value.trim()};
   if(editId){const site=S.sites.find(s=>s.id===parseInt(editId));if(site)Object.assign(site,siteData);}
   else S.sites.push({id:Date.now(),lastScan:null,...siteData});
   closeModal('modal-add-site');save();renderSites();showToast('Site saved');
@@ -1045,6 +1080,7 @@ function editSite(id){
   document.getElementById('site-nerc').value=site.nerc?'1':'0';
   document.getElementById('site-interval').value=site.interval||30;
   document.getElementById('site-threshold').value=site.threshold||5;
+  document.getElementById('site-location').value=site.location||'';
   document.getElementById('site-notes').value=site.notes||'';
   openModal('modal-add-site');
 }
@@ -1377,6 +1413,67 @@ function logEscalationContacts(){
   save();
   addLog({type:'task',title:'Escalation contacts updated',detail:'Tier 1: '+S.escalationContacts.tier1});
   showToast('Contacts saved');
+}
+
+// DEFAULT SITES — seeded on first use, fully editable after
+function seedDefaultSites(){
+  const D=[
+    // NERC BESS
+    {n:'CNDR1',l:true,loc:'Tehachapi, CA',ref:'NP: 818MWh / 200MW\nV SET: 115kV\nBAND: 109.25kV–120.75kV\nAVR/Voltage · Receive/Follow Dispatch'},
+    {n:'PRGN1',l:true,loc:'Mojave, CA',ref:'NP: 430MWh / 200MW\nV SET: 231.3kV\nBAND: 228kV–234kV\nAVR/Voltage · Receive/Follow Dispatch'},
+    {n:'HARQ2',l:true,loc:'Harper Lake, CA',ref:'NP: 1299MWh / 300MW\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nAVR/Voltage · Receive/Follow Dispatch'},
+    {n:'KUNA1',l:true,loc:'Kuna, ID',ref:'NP: 600MWh / 150MW\nV SET: 142kV\nBAND: 138kV–144.9kV\nAVR/Voltage · Receive/Follow Dispatch'},
+    {n:'BLKW1',l:true,loc:'Bakersfield, CA',ref:'NP: 12MW\nV SET: 11.7kV\nNO BAND\nAVR/Voltage · Receive/Follow Dispatch'},
+    {n:'GLTA1',l:true,loc:'Goleta, CA',ref:'NP: 160MWh / 60MW\nV SET: 66.00kV\nBAND: 63.17kV–69.83kV\nAVR/Voltage · Receive/Follow Dispatch'},
+    {n:'COSO1',l:true,loc:'Coso Junction, CA',ref:'NP: 240MWh / 60MW\nV SET: 235kV\nBAND: 230.3kV–239.7kV\nAVR/Voltage · Receive/Follow Dispatch'},
+    // Solar
+    {n:'HARQ1',l:false,loc:'Harper Lake, CA',ref:'PV 200MW\nInverters inverting?\nRates about the same?'},
+    {n:'ANGF1',l:false,loc:'Angel Fire, NM',ref:'PV 7.7MW  BESS 3.5MW / 7MWh\nInverters inverting?\nRates about the same?'},
+    {n:'AVLN1',l:false,loc:'Taos, NM',ref:'PV 19.7MW  BESS 12MW / 24MWh\nInverters inverting?\nRates about the same?'},
+    {n:'NCLS1',l:false,loc:'Nicolis, CA',ref:'PV 26MW\nInverters inverting?\nRates about the same?'},
+    {n:'TSMS1',l:false,loc:'Rosamond, CA',ref:'PV 18.2MW\nInverters inverting?\nRates about the same?'},
+    {n:'TLRE1',l:false,loc:'Tulare, CA',ref:'PV 3.6MW\nInverters inverting?\nRates about the same?'},
+    {n:'PRTV1',l:false,loc:'Porterville, CA',ref:'PV 3.6MW\nInverters inverting?\nRates about the same?'},
+    {n:'LSTH1',l:false,loc:'Lost Hills, CA',ref:'PV 26MW\nInverters inverting?\nRates about the same?'},
+    {n:'HNFD1',l:false,loc:'Hanford, CA',ref:'PV 3.6MW\nInverters inverting?\nRates about the same?'},
+    {n:'FRMV1',l:false,loc:'Farmersville, CA',ref:'PV 5.4MW\nInverters inverting?\nRates about the same?'},
+    {n:'AVLN2',l:false,loc:'Avalon, CA',ref:'PV 25MW\nInverters inverting?\nRates about the same?'},
+    {n:'BLKW2',l:false,loc:'Blackwell, OK',ref:'PV 16.2MW\nInverters inverting?\nRates about the same?'},
+    {n:'LSTH2',l:false,loc:'Lost Hills, CA',ref:'PV 27.6MW\nNP: 20MW  V SET: 71kV  BAND: 70.29–71.71kV\nInverters inverting?\nRates about the same?'},
+    {n:'NSTR1',l:false,loc:'Kern County, CA',ref:'PV 60MW\nNP: 60MW  V SET: 119kV  BAND: 117.81–120.19kV\nInverters inverting?\nRates about the same?'},
+    // Wind
+    {n:'DFRN1',l:false,loc:'Dufferin, Ontario',ref:'Wind 91MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {n:'MCLM1',l:false,loc:'Manitoulin Island, Ontario',ref:'Wind 60MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {n:'GDWL1',l:false,loc:'Goodwell, OK',ref:'Wind 200MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {n:'LNDL1',l:false,loc:'Lincoln County, MN',ref:'Wind 150MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {n:'ORGN1',l:false,loc:'Kern County, CA',ref:'Wind 150MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {n:'RKRD1',l:false,loc:'Kern County, CA',ref:'Wind 149MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {n:'PRRS1',l:false,loc:'Elk County, KS',ref:'Wind 200MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {n:'DIBL1',l:false,loc:'Diablo Range, CA',ref:'Wind 16.68MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    // ROC
+    {n:'ROCC1',l:false,loc:'Remote Operations Center',ref:'CAISO ADS\nIndji Watch\nStay Safe systems'},
+  ];
+  S.sites=D.map((d,i)=>({id:i+1,name:d.n,nerc:d.l,interval:30,threshold:5,lastScan:null,location:d.loc,notes:d.ref}));
+  save();renderSites();
+}
+
+// Weather site search
+function wxFilterSites(){
+  const q=document.getElementById('wx-site-search').value.toLowerCase().trim();
+  const box=document.getElementById('wx-site-matches');
+  if(!q){box.style.display='none';return;}
+  const matches=S.sites.filter(s=>s.name.toLowerCase().includes(q)||(s.location||'').toLowerCase().includes(q)).slice(0,6);
+  if(!matches.length){box.style.display='none';return;}
+  box.style.display='block';
+  box.innerHTML=matches.map(s=>`<div onclick="wxPickSite(${s.id})" style="padding:7px 10px;cursor:pointer;background:var(--bg2);font-size:13px;border-bottom:1px solid var(--border);transition:background .1s;" onmouseover="this.style.background='var(--blue-bg)'" onmouseout="this.style.background='var(--bg2)'">
+    <strong>${esc(s.name)}</strong>${s.location?' <span style="color:var(--text3);font-size:11px;">— '+esc(s.location)+'</span>':''}
+  </div>`).join('');
+}
+function wxPickSite(id){
+  const site=S.sites.find(s=>s.id===id);if(!site)return;
+  document.getElementById('wx-site-search').value=site.name;
+  document.getElementById('wx-location').value=site.location||site.name;
+  document.getElementById('wx-site-matches').style.display='none';
 }
 
 load();
