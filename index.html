@@ -3,290 +3,258 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RNWBL — Field Operations</title>
+<title>RNWBL — Ops Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#f5f4f2;--bg2:#ffffff;--bg3:#eeece9;--bg4:#e4e1dc;
+:root{
+  --bg:#f5f4f2;--bg2:#fff;--bg3:#eeece9;--bg4:#e4e1dc;
   --border:#ddd9d3;--border2:#c8c3bb;
   --text:#1a1917;--text2:#6b6760;--text3:#9e9a94;
-  --green:#1a6e4a;--green-bg:#e8f5ee;--green-mid:#2d9e6b;
-  --amber:#b36b00;--amber-bg:#fff4e0;
-  --red:#b33000;--red-bg:#feeee8;
-  --blue:#1a4d8a;--blue-bg:#e8f0fb;
-  --purple:#5a3a8a;--purple-bg:#f0eaf8;
+  --green:#1a6e4a;--gbg:#e8f5ee;--gmid:#2d9e6b;
+  --amber:#b36b00;--abg:#fff4e0;
+  --red:#b33000;--rbg:#feeee8;
+  --blue:#1a4d8a;--bbg:#e8f0fb;
+  --purple:#5a3a8a;--pbg:#f0eaf8;
   --accent:#c0392b;
-  --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
-  --radius:8px;--radius-lg:12px;
-  --shadow:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
-  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --f:'DM Sans',sans-serif;--m:'DM Mono',monospace;
+  --r:8px;--rl:12px;
+  --sh:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
+  --shs:0 1px 3px rgba(0,0,0,.08);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;min-height:100vh;}
-::-webkit-scrollbar{width:5px;height:5px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
- 
+body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;min-height:100vh;}
+::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+
 /* NAV */
-.nav{display:flex;align-items:center;gap:2px;padding:0 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-wrap:nowrap;height:48px;position:sticky;top:0;z-index:50;box-shadow:var(--shadow-sm);}
-.nav-brand{display:flex;align-items:center;gap:8px;margin-right:12px;}
-.nav-brand-logo{width:24px;height:24px;flex-shrink:0;}
-.nav-brand-text{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--accent);letter-spacing:.08em;white-space:nowrap;}
-.nav-tab{padding:6px 13px;border-radius:6px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;border:none;background:transparent;font-family:var(--font);transition:all .15s;white-space:nowrap;letter-spacing:-.01em;}
+.nav{display:flex;align-items:center;gap:2px;padding:0 16px;background:var(--bg2);border-bottom:1px solid var(--border);height:48px;position:sticky;top:0;z-index:50;box-shadow:var(--shs);}
+.nav-brand{display:flex;align-items:center;gap:8px;margin-right:12px;flex-shrink:0;}
+.nav-brand-text{font-family:var(--m);font-size:12px;font-weight:500;color:var(--accent);letter-spacing:.08em;}
+.nav-tab{padding:6px 13px;border-radius:6px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;border:none;background:transparent;font-family:var(--f);transition:all .15s;white-space:nowrap;}
 .nav-tab:hover{background:var(--bg3);color:var(--text);}
-.nav-tab.active{background:var(--bg3);color:var(--text);box-shadow:var(--shadow-sm);border:1px solid var(--border);}
+.nav-tab.active{background:var(--bg3);color:var(--text);box-shadow:var(--shs);border:1px solid var(--border);}
 .nav-spacer{flex:1;}
-.nav-time{font-family:var(--mono);font-size:11px;color:var(--text3);white-space:nowrap;}
- 
-/* VIEWS */
-.view{display:none;padding:16px;}
-.view.active{display:block;}
- 
-/* TIMER STRIP */
-.timer-strip{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:14px;flex-wrap:wrap;box-shadow:var(--shadow-sm);}
-.timer-big{font-family:var(--mono);font-size:26px;font-weight:500;color:var(--green);min-width:70px;}
-.timer-big.urgent{color:var(--red);animation:pulse 1s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.timer-bar-wrap{flex:1;min-width:80px;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;}
-.timer-bar-fill{height:100%;background:var(--green-mid);border-radius:3px;transition:width 1s linear;}
-.timer-bar-fill.urgent{background:var(--red);}
-.cycles-badge{font-family:var(--mono);font-size:11px;color:var(--text3);white-space:nowrap;background:var(--bg3);padding:3px 9px;border-radius:10px;}
- 
-/* COLS */
+.nav-time{font-family:var(--m);font-size:11px;color:var(--text3);}
+
+/* LAYOUT */
+.view{display:none;padding:16px;}.view.active{display:block;}
 .cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
 @media(max-width:800px){.cols3{grid-template-columns:1fr 1fr;}}
 @media(max-width:500px){.cols3{grid-template-columns:1fr;}}
- 
-/* CARD */
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px;box-shadow:var(--shadow-sm);}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;box-shadow:var(--shs);}
 .card-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px;}
- 
+
 /* BUTTONS */
-.tbtn{padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;font-family:var(--font);font-weight:500;transition:all .15s;box-shadow:var(--shadow-sm);}
-.tbtn:hover{border-color:var(--green);color:var(--green);background:var(--green-bg);}
-.tbtn.active-btn{border-color:var(--green);color:var(--green);background:var(--green-bg);}
-.btn-primary{padding:7px 16px;background:var(--green);border:1px solid var(--green);border-radius:6px;color:#fff;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .15s;}
-.btn-primary:hover{background:var(--green-mid);border-color:var(--green-mid);}
-.btn-cancel{padding:7px 16px;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .15s;}
-.btn-cancel:hover{border-color:var(--text2);color:var(--text);}
-.btn-danger{padding:6px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--red);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .15s;}
-.btn-danger:hover{background:var(--red-bg);border-color:var(--red);}
-.btn-amber{padding:6px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--amber);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .15s;}
-.btn-amber:hover{background:var(--amber-bg);}
- 
-/* TASK ITEMS */
-.task-item{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;background:var(--bg3);margin-bottom:5px;border:1px solid transparent;transition:all .15s;}
+.tbtn{padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;font-family:var(--f);font-weight:500;transition:all .15s;box-shadow:var(--shs);}
+.tbtn:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
+.tbtn.active-btn{border-color:var(--green);color:var(--green);background:var(--gbg);}
+.btn-p{padding:7px 16px;background:var(--green);border:1px solid var(--green);border-radius:6px;color:#fff;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
+.btn-p:hover{background:var(--gmid);}
+.btn-c{padding:7px 16px;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
+.btn-c:hover{color:var(--text);border-color:var(--text2);}
+.btn-d{padding:6px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--red);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
+.btn-d:hover{background:var(--rbg);border-color:var(--red);}
+
+/* TASKS */
+.task-item{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;background:var(--bg3);margin-bottom:5px;border:1px solid transparent;transition:border-color .15s;}
 .task-item:hover{border-color:var(--border2);}
 .task-cb{width:15px;height:15px;accent-color:var(--green);cursor:pointer;flex-shrink:0;}
-.task-label{flex:1;font-size:13px;color:var(--text);}
+.task-label{flex:1;font-size:13px;}
 .task-item.done .task-label{text-decoration:line-through;color:var(--text3);}
-.task-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px;padding:2px 3px;line-height:1;border-radius:4px;opacity:.5;transition:all .15s;}
-.task-del:hover{color:var(--red);opacity:1;background:var(--red-bg);}
-.rec-badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;background:var(--green-bg);color:var(--green);white-space:nowrap;}
+.task-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px;padding:2px 3px;border-radius:4px;opacity:.5;transition:all .15s;}
+.task-del:hover{color:var(--red);opacity:1;background:var(--rbg);}
+.rec-badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;background:var(--gbg);color:var(--green);white-space:nowrap;}
 .rec-badge.done{background:var(--bg4);color:var(--text3);}
-.task-timer-badge{font-family:var(--mono);font-size:11px;color:var(--amber);background:var(--amber-bg);padding:2px 7px;border-radius:10px;white-space:nowrap;}
-.task-timer-badge.expired{color:var(--red);background:var(--red-bg);}
- 
-/* ADD ROW */
+.timer-badge{font-family:var(--m);font-size:11px;color:var(--amber);background:var(--abg);padding:2px 7px;border-radius:10px;cursor:pointer;}
+.timer-badge.exp{color:var(--red);background:var(--rbg);}
+
+/* INPUTS */
 .add-row{display:flex;gap:6px;margin-top:9px;}
-.add-row input,.add-inp{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--font);font-size:13px;transition:border-color .15s;}
-.add-row input:focus,.add-inp:focus{outline:none;border-color:var(--green-mid);background:var(--bg2);}
-.add-row button{padding:6px 12px;background:var(--green-bg);border:1px solid var(--green);border-radius:6px;color:var(--green);font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all .15s;}
+.add-row input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;}
+.add-row input:focus{outline:none;border-color:var(--gmid);background:var(--bg2);}
+.add-row button{padding:6px 12px;background:var(--gbg);border:1px solid var(--green);border-radius:6px;color:var(--green);font-size:14px;font-weight:600;cursor:pointer;}
 .add-row button:hover{background:var(--green);color:#fff;}
- 
-/* ADHOC TIMER */
-.adhoc-add-row{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap;}
-.adhoc-add-row input{flex:1;min-width:100px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--font);font-size:13px;transition:border-color .15s;}
-.adhoc-add-row input:focus{outline:none;border-color:var(--green-mid);background:var(--bg2);}
-.adhoc-timer-inp{width:64px!important;flex:none!important;text-align:center;}
-.adhoc-add-row .add-btn{padding:6px 12px;background:var(--green-bg);border:1px solid var(--green);border-radius:6px;color:var(--green);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font);white-space:nowrap;transition:all .15s;}
-.adhoc-add-row .add-btn:hover{background:var(--green);color:#fff;}
-.adhoc-timer-label{font-size:11px;color:var(--text3);padding:7px 0 7px 2px;white-space:nowrap;align-self:center;}
- 
-/* CHECKLIST REDESIGN */
-.cl-header{display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
-.cl-list-select-wrap{flex:1;position:relative;}
-.cl-list-select{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--font);font-size:13px;font-weight:500;appearance:none;cursor:pointer;}
-.cl-list-select:focus{outline:none;border-color:var(--green-mid);}
-.cl-add-list-row{display:flex;gap:5px;margin-bottom:8px;}
-.cl-add-list-row input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--font);font-size:13px;}
-.cl-add-list-row input:focus{outline:none;border-color:var(--green-mid);background:var(--bg2);}
-.cl-add-list-row button{padding:5px 10px;background:var(--blue-bg);border:1px solid var(--blue);border-radius:6px;color:var(--blue);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;}
-.cl-del-list-btn{padding:5px 9px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--red);font-size:12px;cursor:pointer;transition:all .15s;flex-shrink:0;}
-.cl-del-list-btn:hover{background:var(--red-bg);border-color:var(--red);}
+.adhoc-row{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap;}
+.adhoc-row input{flex:1;min-width:100px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;}
+.adhoc-row input:focus{outline:none;border-color:var(--gmid);background:var(--bg2);}
+.t-inp{width:64px!important;flex:none!important;text-align:center;}
+.adhoc-row .add-btn{padding:6px 12px;background:var(--gbg);border:1px solid var(--green);border-radius:6px;color:var(--green);font-size:13px;font-weight:600;cursor:pointer;}
+.adhoc-row .add-btn:hover{background:var(--green);color:#fff;}
+.min-lbl{font-size:11px;color:var(--text3);align-self:center;padding:0 2px;}
+
+/* CHECKLIST */
+.cl-add-row{display:flex;gap:5px;margin-bottom:8px;}
+.cl-add-row input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--f);font-size:13px;}
+.cl-add-row input:focus{outline:none;border-color:var(--gmid);background:var(--bg2);}
+.cl-add-row button{padding:5px 10px;background:var(--bbg);border:1px solid var(--blue);border-radius:6px;color:var(--blue);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.cl-hdr{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+.cl-sel{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--f);font-size:13px;font-weight:500;}
+.cl-del{padding:5px 9px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;color:var(--red);font-size:12px;cursor:pointer;}
+.cl-del:hover{background:var(--rbg);border-color:var(--red);}
 .prog-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .prog-bar{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden;}
-.prog-fill{height:100%;background:var(--green-mid);border-radius:3px;transition:width .3s;}
-.prog-txt{font-size:11px;color:var(--text3);font-family:var(--mono);min-width:30px;text-align:right;}
-.cl-add-item-row{display:flex;gap:5px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
-.cl-add-item-row input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--font);font-size:13px;}
-.cl-add-item-row input:focus{outline:none;border-color:var(--green-mid);background:var(--bg2);}
-.cl-add-item-row button{padding:6px 13px;background:var(--green-bg);border:1px solid var(--green);border-radius:6px;color:var(--green);font-size:13px;font-weight:600;cursor:pointer;}
-.cl-add-item-row button:hover{background:var(--green);color:#fff;}
- 
+.prog-fill{height:100%;background:var(--gmid);border-radius:3px;transition:width .3s;}
+.prog-txt{font-size:11px;color:var(--text3);font-family:var(--m);min-width:30px;text-align:right;}
+.cl-item-row{display:flex;gap:5px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+.cl-item-row input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;}
+.cl-item-row input:focus{outline:none;border-color:var(--gmid);background:var(--bg2);}
+.cl-item-row button{padding:6px 13px;background:var(--gbg);border:1px solid var(--green);border-radius:6px;color:var(--green);font-size:13px;font-weight:600;cursor:pointer;}
+.cl-item-row button:hover{background:var(--green);color:#fff;}
+
 /* NOTES */
 .notes-layout{display:grid;grid-template-columns:220px 1fr;gap:12px;}
 @media(max-width:600px){.notes-layout{grid-template-columns:1fr;}}
 .notes-sidebar{display:flex;flex-direction:column;gap:8px;}
-.notes-list{display:flex;flex-direction:column;gap:4px;flex:1;overflow-y:auto;}
-.note-entry{padding:8px 10px;border-radius:7px;border:1px solid transparent;cursor:pointer;background:var(--bg2);box-shadow:var(--shadow-sm);transition:all .15s;}
+.notes-list{display:flex;flex-direction:column;gap:4px;overflow-y:auto;}
+.note-entry{padding:8px 10px;border-radius:7px;border:1px solid transparent;cursor:pointer;background:var(--bg2);box-shadow:var(--shs);transition:all .15s;}
 .note-entry:hover{border-color:var(--border2);}
-.note-entry.active{border-color:var(--blue);background:var(--blue-bg);}
-.note-entry-time{font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:2px;}
-.note-entry-title{font-size:12px;color:var(--text);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-/* NOTES EDITOR — fills available space */
-.note-editor-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;display:flex;flex-direction:column;box-shadow:var(--shadow-sm);}
-.note-editor-card textarea{flex:1;width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;color:var(--text);font-family:var(--mono);font-size:13px;resize:none;line-height:1.75;min-height:300px;}
-.note-editor-card textarea:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
-.note-title-input{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-family:var(--font);font-size:15px;font-weight:600;width:100%;}
-.note-title-input:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
- 
-/* TEMPLATES */
+.note-entry.active{border-color:var(--blue);background:var(--bbg);}
+.note-entry-time{font-size:10px;color:var(--text3);font-family:var(--m);margin-bottom:2px;}
+.note-entry-title{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.note-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;display:flex;flex-direction:column;box-shadow:var(--shs);}
+.note-card textarea{flex:1;width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;color:var(--text);font-family:var(--m);font-size:13px;resize:none;line-height:1.75;min-height:300px;}
+.note-card textarea:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
+.note-title-inp{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-family:var(--f);font-size:15px;font-weight:600;width:100%;}
+.note-title-inp:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
 .tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-bottom:14px;}
-.tpl-btn{padding:9px 11px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--font);text-align:left;transition:all .15s;box-shadow:var(--shadow-sm);}
-.tpl-btn:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-bg);}
+.tpl-btn{padding:9px 11px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--f);text-align:left;transition:all .15s;box-shadow:var(--shs);}
+.tpl-btn:hover{border-color:var(--amber);color:var(--amber);background:var(--abg);}
 .tpl-icon{font-size:16px;display:block;margin-bottom:4px;}
 .tpl-name{font-weight:600;display:block;color:var(--text);font-size:12px;}
 .tpl-desc{font-size:11px;color:var(--text3);margin-top:2px;display:block;}
- 
-/* TAGS */
-.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;margin-right:3px;}
-.tag-incident{background:var(--red-bg);color:var(--red);}
-.tag-response{background:var(--purple-bg);color:var(--purple);}
+.tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;}
 .tag-obs{background:var(--bg4);color:var(--text2);}
-.tag-task{background:var(--green-bg);color:var(--green);}
- 
+.tag-incident{background:var(--rbg);color:var(--red);}
+.tag-response{background:var(--pbg);color:var(--purple);}
+.tag-task{background:var(--gbg);color:var(--green);}
+
 /* LOG */
-.log-entry{display:flex;gap:10px;padding:9px 11px;border-radius:7px;background:var(--bg2);margin-bottom:5px;border-left:3px solid var(--border2);box-shadow:var(--shadow-sm);transition:all .15s;}
-.log-entry:hover{border-color:var(--border2);box-shadow:0 2px 8px rgba(0,0,0,.08);}
+.log-entry{display:flex;gap:10px;padding:9px 11px;border-radius:7px;background:var(--bg2);margin-bottom:5px;border-left:3px solid var(--border2);box-shadow:var(--shs);}
 .log-entry.incident{border-left-color:var(--red);}
 .log-entry.response{border-left-color:var(--purple);}
 .log-entry.task{border-left-color:var(--green);}
 .log-entry.note{border-left-color:var(--blue);}
 .log-entry.scan{border-left-color:var(--amber);}
-.log-time{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:50px;padding-top:2px;}
+.log-time{font-family:var(--m);font-size:11px;color:var(--text3);min-width:50px;padding-top:2px;}
 .log-body{flex:1;}
-.log-title{font-size:13px;color:var(--text);font-weight:500;}
+.log-title{font-size:13px;font-weight:500;}
 .log-detail{font-size:12px;color:var(--text2);margin-top:2px;line-height:1.5;}
- 
-/* SCAN SITES */
-.sites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:10px;}
-.site-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px;box-shadow:var(--shadow-sm);transition:all .15s;}
-.site-card:hover{box-shadow:var(--shadow);}
+
+/* SCANS */
+.timer-strip{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:12px 16px;margin-bottom:14px;flex-wrap:wrap;box-shadow:var(--shs);}
+.timer-big{font-family:var(--m);font-size:26px;font-weight:500;color:var(--green);min-width:70px;}
+.timer-big.urgent{color:var(--red);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.timer-bar-wrap{flex:1;min-width:80px;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+.timer-bar-fill{height:100%;background:var(--gmid);border-radius:3px;transition:width 1s linear;}
+.timer-bar-fill.urgent{background:var(--red);}
+.cycles-badge{font-family:var(--m);font-size:11px;color:var(--text3);background:var(--bg3);padding:3px 9px;border-radius:10px;}
+.sites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:6px;}
+.nerc-sep{display:flex;align-items:center;gap:10px;margin:14px 0 4px;grid-column:1/-1;}
+.nerc-sep-line{flex:1;height:1px;background:var(--border);}
+.nerc-sep-lbl{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
+/* Site cards + hover tooltip */
+.site-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:13px;box-shadow:var(--shs);transition:box-shadow .15s;position:relative;}
+.site-card:hover{box-shadow:var(--sh);}
 .site-card.ok{border-left:3px solid var(--green);}
 .site-card.due{border-left:3px solid var(--amber);}
 .site-card.overdue{border-left:3px solid var(--red);}
 .site-card.never{border-left:3px solid var(--text3);}
-.site-header{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
-.site-name{font-size:13px;font-weight:600;color:var(--text);flex:1;}
-.site-badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;}
-.badge-nerc{background:#e8f0fb;color:var(--blue);}
-.badge-ok{background:var(--green-bg);color:var(--green);}
-.badge-due{background:var(--amber-bg);color:var(--amber);}
-.badge-overdue{background:var(--red-bg);color:var(--red);}
-.badge-never{background:var(--bg4);color:var(--text3);}
-.site-meta{font-size:11px;color:var(--text3);margin-bottom:7px;font-family:var(--mono);}
-.site-actions{display:flex;gap:5px;flex-wrap:wrap;}
-.scan-btn{padding:5px 11px;border-radius:5px;border:1px solid var(--green);background:var(--green-bg);color:var(--green);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all .15s;}
+.site-tip{display:none;position:absolute;bottom:calc(100% + 8px);left:0;right:0;background:#1a1917;color:#e8eaf0;border-radius:8px;padding:10px 12px;font-size:11px;font-family:var(--m);line-height:1.75;z-index:300;box-shadow:0 4px 20px rgba(0,0,0,.3);pointer-events:none;white-space:pre-wrap;min-width:200px;}
+.site-tip-title{font-weight:600;font-size:12px;color:#fff;margin-bottom:4px;font-family:var(--f);display:block;}
+.site-card:hover .site-tip{display:block;}
+.site-hdr{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+.site-name{font-size:13px;font-weight:600;flex:1;}
+.badge{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;}
+.b-nerc{background:var(--bbg);color:var(--blue);}
+.b-ok{background:var(--gbg);color:var(--green);}
+.b-due{background:var(--abg);color:var(--amber);}
+.b-overdue{background:var(--rbg);color:var(--red);}
+.b-never{background:var(--bg4);color:var(--text3);}
+.site-meta{font-size:11px;color:var(--text3);margin-bottom:7px;font-family:var(--m);}
+.site-acts{display:flex;gap:5px;flex-wrap:wrap;}
+.scan-btn{padding:5px 11px;border-radius:5px;border:1px solid var(--green);background:var(--gbg);color:var(--green);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;}
 .scan-btn:hover{background:var(--green);color:#fff;}
-.site-note-preview{font-size:11px;color:var(--text3);margin-top:7px;border-top:1px solid var(--border);padding-top:7px;font-style:italic;line-height:1.5;}
 .filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;align-items:center;}
-.filter-btn{padding:5px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .15s;}
-.filter-btn.active{border-color:var(--blue);color:var(--blue);background:var(--blue-bg);}
+.filter-btn{padding:5px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;}
+.filter-btn.active{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
 .stat-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
-.stat-chip{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;box-shadow:var(--shadow-sm);}
-.stat-chip .s-val{font-family:var(--mono);font-size:18px;font-weight:600;color:var(--text);display:block;}
-.stat-chip .s-lbl{font-size:11px;color:var(--text3);}
- 
+.stat-chip{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;box-shadow:var(--shs);}
+.s-val{font-family:var(--m);font-size:18px;font-weight:600;display:block;}
+.s-lbl{font-size:11px;color:var(--text3);}
+
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:100;padding:14px;backdrop-filter:blur(3px);}
-.modal-overlay.hidden{display:none;}
-.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;width:460px;max-width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.14);}
-.modal-title{font-size:15px;font-weight:600;margin-bottom:14px;color:var(--text);}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:100;padding:14px;backdrop-filter:blur(3px);}
+.overlay.hidden{display:none;}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:20px;width:460px;max-width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.14);}
+.modal h3{font-size:15px;font-weight:600;margin-bottom:14px;}
 .modal label{font-size:12px;font-weight:500;color:var(--text2);display:block;margin-bottom:3px;margin-top:10px;}
-.modal input,.modal select,.modal textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--font);font-size:13px;transition:border-color .15s;}
+.modal input,.modal select,.modal textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;}
 .modal input:focus,.modal select:focus,.modal textarea:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
-.modal textarea{min-height:80px;resize:vertical;font-family:var(--mono);}
-.modal select option{background:var(--bg2);}
-.modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;}
- 
-/* HANDOFF */
-.handoff-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;font-family:var(--mono);font-size:12px;line-height:1.9;color:var(--text2);white-space:pre-wrap;max-height:420px;overflow-y:auto;}
- 
-/* SITE TOOLTIP */
-.site-card{position:relative;}
-.site-ref-tip{display:none;position:absolute;bottom:calc(100% + 8px);left:0;right:0;background:#1a1917;color:#fff;border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.75;z-index:300;box-shadow:0 4px 20px rgba(0,0,0,.25);pointer-events:none;white-space:pre-wrap;font-family:var(--mono);}
-.site-card:hover .site-ref-tip{display:block;}
-.site-ref-tip-title{font-weight:600;font-size:12px;margin-bottom:5px;color:#fff;font-family:var(--font);}
-/* NERC SEPARATOR */
-.nerc-sep{display:flex;align-items:center;gap:10px;margin:14px 0 4px;grid-column:1/-1;}
-.nerc-sep-line{flex:1;height:1px;background:var(--border);}
-.nerc-sep-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
- 
-.toast{position:fixed;bottom:20px;right:20px;background:var(--text);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;z-index:200;font-family:var(--mono);box-shadow:0 4px 20px rgba(0,0,0,.2);}
+.modal textarea{min-height:80px;resize:vertical;font-family:var(--m);}
+.m-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;}
+.handoff-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;font-family:var(--m);font-size:12px;line-height:1.9;color:var(--text2);white-space:pre-wrap;max-height:420px;overflow-y:auto;}
+
+/* FIELD INTEL */
+.intel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.intel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;box-shadow:var(--shs);display:flex;flex-direction:column;gap:10px;}
+.intel-card-hdr{display:flex;align-items:flex-start;gap:10px;}
+.intel-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
+.intel-title{font-size:14px;font-weight:600;}
+.intel-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-top:2px;}
+.itag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;display:inline-block;margin-top:4px;}
+.itag-green{background:var(--gbg);color:var(--green);}
+.itag-blue{background:var(--bbg);color:var(--blue);}
+.itag-amber{background:var(--abg);color:var(--amber);}
+.itag-red{background:var(--rbg);color:var(--red);}
+.itag-purple{background:var(--pbg);color:var(--purple);}
+.intel-content{border-top:1px solid var(--border);padding-top:10px;}
+.ifield{margin-bottom:8px;}
+.ifield label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:3px;}
+.ifield input,.ifield select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;}
+.ifield input:focus,.ifield select:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
+.iacts{display:flex;gap:6px;flex-wrap:wrap;}
+.ibtn{padding:6px 13px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
+.ibtn:hover{border-color:var(--text2);color:var(--text);}
+.ibtn-p{border-color:var(--green);color:var(--green);background:var(--gbg);}
+.ibtn-p:hover{background:var(--green)!important;color:#fff!important;}
+.ibtn-r{border-color:var(--red);color:var(--red);background:var(--rbg);}
+.ibtn-r:hover{background:var(--red)!important;color:#fff!important;}
+.wx-section{display:flex;align-items:center;gap:12px;}
+.wx-icon{font-size:32px;}
+.wx-temp{font-size:22px;font-weight:600;font-family:var(--m);}
+.wx-desc{font-size:12px;color:var(--text2);margin-top:2px;}
+.wx-wind{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12px;color:var(--text2);}
+/* Site search dropdown */
+.wx-matches{display:none;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:4px;}
+.wx-match-item{padding:7px 10px;cursor:pointer;background:var(--bg2);font-size:13px;border-bottom:1px solid var(--border);}
+.wx-match-item:last-child{border-bottom:none;}
+.wx-match-item:hover{background:var(--bbg);}
+
+/* Escalation table */
+.esc-table{width:100%;border-collapse:collapse;}
+.esc-table th{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);padding:5px 8px;background:var(--bg3);border-bottom:1px solid var(--border);text-align:left;}
+.esc-table td{font-size:12px;padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text2);}
+.esc-table tr:last-child td{border-bottom:none;}
+.esc-table input{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:3px 7px;font-size:12px;width:100%;color:var(--text);}
+
+/* Safety/NERC check lists */
+.feat-list{display:flex;flex-direction:column;gap:5px;}
+.feat-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);padding:6px 8px;background:var(--bg3);border-radius:5px;}
+
+/* Toast */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--text);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;z-index:200;font-family:var(--m);box-shadow:0 4px 20px rgba(0,0,0,.2);}
 .toast.show{opacity:1;}
 .empty{font-size:12px;color:var(--text3);text-align:center;padding:16px 0;}
- 
-select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--font);font-size:13px;}
-select option{background:var(--bg2);}
- 
-/* PAGE HEADER */
-.page-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
-.page-title{font-size:17px;font-weight:600;color:var(--text);letter-spacing:-.02em;}
- 
-/* INTEL PAGE */
-.intel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
-.intel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:10px;}
-.intel-card-header{display:flex;align-items:flex-start;gap:10px;}
-.intel-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
-.intel-card-title{font-size:14px;font-weight:600;color:var(--text);}
-.intel-card-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-top:2px;}
-.intel-tag{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;display:inline-block;margin-top:4px;}
-.intel-tag-green{background:var(--green-bg);color:var(--green);}
-.intel-tag-blue{background:var(--blue-bg);color:var(--blue);}
-.intel-tag-amber{background:var(--amber-bg);color:var(--amber);}
-.intel-tag-purple{background:var(--purple-bg);color:var(--purple);}
-.intel-tag-red{background:var(--red-bg);color:var(--red);}
-.intel-card-content{border-top:1px solid var(--border);padding-top:10px;}
-.intel-field{margin-bottom:8px;}
-.intel-field label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:3px;}
-.intel-field input,.intel-field select,.intel-field textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--font);font-size:13px;}
-.intel-field input:focus,.intel-field select:focus,.intel-field textarea:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
-.intel-field textarea{min-height:65px;resize:vertical;font-family:var(--mono);font-size:12px;line-height:1.6;}
-.intel-card-actions{display:flex;gap:6px;flex-wrap:wrap;}
-.intel-btn{padding:6px 13px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .15s;}
-.intel-btn:hover{border-color:var(--text2);color:var(--text);}
-.intel-btn-primary{border-color:var(--green);color:var(--green);background:var(--green-bg);}
-.intel-btn-primary:hover{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important;}
-.intel-btn-red{border-color:var(--red);color:var(--red);background:var(--red-bg);}
-.intel-btn-red:hover{background:var(--red)!important;color:#fff!important;}
-.intel-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;}
-.dot-green{background:var(--green-mid);}
-.dot-amber{background:var(--amber);}
-.dot-red{background:var(--red);}
-.dot-grey{background:var(--text3);}
-.feature-list{display:flex;flex-direction:column;gap:5px;}
-.feature-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);padding:6px 8px;background:var(--bg3);border-radius:5px;}
-.feature-item .fi-icon{font-size:13px;flex-shrink:0;}
-.escalation-matrix{width:100%;border-collapse:collapse;}
-.escalation-matrix th{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);padding:5px 8px;background:var(--bg3);border-bottom:1px solid var(--border);text-align:left;}
-.escalation-matrix td{font-size:12px;padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text2);}
-.escalation-matrix tr:last-child td{border-bottom:none;}
-.weather-section{display:flex;align-items:center;gap:12px;}
-.weather-icon{font-size:32px;}
-.weather-info{flex:1;}
-.weather-temp{font-size:22px;font-weight:600;font-family:var(--mono);color:var(--text);}
-.weather-desc{font-size:12px;color:var(--text2);margin-top:2px;}
-.wind-indicator{display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12px;color:var(--text2);}
+select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;}
 </style>
 </head>
 <body>
- 
+
 <div class="nav">
   <div class="nav-brand">
-    <svg class="nav-brand-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/>
-    </svg>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
     <span class="nav-brand-text">RNWBL OPS</span>
   </div>
   <button class="nav-tab active" onclick="switchView('notes',this)">Notepad</button>
@@ -297,8 +265,8 @@ select option{background:var(--bg2);}
   <div class="nav-spacer"></div>
   <div class="nav-time" id="nav-clock"></div>
 </div>
- 
-<!-- NOTEPAD VIEW -->
+
+<!-- NOTEPAD -->
 <div class="view active" id="view-notes">
   <div class="tpl-grid" id="tpl-grid"></div>
   <div class="notes-layout">
@@ -307,19 +275,17 @@ select option{background:var(--bg2);}
       <button class="tbtn" style="text-align:center;width:100%;padding:8px;" onclick="newBlankNote()">+ New note</button>
       <div class="notes-list" id="notes-list"></div>
     </div>
-    <div class="note-editor-card">
+    <div class="note-card">
       <div id="note-no-sel" style="color:var(--text3);font-size:13px;padding:24px;text-align:center;">Select a note or use a template above</div>
       <div id="note-form" style="display:none;flex-direction:column;gap:9px;flex:1;">
         <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;">
-          <input class="note-title-input" id="note-title" placeholder="Note title..." style="flex:1;min-width:120px;">
+          <input class="note-title-inp" id="note-title" placeholder="Note title..." style="flex:1;min-width:120px;">
           <select id="note-tag" style="min-width:130px;">
-            <option value="obs">Observation</option>
-            <option value="incident">Incident</option>
-            <option value="response">Response</option>
-            <option value="task">Task note</option>
+            <option value="obs">Observation</option><option value="incident">Incident</option>
+            <option value="response">Response</option><option value="task">Task note</option>
           </select>
-          <button class="btn-primary" onclick="saveNote()">Save</button>
-          <button class="btn-cancel" onclick="deleteNote()">Delete</button>
+          <button class="btn-p" onclick="saveNote()">Save</button>
+          <button class="btn-c" onclick="deleteNote()">Delete</button>
         </div>
         <textarea id="note-body" placeholder="Start typing..."></textarea>
         <div style="font-size:11px;color:var(--text3);" id="note-meta"></div>
@@ -327,8 +293,8 @@ select option{background:var(--bg2);}
     </div>
   </div>
 </div>
- 
-<!-- SCANS VIEW -->
+
+<!-- SCANS -->
 <div class="view" id="view-scans">
   <div class="timer-strip">
     <div class="timer-big" id="timer-disp">30:00</div>
@@ -336,10 +302,10 @@ select option{background:var(--bg2);}
     <span class="cycles-badge" id="cycles-badge">0 cycles</span>
     <button class="tbtn" id="timer-btn" onclick="toggleTimer()">Start</button>
     <button class="tbtn" onclick="resetTimer()">Reset</button>
-    <span id="scan-next-due" style="font-family:var(--mono);font-size:11px;color:var(--text3);"></span>
+    <span id="scan-next-due" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-left:4px;"></span>
   </div>
   <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
-    <button class="btn-primary" onclick="openModal('modal-add-site')">+ Add site</button>
+    <button class="btn-p" onclick="openModal('modal-add-site')">+ Add site</button>
     <button class="tbtn" onclick="scanAll()">Scan all NERC</button>
   </div>
   <div class="stat-row" id="scan-stats"></div>
@@ -352,8 +318,8 @@ select option{background:var(--bg2);}
   </div>
   <div class="sites-grid" id="sites-grid"></div>
 </div>
- 
-<!-- OPS VIEW -->
+
+<!-- TASKS -->
 <div class="view" id="view-ops">
   <div class="cols3">
     <div class="card">
@@ -367,387 +333,455 @@ select option{background:var(--bg2);}
     <div class="card">
       <div class="card-title">Ad hoc tasks</div>
       <div id="adhoc-list" style="max-height:260px;overflow-y:auto;"></div>
-      <div class="adhoc-add-row">
+      <div class="adhoc-row">
         <input id="adhoc-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addAdhoc()">
-        <input id="adhoc-timer-inp" class="adhoc-timer-inp add-inp" type="number" min="0" placeholder="min" title="Optional timer (minutes)">
-        <span class="adhoc-timer-label">min</span>
+        <input id="adhoc-t" class="t-inp" type="number" min="0" placeholder="min">
+        <span class="min-lbl">min</span>
         <button class="add-btn" onclick="addAdhoc()">+ Add</button>
       </div>
     </div>
     <div class="card">
       <div class="card-title">Checklists</div>
-      <!-- New list creation row -->
-      <div class="cl-add-list-row">
+      <div class="cl-add-row">
         <input id="cl-list-inp" placeholder="New checklist name..." onkeydown="if(event.key==='Enter')addClList()">
         <button onclick="addClList()">+ New list</button>
       </div>
-      <!-- Active list selector + delete -->
-      <div class="cl-header" id="cl-header" style="display:none;">
-        <div class="cl-list-select-wrap">
-          <select class="cl-list-select" id="cl-list-select" onchange="switchClFromSelect()"></select>
-        </div>
-        <button class="cl-del-list-btn" onclick="delActiveClList()" title="Delete this checklist">🗑 Delete list</button>
+      <div class="cl-hdr" id="cl-hdr" style="display:none;">
+        <select class="cl-sel" id="cl-sel" onchange="switchClFromSelect()"></select>
+        <button class="cl-del" onclick="delActiveClList()">🗑 Delete</button>
       </div>
-      <div class="prog-row" id="cl-prog-row" style="display:none">
+      <div class="prog-row" id="cl-prog-row" style="display:none;">
         <div class="prog-bar"><div class="prog-fill" id="cl-prog-fill" style="width:0%"></div></div>
         <div class="prog-txt" id="cl-prog-txt">0/0</div>
       </div>
       <div id="cl-items" style="max-height:180px;overflow-y:auto;"></div>
-      <div class="cl-add-item-row" id="cl-add-item-row" style="display:none;">
-        <input id="cl-item-inp" placeholder="Add item to this checklist..." onkeydown="if(event.key==='Enter')addClItem()">
+      <div class="cl-item-row" id="cl-item-row" style="display:none;">
+        <input id="cl-item-inp" placeholder="Add item..." onkeydown="if(event.key==='Enter')addClItem()">
         <button onclick="addClItem()">+ Item</button>
       </div>
     </div>
   </div>
 </div>
- 
-<!-- LOG VIEW -->
+
+<!-- LOG -->
 <div class="view" id="view-log">
   <div class="stat-row" id="log-stats"></div>
   <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap;">
     <select id="log-filter" onchange="renderLog()">
-      <option value="all">All entries</option>
-      <option value="incident">Incidents</option>
-      <option value="response">Responses</option>
-      <option value="task">Tasks</option>
-      <option value="note">Notes</option>
-      <option value="scan">Scans</option>
+      <option value="all">All entries</option><option value="incident">Incidents</option>
+      <option value="response">Responses</option><option value="task">Tasks</option>
+      <option value="note">Notes</option><option value="scan">Scans</option>
     </select>
     <button class="tbtn" onclick="openHandoff()">↺ Shift handoff</button>
-    <button class="btn-danger" onclick="clearLog()">Clear log</button>
+    <button class="btn-d" onclick="clearLog()">Clear log</button>
   </div>
   <div id="log-list" style="max-height:520px;overflow-y:auto;"></div>
 </div>
- 
-<!-- FIELD INTEL VIEW -->
+
+<!-- FIELD INTEL -->
 <div class="view" id="view-intel">
-  <div class="page-header">
-    <div class="page-title">Field Intel</div>
-    <span style="font-size:12px;color:var(--text3);">Situational awareness tools for field operators</span>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Field Intel</div>
+    <span style="font-size:12px;color:var(--text3);">Situational awareness tools</span>
   </div>
   <div class="intel-grid">
- 
-    <!-- Weather & Wind Conditions -->
+
+    <!-- Weather -->
     <div class="intel-card">
-      <div class="intel-card-header">
+      <div class="intel-card-hdr">
         <span class="intel-icon">🌤</span>
         <div>
-          <div class="intel-card-title">Site Weather & Wind</div>
-          <div class="intel-card-desc">Real-time conditions relevant to wind farm performance and crew safety.</div>
-          <span class="intel-tag intel-tag-green">Live</span>
+          <div class="intel-title">Site Weather & Wind</div>
+          <div class="intel-desc">Search by site name — location auto-fills from your scan sites.</div>
+          <span class="itag itag-green">Live</span>
         </div>
       </div>
-      <div class="intel-card-content">
-        <div class="intel-field">
+      <div class="intel-content">
+        <div class="ifield">
           <label>Search site name</label>
-          <input id="wx-site-search" placeholder="Type site name to match..." oninput="wxFilterSites()">
-          <div id="wx-site-matches" style="display:none;margin-top:4px;border:1px solid var(--border);border-radius:6px;overflow:hidden;"></div>
+          <input id="wx-site-inp" placeholder="Type site name..." oninput="wxFilter()" autocomplete="off">
+          <div class="wx-matches" id="wx-matches"></div>
         </div>
-        <div class="intel-field" style="margin-top:6px;">
-          <label>Location (auto-filled or manual)</label>
-          <input id="wx-location" placeholder="e.g. Tehachapi, CA or GPS coords...">
+        <div class="ifield">
+          <label>Location (auto-filled or override)</label>
+          <input id="wx-location" placeholder="e.g. Tehachapi, CA">
         </div>
-        <div id="wx-display" style="margin-top:8px;">
-          <div class="weather-section">
-            <div class="weather-icon" id="wx-icon">—</div>
-            <div class="weather-info">
-              <div class="weather-temp" id="wx-temp">—</div>
-              <div class="weather-desc" id="wx-desc">Enter a location and fetch conditions</div>
-              <div class="wind-indicator">
-                <span>💨</span><span id="wx-wind">Wind: —</span>
-                <span style="margin-left:8px;">👁</span><span id="wx-vis">Vis: —</span>
-              </div>
+        <div style="margin-top:10px;">
+          <div class="wx-section">
+            <div class="wx-icon" id="wx-icon">—</div>
+            <div>
+              <div class="wx-temp" id="wx-temp">—</div>
+              <div class="wx-desc" id="wx-desc">Search a site or enter a location above</div>
+              <div class="wx-wind"><span>💨</span><span id="wx-wind">Wind: —</span><span style="margin-left:8px;">👁</span><span id="wx-vis">Vis: —</span></div>
             </div>
           </div>
         </div>
-        <div class="intel-card-actions" style="margin-top:8px;">
-          <button class="intel-btn intel-btn-primary" onclick="fetchWeather()">Fetch conditions</button>
-          <button class="intel-btn" onclick="logWeather()">Log to notes</button>
+        <div class="iacts" style="margin-top:10px;">
+          <button class="ibtn ibtn-p" onclick="fetchWeather()">Fetch conditions</button>
+          <button class="ibtn" onclick="logWeather()">Log to notes</button>
         </div>
       </div>
     </div>
- 
-    <!-- Crew Status Board -->
+
+    <!-- Crew -->
     <div class="intel-card">
-      <div class="intel-card-header">
+      <div class="intel-card-hdr">
         <span class="intel-icon">👷</span>
         <div>
-          <div class="intel-card-title">Crew Status Board</div>
-          <div class="intel-card-desc">Track field crew locations, status, and last check-in times.</div>
-          <span class="intel-tag intel-tag-blue">Tracking</span>
+          <div class="intel-title">Crew Status Board</div>
+          <div class="intel-desc">Track field crew locations and check-in status.</div>
+          <span class="itag itag-blue">Tracking</span>
         </div>
       </div>
-      <div class="intel-card-content">
+      <div class="intel-content">
         <div id="crew-list" style="display:flex;flex-direction:column;gap:5px;max-height:160px;overflow-y:auto;margin-bottom:8px;"></div>
         <div style="display:flex;gap:5px;">
-          <input id="crew-name-inp" class="intel-field" style="flex:1;" placeholder="Crew member name..." onkeydown="if(event.key==='Enter')addCrewMember()">
-          <button class="intel-btn intel-btn-primary" onclick="addCrewMember()">+ Add</button>
+          <input id="crew-inp" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;color:var(--text);" placeholder="Crew member name..." onkeydown="if(event.key==='Enter')addCrew()">
+          <button class="ibtn ibtn-p" onclick="addCrew()">+ Add</button>
         </div>
       </div>
     </div>
- 
-    <!-- Escalation Quick-Dial -->
+
+    <!-- Escalation -->
     <div class="intel-card">
-      <div class="intel-card-header">
+      <div class="intel-card-hdr">
         <span class="intel-icon">📞</span>
         <div>
-          <div class="intel-card-title">Escalation Contacts</div>
-          <div class="intel-card-desc">Key contacts by severity tier. Add site-specific contacts for fast escalation.</div>
-          <span class="intel-tag intel-tag-red">Emergency ready</span>
+          <div class="intel-title">Escalation Contacts</div>
+          <div class="intel-desc">Key contacts by severity tier for fast escalation.</div>
+          <span class="itag itag-red">Emergency ready</span>
         </div>
       </div>
-      <div class="intel-card-content">
-        <table class="escalation-matrix">
+      <div class="intel-content">
+        <table class="esc-table">
           <thead><tr><th>Tier</th><th>Role</th><th>Contact</th></tr></thead>
-          <tbody id="escalation-tbody">
-            <tr><td><span class="intel-tag intel-tag-red">1</span></td><td>Site Supervisor</td><td><input style="background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:3px 7px;font-size:12px;width:100%;color:var(--text);" placeholder="Name / number"></td></tr>
-            <tr><td><span class="intel-tag intel-tag-amber">2</span></td><td>Operations Manager</td><td><input style="background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:3px 7px;font-size:12px;width:100%;color:var(--text);" placeholder="Name / number"></td></tr>
-            <tr><td><span class="intel-tag intel-tag-blue">3</span></td><td>Control Center</td><td><input style="background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:3px 7px;font-size:12px;width:100%;color:var(--text);" placeholder="Name / number"></td></tr>
+          <tbody id="esc-tbody">
+            <tr><td><span class="itag itag-red">1</span></td><td>Site Supervisor</td><td><input placeholder="Name / number"></td></tr>
+            <tr><td><span class="itag itag-amber">2</span></td><td>Ops Manager</td><td><input placeholder="Name / number"></td></tr>
+            <tr><td><span class="itag itag-blue">3</span></td><td>Control Center</td><td><input placeholder="Name / number"></td></tr>
           </tbody>
         </table>
-        <div class="intel-card-actions" style="margin-top:8px;">
-          <button class="intel-btn intel-btn-primary" onclick="logEscalationContacts()">Save to log</button>
+        <div class="iacts" style="margin-top:8px;">
+          <button class="ibtn ibtn-p" onclick="saveEscContacts()">Save to log</button>
         </div>
       </div>
     </div>
- 
-    <!-- Pre-Shift Safety Check -->
+
+    <!-- Safety check -->
     <div class="intel-card">
-      <div class="intel-card-header">
+      <div class="intel-card-hdr">
         <span class="intel-icon">🦺</span>
         <div>
-          <div class="intel-card-title">Pre-Shift Safety Check</div>
-          <div class="intel-card-desc">Quick PPE and site safety verification before starting a shift.</div>
-          <span class="intel-tag intel-tag-amber">Safety</span>
+          <div class="intel-title">Pre-Shift Safety Check</div>
+          <div class="intel-desc">Quick PPE and site safety verification before starting a shift.</div>
+          <span class="itag itag-amber">Safety</span>
         </div>
       </div>
-      <div class="intel-card-content">
-        <div id="safety-check-list" style="display:flex;flex-direction:column;gap:5px;"></div>
-        <div class="intel-card-actions" style="margin-top:10px;">
-          <button class="intel-btn intel-btn-primary" onclick="completeSafetyCheck()">✓ Complete &amp; log</button>
-          <button class="intel-btn" onclick="resetSafetyCheck()">Reset</button>
+      <div class="intel-content">
+        <div id="safety-list" style="display:flex;flex-direction:column;gap:5px;"></div>
+        <div class="iacts" style="margin-top:10px;">
+          <button class="ibtn ibtn-p" onclick="completeSafety()">✓ Complete &amp; log</button>
+          <button class="ibtn" onclick="resetSafety()">Reset</button>
         </div>
       </div>
     </div>
- 
-    <!-- Equipment Status Tracker -->
+
+    <!-- Equipment -->
     <div class="intel-card">
-      <div class="intel-card-header">
+      <div class="intel-card-hdr">
         <span class="intel-icon">⚙️</span>
         <div>
-          <div class="intel-card-title">Equipment Status</div>
-          <div class="intel-card-desc">Log turbine, inverter, or BOS equipment issues for handoff and maintenance tracking.</div>
-          <span class="intel-tag intel-tag-purple">Maintenance</span>
+          <div class="intel-title">Equipment Status</div>
+          <div class="intel-desc">Log turbine, inverter, or BOS equipment issues.</div>
+          <span class="itag itag-purple">Maintenance</span>
         </div>
       </div>
-      <div class="intel-card-content">
-        <div id="equipment-list" style="display:flex;flex-direction:column;gap:5px;max-height:140px;overflow-y:auto;margin-bottom:8px;"></div>
+      <div class="intel-content">
+        <div id="equip-list" style="display:flex;flex-direction:column;gap:5px;max-height:140px;overflow-y:auto;margin-bottom:8px;"></div>
         <div style="display:flex;gap:5px;flex-wrap:wrap;">
-          <input id="equip-name-inp" style="flex:1;min-width:100px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;color:var(--text);" placeholder="Equipment ID / name...">
-          <select id="equip-status-inp" style="min-width:90px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--text);">
-            <option value="ok">✅ OK</option>
-            <option value="caution">⚠️ Caution</option>
-            <option value="down">🔴 Down</option>
+          <input id="equip-inp" style="flex:1;min-width:100px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:13px;color:var(--text);" placeholder="Equipment ID / name...">
+          <select id="equip-status" style="min-width:90px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--text);">
+            <option value="ok">✅ OK</option><option value="caution">⚠️ Caution</option><option value="down">🔴 Down</option>
           </select>
-          <button class="intel-btn intel-btn-primary" onclick="addEquipment()">+ Log</button>
+          <button class="ibtn ibtn-p" onclick="addEquip()">+ Log</button>
         </div>
       </div>
     </div>
- 
-    <!-- Observation Quick-Log -->
+
+    <!-- NERC -->
     <div class="intel-card">
-      <div class="intel-card-header">
+      <div class="intel-card-hdr">
         <span class="intel-icon">📡</span>
         <div>
-          <div class="intel-card-title">NERC Compliance Checklist</div>
-          <div class="intel-card-desc">Pre-built NERC CIP/O&P compliance items. Check off and log with timestamp.</div>
-          <span class="intel-tag intel-tag-blue">NERC</span>
+          <div class="intel-title">NERC Compliance Checklist</div>
+          <div class="intel-desc">Pre-built CIP/O&P compliance items. Check off and log with timestamp.</div>
+          <span class="itag itag-blue">NERC</span>
         </div>
       </div>
-      <div class="intel-card-content">
-        <div id="nerc-check-list" style="display:flex;flex-direction:column;gap:5px;"></div>
-        <div class="intel-card-actions" style="margin-top:10px;">
-          <button class="intel-btn intel-btn-primary" onclick="completeNERCCheck()">✓ Submit compliance log</button>
-          <button class="intel-btn" onclick="resetNERCCheck()">Reset</button>
+      <div class="intel-content">
+        <div id="nerc-list" style="display:flex;flex-direction:column;gap:5px;"></div>
+        <div class="iacts" style="margin-top:10px;">
+          <button class="ibtn ibtn-p" onclick="completeNERC()">✓ Submit compliance log</button>
+          <button class="ibtn" onclick="resetNERC()">Reset</button>
         </div>
       </div>
     </div>
- 
+
   </div>
 </div>
- 
-<!-- HANDOFF MODAL -->
-<div class="modal-overlay hidden" id="modal-handoff">
+
+<!-- MODALS -->
+<div class="overlay hidden" id="modal-handoff">
   <div class="modal" style="width:520px;">
-    <div class="modal-title">↺ Shift handoff summary</div>
+    <h3>↺ Shift handoff summary</h3>
     <div class="handoff-box" id="handoff-content"></div>
-    <div class="modal-actions">
+    <div class="m-actions">
       <button class="tbtn" onclick="copyHandoff()">Copy text</button>
-      <button class="btn-cancel" onclick="closeModal('modal-handoff')">Close</button>
+      <button class="btn-c" onclick="closeModal('modal-handoff')">Close</button>
     </div>
   </div>
 </div>
- 
-<!-- ADD SITE MODAL -->
-<div class="modal-overlay hidden" id="modal-add-site">
+
+<div class="overlay hidden" id="modal-add-site">
   <div class="modal">
-    <div class="modal-title" id="site-modal-title">Add site</div>
+    <h3 id="site-modal-title">Add site</h3>
     <input type="hidden" id="site-edit-id">
-    <label>Site name</label>
-    <input id="site-name" placeholder="e.g. Station Alpha, Gate B...">
+    <label>Site name / code</label>
+    <input id="site-name" placeholder="e.g. CNDR1">
     <label>NERC site?</label>
     <select id="site-nerc"><option value="0">No</option><option value="1">Yes</option></select>
     <label>Scan interval (minutes)</label>
     <input id="site-interval" type="number" value="30" min="1">
     <label>Due-soon threshold (minutes before overdue)</label>
     <input id="site-threshold" type="number" value="5" min="1">
-    <label>Location (city/state for weather search)</label>
+    <label>Location (city/state — used for weather search)</label>
     <input id="site-location" placeholder="e.g. Tehachapi, CA">
-    <label>Reference info (NP, voltage, band — shown on hover)</label>
+    <label>Reference info (shown on hover — NP, voltage, band)</label>
     <textarea id="site-notes" placeholder="NP: 818MWh / 200MW&#10;V SET POINT: 115kV&#10;BAND: 109.25kV–120.75kV"></textarea>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('modal-add-site')">Cancel</button>
-      <button class="btn-primary" onclick="saveSite()">Save site</button>
+    <div class="m-actions">
+      <button class="btn-c" onclick="closeModal('modal-add-site')">Cancel</button>
+      <button class="btn-p" onclick="saveSite()">Save site</button>
     </div>
   </div>
 </div>
- 
-<!-- SCAN NOTE MODAL -->
-<div class="modal-overlay hidden" id="modal-scan-note">
+
+<div class="overlay hidden" id="modal-scan-note">
   <div class="modal">
-    <div class="modal-title" id="scan-note-title">Log scan</div>
+    <h3 id="scan-note-title">Log scan</h3>
     <input type="hidden" id="scan-note-site-id">
     <label>Scan notes (optional)</label>
     <textarea id="scan-note-body" placeholder="All clear, or note any anomalies..."></textarea>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('modal-scan-note')">Cancel</button>
-      <button class="btn-primary" onclick="confirmScan()">Log scan</button>
+    <div class="m-actions">
+      <button class="btn-c" onclick="closeModal('modal-scan-note')">Cancel</button>
+      <button class="btn-p" onclick="confirmScan()">Log scan</button>
     </div>
   </div>
 </div>
- 
-<!-- INCIDENT MODAL -->
-<div class="modal-overlay hidden" id="modal-incident">
+
+<div class="overlay hidden" id="modal-incident">
   <div class="modal">
-    <div class="modal-title">🚨 Incident report</div>
-    <label>Location / zone</label>
-    <input id="inc-location" placeholder="Zone, gate, site name...">
+    <h3>🚨 Incident report</h3>
+    <label>Location / zone</label><input id="inc-location" placeholder="Zone, gate, site name...">
     <label>Severity</label>
     <select id="inc-severity"><option>Low</option><option>Medium</option><option selected>High</option><option>Critical</option></select>
-    <label>Reported by</label>
-    <input id="inc-reporter" placeholder="Name or radio ID...">
-    <label>Description</label>
-    <textarea id="inc-desc" placeholder="What happened?"></textarea>
-    <label>Action taken</label>
-    <textarea id="inc-action" placeholder="What did you do?"></textarea>
+    <label>Reported by</label><input id="inc-reporter" placeholder="Name or radio ID...">
+    <label>Description</label><textarea id="inc-desc" placeholder="What happened?"></textarea>
+    <label>Action taken</label><textarea id="inc-action" placeholder="What did you do?"></textarea>
     <label>Follow-up required?</label>
     <select id="inc-followup"><option value="no">No</option><option value="yes">Yes — open item</option></select>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('modal-incident')">Cancel</button>
-      <button class="btn-primary" onclick="saveIncident()">Log incident</button>
+    <div class="m-actions">
+      <button class="btn-c" onclick="closeModal('modal-incident')">Cancel</button>
+      <button class="btn-p" onclick="saveIncident()">Log incident</button>
     </div>
   </div>
 </div>
- 
-<!-- RESPONSE MODAL -->
-<div class="modal-overlay hidden" id="modal-response">
+
+<div class="overlay hidden" id="modal-response">
   <div class="modal">
-    <div class="modal-title">✅ Correct response log</div>
-    <label>Situation / trigger</label>
-    <input id="res-situation" placeholder="What prompted this?">
-    <label>Who was notified</label>
-    <input id="res-notified" placeholder="Names, teams, channels...">
-    <label>Procedure followed</label>
-    <textarea id="res-procedure" placeholder="Steps taken..."></textarea>
-    <label>Resolution / outcome</label>
-    <textarea id="res-outcome" placeholder="What was the result?"></textarea>
+    <h3>✅ Correct response log</h3>
+    <label>Situation / trigger</label><input id="res-situation" placeholder="What prompted this?">
+    <label>Who was notified</label><input id="res-notified" placeholder="Names, teams, channels...">
+    <label>Procedure followed</label><textarea id="res-procedure" placeholder="Steps taken..."></textarea>
+    <label>Resolution / outcome</label><textarea id="res-outcome" placeholder="What was the result?"></textarea>
     <label>Escalation</label>
     <select id="res-escalation"><option>No escalation</option><option>Yes — escalated</option><option>Yes — pending</option></select>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('modal-response')">Cancel</button>
-      <button class="btn-primary" onclick="saveResponse()">Log response</button>
+    <div class="m-actions">
+      <button class="btn-c" onclick="closeModal('modal-response')">Cancel</button>
+      <button class="btn-p" onclick="saveResponse()">Log response</button>
     </div>
   </div>
 </div>
- 
-<!-- ADHOC TIMER MODAL -->
-<div class="modal-overlay hidden" id="modal-task-timer">
+
+<div class="overlay hidden" id="modal-task-timer">
   <div class="modal" style="width:320px;">
-    <div class="modal-title" id="task-timer-modal-title">Task timer</div>
-    <input type="hidden" id="task-timer-task-id">
+    <h3 id="ttimer-title">Task timer</h3>
     <div style="text-align:center;padding:16px 0;">
-      <div style="font-family:var(--mono);font-size:40px;font-weight:500;color:var(--amber);" id="task-timer-display">00:00</div>
-      <div style="font-size:12px;color:var(--text3);margin-top:6px;" id="task-timer-desc"></div>
+      <div style="font-family:var(--m);font-size:40px;font-weight:500;color:var(--amber);" id="ttimer-disp">00:00</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:6px;" id="ttimer-desc"></div>
     </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('modal-task-timer')">Close</button>
-    </div>
+    <div class="m-actions"><button class="btn-c" onclick="closeModal('modal-task-timer')">Close</button></div>
   </div>
 </div>
- 
+
 <div class="toast" id="toast"></div>
- 
+
 <script>
-const SK = 'ctrlroom_v5';
+// ─── CONSTANTS ────────────────────────────────────────────────────────────────
+const SK = 'rnwbl_v1';         // bumped key — forces clean state
+const SITES_KEY = 'rnwbl_sites_v1'; // sites stored separately so they survive SK upgrades
+
+// ─── DEFAULT SITES ────────────────────────────────────────────────────────────
+function defaultSites() {
+  return [
+    // NERC BESS ---------------------------------------------------------------
+    {id:101,name:'CNDR1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Tehachapi, CA',
+     notes:'NP: 818MWh / 200MW\nV SET: 115kV\nBAND: 109.25kV–120.75kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:102,name:'PRGN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Mojave, CA',
+     notes:'NP: 430MWh / 200MW\nV SET: 231.3kV\nBAND: 228kV–234kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:103,name:'HARQ2',nerc:true,interval:30,threshold:5,lastScan:null,location:'Harper Lake, CA',
+     notes:'NP: 1299MWh / 300MW\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:104,name:'KUNA1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Kuna, ID',
+     notes:'NP: 600MWh / 150MW\nV SET: 142kV\nBAND: 138kV–144.9kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:105,name:'BLKW1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Bakersfield, CA',
+     notes:'NP: 12MW\nV SET: 11.7kV\nNO BAND\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:106,name:'GLTA1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Goleta, CA',
+     notes:'NP: 160MWh / 60MW\nV SET: 66.00kV\nBAND: 63.17kV–69.83kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:107,name:'COSO1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Coso Junction, CA',
+     notes:'NP: 240MWh / 60MW\nV SET: 235kV\nBAND: 230.3kV–239.7kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    // Solar -------------------------------------------------------------------
+    {id:201,name:'HARQ1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Harper Lake, CA',
+     notes:'PV 200MW\nInverters inverting?\nRates about the same?'},
+    {id:202,name:'ANGF1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Angel Fire, NM',
+     notes:'PV 7.7MW  BESS 3.5MW / 7MWh\nInverters inverting?\nRates about the same?'},
+    {id:203,name:'AVLN1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Taos, NM',
+     notes:'PV 19.7MW  BESS 12MW / 24MWh\nInverters inverting?\nRates about the same?'},
+    {id:204,name:'NCLS1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Nicolis, CA',
+     notes:'PV 26MW\nInverters inverting?\nRates about the same?'},
+    {id:205,name:'TSMS1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Rosamond, CA',
+     notes:'PV 18.2MW\nInverters inverting?\nRates about the same?'},
+    {id:206,name:'TLRE1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Tulare, CA',
+     notes:'PV 3.6MW\nInverters inverting?\nRates about the same?'},
+    {id:207,name:'PRTV1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Porterville, CA',
+     notes:'PV 3.6MW\nInverters inverting?\nRates about the same?'},
+    {id:208,name:'LSTH1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Lost Hills, CA',
+     notes:'PV 26MW\nInverters inverting?\nRates about the same?'},
+    {id:209,name:'HNFD1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Hanford, CA',
+     notes:'PV 3.6MW\nInverters inverting?\nRates about the same?'},
+    {id:210,name:'FRMV1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Farmersville, CA',
+     notes:'PV 5.4MW\nInverters inverting?\nRates about the same?'},
+    {id:211,name:'AVLN2',nerc:false,interval:30,threshold:5,lastScan:null,location:'Avalon, CA',
+     notes:'PV 25MW\nInverters inverting?\nRates about the same?'},
+    {id:212,name:'BLKW2',nerc:false,interval:30,threshold:5,lastScan:null,location:'Blackwell, OK',
+     notes:'PV 16.2MW\nInverters inverting?\nRates about the same?'},
+    {id:213,name:'LSTH2',nerc:false,interval:30,threshold:5,lastScan:null,location:'Lost Hills, CA',
+     notes:'PV 27.6MW\nNP: 20MW  V SET: 71kV  BAND: 70.29–71.71kV\nInverters inverting?\nRates about the same?'},
+    {id:214,name:'NSTR1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Kern County, CA',
+     notes:'PV 60MW\nNP: 60MW  V SET: 119kV  BAND: 117.81–120.19kV\nInverters inverting?\nRates about the same?'},
+    // Wind --------------------------------------------------------------------
+    {id:301,name:'DFRN1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Dufferin, Ontario',
+     notes:'Wind 91MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {id:302,name:'MCLM1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Manitoulin Island, Ontario',
+     notes:'Wind 60MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {id:303,name:'GDWL1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Goodwell, OK',
+     notes:'Wind 200MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {id:304,name:'LNDL1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Lincoln County, MN',
+     notes:'Wind 150MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {id:305,name:'ORGN1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Kern County, CA',
+     notes:'Wind 150MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {id:306,name:'RKRD1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Kern County, CA',
+     notes:'Wind 149MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {id:307,name:'PRRS1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Elk County, KS',
+     notes:'Wind 200MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {id:308,name:'DIBL1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Diablo Range, CA',
+     notes:'Wind 16.68MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    // ROC ---------------------------------------------------------------------
+    {id:401,name:'ROCC1',nerc:false,interval:30,threshold:5,lastScan:null,location:'Remote Ops Center',
+     notes:'CAISO ADS\nIndji Watch\nStay Safe systems'},
+  ];
+}
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+// Sites live in their own key so user edits persist independently of app state
+function loadSites() {
+  try {
+    const raw = localStorage.getItem(SITES_KEY);
+    if (raw) { const p = JSON.parse(raw); if (Array.isArray(p) && p.length) return p; }
+  } catch(e) {}
+  return defaultSites();
+}
+function saveSites(sites) {
+  try { localStorage.setItem(SITES_KEY, JSON.stringify(sites)); } catch(e) {}
+  try { window.storage && window.storage.set(SITES_KEY, JSON.stringify(sites)); } catch(e) {}
+}
+async function loadSitesAsync() {
+  try {
+    const raw = localStorage.getItem(SITES_KEY);
+    if (raw) { const p = JSON.parse(raw); if (Array.isArray(p) && p.length) return p; }
+  } catch(e) {}
+  try {
+    const r = await window.storage.get(SITES_KEY);
+    if (r && r.value) { const p = JSON.parse(r.value); if (Array.isArray(p) && p.length) return p; }
+  } catch(e) {}
+  return defaultSites();
+}
+
 let S = {
   recTasks:[], adhocTasks:[], checklists:{}, activeList:null,
-  notes:[], activeNote:null,
-  logEntries:[],
-  sites:[], siteFilter:'all',
+  notes:[], activeNote:null, logEntries:[],
+  siteFilter:'all',
   timerRunning:false, timerElapsed:0, timerCycles:0,
-  shiftStart: Date.now(),
-  crewMembers:[], equipmentLog:[],
-  escalationContacts:{tier1:'',tier2:'',tier3:''}
+  shiftStart:Date.now(),
+  crew:[], equipment:[], escContacts:{t1:'',t2:'',t3:''}
 };
- 
+let SITES = []; // loaded separately
+
 function save() {
   try { localStorage.setItem(SK, JSON.stringify(S)); } catch(e) {}
   try { window.storage && window.storage.set(SK, JSON.stringify(S)); } catch(e) {}
 }
+
 async function load() {
+  // Load user state
   let raw = null;
   try { raw = localStorage.getItem(SK); } catch(e) {}
   if (!raw) { try { const r = await window.storage.get(SK); if(r) raw=r.value; } catch(e) {} }
   if (raw) {
     try {
       const p = JSON.parse(raw);
-      S = {...S,...p};
+      S = Object.assign(S, p);
       if(!S.checklists) S.checklists={};
       if(!S.notes) S.notes=[];
       if(!S.logEntries) S.logEntries=[];
-      if(!S.sites) S.sites=[];
+      if(!S.crew) S.crew=[];
+      if(!S.equipment) S.equipment=[];
+      if(!S.escContacts) S.escContacts={t1:'',t2:'',t3:''};
       if(!S.timerCycles) S.timerCycles=0;
-      if(!S.crewMembers) S.crewMembers=[];
-      if(!S.equipmentLog) S.equipmentLog=[];
-      if(!S.escalationContacts) S.escalationContacts={tier1:'',tier2:'',tier3:''};
+      if(!S.shiftStart) S.shiftStart=Date.now();
     } catch(e) {}
   }
+
+  // Load sites (separate key — always has defaults if blank)
+  SITES = await loadSitesAsync();
+
   renderAll();
-  if(!S.sites||S.sites.length===0) seedDefaultSites();
   if (S.timerRunning) startTimerInterval();
   setInterval(refreshScanStatuses, 30000);
   refreshScanStatuses();
-  initSafetyCheck();
-  initNERCCheck();
-  renderCrewList();
-  renderEquipmentList();
+  initSafety();
+  initNERC();
+  renderCrew();
+  renderEquip();
   restoreAdhocTimers();
-  // restore escalation contacts
-  const rows = document.querySelectorAll('#escalation-tbody tr');
-  const tiers = ['tier1','tier2','tier3'];
-  rows.forEach((row,i)=>{
-    const inp = row.querySelector('input');
-    if(inp) inp.value = S.escalationContacts[tiers[i]]||'';
-  });
+  // Restore escalation contacts
+  const rows = document.querySelectorAll('#esc-tbody tr');
+  const tkeys = ['t1','t2','t3'];
+  rows.forEach((row,i) => { const inp=row.querySelector('input'); if(inp) inp.value=S.escContacts[tkeys[i]]||''; });
 }
- 
-// CLOCK
-function updateClock() {
-  document.getElementById('nav-clock').textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-}
-setInterval(updateClock,1000); updateClock();
- 
-// VIEW SWITCH
+
+// ─── CLOCK ────────────────────────────────────────────────────────────────────
+setInterval(()=>{ document.getElementById('nav-clock').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'}); },1000);
+
+// ─── NAV ──────────────────────────────────────────────────────────────────────
 function switchView(v, el) {
   document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
@@ -756,726 +790,470 @@ function switchView(v, el) {
   if(v==='log') renderLog();
   if(v==='scans') { refreshScanStatuses(); renderSites(); }
 }
- 
-// TIMER (now on scans page)
+
+// ─── 30-MIN TIMER ─────────────────────────────────────────────────────────────
 let timerInt=null;
-const TOTAL=30*60;
-function toggleTimer() {
-  if(S.timerRunning){stopTimer();}
-  else{S.timerRunning=true;save();startTimerInterval();}
-}
-function startTimerInterval() {
-  document.getElementById('timer-btn').textContent='Stop';
-  document.getElementById('timer-btn').classList.add('active-btn');
+const TOTAL=1800;
+function toggleTimer(){ S.timerRunning ? stopTimer() : (S.timerRunning=true, save(), startTimerInterval()); }
+function startTimerInterval(){
+  const btn=document.getElementById('timer-btn');
+  btn.textContent='Stop'; btn.classList.add('active-btn');
   timerInt=setInterval(()=>{
     S.timerElapsed++;
     if(S.timerElapsed>=TOTAL){
-      S.timerElapsed=0;S.timerCycles++;
+      S.timerElapsed=0; S.timerCycles++;
       addLog({type:'task',title:'30-min cycle #'+S.timerCycles+' completed',detail:''});
       fireAlert('Cycle #'+S.timerCycles+' — time to scan!');
     }
-    save();updateTimerUI();
+    save(); updateTimerUI();
   },1000);
 }
-function stopTimer(){S.timerRunning=false;clearInterval(timerInt);timerInt=null;document.getElementById('timer-btn').textContent='Start';document.getElementById('timer-btn').classList.remove('active-btn');save();}
-function resetTimer(){stopTimer();S.timerElapsed=0;save();updateTimerUI();}
+function stopTimer(){
+  S.timerRunning=false; clearInterval(timerInt); timerInt=null;
+  const btn=document.getElementById('timer-btn'); btn.textContent='Start'; btn.classList.remove('active-btn'); save();
+}
+function resetTimer(){ stopTimer(); S.timerElapsed=0; save(); updateTimerUI(); }
 function updateTimerUI(){
-  const rem=TOTAL-S.timerElapsed;
-  const disp=document.getElementById('timer-disp');
-  disp.textContent=String(Math.floor(rem/60)).padStart(2,'0')+':'+String(rem%60).padStart(2,'0');
-  const urgent=rem<=120;
-  disp.classList.toggle('urgent',urgent);
-  const fill=document.getElementById('timer-fill');
-  fill.style.width=((rem/TOTAL)*100).toFixed(1)+'%';
-  fill.classList.toggle('urgent',urgent);
+  const rem=TOTAL-S.timerElapsed, urgent=rem<=120;
+  document.getElementById('timer-disp').textContent=String(Math.floor(rem/60)).padStart(2,'0')+':'+String(rem%60).padStart(2,'0');
+  document.getElementById('timer-disp').classList.toggle('urgent',urgent);
+  document.getElementById('timer-fill').style.width=((rem/TOTAL)*100).toFixed(1)+'%';
+  document.getElementById('timer-fill').classList.toggle('urgent',urgent);
   document.getElementById('cycles-badge').textContent=S.timerCycles+' cycle'+(S.timerCycles!==1?'s':'');
 }
- 
-// RECURRING
-function addRec(){const v=document.getElementById('rec-inp').value.trim();if(!v)return;S.recTasks.push({id:Date.now(),name:v,done:false});document.getElementById('rec-inp').value='';save();renderRec();}
-function toggleRec(id){const t=S.recTasks.find(x=>x.id===id);if(t)t.done=!t.done;save();renderRec();}
-function delRec(id){S.recTasks=S.recTasks.filter(x=>x.id!==id);save();renderRec();}
+
+// ─── RECURRING TASKS ──────────────────────────────────────────────────────────
+function addRec(){ const v=document.getElementById('rec-inp').value.trim(); if(!v)return; S.recTasks.push({id:Date.now(),name:v,done:false}); document.getElementById('rec-inp').value=''; save(); renderRec(); }
+function toggleRec(id){ const t=S.recTasks.find(x=>x.id===id); if(t)t.done=!t.done; save(); renderRec(); }
+function delRec(id){ S.recTasks=S.recTasks.filter(x=>x.id!==id); save(); renderRec(); }
 function renderRec(){
   const el=document.getElementById('rec-list');
-  if(!S.recTasks.length){el.innerHTML='<div class="empty">No recurring tasks</div>';return;}
-  el.innerHTML=S.recTasks.map(t=>`<div class="task-item${t.done?' done':''}">
-    <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleRec(${t.id})">
-    <span class="task-label">${esc(t.name)}</span>
-    <span class="rec-badge${t.done?' done':''}">${t.done?'done':'due'}</span>
-    <button class="task-del" onclick="delRec(${t.id})">✕</button>
-  </div>`).join('');
+  el.innerHTML=!S.recTasks.length?'<div class="empty">No recurring tasks</div>':
+    S.recTasks.map(t=>`<div class="task-item${t.done?' done':''}">
+      <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleRec(${t.id})">
+      <span class="task-label">${esc(t.name)}</span>
+      <span class="rec-badge${t.done?' done':''}">${t.done?'done':'due'}</span>
+      <button class="task-del" onclick="delRec(${t.id})">✕</button>
+    </div>`).join('');
 }
- 
-// ADHOC with optional timer
-let adhocTimerIntervals={};
+
+// ─── ADHOC TASKS ──────────────────────────────────────────────────────────────
+let adhocInts={};
 function addAdhoc(){
-  const v=document.getElementById('adhoc-inp').value.trim();if(!v)return;
-  const minRaw=parseInt(document.getElementById('adhoc-timer-inp').value)||0;
-  const task={id:Date.now(),name:v,done:false,timerMin:minRaw>0?minRaw:null,timerStart:minRaw>0?Date.now():null};
+  const v=document.getElementById('adhoc-inp').value.trim(); if(!v)return;
+  const min=parseInt(document.getElementById('adhoc-t').value)||0;
+  const task={id:Date.now(),name:v,done:false,timerMin:min>0?min:null,timerStart:min>0?Date.now():null};
   S.adhocTasks.push(task);
-  document.getElementById('adhoc-inp').value='';
-  document.getElementById('adhoc-timer-inp').value='';
-  addLog({type:'task',title:'Task added: '+v,detail:minRaw>0?minRaw+'min timer set':''});
-  save();renderAdhoc();
-  if(task.timerMin) startAdhocTimer(task.id);
+  document.getElementById('adhoc-inp').value=''; document.getElementById('adhoc-t').value='';
+  addLog({type:'task',title:'Task added: '+v,detail:min>0?min+'min timer':''});
+  save(); renderAdhoc(); if(task.timerMin) startAdhocTimer(task.id);
 }
-function startAdhocTimer(id){
-  if(adhocTimerIntervals[id]) clearInterval(adhocTimerIntervals[id]);
-  adhocTimerIntervals[id]=setInterval(()=>{renderAdhoc();},30000);
-}
-function restoreAdhocTimers(){
-  S.adhocTasks.forEach(t=>{if(t.timerMin&&t.timerStart&&!t.done)startAdhocTimer(t.id);});
-}
-function getAdhocTimerDisplay(task){
-  if(!task.timerMin||!task.timerStart) return null;
-  const elapsedMs=Date.now()-task.timerStart;
-  const totalMs=task.timerMin*60000;
-  const remMs=totalMs-elapsedMs;
-  if(remMs<=0) return {label:'Overdue',expired:true};
-  const remMin=Math.ceil(remMs/60000);
-  return {label:remMin+'min left',expired:false};
+function startAdhocTimer(id){ if(adhocInts[id])clearInterval(adhocInts[id]); adhocInts[id]=setInterval(()=>renderAdhoc(),30000); }
+function restoreAdhocTimers(){ S.adhocTasks.forEach(t=>{if(t.timerMin&&t.timerStart&&!t.done)startAdhocTimer(t.id);}); }
+function timerDisplay(t){
+  if(!t.timerMin||!t.timerStart) return null;
+  const rem=(t.timerMin*60000)-(Date.now()-t.timerStart);
+  if(rem<=0) return {label:'Overdue',exp:true};
+  return {label:Math.ceil(rem/60000)+'min left',exp:false};
 }
 function toggleAdhoc(id){
-  const t=S.adhocTasks.find(x=>x.id===id);if(t){t.done=!t.done;if(t.done){addLog({type:'task',title:'Task done: '+t.name,detail:''});if(adhocTimerIntervals[id]){clearInterval(adhocTimerIntervals[id]);delete adhocTimerIntervals[id];}}}
-  save();renderAdhoc();
+  const t=S.adhocTasks.find(x=>x.id===id); if(!t)return;
+  t.done=!t.done;
+  if(t.done){ addLog({type:'task',title:'Task done: '+t.name,detail:''}); if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];} }
+  save(); renderAdhoc();
 }
-function delAdhoc(id){
-  if(adhocTimerIntervals[id]){clearInterval(adhocTimerIntervals[id]);delete adhocTimerIntervals[id];}
-  S.adhocTasks=S.adhocTasks.filter(x=>x.id!==id);save();renderAdhoc();
-}
+function delAdhoc(id){ if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];} S.adhocTasks=S.adhocTasks.filter(x=>x.id!==id); save(); renderAdhoc(); }
 function openTaskTimer(id){
-  const t=S.adhocTasks.find(x=>x.id===id);if(!t||!t.timerMin)return;
-  document.getElementById('task-timer-modal-title').textContent=esc(t.name);
-  document.getElementById('task-timer-task-id').value=id;
-  document.getElementById('task-timer-desc').textContent=t.timerMin+'min timer';
-  updateTaskTimerDisplay(id);
-  openModal('modal-task-timer');
-  // live update while modal open
-  if(window._taskTimerModalInt) clearInterval(window._taskTimerModalInt);
-  window._taskTimerModalInt=setInterval(()=>{
-    const modal=document.getElementById('modal-task-timer');
-    if(!modal.classList.contains('hidden'))updateTaskTimerDisplay(id);
-    else clearInterval(window._taskTimerModalInt);
-  },1000);
+  const t=S.adhocTasks.find(x=>x.id===id); if(!t||!t.timerMin)return;
+  document.getElementById('ttimer-title').textContent=esc(t.name);
+  document.getElementById('ttimer-desc').textContent=t.timerMin+'min timer';
+  updateTTimerDisp(id); openModal('modal-task-timer');
+  if(window._tt)clearInterval(window._tt);
+  window._tt=setInterval(()=>{ if(!document.getElementById('modal-task-timer').classList.contains('hidden'))updateTTimerDisp(id); else clearInterval(window._tt); },1000);
 }
-function updateTaskTimerDisplay(id){
-  const t=S.adhocTasks.find(x=>x.id===id);if(!t)return;
-  const ti=getAdhocTimerDisplay(t);
-  const disp=document.getElementById('task-timer-display');
-  if(!ti){disp.textContent='No timer';return;}
-  if(ti.expired){disp.textContent='OVERDUE';disp.style.color='var(--red)';return;}
-  const remMs=Math.max(0,(t.timerMin*60000)-(Date.now()-t.timerStart));
-  const m=Math.floor(remMs/60000),s=Math.floor((remMs%60000)/1000);
-  disp.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  disp.style.color='var(--amber)';
+function updateTTimerDisp(id){
+  const t=S.adhocTasks.find(x=>x.id===id); if(!t)return;
+  const ti=timerDisplay(t); const d=document.getElementById('ttimer-disp');
+  if(!ti){d.textContent='No timer';return;}
+  if(ti.exp){d.textContent='OVERDUE';d.style.color='var(--red)';return;}
+  const rem=Math.max(0,(t.timerMin*60000)-(Date.now()-t.timerStart));
+  d.textContent=String(Math.floor(rem/60000)).padStart(2,'0')+':'+String(Math.floor((rem%60000)/1000)).padStart(2,'0');
+  d.style.color='var(--amber)';
 }
 function renderAdhoc(){
   const el=document.getElementById('adhoc-list');
-  if(!S.adhocTasks.length){el.innerHTML='<div class="empty">No tasks yet</div>';return;}
-  el.innerHTML=S.adhocTasks.map(t=>{
-    const ti=getAdhocTimerDisplay(t);
-    return `<div class="task-item${t.done?' done':''}">
+  el.innerHTML=!S.adhocTasks.length?'<div class="empty">No tasks yet</div>':
+    S.adhocTasks.map(t=>{ const ti=timerDisplay(t); return `<div class="task-item${t.done?' done':''}">
       <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleAdhoc(${t.id})">
       <span class="task-label">${esc(t.name)}</span>
-      ${ti?`<span class="task-timer-badge${ti.expired?' expired':''}" onclick="openTaskTimer(${t.id})" style="cursor:pointer;">${ti.label}</span>`:''}
+      ${ti?`<span class="timer-badge${ti.exp?' exp':''}" onclick="openTaskTimer(${t.id})">${ti.label}</span>`:''}
       <button class="task-del" onclick="delAdhoc(${t.id})">✕</button>
-    </div>`;
-  }).join('');
+    </div>`; }).join('');
 }
- 
-// CHECKLISTS — redesigned: dropdown selector, separate delete button
-function addClList(){
-  const v=document.getElementById('cl-list-inp').value.trim();
-  if(!v)return;
-  if(!S.checklists[v])S.checklists[v]=[];
-  S.activeList=v;
-  document.getElementById('cl-list-inp').value='';
-  save();renderCl();
-}
-function switchClFromSelect(){
-  const sel=document.getElementById('cl-list-select');
-  S.activeList=sel.value||null;
-  renderCl();
-}
-function delActiveClList(){
-  if(!S.activeList)return;
-  if(!confirm('Delete checklist "'+S.activeList+'"?'))return;
-  delete S.checklists[S.activeList];
-  S.activeList=Object.keys(S.checklists)[0]||null;
-  save();renderCl();
-}
-function addClItem(){
-  if(!S.activeList)return;
-  const v=document.getElementById('cl-item-inp').value.trim();
-  if(!v)return;
-  S.checklists[S.activeList].push({id:Date.now(),name:v,done:false});
-  document.getElementById('cl-item-inp').value='';
-  save();renderCl();
-}
-function toggleCl(id){if(!S.activeList)return;const t=S.checklists[S.activeList].find(x=>x.id===id);if(t)t.done=!t.done;save();renderCl();}
-function delCl(id){if(!S.activeList)return;S.checklists[S.activeList]=S.checklists[S.activeList].filter(x=>x.id!==id);save();renderCl();}
+
+// ─── CHECKLISTS ───────────────────────────────────────────────────────────────
+function addClList(){ const v=document.getElementById('cl-list-inp').value.trim(); if(!v)return; if(!S.checklists[v])S.checklists[v]=[]; S.activeList=v; document.getElementById('cl-list-inp').value=''; save(); renderCl(); }
+function switchClFromSelect(){ S.activeList=document.getElementById('cl-sel').value||null; renderCl(); }
+function delActiveClList(){ if(!S.activeList||!confirm('Delete "'+S.activeList+'"?'))return; delete S.checklists[S.activeList]; S.activeList=Object.keys(S.checklists)[0]||null; save(); renderCl(); }
+function addClItem(){ if(!S.activeList)return; const v=document.getElementById('cl-item-inp').value.trim(); if(!v)return; S.checklists[S.activeList].push({id:Date.now(),name:v,done:false}); document.getElementById('cl-item-inp').value=''; save(); renderCl(); }
+function toggleCl(id){ if(!S.activeList)return; const t=S.checklists[S.activeList].find(x=>x.id===id); if(t)t.done=!t.done; save(); renderCl(); }
+function delCl(id){ if(!S.activeList)return; S.checklists[S.activeList]=S.checklists[S.activeList].filter(x=>x.id!==id); save(); renderCl(); }
 function renderCl(){
   const keys=Object.keys(S.checklists);
-  const header=document.getElementById('cl-header');
-  const addItemRow=document.getElementById('cl-add-item-row');
-  const progRow=document.getElementById('cl-prog-row');
-  const el=document.getElementById('cl-items');
-  if(!keys.length){
-    header.style.display='none';addItemRow.style.display='none';progRow.style.display='none';
-    el.innerHTML='<div class="empty">Create your first checklist above</div>';return;
-  }
-  // Ensure activeList is valid
+  const hdr=document.getElementById('cl-hdr'), ir=document.getElementById('cl-item-row'), pr=document.getElementById('cl-prog-row'), el=document.getElementById('cl-items');
+  if(!keys.length){ hdr.style.display='none'; ir.style.display='none'; pr.style.display='none'; el.innerHTML='<div class="empty">Create your first checklist above</div>'; return; }
   if(!S.activeList||!S.checklists[S.activeList]) S.activeList=keys[0];
-  header.style.display='flex';
-  // Populate dropdown
-  const sel=document.getElementById('cl-list-select');
-  sel.innerHTML=keys.map(k=>`<option value="${esc(k)}"${S.activeList===k?' selected':''}>${esc(k)}</option>`).join('');
-  const list=S.checklists[S.activeList];
-  const done=list.filter(x=>x.done).length,total=list.length;
-  if(total>0){progRow.style.display='flex';document.getElementById('cl-prog-fill').style.width=Math.round(done/total*100)+'%';document.getElementById('cl-prog-txt').textContent=done+'/'+total;}
-  else progRow.style.display='none';
-  addItemRow.style.display='flex';
-  el.innerHTML=!list.length?'<div class="empty">No items yet — add one below</div>':list.map(t=>`<div class="task-item${t.done?' done':''}">
-    <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleCl(${t.id})">
-    <span class="task-label">${esc(t.name)}</span>
-    <button class="task-del" onclick="delCl(${t.id})">✕</button>
-  </div>`).join('');
+  hdr.style.display='flex';
+  document.getElementById('cl-sel').innerHTML=keys.map(k=>`<option value="${esc(k)}"${S.activeList===k?' selected':''}>${esc(k)}</option>`).join('');
+  const list=S.checklists[S.activeList], done=list.filter(x=>x.done).length, tot=list.length;
+  if(tot>0){ pr.style.display='flex'; document.getElementById('cl-prog-fill').style.width=Math.round(done/tot*100)+'%'; document.getElementById('cl-prog-txt').textContent=done+'/'+tot; } else pr.style.display='none';
+  ir.style.display='flex';
+  el.innerHTML=!list.length?'<div class="empty">No items yet — add one below</div>':
+    list.map(t=>`<div class="task-item${t.done?' done':''}">
+      <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleCl(${t.id})">
+      <span class="task-label">${esc(t.name)}</span>
+      <button class="task-del" onclick="delCl(${t.id})">✕</button>
+    </div>`).join('');
 }
- 
-// SITES
-function siteStatus(site) {
-  if(!site.lastScan) return 'never';
-  const elapsedMin=(Date.now()-site.lastScan)/60000;
-  const interval=site.interval||30;
-  const threshold=site.threshold||5;
-  if(elapsedMin>interval) return 'overdue';
-  if(elapsedMin>interval-threshold) return 'due';
+
+// ─── SITES / SCANS ────────────────────────────────────────────────────────────
+function siteStatus(s){
+  if(!s.lastScan) return 'never';
+  const e=(Date.now()-s.lastScan)/60000, i=s.interval||30, th=s.threshold||5;
+  if(e>i) return 'overdue';
+  if(e>i-th) return 'due';
   return 'ok';
 }
-function siteStatusLabel(s){return{ok:'OK',due:'Due soon',overdue:'OVERDUE',never:'Never scanned'}[s]||s;}
-function siteStatusBadgeClass(s){return{ok:'badge-ok',due:'badge-due',overdue:'badge-overdue',never:'badge-never'}[s]||'badge-never';}
-function refreshScanStatuses(){renderSites();renderScanStats();}
-function setSiteFilter(f,el){
-  S.siteFilter=f;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  if(el)el.classList.add('active');
-  renderSites();
-}
+const STATUS_LABEL={ok:'OK',due:'Due soon',overdue:'OVERDUE',never:'Never scanned'};
+const STATUS_BADGE={ok:'b-ok',due:'b-due',overdue:'b-overdue',never:'b-never'};
+function setSiteFilter(f,el){ S.siteFilter=f; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderSites(); }
+function refreshScanStatuses(){ renderSites(); renderScanStats(); }
 function renderScanStats(){
-  const total=S.sites.length;
-  const ok=S.sites.filter(s=>siteStatus(s)==='ok').length;
-  const due=S.sites.filter(s=>siteStatus(s)==='due').length;
-  const overdue=S.sites.filter(s=>siteStatus(s)==='overdue').length;
-  const never=S.sites.filter(s=>siteStatus(s)==='never').length;
+  const ok=SITES.filter(s=>siteStatus(s)==='ok').length, due=SITES.filter(s=>siteStatus(s)==='due').length,
+        ov=SITES.filter(s=>siteStatus(s)==='overdue').length, nv=SITES.filter(s=>siteStatus(s)==='never').length;
   document.getElementById('scan-stats').innerHTML=`
-    <div class="stat-chip"><span class="s-val">${total}</span><span class="s-lbl">Sites</span></div>
+    <div class="stat-chip"><span class="s-val">${SITES.length}</span><span class="s-lbl">Sites</span></div>
     <div class="stat-chip"><span class="s-val" style="color:var(--green)">${ok}</span><span class="s-lbl">OK</span></div>
     <div class="stat-chip"><span class="s-val" style="color:var(--amber)">${due}</span><span class="s-lbl">Due soon</span></div>
-    <div class="stat-chip"><span class="s-val" style="color:var(--red)">${overdue}</span><span class="s-lbl">Overdue</span></div>
-    <div class="stat-chip"><span class="s-val" style="color:var(--text3)">${never}</span><span class="s-lbl">Never</span></div>`;
-  const pending=S.sites.filter(s=>s.lastScan&&siteStatus(s)==='ok').sort((a,b)=>{
-    const aRem=(a.interval||30)-((Date.now()-a.lastScan)/60000);
-    const bRem=(b.interval||30)-((Date.now()-b.lastScan)/60000);
-    return aRem-bRem;
-  });
-  if(pending.length){
-    const next=pending[0];
-    const remMin=Math.max(0,((next.interval||30)-((Date.now()-next.lastScan)/60000)));
-    document.getElementById('scan-next-due').textContent='Next: '+esc(next.name)+' in ~'+Math.ceil(remMin)+'min';
-  } else {
-    document.getElementById('scan-next-due').textContent='';
-  }
+    <div class="stat-chip"><span class="s-val" style="color:var(--red)">${ov}</span><span class="s-lbl">Overdue</span></div>
+    <div class="stat-chip"><span class="s-val" style="color:var(--text3)">${nv}</span><span class="s-lbl">Never</span></div>`;
+  const next=SITES.filter(s=>s.lastScan&&siteStatus(s)==='ok').sort((a,b)=>((a.interval||30)-((Date.now()-a.lastScan)/60000))-((b.interval||30)-((Date.now()-b.lastScan)/60000)))[0];
+  document.getElementById('scan-next-due').textContent=next?'Next: '+esc(next.name)+' ~'+Math.ceil(Math.max(0,(next.interval||30)-((Date.now()-next.lastScan)/60000)))+'min':'';
+}
+function siteCard(site){
+  const st=siteStatus(site), last=site.lastScan?timeSince(site.lastScan):'—';
+  const tip=site.notes?`<div class="site-tip"><span class="site-tip-title">${esc(site.name)}</span>${esc(site.notes)}</div>`:'';
+  return `<div class="site-card ${st}">
+    ${tip}
+    <div class="site-hdr">
+      <span class="site-name">${esc(site.name)}</span>
+      ${site.nerc?'<span class="badge b-nerc">NERC</span>':''}
+      <span class="badge ${STATUS_BADGE[st]}">${STATUS_LABEL[st]}</span>
+    </div>
+    <div class="site-meta">Last: ${last} · ${site.interval||30}min</div>
+    <div class="site-acts">
+      <button class="scan-btn" onclick="openScanNote(${site.id})">Log scan</button>
+      <button class="tbtn" style="font-size:11px;padding:3px 9px;" onclick="editSite(${site.id})">Edit</button>
+      <button class="tbtn" style="font-size:11px;padding:3px 9px;color:var(--red);border-color:var(--red);" onclick="deleteSite(${site.id})">Del</button>
+    </div>
+  </div>`;
 }
 function renderSites(){
   renderScanStats();
-  let sites=[...S.sites];
-  const f=S.siteFilter;
+  const f=S.siteFilter||'all';
+  const order={overdue:0,due:1,never:2,ok:3};
+  let sites=[...SITES];
   if(f==='nerc') sites=sites.filter(s=>s.nerc);
   else if(f!=='all') sites=sites.filter(s=>siteStatus(s)===f);
-  const order={overdue:0,due:1,never:2,ok:3};
   sites.sort((a,b)=>(order[siteStatus(a)]||0)-(order[siteStatus(b)]||0));
   const el=document.getElementById('sites-grid');
-  if(!sites.length){el.innerHTML='<div class="empty" style="grid-column:1/-1;">No sites'+(f!=='all'?' matching filter':' added yet')+'</div>';return;}
- 
-  function cardHTML(site){
-    const status=siteStatus(site);
-    const lastStr=site.lastScan?timeSince(site.lastScan):'—';
-    const intervalStr=(site.interval||30)+'min interval';
-    const refText=site.notes?`<div class="site-ref-tip"><div class="site-ref-tip-title">${esc(site.name)}</div>${esc(site.notes)}</div>`:'';
-    return `<div class="site-card ${status}">
-      ${refText}
-      <div class="site-header">
-        <span class="site-name">${esc(site.name)}</span>
-        ${site.nerc?'<span class="site-badge badge-nerc">NERC</span>':''}
-        <span class="site-badge ${siteStatusBadgeClass(status)}">${siteStatusLabel(status)}</span>
-      </div>
-      <div class="site-meta">Last: ${lastStr} · ${intervalStr}</div>
-      <div class="site-actions">
-        <button class="scan-btn" onclick="openScanNote(${site.id})">Log scan</button>
-        <button class="tbtn" style="font-size:11px;padding:3px 9px;" onclick="editSite(${site.id})">Edit</button>
-        <button class="tbtn" style="font-size:11px;padding:3px 9px;color:var(--red);border-color:var(--red);" onclick="deleteSite(${site.id})">Del</button>
-      </div>
-    </div>`;
-  }
- 
-  // If showing all, split into NERC and non-NERC groups with separator
+  if(!sites.length){ el.innerHTML='<div class="empty" style="grid-column:1/-1;">No sites'+(f!=='all'?' matching filter':' added yet')+'</div>'; return; }
   if(f==='all'){
-    const nerc=sites.filter(s=>s.nerc);
-    const nonNerc=sites.filter(s=>!s.nerc);
-    let html='';
-    if(nerc.length){
-      html+=`<div class="nerc-sep"><div class="nerc-sep-line"></div><span class="nerc-sep-label">NERC Sites</span><div class="nerc-sep-line"></div></div>`;
-      html+=nerc.map(cardHTML).join('');
-    }
-    if(nonNerc.length){
-      html+=`<div class="nerc-sep"><div class="nerc-sep-line"></div><span class="nerc-sep-label">Non-NERC Sites</span><div class="nerc-sep-line"></div></div>`;
-      html+=nonNerc.map(cardHTML).join('');
-    }
-    el.innerHTML=html;
+    const nerc=sites.filter(s=>s.nerc), non=sites.filter(s=>!s.nerc);
+    el.innerHTML=
+      (nerc.length?`<div class="nerc-sep"><div class="nerc-sep-line"></div><span class="nerc-sep-lbl">NERC Sites</span><div class="nerc-sep-line"></div></div>${nerc.map(siteCard).join('')}`:'') +
+      (non.length?`<div class="nerc-sep"><div class="nerc-sep-line"></div><span class="nerc-sep-lbl">Non-NERC Sites</span><div class="nerc-sep-line"></div></div>${non.map(siteCard).join('')}`:'');
   } else {
-    el.innerHTML=sites.map(cardHTML).join('');
+    el.innerHTML=sites.map(siteCard).join('');
   }
 }
-function timeSince(ts){
-  const m=Math.floor((Date.now()-ts)/60000);
-  if(m<1)return'just now';if(m<60)return m+'min ago';
-  return Math.floor(m/60)+'h '+m%60+'m ago';
-}
-function openScanNote(id){
-  const site=S.sites.find(s=>s.id===id);if(!site)return;
-  document.getElementById('scan-note-title').textContent='Log scan — '+site.name;
-  document.getElementById('scan-note-site-id').value=id;
-  document.getElementById('scan-note-body').value='';
-  openModal('modal-scan-note');
-}
+function timeSince(ts){ const m=Math.floor((Date.now()-ts)/60000); return m<1?'just now':m<60?m+'min ago':Math.floor(m/60)+'h '+m%60+'m ago'; }
+function openScanNote(id){ const s=SITES.find(x=>x.id===id); if(!s)return; document.getElementById('scan-note-title').textContent='Log scan — '+s.name; document.getElementById('scan-note-site-id').value=id; document.getElementById('scan-note-body').value=''; openModal('modal-scan-note'); }
 function confirmScan(){
-  const id=parseInt(document.getElementById('scan-note-site-id').value);
-  const site=S.sites.find(s=>s.id===id);if(!site)return;
-  const note=document.getElementById('scan-note-body').value.trim();
-  site.lastScan=Date.now();
-  addLog({type:'scan',title:'Scan: '+site.name,detail:note||'All clear'});
-  closeModal('modal-scan-note');
-  save();renderSites();showToast('Scan logged');
+  const id=parseInt(document.getElementById('scan-note-site-id').value), s=SITES.find(x=>x.id===id); if(!s)return;
+  s.lastScan=Date.now(); addLog({type:'scan',title:'Scan: '+s.name,detail:document.getElementById('scan-note-body').value.trim()||'All clear'});
+  closeModal('modal-scan-note'); saveSites(SITES); renderSites(); showToast('Scan logged');
 }
 function scanAll(){
-  const nerc=S.sites.filter(s=>s.nerc);
-  if(!nerc.length){showToast('No NERC sites added');return;}
-  nerc.forEach(s=>s.lastScan=Date.now());
-  addLog({type:'scan',title:'Scan all NERC ('+nerc.length+' sites)',detail:nerc.map(s=>s.name).join(', ')});
-  save();renderSites();showToast('All NERC sites scanned');
+  const nerc=SITES.filter(s=>s.nerc); if(!nerc.length){showToast('No NERC sites');return;}
+  nerc.forEach(s=>s.lastScan=Date.now()); addLog({type:'scan',title:'Scan all NERC ('+nerc.length+')',detail:nerc.map(s=>s.name).join(', ')});
+  saveSites(SITES); renderSites(); showToast('All NERC sites scanned');
 }
 function saveSite(){
-  const name=document.getElementById('site-name').value.trim();if(!name)return;
+  const name=document.getElementById('site-name').value.trim(); if(!name)return;
   const editId=document.getElementById('site-edit-id').value;
-  const siteData={name,nerc:document.getElementById('site-nerc').value==='1',interval:parseInt(document.getElementById('site-interval').value)||30,threshold:parseInt(document.getElementById('site-threshold').value)||5,location:document.getElementById('site-location').value.trim(),notes:document.getElementById('site-notes').value.trim()};
-  if(editId){const site=S.sites.find(s=>s.id===parseInt(editId));if(site)Object.assign(site,siteData);}
-  else S.sites.push({id:Date.now(),lastScan:null,...siteData});
-  closeModal('modal-add-site');save();renderSites();showToast('Site saved');
+  const d={name,nerc:document.getElementById('site-nerc').value==='1',interval:parseInt(document.getElementById('site-interval').value)||30,threshold:parseInt(document.getElementById('site-threshold').value)||5,location:document.getElementById('site-location').value.trim(),notes:document.getElementById('site-notes').value.trim()};
+  if(editId){ const s=SITES.find(x=>x.id===parseInt(editId)); if(s)Object.assign(s,d); }
+  else SITES.push({id:Date.now(),lastScan:null,...d});
+  closeModal('modal-add-site'); saveSites(SITES); renderSites(); showToast('Site saved');
 }
 function editSite(id){
-  const site=S.sites.find(s=>s.id===id);if(!site)return;
+  const s=SITES.find(x=>x.id===id); if(!s)return;
   document.getElementById('site-modal-title').textContent='Edit site';
   document.getElementById('site-edit-id').value=id;
-  document.getElementById('site-name').value=site.name;
-  document.getElementById('site-nerc').value=site.nerc?'1':'0';
-  document.getElementById('site-interval').value=site.interval||30;
-  document.getElementById('site-threshold').value=site.threshold||5;
-  document.getElementById('site-location').value=site.location||'';
-  document.getElementById('site-notes').value=site.notes||'';
+  document.getElementById('site-name').value=s.name;
+  document.getElementById('site-nerc').value=s.nerc?'1':'0';
+  document.getElementById('site-interval').value=s.interval||30;
+  document.getElementById('site-threshold').value=s.threshold||5;
+  document.getElementById('site-location').value=s.location||'';
+  document.getElementById('site-notes').value=s.notes||'';
   openModal('modal-add-site');
 }
-function deleteSite(id){if(confirm('Delete this site?')){S.sites=S.sites.filter(s=>s.id!==id);save();renderSites();}}
- 
-// TEMPLATES
+function deleteSite(id){ if(!confirm('Delete this site?'))return; SITES=SITES.filter(x=>x.id!==id); saveSites(SITES); renderSites(); }
+
+// ─── TEMPLATES ────────────────────────────────────────────────────────────────
 const TEMPLATES=[
-  {id:'incident',icon:'🚨',name:'Incident report',desc:'Location, severity, action',tag:'incident'},
-  {id:'response',icon:'✅',name:'Correct response',desc:'Procedure, notify, outcome',tag:'response'},
-  {id:'obs',icon:'📋',name:'Observation',desc:'Quick freeform note',tag:'obs',quick:'Time: {time}\nLocation: \nObservation: \nAction taken: '},
-  {id:'callback',icon:'📞',name:'Callback / follow-up',desc:'Who to call back',tag:'task',quick:'Time: {time}\nContact: \nReason: \nFollow up by: '},
-  {id:'handoff',icon:'↺',name:'Shift handoff',desc:'Auto-summary of your shift',tag:'obs'},
+  {id:'incident',icon:'🚨',name:'Incident report',desc:'Location, severity, action'},
+  {id:'response',icon:'✅',name:'Correct response',desc:'Procedure, notify, outcome'},
+  {id:'obs',icon:'📋',name:'Observation',desc:'Quick freeform note',body:'Time: {t}\nLocation: \nObservation: \nAction taken: '},
+  {id:'callback',icon:'📞',name:'Callback / follow-up',desc:'Who to call back',body:'Time: {t}\nContact: \nReason: \nFollow up by: '},
+  {id:'handoff',icon:'↺',name:'Shift handoff',desc:'Auto-summary of your shift'},
 ];
 function renderTemplates(){
-  document.getElementById('tpl-grid').innerHTML=TEMPLATES.map(t=>`<button class="tpl-btn" onclick="useTemplate('${t.id}')"><span class="tpl-icon">${t.icon}</span><span class="tpl-name">${t.name}</span><span class="tpl-desc">${t.desc}</span></button>`).join('');
+  document.getElementById('tpl-grid').innerHTML=TEMPLATES.map(t=>`<button class="tpl-btn" onclick="useTemplate('${t.id}')"><span class="tpl-icon">${t.icon}</span><span class="tpl-name">${esc(t.name)}</span><span class="tpl-desc">${esc(t.desc)}</span></button>`).join('');
 }
 function useTemplate(id){
   if(id==='incident'){openModal('modal-incident');return;}
   if(id==='response'){openModal('modal-response');return;}
   if(id==='handoff'){openHandoffAsNote();return;}
-  const tpl=TEMPLATES.find(t=>t.id===id);if(!tpl)return;
+  const tpl=TEMPLATES.find(t=>t.id===id); if(!tpl)return;
   const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  newNote(tpl.name+' — '+now, tpl.quick.replace('{time}',now), tpl.tag);
+  newNote(tpl.name+' — '+now, (tpl.body||'').replace('{t}',now), 'obs');
 }
- 
-// NOTES
-function newBlankNote(){newNote('New note','','obs');}
+
+// ─── NOTES ────────────────────────────────────────────────────────────────────
+function newBlankNote(){ newNote('New note','','obs'); }
 function newNote(title,body,tag){
-  const note={id:Date.now(),title:title||'New note',body:body||'',tag:tag||'obs',ts:Date.now()};
-  S.notes.unshift(note);S.activeNote=note.id;
-  save();renderNotes();loadNoteForm(note);
+  const n={id:Date.now(),title:title||'New note',body:body||'',tag:tag||'obs',ts:Date.now()};
+  S.notes.unshift(n); S.activeNote=n.id; save(); renderNotes(); loadNoteForm(n);
 }
-function selectNote(id){S.activeNote=id;const note=S.notes.find(n=>n.id===id);renderNotes();loadNoteForm(note);}
-function loadNoteForm(note){
+function selectNote(id){ S.activeNote=id; renderNotes(); loadNoteForm(S.notes.find(n=>n.id===id)); }
+function loadNoteForm(n){
+  if(!n)return;
   document.getElementById('note-no-sel').style.display='none';
-  const f=document.getElementById('note-form');f.style.display='flex';
-  document.getElementById('note-title').value=note.title;
-  document.getElementById('note-body').value=note.body;
-  document.getElementById('note-tag').value=note.tag;
-  document.getElementById('note-meta').textContent='Saved '+new Date(note.ts).toLocaleString();
+  document.getElementById('note-form').style.display='flex';
+  document.getElementById('note-title').value=n.title;
+  document.getElementById('note-body').value=n.body;
+  document.getElementById('note-tag').value=n.tag;
+  document.getElementById('note-meta').textContent='Saved '+new Date(n.ts).toLocaleString();
 }
 function saveNote(){
-  if(!S.activeNote)return;
-  const note=S.notes.find(n=>n.id===S.activeNote);if(!note)return;
-  note.title=document.getElementById('note-title').value||'Untitled';
-  note.body=document.getElementById('note-body').value;
-  note.tag=document.getElementById('note-tag').value;
-  note.ts=Date.now();
-  document.getElementById('note-meta').textContent='Saved '+new Date(note.ts).toLocaleString();
-  addLog({type:note.tag==='incident'?'incident':note.tag==='response'?'response':'note',title:note.title,detail:note.body.substring(0,100)});
-  save();renderNotes();showToast('Saved');
+  const n=S.notes.find(x=>x.id===S.activeNote); if(!n)return;
+  n.title=document.getElementById('note-title').value||'Untitled';
+  n.body=document.getElementById('note-body').value;
+  n.tag=document.getElementById('note-tag').value;
+  n.ts=Date.now();
+  document.getElementById('note-meta').textContent='Saved '+new Date(n.ts).toLocaleString();
+  addLog({type:n.tag==='incident'?'incident':n.tag==='response'?'response':'note',title:n.title,detail:n.body.substring(0,100)});
+  save(); renderNotes(); showToast('Saved');
 }
 function deleteNote(){
   if(!S.activeNote)return;
-  S.notes=S.notes.filter(n=>n.id!==S.activeNote);
-  S.activeNote=S.notes[0]?.id||null;
-  save();renderNotes();
-  if(S.activeNote)loadNoteForm(S.notes.find(n=>n.id===S.activeNote));
-  else{document.getElementById('note-form').style.display='none';document.getElementById('note-no-sel').style.display='block';}
+  S.notes=S.notes.filter(x=>x.id!==S.activeNote);
+  S.activeNote=S.notes[0]?.id||null; save(); renderNotes();
+  if(S.activeNote) loadNoteForm(S.notes.find(n=>n.id===S.activeNote));
+  else { document.getElementById('note-form').style.display='none'; document.getElementById('note-no-sel').style.display='block'; }
 }
-const TAG_LABELS={obs:'Observation',incident:'Incident',response:'Response',task:'Task note'};
+const TAG_LABEL={obs:'Observation',incident:'Incident',response:'Response',task:'Task note'};
 const TAG_CLS={obs:'tag-obs',incident:'tag-incident',response:'tag-response',task:'tag-task'};
 function renderNotes(){
   const el=document.getElementById('notes-list');
-  if(!S.notes.length){el.innerHTML='<div class="empty">No notes yet</div>';return;}
-  el.innerHTML=S.notes.map(n=>`<div class="note-entry${S.activeNote===n.id?' active':''}" onclick="selectNote(${n.id})">
-    <div class="note-entry-time">${new Date(n.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
-    <div class="note-entry-title">${esc(n.title)}</div>
-    <div style="margin-top:2px;"><span class="tag ${TAG_CLS[n.tag]||'tag-obs'}">${TAG_LABELS[n.tag]||n.tag}</span></div>
-  </div>`).join('');
+  el.innerHTML=!S.notes.length?'<div class="empty">No notes yet</div>':
+    S.notes.map(n=>`<div class="note-entry${S.activeNote===n.id?' active':''}" onclick="selectNote(${n.id})">
+      <div class="note-entry-time">${new Date(n.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="note-entry-title">${esc(n.title)}</div>
+      <div style="margin-top:2px;"><span class="tag ${TAG_CLS[n.tag]||'tag-obs'}">${TAG_LABEL[n.tag]||n.tag}</span></div>
+    </div>`).join('');
 }
- 
-// INCIDENT / RESPONSE
+
+// ─── INCIDENT / RESPONSE ──────────────────────────────────────────────────────
 function saveIncident(){
-  const loc=document.getElementById('inc-location').value;
-  const sev=document.getElementById('inc-severity').value;
-  const rep=document.getElementById('inc-reporter').value;
-  const desc=document.getElementById('inc-desc').value;
-  const action=document.getElementById('inc-action').value;
-  const followup=document.getElementById('inc-followup').value;
+  const loc=document.getElementById('inc-location').value, sev=document.getElementById('inc-severity').value,
+        rep=document.getElementById('inc-reporter').value, desc=document.getElementById('inc-desc').value,
+        act=document.getElementById('inc-action').value, fu=document.getElementById('inc-followup').value;
   const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  const title='['+sev+'] Incident — '+(loc||'unknown location');
-  const body='Time: '+now+'\nLocation: '+loc+'\nSeverity: '+sev+'\nReported by: '+rep+'\nDescription: '+desc+'\nAction taken: '+action+'\nFollow-up required: '+followup;
-  newNote(title,body,'incident');
-  addLog({type:'incident',title,detail:sev+' at '+(loc||'?')+'. '+(desc||'').substring(0,80),followup:followup==='yes'});
+  const title='['+sev+'] Incident — '+(loc||'unknown');
+  newNote(title,'Time: '+now+'\nLocation: '+loc+'\nSeverity: '+sev+'\nReported by: '+rep+'\nDescription: '+desc+'\nAction taken: '+act+'\nFollow-up: '+fu,'incident');
+  addLog({type:'incident',title,detail:sev+' at '+(loc||'?')+'. '+desc.substring(0,80),followup:fu==='yes'});
   closeModal('modal-incident');
-  ['inc-location','inc-reporter','inc-desc','inc-action'].forEach(id=>{document.getElementById(id).value='';});
+  ['inc-location','inc-reporter','inc-desc','inc-action'].forEach(id=>document.getElementById(id).value='');
   showToast('Incident logged');
   switchView('notes',document.querySelectorAll('.nav-tab')[0]);
 }
 function saveResponse(){
-  const sit=document.getElementById('res-situation').value;
-  const notif=document.getElementById('res-notified').value;
-  const proc=document.getElementById('res-procedure').value;
-  const out=document.getElementById('res-outcome').value;
-  const esc2=document.getElementById('res-escalation').value;
+  const sit=document.getElementById('res-situation').value, notif=document.getElementById('res-notified').value,
+        proc=document.getElementById('res-procedure').value, out=document.getElementById('res-outcome').value,
+        esc2=document.getElementById('res-escalation').value;
   const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  const title='Response — '+(sit||'situation')+' at '+now;
-  const body='Time: '+now+'\nSituation: '+sit+'\nNotified: '+notif+'\nProcedure: '+proc+'\nOutcome: '+out+'\nEscalation: '+esc2;
-  newNote(title,body,'response');
-  addLog({type:'response',title,detail:'Notified: '+notif+'. '+(out||'').substring(0,80)});
+  const title='Response — '+(sit||'situation')+' @ '+now;
+  newNote(title,'Time: '+now+'\nSituation: '+sit+'\nNotified: '+notif+'\nProcedure: '+proc+'\nOutcome: '+out+'\nEscalation: '+esc2,'response');
+  addLog({type:'response',title,detail:'Notified: '+notif+'. '+out.substring(0,80)});
   closeModal('modal-response');
-  ['res-situation','res-notified','res-procedure','res-outcome'].forEach(id=>{document.getElementById(id).value='';});
+  ['res-situation','res-notified','res-procedure','res-outcome'].forEach(id=>document.getElementById(id).value='');
   showToast('Response logged');
   switchView('notes',document.querySelectorAll('.nav-tab')[0]);
 }
- 
-// HANDOFF
-function buildHandoffText(){
-  const now=new Date();
-  const shiftStartStr=new Date(S.shiftStart).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  const shiftEndStr=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  const todayEntries=S.logEntries.filter(e=>e.ts>=S.shiftStart);
-  const incidents=todayEntries.filter(e=>e.type==='incident');
-  const responses=todayEntries.filter(e=>e.type==='response');
-  const tasks=todayEntries.filter(e=>e.type==='task'&&e.title.startsWith('Task done:'));
-  const cycles=S.timerCycles;
-  const scans=todayEntries.filter(e=>e.type==='scan');
-  const openIncidents=incidents.filter(e=>e.followup);
-  const openTasks=S.adhocTasks.filter(t=>!t.done);
-  const overdueSites=S.sites.filter(s=>siteStatus(s)==='overdue');
-  const dueSites=S.sites.filter(s=>siteStatus(s)==='due');
-  const clKeys=Object.keys(S.checklists);
-  const clStatus=clKeys.map(k=>{const list=S.checklists[k];const done=list.filter(x=>x.done).length;return k+': '+done+'/'+list.length;});
-  let lines=[];
-  lines.push('SHIFT HANDOFF SUMMARY');
-  lines.push('─────────────────────');
-  lines.push('Shift: '+shiftStartStr+' → '+shiftEndStr);
-  lines.push('Cycles completed: '+cycles);
-  lines.push('');
-  const hasOpen=openIncidents.length||openTasks.length||overdueSites.length||dueSites.length;
-  lines.push('⚠ OPEN ITEMS'+(hasOpen?'':' — none'));
-  if(openIncidents.length){lines.push('');lines.push('  Incidents requiring follow-up:');openIncidents.forEach(e=>lines.push('  • '+e.title+(e.detail?' — '+e.detail.substring(0,60):'')));}
-  if(openTasks.length){lines.push('');lines.push('  Incomplete tasks:');openTasks.forEach(t=>lines.push('  • '+t.name));}
-  if(overdueSites.length){lines.push('');lines.push('  Overdue scans:');overdueSites.forEach(s=>lines.push('  • '+s.name+(s.nerc?' [NERC]':'')+' — last '+timeSince(s.lastScan||0)));}
-  if(dueSites.length){lines.push('');lines.push('  Due soon:');dueSites.forEach(s=>lines.push('  • '+s.name+(s.nerc?' [NERC]':'')));}
-  lines.push('');
-  lines.push('✓ ACTIVITY THIS SHIFT');
-  lines.push('  Incidents logged: '+incidents.length);
-  lines.push('  Responses logged: '+responses.length);
-  lines.push('  Tasks completed:  '+tasks.length);
-  lines.push('  Scans logged:     '+scans.length);
-  if(clStatus.length){lines.push('');lines.push('  Checklists:');clStatus.forEach(s=>lines.push('  • '+s));}
-  if(incidents.length){lines.push('');lines.push('  Incident log:');incidents.forEach(e=>{const t=new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});lines.push('  ['+t+'] '+e.title);if(e.detail)lines.push('          '+e.detail.substring(0,80));});}
-  lines.push('');lines.push('──────────────────────');lines.push('Generated '+now.toLocaleString());
-  return lines.join('\n');
+
+// ─── HANDOFF ──────────────────────────────────────────────────────────────────
+function buildHandoff(){
+  const now=new Date(), sStr=new Date(S.shiftStart).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}), eStr=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const te=S.logEntries.filter(e=>e.ts>=S.shiftStart);
+  const inc=te.filter(e=>e.type==='incident'), res=te.filter(e=>e.type==='response'),
+        done=te.filter(e=>e.type==='task'&&e.title.startsWith('Task done:')), scans=te.filter(e=>e.type==='scan');
+  const openInc=inc.filter(e=>e.followup), openTasks=S.adhocTasks.filter(t=>!t.done),
+        ov=SITES.filter(s=>siteStatus(s)==='overdue'), du=SITES.filter(s=>siteStatus(s)==='due');
+  const clStatus=Object.keys(S.checklists).map(k=>{const l=S.checklists[k]; return k+': '+l.filter(x=>x.done).length+'/'+l.length;});
+  const L=[];
+  L.push('SHIFT HANDOFF SUMMARY\n─────────────────────');
+  L.push('Shift: '+sStr+' → '+eStr+'\nCycles completed: '+S.timerCycles+'\n');
+  const hasOpen=openInc.length||openTasks.length||ov.length||du.length;
+  L.push('⚠ OPEN ITEMS'+(hasOpen?'':' — none'));
+  if(openInc.length){L.push('\n  Incidents with follow-up:');openInc.forEach(e=>L.push('  • '+e.title+(e.detail?' — '+e.detail.substring(0,60):'')));}
+  if(openTasks.length){L.push('\n  Incomplete tasks:');openTasks.forEach(t=>L.push('  • '+t.name));}
+  if(ov.length){L.push('\n  Overdue scans:');ov.forEach(s=>L.push('  • '+s.name+(s.nerc?' [NERC]':'')+'  (last: '+timeSince(s.lastScan||0)+')'));}
+  if(du.length){L.push('\n  Due soon:');du.forEach(s=>L.push('  • '+s.name+(s.nerc?' [NERC]':'')));}
+  L.push('\n✓ ACTIVITY\n  Incidents: '+inc.length+'  Responses: '+res.length+'  Tasks done: '+done.length+'  Scans: '+scans.length);
+  if(clStatus.length){L.push('\n  Checklists:');clStatus.forEach(s=>L.push('  • '+s));}
+  if(inc.length){L.push('\n  Incident log:');inc.forEach(e=>{const t=new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});L.push('  ['+t+'] '+e.title);if(e.detail)L.push('        '+e.detail.substring(0,80));});}
+  L.push('\n──────────────────────\nGenerated '+now.toLocaleString());
+  return L.join('\n');
 }
-function openHandoffAsNote(){const text=buildHandoffText();const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});newNote('Shift handoff — '+now,text,'obs');switchView('notes',document.querySelectorAll('.nav-tab')[0]);}
-function openHandoff(){document.getElementById('handoff-content').textContent=buildHandoffText();openModal('modal-handoff');}
-function copyHandoff(){try{navigator.clipboard.writeText(document.getElementById('handoff-content').textContent);showToast('Copied!');}catch(e){showToast('Select and copy manually');}}
- 
-// LOG
-function addLog(entry){S.logEntries.unshift({...entry,ts:Date.now(),id:Date.now()});if(S.logEntries.length>500)S.logEntries=S.logEntries.slice(0,500);save();}
+function openHandoffAsNote(){ const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); newNote('Shift handoff — '+now,buildHandoff(),'obs'); switchView('notes',document.querySelectorAll('.nav-tab')[0]); }
+function openHandoff(){ document.getElementById('handoff-content').textContent=buildHandoff(); openModal('modal-handoff'); }
+function copyHandoff(){ try{navigator.clipboard.writeText(document.getElementById('handoff-content').textContent);showToast('Copied!');}catch(e){showToast('Select and copy manually');} }
+
+// ─── LOG ──────────────────────────────────────────────────────────────────────
+function addLog(e){ S.logEntries.unshift({...e,ts:Date.now(),id:Date.now()}); if(S.logEntries.length>500)S.logEntries.length=500; save(); }
 function renderLog(){
-  const filter=document.getElementById('log-filter').value;
-  const entries=filter==='all'?S.logEntries:S.logEntries.filter(e=>e.type===filter);
-  const el=document.getElementById('log-list');
-  el.innerHTML=!entries.length?'<div class="empty">No entries yet</div>':entries.map(e=>`<div class="log-entry ${e.type||'note'}">
-    <div class="log-time">${new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
-    <div class="log-body"><div class="log-title">${esc(e.title||'')}</div>${e.detail?`<div class="log-detail">${esc(e.detail)}</div>`:''}</div>
-  </div>`).join('');
-  const total=S.logEntries.length;
-  const inc=S.logEntries.filter(e=>e.type==='incident').length;
-  const res=S.logEntries.filter(e=>e.type==='response').length;
-  const tsk=S.logEntries.filter(e=>e.type==='task').length;
-  const scn=S.logEntries.filter(e=>e.type==='scan').length;
+  const f=document.getElementById('log-filter').value;
+  const entries=f==='all'?S.logEntries:S.logEntries.filter(e=>e.type===f);
+  document.getElementById('log-list').innerHTML=!entries.length?'<div class="empty">No entries yet</div>':
+    entries.map(e=>`<div class="log-entry ${e.type||'note'}">
+      <div class="log-time">${new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="log-body"><div class="log-title">${esc(e.title||'')}</div>${e.detail?`<div class="log-detail">${esc(e.detail)}</div>`:''}</div>
+    </div>`).join('');
+  const inc=S.logEntries.filter(e=>e.type==='incident').length, res=S.logEntries.filter(e=>e.type==='response').length,
+        tsk=S.logEntries.filter(e=>e.type==='task').length, scn=S.logEntries.filter(e=>e.type==='scan').length;
   document.getElementById('log-stats').innerHTML=`
-    <div class="stat-chip"><span class="s-val">${total}</span><span class="s-lbl">Total</span></div>
+    <div class="stat-chip"><span class="s-val">${S.logEntries.length}</span><span class="s-lbl">Total</span></div>
     <div class="stat-chip"><span class="s-val" style="color:var(--red)">${inc}</span><span class="s-lbl">Incidents</span></div>
     <div class="stat-chip"><span class="s-val" style="color:var(--purple)">${res}</span><span class="s-lbl">Responses</span></div>
     <div class="stat-chip"><span class="s-val" style="color:var(--green)">${tsk}</span><span class="s-lbl">Tasks</span></div>
     <div class="stat-chip"><span class="s-val" style="color:var(--amber)">${scn}</span><span class="s-lbl">Scans</span></div>`;
 }
-function clearLog(){if(confirm('Clear all log entries?')){S.logEntries=[];save();renderLog();}}
- 
-// MODAL
-function openModal(id){document.getElementById(id).classList.remove('hidden');}
-function closeModal(id){document.getElementById(id).classList.add('hidden');}
- 
-// UTILS
-function fireAlert(msg){showToast(msg);try{const ctx=new AudioContext();[880,660].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;g.gain.setValueAtTime(.25,ctx.currentTime+i*.15);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+i*.15+.4);o.start(ctx.currentTime+i*.15);o.stop(ctx.currentTime+i*.15+.4);});}catch(e){}}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-function renderAll(){renderRec();renderAdhoc();renderCl();renderNotes();renderTemplates();updateTimerUI();renderSites();}
- 
-// ── FIELD INTEL FEATURES ──────────────────────────────────────────
- 
-// Weather
+function clearLog(){ if(confirm('Clear all log entries?')){ S.logEntries=[]; save(); renderLog(); } }
+
+// ─── MODAL ────────────────────────────────────────────────────────────────────
+function openModal(id){ document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id){ document.getElementById(id).classList.add('hidden'); }
+
+// ─── WEATHER ──────────────────────────────────────────────────────────────────
+function wxFilter(){
+  const q=document.getElementById('wx-site-inp').value.toLowerCase().trim();
+  const box=document.getElementById('wx-matches');
+  if(!q){ box.style.display='none'; return; }
+  const hits=SITES.filter(s=>s.name.toLowerCase().includes(q)||(s.location||'').toLowerCase().includes(q)).slice(0,6);
+  if(!hits.length){ box.style.display='none'; return; }
+  box.style.display='block';
+  box.innerHTML=hits.map(s=>`<div class="wx-match-item" onclick="wxPick(${s.id})">
+    <strong>${esc(s.name)}</strong>${s.location?' — <span style="color:var(--text3);font-size:11px;">'+esc(s.location)+'</span>':''}
+  </div>`).join('');
+}
+function wxPick(id){ const s=SITES.find(x=>x.id===id); if(!s)return; document.getElementById('wx-site-inp').value=s.name; document.getElementById('wx-location').value=s.location||s.name; document.getElementById('wx-matches').style.display='none'; }
 async function fetchWeather(){
-  const loc=document.getElementById('wx-location').value.trim();
-  if(!loc){showToast('Enter a location first');return;}
+  const loc=document.getElementById('wx-location').value.trim(); if(!loc){showToast('Enter a location first');return;}
   document.getElementById('wx-desc').textContent='Fetching...';
   try{
-    const res=await fetch(`https://wttr.in/${encodeURIComponent(loc)}?format=j1`);
-    const d=await res.json();
-    const cur=d.current_condition[0];
-    const tempF=cur.temp_F;
-    const desc=cur.weatherDesc[0].value;
-    const wind=cur.windspeedMiles+'mph '+cur.winddir16Point;
-    const vis=cur.visibility+'mi';
-    const humidity=cur.humidity+'%';
-    document.getElementById('wx-temp').textContent=tempF+'°F';
-    document.getElementById('wx-desc').textContent=desc+' · Humidity '+humidity;
-    document.getElementById('wx-wind').textContent='Wind: '+wind;
-    document.getElementById('wx-vis').textContent='Vis: '+vis;
-    document.getElementById('wx-icon').textContent=getWeatherEmoji(desc);
-  }catch(e){
-    document.getElementById('wx-desc').textContent='Could not fetch — check location';
-  }
-}
-function getWeatherEmoji(desc){
-  const d=desc.toLowerCase();
-  if(d.includes('thunder'))return'⛈';if(d.includes('rain')||d.includes('drizzle'))return'🌧';
-  if(d.includes('snow'))return'❄️';if(d.includes('cloud'))return'☁️';
-  if(d.includes('overcast'))return'🌥';if(d.includes('fog')||d.includes('mist'))return'🌫';
-  if(d.includes('sunny')||d.includes('clear'))return'☀️';return'🌤';
+    const d=(await(await fetch(`https://wttr.in/${encodeURIComponent(loc)}?format=j1`)).json()).current_condition[0];
+    document.getElementById('wx-temp').textContent=d.temp_F+'°F';
+    document.getElementById('wx-desc').textContent=d.weatherDesc[0].value+' · Humidity '+d.humidity+'%';
+    document.getElementById('wx-wind').textContent='Wind: '+d.windspeedMiles+'mph '+d.winddir16Point;
+    document.getElementById('wx-vis').textContent='Vis: '+d.visibility+'mi';
+    const desc=d.weatherDesc[0].value.toLowerCase();
+    document.getElementById('wx-icon').textContent=desc.includes('thunder')?'⛈':desc.includes('rain')||desc.includes('drizzle')?'🌧':desc.includes('snow')?'❄️':desc.includes('overcast')?'🌥':desc.includes('cloud')?'☁️':desc.includes('fog')||desc.includes('mist')?'🌫':desc.includes('sunny')||desc.includes('clear')?'☀️':'🌤';
+  }catch(e){ document.getElementById('wx-desc').textContent='Could not fetch — check location'; }
 }
 function logWeather(){
-  const temp=document.getElementById('wx-temp').textContent;
-  const desc=document.getElementById('wx-desc').textContent;
-  const wind=document.getElementById('wx-wind').textContent;
-  const loc=document.getElementById('wx-location').value.trim()||'site';
-  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const temp=document.getElementById('wx-temp').textContent, desc=document.getElementById('wx-desc').textContent,
+        wind=document.getElementById('wx-wind').textContent, loc=document.getElementById('wx-location').value.trim()||'site',
+        now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   newNote('Weather — '+loc+' @ '+now,'Location: '+loc+'\nTime: '+now+'\nTemp: '+temp+'\n'+desc+'\n'+wind,'obs');
-  switchView('notes',document.querySelectorAll('.nav-tab')[0]);
-  showToast('Weather logged to Notepad');
+  switchView('notes',document.querySelectorAll('.nav-tab')[0]); showToast('Weather logged');
 }
- 
-// Crew
-function addCrewMember(){
-  const name=document.getElementById('crew-name-inp').value.trim();if(!name)return;
-  S.crewMembers.push({id:Date.now(),name,status:'In field',checkin:Date.now()});
-  document.getElementById('crew-name-inp').value='';
-  save();renderCrewList();
+
+// ─── CREW ─────────────────────────────────────────────────────────────────────
+function addCrew(){ const n=document.getElementById('crew-inp').value.trim(); if(!n)return; S.crew.push({id:Date.now(),name:n,status:'In field'}); document.getElementById('crew-inp').value=''; save(); renderCrew(); }
+function cycleCrew(id){ const STATS=['In field','On break','Off site','Stand-by']; const m=S.crew.find(x=>x.id===id); if(!m)return; m.status=STATS[(STATS.indexOf(m.status)+1)%STATS.length]; save(); renderCrew(); }
+function removeCrew(id){ S.crew=S.crew.filter(x=>x.id!==id); save(); renderCrew(); }
+function renderCrew(){
+  const colors={'In field':'var(--green)','On break':'var(--amber)','Off site':'var(--text3)','Stand-by':'var(--blue)'};
+  document.getElementById('crew-list').innerHTML=!S.crew.length?'<div class="empty">No crew added</div>':
+    S.crew.map(m=>`<div class="task-item"><span class="task-label">${esc(m.name)}</span>
+      <span style="font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;background:var(--bg4);color:${colors[m.status]||'var(--text2)'};cursor:pointer;" onclick="cycleCrew(${m.id})">${m.status}</span>
+      <button class="task-del" onclick="removeCrew(${m.id})">✕</button>
+    </div>`).join('');
 }
-function cycleCrewStatus(id){
-  const statuses=['In field','On break','Off site','Stand-by'];
-  const m=S.crewMembers.find(x=>x.id===id);if(!m)return;
-  const idx=statuses.indexOf(m.status);
-  m.status=statuses[(idx+1)%statuses.length];
-  m.checkin=Date.now();
-  save();renderCrewList();
-}
-function removeCrewMember(id){S.crewMembers=S.crewMembers.filter(x=>x.id!==id);save();renderCrewList();}
-function renderCrewList(){
-  const el=document.getElementById('crew-list');
-  if(!S.crewMembers.length){el.innerHTML='<div class="empty">No crew added</div>';return;}
-  const statusColors={'In field':'var(--green)','On break':'var(--amber)','Off site':'var(--text3)','Stand-by':'var(--blue)'};
-  el.innerHTML=S.crewMembers.map(m=>`<div class="task-item">
-    <span class="task-label">${esc(m.name)}</span>
-    <span style="font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;background:var(--bg4);color:${statusColors[m.status]||'var(--text2)'};cursor:pointer;" onclick="cycleCrewStatus(${m.id})">${m.status}</span>
-    <button class="task-del" onclick="removeCrewMember(${m.id})">✕</button>
-  </div>`).join('');
-}
- 
-// Equipment
-function addEquipment(){
-  const name=document.getElementById('equip-name-inp').value.trim();if(!name)return;
-  const status=document.getElementById('equip-status-inp').value;
-  S.equipmentLog.push({id:Date.now(),name,status,ts:Date.now()});
-  document.getElementById('equip-name-inp').value='';
-  addLog({type:'task',title:'Equipment: '+name+' — '+status,detail:''});
-  save();renderEquipmentList();
-}
-function removeEquipment(id){S.equipmentLog=S.equipmentLog.filter(x=>x.id!==id);save();renderEquipmentList();}
-function renderEquipmentList(){
-  const el=document.getElementById('equipment-list');
-  if(!S.equipmentLog.length){el.innerHTML='<div class="empty">No equipment logged</div>';return;}
+
+// ─── EQUIPMENT ────────────────────────────────────────────────────────────────
+function addEquip(){ const n=document.getElementById('equip-inp').value.trim(); if(!n)return; const st=document.getElementById('equip-status').value; S.equipment.push({id:Date.now(),name:n,status:st,ts:Date.now()}); document.getElementById('equip-inp').value=''; addLog({type:'task',title:'Equipment: '+n+' — '+st,detail:''}); save(); renderEquip(); }
+function removeEquip(id){ S.equipment=S.equipment.filter(x=>x.id!==id); save(); renderEquip(); }
+function renderEquip(){
   const icons={ok:'✅',caution:'⚠️',down:'🔴'};
-  el.innerHTML=S.equipmentLog.map(e=>`<div class="task-item">
-    <span style="font-size:14px;">${icons[e.status]||'?'}</span>
-    <span class="task-label">${esc(e.name)}</span>
-    <span style="font-size:10px;color:var(--text3);font-family:var(--mono);">${timeSince(e.ts)}</span>
-    <button class="task-del" onclick="removeEquipment(${e.id})">✕</button>
-  </div>`).join('');
+  document.getElementById('equip-list').innerHTML=!S.equipment.length?'<div class="empty">No equipment logged</div>':
+    S.equipment.map(e=>`<div class="task-item"><span style="font-size:14px;">${icons[e.status]||'?'}</span><span class="task-label">${esc(e.name)}</span><span style="font-size:10px;color:var(--text3);font-family:var(--m);">${timeSince(e.ts)}</span><button class="task-del" onclick="removeEquip(${e.id})">✕</button></div>`).join('');
 }
- 
-// Safety check
-const SAFETY_ITEMS=['Hard hat worn','High-vis vest on','Safety glasses','Steel-toe boots','Gloves available','First aid kit accessible','Buddy check complete','Radio/comms operational','Weather conditions acceptable','Site hazards reviewed'];
-let safetyState={};
-function initSafetyCheck(){
-  SAFETY_ITEMS.forEach(item=>{if(safetyState[item]===undefined)safetyState[item]=false;});
-  renderSafetyCheck();
+
+// ─── SAFETY CHECK ─────────────────────────────────────────────────────────────
+const SAFETY=['Hard hat worn','High-vis vest on','Safety glasses','Steel-toe boots','Gloves available','First aid kit accessible','Buddy check complete','Radio/comms operational','Weather conditions acceptable','Site hazards reviewed'];
+let safetyS={};
+function initSafety(){ SAFETY.forEach(i=>{if(safetyS[i]===undefined)safetyS[i]=false;}); renderSafety(); }
+function toggleSafety(i){ safetyS[i]=!safetyS[i]; renderSafety(); }
+function renderSafety(){ document.getElementById('safety-list').innerHTML=SAFETY.map(i=>`<div class="task-item${safetyS[i]?' done':''}"><input type="checkbox" class="task-cb" ${safetyS[i]?'checked':''} onchange="toggleSafety('${i.replace(/'/g,"\\'")}')" ><span class="task-label">${i}</span></div>`).join(''); }
+function completeSafety(){
+  const done=SAFETY.filter(i=>safetyS[i]).length, now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  addLog({type:'task',title:'Safety check — '+done+'/'+SAFETY.length,detail:done===SAFETY.length?'All clear':'Incomplete'});
+  newNote('Safety check @ '+now,'Items: '+done+'/'+SAFETY.length+'\n'+SAFETY.map(i=>(safetyS[i]?'✓':'✗')+' '+i).join('\n'),'obs');
+  switchView('notes',document.querySelectorAll('.nav-tab')[0]); showToast('Safety check logged');
 }
-function renderSafetyCheck(){
-  document.getElementById('safety-check-list').innerHTML=SAFETY_ITEMS.map(item=>`<div class="task-item${safetyState[item]?' done':''}">
-    <input type="checkbox" class="task-cb" ${safetyState[item]?'checked':''} onchange="toggleSafetyItem('${item.replace(/'/g,"\\'")}')">
-    <span class="task-label">${item}</span>
-  </div>`).join('');
-}
-function toggleSafetyItem(item){safetyState[item]=!safetyState[item];renderSafetyCheck();}
-function completeSafetyCheck(){
-  const done=SAFETY_ITEMS.filter(i=>safetyState[i]).length;
-  const total=SAFETY_ITEMS.length;
-  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addLog({type:'task',title:'Pre-shift safety check — '+done+'/'+total+' items',detail:done===total?'All clear':'Incomplete — review before proceeding'});
-  newNote('Safety check @ '+now,'Items: '+done+'/'+total+'\n'+SAFETY_ITEMS.map(i=>(safetyState[i]?'✓':'✗')+' '+i).join('\n'),'obs');
-  switchView('notes',document.querySelectorAll('.nav-tab')[0]);
-  showToast('Safety check logged');
-}
-function resetSafetyCheck(){SAFETY_ITEMS.forEach(i=>safetyState[i]=false);renderSafetyCheck();}
- 
-// NERC Checklist
+function resetSafety(){ SAFETY.forEach(i=>safetyS[i]=false); renderSafety(); }
+
+// ─── NERC CHECK ───────────────────────────────────────────────────────────────
 const NERC_ITEMS=['Physical access log reviewed','Electronic access controls verified','Security perimeter inspected','Unauthorized access attempts checked','Backup communications tested','SCADA/EMS communication verified','Protection relay status confirmed','Transmission constraint monitoring active','Outage coordination reviewed','Operator log current and complete'];
-let nercState={};
-function initNERCCheck(){NERC_ITEMS.forEach(item=>{if(nercState[item]===undefined)nercState[item]=false;});renderNERCCheck();}
-function renderNERCCheck(){
-  document.getElementById('nerc-check-list').innerHTML=NERC_ITEMS.map(item=>`<div class="task-item${nercState[item]?' done':''}">
-    <input type="checkbox" class="task-cb" ${nercState[item]?'checked':''} onchange="toggleNERCItem('${item.replace(/'/g,"\\'")}')">
-    <span class="task-label" style="font-size:12px;">${item}</span>
-  </div>`).join('');
+let nercS={};
+function initNERC(){ NERC_ITEMS.forEach(i=>{if(nercS[i]===undefined)nercS[i]=false;}); renderNERC(); }
+function toggleNERC(i){ nercS[i]=!nercS[i]; renderNERC(); }
+function renderNERC(){ document.getElementById('nerc-list').innerHTML=NERC_ITEMS.map(i=>`<div class="task-item${nercS[i]?' done':''}"><input type="checkbox" class="task-cb" ${nercS[i]?'checked':''} onchange="toggleNERC('${i.replace(/'/g,"\\'")}')" ><span class="task-label" style="font-size:12px;">${i}</span></div>`).join(''); }
+function completeNERC(){
+  const done=NERC_ITEMS.filter(i=>nercS[i]).length, now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  addLog({type:'scan',title:'NERC compliance — '+done+'/'+NERC_ITEMS.length,detail:done===NERC_ITEMS.length?'All verified':'Incomplete'});
+  newNote('NERC compliance @ '+now,'Items: '+done+'/'+NERC_ITEMS.length+'\n'+NERC_ITEMS.map(i=>(nercS[i]?'✓':'✗')+' '+i).join('\n'),'obs');
+  switchView('notes',document.querySelectorAll('.nav-tab')[0]); showToast('NERC check submitted');
 }
-function toggleNERCItem(item){nercState[item]=!nercState[item];renderNERCCheck();}
-function completeNERCCheck(){
-  const done=NERC_ITEMS.filter(i=>nercState[i]).length;
-  const total=NERC_ITEMS.length;
-  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addLog({type:'scan',title:'NERC compliance check — '+done+'/'+total,detail:done===total?'All items verified':'Incomplete — review required'});
-  newNote('NERC compliance @ '+now,'Items: '+done+'/'+total+'\n'+NERC_ITEMS.map(i=>(nercState[i]?'✓':'✗')+' '+i).join('\n'),'obs');
-  switchView('notes',document.querySelectorAll('.nav-tab')[0]);
-  showToast('NERC check submitted');
+function resetNERC(){ NERC_ITEMS.forEach(i=>nercS[i]=false); renderNERC(); }
+
+// ─── ESCALATION CONTACTS ──────────────────────────────────────────────────────
+function saveEscContacts(){
+  const rows=document.querySelectorAll('#esc-tbody tr'), keys=['t1','t2','t3'];
+  rows.forEach((row,i)=>{ const inp=row.querySelector('input'); if(inp)S.escContacts[keys[i]]=inp.value; });
+  save(); addLog({type:'task',title:'Escalation contacts updated',detail:'Tier 1: '+S.escContacts.t1}); showToast('Contacts saved');
 }
-function resetNERCCheck(){NERC_ITEMS.forEach(i=>nercState[i]=false);renderNERCCheck();}
- 
-// Escalation contacts save
-function logEscalationContacts(){
-  const rows=document.querySelectorAll('#escalation-tbody tr');
-  const tiers=['tier1','tier2','tier3'];
-  rows.forEach((row,i)=>{const inp=row.querySelector('input');if(inp)S.escalationContacts[tiers[i]]=inp.value;});
-  save();
-  addLog({type:'task',title:'Escalation contacts updated',detail:'Tier 1: '+S.escalationContacts.tier1});
-  showToast('Contacts saved');
-}
- 
-// DEFAULT SITES — seeded on first use, fully editable after
-function seedDefaultSites(){
-  const D=[
-    // NERC BESS
-    {n:'CNDR1',l:true,loc:'Tehachapi, CA',ref:'NP: 818MWh / 200MW\nV SET: 115kV\nBAND: 109.25kV–120.75kV\nAVR/Voltage · Receive/Follow Dispatch'},
-    {n:'PRGN1',l:true,loc:'Mojave, CA',ref:'NP: 430MWh / 200MW\nV SET: 231.3kV\nBAND: 228kV–234kV\nAVR/Voltage · Receive/Follow Dispatch'},
-    {n:'HARQ2',l:true,loc:'Harper Lake, CA',ref:'NP: 1299MWh / 300MW\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nAVR/Voltage · Receive/Follow Dispatch'},
-    {n:'KUNA1',l:true,loc:'Kuna, ID',ref:'NP: 600MWh / 150MW\nV SET: 142kV\nBAND: 138kV–144.9kV\nAVR/Voltage · Receive/Follow Dispatch'},
-    {n:'BLKW1',l:true,loc:'Bakersfield, CA',ref:'NP: 12MW\nV SET: 11.7kV\nNO BAND\nAVR/Voltage · Receive/Follow Dispatch'},
-    {n:'GLTA1',l:true,loc:'Goleta, CA',ref:'NP: 160MWh / 60MW\nV SET: 66.00kV\nBAND: 63.17kV–69.83kV\nAVR/Voltage · Receive/Follow Dispatch'},
-    {n:'COSO1',l:true,loc:'Coso Junction, CA',ref:'NP: 240MWh / 60MW\nV SET: 235kV\nBAND: 230.3kV–239.7kV\nAVR/Voltage · Receive/Follow Dispatch'},
-    // Solar
-    {n:'HARQ1',l:false,loc:'Harper Lake, CA',ref:'PV 200MW\nInverters inverting?\nRates about the same?'},
-    {n:'ANGF1',l:false,loc:'Angel Fire, NM',ref:'PV 7.7MW  BESS 3.5MW / 7MWh\nInverters inverting?\nRates about the same?'},
-    {n:'AVLN1',l:false,loc:'Taos, NM',ref:'PV 19.7MW  BESS 12MW / 24MWh\nInverters inverting?\nRates about the same?'},
-    {n:'NCLS1',l:false,loc:'Nicolis, CA',ref:'PV 26MW\nInverters inverting?\nRates about the same?'},
-    {n:'TSMS1',l:false,loc:'Rosamond, CA',ref:'PV 18.2MW\nInverters inverting?\nRates about the same?'},
-    {n:'TLRE1',l:false,loc:'Tulare, CA',ref:'PV 3.6MW\nInverters inverting?\nRates about the same?'},
-    {n:'PRTV1',l:false,loc:'Porterville, CA',ref:'PV 3.6MW\nInverters inverting?\nRates about the same?'},
-    {n:'LSTH1',l:false,loc:'Lost Hills, CA',ref:'PV 26MW\nInverters inverting?\nRates about the same?'},
-    {n:'HNFD1',l:false,loc:'Hanford, CA',ref:'PV 3.6MW\nInverters inverting?\nRates about the same?'},
-    {n:'FRMV1',l:false,loc:'Farmersville, CA',ref:'PV 5.4MW\nInverters inverting?\nRates about the same?'},
-    {n:'AVLN2',l:false,loc:'Avalon, CA',ref:'PV 25MW\nInverters inverting?\nRates about the same?'},
-    {n:'BLKW2',l:false,loc:'Blackwell, OK',ref:'PV 16.2MW\nInverters inverting?\nRates about the same?'},
-    {n:'LSTH2',l:false,loc:'Lost Hills, CA',ref:'PV 27.6MW\nNP: 20MW  V SET: 71kV  BAND: 70.29–71.71kV\nInverters inverting?\nRates about the same?'},
-    {n:'NSTR1',l:false,loc:'Kern County, CA',ref:'PV 60MW\nNP: 60MW  V SET: 119kV  BAND: 117.81–120.19kV\nInverters inverting?\nRates about the same?'},
-    // Wind
-    {n:'DFRN1',l:false,loc:'Dufferin, Ontario',ref:'Wind 91MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    {n:'MCLM1',l:false,loc:'Manitoulin Island, Ontario',ref:'Wind 60MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    {n:'GDWL1',l:false,loc:'Goodwell, OK',ref:'Wind 200MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    {n:'LNDL1',l:false,loc:'Lincoln County, MN',ref:'Wind 150MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    {n:'ORGN1',l:false,loc:'Kern County, CA',ref:'Wind 150MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    {n:'RKRD1',l:false,loc:'Kern County, CA',ref:'Wind 149MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    {n:'PRRS1',l:false,loc:'Elk County, KS',ref:'Wind 200MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    {n:'DIBL1',l:false,loc:'Diablo Range, CA',ref:'Wind 16.68MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    // ROC
-    {n:'ROCC1',l:false,loc:'Remote Operations Center',ref:'CAISO ADS\nIndji Watch\nStay Safe systems'},
-  ];
-  S.sites=D.map((d,i)=>({id:i+1,name:d.n,nerc:d.l,interval:30,threshold:5,lastScan:null,location:d.loc,notes:d.ref}));
-  save();renderSites();
-}
- 
-// Weather site search
-function wxFilterSites(){
-  const q=document.getElementById('wx-site-search').value.toLowerCase().trim();
-  const box=document.getElementById('wx-site-matches');
-  if(!q){box.style.display='none';return;}
-  const matches=S.sites.filter(s=>s.name.toLowerCase().includes(q)||(s.location||'').toLowerCase().includes(q)).slice(0,6);
-  if(!matches.length){box.style.display='none';return;}
-  box.style.display='block';
-  box.innerHTML=matches.map(s=>`<div onclick="wxPickSite(${s.id})" style="padding:7px 10px;cursor:pointer;background:var(--bg2);font-size:13px;border-bottom:1px solid var(--border);transition:background .1s;" onmouseover="this.style.background='var(--blue-bg)'" onmouseout="this.style.background='var(--bg2)'">
-    <strong>${esc(s.name)}</strong>${s.location?' <span style="color:var(--text3);font-size:11px;">— '+esc(s.location)+'</span>':''}
-  </div>`).join('');
-}
-function wxPickSite(id){
-  const site=S.sites.find(s=>s.id===id);if(!site)return;
-  document.getElementById('wx-site-search').value=site.name;
-  document.getElementById('wx-location').value=site.location||site.name;
-  document.getElementById('wx-site-matches').style.display='none';
-}
- 
+
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+function fireAlert(msg){ showToast(msg); try{const ctx=new AudioContext();[880,660].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;g.gain.setValueAtTime(.25,ctx.currentTime+i*.15);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+i*.15+.4);o.start(ctx.currentTime+i*.15);o.stop(ctx.currentTime+i*.15+.4);});}catch(e){} }
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function renderAll(){ renderRec(); renderAdhoc(); renderCl(); renderNotes(); renderTemplates(); updateTimerUI(); renderSites(); }
+
 load();
 </script>
 </body>
