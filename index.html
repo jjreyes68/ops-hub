@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -768,7 +769,7 @@ function switchView(v, el) {
   if(el) el.classList.add('active');
   if(v==='log') renderLog();
   if(v==='scans') { refreshScanStatuses(); renderSites(); }
-  if(v==='asset') asRenderForm();
+  if(v==='asset') { asRenderTabs(); asRenderForm(); }
 }
 
 // ─── 30-MIN TIMER ─────────────────────────────────────────────────────────────
@@ -1902,15 +1903,15 @@ const AS_CUSTOM_KEY = 'rnwbl_ascustom_v1'; // user-added/edited sites stored her
 let asVals = {};
 let asDone = {};        // {siteId: true} manually marked complete
 let asCustom = null;    // null = not yet loaded; [] or array = overrides AS_SITES
-let asActiveSite = AS_SITES[0].id;
+let asActiveSite = '';
 
-// Effective site list: custom overrides defaults when set
-function asSites() { return asCustom !== null ? asCustom : AS_SITES; }
+// Effective site list: custom overrides defaults when set AND non-empty
+function asSites() { return (asCustom !== null && asCustom.length > 0) ? asCustom : AS_SITES; }
 
 function asLoadAll() {
   try { const r=localStorage.getItem(AS_VAL_KEY); if(r) asVals=JSON.parse(r)||{}; } catch(e){}
   try { const r=localStorage.getItem(AS_DONE_KEY); if(r) asDone=JSON.parse(r)||{}; } catch(e){}
-  try { const r=localStorage.getItem(AS_CUSTOM_KEY); if(r) { const p=JSON.parse(r); if(Array.isArray(p)) asCustom=p; } } catch(e){}
+  try { const r=localStorage.getItem(AS_CUSTOM_KEY); if(r) { const p=JSON.parse(r); if(Array.isArray(p) && p.length > 0) asCustom=p; } } catch(e){}
 }
 function asSaveVals() { try{localStorage.setItem(AS_VAL_KEY,JSON.stringify(asVals));}catch(e){} }
 function asSaveDone() { try{localStorage.setItem(AS_DONE_KEY,JSON.stringify(asDone));}catch(e){} }
@@ -1941,7 +1942,14 @@ function asSectionHasAlert(siteId, si) {
 function asInit() {
   document.getElementById('as-date').valueAsDate = new Date();
   asLoadAll();
-  if(!asSites().find(s=>s.id===asActiveSite)) asActiveSite=asSites()[0]?.id||'';
+  // Restore last visited tab; if none saved, skip ROCC1 and land on first real site
+  const saved = (()=>{try{return localStorage.getItem('rnwbl_asactive')||'';}catch(e){return '';}})();
+  const sites = asSites();
+  if(saved && sites.find(s=>s.id===saved)) {
+    asActiveSite = saved;
+  } else {
+    asActiveSite = (sites.find(s=>s.id!=='ROCC1') || sites[0])?.id || '';
+  }
   asRenderTabs();
   asRenderForm();
 }
@@ -1957,7 +1965,7 @@ function asRenderTabs() {
   }).join('');
 }
 
-function asSwitch(id) { asActiveSite=id; asRenderTabs(); asRenderForm(); }
+function asSwitch(id) { asActiveSite=id; try{localStorage.setItem('rnwbl_asactive',id);}catch(e){} asRenderTabs(); asRenderForm(); }
 
 function asRenderForm() {
   const site=asSites().find(s=>s.id===asActiveSite); if(!site) return;
