@@ -120,6 +120,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 .tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-bottom:14px;}
 .tpl-btn{padding:9px 11px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--f);text-align:left;transition:all .15s;box-shadow:var(--shs);}
 .tpl-btn:hover{border-color:var(--amber);color:var(--amber);background:var(--abg);}
+.tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
+@media(max-width:700px){.tools-grid{grid-template-columns:1fr;}}
+.intel-card{align-self:start;}
 .sc-btn{padding:4px 10px;border-radius:5px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:11px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;white-space:nowrap;}
 .sc-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
 .tpl-icon{font-size:16px;display:block;margin-bottom:4px;}
@@ -360,35 +363,8 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 
 <!-- FIELD INTEL -->
 <div class="view" id="view-intel">
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Tools</div>
-    <span style="font-size:12px;color:var(--text3);">Phonetics, log builder &amp; site conditions</span>
-  </div>
-  <div style="max-width:480px;">
-    <div class="intel-card" style="margin-bottom:14px;">
-      <div class="intel-card-hdr">
-        <span class="intel-icon">🔤</span>
-        <div>
-          <div class="intel-title">NATO Phonetic Alphabet</div>
-          <div class="intel-desc">Type any text — get the phonetic readout instantly.</div>
-          <span class="itag itag-blue">Instant</span>
-        </div>
-      </div>
-      <div class="intel-content">
-        <div class="ifield">
-          <label>Input</label>
-          <input id="ph-input" placeholder="e.g. 589L45" oninput="renderPhonetic()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="font-family:var(--m);letter-spacing:.04em;">
-        </div>
-        <div id="ph-output" style="margin-top:10px;min-height:36px;font-family:var(--m);font-size:13px;color:var(--text);line-height:1.8;word-break:break-word;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;display:none;"></div>
-        <div id="ph-empty" style="margin-top:8px;font-size:12px;color:var(--text3);">Enter text above to see the phonetic readout.</div>
-        <div class="iacts" style="margin-top:10px;">
-          <button class="ibtn ibtn-p" onclick="copyPhonetic()">Copy</button>
-          <button class="ibtn" onclick="document.getElementById('ph-input').value='';renderPhonetic();">Clear</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="intel-card" style="margin-bottom:14px;">
+  <div class="tools-grid">
+    <div class="intel-card">
       <div class="intel-card-hdr">
         <span class="intel-icon">📋</span>
         <div>
@@ -412,6 +388,29 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
           </div>
         </div>
         <div id="sw-empty" style="font-size:12px;color:var(--text3);margin-top:6px;">No flows yet — click "Manage flows" to add one.</div>
+      </div>
+    </div>
+
+    <div class="intel-card">
+      <div class="intel-card-hdr">
+        <span class="intel-icon">🔤</span>
+        <div>
+          <div class="intel-title">NATO Phonetic Alphabet</div>
+          <div class="intel-desc">Type any text — get the phonetic readout instantly.</div>
+          <span class="itag itag-blue">Instant</span>
+        </div>
+      </div>
+      <div class="intel-content">
+        <div class="ifield">
+          <label>Input</label>
+          <input id="ph-input" placeholder="e.g. 589L45" oninput="renderPhonetic()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="font-family:var(--m);letter-spacing:.04em;">
+        </div>
+        <div id="ph-output" style="margin-top:10px;min-height:36px;font-family:var(--m);font-size:13px;color:var(--text);line-height:1.8;word-break:break-word;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;display:none;"></div>
+        <div id="ph-empty" style="margin-top:8px;font-size:12px;color:var(--text3);">Enter text above to see the phonetic readout.</div>
+        <div class="iacts" style="margin-top:10px;">
+          <button class="ibtn ibtn-p" onclick="copyPhonetic()">Copy</button>
+          <button class="ibtn" onclick="document.getElementById('ph-input').value='';renderPhonetic();">Clear</button>
+        </div>
       </div>
     </div>
 
@@ -450,7 +449,34 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
         </div>
       </div>
     </div>
-  </div>
+
+    <div class="intel-card">
+      <div class="intel-card-hdr">
+        <span class="intel-icon">⏱</span>
+        <div>
+          <div class="intel-title">Elapsed Time</div>
+          <div class="intel-desc">Mark when an event started — track duration for logs &amp; NERC compliance.</div>
+          <span class="itag itag-amber">Live</span>
+        </div>
+      </div>
+      <div class="intel-content">
+        <div style="display:flex;gap:6px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px;">
+          <div class="ifield" style="flex:1;margin-bottom:0;">
+            <label>Event start time</label>
+            <input type="time" id="et-start" style="font-family:var(--m);font-size:14px;">
+          </div>
+          <button class="ibtn ibtn-p" onclick="etSetNow()" style="white-space:nowrap;">Set to now</button>
+        </div>
+        <div id="et-label" style="font-size:11px;font-weight:600;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;display:none;">Elapsed</div>
+        <div id="et-display" style="font-family:var(--m);font-size:32px;font-weight:500;color:var(--green);letter-spacing:.02em;display:none;">00:00:00</div>
+        <div id="et-since" style="font-size:12px;color:var(--text2);margin-top:3px;display:none;"></div>
+        <div id="et-empty" style="font-size:12px;color:var(--text3);margin-top:4px;">Set a start time to begin tracking.</div>
+        <div class="iacts" style="margin-top:12px;">
+          <button class="ibtn ibtn-p" onclick="etCopyLog()" id="et-copy-btn" style="display:none;">Copy for log</button>
+          <button class="ibtn" onclick="etReset()">Reset</button>
+        </div>
+      </div>
+    </div>
 </div>
 
 <!-- MODALS -->
@@ -1162,6 +1188,66 @@ function copyPhonetic(){
   try{navigator.clipboard.writeText(text);showToast('Copied!');}catch(e){showToast('Select and copy manually');}
 }
 
+
+// ─── ELAPSED TIME TOOL ────────────────────────────────────────────────────────
+let _etInterval=null, _etStartMs=null;
+function etSetNow(){
+  const now=new Date();
+  const hh=String(now.getHours()).padStart(2,'0'), mm=String(now.getMinutes()).padStart(2,'0');
+  document.getElementById('et-start').value=hh+':'+mm;
+  etStart();
+}
+function etStart(){
+  const val=document.getElementById('et-start').value; if(!val)return;
+  const [hh,mm]=val.split(':').map(Number);
+  const now=new Date(); const start=new Date(now);
+  start.setHours(hh,mm,0,0);
+  if(start>now) start.setDate(start.getDate()-1); // handle past midnight
+  _etStartMs=start.getTime();
+  if(_etInterval)clearInterval(_etInterval);
+  _etInterval=setInterval(etTick,1000);
+  document.getElementById('et-empty').style.display='none';
+  document.getElementById('et-label').style.display='block';
+  document.getElementById('et-display').style.display='block';
+  document.getElementById('et-since').style.display='block';
+  document.getElementById('et-copy-btn').style.display='inline-flex';
+  etTick();
+}
+function etTick(){
+  if(!_etStartMs)return;
+  const elapsed=Math.max(0,Date.now()-_etStartMs);
+  const h=Math.floor(elapsed/3600000), m=Math.floor((elapsed%3600000)/60000), s=Math.floor((elapsed%60000)/1000);
+  const disp=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  document.getElementById('et-display').textContent=disp;
+  const startStr=new Date(_etStartMs).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('et-since').textContent='Started at '+startStr+(h>0?' — '+h+'h '+m+'m':' — '+m+'m '+s+'s')+' ago';
+  const color=h>=2?'var(--red)':h>=1?'var(--amber)':'var(--green)';
+  document.getElementById('et-display').style.color=color;
+}
+function etCopyLog(){
+  if(!_etStartMs)return;
+  const elapsed=Math.max(0,Date.now()-_etStartMs);
+  const h=Math.floor(elapsed/3600000), m=Math.floor((elapsed%3600000)/60000), s=Math.floor((elapsed%60000)/1000);
+  const startStr=new Date(_etStartMs).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const durStr=(h?h+'h ':'')+m+'m '+s+'s';
+  const text='Event start: '+startStr+' | Elapsed: '+durStr+' ('+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+')';
+  try{navigator.clipboard.writeText(text);showToast('Copied!');}catch(e){showToast('Select and copy manually');}
+}
+function etReset(){
+  if(_etInterval)clearInterval(_etInterval); _etInterval=null; _etStartMs=null;
+  document.getElementById('et-start').value='';
+  document.getElementById('et-display').style.display='none';
+  document.getElementById('et-label').style.display='none';
+  document.getElementById('et-since').style.display='none';
+  document.getElementById('et-copy-btn').style.display='none';
+  document.getElementById('et-empty').style.display='block';
+  document.getElementById('et-display').textContent='00:00:00';
+}
+// Auto-start when time input changes
+document.addEventListener('DOMContentLoaded',()=>{
+  const inp=document.getElementById('et-start');
+  if(inp) inp.addEventListener('change',etStart);
+});
 // ─── WEATHER ──────────────────────────────────────────────────────────────────
 function wxFilter(){
   const q=document.getElementById('wx-site-inp').value.toLowerCase().trim();
