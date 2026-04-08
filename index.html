@@ -120,11 +120,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 .tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-bottom:14px;}
 .tpl-btn{padding:9px 11px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--f);text-align:left;transition:all .15s;box-shadow:var(--shs);}
 .tpl-btn:hover{border-color:var(--amber);color:var(--amber);background:var(--abg);}
-.tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
-@media(max-width:700px){.tools-grid{grid-template-columns:1fr;}}
-.intel-card{align-self:start;}
-.sc-btn{padding:4px 10px;border-radius:5px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:11px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;white-space:nowrap;}
-.sc-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
 .tpl-icon{font-size:16px;display:block;margin-bottom:4px;}
 .tpl-name{font-weight:600;display:block;color:var(--text);font-size:12px;}
 .tpl-desc{font-size:11px;color:var(--text3);margin-top:2px;display:block;}
@@ -297,7 +292,9 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
   </div>
   <button class="nav-tab active" onclick="switchView('notes',this)">Notepad</button>
   <button class="nav-tab" onclick="switchView('scans',this)">Scans</button>
-  <button class="nav-tab" onclick="switchView('intel',this)">Ops Tools</button>
+  <button class="nav-tab" onclick="switchView('ops',this)">Tasks</button>
+  <button class="nav-tab" onclick="switchView('log',this)">Log</button>
+  <button class="nav-tab" onclick="switchView('intel',this)">Field Intel</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
   <div class="nav-spacer"></div>
   <div class="nav-time" id="nav-clock"></div>
@@ -305,31 +302,27 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 
 <!-- NOTEPAD -->
 <div class="view active" id="view-notes">
+  <div class="tpl-grid" id="tpl-grid"></div>
   <div class="notes-layout">
     <div class="notes-sidebar">
-      <div class="card-title" style="padding:0 2px;">Notes</div>
+      <div class="card-title" style="padding:0 2px;">Notes log</div>
       <button class="tbtn" style="text-align:center;width:100%;padding:8px;" onclick="newBlankNote()">+ New note</button>
       <div class="notes-list" id="notes-list"></div>
     </div>
     <div class="note-card">
-      <div id="note-no-sel" style="color:var(--text3);font-size:13px;padding:24px;text-align:center;">Select a note or create a new one</div>
-      <div id="note-form" style="display:none;flex-direction:column;gap:8px;flex:1;">
+      <div id="note-no-sel" style="color:var(--text3);font-size:13px;padding:24px;text-align:center;">Select a note or use a template above</div>
+      <div id="note-form" style="display:none;flex-direction:column;gap:9px;flex:1;">
         <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;">
-          <input class="note-title-inp" id="note-title" placeholder="Note title..." style="flex:1;min-width:120px;" oninput="scheduleAutoSave()">
+          <input class="note-title-inp" id="note-title" placeholder="Note title..." style="flex:1;min-width:120px;">
+          <select id="note-tag" style="min-width:130px;">
+            <option value="trip">Site Trip</option>
+            <option value="obs">Observation</option>
+          </select>
           <button class="btn-p" onclick="saveNote()">Save</button>
           <button class="btn-c" onclick="deleteNote()">Delete</button>
         </div>
-        <div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;padding:6px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;">
-          <span style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-right:2px;">Insert</span>
-          <button class="sc-btn" onclick="insertSnippet('time')" title="Current time">⏱ Time</button>
-          <button class="sc-btn" onclick="insertSnippet('datetime')" title="Date + time">📅 Date·Time</button>
-          <button class="sc-btn" onclick="insertSnippet('divider')" title="Divider line">— Divider</button>
-          <button class="sc-btn" onclick="insertSnippet('location')" title="Location label">📍 Location:</button>
-          <button class="sc-btn" onclick="insertSnippet('action')" title="Action item">☑ Action:</button>
-          <button class="sc-btn" onclick="insertSnippet('followup')" title="Follow-up label">↩ Follow-up:</button>
-        </div>
-        <textarea id="note-body" placeholder="Start typing..." oninput="scheduleAutoSave()"></textarea>
-        <div style="font-size:11px;color:var(--text3);display:flex;gap:10px;" id="note-meta"></div>
+        <textarea id="note-body" placeholder="Start typing..."></textarea>
+        <div style="font-size:11px;color:var(--text3);" id="note-meta"></div>
       </div>
     </div>
   </div>
@@ -360,60 +353,72 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
   <div class="sites-grid" id="sites-grid"></div>
 </div>
 
+<!-- TASKS -->
+<div class="view" id="view-ops">
+  <div class="cols3">
+    <div class="card">
+      <div class="card-title">Recurring tasks</div>
+      <div id="rec-list"></div>
+      <div class="add-row">
+        <input id="rec-inp" placeholder="Add recurring task..." onkeydown="if(event.key==='Enter')addRec()">
+        <button onclick="addRec()">+</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Ad hoc tasks</div>
+      <div id="adhoc-list" style="max-height:260px;overflow-y:auto;"></div>
+      <div class="adhoc-row">
+        <input id="adhoc-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addAdhoc()">
+        <input id="adhoc-t" class="t-inp" type="number" min="0" placeholder="min">
+        <span class="min-lbl">min</span>
+        <button class="add-btn" onclick="addAdhoc()">+ Add</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Checklists</div>
+      <div class="cl-add-row">
+        <input id="cl-list-inp" placeholder="New checklist name..." onkeydown="if(event.key==='Enter')addClList()">
+        <button onclick="addClList()">+ New list</button>
+      </div>
+      <div class="cl-hdr" id="cl-hdr" style="display:none;">
+        <select class="cl-sel" id="cl-sel" onchange="switchClFromSelect()"></select>
+        <button class="cl-del" onclick="delActiveClList()">🗑 Delete</button>
+      </div>
+      <div class="prog-row" id="cl-prog-row" style="display:none;">
+        <div class="prog-bar"><div class="prog-fill" id="cl-prog-fill" style="width:0%"></div></div>
+        <div class="prog-txt" id="cl-prog-txt">0/0</div>
+      </div>
+      <div id="cl-items" style="max-height:180px;overflow-y:auto;"></div>
+      <div class="cl-item-row" id="cl-item-row" style="display:none;">
+        <input id="cl-item-inp" placeholder="Add item..." onkeydown="if(event.key==='Enter')addClItem()">
+        <button onclick="addClItem()">+ Item</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOG -->
+<div class="view" id="view-log">
+  <div class="stat-row" id="log-stats"></div>
+  <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap;">
+    <select id="log-filter" onchange="renderLog()">
+      <option value="all">All entries</option><option value="incident">Incidents</option>
+      <option value="response">Responses</option><option value="task">Tasks</option>
+      <option value="note">Notes</option><option value="scan">Scans</option>
+    </select>
+    <button class="tbtn" onclick="openHandoff()">↺ Shift handoff</button>
+    <button class="btn-d" onclick="clearLog()">Clear log</button>
+  </div>
+  <div id="log-list" style="max-height:520px;overflow-y:auto;"></div>
+</div>
 
 <!-- FIELD INTEL -->
 <div class="view" id="view-intel">
-  <div class="tools-grid">
-    <div class="intel-card">
-      <div class="intel-card-hdr">
-        <span class="intel-icon">📋</span>
-        <div>
-          <div class="intel-title">SoftWrench Log Builder</div>
-          <div class="intel-desc">Select a procedure, fill the fields, copy the ready-to-paste log entry.</div>
-          <span class="itag itag-amber">Log Builder</span>
-        </div>
-      </div>
-      <div class="intel-content">
-        <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">
-          <select id="sw-flow-sel" style="flex:1;" onchange="swSelectFlow()"></select>
-          <button class="ibtn ibtn-p" onclick="swOpenManage()">✏ Manage flows</button>
-        </div>
-        <div id="sw-fields" style="display:flex;flex-direction:column;gap:7px;"></div>
-        <div id="sw-output-wrap" style="display:none;margin-top:10px;">
-          <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;">Output — ready to paste</div>
-          <div id="sw-output" style="font-family:var(--m);font-size:12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;line-height:1.8;white-space:pre-wrap;word-break:break-word;color:var(--text);"></div>
-          <div class="iacts" style="margin-top:8px;">
-            <button class="ibtn ibtn-p" onclick="swCopy()">Copy</button>
-            <button class="ibtn" onclick="swClear()">Clear fields</button>
-          </div>
-        </div>
-        <div id="sw-empty" style="font-size:12px;color:var(--text3);margin-top:6px;">No flows yet — click "Manage flows" to add one.</div>
-      </div>
-    </div>
-
-    <div class="intel-card">
-      <div class="intel-card-hdr">
-        <span class="intel-icon">🔤</span>
-        <div>
-          <div class="intel-title">NATO Phonetic Alphabet</div>
-          <div class="intel-desc">Type any text — get the phonetic readout instantly.</div>
-          <span class="itag itag-blue">Instant</span>
-        </div>
-      </div>
-      <div class="intel-content">
-        <div class="ifield">
-          <label>Input</label>
-          <input id="ph-input" placeholder="e.g. 589L45" oninput="renderPhonetic()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="font-family:var(--m);letter-spacing:.04em;">
-        </div>
-        <div id="ph-output" style="margin-top:10px;min-height:36px;font-family:var(--m);font-size:13px;color:var(--text);line-height:1.8;word-break:break-word;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;display:none;"></div>
-        <div id="ph-empty" style="margin-top:8px;font-size:12px;color:var(--text3);">Enter text above to see the phonetic readout.</div>
-        <div class="iacts" style="margin-top:10px;">
-          <button class="ibtn ibtn-p" onclick="copyPhonetic()">Copy</button>
-          <button class="ibtn" onclick="document.getElementById('ph-input').value='';renderPhonetic();">Clear</button>
-        </div>
-      </div>
-    </div>
-
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Field Intel</div>
+    <span style="font-size:12px;color:var(--text3);">Site weather &amp; conditions</span>
+  </div>
+  <div style="max-width:480px;">
     <div class="intel-card">
       <div class="intel-card-hdr">
         <span class="intel-icon">🌤</span>
@@ -449,34 +454,7 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
         </div>
       </div>
     </div>
-
-    <div class="intel-card">
-      <div class="intel-card-hdr">
-        <span class="intel-icon">⏱</span>
-        <div>
-          <div class="intel-title">Elapsed Time</div>
-          <div class="intel-desc">Mark when an event started — track duration for logs &amp; NERC compliance.</div>
-          <span class="itag itag-amber">Live</span>
-        </div>
-      </div>
-      <div class="intel-content">
-        <div style="display:flex;gap:6px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px;">
-          <div class="ifield" style="flex:1;margin-bottom:0;">
-            <label>Event start time</label>
-            <input type="time" id="et-start" style="font-family:var(--m);font-size:14px;">
-          </div>
-          <button class="ibtn ibtn-p" onclick="etSetNow()" style="white-space:nowrap;">Set to now</button>
-        </div>
-        <div id="et-label" style="font-size:11px;font-weight:600;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;display:none;">Elapsed</div>
-        <div id="et-display" style="font-family:var(--m);font-size:32px;font-weight:500;color:var(--green);letter-spacing:.02em;display:none;">00:00:00</div>
-        <div id="et-since" style="font-size:12px;color:var(--text2);margin-top:3px;display:none;"></div>
-        <div id="et-empty" style="font-size:12px;color:var(--text3);margin-top:4px;">Set a start time to begin tracking.</div>
-        <div class="iacts" style="margin-top:12px;">
-          <button class="ibtn ibtn-p" onclick="etCopyLog()" id="et-copy-btn" style="display:none;">Copy for log</button>
-          <button class="ibtn" onclick="etReset()">Reset</button>
-        </div>
-      </div>
-    </div>
+  </div>
 </div>
 
 <!-- MODALS -->
@@ -523,6 +501,39 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
     <div class="m-actions">
       <button class="btn-c" onclick="closeModal('modal-scan-note')">Cancel</button>
       <button class="btn-p" onclick="confirmScan()">Log scan</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="modal-incident">
+  <div class="modal">
+    <h3>🏭 Site Trip</h3>
+    <label>Site / Location</label><input id="inc-location" placeholder="Site name, zone, address...">
+    <label>Purpose of visit</label><input id="inc-purpose" placeholder="Inspection, maintenance, commissioning...">
+    <label>Personnel on site</label><input id="inc-personnel" placeholder="Names or IDs of personnel present...">
+    <label>Conditions / Findings</label><textarea id="inc-desc" placeholder="What was observed or found on site?"></textarea>
+    <label>Actions taken</label><textarea id="inc-action" placeholder="Work performed, issues addressed..."></textarea>
+    <label>Follow-up required?</label>
+    <select id="inc-followup"><option value="no">No</option><option value="yes">Yes — open item</option></select>
+    <div class="m-actions">
+      <button class="btn-c" onclick="closeModal('modal-incident')">Cancel</button>
+      <button class="btn-p" onclick="saveIncident()">Log site trip</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="modal-response">
+  <div class="modal">
+    <h3>✅ Correct response log</h3>
+    <label>Situation / trigger</label><input id="res-situation" placeholder="What prompted this?">
+    <label>Who was notified</label><input id="res-notified" placeholder="Names, teams, channels...">
+    <label>Procedure followed</label><textarea id="res-procedure" placeholder="Steps taken..."></textarea>
+    <label>Resolution / outcome</label><textarea id="res-outcome" placeholder="What was the result?"></textarea>
+    <label>Escalation</label>
+    <select id="res-escalation"><option>No escalation</option><option>Yes — escalated</option><option>Yes — pending</option></select>
+    <div class="m-actions">
+      <button class="btn-c" onclick="closeModal('modal-response')">Cancel</button>
+      <button class="btn-p" onclick="saveResponse()">Log response</button>
     </div>
   </div>
 </div>
@@ -588,61 +599,23 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
   </div>
 </div>
 
-<!-- SOFTWRENCH MANAGE FLOWS MODAL -->
-<div class="overlay hidden" id="modal-sw-manage">
-  <div class="modal" style="width:580px;max-height:92vh;">
-    <h3>📋 Manage SoftWrench Flows</h3>
-
-    <!-- Flow list -->
-    <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Your flows</div>
-    <div id="sw-flow-list" style="max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;border:1px solid var(--border);border-radius:8px;padding:8px;margin-bottom:16px;"></div>
-
-    <!-- Divider -->
-    <div style="border-top:1px solid var(--border);padding-top:14px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <div style="font-size:13px;font-weight:600;" id="sw-form-hdr">Add new flow</div>
-        <button class="tbtn" style="font-size:11px;" onclick="swFormClear()">✕ Clear form</button>
-      </div>
-      <input type="hidden" id="sw-edit-idx">
-
-      <!-- Step 1: Name -->
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-        <div style="width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
-        <div style="flex:1;">
-          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:3px;">Flow name</div>
-          <input id="sw-fname" placeholder="e.g. HARQ De-Energize" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;color:var(--text);">
-        </div>
-      </div>
-
-      <!-- Step 2: Template -->
-      <div style="display:flex;gap:8px;margin-bottom:10px;">
-        <div style="width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">2</div>
-        <div style="flex:1;">
-          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:3px;">
-            Write the log template
-            <span style="font-weight:400;color:var(--text3);margin-left:4px;">— wrap any input you need in <code style="background:var(--bbg);color:var(--blue);padding:1px 5px;border-radius:3px;font-size:11px;">{curly braces}</code></span>
-          </div>
-          <textarea id="sw-ftemplate" rows="5" oninput="swPreviewFields()"
-            placeholder="Call received from field tech {Tech Name} requesting de-energization of {Equipment}:&#10;– Associated Megapacks disabled remotely&#10;– {Equipment} opened remotely"
-            style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:12px;color:var(--text);font-family:var(--m);resize:vertical;line-height:1.7;"></textarea>
-        </div>
-      </div>
-
-      <!-- Step 3: Live field preview -->
-      <div style="display:flex;gap:8px;">
-        <div style="width:20px;height:20px;border-radius:50%;background:var(--gmid);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">3</div>
-        <div style="flex:1;">
-          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;">Fields that will appear for this flow</div>
-          <div id="sw-field-preview" style="min-height:30px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text3);">
-            Type a template above — fields will appear here as you use <span style="color:var(--blue);">{curly braces}</span>.
-          </div>
-        </div>
-      </div>
+<!-- ADD CUSTOM TEMPLATE MODAL -->
+<div class="overlay hidden" id="modal-add-tpl">
+  <div class="modal" style="width:420px;">
+    <h3>➕ Add note type</h3>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:12px;">Create a custom template that appears alongside the built-in types.</p>
+    <label>Name</label><input id="ctpl-name" placeholder="e.g. Permit to Work, Callback...">
+    <label>Icon <span style="font-weight:400;color:var(--text3);">(emoji)</span></label>
+    <input id="ctpl-icon" placeholder="📝" style="width:70px;">
+    <label>Starter text <span style="font-weight:400;color:var(--text3);">(use {t} for current time)</span></label>
+    <textarea id="ctpl-body" rows="5" placeholder="Time: {t}&#10;Location: &#10;Notes: "></textarea>
+    <div style="margin-top:14px;">
+      <div style="font-size:11px;font-weight:600;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">Your custom types</div>
+      <div id="ctpl-list" style="display:flex;flex-direction:column;gap:4px;max-height:140px;overflow-y:auto;"></div>
     </div>
-
-    <div class="m-actions" style="margin-top:16px;">
-      <button class="btn-c" onclick="closeModal('modal-sw-manage')">Close</button>
-      <button class="btn-p" onclick="swSaveFlow()">Save flow</button>
+    <div class="m-actions">
+      <button class="btn-c" onclick="closeModal('modal-add-tpl')">Close</button>
+      <button class="btn-p" onclick="saveCustomTpl()">Add template</button>
     </div>
   </div>
 </div>
@@ -751,7 +724,8 @@ async function loadSitesAsync() {
 
 let S = {
   recTasks:[], adhocTasks:[], checklists:{}, activeList:null,
-  notes:[], activeNote:null, logEntries:[], swFlows:null,
+  notes:[], activeNote:null, logEntries:[],
+  customTemplates:[],
   siteFilter:'all',
   timerRunning:false, timerElapsed:0, timerCycles:0,
   shiftStart:Date.now(),
@@ -795,6 +769,7 @@ async function load() {
   initNERC();
   renderCrew();
   renderEquip();
+  restoreAdhocTimers();
   asInit();
   // Restore escalation contacts
   const rows = document.querySelectorAll('#esc-tbody tr');
@@ -813,7 +788,7 @@ function switchView(v, el) {
   if(el) el.classList.add('active');
   if(v==='log') renderLog();
   if(v==='scans') { refreshScanStatuses(); renderSites(); }
-  if(v==='asset') { asRenderTabs(); asRenderForm(); }
+  if(v==='asset') { asInit(); asRenderTabs(); asRenderForm(); }
 }
 
 // ─── 30-MIN TIMER ─────────────────────────────────────────────────────────────
@@ -845,6 +820,100 @@ function updateTimerUI(){
   document.getElementById('timer-fill').style.width=((rem/TOTAL)*100).toFixed(1)+'%';
   document.getElementById('timer-fill').classList.toggle('urgent',urgent);
   document.getElementById('cycles-badge').textContent=S.timerCycles+' cycle'+(S.timerCycles!==1?'s':'');
+}
+
+// ─── RECURRING TASKS ──────────────────────────────────────────────────────────
+function addRec(){ const v=document.getElementById('rec-inp').value.trim(); if(!v)return; S.recTasks.push({id:Date.now(),name:v,done:false}); document.getElementById('rec-inp').value=''; save(); renderRec(); }
+function toggleRec(id){ const t=S.recTasks.find(x=>x.id===id); if(t)t.done=!t.done; save(); renderRec(); }
+function delRec(id){ S.recTasks=S.recTasks.filter(x=>x.id!==id); save(); renderRec(); }
+function renderRec(){
+  const el=document.getElementById('rec-list');
+  el.innerHTML=!S.recTasks.length?'<div class="empty">No recurring tasks</div>':
+    S.recTasks.map(t=>`<div class="task-item${t.done?' done':''}">
+      <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleRec(${t.id})">
+      <span class="task-label">${esc(t.name)}</span>
+      <span class="rec-badge${t.done?' done':''}">${t.done?'done':'due'}</span>
+      <button class="task-del" onclick="delRec(${t.id})">✕</button>
+    </div>`).join('');
+}
+
+// ─── ADHOC TASKS ──────────────────────────────────────────────────────────────
+let adhocInts={};
+function addAdhoc(){
+  const v=document.getElementById('adhoc-inp').value.trim(); if(!v)return;
+  const min=parseInt(document.getElementById('adhoc-t').value)||0;
+  const task={id:Date.now(),name:v,done:false,timerMin:min>0?min:null,timerStart:min>0?Date.now():null};
+  S.adhocTasks.push(task);
+  document.getElementById('adhoc-inp').value=''; document.getElementById('adhoc-t').value='';
+  addLog({type:'task',title:'Task added: '+v,detail:min>0?min+'min timer':''});
+  save(); renderAdhoc(); if(task.timerMin) startAdhocTimer(task.id);
+}
+function startAdhocTimer(id){ if(adhocInts[id])clearInterval(adhocInts[id]); adhocInts[id]=setInterval(()=>renderAdhoc(),30000); }
+function restoreAdhocTimers(){ S.adhocTasks.forEach(t=>{if(t.timerMin&&t.timerStart&&!t.done)startAdhocTimer(t.id);}); }
+function timerDisplay(t){
+  if(!t.timerMin||!t.timerStart) return null;
+  const rem=(t.timerMin*60000)-(Date.now()-t.timerStart);
+  if(rem<=0) return {label:'Overdue',exp:true};
+  return {label:Math.ceil(rem/60000)+'min left',exp:false};
+}
+function toggleAdhoc(id){
+  const t=S.adhocTasks.find(x=>x.id===id); if(!t)return;
+  t.done=!t.done;
+  if(t.done){ addLog({type:'task',title:'Task done: '+t.name,detail:''}); if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];} }
+  save(); renderAdhoc();
+}
+function delAdhoc(id){ if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];} S.adhocTasks=S.adhocTasks.filter(x=>x.id!==id); save(); renderAdhoc(); }
+function openTaskTimer(id){
+  const t=S.adhocTasks.find(x=>x.id===id); if(!t||!t.timerMin)return;
+  document.getElementById('ttimer-title').textContent=esc(t.name);
+  document.getElementById('ttimer-desc').textContent=t.timerMin+'min timer';
+  updateTTimerDisp(id); openModal('modal-task-timer');
+  if(window._tt)clearInterval(window._tt);
+  window._tt=setInterval(()=>{ if(!document.getElementById('modal-task-timer').classList.contains('hidden'))updateTTimerDisp(id); else clearInterval(window._tt); },1000);
+}
+function updateTTimerDisp(id){
+  const t=S.adhocTasks.find(x=>x.id===id); if(!t)return;
+  const ti=timerDisplay(t); const d=document.getElementById('ttimer-disp');
+  if(!ti){d.textContent='No timer';return;}
+  if(ti.exp){d.textContent='OVERDUE';d.style.color='var(--red)';return;}
+  const rem=Math.max(0,(t.timerMin*60000)-(Date.now()-t.timerStart));
+  d.textContent=String(Math.floor(rem/60000)).padStart(2,'0')+':'+String(Math.floor((rem%60000)/1000)).padStart(2,'0');
+  d.style.color='var(--amber)';
+}
+function renderAdhoc(){
+  const el=document.getElementById('adhoc-list');
+  el.innerHTML=!S.adhocTasks.length?'<div class="empty">No tasks yet</div>':
+    S.adhocTasks.map(t=>{ const ti=timerDisplay(t); return `<div class="task-item${t.done?' done':''}">
+      <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleAdhoc(${t.id})">
+      <span class="task-label">${esc(t.name)}</span>
+      ${ti?`<span class="timer-badge${ti.exp?' exp':''}" onclick="openTaskTimer(${t.id})">${ti.label}</span>`:''}
+      <button class="task-del" onclick="delAdhoc(${t.id})">✕</button>
+    </div>`; }).join('');
+}
+
+// ─── CHECKLISTS ───────────────────────────────────────────────────────────────
+function addClList(){ const v=document.getElementById('cl-list-inp').value.trim(); if(!v)return; if(!S.checklists[v])S.checklists[v]=[]; S.activeList=v; document.getElementById('cl-list-inp').value=''; save(); renderCl(); }
+function switchClFromSelect(){ S.activeList=document.getElementById('cl-sel').value||null; renderCl(); }
+function delActiveClList(){ if(!S.activeList||!confirm('Delete "'+S.activeList+'"?'))return; delete S.checklists[S.activeList]; S.activeList=Object.keys(S.checklists)[0]||null; save(); renderCl(); }
+function addClItem(){ if(!S.activeList)return; const v=document.getElementById('cl-item-inp').value.trim(); if(!v)return; S.checklists[S.activeList].push({id:Date.now(),name:v,done:false}); document.getElementById('cl-item-inp').value=''; save(); renderCl(); }
+function toggleCl(id){ if(!S.activeList)return; const t=S.checklists[S.activeList].find(x=>x.id===id); if(t)t.done=!t.done; save(); renderCl(); }
+function delCl(id){ if(!S.activeList)return; S.checklists[S.activeList]=S.checklists[S.activeList].filter(x=>x.id!==id); save(); renderCl(); }
+function renderCl(){
+  const keys=Object.keys(S.checklists);
+  const hdr=document.getElementById('cl-hdr'), ir=document.getElementById('cl-item-row'), pr=document.getElementById('cl-prog-row'), el=document.getElementById('cl-items');
+  if(!keys.length){ hdr.style.display='none'; ir.style.display='none'; pr.style.display='none'; el.innerHTML='<div class="empty">Create your first checklist above</div>'; return; }
+  if(!S.activeList||!S.checklists[S.activeList]) S.activeList=keys[0];
+  hdr.style.display='flex';
+  document.getElementById('cl-sel').innerHTML=keys.map(k=>`<option value="${esc(k)}"${S.activeList===k?' selected':''}>${esc(k)}</option>`).join('');
+  const list=S.checklists[S.activeList], done=list.filter(x=>x.done).length, tot=list.length;
+  if(tot>0){ pr.style.display='flex'; document.getElementById('cl-prog-fill').style.width=Math.round(done/tot*100)+'%'; document.getElementById('cl-prog-txt').textContent=done+'/'+tot; } else pr.style.display='none';
+  ir.style.display='flex';
+  el.innerHTML=!list.length?'<div class="empty">No items yet — add one below</div>':
+    list.map(t=>`<div class="task-item${t.done?' done':''}">
+      <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleCl(${t.id})">
+      <span class="task-label">${esc(t.name)}</span>
+      <button class="task-del" onclick="delCl(${t.id})">✕</button>
+    </div>`).join('');
 }
 
 // ─── SITES / SCANS ────────────────────────────────────────────────────────────
@@ -942,15 +1011,53 @@ function editSite(id){
 }
 function deleteSite(id){ if(!confirm('Delete this site?'))return; SITES=SITES.filter(x=>x.id!==id); saveSites(SITES); renderSites(); }
 
-// ─── TEMPLATES (removed) ──────────────────────────────────────────────────────
-function renderTemplates(){} // no-op
+// ─── TEMPLATES ────────────────────────────────────────────────────────────────
+const TEMPLATES_BUILTIN=[
+  {id:'trip',  icon:'🏭', name:'Site Trip',   desc:'Site visit log',    modal:'modal-incident'},
+  {id:'obs',   icon:'📋', name:'Observation', desc:'Quick freeform note',body:'Time: {t}\nLocation: \nObservation: \nAction taken: '},
+];
+function allTemplates(){ return [...TEMPLATES_BUILTIN,...(S.customTemplates||[])]; }
+function renderTemplates(){
+  const grid=document.getElementById('tpl-grid');
+  grid.innerHTML=
+    allTemplates().map(t=>`<button class="tpl-btn" onclick="useTemplate('${esc(t.id)}')"><span class="tpl-icon">${t.icon}</span><span class="tpl-name">${esc(t.name)}</span><span class="tpl-desc">${esc(t.desc)}</span></button>`).join('')+
+    `<button class="tpl-btn" onclick="openAddTplModal()" style="border-style:dashed;color:var(--text3);"><span class="tpl-icon">＋</span><span class="tpl-name">Add type</span><span class="tpl-desc">Custom note template</span></button>`;
+  // Sync tag select options to current template list
+  const sel=document.getElementById('note-tag'), cur=sel.value;
+  sel.innerHTML=allTemplates().map(t=>`<option value="${esc(t.id)}">${esc(t.name)}</option>`).join('');
+  if([...sel.options].some(o=>o.value===cur)) sel.value=cur;
+}
+function useTemplate(id){
+  const tpl=allTemplates().find(t=>t.id===id); if(!tpl)return;
+  if(tpl.modal){openModal(tpl.modal);return;}
+  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  newNote(tpl.name+' — '+now,(tpl.body||'').replace('{t}',now),id);
+}
+function openAddTplModal(){ renderCustomTplList(); openModal('modal-add-tpl'); }
+function renderCustomTplList(){
+  const el=document.getElementById('ctpl-list'); if(!el)return;
+  const c=S.customTemplates||[];
+  el.innerHTML=!c.length?'<div class="empty">No custom types yet</div>':
+    c.map(t=>`<div class="task-item"><span style="font-size:14px;flex-shrink:0;">${t.icon}</span><span class="task-label">${esc(t.name)}</span><button class="task-del" onclick="delCustomTpl('${t.id}')">✕</button></div>`).join('');
+}
+function saveCustomTpl(){
+  const name=document.getElementById('ctpl-name').value.trim(); if(!name){showToast('Name required');return;}
+  const icon=document.getElementById('ctpl-icon').value.trim()||'📝';
+  const body=document.getElementById('ctpl-body').value;
+  if(!S.customTemplates)S.customTemplates=[];
+  S.customTemplates.push({id:'ctpl_'+Date.now(),icon,name,desc:body.split('\n')[0].substring(0,40)||'Custom note',body});
+  ['ctpl-name','ctpl-icon','ctpl-body'].forEach(id=>document.getElementById(id).value='');
+  save(); renderTemplates(); renderCustomTplList(); showToast('Template added');
+}
+function delCustomTpl(id){
+  S.customTemplates=(S.customTemplates||[]).filter(t=>t.id!==id);
+  save(); renderTemplates(); renderCustomTplList(); showToast('Removed');
+}
 
 // ─── NOTES ────────────────────────────────────────────────────────────────────
-let _autoSaveTimer=null;
-function scheduleAutoSave(){ clearTimeout(_autoSaveTimer); _autoSaveTimer=setTimeout(saveNote,1200); }
-function newBlankNote(){ newNote('New note',''); }
-function newNote(title,body){
-  const n={id:Date.now(),title:title||'New note',body:body||'',ts:Date.now()};
+function newBlankNote(){ newNote('New note','','obs'); }
+function newNote(title,body,tag){
+  const n={id:Date.now(),title:title||'New note',body:body||'',tag:tag||'obs',ts:Date.now()};
   S.notes.unshift(n); S.activeNote=n.id; save(); renderNotes(); loadNoteForm(n);
 }
 function selectNote(id){ S.activeNote=id; renderNotes(); loadNoteForm(S.notes.find(n=>n.id===id)); }
@@ -960,15 +1067,18 @@ function loadNoteForm(n){
   document.getElementById('note-form').style.display='flex';
   document.getElementById('note-title').value=n.title;
   document.getElementById('note-body').value=n.body;
+  document.getElementById('note-tag').value=n.tag;
   document.getElementById('note-meta').textContent='Saved '+new Date(n.ts).toLocaleString();
 }
 function saveNote(){
   const n=S.notes.find(x=>x.id===S.activeNote); if(!n)return;
   n.title=document.getElementById('note-title').value||'Untitled';
   n.body=document.getElementById('note-body').value;
+  n.tag=document.getElementById('note-tag').value;
   n.ts=Date.now();
   document.getElementById('note-meta').textContent='Saved '+new Date(n.ts).toLocaleString();
-  save(); renderNotes();
+  addLog({type:n.tag==='incident'?'incident':n.tag==='response'?'response':'note',title:n.title,detail:n.body.substring(0,100)});
+  save(); renderNotes(); showToast('Saved');
 }
 function deleteNote(){
   if(!S.activeNote)return;
@@ -977,35 +1087,36 @@ function deleteNote(){
   if(S.activeNote) loadNoteForm(S.notes.find(n=>n.id===S.activeNote));
   else { document.getElementById('note-form').style.display='none'; document.getElementById('note-no-sel').style.display='block'; }
 }
+function tagLabel(tag){ return allTemplates().find(t=>t.id===tag)?.name||tag; }
+function tagCls(tag){ return {obs:'tag-obs',trip:'tag-incident',incident:'tag-incident',response:'tag-response',task:'tag-task'}[tag]||'tag-obs'; }
 function renderNotes(){
   const el=document.getElementById('notes-list');
   el.innerHTML=!S.notes.length?'<div class="empty">No notes yet</div>':
     S.notes.map(n=>`<div class="note-entry${S.activeNote===n.id?' active':''}" onclick="selectNote(${n.id})">
       <div class="note-entry-time">${new Date(n.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
       <div class="note-entry-title">${esc(n.title)}</div>
+      <div style="margin-top:2px;"><span class="tag ${tagCls(n.tag)}">${tagLabel(n.tag)}</span></div>
     </div>`).join('');
 }
-// ─── SHORTCUTS ────────────────────────────────────────────────────────────────
-function insertSnippet(type){
-  const ta=document.getElementById('note-body');
-  const now=new Date();
-  const t=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  const d=now.toLocaleDateString([],{month:'short',day:'numeric',year:'numeric'});
-  const snippets={
-    time: t,
-    datetime: d+' '+t,
-    divider: '\n────────────────────\n',
-    location: 'Location: ',
-    action: '☑ Action: ',
-    followup: '↩ Follow-up: ',
-  };
-  const s=snippets[type]||''; if(!s)return;
-  const start=ta.selectionStart, end=ta.selectionEnd;
-  ta.value=ta.value.slice(0,start)+s+ta.value.slice(end);
-  ta.selectionStart=ta.selectionEnd=start+s.length;
-  ta.focus(); scheduleAutoSave();
-}
 
+// ─── INCIDENT / RESPONSE ──────────────────────────────────────────────────────
+function saveIncident(){
+  const loc=document.getElementById('inc-location').value,
+        purpose=document.getElementById('inc-purpose').value,
+        personnel=document.getElementById('inc-personnel').value,
+        findings=document.getElementById('inc-desc').value,
+        act=document.getElementById('inc-action').value,
+        fu=document.getElementById('inc-followup').value;
+  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const title='Site Trip — '+(loc||'unknown')+' @ '+now;
+  newNote(title,'Time: '+now+'\nSite: '+loc+'\nPurpose: '+purpose+'\nPersonnel: '+personnel+'\nFindings: '+findings+'\nActions taken: '+act+'\nFollow-up: '+fu,'trip');
+  addLog({type:'incident',title,detail:(purpose||'Visit')+' at '+(loc||'?')+'. '+findings.substring(0,80),followup:fu==='yes'});
+  closeModal('modal-incident');
+  ['inc-location','inc-purpose','inc-personnel','inc-desc','inc-action'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('inc-followup').value='no';
+  showToast('Site trip logged');
+  switchView('notes',document.querySelectorAll('.nav-tab')[0]);
+}
 function saveResponse(){
   const sit=document.getElementById('res-situation').value, notif=document.getElementById('res-notified').value,
         proc=document.getElementById('res-procedure').value, out=document.getElementById('res-outcome').value,
@@ -1048,206 +1159,31 @@ function openHandoffAsNote(){ const now=new Date().toLocaleTimeString([],{hour:'
 function openHandoff(){ document.getElementById('handoff-content').textContent=buildHandoff(); openModal('modal-handoff'); }
 function copyHandoff(){ try{navigator.clipboard.writeText(document.getElementById('handoff-content').textContent);showToast('Copied!');}catch(e){showToast('Select and copy manually');} }
 
-// ─── LOG (removed — addLog kept as no-op) ────────────────────────────────────
-function addLog(e){} // no-op
+// ─── LOG ──────────────────────────────────────────────────────────────────────
+function addLog(e){ S.logEntries.unshift({...e,ts:Date.now(),id:Date.now()}); if(S.logEntries.length>500)S.logEntries.length=500; save(); }
+function renderLog(){
+  const f=document.getElementById('log-filter').value;
+  const entries=f==='all'?S.logEntries:S.logEntries.filter(e=>e.type===f);
+  document.getElementById('log-list').innerHTML=!entries.length?'<div class="empty">No entries yet</div>':
+    entries.map(e=>`<div class="log-entry ${e.type||'note'}">
+      <div class="log-time">${new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="log-body"><div class="log-title">${esc(e.title||'')}</div>${e.detail?`<div class="log-detail">${esc(e.detail)}</div>`:''}</div>
+    </div>`).join('');
+  const inc=S.logEntries.filter(e=>e.type==='incident').length, res=S.logEntries.filter(e=>e.type==='response').length,
+        tsk=S.logEntries.filter(e=>e.type==='task').length, scn=S.logEntries.filter(e=>e.type==='scan').length;
+  document.getElementById('log-stats').innerHTML=`
+    <div class="stat-chip"><span class="s-val">${S.logEntries.length}</span><span class="s-lbl">Total</span></div>
+    <div class="stat-chip"><span class="s-val" style="color:var(--red)">${inc}</span><span class="s-lbl">Incidents</span></div>
+    <div class="stat-chip"><span class="s-val" style="color:var(--purple)">${res}</span><span class="s-lbl">Responses</span></div>
+    <div class="stat-chip"><span class="s-val" style="color:var(--green)">${tsk}</span><span class="s-lbl">Tasks</span></div>
+    <div class="stat-chip"><span class="s-val" style="color:var(--amber)">${scn}</span><span class="s-lbl">Scans</span></div>`;
+}
+function clearLog(){ if(confirm('Clear all log entries?')){ S.logEntries=[]; save(); renderLog(); } }
 
 // ─── MODAL ────────────────────────────────────────────────────────────────────
 function openModal(id){ document.getElementById(id).classList.remove('hidden'); }
 function closeModal(id){ document.getElementById(id).classList.add('hidden'); }
 
-// ─── SOFTWRENCH LOG BUILDER ───────────────────────────────────────────────────
-const SW_DEFAULTS=[
-  {id:'sw_1',name:'HARQ De-Energize',template:'Call received from field tech {Tech Name} requesting de-energization of {Equipment}:\n\u2013 Associated Megapacks disabled remotely\n\u2013 MVT AC Level Breakers opened remotely\n\u2013 {Equipment} opened remotely'},
-  {id:'sw_2',name:'HARQ Energize',template:'Call received from field tech {Tech Name} requesting energization of {Equipment}:\n\u2013 {Equipment} closed remotely\n\u2013 MVT AC Level Breakers closed remotely\n\u2013 Associated Megapacks enabled remotely'},
-  {id:'sw_3',name:'PRGN1 De-Energize',template:'Call received from field tech {Tech Name} requesting de-energization of MVT {MVT #}:\n\u2013 Associated Megapacks disabled remotely\n\u2013 MVT AC Level Breakers opened remotely\n\u2013 Oil switch opened locally'},
-  {id:'sw_4',name:'PRGN1 Re-Energize',template:'Call received from field tech {Tech Name} requesting energization of MVT {MVT #}:\n\u2013 Oil switch closed locally\n\u2013 MVT AC Level Breakers closed remotely\n\u2013 Associated Megapacks enabled remotely'},
-];
-function swFlows(){ return (S.swFlows && S.swFlows.length) ? S.swFlows : SW_DEFAULTS; }
-function swGetFields(template){ const seen=new Set(),out=[]; (template.match(/\{([^}]+)\}/g)||[]).forEach(m=>{const k=m.slice(1,-1);if(!seen.has(k)){seen.add(k);out.push(k);}}); return out; }
-function swRenderFlowSel(){
-  const sel=document.getElementById('sw-flow-sel'); if(!sel)return;
-  const flows=swFlows();
-  sel.innerHTML=flows.length?flows.map((f,i)=>`<option value="${i}">${esc(f.name)}</option>`):'<option value="">— no flows —</option>';
-  document.getElementById('sw-empty').style.display=flows.length?'none':'block';
-  if(flows.length) swSelectFlow();
-}
-function swSelectFlow(){
-  const sel=document.getElementById('sw-flow-sel');
-  const flow=swFlows()[parseInt(sel.value)];
-  const container=document.getElementById('sw-fields');
-  document.getElementById('sw-output-wrap').style.display='none';
-  if(!flow){container.innerHTML='';return;}
-  const fields=swGetFields(flow.template);
-  container.innerHTML=fields.map(f=>`
-    <div class="ifield">
-      <label>${esc(f)}</label>
-      <input id="swf_${esc(f.replace(/\s+/g,'_'))}" placeholder="${esc(f)}..." oninput="swBuildOutput()" style="font-family:var(--m);">
-    </div>`).join('');
-}
-function swBuildOutput(){
-  const sel=document.getElementById('sw-flow-sel');
-  const flow=swFlows()[parseInt(sel.value)]; if(!flow)return;
-  const fields=swGetFields(flow.template);
-  const vals={};
-  fields.forEach(f=>{
-    const el=document.getElementById('swf_'+f.replace(/\s+/g,'_'));
-    vals[f]=el?el.value.trim():'';
-  });
-  const allFilled=fields.every(f=>vals[f]);
-  let out=flow.template;
-  fields.forEach(f=>{ out=out.split('{'+f+'}').join(vals[f]||('['+f+']')); });
-  document.getElementById('sw-output').textContent=out;
-  document.getElementById('sw-output-wrap').style.display=allFilled?'block':'none';
-  if(!allFilled&&fields.some(f=>vals[f])) document.getElementById('sw-output-wrap').style.display='block';
-}
-function swCopy(){
-  const txt=document.getElementById('sw-output').textContent; if(!txt)return;
-  try{navigator.clipboard.writeText(txt);showToast('Copied!');}catch(e){showToast('Select and copy manually');}
-}
-function swClear(){
-  document.querySelectorAll('#sw-fields input').forEach(el=>el.value='');
-  document.getElementById('sw-output-wrap').style.display='none';
-}
-function swOpenManage(){ swRenderFlowList(); swFormClear(); openModal('modal-sw-manage'); }
-function swRenderFlowList(){
-  const el=document.getElementById('sw-flow-list'); if(!el)return;
-  const flows=swFlows();
-  el.innerHTML=!flows.length?'<div class="empty">No flows yet</div>':
-    flows.map((f,i)=>`<div class="task-item">
-      <span class="task-label">${esc(f.name)}</span>
-      <button class="tbtn" style="font-size:11px;padding:2px 8px;" onclick="swEditLoad(${i})">Edit</button>
-      <button class="task-del" onclick="swDelFlow(${i})">✕</button>
-    </div>`).join('');
-}
-function swEditLoad(i){
-  const f=swFlows()[i]; if(!f)return;
-  document.getElementById('sw-edit-idx').value=i;
-  document.getElementById('sw-fname').value=f.name;
-  document.getElementById('sw-ftemplate').value=f.template;
-  document.getElementById('sw-form-hdr').textContent='Edit: '+f.name;
-  swPreviewFields();
-}
-function swFormClear(){
-  document.getElementById('sw-edit-idx').value='';
-  document.getElementById('sw-fname').value='';
-  document.getElementById('sw-ftemplate').value='';
-  document.getElementById('sw-form-hdr').textContent='Add new flow';
-  swPreviewFields();
-}
-function swPreviewFields(){
-  const tpl=document.getElementById('sw-ftemplate').value;
-  const el=document.getElementById('sw-field-preview'); if(!el)return;
-  const fields=swGetFields(tpl);
-  if(!fields.length){
-    el.innerHTML='Type a template above — fields will appear here as you use <span style="color:var(--blue);">{curly braces}</span>.';
-    return;
-  }
-  el.innerHTML=fields.map(f=>`<span style="display:inline-flex;align-items:center;gap:4px;background:var(--bbg);color:var(--blue);border:1px solid var(--border);border-radius:5px;padding:3px 9px;font-size:12px;font-weight:500;margin:2px;">⬜ ${esc(f)}</span>`).join(' ');
-}
-function swSaveFlow(){
-  const name=document.getElementById('sw-fname').value.trim(); if(!name){showToast('Name required');return;}
-  const template=document.getElementById('sw-ftemplate').value.trim(); if(!template){showToast('Template required');return;}
-  if(!S.swFlows||!S.swFlows.length) S.swFlows=[...SW_DEFAULTS];
-  const idx=parseInt(document.getElementById('sw-edit-idx').value);
-  const entry={id:'sw_'+Date.now(),name,template};
-  if(!isNaN(idx)&&idx>=0) S.swFlows[idx]=entry; else S.swFlows.push(entry);
-  save(); swRenderFlowList(); swFormClear(); swRenderFlowSel(); showToast('Flow saved');
-}
-function swDelFlow(i){
-  if(!confirm('Delete this flow?'))return;
-  if(!S.swFlows||!S.swFlows.length) S.swFlows=[...SW_DEFAULTS];
-  S.swFlows.splice(i,1); save(); swRenderFlowList(); swRenderFlowSel(); showToast('Flow deleted');
-}
-
-// ─── PHONETIC TOOL ────────────────────────────────────────────────────────────
-const NATO={
-  A:'Alpha',B:'Bravo',C:'Charlie',D:'Delta',E:'Echo',F:'Foxtrot',G:'Golf',H:'Hotel',
-  I:'India',J:'Juliet',K:'Kilo',L:'Lima',M:'Mike',N:'November',O:'Oscar',P:'Papa',
-  Q:'Quebec',R:'Romeo',S:'Sierra',T:'Tango',U:'Uniform',V:'Victor',W:'Whiskey',
-  X:'X-ray',Y:'Yankee',Z:'Zulu',
-  '0':'Zero','1':'One','2':'Two','3':'Three','4':'Four','5':'Five',
-  '6':'Six','7':'Seven','8':'Eight','9':'Nine',
-  '.':'Decimal','-':'Dash','_':'Underscore','/':'Slash','@':'At','#':'Pound',' ':'[space]'
-};
-function renderPhonetic(){
-  const val=document.getElementById('ph-input').value;
-  const out=document.getElementById('ph-output');
-  const empty=document.getElementById('ph-empty');
-  if(!val){out.style.display='none';empty.style.display='block';return;}
-  const parts=val.toUpperCase().split('').map(c=>NATO[c]||c);
-  out.innerHTML=parts.map((p,i)=>{
-    const orig=val[i];
-    const known=NATO[orig.toUpperCase()];
-    return `<span style="display:inline-block;margin:1px 3px;padding:1px 6px;border-radius:4px;background:${known?'var(--bbg)':'var(--rbg)'};color:${known?'var(--blue)':'var(--red)'};">${esc(p)}</span>`;
-  }).join('<span style="color:var(--text3);font-size:11px;margin:0 1px;">·</span>');
-  out.style.display='block'; empty.style.display='none';
-}
-function copyPhonetic(){
-  const val=document.getElementById('ph-input').value; if(!val)return;
-  const text=val.toUpperCase().split('').map(c=>NATO[c]||c).join('-');
-  try{navigator.clipboard.writeText(text);showToast('Copied!');}catch(e){showToast('Select and copy manually');}
-}
-
-
-// ─── ELAPSED TIME TOOL ────────────────────────────────────────────────────────
-let _etInterval=null, _etStartMs=null;
-function etSetNow(){
-  const now=new Date();
-  const hh=String(now.getHours()).padStart(2,'0'), mm=String(now.getMinutes()).padStart(2,'0');
-  document.getElementById('et-start').value=hh+':'+mm;
-  etStart();
-}
-function etStart(){
-  const val=document.getElementById('et-start').value; if(!val)return;
-  const [hh,mm]=val.split(':').map(Number);
-  const now=new Date(); const start=new Date(now);
-  start.setHours(hh,mm,0,0);
-  if(start>now) start.setDate(start.getDate()-1); // handle past midnight
-  _etStartMs=start.getTime();
-  if(_etInterval)clearInterval(_etInterval);
-  _etInterval=setInterval(etTick,1000);
-  document.getElementById('et-empty').style.display='none';
-  document.getElementById('et-label').style.display='block';
-  document.getElementById('et-display').style.display='block';
-  document.getElementById('et-since').style.display='block';
-  document.getElementById('et-copy-btn').style.display='inline-flex';
-  etTick();
-}
-function etTick(){
-  if(!_etStartMs)return;
-  const elapsed=Math.max(0,Date.now()-_etStartMs);
-  const h=Math.floor(elapsed/3600000), m=Math.floor((elapsed%3600000)/60000), s=Math.floor((elapsed%60000)/1000);
-  const disp=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-  document.getElementById('et-display').textContent=disp;
-  const startStr=new Date(_etStartMs).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  document.getElementById('et-since').textContent='Started at '+startStr+(h>0?' — '+h+'h '+m+'m':' — '+m+'m '+s+'s')+' ago';
-  const color=h>=2?'var(--red)':h>=1?'var(--amber)':'var(--green)';
-  document.getElementById('et-display').style.color=color;
-}
-function etCopyLog(){
-  if(!_etStartMs)return;
-  const elapsed=Math.max(0,Date.now()-_etStartMs);
-  const h=Math.floor(elapsed/3600000), m=Math.floor((elapsed%3600000)/60000), s=Math.floor((elapsed%60000)/1000);
-  const startStr=new Date(_etStartMs).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  const durStr=(h?h+'h ':'')+m+'m '+s+'s';
-  const text='Event start: '+startStr+' | Elapsed: '+durStr+' ('+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+')';
-  try{navigator.clipboard.writeText(text);showToast('Copied!');}catch(e){showToast('Select and copy manually');}
-}
-function etReset(){
-  if(_etInterval)clearInterval(_etInterval); _etInterval=null; _etStartMs=null;
-  document.getElementById('et-start').value='';
-  document.getElementById('et-display').style.display='none';
-  document.getElementById('et-label').style.display='none';
-  document.getElementById('et-since').style.display='none';
-  document.getElementById('et-copy-btn').style.display='none';
-  document.getElementById('et-empty').style.display='block';
-  document.getElementById('et-display').textContent='00:00:00';
-}
-// Auto-start when time input changes
-document.addEventListener('DOMContentLoaded',()=>{
-  const inp=document.getElementById('et-start');
-  if(inp) inp.addEventListener('change',etStart);
-});
 // ─── WEATHER ──────────────────────────────────────────────────────────────────
 function wxFilter(){
   const q=document.getElementById('wx-site-inp').value.toLowerCase().trim();
