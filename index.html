@@ -2022,29 +2022,46 @@ function asSectionHasAlert(siteId, si) {
 
 // ── init & render ──────────────────────────────────────────────────────────────
 function asInit() {
-  document.getElementById('as-date').valueAsDate = new Date();
-  asLoadAll();
-  // Restore last visited tab; if none saved, skip ROCC1 and land on first real site
-  const saved = (()=>{try{return localStorage.getItem('rnwbl_asactive')||'';}catch(e){return '';}})();
-  const sites = asSites();
-  if(saved && sites.find(s=>s.id===saved)) {
-    asActiveSite = saved;
-  } else {
-    asActiveSite = (sites.find(s=>s.id!=='ROCC1') || sites[0])?.id || '';
+  try {
+    console.log('Asset Scan: Initializing...');
+    document.getElementById('as-date').valueAsDate = new Date();
+    asLoadAll();
+    // Restore last visited tab; if none saved, skip ROCC1 and land on first real site
+    const saved = (()=>{try{return localStorage.getItem('rnwbl_asactive')||'';}catch(e){return '';}})();
+    const sites = asSites();
+    console.log('Asset Scan: Sites loaded:', sites.length, 'sites');
+    if(saved && sites.find(s=>s.id===saved)) {
+      asActiveSite = saved;
+    } else {
+      asActiveSite = (sites.find(s=>s.id!=='ROCC1') || sites[0])?.id || '';
+    }
+    console.log('Asset Scan: Active site:', asActiveSite);
+    asRenderTabs();
+    asRenderForm();
+    console.log('Asset Scan: Initialization complete');
+  } catch(e) {
+    console.error('Asset Scan: Initialization failed:', e);
+    showToast('Asset Scan initialization failed');
   }
-  asRenderTabs();
-  asRenderForm();
 }
 
 function asRenderTabs() {
-  document.getElementById('as-tabs').innerHTML = asSites().map(s=>{
-    const done=asSiteComplete(s.id), pct=asSiteFilledPct(s.id);
-    const style=done?'border-color:var(--green);color:var(--green);background:var(--gbg);'
-                :pct>0?'border-color:var(--amber);color:var(--amber);background:var(--abg);':'';
-    const icon=done?' ✓':pct>0?' …':'';
-    const isActive=s.id===asActiveSite;
-    return `<button class="as-tab${isActive?' active':''}" style="${isActive?'':style}" onclick="asSwitch('${esc(s.id)}')">${esc(s.id)}${icon}</button>`;
-  }).join('');
+  try {
+    const sites = asSites();
+    console.log('Asset Scan: Rendering tabs for', sites.length, 'sites');
+    const tabsHtml = sites.map(s=>{
+      const done=asSiteComplete(s.id), pct=asSiteFilledPct(s.id);
+      const style=done?'border-color:var(--green);color:var(--green);background:var(--gbg);'
+                  :pct>0?'border-color:var(--amber);color:var(--amber);background:var(--abg);':'';
+      const icon=done?' ':pct>0?' ...':'';
+      const isActive=s.id===asActiveSite;
+      return `<button class="as-tab${isActive?' active':''}" style="${isActive?'':style}" onclick="asSwitch('${esc(s.id)}')">${esc(s.id)}${icon}</button>`;
+    }).join('');
+    document.getElementById('as-tabs').innerHTML = tabsHtml;
+    console.log('Asset Scan: Tabs rendered successfully');
+  } catch(e) {
+    console.error('Asset Scan: Failed to render tabs:', e);
+  }
 }
 
 function asSwitch(id) { asActiveSite=id; try{localStorage.setItem('rnwbl_asactive',id);}catch(e){} asRenderTabs(); asRenderForm(); }
