@@ -1861,6 +1861,30 @@ const AS_SITES = [
       ]},
     ]
   },
+  { id:'TRPC1', label:'Tropico', stats:'PV 18.2MW',
+    sections:[
+      { title:'0-STATUS', fields:[
+        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Notes', t:'textarea'},
+      ]},
+      { title:'2-OUTPUT', fields:[
+        {n:'MW',   t:'text', unit:'MW'},
+        {n:'kV',   t:'text', unit:'kV'},
+        {n:'MVAR', t:'text', unit:'MVAR'},
+      ]},
+      { title:'3-CAPACITY', fields:[
+        {n:'MW [15+]', t:'select', opts:['','Yes','No'], alert:''},
+      ]},
+      { title:'5-FIELD EQUIP', fields:[
+        {n:'Inverters [7]', t:'text',   unit:'/7 Online'},
+        {n:'6+ Inverters',   t:'select', opts:['','Yes','No'], alert:'No'},
+      ]},
+      { title:'6-SCHEDULING', fields:[
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Notes', t:'textarea'},
+      ]},
+    ]
+  },
   { id:'TSMS1', label:'Tropico', stats:'PV 18.2MW',
     sections:[
       { title:'0-STATUS', fields:[
