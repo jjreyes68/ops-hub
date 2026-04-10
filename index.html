@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -128,11 +130,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 .tag-incident{background:var(--rbg);color:var(--red);}
 .tag-response{background:var(--pbg);color:var(--purple);}
 .tag-task{background:var(--gbg);color:var(--green);}
-.tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
-@media(max-width:700px){.tools-grid{grid-template-columns:1fr;}}
-.intel-card{align-self:start;}
-.sc-btn{padding:4px 10px;border-radius:5px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:11px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;white-space:nowrap;}
-.sc-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
 
 /* LOG */
 .log-entry{display:flex;gap:10px;padding:9px 11px;border-radius:7px;background:var(--bg2);margin-bottom:5px;border-left:3px solid var(--border2);box-shadow:var(--shs);}
@@ -295,10 +292,12 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
     <span class="nav-brand-text">RNWBL OPS</span>
   </div>
-  <button class="nav-tab active" onclick="switchView('notes',this)" aria-label="Notepad" aria-current="page" tabindex="0">Notepad</button>
-  <button class="nav-tab" onclick="switchView('scans',this)" aria-label="Scans" tabindex="0">Scans</button>
-  <button class="nav-tab" onclick="switchView('intel',this)" aria-label="Ops Tools" tabindex="0">Ops Tools</button>
-  <button class="nav-tab" onclick="switchView('asset',this)" aria-label="Asset Scan" tabindex="0">Asset Scan</button>
+  <button class="nav-tab active" onclick="switchView('notes',this)">Notepad</button>
+  <button class="nav-tab" onclick="switchView('scans',this)">Scans</button>
+  <button class="nav-tab" onclick="switchView('ops',this)">Tasks</button>
+  <button class="nav-tab" onclick="switchView('log',this)">Log</button>
+  <button class="nav-tab" onclick="switchView('intel',this)">Field Intel</button>
+  <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
   <div class="nav-spacer"></div>
   <div class="nav-time" id="nav-clock"></div>
 </div>
@@ -318,8 +317,8 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
         <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap;">
           <input class="note-title-inp" id="note-title" placeholder="Note title..." style="flex:1;min-width:120px;">
           <select id="note-tag" style="min-width:130px;">
-            <option value="trip">Site Trip</option>
-            <option value="obs">Observation</option>
+            <option value="obs">Observation</option><option value="incident">Incident</option>
+            <option value="response">Response</option><option value="task">Task note</option>
           </select>
           <button class="btn-p" onclick="saveNote()">Save</button>
           <button class="btn-c" onclick="deleteNote()">Delete</button>
@@ -356,65 +355,78 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
   <div class="sites-grid" id="sites-grid"></div>
 </div>
 
+<!-- TASKS -->
+<div class="view" id="view-ops">
+  <div class="cols3">
+    <div class="card">
+      <div class="card-title">Recurring tasks</div>
+      <div id="rec-list"></div>
+      <div class="add-row">
+        <input id="rec-inp" placeholder="Add recurring task..." onkeydown="if(event.key==='Enter')addRec()">
+        <button onclick="addRec()">+</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Ad hoc tasks</div>
+      <div id="adhoc-list" style="max-height:260px;overflow-y:auto;"></div>
+      <div class="adhoc-row">
+        <input id="adhoc-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addAdhoc()">
+        <input id="adhoc-t" class="t-inp" type="number" min="0" placeholder="min">
+        <span class="min-lbl">min</span>
+        <button class="add-btn" onclick="addAdhoc()">+ Add</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Checklists</div>
+      <div class="cl-add-row">
+        <input id="cl-list-inp" placeholder="New checklist name..." onkeydown="if(event.key==='Enter')addClList()">
+        <button onclick="addClList()">+ New list</button>
+      </div>
+      <div class="cl-hdr" id="cl-hdr" style="display:none;">
+        <select class="cl-sel" id="cl-sel" onchange="switchClFromSelect()"></select>
+        <button class="cl-del" onclick="delActiveClList()">🗑 Delete</button>
+      </div>
+      <div class="prog-row" id="cl-prog-row" style="display:none;">
+        <div class="prog-bar"><div class="prog-fill" id="cl-prog-fill" style="width:0%"></div></div>
+        <div class="prog-txt" id="cl-prog-txt">0/0</div>
+      </div>
+      <div id="cl-items" style="max-height:180px;overflow-y:auto;"></div>
+      <div class="cl-item-row" id="cl-item-row" style="display:none;">
+        <input id="cl-item-inp" placeholder="Add item..." onkeydown="if(event.key==='Enter')addClItem()">
+        <button onclick="addClItem()">+ Item</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LOG -->
+<div class="view" id="view-log">
+  <div class="stat-row" id="log-stats"></div>
+  <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap;">
+    <select id="log-filter" onchange="renderLog()">
+      <option value="all">All entries</option><option value="incident">Incidents</option>
+      <option value="response">Responses</option><option value="task">Tasks</option>
+      <option value="note">Notes</option><option value="scan">Scans</option>
+    </select>
+    <button class="tbtn" onclick="openHandoff()">↺ Shift handoff</button>
+    <button class="btn-d" onclick="clearLog()">Clear log</button>
+  </div>
+  <div id="log-list" style="max-height:520px;overflow-y:auto;"></div>
+</div>
+
 <!-- FIELD INTEL -->
 <div class="view" id="view-intel">
-  <div class="tools-grid">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Field Intel</div>
+    <span style="font-size:12px;color:var(--text3);">Site weather &amp; conditions</span>
+  </div>
+  <div style="max-width:480px;">
     <div class="intel-card">
       <div class="intel-card-hdr">
-        <span class="intel-icon">??</span>
-        <div>
-          <div class="intel-title">SoftWrench Log Builder</div>
-          <div class="intel-desc">Select a procedure, fill the fields, copy the ready-to-paste log entry.</div>
-          <span class="itag itag-amber">Log Builder</span>
-        </div>
-      </div>
-      <div class="intel-content">
-        <div style="display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">
-          <select id="sw-flow-sel" style="flex:1;" onchange="swSelectFlow()"></select>
-          <button class="ibtn ibtn-p" onclick="swOpenManage()">?? Manage flows</button>
-        </div>
-        <div id="sw-fields" style="display:flex;flex-direction:column;gap:7px;"></div>
-        <div id="sw-output-wrap" style="display:none;margin-top:10px;">
-          <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;">Output - ready to paste</div>
-          <div id="sw-output" style="font-family:var(--m);font-size:12px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;line-height:1.8;white-space:pre-wrap;word-break:break-word;color:var(--text);"></div>
-          <div class="iacts" style="margin-top:8px;">
-            <button class="ibtn ibtn-p" onclick="swCopy()">Copy</button>
-            <button class="ibtn" onclick="swClear()">Clear fields</button>
-          </div>
-        </div>
-        <div id="sw-empty" style="font-size:12px;color:var(--text3);margin-top:6px;">No flows yet - click "Manage flows" to add one.</div>
-      </div>
-    </div>
-
-    <div class="intel-card">
-      <div class="intel-card-hdr">
-        <span class="intel-icon">??</span>
-        <div>
-          <div class="intel-title">NATO Phonetic Alphabet</div>
-          <div class="intel-desc">Type any text - get the phonetic readout instantly.</div>
-          <span class="itag itag-blue">Instant</span>
-        </div>
-      </div>
-      <div class="intel-content">
-        <div class="ifield">
-          <label>Input</label>
-          <input id="ph-input" placeholder="e.g. 589L45" oninput="renderPhonetic()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="font-family:var(--m);letter-spacing:.04em;">
-        </div>
-        <div id="ph-output" style="margin-top:10px;min-height:36px;font-family:var(--m);font-size:13px;color:var(--text);line-height:1.8;word-break:break-word;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;display:none;"></div>
-        <div id="ph-empty" style="margin-top:8px;font-size:12px;color:var(--text3);">Enter text above to see the phonetic readout.</div>
-        <div class="iacts" style="margin-top:10px;">
-          <button class="ibtn ibtn-p" onclick="copyPhonetic()">Copy</button>
-          <button class="ibtn" onclick="document.getElementById('ph-input').value='';renderPhonetic();">Clear</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="intel-card">
-      <div class="intel-card-hdr">
-        <span class="intel-icon">??</span>
+        <span class="intel-icon">🌤</span>
         <div>
           <div class="intel-title">Site Weather &amp; Wind</div>
-          <div class="intel-desc">Search by site name - location auto-fills from your scan sites.</div>
+          <div class="intel-desc">Search by site name — location auto-fills from your scan sites.</div>
           <span class="itag itag-green">Live</span>
         </div>
       </div>
@@ -430,11 +442,11 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
         </div>
         <div style="margin-top:10px;">
           <div class="wx-section">
-            <div class="wx-icon" id="wx-icon">-</div>
+            <div class="wx-icon" id="wx-icon">—</div>
             <div>
-              <div class="wx-temp" id="wx-temp">-</div>
+              <div class="wx-temp" id="wx-temp">—</div>
               <div class="wx-desc" id="wx-desc">Search a site or enter a location above</div>
-              <div class="wx-wind"><span>??</span><span id="wx-wind">Wind: -</span><span style="margin-left:8px;">??</span><span id="wx-vis">Vis: -</span></div>
+              <div class="wx-wind"><span>💨</span><span id="wx-wind">Wind: —</span><span style="margin-left:8px;">👁</span><span id="wx-vis">Vis: —</span></div>
             </div>
           </div>
         </div>
@@ -444,40 +456,12 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
         </div>
       </div>
     </div>
-
-    <div class="intel-card">
-      <div class="intel-card-hdr">
-        <span class="intel-icon">??</span>
-        <div>
-          <div class="intel-title">Elapsed Time</div>
-          <div class="intel-desc">Mark when an event started - track duration for logs &amp; NERC compliance.</div>
-          <span class="itag itag-amber">Live</span>
-        </div>
-      </div>
-      <div class="intel-content">
-        <div style="display:flex;gap:6px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px;">
-          <div class="ifield" style="flex:1;margin-bottom:0;">
-            <label>Event start time</label>
-            <input type="time" id="et-start" style="font-family:var(--m);font-size:14px;">
-          </div>
-          <button class="ibtn ibtn-p" onclick="etSetNow()" style="white-space:nowrap;">Set to now</button>
-        </div>
-        <div id="et-label" style="font-size:11px;font-weight:600;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;display:none;">Elapsed</div>
-        <div id="et-display" style="font-family:var(--m);font-size:32px;font-weight:500;color:var(--green);letter-spacing:.02em;display:none;">00:00:00</div>
-        <div id="et-since" style="font-size:12px;color:var(--text2);margin-top:3px;display:none;"></div>
-        <div id="et-empty" style="font-size:12px;color:var(--text3);margin-top:4px;">Set a start time to begin tracking.</div>
-        <div class="iacts" style="margin-top:12px;">
-          <button class="ibtn ibtn-p" onclick="etCopyLog()" id="et-copy-btn" style="display:none;">Copy for log</button>
-          <button class="ibtn" onclick="etReset()">Reset</button>
-        </div>
-      </div>
-    </div>
+  </div>
 </div>
 
 <!-- MODALS -->
 <div class="overlay hidden" id="modal-handoff">
   <div class="modal" style="width:520px;">
-    <h3>?? Shift handoff summary</h3>
     <h3>↺ Shift handoff summary</h3>
     <div class="handoff-box" id="handoff-content"></div>
     <div class="m-actions">
@@ -525,17 +509,18 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 
 <div class="overlay hidden" id="modal-incident">
   <div class="modal">
-    <h3>🏭 Site Trip</h3>
-    <label>Site / Location</label><input id="inc-location" placeholder="Site name, zone, address...">
-    <label>Purpose of visit</label><input id="inc-purpose" placeholder="Inspection, maintenance, commissioning...">
-    <label>Personnel on site</label><input id="inc-personnel" placeholder="Names or IDs of personnel present...">
-    <label>Conditions / Findings</label><textarea id="inc-desc" placeholder="What was observed or found on site?"></textarea>
-    <label>Actions taken</label><textarea id="inc-action" placeholder="Work performed, issues addressed..."></textarea>
+    <h3>🚨 Incident report</h3>
+    <label>Location / zone</label><input id="inc-location" placeholder="Zone, gate, site name...">
+    <label>Severity</label>
+    <select id="inc-severity"><option>Low</option><option>Medium</option><option selected>High</option><option>Critical</option></select>
+    <label>Reported by</label><input id="inc-reporter" placeholder="Name or radio ID...">
+    <label>Description</label><textarea id="inc-desc" placeholder="What happened?"></textarea>
+    <label>Action taken</label><textarea id="inc-action" placeholder="What did you do?"></textarea>
     <label>Follow-up required?</label>
     <select id="inc-followup"><option value="no">No</option><option value="yes">Yes — open item</option></select>
     <div class="m-actions">
       <button class="btn-c" onclick="closeModal('modal-incident')">Cancel</button>
-      <button class="btn-p" onclick="saveIncident()">Log site trip</button>
+      <button class="btn-p" onclick="saveIncident()">Log incident</button>
     </div>
   </div>
 </div>
@@ -567,66 +552,6 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
   </div>
 </div>
 
-<!-- SOFTWRENCH MANAGE FLOWS MODAL -->
-<div class="overlay hidden" id="modal-sw-manage">
-  <div class="modal" style="width:580px;max-height:92vh;">
-    <h3>?? Manage SoftWrench Flows</h3>
-
-    <!-- Flow list -->
-    <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Your flows</div>
-    <div id="sw-flow-list" style="max-height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;border:1px solid var(--border);border-radius:8px;padding:8px;margin-bottom:16px;"></div>
-
-    <!-- Divider -->
-    <div style="border-top:1px solid var(--border);padding-top:14px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <div style="font-size:13px;font-weight:600;" id="sw-form-hdr">Add new flow</div>
-        <button class="tbtn" style="font-size:11px;" onclick="swFormClear()">?? Clear form</button>
-      </div>
-      <input type="hidden" id="sw-edit-idx">
-
-      <!-- Step 1: Name -->
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-        <div style="width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
-        <div style="flex:1;">
-          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:3px;">Flow name</div>
-          <input id="sw-fname" placeholder="e.g. HARQ De-Energize" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;color:var(--text);">
-        </div>
-      </div>
-
-      <!-- Step 2: Template -->
-      <div style="display:flex;gap:8px;margin-bottom:10px;">
-        <div style="width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">2</div>
-        <div style="flex:1;">
-          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:3px;">
-            Write the log template
-            <span style="font-weight:400;color:var(--text3);margin-left:4px;">- wrap any input you need in <code style="background:var(--bbg);color:var(--blue);padding:1px 5px;border-radius:3px;font-size:11px;">{curly braces}</code></span>
-          </div>
-          <textarea id="sw-ftemplate" rows="5" oninput="swPreviewFields()"
-            placeholder="Call received from field tech {Tech Name} requesting de-energization of {Equipment}:&#10;- Associated Megapacks disabled remotely&#10;- {Equipment} opened remotely"
-            style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:12px;color:var(--text);font-family:var(--m);resize:vertical;line-height:1.7;"></textarea>
-        </div>
-      </div>
-
-      <!-- Step 3: Live field preview -->
-      <div style="display:flex;gap:8px;">
-        <div style="width:20px;height:20px;border-radius:50%;background:var(--gmid);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">3</div>
-        <div style="flex:1;">
-          <div style="font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;">Fields that will appear for this flow</div>
-          <div id="sw-field-preview" style="min-height:30px;padding:8px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text3);">
-            Type a template above - fields will appear here as you use <span style="color:var(--blue);">{curly braces}</span>.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="m-actions" style="margin-top:16px;">
-      <button class="btn-c" onclick="closeModal('modal-sw-manage')">Close</button>
-      <button class="btn-p" onclick="swSaveFlow()">Save flow</button>
-    </div>
-  </div>
-</div>
-
-<!-- ASSET SCAN -->
 <!-- ASSET SCAN -->
 <div class="view" id="view-asset">
   <div class="as-meta">
@@ -644,48 +569,35 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
       <select id="as-shift"><option value="">Select</option><option>Day</option><option>Night</option></select>
     </div>
     <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;">
-      <button class="tbtn" onclick="asStartFresh()">Start fresh</button>
+      <button class="tbtn" onclick="asOpenEdit()">✏ Edit sites</button>
+      <button class="tbtn" style="color:var(--amber);border-color:var(--amber);" onclick="asStartFresh()">↺ Start fresh</button>
       <button class="btn-p" onclick="asExportCSV()">Export CSV</button>
     </div>
   </div>
-  
-  <!-- Site Selection -->
-  <div style="margin-bottom:16px;">
-    <label style="font-weight:600;margin-bottom:8px;display:block;">Select Site:</label>
-    <div style="display:flex;gap:8px;align-items:center;">
-      <select id="as-site-select" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);">
-        <option value="">Choose a site...</option>
-      </select>
-      <button class="btn-p" onclick="asMarkComplete()">Mark Complete</button>
-    </div>
-  </div>
-  
-  <!-- Site Form -->
-  <div id="as-site-form" style="display:none;">
-    <div class="card">
-      <div class="card-title" id="site-form-title">Site Form</div>
-      <div id="as-form-content"></div>
-    </div>
-  </div>
+  <div class="as-site-tabs" id="as-tabs"></div>
+  <div id="as-form-wrap"></div>
 </div>
 
-<!-- ADD CUSTOM TEMPLATE MODAL -->
-<div class="overlay hidden" id="modal-add-tpl">
-  <div class="modal" style="width:420px;">
-    <h3>➕ Add note type</h3>
-    <p style="font-size:12px;color:var(--text3);margin-bottom:12px;">Create a custom template that appears alongside the built-in types.</p>
-    <label>Name</label><input id="ctpl-name" placeholder="e.g. Permit to Work, Callback...">
-    <label>Icon <span style="font-weight:400;color:var(--text3);">(emoji)</span></label>
-    <input id="ctpl-icon" placeholder="📝" style="width:70px;">
-    <label>Starter text <span style="font-weight:400;color:var(--text3);">(use {t} for current time)</span></label>
-    <textarea id="ctpl-body" rows="5" placeholder="Time: {t}&#10;Location: &#10;Notes: "></textarea>
-    <div style="margin-top:14px;">
-      <div style="font-size:11px;font-weight:600;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;">Your custom types</div>
-      <div id="ctpl-list" style="display:flex;flex-direction:column;gap:4px;max-height:140px;overflow-y:auto;"></div>
+<!-- ASSET SCAN EDIT MODAL -->
+<div class="overlay hidden" id="modal-as-edit">
+  <div class="modal" style="width:560px;max-height:90vh;">
+    <h3>✏ Edit Asset Scan Sites</h3>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:10px;">Add, edit or remove sites. Changes are saved to localStorage immediately.</p>
+    <div id="as-edit-list" style="max-height:220px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:5px;border:1px solid var(--border);border-radius:6px;padding:8px;"></div>
+    <div style="border-top:1px solid var(--border);padding-top:12px;">
+      <div style="font-size:13px;font-weight:600;margin-bottom:8px;" id="as-edit-form-hdr">Add new site</div>
+      <input type="hidden" id="as-edit-idx">
+      <label>Site ID</label><input id="as-eid" placeholder="e.g. NEWSITE1" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);margin-bottom:6px;">
+      <label>Display label</label><input id="as-elabel" placeholder="e.g. New Solar Farm" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);margin-bottom:6px;">
+      <label>Stats line</label><input id="as-estats" placeholder="e.g. PV 60MW  V SET: 119kV" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);margin-bottom:6px;">
+      <label>Sections JSON <span style="font-weight:400;color:var(--text3);">(array of {title, fields:[{n,t,opts,alert,unit,kvMin,kvMax,hint}]})</span></label>
+      <textarea id="as-ejson" rows="5" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 9px;font-size:12px;color:var(--text);font-family:var(--m);resize:vertical;" placeholder='[{"title":"0-STATUS","fields":[{"n":"Abnormal Operating Conditions","t":"select","opts":["","Yes","No"],"alert":"Yes"},{"n":"Notes","t":"textarea"}]}]'></textarea>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px;">Types: <code>select</code> (needs opts[]), <code>text</code> (unit/kvMin/kvMax optional), <code>textarea</code></div>
     </div>
     <div class="m-actions">
-      <button class="btn-c" onclick="closeModal('modal-add-tpl')">Close</button>
-      <button class="btn-p" onclick="saveCustomTpl()">Add template</button>
+      <button class="btn-c" onclick="asEditClear()">Clear</button>
+      <button class="btn-c" onclick="closeModal('modal-as-edit')">Close</button>
+      <button class="btn-p" onclick="asEditSave()">Save site</button>
     </div>
   </div>
 </div>
@@ -694,28 +606,8 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 
 <script>
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
-const SK = 'rnwbl_state_v2';         // bumped key — for version tracking
+const SK = 'rnwbl_v1';         // bumped key — forces clean state
 const SITES_KEY = 'rnwbl_sites_v1'; // sites stored separately so they survive SK upgrades
-const APP_VERSION = '2.0.0';
-
-// Data migration
-function migrateData() {
-  try {
-    const oldState = localStorage.getItem('rnwbl_state_v1');
-    if (oldState && !localStorage.getItem(SK)) {
-      const parsed = JSON.parse(oldState);
-      // Remove deprecated properties
-      delete parsed.logEntries;
-      delete parsed.checklists;
-      delete parsed.recTasks;
-      delete parsed.adhocTasks;
-      localStorage.setItem(SK, JSON.stringify(parsed));
-      console.log('Data migrated to v2');
-    }
-  } catch(e) {
-    console.error('Migration failed:', e);
-  }
-}
 
 // ─── DEFAULT SITES ────────────────────────────────────────────────────────────
 function defaultSites() {
@@ -815,7 +707,6 @@ async function loadSitesAsync() {
 let S = {
   recTasks:[], adhocTasks:[], checklists:{}, activeList:null,
   notes:[], activeNote:null, logEntries:[],
-  customTemplates:[],
   siteFilter:'all',
   timerRunning:false, timerElapsed:0, timerCycles:0,
   shiftStart:Date.now(),
@@ -824,23 +715,11 @@ let S = {
 let SITES = []; // loaded separately
 
 function save() {
-  try { 
-    localStorage.setItem(SK, JSON.stringify(S)); 
-  } catch(e) { 
-    console.error('localStorage save failed:', e);
-    showToast('Warning: Data may not be saved locally');
-  }
-  try { 
-    window.storage && window.storage.set(SK, JSON.stringify(S)); 
-  } catch(e) { 
-    console.error('Cloud storage save failed:', e);
-  }
+  try { localStorage.setItem(SK, JSON.stringify(S)); } catch(e) {}
+  try { window.storage && window.storage.set(SK, JSON.stringify(S)); } catch(e) {}
 }
 
 async function load() {
-  // Run data migration first
-  migrateData();
-  
   // Load user state
   let raw = null;
   try { raw = localStorage.getItem(SK); } catch(e) {}
@@ -849,7 +728,9 @@ async function load() {
     try {
       const p = JSON.parse(raw);
       S = Object.assign(S, p);
+      if(!S.checklists) S.checklists={};
       if(!S.notes) S.notes=[];
+      if(!S.logEntries) S.logEntries=[];
       if(!S.crew) S.crew=[];
       if(!S.equipment) S.equipment=[];
       if(!S.escContacts) S.escContacts={t1:'',t2:'',t3:''};
@@ -886,21 +767,9 @@ function switchView(v, el) {
   document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');
   if(el) el.classList.add('active');
+  if(v==='log') renderLog();
   if(v==='scans') { refreshScanStatuses(); renderSites(); }
-  if(v==='asset') { 
-    // Initialize new Asset Scan
-    setTimeout(() => {
-      initAssetScan();
-      // Add event listener for site dropdown
-      const siteSelect = document.getElementById('as-site-select');
-      if (siteSelect && !siteSelect.hasAttribute('data-listener')) {
-        siteSelect.setAttribute('data-listener', 'true');
-        siteSelect.addEventListener('change', (e) => {
-          selectSite(e.target.value);
-        });
-      }
-    }, 100);
-  }
+  if(v==='asset') { asRenderTabs(); asRenderForm(); }
 }
 
 // ─── 30-MIN TIMER ─────────────────────────────────────────────────────────────
@@ -914,6 +783,7 @@ function startTimerInterval(){
     S.timerElapsed++;
     if(S.timerElapsed>=TOTAL){
       S.timerElapsed=0; S.timerCycles++;
+      addLog({type:'task',title:'30-min cycle #'+S.timerCycles+' completed',detail:''});
       fireAlert('Cycle #'+S.timerCycles+' — time to scan!');
     }
     save(); updateTimerUI();
@@ -931,6 +801,100 @@ function updateTimerUI(){
   document.getElementById('timer-fill').style.width=((rem/TOTAL)*100).toFixed(1)+'%';
   document.getElementById('timer-fill').classList.toggle('urgent',urgent);
   document.getElementById('cycles-badge').textContent=S.timerCycles+' cycle'+(S.timerCycles!==1?'s':'');
+}
+
+// ─── RECURRING TASKS ──────────────────────────────────────────────────────────
+function addRec(){ const v=document.getElementById('rec-inp').value.trim(); if(!v)return; S.recTasks.push({id:Date.now(),name:v,done:false}); document.getElementById('rec-inp').value=''; save(); renderRec(); }
+function toggleRec(id){ const t=S.recTasks.find(x=>x.id===id); if(t)t.done=!t.done; save(); renderRec(); }
+function delRec(id){ S.recTasks=S.recTasks.filter(x=>x.id!==id); save(); renderRec(); }
+function renderRec(){
+  const el=document.getElementById('rec-list');
+  el.innerHTML=!S.recTasks.length?'<div class="empty">No recurring tasks</div>':
+    S.recTasks.map(t=>`<div class="task-item${t.done?' done':''}">
+      <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleRec(${t.id})">
+      <span class="task-label">${esc(t.name)}</span>
+      <span class="rec-badge${t.done?' done':''}">${t.done?'done':'due'}</span>
+      <button class="task-del" onclick="delRec(${t.id})">✕</button>
+    </div>`).join('');
+}
+
+// ─── ADHOC TASKS ──────────────────────────────────────────────────────────────
+let adhocInts={};
+function addAdhoc(){
+  const v=document.getElementById('adhoc-inp').value.trim(); if(!v)return;
+  const min=parseInt(document.getElementById('adhoc-t').value)||0;
+  const task={id:Date.now(),name:v,done:false,timerMin:min>0?min:null,timerStart:min>0?Date.now():null};
+  S.adhocTasks.push(task);
+  document.getElementById('adhoc-inp').value=''; document.getElementById('adhoc-t').value='';
+  addLog({type:'task',title:'Task added: '+v,detail:min>0?min+'min timer':''});
+  save(); renderAdhoc(); if(task.timerMin) startAdhocTimer(task.id);
+}
+function startAdhocTimer(id){ if(adhocInts[id])clearInterval(adhocInts[id]); adhocInts[id]=setInterval(()=>renderAdhoc(),30000); }
+function restoreAdhocTimers(){ S.adhocTasks.forEach(t=>{if(t.timerMin&&t.timerStart&&!t.done)startAdhocTimer(t.id);}); }
+function timerDisplay(t){
+  if(!t.timerMin||!t.timerStart) return null;
+  const rem=(t.timerMin*60000)-(Date.now()-t.timerStart);
+  if(rem<=0) return {label:'Overdue',exp:true};
+  return {label:Math.ceil(rem/60000)+'min left',exp:false};
+}
+function toggleAdhoc(id){
+  const t=S.adhocTasks.find(x=>x.id===id); if(!t)return;
+  t.done=!t.done;
+  if(t.done){ addLog({type:'task',title:'Task done: '+t.name,detail:''}); if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];} }
+  save(); renderAdhoc();
+}
+function delAdhoc(id){ if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];} S.adhocTasks=S.adhocTasks.filter(x=>x.id!==id); save(); renderAdhoc(); }
+function openTaskTimer(id){
+  const t=S.adhocTasks.find(x=>x.id===id); if(!t||!t.timerMin)return;
+  document.getElementById('ttimer-title').textContent=esc(t.name);
+  document.getElementById('ttimer-desc').textContent=t.timerMin+'min timer';
+  updateTTimerDisp(id); openModal('modal-task-timer');
+  if(window._tt)clearInterval(window._tt);
+  window._tt=setInterval(()=>{ if(!document.getElementById('modal-task-timer').classList.contains('hidden'))updateTTimerDisp(id); else clearInterval(window._tt); },1000);
+}
+function updateTTimerDisp(id){
+  const t=S.adhocTasks.find(x=>x.id===id); if(!t)return;
+  const ti=timerDisplay(t); const d=document.getElementById('ttimer-disp');
+  if(!ti){d.textContent='No timer';return;}
+  if(ti.exp){d.textContent='OVERDUE';d.style.color='var(--red)';return;}
+  const rem=Math.max(0,(t.timerMin*60000)-(Date.now()-t.timerStart));
+  d.textContent=String(Math.floor(rem/60000)).padStart(2,'0')+':'+String(Math.floor((rem%60000)/1000)).padStart(2,'0');
+  d.style.color='var(--amber)';
+}
+function renderAdhoc(){
+  const el=document.getElementById('adhoc-list');
+  el.innerHTML=!S.adhocTasks.length?'<div class="empty">No tasks yet</div>':
+    S.adhocTasks.map(t=>{ const ti=timerDisplay(t); return `<div class="task-item${t.done?' done':''}">
+      <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleAdhoc(${t.id})">
+      <span class="task-label">${esc(t.name)}</span>
+      ${ti?`<span class="timer-badge${ti.exp?' exp':''}" onclick="openTaskTimer(${t.id})">${ti.label}</span>`:''}
+      <button class="task-del" onclick="delAdhoc(${t.id})">✕</button>
+    </div>`; }).join('');
+}
+
+// ─── CHECKLISTS ───────────────────────────────────────────────────────────────
+function addClList(){ const v=document.getElementById('cl-list-inp').value.trim(); if(!v)return; if(!S.checklists[v])S.checklists[v]=[]; S.activeList=v; document.getElementById('cl-list-inp').value=''; save(); renderCl(); }
+function switchClFromSelect(){ S.activeList=document.getElementById('cl-sel').value||null; renderCl(); }
+function delActiveClList(){ if(!S.activeList||!confirm('Delete "'+S.activeList+'"?'))return; delete S.checklists[S.activeList]; S.activeList=Object.keys(S.checklists)[0]||null; save(); renderCl(); }
+function addClItem(){ if(!S.activeList)return; const v=document.getElementById('cl-item-inp').value.trim(); if(!v)return; S.checklists[S.activeList].push({id:Date.now(),name:v,done:false}); document.getElementById('cl-item-inp').value=''; save(); renderCl(); }
+function toggleCl(id){ if(!S.activeList)return; const t=S.checklists[S.activeList].find(x=>x.id===id); if(t)t.done=!t.done; save(); renderCl(); }
+function delCl(id){ if(!S.activeList)return; S.checklists[S.activeList]=S.checklists[S.activeList].filter(x=>x.id!==id); save(); renderCl(); }
+function renderCl(){
+  const keys=Object.keys(S.checklists);
+  const hdr=document.getElementById('cl-hdr'), ir=document.getElementById('cl-item-row'), pr=document.getElementById('cl-prog-row'), el=document.getElementById('cl-items');
+  if(!keys.length){ hdr.style.display='none'; ir.style.display='none'; pr.style.display='none'; el.innerHTML='<div class="empty">Create your first checklist above</div>'; return; }
+  if(!S.activeList||!S.checklists[S.activeList]) S.activeList=keys[0];
+  hdr.style.display='flex';
+  document.getElementById('cl-sel').innerHTML=keys.map(k=>`<option value="${esc(k)}"${S.activeList===k?' selected':''}>${esc(k)}</option>`).join('');
+  const list=S.checklists[S.activeList], done=list.filter(x=>x.done).length, tot=list.length;
+  if(tot>0){ pr.style.display='flex'; document.getElementById('cl-prog-fill').style.width=Math.round(done/tot*100)+'%'; document.getElementById('cl-prog-txt').textContent=done+'/'+tot; } else pr.style.display='none';
+  ir.style.display='flex';
+  el.innerHTML=!list.length?'<div class="empty">No items yet — add one below</div>':
+    list.map(t=>`<div class="task-item${t.done?' done':''}">
+      <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleCl(${t.id})">
+      <span class="task-label">${esc(t.name)}</span>
+      <button class="task-del" onclick="delCl(${t.id})">✕</button>
+    </div>`).join('');
 }
 
 // ─── SITES / SCANS ────────────────────────────────────────────────────────────
@@ -998,12 +962,12 @@ function timeSince(ts){ const m=Math.floor((Date.now()-ts)/60000); return m<1?'j
 function openScanNote(id){ const s=SITES.find(x=>x.id===id); if(!s)return; document.getElementById('scan-note-title').textContent='Log scan — '+s.name; document.getElementById('scan-note-site-id').value=id; document.getElementById('scan-note-body').value=''; openModal('modal-scan-note'); }
 function confirmScan(){
   const id=parseInt(document.getElementById('scan-note-site-id').value), s=SITES.find(x=>x.id===id); if(!s)return;
-  s.lastScan=Date.now();
+  s.lastScan=Date.now(); addLog({type:'scan',title:'Scan: '+s.name,detail:document.getElementById('scan-note-body').value.trim()||'All clear'});
   closeModal('modal-scan-note'); saveSites(SITES); renderSites(); showToast('Scan logged');
 }
 function scanAll(){
   const nerc=SITES.filter(s=>s.nerc); if(!nerc.length){showToast('No NERC sites');return;}
-  nerc.forEach(s=>s.lastScan=Date.now());
+  nerc.forEach(s=>s.lastScan=Date.now()); addLog({type:'scan',title:'Scan all NERC ('+nerc.length+')',detail:nerc.map(s=>s.name).join(', ')});
   saveSites(SITES); renderSites(); showToast('All NERC sites scanned');
 }
 function saveSite(){
@@ -1029,46 +993,23 @@ function editSite(id){
 function deleteSite(id){ if(!confirm('Delete this site?'))return; SITES=SITES.filter(x=>x.id!==id); saveSites(SITES); renderSites(); }
 
 // ─── TEMPLATES ────────────────────────────────────────────────────────────────
-const TEMPLATES_BUILTIN=[
-  {id:'trip',  icon:'🏭', name:'Site Trip',   desc:'Site visit log',    modal:'modal-incident'},
-  {id:'obs',   icon:'📋', name:'Observation', desc:'Quick freeform note',body:'Time: {t}\nLocation: \nObservation: \nAction taken: '},
+const TEMPLATES=[
+  {id:'incident',icon:'🚨',name:'Incident report',desc:'Location, severity, action'},
+  {id:'response',icon:'✅',name:'Correct response',desc:'Procedure, notify, outcome'},
+  {id:'obs',icon:'📋',name:'Observation',desc:'Quick freeform note',body:'Time: {t}\nLocation: \nObservation: \nAction taken: '},
+  {id:'callback',icon:'📞',name:'Callback / follow-up',desc:'Who to call back',body:'Time: {t}\nContact: \nReason: \nFollow up by: '},
+  {id:'handoff',icon:'↺',name:'Shift handoff',desc:'Auto-summary of your shift'},
 ];
-function allTemplates(){ return [...TEMPLATES_BUILTIN,...(S.customTemplates||[])]; }
 function renderTemplates(){
-  const grid=document.getElementById('tpl-grid');
-  grid.innerHTML=
-    allTemplates().map(t=>`<button class="tpl-btn" onclick="useTemplate('${esc(t.id)}')"><span class="tpl-icon">${t.icon}</span><span class="tpl-name">${esc(t.name)}</span><span class="tpl-desc">${esc(t.desc)}</span></button>`).join('')+
-    `<button class="tpl-btn" onclick="openAddTplModal()" style="border-style:dashed;color:var(--text3);"><span class="tpl-icon">＋</span><span class="tpl-name">Add type</span><span class="tpl-desc">Custom note template</span></button>`;
-  // Sync tag select options to current template list
-  const sel=document.getElementById('note-tag'), cur=sel.value;
-  sel.innerHTML=allTemplates().map(t=>`<option value="${esc(t.id)}">${esc(t.name)}</option>`).join('');
-  if([...sel.options].some(o=>o.value===cur)) sel.value=cur;
+  document.getElementById('tpl-grid').innerHTML=TEMPLATES.map(t=>`<button class="tpl-btn" onclick="useTemplate('${t.id}')"><span class="tpl-icon">${t.icon}</span><span class="tpl-name">${esc(t.name)}</span><span class="tpl-desc">${esc(t.desc)}</span></button>`).join('');
 }
 function useTemplate(id){
-  const tpl=allTemplates().find(t=>t.id===id); if(!tpl)return;
-  if(tpl.modal){openModal(tpl.modal);return;}
+  if(id==='incident'){openModal('modal-incident');return;}
+  if(id==='response'){openModal('modal-response');return;}
+  if(id==='handoff'){openHandoffAsNote();return;}
+  const tpl=TEMPLATES.find(t=>t.id===id); if(!tpl)return;
   const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  newNote(tpl.name+' — '+now,(tpl.body||'').replace('{t}',now),id);
-}
-function openAddTplModal(){ renderCustomTplList(); openModal('modal-add-tpl'); }
-function renderCustomTplList(){
-  const el=document.getElementById('ctpl-list'); if(!el)return;
-  const c=S.customTemplates||[];
-  el.innerHTML=!c.length?'<div class="empty">No custom types yet</div>':
-    c.map(t=>`<div class="task-item"><span style="font-size:14px;flex-shrink:0;">${t.icon}</span><span class="task-label">${esc(t.name)}</span><button class="task-del" onclick="delCustomTpl('${t.id}')">✕</button></div>`).join('');
-}
-function saveCustomTpl(){
-  const name=document.getElementById('ctpl-name').value.trim(); if(!name){showToast('Name required');return;}
-  const icon=document.getElementById('ctpl-icon').value.trim()||'📝';
-  const body=document.getElementById('ctpl-body').value;
-  if(!S.customTemplates)S.customTemplates=[];
-  S.customTemplates.push({id:'ctpl_'+Date.now(),icon,name,desc:body.split('\n')[0].substring(0,40)||'Custom note',body});
-  ['ctpl-name','ctpl-icon','ctpl-body'].forEach(id=>document.getElementById(id).value='');
-  save(); renderTemplates(); renderCustomTplList(); showToast('Template added');
-}
-function delCustomTpl(id){
-  S.customTemplates=(S.customTemplates||[]).filter(t=>t.id!==id);
-  save(); renderTemplates(); renderCustomTplList(); showToast('Removed');
+  newNote(tpl.name+' — '+now, (tpl.body||'').replace('{t}',now), 'obs');
 }
 
 // ─── NOTES ────────────────────────────────────────────────────────────────────
@@ -1089,26 +1030,12 @@ function loadNoteForm(n){
 }
 function saveNote(){
   const n=S.notes.find(x=>x.id===S.activeNote); if(!n)return;
-  
-  const title = document.getElementById('note-title').value?.trim() || 'Untitled';
-  const body = document.getElementById('note-body').value?.trim() || '';
-  const tag = document.getElementById('note-tag').value?.trim() || 'obs';
-  
-  // Validate inputs
-  if (title.length > 200) {
-    showToast('Title too long (max 200 chars)');
-    return;
-  }
-  if (body.length > 50000) {
-    showToast('Note too long (max 50,000 chars)');
-    return;
-  }
-  
-  n.title = title;
-  n.body = body;
-  n.tag = tag;
-  n.ts = Date.now();
+  n.title=document.getElementById('note-title').value||'Untitled';
+  n.body=document.getElementById('note-body').value;
+  n.tag=document.getElementById('note-tag').value;
+  n.ts=Date.now();
   document.getElementById('note-meta').textContent='Saved '+new Date(n.ts).toLocaleString();
+  addLog({type:n.tag==='incident'?'incident':n.tag==='response'?'response':'note',title:n.title,detail:n.body.substring(0,100)});
   save(); renderNotes(); showToast('Saved');
 }
 function deleteNote(){
@@ -1118,33 +1045,30 @@ function deleteNote(){
   if(S.activeNote) loadNoteForm(S.notes.find(n=>n.id===S.activeNote));
   else { document.getElementById('note-form').style.display='none'; document.getElementById('note-no-sel').style.display='block'; }
 }
-function tagLabel(tag){ return allTemplates().find(t=>t.id===tag)?.name||tag; }
-function tagCls(tag){ return {obs:'tag-obs',trip:'tag-incident',incident:'tag-incident',response:'tag-response',task:'tag-task'}[tag]||'tag-obs'; }
+const TAG_LABEL={obs:'Observation',incident:'Incident',response:'Response',task:'Task note'};
+const TAG_CLS={obs:'tag-obs',incident:'tag-incident',response:'tag-response',task:'tag-task'};
 function renderNotes(){
   const el=document.getElementById('notes-list');
   el.innerHTML=!S.notes.length?'<div class="empty">No notes yet</div>':
     S.notes.map(n=>`<div class="note-entry${S.activeNote===n.id?' active':''}" onclick="selectNote(${n.id})">
       <div class="note-entry-time">${new Date(n.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
       <div class="note-entry-title">${esc(n.title)}</div>
-      <div style="margin-top:2px;"><span class="tag ${tagCls(n.tag)}">${tagLabel(n.tag)}</span></div>
+      <div style="margin-top:2px;"><span class="tag ${TAG_CLS[n.tag]||'tag-obs'}">${TAG_LABEL[n.tag]||n.tag}</span></div>
     </div>`).join('');
 }
 
 // ─── INCIDENT / RESPONSE ──────────────────────────────────────────────────────
 function saveIncident(){
-  const loc=document.getElementById('inc-location').value,
-        purpose=document.getElementById('inc-purpose').value,
-        personnel=document.getElementById('inc-personnel').value,
-        findings=document.getElementById('inc-desc').value,
-        act=document.getElementById('inc-action').value,
-        fu=document.getElementById('inc-followup').value;
+  const loc=document.getElementById('inc-location').value, sev=document.getElementById('inc-severity').value,
+        rep=document.getElementById('inc-reporter').value, desc=document.getElementById('inc-desc').value,
+        act=document.getElementById('inc-action').value, fu=document.getElementById('inc-followup').value;
   const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  const title='Site Trip — '+(loc||'unknown')+' @ '+now;
-  newNote(title,'Time: '+now+'\nSite: '+loc+'\nPurpose: '+purpose+'\nPersonnel: '+personnel+'\nFindings: '+findings+'\nActions taken: '+act+'\nFollow-up: '+fu,'trip');
+  const title='['+sev+'] Incident — '+(loc||'unknown');
+  newNote(title,'Time: '+now+'\nLocation: '+loc+'\nSeverity: '+sev+'\nReported by: '+rep+'\nDescription: '+desc+'\nAction taken: '+act+'\nFollow-up: '+fu,'incident');
+  addLog({type:'incident',title,detail:sev+' at '+(loc||'?')+'. '+desc.substring(0,80),followup:fu==='yes'});
   closeModal('modal-incident');
-  ['inc-location','inc-purpose','inc-personnel','inc-desc','inc-action'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('inc-followup').value='no';
-  showToast('Site trip logged');
+  ['inc-location','inc-reporter','inc-desc','inc-action'].forEach(id=>document.getElementById(id).value='');
+  showToast('Incident logged');
   switchView('notes',document.querySelectorAll('.nav-tab')[0]);
 }
 function saveResponse(){
@@ -1154,6 +1078,7 @@ function saveResponse(){
   const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   const title='Response — '+(sit||'situation')+' @ '+now;
   newNote(title,'Time: '+now+'\nSituation: '+sit+'\nNotified: '+notif+'\nProcedure: '+proc+'\nOutcome: '+out+'\nEscalation: '+esc2,'response');
+  addLog({type:'response',title,detail:'Notified: '+notif+'. '+out.substring(0,80)});
   closeModal('modal-response');
   ['res-situation','res-notified','res-procedure','res-outcome'].forEach(id=>document.getElementById(id).value='');
   showToast('Response logged');
@@ -1163,40 +1088,51 @@ function saveResponse(){
 // ─── HANDOFF ──────────────────────────────────────────────────────────────────
 function buildHandoff(){
   const now=new Date(), sStr=new Date(S.shiftStart).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}), eStr=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  const scans=SITES.filter(s=>s.lastScan&&s.lastScan>=S.shiftStart);
-  const L=[`Shift handoff: ${sStr} - ${eStr}`];
-  L.push('\nSUMMARY');
-  L.push('  Sites scanned this shift: '+scans.length);
-  L.push('\nACTIVITY\n  Scans: '+scans.length);
-  L.push('\n\nNOTES');
-  const notes=S.notes.filter(n=>n.ts>=S.shiftStart);
-  if(notes.length){notes.forEach(n=>{const t=new Date(n.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});L.push('['+t+'] '+n.title);});}else{L.push('  (none)');}
-  L.push('\n\nEQUIPMENT STATUS');
-  const eq=S.equipment.filter(e=>e.ts>=S.shiftStart);
-  if(eq.length){eq.forEach(e=>{L.push('  '+e.name+' - '+e.status);});}else{L.push('  (no changes)');}
-  L.push('\n\nSAFETY CHECKLIST');
-  const safetyDone=SAFETY.filter(i=>safetyS[i]).length;
-  L.push('  Completed: '+safetyDone+'/'+SAFETY.length);
-  L.push('\n\nNERC COMPLIANCE');
-  const nercDone=NERC_ITEMS.filter(i=>nercS[i]).length;
-  L.push('  Completed: '+nercDone+'/'+NERC_ITEMS.length);
-  L.push('\n\nSHIFT TIMING');
-  L.push('  Start: '+sStr);
-  L.push('  End: '+eStr);
-  L.push('  Duration: '+Math.floor((now-S.shiftStart)/60000)+' minutes');
-  L.push('\n\nESCALATION CONTACTS');
-  L.push('  Tier 1: '+S.escContacts.t1);
-  L.push('  Tier 2: '+S.escContacts.t2);
-  L.push('  Tier 3: '+S.escContacts.t3);
-  L.push('\n\nNEXT SHIFT');
-  L.push('  Priority items: _______________');
-  L.push('  Follow-ups needed: _______________');
-  L.push('\n\nGenerated '+now.toLocaleString());
+  const te=S.logEntries.filter(e=>e.ts>=S.shiftStart);
+  const inc=te.filter(e=>e.type==='incident'), res=te.filter(e=>e.type==='response'),
+        done=te.filter(e=>e.type==='task'&&e.title.startsWith('Task done:')), scans=te.filter(e=>e.type==='scan');
+  const openInc=inc.filter(e=>e.followup), openTasks=S.adhocTasks.filter(t=>!t.done),
+        ov=SITES.filter(s=>siteStatus(s)==='overdue'), du=SITES.filter(s=>siteStatus(s)==='due');
+  const clStatus=Object.keys(S.checklists).map(k=>{const l=S.checklists[k]; return k+': '+l.filter(x=>x.done).length+'/'+l.length;});
+  const L=[];
+  L.push('SHIFT HANDOFF SUMMARY\n─────────────────────');
+  L.push('Shift: '+sStr+' → '+eStr+'\nCycles completed: '+S.timerCycles+'\n');
+  const hasOpen=openInc.length||openTasks.length||ov.length||du.length;
+  L.push('⚠ OPEN ITEMS'+(hasOpen?'':' — none'));
+  if(openInc.length){L.push('\n  Incidents with follow-up:');openInc.forEach(e=>L.push('  • '+e.title+(e.detail?' — '+e.detail.substring(0,60):'')));}
+  if(openTasks.length){L.push('\n  Incomplete tasks:');openTasks.forEach(t=>L.push('  • '+t.name));}
+  if(ov.length){L.push('\n  Overdue scans:');ov.forEach(s=>L.push('  • '+s.name+(s.nerc?' [NERC]':'')+'  (last: '+timeSince(s.lastScan||0)+')'));}
+  if(du.length){L.push('\n  Due soon:');du.forEach(s=>L.push('  • '+s.name+(s.nerc?' [NERC]':'')));}
+  L.push('\n✓ ACTIVITY\n  Incidents: '+inc.length+'  Responses: '+res.length+'  Tasks done: '+done.length+'  Scans: '+scans.length);
+  if(clStatus.length){L.push('\n  Checklists:');clStatus.forEach(s=>L.push('  • '+s));}
+  if(inc.length){L.push('\n  Incident log:');inc.forEach(e=>{const t=new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});L.push('  ['+t+'] '+e.title);if(e.detail)L.push('        '+e.detail.substring(0,80));});}
+  L.push('\n──────────────────────\nGenerated '+now.toLocaleString());
   return L.join('\n');
 }
 function openHandoffAsNote(){ const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); newNote('Shift handoff — '+now,buildHandoff(),'obs'); switchView('notes',document.querySelectorAll('.nav-tab')[0]); }
 function openHandoff(){ document.getElementById('handoff-content').textContent=buildHandoff(); openModal('modal-handoff'); }
 function copyHandoff(){ try{navigator.clipboard.writeText(document.getElementById('handoff-content').textContent);showToast('Copied!');}catch(e){showToast('Select and copy manually');} }
+
+// ─── LOG ──────────────────────────────────────────────────────────────────────
+function addLog(e){ S.logEntries.unshift({...e,ts:Date.now(),id:Date.now()}); if(S.logEntries.length>500)S.logEntries.length=500; save(); }
+function renderLog(){
+  const f=document.getElementById('log-filter').value;
+  const entries=f==='all'?S.logEntries:S.logEntries.filter(e=>e.type===f);
+  document.getElementById('log-list').innerHTML=!entries.length?'<div class="empty">No entries yet</div>':
+    entries.map(e=>`<div class="log-entry ${e.type||'note'}">
+      <div class="log-time">${new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="log-body"><div class="log-title">${esc(e.title||'')}</div>${e.detail?`<div class="log-detail">${esc(e.detail)}</div>`:''}</div>
+    </div>`).join('');
+  const inc=S.logEntries.filter(e=>e.type==='incident').length, res=S.logEntries.filter(e=>e.type==='response').length,
+        tsk=S.logEntries.filter(e=>e.type==='task').length, scn=S.logEntries.filter(e=>e.type==='scan').length;
+  document.getElementById('log-stats').innerHTML=`
+    <div class="stat-chip"><span class="s-val">${S.logEntries.length}</span><span class="s-lbl">Total</span></div>
+    <div class="stat-chip"><span class="s-val" style="color:var(--red)">${inc}</span><span class="s-lbl">Incidents</span></div>
+    <div class="stat-chip"><span class="s-val" style="color:var(--purple)">${res}</span><span class="s-lbl">Responses</span></div>
+    <div class="stat-chip"><span class="s-val" style="color:var(--green)">${tsk}</span><span class="s-lbl">Tasks</span></div>
+    <div class="stat-chip"><span class="s-val" style="color:var(--amber)">${scn}</span><span class="s-lbl">Scans</span></div>`;
+}
+function clearLog(){ if(confirm('Clear all log entries?')){ S.logEntries=[]; save(); renderLog(); } }
 
 // ─── MODAL ────────────────────────────────────────────────────────────────────
 function openModal(id){ document.getElementById(id).classList.remove('hidden'); }
@@ -1250,7 +1186,7 @@ function renderCrew(){
 }
 
 // ─── EQUIPMENT ────────────────────────────────────────────────────────────────
-function addEquip(){ const n=document.getElementById('equip-inp').value.trim(); if(!n)return; const st=document.getElementById('equip-status').value; S.equipment.push({id:Date.now(),name:n,status:st,ts:Date.now()}); document.getElementById('equip-inp').value=''; save(); renderEquip(); }
+function addEquip(){ const n=document.getElementById('equip-inp').value.trim(); if(!n)return; const st=document.getElementById('equip-status').value; S.equipment.push({id:Date.now(),name:n,status:st,ts:Date.now()}); document.getElementById('equip-inp').value=''; addLog({type:'task',title:'Equipment: '+n+' — '+st,detail:''}); save(); renderEquip(); }
 function removeEquip(id){ S.equipment=S.equipment.filter(x=>x.id!==id); save(); renderEquip(); }
 function renderEquip(){
   const icons={ok:'✅',caution:'⚠️',down:'🔴'};
@@ -1266,7 +1202,8 @@ function toggleSafety(i){ safetyS[i]=!safetyS[i]; renderSafety(); }
 function renderSafety(){ document.getElementById('safety-list').innerHTML=SAFETY.map(i=>`<div class="task-item${safetyS[i]?' done':''}"><input type="checkbox" class="task-cb" ${safetyS[i]?'checked':''} onchange="toggleSafety('${i.replace(/'/g,"\\'")}')" ><span class="task-label">${i}</span></div>`).join(''); }
 function completeSafety(){
   const done=SAFETY.filter(i=>safetyS[i]).length, now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  newNote('Safety check @ '+now,'Items: '+done+'/'+SAFETY.length+'\n'+SAFETY.map(i=>(safetyS[i]?'':'')+' '+i).join('\n'),'obs');
+  addLog({type:'task',title:'Safety check — '+done+'/'+SAFETY.length,detail:done===SAFETY.length?'All clear':'Incomplete'});
+  newNote('Safety check @ '+now,'Items: '+done+'/'+SAFETY.length+'\n'+SAFETY.map(i=>(safetyS[i]?'✓':'✗')+' '+i).join('\n'),'obs');
   switchView('notes',document.querySelectorAll('.nav-tab')[0]); showToast('Safety check logged');
 }
 function resetSafety(){ SAFETY.forEach(i=>safetyS[i]=false); renderSafety(); }
@@ -1279,7 +1216,8 @@ function toggleNERC(i){ nercS[i]=!nercS[i]; renderNERC(); }
 function renderNERC(){ document.getElementById('nerc-list').innerHTML=NERC_ITEMS.map(i=>`<div class="task-item${nercS[i]?' done':''}"><input type="checkbox" class="task-cb" ${nercS[i]?'checked':''} onchange="toggleNERC('${i.replace(/'/g,"\\'")}')" ><span class="task-label" style="font-size:12px;">${i}</span></div>`).join(''); }
 function completeNERC(){
   const done=NERC_ITEMS.filter(i=>nercS[i]).length, now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  newNote('NERC compliance @ '+now,'Items: '+done+'/'+NERC_ITEMS.length+'\n'+NERC_ITEMS.map(i=>(nercS[i]?'':'')+' '+i).join('\n'),'obs');
+  addLog({type:'scan',title:'NERC compliance — '+done+'/'+NERC_ITEMS.length,detail:done===NERC_ITEMS.length?'All verified':'Incomplete'});
+  newNote('NERC compliance @ '+now,'Items: '+done+'/'+NERC_ITEMS.length+'\n'+NERC_ITEMS.map(i=>(nercS[i]?'✓':'✗')+' '+i).join('\n'),'obs');
   switchView('notes',document.querySelectorAll('.nav-tab')[0]); showToast('NERC check submitted');
 }
 function resetNERC(){ NERC_ITEMS.forEach(i=>nercS[i]=false); renderNERC(); }
@@ -1288,40 +1226,14 @@ function resetNERC(){ NERC_ITEMS.forEach(i=>nercS[i]=false); renderNERC(); }
 function saveEscContacts(){
   const rows=document.querySelectorAll('#esc-tbody tr'), keys=['t1','t2','t3'];
   rows.forEach((row,i)=>{ const inp=row.querySelector('input'); if(inp)S.escContacts[keys[i]]=inp.value; });
-  save(); showToast('Contacts saved');
+  save(); addLog({type:'task',title:'Escalation contacts updated',detail:'Tier 1: '+S.escContacts.t1}); showToast('Contacts saved');
 }
 
 // ─── UTILS ────────────────────────────────────────────────────────────────────
 function fireAlert(msg){ showToast(msg); try{const ctx=new AudioContext();[880,660].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;g.gain.setValueAtTime(.25,ctx.currentTime+i*.15);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+i*.15+.4);o.start(ctx.currentTime+i*.15);o.stop(ctx.currentTime+i*.15+.4);});}catch(e){} }
 function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
-function renderAll(){ renderNotes(); renderTemplates(); updateTimerUI(); renderSites(); }
-
-// Performance utilities
-function debounce(func, wait) {
-  let timeout;
-  return function executedFunction(...args) {
-    const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
-}
-
-function throttle(func, limit) {
-  let inThrottle;
-  return function() {
-    const args = arguments;
-    const context = this;
-    if (!inThrottle) {
-      func.apply(context, args);
-      inThrottle = true;
-      setTimeout(() => inThrottle = false, limit);
-    }
-  };
-}
+function renderAll(){ renderRec(); renderAdhoc(); renderCl(); renderNotes(); renderTemplates(); updateTimerUI(); renderSites(); }
 
 // ─── ASSET SCAN ───────────────────────────────────────────────────────────────
 // Site definitions: each site has sections, each section has fields.
@@ -1983,799 +1895,246 @@ const AS_SITES = [
   },
 ];
 
+// ─── ASSET SCAN ───────────────────────────────────────────────────────────────
+const AS_VAL_KEY  = 'rnwbl_asvals_v1';
+const AS_DONE_KEY = 'rnwbl_asdone_v1';
+const AS_CUSTOM_KEY = 'rnwbl_ascustom_v1'; // user-added/edited sites stored here
 
-// ─── NEW ASSET SCAN ───────────────────────────────────────────────────────
-// Asset Scan tool for scanning sites during shifts
+let asVals = {};
+let asDone = {};        // {siteId: true} manually marked complete
+let asCustom = null;    // null = not yet loaded; [] or array = overrides AS_SITES
+let asActiveSite = '';
 
-const AS_SCAN_KEY = 'rnwbl_asset_scan_v1';
+// Effective site list: custom overrides defaults when set AND non-empty
+function asSites() { return (asCustom !== null && asCustom.length > 0) ? asCustom : AS_SITES; }
 
-// Toast
-function showToast(msg) {
-  const toast=document.getElementById('toast');
-  toast.textContent=msg;
-  toast.classList.add('show');
-  setTimeout(()=>toast.classList.remove('show'),3000);
+function asLoadAll() {
+  try { const r=localStorage.getItem(AS_VAL_KEY); if(r) asVals=JSON.parse(r)||{}; } catch(e){}
+  try { const r=localStorage.getItem(AS_DONE_KEY); if(r) asDone=JSON.parse(r)||{}; } catch(e){}
+  try { const r=localStorage.getItem(AS_CUSTOM_KEY); if(r) { const p=JSON.parse(r); if(Array.isArray(p) && p.length > 0) asCustom=p; } } catch(e){}
+}
+function asSaveVals() { try{localStorage.setItem(AS_VAL_KEY,JSON.stringify(asVals));}catch(e){} }
+function asSaveDone() { try{localStorage.setItem(AS_DONE_KEY,JSON.stringify(asDone));}catch(e){} }
+function asSaveCustom() { try{localStorage.setItem(AS_CUSTOM_KEY,JSON.stringify(asSites()));}catch(e){} }
+
+function asKey(siteId, si, fi) { return siteId+'|'+si+'|'+fi; }
+
+// ── completion ────────────────────────────────────────────────────────────────
+function asSiteFilledPct(siteId) {
+  const site = asSites().find(s=>s.id===siteId); if(!site) return 0;
+  let total=0, filled=0;
+  site.sections.forEach((sec,si)=>sec.fields.forEach((f,fi)=>{
+    if(f.t==='textarea') return;
+    total++;
+    if((asVals[asKey(siteId,si,fi)]||'')!=='') filled++;
+  }));
+  return total===0?100:Math.round(filled/total*100);
+}
+function asSiteComplete(siteId) { return asDone[siteId]||asSiteFilledPct(siteId)===100; }
+function asSectionHasAlert(siteId, si) {
+  const site=asSites().find(s=>s.id===siteId); if(!site) return false;
+  return (site.sections[si]?.fields||[]).some((f,fi)=>
+    f.alert && (asVals[asKey(siteId,si,fi)]||'').toLowerCase()===f.alert.toLowerCase() && asVals[asKey(siteId,si,fi)]!==''
+  );
 }
 
-// Site definitions with default values
-const ASSET_SITES = {
-  'ROCC1': {
-    name: 'ROCC1',
-    fields: [
-      { id: 'caiso_ads', label: 'CAISO ADS', type: 'select', options: ['', 'Online', 'Offline'], value: '' },
-      { id: 'caiso_visible', label: 'CAISO ADS Visible', type: 'select', options: ['', 'Yes', 'No'], value: '' },
-      { id: 'abnormal_conditions', label: 'Abnormal Conditions', type: 'text', value: '' },
-      { id: 'indji_online', label: 'Indji Watch Online', type: 'select', options: ['', 'Online', 'Offline'], value: '' },
-      { id: 'indji_visible', label: 'Indji Watch Visible', type: 'select', options: ['', 'Yes', 'No'], value: '' },
-      { id: 'tv_monitor', label: 'TV Monitor Vol [40?]', type: 'select', options: ['', 'Yes', 'No'], value: '' },
-      { id: 'staysafe_online', label: 'Stay Safe Online', type: 'select', options: ['', 'Online', 'Offline'], value: '' },
-      { id: 'staysafe_visible', label: 'Stay Safe Visible', type: 'select', options: ['', 'Yes', 'No'], value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'ANGF1': {
-    name: 'Angel Fire (ANGF1)',
-    fields: [
-      { id: 'abnormal_conditions', label: 'Abnormal Operating Conditions', type: 'select', options: ['', 'Yes', 'No'], value: '' },
-      { id: 'temperature', label: 'Temperature', type: 'text', unit: '°F', value: '' },
-      { id: 'weather', label: 'Weather Conditions', type: 'select', options: ['', 'Clear', 'Cloudy', 'Rain', 'Snow', 'Wind'], value: '' },
-      { id: 'lightning', label: 'Lightning Activity', type: 'select', options: ['', 'None', 'Distant', 'Local', 'Overhead'], value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'AVLN1': {
-    name: 'Avila (AVLN1)',
-    fields: [
-      { id: 'overall_status', label: 'Overall Status', type: 'select', options: ['', 'Normal', 'Alarm', 'Fault'], value: '' },
-      { id: 'power_output', label: 'Power Output', type: 'text', unit: 'MW', value: '' },
-      { id: 'battery_soc', label: 'Battery SOC', type: 'text', unit: '%', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'BLKW1': {
-    name: 'Blackwater (BLKW1)',
-    fields: [
-      { id: 'current_output', label: 'Current Output', type: 'text', unit: 'MW', value: '' },
-      { id: 'irradiance', label: 'Irradiance', type: 'text', unit: 'W/m²', value: '' },
-      { id: 'panel_temp', label: 'Panel Temperature', type: 'text', unit: '°C', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'CNDR1': {
-    name: 'Cedar (CNDR1)',
-    fields: [
-      { id: 'site_access', label: 'Site Access', type: 'select', options: ['', 'Clear', 'Restricted'], value: '' },
-      { id: 'security_check', label: 'Security Check', type: 'select', options: ['', 'Pass', 'Fail'], value: '' },
-      { id: 'permits_current', label: 'Permits Current', type: 'select', options: ['', 'Yes', 'No'], value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'COSO1': {
-    name: 'Cosco (COSO1)',
-    fields: [
-      { id: 'inverter_status', label: 'Inverter Status', type: 'select', options: ['', 'Running', 'Stopped', 'Fault'], value: '' },
-      { id: 'scada_status', label: 'SCADA Status', type: 'select', options: ['', 'Online', 'Offline'], value: '' },
-      { id: 'output_power', label: 'Output Power', type: 'text', unit: 'MW', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'DFRN1': {
-    name: 'Defiance (DFRN1)',
-    fields: [
-      { id: 'dc_voltage', label: 'DC Voltage', type: 'text', unit: 'V', value: '' },
-      { id: 'ac_voltage', label: 'AC Voltage', type: 'text', unit: 'V', value: '' },
-      { id: 'frequency', label: 'Frequency', type: 'text', unit: 'Hz', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'FRMV1': {
-    name: 'Farmersville (FRMV1)',
-    fields: [
-      { id: 'system_health', label: 'System Health', type: 'select', options: ['', 'Good', 'Warning', 'Critical'], value: '' },
-      { id: 'production', label: 'Production', type: 'text', unit: 'MWh', value: '' },
-      { id: 'availability', label: 'Availability', type: 'text', unit: '%', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'GLTA1': {
-    name: 'Glendale (GLTA1)',
-    fields: [
-      { id: 'string_monitoring', label: 'String Monitoring', type: 'select', options: ['', 'Normal', 'Abnormal'], value: '' },
-      { id: 'performance_ratio', label: 'Performance Ratio', type: 'text', unit: '%', value: '' },
-      { id: 'soiling_loss', label: 'Soiling Loss', type: 'text', unit: '%', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'HARQ1': {
-    name: 'Harper Lake 1 (HARQ1)',
-    fields: [
-      { id: 'state_of_charge', label: 'State of Charge', type: 'text', unit: '%', value: '' },
-      { id: 'charge_discharge', label: 'Charge/Discharge', type: 'select', options: ['', 'Charging', 'Discharging', 'Idle'], value: '' },
-      { id: 'temperature', label: 'Temperature', type: 'text', unit: '°C', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'HARQ2': {
-    name: 'Harper Lake 2 (HARQ2)',
-    fields: [
-      { id: 'state_of_charge', label: 'State of Charge', type: 'text', unit: '%', value: '' },
-      { id: 'charge_discharge', label: 'Charge/Discharge', type: 'select', options: ['', 'Charging', 'Discharging', 'Idle'], value: '' },
-      { id: 'temperature', label: 'Temperature', type: 'text', unit: '°C', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'HNFD1': {
-    name: 'Hanford (HNFD1)',
-    fields: [
-      { id: 'fencing_status', label: 'Fencing Status', type: 'select', options: ['', 'Secure', 'Breach'], value: '' },
-      { id: 'lighting_status', label: 'Lighting Status', type: 'select', options: ['', 'Operational', 'Failed'], value: '' },
-      { id: 'equipment_status', label: 'Equipment Status', type: 'select', options: ['', 'Normal', 'Maintenance', 'Fault'], value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'KUNA1': {
-    name: 'Kuna (KUNA1)',
-    fields: [
-      { id: 'current_output', label: 'Current Output', type: 'text', unit: 'MW', value: '' },
-      { id: 'daily_production', label: 'Daily Production', type: 'text', unit: 'MWh', value: '' },
-      { id: 'efficiency', label: 'Efficiency', type: 'text', unit: '%', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'LSTH1': {
-    name: 'Lathrop 1 (LSTH1)',
-    fields: [
-      { id: 'inverter_status', label: 'Inverter Status', type: 'select', options: ['', 'Online', 'Offline', 'Fault'], value: '' },
-      { id: 'power_output', label: 'Power Output', type: 'text', unit: 'MW', value: '' },
-      { id: 'weather_impact', label: 'Weather Impact', type: 'select', options: ['', 'Clear', 'Cloudy', 'Storm'], value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'LSTH2': {
-    name: 'Lathrop 2 (LSTH2)',
-    fields: [
-      { id: 'inverter_status', label: 'Inverter Status', type: 'select', options: ['', 'Online', 'Offline', 'Fault'], value: '' },
-      { id: 'power_output', label: 'Power Output', type: 'text', unit: 'MW', value: '' },
-      { id: 'weather_impact', label: 'Weather Impact', type: 'select', options: ['', 'Clear', 'Cloudy', 'Storm'], value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'MCLM1': {
-    name: 'McCalM (MCLM1)',
-    fields: [
-      { id: 'array_status', label: 'Array Status', type: 'select', options: ['', 'Tracking', 'Fixed', 'Manual'], value: '' },
-      { id: 'dc_voltage', label: 'DC Voltage', type: 'text', unit: 'V', value: '' },
-      { id: 'ac_power', label: 'AC Power', type: 'text', unit: 'kW', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'NCLS1': {
-    name: 'Niles (NCLS1)',
-    fields: [
-      { id: 'scada_connection', label: 'SCADA Connection', type: 'select', options: ['', 'Connected', 'Lost'], value: '' },
-      { id: 'data_quality', label: 'Data Quality', type: 'select', options: ['', 'Good', 'Poor'], value: '' },
-      { id: 'performance_index', label: 'Performance Index', type: 'text', unit: '%', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'NSTR1': {
-    name: 'Mustang (NSTR1)',
-    fields: [
-      { id: 'access_road', label: 'Access Road', type: 'select', options: ['', 'Clear', 'Blocked'], value: '' },
-      { id: 'weather_station', label: 'Weather Station', type: 'select', options: ['', 'Working', 'Failed'], value: '' },
-      { id: 'communication', label: 'Communication', type: 'select', options: ['', 'Normal', 'Intermittent'], value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'PRGN1': {
-    name: 'Piru (PRGN1)',
-    fields: [
-      { id: 'breaker_status', label: 'Breaker Status', type: 'select', options: ['', 'Closed', 'Open', 'Trip'], value: '' },
-      { id: 'voltage_level', label: 'Voltage Level', type: 'text', unit: 'kV', value: '' },
-      { id: 'load_current', label: 'Load Current', type: 'text', unit: 'A', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'PRTV1': {
-    name: 'Porterville (PRTV1)',
-    fields: [
-      { id: 'inverter_efficiency', label: 'Inverter Efficiency', type: 'text', unit: '%', value: '' },
-      { id: 'array_performance', label: 'Array Performance', type: 'select', options: ['', 'Optimal', 'Suboptimal'], value: '' },
-      { id: 'maintenance_required', label: 'Maintenance Required', type: 'select', options: ['', 'No', 'Yes'], value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'TLRE1': {
-    name: 'Tulare (TLRE1)',
-    fields: [
-      { id: 'active_power', label: 'Active Power', type: 'text', unit: 'MW', value: '' },
-      { id: 'reactive_power', label: 'Reactive Power', type: 'text', unit: 'MVar', value: '' },
-      { id: 'power_factor', label: 'Power Factor', type: 'text', unit: '', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  },
-  'TSMS1': {
-    name: 'Tehachapi (TSMS1)',
-    fields: [
-      { id: 'tracker_operation', label: 'Tracker Operation', type: 'select', options: ['', 'Auto', 'Manual', 'Stopped'], value: '' },
-      { id: 'soiling_level', label: 'Soiling Level', type: 'select', options: ['', 'Clean', 'Light', 'Moderate', 'Heavy'], value: '' },
-      { id: 'wind_speed', label: 'Wind Speed', type: 'text', unit: 'mph', value: '' },
-      { id: 'notes', label: 'Notes', type: 'textarea', value: '' }
-    ]
-  }
-};
-
-let assetScanData = {};
-let currentSite = '';
-
-// Initialize Asset Scan
-function initAssetScan() {
-  console.log('Asset Scan: Initializing...');  
-  // Load saved data
-  try {
-    const saved = localStorage.getItem(AS_SCAN_KEY);
-    if (saved) {
-      assetScanData = JSON.parse(saved) || {};
-    }
-  } catch(e) {
-    console.error('Failed to load Asset Scan data:', e);
-  }
-  
-  // Populate site dropdown
-  populateSiteDropdown();
-  
-  // Set current date
+// ── init & render ──────────────────────────────────────────────────────────────
+function asInit() {
   document.getElementById('as-date').valueAsDate = new Date();
-  
-  console.log('Asset Scan: Initialized successfully');
+  asLoadAll();
+  // Restore last visited tab; if none saved, skip ROCC1 and land on first real site
+  const saved = (()=>{try{return localStorage.getItem('rnwbl_asactive')||'';}catch(e){return '';}})();
+  const sites = asSites();
+  if(saved && sites.find(s=>s.id===saved)) {
+    asActiveSite = saved;
+  } else {
+    asActiveSite = (sites.find(s=>s.id!=='ROCC1') || sites[0])?.id || '';
+  }
+  asRenderTabs();
+  asRenderForm();
 }
 
-// Populate site dropdown
-function populateSiteDropdown() {
-  const select = document.getElementById('as-site-select');
-  select.innerHTML = '<option value="">Choose a site...</option>';
-  
-  Object.keys(ASSET_SITES).forEach(siteId => {
-    const option = document.createElement('option');
-    option.value = siteId;
-    option.textContent = ASSET_SITES[siteId].name;
-    select.appendChild(option);
+function asRenderTabs() {
+  document.getElementById('as-tabs').innerHTML = asSites().map(s=>{
+    const done=asSiteComplete(s.id), pct=asSiteFilledPct(s.id);
+    const style=done?'border-color:var(--green);color:var(--green);background:var(--gbg);'
+                :pct>0?'border-color:var(--amber);color:var(--amber);background:var(--abg);':'';
+    const icon=done?' ✓':pct>0?' …':'';
+    const isActive=s.id===asActiveSite;
+    return `<button class="as-tab${isActive?' active':''}" style="${isActive?'':style}" onclick="asSwitch('${esc(s.id)}')">${esc(s.id)}${icon}</button>`;
+  }).join('');
+}
+
+function asSwitch(id) { asActiveSite=id; try{localStorage.setItem('rnwbl_asactive',id);}catch(e){} asRenderTabs(); asRenderForm(); }
+
+function asRenderForm() {
+  const site=asSites().find(s=>s.id===asActiveSite); if(!site) return;
+  const done=asSiteComplete(site.id), pct=asSiteFilledPct(site.id);
+  const bannerBg=done?'background:var(--green);':'';
+
+  let html=`<div class="as-banner" style="${bannerBg}">
+    <span class="as-banner-name">${esc(site.id)}</span>
+    ${site.stats?`<span class="as-banner-stats">${esc(site.stats)}</span>`:''}
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+      ${done
+        ?`<span style="font-size:11px;font-weight:600;color:#fff;background:rgba(255,255,255,.2);padding:3px 10px;border-radius:10px;">✓ Complete</span>
+          <button onclick="asUnmarkDone('${esc(site.id)}')" style="font-size:11px;padding:3px 10px;border-radius:5px;border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;cursor:pointer;">Reopen</button>`
+        :`<span style="font-size:11px;color:rgba(255,255,255,.65);">${pct}% filled</span>
+          <button onclick="asMarkDone('${esc(site.id)}')" style="font-size:11px;padding:3px 10px;border-radius:5px;border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;cursor:pointer;">✓ Mark complete</button>`
+      }
+    </div>
+  </div><div class="as-body">`;
+
+  site.sections.forEach((sec,si)=>{
+    const secAlert=asSectionHasAlert(site.id,si);
+    if(sec.title) html+=`<div class="as-section-hdr">${esc(sec.title)}${secAlert?` <span style="font-size:10px;font-weight:600;color:var(--red);background:var(--rbg);padding:1px 7px;border-radius:8px;">⚠ Alert</span>`:''}</div>`;
+    sec.fields.forEach((f,fi)=>{
+      const k=asKey(site.id,si,fi), val=asVals[k]||'';
+      const fid='asf_'+k.replace(/\|/g,'_'), aid='asa_'+k.replace(/\|/g,'_'), kid='askv_'+k.replace(/\|/g,'_');
+      html+=`<div class="as-row"><div><div class="as-lbl">${esc(f.n)}</div>${f.hint?`<div class="as-hint">${esc(f.hint)}</div>`:''}</div><div>`;
+      if(f.t==='select'){
+        html+=`<select class="as-sel" id="${fid}" onchange="asChange('${k}','${aid}','${esc(site.id)}',${si},this)">${(f.opts||[]).map(o=>`<option value="${esc(o)}"${val===o?' selected':''}>${esc(o)}</option>`).join('')}</select>`;
+      } else if(f.t==='textarea'){
+        html+=`<textarea class="as-textarea" id="${fid}" rows="2" onchange="asChange('${k}','','${esc(site.id)}',${si},this)">${esc(val)}</textarea>`;
+      } else {
+        const unit=f.unit||'', dispVal=(unit&&val.endsWith(unit))?val.slice(0,-unit.length):val;
+        html+=`<input class="as-inp" id="${fid}" value="${esc(dispVal)}" placeholder="${esc(f.n)}${unit?' ('+unit+')':''}" data-unit="${esc(unit)}" data-kv-min="${f.kvMin||''}" data-kv-max="${f.kvMax||''}" data-kv-id="${kid}" onblur="asTextBlur('${k}','${kid}','${esc(site.id)}',${si},this)" onchange="asChange('${k}','','${esc(site.id)}',${si},this)">`;
+      }
+      html+=`</div><div>`;
+      if(f.t==='select'&&f.alert){ const on=val&&val.toLowerCase()===f.alert.toLowerCase(); html+=`<span class="alert-pill${on?' on':''}" id="${aid}">⚠ TAKE ACTION</span>`; }
+      if(f.kvMin!=null) html+=`<span class="as-status" id="${kid}"></span>`;
+      html+=`</div></div>`;
+    });
   });
+
+  html+=`<div class="as-export-bar"><button class="btn-p" onclick="asExportCSV()">Export CSV</button><span style="font-size:12px;color:var(--text3);">Fill in Date, Operator &amp; Shift above before exporting.</span></div></div>`;
+  document.getElementById('as-form-wrap').innerHTML=html;
+
+  // Restore kV indicators
+  site.sections.forEach((sec,si)=>sec.fields.forEach((f,fi)=>{
+    if(f.kvMin==null) return;
+    const k=asKey(site.id,si,fi), val=asVals[k]||'', unit=f.unit||'';
+    const num=parseFloat((unit&&val.endsWith(unit))?val.slice(0,-unit.length):val);
+    if(!isNaN(num)) asUpdateKv('askv_'+k.replace(/\|/g,'_'),num,f.kvMin,f.kvMax);
+  }));
 }
 
-// Handle site selection
-function selectSite(siteId) {
-  if (!siteId) {
-    document.getElementById('as-site-form').style.display = 'none';
-    return;
-  }
-  
-  currentSite = siteId;
-  renderSiteForm(siteId);
-}
-
-// Render form for selected site
-function renderSiteForm(siteId) {
-  const site = ASSET_SITES[siteId];
-  if (!site) return;
-  
-  const formContent = document.getElementById('as-form-content');
-  formContent.innerHTML = '';
-  
-  // Create form sections
-  let html = `<div class="card">
-    <div class="card-title">${site.name}</div>`;
-  
-  site.fields.forEach(field => {
-    const savedValue = assetScanData[siteId] && assetScanData[siteId][field.id] ? assetScanData[siteId][field.id] : '';
-    
-    html += `<div style="margin-bottom:12px;">
-      <label style="display:block;font-weight:500;margin-bottom:4px;color:var(--text2);">${field.label}${field.unit ? ' (' + field.unit + ')' : ''}</label>`;
-    
-    if (field.type === 'select') {
-      html += `<select id="field-${field.id}" style="width:100%;padding:6px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);">`;
-      html += `<option value="">Select...</option>`;
-      field.options.forEach(option => {
-        const selected = option === savedValue ? 'selected' : '';
-        html += `<option value="${option}" ${selected}>${option}</option>`;
-      });
-      html += `</select>`;
-    } else if (field.type === 'textarea') {
-      html += `<textarea id="field-${field.id}" rows="3" style="width:100%;padding:6px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);resize:vertical;">${savedValue}</textarea>`;
-    } else {
-      html += `<input type="text" id="field-${field.id}" value="${savedValue}" placeholder="${field.label}" style="width:100%;padding:6px;border:1px solid var(--border);border-radius:6px;background:var(--bg2);">`;
-    }
-    
-    html += `</div>`;
-  });
-  
-  html += `</div>`;
-  formContent.innerHTML = html;
-  
-  // Show form
-  document.getElementById('as-site-form').style.display = 'block';
-  
-  // Add change listeners
-  site.fields.forEach(field => {
-    const element = document.getElementById(`field-${field.id}`);
-    if (element) {
-      element.addEventListener('change', () => saveFieldValue(siteId, field.id, element.value));
-    }
-  });
-}
-
-// Save field value
-function saveFieldValue(siteId, fieldId, value) {
-  if (!assetScanData[siteId]) {
-    assetScanData[siteId] = {};
-  }
-  assetScanData[siteId][fieldId] = value;
-  
-  try {
-    localStorage.setItem(AS_SCAN_KEY, JSON.stringify(assetScanData));
-  } catch(e) {
-    console.error('Failed to save Asset Scan data:', e);
-  }
-}
-
-// Mark site as complete
-function asMarkComplete() {
-  if (!currentSite) {
-    showToast('Please select a site first');
-    return;
-  }
-  
-  // Add completion timestamp
-  if (!assetScanData[currentSite]) {
-    assetScanData[currentSite] = {};
-  }
-  assetScanData[currentSite].completed = true;
-  assetScanData[currentSite].completedAt = new Date().toISOString();
-  
-  try {
-    localStorage.setItem(AS_SCAN_KEY, JSON.stringify(assetScanData));
-    showToast(`${ASSET_SITES[currentSite].name} marked as complete ✓`);
-  } catch(e) {
-    console.error('Failed to save completion:', e);
-  }
-}
-
-// Start fresh (clear all data)
-function asStartFresh() {
-  if (!confirm('Clear all Asset Scan data? This will remove all entered values and completion status.')) {
-    return;
-  }
-  
-  assetScanData = {};
-  currentSite = '';
-  
-  try {
-    localStorage.setItem(AS_SCAN_KEY, JSON.stringify(assetScanData));
-    document.getElementById('as-site-form').style.display = 'none';
-    document.getElementById('as-site-select').value = '';
-    showToast('Asset Scan cleared - ready for new shift');
-  } catch(e) {
-    console.error('Failed to clear Asset Scan data:', e);
-  }
-}
-
-// Export to CSV
-function asExportCSV() {
-  if (Object.keys(assetScanData).length === 0) {
-    showToast('No data to export');
-    return;
-  }
-  
-  let csv = 'Site,Field,Value,Completed,Completed At\n';
-  
-  Object.keys(assetScanData).forEach(siteId => {
-    const site = ASSET_SITES[siteId];
-    const siteData = assetScanData[siteId];
-    
-    if (siteData) {
-      Object.keys(siteData).forEach(fieldId => {
-        if (fieldId !== 'completed' && fieldId !== 'completedAt') {
-          const field = site.fields.find(f => f.id === fieldId);
-          if (field) {
-            csv += `"${site.name}","${field.label}","${siteData[fieldId] || ''}","${siteData.completed || 'No'}","${siteData.completedAt || ''}"\n`;
-          }
+function asChange(k, alertId, siteId, si, el) {
+  asVals[k]=el.value; asSaveVals();
+  if(alertId){
+    const pill=document.getElementById(alertId);
+    const site=asSites().find(s=>s.id===siteId);
+    const fi=parseInt(k.split('|')[2]), f=site?.sections[si]?.fields[fi];
+    if(pill&&f?.alert) pill.classList.toggle('on',el.value.toLowerCase()===f.alert.toLowerCase()&&el.value!=='');
+    // update section alert badge inline
+    if(site&&site.sections[si]?.title){
+      const hdrs=document.querySelectorAll('.as-section-hdr');
+      hdrs.forEach(hdr=>{
+        const titleMatch=hdr.textContent.trim().split('⚠')[0].trim()===site.sections[si].title;
+        if(titleMatch){
+          const existing=hdr.querySelector('span'); const hasAlert=asSectionHasAlert(siteId,si);
+          if(hasAlert&&!existing) hdr.insertAdjacentHTML('beforeend','<span style="font-size:10px;font-weight:600;color:var(--red);background:var(--rbg);padding:1px 7px;border-radius:8px;">⚠ Alert</span>');
+          else if(!hasAlert&&existing) existing.remove();
         }
       });
     }
-  });
-  
-  // Create download
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `asset_scan_${new Date().toISOString().split('T')[0]}.csv`;
-  a.click();
-  window.URL.revokeObjectURL(url);
-  
-  showToast('Asset Scan exported to CSV');
-}
-
-// OPS TOOLS FUNCTIONS
-
-// SoftWrench Log Builder
-const SW_KEY = 'rnwbl_sw_flows_v1';
-let swFlows = [];
-let swActiveFlow = null;
-let swFieldValues = {};
-
-function swLoadFlows() {
-  try { const r = localStorage.getItem(SW_KEY); if (r) swFlows = JSON.parse(r) || []; } catch(e) {}
-  swRenderFlowSelect();
-}
-
-function swSaveFlows() {
-  try { localStorage.setItem(SW_KEY, JSON.stringify(swFlows)); } catch(e) {}
-}
-
-function swRenderFlowSelect() {
-  const sel = document.getElementById('sw-flow-sel');
-  if (!sel) return;
-  sel.innerHTML = '<option value="">Select a flow...</option>' + 
-    swFlows.map((f, i) => `<option value="${i}">${esc(f.name)}</option>`).join('');
-}
-
-function swSelectFlow() {
-  const sel = document.getElementById('sw-flow-sel');
-  const idx = parseInt(sel.value);
-  if (isNaN(idx) || !swFlows[idx]) {
-    swActiveFlow = null;
-    swFieldValues = {};
-    swRenderFields();
-    return;
   }
-  swActiveFlow = swFlows[idx];
-  swFieldValues = {};
-  swRenderFields();
+  asRenderTabs();
 }
 
-function swRenderFields() {
-  const container = document.getElementById('sw-fields');
-  const outputWrap = document.getElementById('sw-output-wrap');
-  const empty = document.getElementById('sw-empty');
-  if (!container) return;
+function asTextBlur(k, kvId, siteId, si, el) {
+  const unit=el.getAttribute('data-unit')||'', kvMin=el.getAttribute('data-kv-min'), kvMax=el.getAttribute('data-kv-max');
+  let v=el.value.trim();
+  if(!v){asVals[k]='';asSaveVals();return;}
+  if(unit&&v.endsWith(unit)) v=v.slice(0,-unit.length).trim();
+  if(!isNaN(parseFloat(v))&&isFinite(v)){
+    if(unit) el.value=v+unit;
+    asVals[k]=el.value;
+    if(kvMin&&kvMax) asUpdateKv(kvId,parseFloat(v),parseFloat(kvMin),parseFloat(kvMax));
+  } else { asVals[k]=el.value; }
+  asSaveVals(); asRenderTabs();
+}
 
-  if (!swActiveFlow) {
-    container.innerHTML = '';
-    outputWrap.style.display = 'none';
-    empty.style.display = 'block';
-    return;
+function asUpdateKv(kvId, val, min, max) {
+  const sp=document.getElementById(kvId); if(!sp) return;
+  if(val>=min&&val<=max){sp.textContent='In band';sp.className='as-status kv-ok';}
+  else{sp.textContent='Out of band';sp.className='as-status kv-bad';}
+}
+
+function asMarkDone(siteId){asDone[siteId]=true;asSaveDone();asRenderTabs();asRenderForm();showToast(siteId+' marked complete ✓');}
+function asUnmarkDone(siteId){delete asDone[siteId];asSaveDone();asRenderTabs();asRenderForm();}
+
+function asStartFresh(){
+  if(!confirm('Clear all Asset Scan values and completion flags? Site definitions are kept.')) return;
+  asVals={};asDone={};asSaveVals();asSaveDone();asRenderTabs();asRenderForm();showToast('Asset Scan cleared — ready for next round');
+}
+
+// ── edit sites ────────────────────────────────────────────────────────────────
+function asOpenEdit(){
+  asRenderEditList(); asEditClear(); openModal('modal-as-edit');
+}
+function asRenderEditList(){
+  const el=document.getElementById('as-edit-list'); if(!el) return;
+  el.innerHTML=asSites().map((s,i)=>`<div class="task-item">
+    <span class="task-label">${esc(s.id)} <span style="color:var(--text3);font-size:11px;">— ${esc(s.label||'')} ${esc(s.stats||'')}</span></span>
+    <button class="tbtn" style="font-size:11px;padding:2px 8px;" onclick="asEditLoad(${i})">Edit</button>
+    <button class="task-del" onclick="asEditDel(${i})">✕</button>
+  </div>`).join('')||'<div class="empty">No sites</div>';
+}
+function asEditLoad(idx){
+  const s=asSites()[idx]; if(!s) return;
+  document.getElementById('as-edit-idx').value=idx;
+  document.getElementById('as-eid').value=s.id;
+  document.getElementById('as-elabel').value=s.label||'';
+  document.getElementById('as-estats').value=s.stats||'';
+  document.getElementById('as-ejson').value=JSON.stringify(s.sections,null,2);
+  document.getElementById('as-edit-form-hdr').textContent='Edit: '+s.id;
+}
+function asEditClear(){
+  document.getElementById('as-edit-idx').value='';
+  ['as-eid','as-elabel','as-estats','as-ejson'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('as-edit-form-hdr').textContent='Add new site';
+}
+function asEditSave(){
+  const id=document.getElementById('as-eid').value.trim();
+  if(!id){showToast('Site ID required');return;}
+  let sections=[];
+  const raw=document.getElementById('as-ejson').value.trim();
+  if(raw){try{sections=JSON.parse(raw);}catch(e){showToast('JSON error: '+e.message);return;}}
+  const site={id,label:document.getElementById('as-elabel').value.trim()||id,stats:document.getElementById('as-estats').value.trim(),sections};
+  if(asCustom===null) asCustom=[...AS_SITES]; // clone defaults on first edit
+  const idx=parseInt(document.getElementById('as-edit-idx').value);
+  if(!isNaN(idx)&&idx>=0) asCustom[idx]=site;
+  else {
+    if(asCustom.find(s=>s.id===id)){showToast('ID already exists');return;}
+    asCustom.push(site);
   }
-
-  const fields = swExtractFields(swActiveFlow.template);
-  container.innerHTML = fields.map(field => `
-    <div style="display:flex;gap:6px;align-items:center;">
-      <label style="font-size:12px;font-weight:500;color:var(--text2);min-width:80px;">${esc(field)}:</label>
-      <input type="text" style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);" 
-             data-field="${esc(field)}" oninput="swUpdateField('${esc(field)}', this.value)" value="${esc(swFieldValues[field] || '')}">
-    </div>
-  `).join('');
-
-  empty.style.display = 'none';
-  swUpdateOutput();
+  asSaveCustom(); asRenderEditList(); asEditClear();
+  if(!asActiveSite) asActiveSite=id;
+  asRenderTabs(); showToast('Site saved');
+}
+function asEditDel(idx){
+  if(!confirm('Remove this site?')) return;
+  if(asCustom===null) asCustom=[...AS_SITES];
+  const removed=asCustom.splice(idx,1)[0];
+  if(asActiveSite===removed?.id) asActiveSite=asCustom[0]?.id||'';
+  asSaveCustom(); asRenderEditList(); asRenderTabs(); asRenderForm();
 }
 
-function swExtractFields(template) {
-  const matches = template.match(/\{([^}]+)\}/g);
-  if (!matches) return [];
-  return matches.map(m => m.slice(1, -1)).filter((f, i, arr) => arr.indexOf(f) === i);
+function asExportCSV() {
+  const date=document.getElementById('as-date').value, op=document.getElementById('as-operator').value, shift=document.getElementById('as-shift').value;
+  let csv='Date,Operator,Shift,Site,Section,Field,Value\n';
+  asSites().forEach(site=>site.sections.forEach((sec,si)=>sec.fields.forEach((f,fi)=>{
+    const v=(asVals[asKey(site.id,si,fi)]||'').replace(/"/g,'""');
+    csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","${f.n}","${v}"\n`;
+  })));
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download=`ROC_Asset_Scan_${op||'Op'}_${date||'nodate'}.csv`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(a.href);
 }
 
-function swUpdateField(field, value) {
-  swFieldValues[field] = value;
-  swUpdateOutput();
-}
-
-function swUpdateOutput() {
-  const output = document.getElementById('sw-output');
-  if (!output || !swActiveFlow) return;
-
-  let result = swActiveFlow.template;
-  for (const [field, value] of Object.entries(swFieldValues)) {
-    result = result.replace(new RegExp(`\\{${field.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\}`, 'g'), value || `{${field}}`);
-  }
-
-  output.textContent = result;
-  document.getElementById('sw-output-wrap').style.display = 'block';
-}
-
-function swCopy() {
-  const output = document.getElementById('sw-output');
-  if (!output) return;
-  output.select();
-  document.execCommand('copy');
-  showToast('Log entry copied to clipboard');
-}
-
-function swClear() {
-  swFieldValues = {};
-  swRenderFields();
-}
-
-function swOpenManage() {
-  swRenderFlowList();
-  swFormClear();
-  openModal('modal-sw-manage');
-}
-
-function swRenderFlowList() {
-  const list = document.getElementById('sw-flow-list');
-  if (!list) return;
-  
-  list.innerHTML = swFlows.length === 0 ? '<div style="color:var(--text3);font-size:12px;text-align:center;padding:20px;">No flows created yet</div>' :
-    swFlows.map((f, i) => `
-      <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg3);border-radius:6px;">
-        <span style="flex:1;font-size:13px;">${esc(f.name)}</span>
-        <button class="tbtn" style="font-size:11px;padding:2px 8px;" onclick="swEditFlow(${i})">Edit</button>
-        <button class="task-del" onclick="swDeleteFlow(${i})">??</button>
-      </div>
-    `).join('');
-}
-
-function swEditFlow(idx) {
-  const flow = swFlows[idx];
-  if (!flow) return;
-  
-  document.getElementById('sw-edit-idx').value = idx;
-  document.getElementById('sw-fname').value = flow.name;
-  document.getElementById('sw-ftemplate').value = flow.template;
-  document.getElementById('sw-form-hdr').textContent = 'Edit flow';
-  swPreviewFields();
-}
-
-function swDeleteFlow(idx) {
-  if (!confirm('Delete this flow?')) return;
-  swFlows.splice(idx, 1);
-  swSaveFlows();
-  swRenderFlowList();
-  swRenderFlowSelect();
-}
-
-function swFormClear() {
-  document.getElementById('sw-edit-idx').value = '';
-  document.getElementById('sw-fname').value = '';
-  document.getElementById('sw-ftemplate').value = '';
-  document.getElementById('sw-form-hdr').textContent = 'Add new flow';
-  swPreviewFields();
-}
-
-function swPreviewFields() {
-  const template = document.getElementById('sw-ftemplate').value;
-  const fields = swExtractFields(template);
-  const preview = document.getElementById('sw-field-preview');
-  
-  if (!preview) return;
-  
-  preview.innerHTML = fields.length === 0 
-    ? 'Type a template above - fields will appear here as you use <span style="color:var(--blue);">{curly braces}</span>.'
-    : fields.map(f => `<code style="background:var(--bbg);color:var(--blue);padding:2px 6px;border-radius:3px;margin:2px;">{${esc(f)}}</code>`).join(' ');
-}
-
-function swSaveFlow() {
-  const name = document.getElementById('sw-fname').value.trim();
-  const template = document.getElementById('sw-ftemplate').value.trim();
-  
-  if (!name || !template) {
-    showToast('Name and template are required');
-    return;
-  }
-  
-  const idx = parseInt(document.getElementById('sw-edit-idx').value);
-  const flow = { name, template };
-  
-  if (!isNaN(idx) && idx >= 0) {
-    swFlows[idx] = flow;
-  } else {
-    swFlows.push(flow);
-  }
-  
-  swSaveFlows();
-  swRenderFlowList();
-  swRenderFlowSelect();
-  swFormClear();
-  showToast('Flow saved');
-}
-
-// NATO Phonetic Alphabet
-const NATO = {
-  'A': 'Alpha', 'B': 'Bravo', 'C': 'Charlie', 'D': 'Delta', 'E': 'Echo',
-  'F': 'Foxtrot', 'G': 'Golf', 'H': 'Hotel', 'I': 'India', 'J': 'Juliett',
-  'K': 'Kilo', 'L': 'Lima', 'M': 'Mike', 'N': 'November', 'O': 'Oscar',
-  'P': 'Papa', 'Q': 'Quebec', 'R': 'Romeo', 'S': 'Sierra', 'T': 'Tango',
-  'U': 'Uniform', 'V': 'Victor', 'W': 'Whiskey', 'X': 'X-ray', 'Y': 'Yankee', 'Z': 'Zulu',
-  '0': 'Zero', '1': 'One', '2': 'Two', '3': 'Three', '4': 'Four',
-  '5': 'Five', '6': 'Six', '7': 'Seven', '8': 'Eight', '9': 'Nine'
-};
-
-function renderPhonetic() {
-  const input = document.getElementById('ph-input').value.toUpperCase();
-  const output = document.getElementById('ph-output');
-  const empty = document.getElementById('ph-empty');
-  
-  if (!input) {
-    output.style.display = 'none';
-    empty.style.display = 'block';
-    return;
-  }
-  
-  const phonetic = input.split('').map(char => NATO[char] || char).join(' ');
-  output.textContent = phonetic;
-  output.style.display = 'block';
-  empty.style.display = 'none';
-}
-
-function copyPhonetic() {
-  const output = document.getElementById('ph-output');
-  if (!output) return;
-  
-  const text = output.textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    showToast('Phonetic text copied');
-  }).catch(() => {
-    // Fallback for older browsers
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    showToast('Phonetic text copied');
-  });
-}
-
-// Elapsed Time
-let etInterval = null;
-let etStartTime = null;
-
-function etSetNow() {
-  const now = new Date();
-  const timeStr = now.toTimeString().slice(0, 5);
-  document.getElementById('et-start').value = timeStr;
-  etStartTimer();
-}
-
-function etStartTimer() {
-  const timeInput = document.getElementById('et-start').value;
-  if (!timeInput) return;
-  
-  const [hours, minutes] = timeInput.split(':').map(Number);
-  const now = new Date();
-  const start = new Date();
-  start.setHours(hours, minutes, 0, 0);
-  
-  // If the time is in the past, assume it's today
-  if (start > now) {
-    start.setDate(start.getDate() - 1);
-  }
-  
-  etStartTime = start;
-  
-  if (etInterval) clearInterval(etInterval);
-  etInterval = setInterval(etUpdateTimer, 1000);
-  etUpdateTimer();
-  
-  document.getElementById('et-label').style.display = 'block';
-  document.getElementById('et-display').style.display = 'block';
-  document.getElementById('et-since').style.display = 'block';
-  document.getElementById('et-empty').style.display = 'none';
-  document.getElementById('et-copy-btn').style.display = 'inline-block';
-}
-
-function etUpdateTimer() {
-  if (!etStartTime) return;
-  
-  const now = new Date();
-  const diff = now - etStartTime;
-  
-  const hours = Math.floor(diff / 3600000);
-  const minutes = Math.floor((diff % 3600000) / 60000);
-  const seconds = Math.floor((diff % 60000) / 1000);
-  
-  const display = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  document.getElementById('et-display').textContent = display;
-  
-  const sinceStr = `Since ${etStartTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}`;
-  document.getElementById('et-since').textContent = sinceStr;
-}
-
-function etReset() {
-  if (etInterval) clearInterval(etInterval);
-  etInterval = null;
-  etStartTime = null;
-  
-  document.getElementById('et-start').value = '';
-  document.getElementById('et-label').style.display = 'none';
-  document.getElementById('et-display').style.display = 'none';
-  document.getElementById('et-since').style.display = 'none';
-  document.getElementById('et-empty').style.display = 'block';
-  document.getElementById('et-copy-btn').style.display = 'none';
-}
-
-function etCopyLog() {
-  if (!etStartTime) return;
-  
-  const now = new Date();
-  const diff = now - etStartTime;
-  const minutes = Math.floor(diff / 60000);
-  
-  const logText = `Event started: ${etStartTime.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}\nElapsed: ${minutes} minutes`;
-  
-  navigator.clipboard.writeText(logText).then(() => {
-    showToast('Elapsed time copied to log');
-  }).catch(() => {
-    // Fallback
-    const textarea = document.createElement('textarea');
-    textarea.value = logText;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    showToast('Elapsed time copied to log');
-  });
-}
-
-// Initialize ops tools when page loads
-function initOpsTools() {
-  swLoadFlows();
-  renderPhonetic();
-}
-
-// Simple test function
-function testAssetScan() {
-  console.log('=== ASSET SCAN TEST ===');
-  
-  // Test 1: Check if elements exist
-  const viewAsset = document.getElementById('view-asset');
-  const asTabs = document.getElementById('as-tabs');
-  const asFormWrap = document.getElementById('as-form-wrap');
-  
-  console.log('view-asset exists:', !!viewAsset);
-  console.log('as-tabs exists:', !!asTabs);
-  console.log('as-form-wrap exists:', !!asFormWrap);
-  
-  // Test 2: Check if AS_SITES is defined
-  console.log('AS_SITES defined:', typeof AS_SITES !== 'undefined');
-  console.log('AS_SITES length:', AS_SITES ? AS_SITES.length : 'undefined');
-  
-  // Test 3: Try to manually add content
-  if (asTabs) {
-    asTabs.innerHTML = '<button style="padding:5px;border:1px solid #ccc;">TEST BUTTON</button>';
-    console.log('Manual content added to as-tabs');
-  }
-  
-  if (asFormWrap) {
-    asFormWrap.innerHTML = '<div style="padding:20px;border:1px solid #ccc;">TEST FORM</div>';
-    console.log('Manual content added to as-form-wrap');
-  }
-  
-  console.log('=== END TEST ===');
-}
-
-// Initialize everything
-load().then(() => {
-  initOpsTools();
-  
-  // Run test
-  testAssetScan();
-  
-  // Initialize Asset Scan if we're on that view
-  if (document.getElementById('view-asset').classList.contains('active')) {
-    initAssetScan();
-  }
-  
-  // Add Asset Scan site dropdown listener
-  const siteSelect = document.getElementById('as-site-select');
-  if (siteSelect) {
-    siteSelect.addEventListener('change', (e) => {
-      selectSite(e.target.value);
-    });
-  }
-});
+load();
 </script>
 </body>
 </html>
