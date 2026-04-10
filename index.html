@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -292,18 +290,18 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
     <span class="nav-brand-text">RNWBL OPS</span>
   </div>
-  <button class="nav-tab active" onclick="switchView('notes',this)">Notepad</button>
-  <button class="nav-tab" onclick="switchView('scans',this)">Scans</button>
-  <button class="nav-tab" onclick="switchView('ops',this)">Tasks</button>
-  <button class="nav-tab" onclick="switchView('log',this)">Log</button>
-  <button class="nav-tab" onclick="switchView('intel',this)">Field Intel</button>
+  <button class="nav-tab active" onclick="switchView('scans',this)">Scans</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
+  <button class="nav-tab" onclick="switchView('intel',this)">Field Intel</button>
+  <button class="nav-tab" onclick="switchView('ops',this)">Tasks</button>
+  <button class="nav-tab" style="display:none;" onclick="switchView('notes',this)">Notepad</button>
+  <button class="nav-tab" style="display:none;" onclick="switchView('log',this)">Log</button>
   <div class="nav-spacer"></div>
   <div class="nav-time" id="nav-clock"></div>
 </div>
 
 <!-- NOTEPAD -->
-<div class="view active" id="view-notes">
+<div class="view" id="view-notes" style="display:none!important">
   <div class="tpl-grid" id="tpl-grid"></div>
   <div class="notes-layout">
     <div class="notes-sidebar">
@@ -331,7 +329,7 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 </div>
 
 <!-- SCANS -->
-<div class="view" id="view-scans">
+<div class="view active" id="view-scans">
   <div class="timer-strip">
     <div class="timer-big" id="timer-disp">30:00</div>
     <div class="timer-bar-wrap"><div class="timer-bar-fill" id="timer-fill" style="width:100%"></div></div>
@@ -400,7 +398,7 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 </div>
 
 <!-- LOG -->
-<div class="view" id="view-log">
+<div class="view" id="view-log" style="display:none!important">
   <div class="stat-row" id="log-stats"></div>
   <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap;">
     <select id="log-filter" onchange="renderLog()">
