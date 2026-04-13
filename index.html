@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RNWBL — Ops Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <style>
 :root{
@@ -323,7 +324,7 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .map-legend{display:flex;align-items:center;gap:12px;margin-left:auto;flex-wrap:wrap;}
 .map-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);font-family:var(--m);}
 .map-legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(0,0,0,.18);}
-#map-container{flex:1;min-height:0;height:calc(100vh - 48px - 44px);}
+#map-container{flex:1;min-height:0;height:calc(100vh - 48px - 44px);background:var(--bg3);}
 /* Leaflet popup styled to match ops dashboard */
 .lf-popup .leaflet-popup-content-wrapper{background:var(--bg2);border:1px solid var(--border);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.12);padding:0;font-family:'DM Sans',sans-serif;}
 .lf-popup .leaflet-popup-tip{background:var(--bg2);}
@@ -2779,9 +2780,7 @@ function swRenderHist() {
 }
 
 // ─── MAP ─────────────────────────────────────────────────────────────────────
-// Leaflet is loaded from CDN. We create the map once and reuse it — calling
-// invalidateSize() fixes the common "grey tile" bug when Leaflet initialises
-// inside a hidden element.
+// Leaflet with free CartoDB tiles (no API key required)
 
 // Marker fill colors keyed by siteStatus() return values
 const MAP_COLORS = {
@@ -2791,10 +2790,10 @@ const MAP_COLORS = {
   never:   { fill:'#9e9a94', stroke:'#6b6760' }
 };
 
-let _map        = null;  // Leaflet map instance — created once
-let _mapMarkers = {};    // siteId → L.marker, for fast status updates
+let _map        = null;  // Leaflet map instance
+let _mapMarkers = {};    // siteId → L.marker
 
-// Build an SVG circle DivIcon sized for operator readability
+// Build an SVG circle DivIcon
 function mapMakeIcon(status) {
   const c = MAP_COLORS[status] || MAP_COLORS.never;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" class="map-marker-svg">
@@ -2806,7 +2805,7 @@ function mapMakeIcon(status) {
   });
 }
 
-// Build the HTML string inside each popup
+// Build popup HTML
 function mapPopupHtml(site) {
   const st    = siteStatus(site);
   const last  = site.lastScan ? timeSince(site.lastScan) : '—';
@@ -2827,26 +2826,28 @@ function mapPopupHtml(site) {
   </div>`;
 }
 
-// Called by popup button — closes popup then opens the scan modal
+// Called by popup button
 function mapLogScan(id) {
   if (_map) _map.closePopup();
   openScanNote(id);
 }
 
-// First-time map creation. Runs once; subsequent calls to mapActivate() are cheap.
+// Create map with free CartoDB tiles
 function mapCreate() {
-  if (_map) return;                        // already exists
-  if (typeof L === 'undefined') return;    // Leaflet not loaded yet
+  if (_map) return;
+  if (typeof L === 'undefined') {
+    document.getElementById('map-container').innerHTML = '<div style="padding:20px;color:var(--red);">Map library failed to load. Check internet connection.</div>';
+    return;
+  }
 
   _map = L.map('map-container', {
-    // Slightly warmer default zoom to show all US + Canada sites
     zoomControl: true,
     attributionControl: true
   });
 
-  // CartoDB Positron — clean, monochrome, ops-appropriate, no API key required
+  // FREE CartoDB Positron tiles — clean, light, no API key
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> | &copy; <a href="https://carto.com/attributions">CARTO</a>',
     subdomains: 'abcd',
     maxZoom: 19
   }).addTo(_map);
@@ -2854,10 +2855,9 @@ function mapCreate() {
   mapBuildMarkers();
 }
 
-// Add/replace all markers. Runs once on creation; called again if SITES changes.
+// Build all markers
 function mapBuildMarkers() {
   if (!_map) return;
-  // Remove any stale markers
   Object.values(_mapMarkers).forEach(m => m.remove());
   _mapMarkers = {};
 
@@ -2869,40 +2869,33 @@ function mapBuildMarkers() {
     _mapMarkers[site.id] = marker;
   });
 
-  // Update toolbar count
   const el = document.getElementById('map-site-count');
   if (el) el.textContent = `${mappable.length} of ${SITES.length} sites plotted`;
 }
 
-// Refresh marker icons + popup content when scan status may have changed.
-// Much cheaper than rebuilding markers from scratch.
+// Refresh markers when status changes
 function mapRefreshMarkers() {
   if (!_map) return;
   SITES.forEach(site => {
     const m = _mapMarkers[site.id];
     if (!m) return;
     m.setIcon(mapMakeIcon(siteStatus(site)));
-    // Rebuild popup content so "last scan" time is current
     m.setPopupContent(mapPopupHtml(site));
   });
 }
 
-// Fit the viewport to include all plotted markers
+// Fit to all markers
 function mapFitBounds() {
   if (!_map) return;
   const pts = SITES.filter(s => s.lat && s.lng).map(s => [s.lat, s.lng]);
   if (pts.length) _map.fitBounds(pts, { padding: [36, 36], maxZoom: 7 });
 }
 
-// Called by switchView('map'). Creates map if needed, fixes grey-tile bug,
-// refreshes marker colors, and fits bounds on first visit.
+// Called when switching to Map tab
 let _mapFirstVisit = true;
 function mapActivate() {
-  // Leaflet must be initialised after the container is visible
-  // (the view has just become active at this point)
   if (typeof L === 'undefined') {
-    // Leaflet script not yet parsed — shouldn't happen with sync CDN include
-    document.getElementById('map-container').innerHTML = '<div style="padding:20px;color:var(--red);">Map library (Leaflet) failed to load. Check internet connection.</div>';
+    document.getElementById('map-container').innerHTML = '<div style="padding:20px;color:var(--red);">Map library failed to load. Check internet connection.</div>';
     return;
   }
   if (!_map) {
@@ -2910,7 +2903,6 @@ function mapActivate() {
     mapFitBounds();
     _mapFirstVisit = false;
   } else {
-    // invalidateSize() is essential after being hidden — forces tile recalculation
     _map.invalidateSize();
     mapRefreshMarkers();
     if (_mapFirstVisit) { mapFitBounds(); _mapFirstVisit = false; }
@@ -2919,7 +2911,5 @@ function mapActivate() {
 
 load();
 </script>
-<!-- Leaflet loaded after app script so the map-container DOM exists -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 </body>
 </html>
