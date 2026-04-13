@@ -846,26 +846,47 @@ function defaultSites() {
 // ─── STATE ────────────────────────────────────────────────────────────────────
 // Sites live in their own key so user edits persist independently of app state
 function loadSites() {
+  const defaults = defaultSites();
   try {
     const raw = localStorage.getItem(SITES_KEY);
-    if (raw) { const p = JSON.parse(raw); if (Array.isArray(p) && p.length) return p; }
+    if (raw) {
+      const stored = JSON.parse(raw);
+      if (Array.isArray(stored) && stored.length) {
+        // Merge stored sites with default coordinates (hardcoded lat/lng always win)
+        return stored.map(s => {
+          const def = defaults.find(d => d.id === s.id);
+          return def ? { ...s, lat: def.lat, lng: def.lng } : s;
+        });
+      }
+    }
   } catch(e) {}
-  return defaultSites();
+  return defaults;
 }
 function saveSites(sites) {
   try { localStorage.setItem(SITES_KEY, JSON.stringify(sites)); } catch(e) {}
   try { window.storage && window.storage.set(SITES_KEY, JSON.stringify(sites)); } catch(e) {}
 }
 async function loadSitesAsync() {
+  const defaults = defaultSites();
+  let stored = null;
   try {
     const raw = localStorage.getItem(SITES_KEY);
-    if (raw) { const p = JSON.parse(raw); if (Array.isArray(p) && p.length) return p; }
+    if (raw) stored = JSON.parse(raw);
   } catch(e) {}
   try {
-    const r = await window.storage.get(SITES_KEY);
-    if (r && r.value) { const p = JSON.parse(r.value); if (Array.isArray(p) && p.length) return p; }
+    if (!stored) {
+      const r = await window.storage.get(SITES_KEY);
+      if (r && r.value) stored = JSON.parse(r.value);
+    }
   } catch(e) {}
-  return defaultSites();
+  // Merge stored sites with default coordinates (hardcoded lat/lng always win)
+  if (Array.isArray(stored) && stored.length) {
+    return stored.map(s => {
+      const def = defaults.find(d => d.id === s.id);
+      return def ? { ...s, lat: def.lat, lng: def.lng } : s;
+    });
+  }
+  return defaults;
 }
 
 let S = {
@@ -2881,7 +2902,7 @@ function mapActivate() {
   // (the view has just become active at this point)
   if (typeof L === 'undefined') {
     // Leaflet script not yet parsed — shouldn't happen with sync CDN include
-    document.getElementById('map-container').textContent = 'Map library failed to load.';
+    document.getElementById('map-container').innerHTML = '<div style="padding:20px;color:var(--red);">Map library (Leaflet) failed to load. Check internet connection.</div>';
     return;
   }
   if (!_map) {
