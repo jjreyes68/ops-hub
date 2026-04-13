@@ -1377,8 +1377,9 @@ function addCrew(){ const n=document.getElementById('crew-inp').value.trim(); if
 function cycleCrew(id){ const STATS=['In field','On break','Off site','Stand-by']; const m=S.crew.find(x=>x.id===id); if(!m)return; m.status=STATS[(STATS.indexOf(m.status)+1)%STATS.length]; save(); renderCrew(); }
 function removeCrew(id){ S.crew=S.crew.filter(x=>x.id!==id); save(); renderCrew(); }
 function renderCrew(){
+  const el=document.getElementById('crew-list'); if(!el) return;
   const colors={'In field':'var(--green)','On break':'var(--amber)','Off site':'var(--text3)','Stand-by':'var(--blue)'};
-  document.getElementById('crew-list').innerHTML=!S.crew.length?'<div class="empty">No crew added</div>':
+  el.innerHTML=!S.crew.length?'<div class="empty">No crew added</div>':
     S.crew.map(m=>`<div class="task-item"><span class="task-label">${esc(m.name)}</span>
       <span style="font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;background:var(--bg4);color:${colors[m.status]||'var(--text2)'};cursor:pointer;" onclick="cycleCrew(${m.id})">${m.status}</span>
       <button class="task-del" onclick="removeCrew(${m.id})">✕</button>
@@ -1389,8 +1390,9 @@ function renderCrew(){
 function addEquip(){ const n=document.getElementById('equip-inp').value.trim(); if(!n)return; const st=document.getElementById('equip-status').value; S.equipment.push({id:Date.now(),name:n,status:st,ts:Date.now()}); document.getElementById('equip-inp').value=''; addLog({type:'task',title:'Equipment: '+n+' — '+st,detail:''}); save(); renderEquip(); }
 function removeEquip(id){ S.equipment=S.equipment.filter(x=>x.id!==id); save(); renderEquip(); }
 function renderEquip(){
+  const el=document.getElementById('equip-list'); if(!el) return;
   const icons={ok:'✅',caution:'⚠️',down:'🔴'};
-  document.getElementById('equip-list').innerHTML=!S.equipment.length?'<div class="empty">No equipment logged</div>':
+  el.innerHTML=!S.equipment.length?'<div class="empty">No equipment logged</div>':
     S.equipment.map(e=>`<div class="task-item"><span style="font-size:14px;">${icons[e.status]||'?'}</span><span class="task-label">${esc(e.name)}</span><span style="font-size:10px;color:var(--text3);font-family:var(--m);">${timeSince(e.ts)}</span><button class="task-del" onclick="removeEquip(${e.id})">✕</button></div>`).join('');
 }
 
@@ -1399,7 +1401,7 @@ const SAFETY=['Hard hat worn','High-vis vest on','Safety glasses','Steel-toe boo
 let safetyS={};
 function initSafety(){ SAFETY.forEach(i=>{if(safetyS[i]===undefined)safetyS[i]=false;}); renderSafety(); }
 function toggleSafety(i){ safetyS[i]=!safetyS[i]; renderSafety(); }
-function renderSafety(){ document.getElementById('safety-list').innerHTML=SAFETY.map(i=>`<div class="task-item${safetyS[i]?' done':''}"><input type="checkbox" class="task-cb" ${safetyS[i]?'checked':''} onchange="toggleSafety('${i.replace(/'/g,"\\'")}')" ><span class="task-label">${i}</span></div>`).join(''); }
+function renderSafety(){ const el=document.getElementById('safety-list'); if(!el) return; el.innerHTML=SAFETY.map(i=>`<div class="task-item${safetyS[i]?' done':''}"><input type="checkbox" class="task-cb" ${safetyS[i]?'checked':''} onchange="toggleSafety('${i.replace(/'/g,"\\'")}')" ><span class="task-label">${i}</span></div>`).join(''); }
 function completeSafety(){
   const done=SAFETY.filter(i=>safetyS[i]).length, now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   addLog({type:'task',title:'Safety check — '+done+'/'+SAFETY.length,detail:done===SAFETY.length?'All clear':'Incomplete'});
@@ -1413,7 +1415,7 @@ const NERC_ITEMS=['Physical access log reviewed','Electronic access controls ver
 let nercS={};
 function initNERC(){ NERC_ITEMS.forEach(i=>{if(nercS[i]===undefined)nercS[i]=false;}); renderNERC(); }
 function toggleNERC(i){ nercS[i]=!nercS[i]; renderNERC(); }
-function renderNERC(){ document.getElementById('nerc-list').innerHTML=NERC_ITEMS.map(i=>`<div class="task-item${nercS[i]?' done':''}"><input type="checkbox" class="task-cb" ${nercS[i]?'checked':''} onchange="toggleNERC('${i.replace(/'/g,"\\'")}')" ><span class="task-label" style="font-size:12px;">${i}</span></div>`).join(''); }
+function renderNERC(){ const el=document.getElementById('nerc-list'); if(!el) return; el.innerHTML=NERC_ITEMS.map(i=>`<div class="task-item${nercS[i]?' done':''}"><input type="checkbox" class="task-cb" ${nercS[i]?'checked':''} onchange="toggleNERC('${i.replace(/'/g,"\\'")}')" ><span class="task-label" style="font-size:12px;">${i}</span></div>`).join(''); }
 function completeNERC(){
   const done=NERC_ITEMS.filter(i=>nercS[i]).length, now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   addLog({type:'scan',title:'NERC compliance — '+done+'/'+NERC_ITEMS.length,detail:done===NERC_ITEMS.length?'All verified':'Incomplete'});
