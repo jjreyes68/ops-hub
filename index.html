@@ -281,6 +281,41 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 .toast.show{opacity:1;}
 .empty{font-size:12px;color:var(--text3);text-align:center;padding:16px 0;}
 select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;}
+/* ── SW BUILDER ─────────────────────────────────────────────────────────────── */
+.sw-wrap{display:grid;grid-template-columns:320px 1fr;gap:14px;align-items:start;}
+@media(max-width:680px){.sw-wrap{grid-template-columns:1fr;}}
+.sw-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;box-shadow:var(--shs);}
+.sw-box-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;}
+.sw-tpls{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;}
+.sw-tpl{display:flex;align-items:center;gap:0;padding:0;border-radius:7px;border:1.5px solid var(--border);background:var(--bg3);cursor:pointer;font-family:var(--f);font-size:12px;font-weight:600;transition:all .15s;overflow:hidden;text-align:left;}
+.sw-tpl:hover{border-color:var(--border2);background:var(--bg2);}
+.sw-tpl.sel-de{border-color:var(--red)!important;background:var(--rbg)!important;color:var(--red)!important;}
+.sw-tpl.sel-re{border-color:var(--green)!important;background:var(--gbg)!important;color:var(--green)!important;}
+.sw-tpl-stripe{width:4px;align-self:stretch;flex-shrink:0;}
+.sw-tpl-stripe.de{background:var(--red);}
+.sw-tpl-stripe.re{background:var(--green);}
+.sw-tpl-body{padding:8px 10px;flex:1;}
+.sw-tpl-site{font-size:10px;font-weight:500;color:var(--text3);display:block;margin-bottom:1px;}
+.sw-tpl.sel-de .sw-tpl-site,.sw-tpl.sel-re .sw-tpl-site{color:inherit;opacity:.75;}
+.sw-field{margin-bottom:10px;}
+.sw-field label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:4px;}
+.sw-field input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;}
+.sw-field input:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
+.sw-out-hdr{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+.sw-copy{padding:5px 16px;border-radius:6px;border:1px solid var(--green);background:var(--gbg);color:var(--green);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .15s;}
+.sw-copy:hover,.sw-copy.ok{background:var(--green);color:#fff;border-color:var(--green);}
+.sw-result-hdr{font-size:12px;font-weight:700;text-align:center;padding:5px 10px;border-radius:5px;margin-bottom:10px;letter-spacing:.03em;}
+.sw-result-hdr.de{background:var(--rbg);color:var(--red);}
+.sw-result-hdr.re{background:var(--gbg);color:var(--green);}
+.sw-result-body{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:var(--m);font-size:12.5px;line-height:1.85;color:var(--text);min-height:100px;white-space:pre-wrap;word-break:break-word;}
+.sw-empty{color:var(--text3);font-size:12px;text-align:center;padding:28px 0;font-family:var(--f);}
+.sw-hist-list{display:flex;flex-direction:column;gap:4px;max-height:240px;overflow-y:auto;margin-top:6px;}
+.sw-hist-row{padding:8px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:7px;cursor:pointer;transition:border-color .15s;}
+.sw-hist-row:hover{border-color:var(--border2);}
+.sw-hist-meta{font-size:10px;color:var(--text3);font-family:var(--m);}
+.sw-hist-snip{font-size:11px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;}
+select,option{background:var(--bg3);}
+
 </style>
 </head>
 <body>
@@ -294,6 +329,7 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
   <button class="nav-tab" onclick="switchView('intel',this)">Field Intel</button>
   <button class="nav-tab" onclick="switchView('ops',this)">Tasks</button>
+  <button class="nav-tab" onclick="switchView('swbuilder',this)">SW Builder</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('notes',this)">Notepad</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('log',this)">Log</button>
   <div class="nav-spacer"></div>
@@ -431,7 +467,7 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
       <div class="intel-content">
         <div class="ifield">
           <label>Search site name</label>
-          <input id="wx-site-inp" placeholder="Type site name..." oninput="debouncedWxFilter()" autocomplete="off">
+          <input id="wx-site-inp" placeholder="Type site name..." oninput="wxFilter()" autocomplete="off">
           <div class="wx-matches" id="wx-matches"></div>
         </div>
         <div class="ifield">
@@ -600,6 +636,87 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
   </div>
 </div>
 
+<!-- SW BUILDER ─────────────────────────────────────────────────────────────── -->
+<div class="view" id="view-swbuilder">
+  <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px;">
+    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">SoftWrench Log Builder</div>
+    <span style="font-size:12px;color:var(--text3);">Select template → fill name &amp; number → copy</span>
+  </div>
+  <div class="sw-wrap">
+
+    <!-- LEFT PANEL ─────────────────────── -->
+    <div>
+      <div class="sw-box">
+        <div class="sw-box-title">Template</div>
+
+        <!-- ALL 6 HARDCODED — always visible, no JS needed to render -->
+        <div class="sw-tpls">
+          <button class="sw-tpl" id="swtpl-harq-de" onclick="swSelect('harq-de',this)">
+            <span class="sw-tpl-stripe de"></span>
+            <span class="sw-tpl-body"><span class="sw-tpl-site">HARQ · Feeder Breaker</span>De-Energize</span>
+          </button>
+          <button class="sw-tpl" id="swtpl-harq-re" onclick="swSelect('harq-re',this)">
+            <span class="sw-tpl-stripe re"></span>
+            <span class="sw-tpl-body"><span class="sw-tpl-site">HARQ · Feeder Breaker</span>Re-Energize</span>
+          </button>
+          <button class="sw-tpl" id="swtpl-prgrn-de" onclick="swSelect('prgrn-de',this)">
+            <span class="sw-tpl-stripe de"></span>
+            <span class="sw-tpl-body"><span class="sw-tpl-site">PRGRN · MVT</span>De-Energize</span>
+          </button>
+          <button class="sw-tpl" id="swtpl-prgrn-re" onclick="swSelect('prgrn-re',this)">
+            <span class="sw-tpl-stripe re"></span>
+            <span class="sw-tpl-body"><span class="sw-tpl-site">PRGRN · MVT</span>Re-Energize</span>
+          </button>
+          <button class="sw-tpl" id="swtpl-cndr-de" onclick="swSelect('cndr-de',this)">
+            <span class="sw-tpl-stripe de"></span>
+            <span class="sw-tpl-body"><span class="sw-tpl-site">Condor · MVT Local</span>De-Energize</span>
+          </button>
+          <button class="sw-tpl" id="swtpl-cndr-re" onclick="swSelect('cndr-re',this)">
+            <span class="sw-tpl-stripe re"></span>
+            <span class="sw-tpl-body"><span class="sw-tpl-site">Condor · MVT Local</span>Re-Energize</span>
+          </button>
+        </div>
+
+        <div class="sw-field">
+          <label>Field Tech Name</label>
+          <input id="sw-tech" list="sw-tech-list" placeholder="e.g. Jake Zulaf" oninput="swBuild()">
+          <datalist id="sw-tech-list">
+            <option>Adam McCauley</option><option>Alexander Conway</option><option>Christopher Hill</option>
+            <option>Jake Zulaf</option><option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option>
+            <option>Mar'Cell Edwards</option><option>Morgan Shearer</option><option>Rob Seffern</option>
+            <option>Sergio Torres</option><option>Tineiaifi Malala</option><option>Tykeith</option>
+          </datalist>
+        </div>
+        <div class="sw-field">
+          <label id="sw-num-lbl">Number</label>
+          <input id="sw-num" type="text" placeholder="Select a template first" oninput="swBuild()">
+        </div>
+        <button class="btn-p" style="width:100%;margin-top:2px;" onclick="swSaveHistory()">Save to history</button>
+      </div>
+
+      <!-- HISTORY ────────────────────── -->
+      <div style="margin-top:12px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0 2px;margin-bottom:4px;">
+          <span style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;">Recent</span>
+          <button class="tbtn" style="font-size:11px;padding:2px 8px;" onclick="swClearHistory()">Clear</button>
+        </div>
+        <div id="sw-hist-wrap"><div class="sw-empty">No history yet</div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL ────────────────────── -->
+    <div class="sw-box">
+      <div class="sw-out-hdr">
+        <span>Output — ready to paste into SoftWrench</span>
+        <button class="sw-copy" id="sw-copy-btn" onclick="swCopy()">Copy</button>
+      </div>
+      <div id="sw-out-hdr-badge"></div>
+      <div id="sw-out-body"><div class="sw-empty">Select a template to begin</div></div>
+    </div>
+
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -741,7 +858,7 @@ async function load() {
   SITES = await loadSitesAsync();
 
   renderAll();
-  if (S.timerRunning) { timerLastTick=Date.now(); startTimerInterval(); }
+  if (S.timerRunning) startTimerInterval();
   setInterval(refreshScanStatuses, 30000);
   refreshScanStatuses();
   initSafety();
@@ -750,6 +867,7 @@ async function load() {
   renderEquip();
   restoreAdhocTimers();
   asInit();
+  swInit();
   // Restore escalation contacts
   const rows = document.querySelectorAll('#esc-tbody tr');
   const tkeys = ['t1','t2','t3'];
@@ -771,23 +889,20 @@ function switchView(v, el) {
 }
 
 // ─── 30-MIN TIMER ─────────────────────────────────────────────────────────────
-let timerInt=null, timerLastTick=null;
+let timerInt=null;
 const TOTAL=1800;
-function toggleTimer(){ S.timerRunning ? stopTimer() : (S.timerRunning=true, timerLastTick=Date.now(), save(), startTimerInterval()); }
+function toggleTimer(){ S.timerRunning ? stopTimer() : (S.timerRunning=true, save(), startTimerInterval()); }
 function startTimerInterval(){
   const btn=document.getElementById('timer-btn');
   btn.textContent='Stop'; btn.classList.add('active-btn');
   timerInt=setInterval(()=>{
-    const now=Date.now(), elapsed=Math.floor((now-timerLastTick)/1000);
-    if(elapsed>=1){
-      S.timerElapsed+=elapsed; timerLastTick=now;
-      if(S.timerElapsed>=TOTAL){
-        S.timerElapsed=0; S.timerCycles++;
-        addLog({type:'task',title:'30-min cycle #'+S.timerCycles+' completed',detail:''});
-        fireAlert('Cycle #'+S.timerCycles+' — time to scan!');
-      }
-      save(); updateTimerUI();
+    S.timerElapsed++;
+    if(S.timerElapsed>=TOTAL){
+      S.timerElapsed=0; S.timerCycles++;
+      addLog({type:'task',title:'30-min cycle #'+S.timerCycles+' completed',detail:''});
+      fireAlert('Cycle #'+S.timerCycles+' — time to scan!');
     }
+    save(); updateTimerUI();
   },1000);
 }
 function stopTimer(){
@@ -1140,8 +1255,6 @@ function openModal(id){ document.getElementById(id).classList.remove('hidden'); 
 function closeModal(id){ document.getElementById(id).classList.add('hidden'); }
 
 // ─── WEATHER ──────────────────────────────────────────────────────────────────
-const debouncedWxFilter = debounce(wxFilter, 300);
-
 function wxFilter(){
   const q=document.getElementById('wx-site-inp').value.toLowerCase().trim();
   const box=document.getElementById('wx-matches');
@@ -1154,26 +1267,18 @@ function wxFilter(){
   </div>`).join('');
 }
 function wxPick(id){ const s=SITES.find(x=>x.id===id); if(!s)return; document.getElementById('wx-site-inp').value=s.name; document.getElementById('wx-location').value=s.location||s.name; document.getElementById('wx-matches').style.display='none'; }
-
-let weatherAbort = null;
-
 async function fetchWeather(){
   const loc=document.getElementById('wx-location').value.trim(); if(!loc){showToast('Enter a location first');return;}
   document.getElementById('wx-desc').textContent='Fetching...';
-  if(weatherAbort) weatherAbort.abort();
-  weatherAbort = new AbortController();
   try{
-    const d=(await(await fetch(`https://wttr.in/${encodeURIComponent(loc)}?format=j1`, {signal: weatherAbort.signal})).json()).current_condition[0];
+    const d=(await(await fetch(`https://wttr.in/${encodeURIComponent(loc)}?format=j1`)).json()).current_condition[0];
     document.getElementById('wx-temp').textContent=d.temp_F+'°F';
     document.getElementById('wx-desc').textContent=d.weatherDesc[0].value+' · Humidity '+d.humidity+'%';
     document.getElementById('wx-wind').textContent='Wind: '+d.windspeedMiles+'mph '+d.winddir16Point;
     document.getElementById('wx-vis').textContent='Vis: '+d.visibility+'mi';
     const desc=d.weatherDesc[0].value.toLowerCase();
     document.getElementById('wx-icon').textContent=desc.includes('thunder')?'⛈':desc.includes('rain')||desc.includes('drizzle')?'🌧':desc.includes('snow')?'❄️':desc.includes('overcast')?'🌥':desc.includes('cloud')?'☁️':desc.includes('fog')||desc.includes('mist')?'🌫':desc.includes('sunny')||desc.includes('clear')?'☀️':'🌤';
-  }catch(e){ 
-    if(e.name === 'AbortError') return;
-    document.getElementById('wx-desc').textContent='Could not fetch — check location'; 
-  }
+  }catch(e){ document.getElementById('wx-desc').textContent='Could not fetch — check location'; }
 }
 function logWeather(){
   const temp=document.getElementById('wx-temp').textContent, desc=document.getElementById('wx-desc').textContent,
@@ -2150,7 +2255,7 @@ const AS_SITES = [
       ]},
     ]
   },
-  { id:'TSMS1', label:'Taft Mesa Solar', stats:'PV 18.2MW',
+  { id:'TSMS1', label:'Tropico', stats:'PV 18.2MW',
     sections:[
       { title:'0-STATUS', fields:[
         {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
@@ -2421,55 +2526,176 @@ function asExportCSV() {
   document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(a.href);
 }
 
-load();
-
-// ─── GLOBAL KEYBOARD SHORTCUTS ──────────────────────────────────────────────────
-document.addEventListener('keydown', function(e) {
-  // Escape closes open modals
-  if (e.key === 'Escape') {
-    const openModal = document.querySelector('.overlay:not(.hidden)');
-    if (openModal) openModal.classList.add('hidden');
+// ─── SW BUILDER ──────────────────────────────────────────────────────────────
+// Templates hardcoded — identical to the 6 Excel formulas provided
+const SW_TPLS = {
+  'harq-de': {
+    cls: 'de',
+    hdr: 'Harq De Energize',
+    numLbl: 'Feeder Breaker #',
+    numPlaceholder: 'e.g. 24',
+    build: (t, n) =>
+      `Call received from field tech ${t} requesting de-energization of Feeder Breaker 52F${n}:\n` +
+      `– Associated Megapacks disabled remotely\n` +
+      `– MVT AC Level Breakers opened remotely\n` +
+      `– Feeder Breaker 52F${n} opened remotely`
+  },
+  'harq-re': {
+    cls: 're',
+    hdr: 'Harq Energize',
+    numLbl: 'Feeder Breaker #',
+    numPlaceholder: 'e.g. 15',
+    build: (t, n) =>
+      `Call received from field tech ${t} requesting energization of Feeder Breaker 52F${n}:\n` +
+      `– Feeder Breaker 52F${n} closed remotely\n` +
+      `– MVT AC Level Breakers closed remotely\n` +
+      `– Associated Megapacks enabled remotely`
+  },
+  'prgrn-de': {
+    cls: 'de',
+    hdr: 'PRGRN De Energize',
+    numLbl: 'MVT #',
+    numPlaceholder: 'e.g. 41',
+    build: (t, n) =>
+      `Call received from field tech ${t} requesting de-energization of MVT ${n}:\n` +
+      `– Associated Megapacks disabled remotely\n` +
+      `– MVT AC Level Breakers opened remotely\n` +
+      `– Oil switch opened locally`
+  },
+  'prgrn-re': {
+    cls: 're',
+    hdr: 'PRGRN RE Energize',
+    numLbl: 'MVT #',
+    numPlaceholder: 'e.g. 40',
+    build: (t, n) =>
+      `Call received from field tech ${t} requesting energization of MVT ${n}:\n` +
+      `– Oil switch closed locally\n` +
+      `– MVT AC Level Breakers closed remotely\n` +
+      `– Associated Megapacks enabled remotely`
+  },
+  'cndr-de': {
+    cls: 'de',
+    hdr: 'Condor De Energize',
+    numLbl: 'MVT #',
+    numPlaceholder: 'e.g. 8',
+    build: (t, n) =>
+      `Call received from field tech ${t} requesting permission to de-energize MVT ${n} Locally. ` +
+      `Permission was granted, and local switching was completed.`
+  },
+  'cndr-re': {
+    cls: 're',
+    hdr: 'Condor RE Energize',
+    numLbl: 'MVT #',
+    numPlaceholder: 'e.g. 8',
+    build: (t, n) =>
+      `Call received from field tech ${t} requesting permission to Energize MVT ${n} Locally. ` +
+      `Permission was granted, and local switching was completed.`
   }
-  // Ctrl+S saves active note
-  if (e.ctrlKey && e.key === 's' && !e.altKey && !e.shiftKey) {
-    e.preventDefault();
-    const noteForm = document.getElementById('note-form');
-    if (noteForm && noteForm.style.display !== 'none') saveNote();
-  }
-});
+};
 
-// ─── DEBOUNCE UTILITY ─────────────────────────────────────────────────────────
-function debounce(fn, wait) {
-  let t;
-  return function(...args) {
-    clearTimeout(t);
-    t = setTimeout(() => fn.apply(this, args), wait);
+let swActive = null;   // active template id string
+let swHist   = [];     // in-memory + localStorage
+
+function swInit() {
+  try { swHist = JSON.parse(localStorage.getItem('sw_hist_v1') || '[]'); } catch(e) { swHist = []; }
+  swRenderHist();
+}
+
+function swSelect(id, el) {
+  swActive = id;
+  // Clear all selection classes
+  document.querySelectorAll('.sw-tpl').forEach(b => { b.classList.remove('sel-de','sel-re'); });
+  const tpl = SW_TPLS[id]; if (!tpl) return;
+  el.classList.add('sel-' + tpl.cls);
+  // Update number label + placeholder
+  document.getElementById('sw-num-lbl').textContent = tpl.numLbl;
+  document.getElementById('sw-num').placeholder = tpl.numPlaceholder;
+  swBuild();
+}
+
+function swBuild() {
+  const tpl = SW_TPLS[swActive];
+  if (!tpl) return;
+  const tech = document.getElementById('sw-tech').value.trim() || '[Tech Name]';
+  const num  = document.getElementById('sw-num').value.trim()  || '[Number]';
+  const text = tpl.build(tech, num);
+  document.getElementById('sw-out-hdr-badge').innerHTML =
+    `<div class="sw-result-hdr ${tpl.cls}">${tpl.hdr}</div>`;
+  document.getElementById('sw-out-body').textContent = text;
+}
+
+function swGetText() {
+  const tpl = SW_TPLS[swActive]; if (!tpl) return '';
+  const tech = document.getElementById('sw-tech').value.trim() || '[Tech Name]';
+  const num  = document.getElementById('sw-num').value.trim()  || '[Number]';
+  return tpl.build(tech, num);
+}
+
+function swCopy() {
+  const text = swGetText();
+  if (!text) { showToast('Select a template first'); return; }
+  try {
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('sw-copy-btn');
+      btn.textContent = 'Copied ✓'; btn.classList.add('ok');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 1800);
+    });
+  } catch(e) { showToast('Use Ctrl+C — clipboard blocked'); }
+}
+
+function swSaveHistory() {
+  const tpl = SW_TPLS[swActive];
+  if (!tpl) { showToast('Select a template first'); return; }
+  const tech = document.getElementById('sw-tech').value.trim();
+  const num  = document.getElementById('sw-num').value.trim();
+  if (!tech) { showToast('Enter a tech name first'); return; }
+  if (!num)  { showToast('Enter a number first'); return; }
+  const entry = {
+    id: Date.now(), tplId: swActive, cls: tpl.cls,
+    hdr: tpl.hdr, tech, num,
+    text: tpl.build(tech, num),
+    ts: Date.now()
   };
+  swHist.unshift(entry);
+  if (swHist.length > 30) swHist.length = 30;
+  try { localStorage.setItem('sw_hist_v1', JSON.stringify(swHist)); } catch(e) {}
+  swRenderHist();
+  showToast('Saved to history');
 }
 
-// ─── OFFLINE INDICATOR ────────────────────────────────────────────────────────
-function updateOnlineStatus() {
-  const nav = document.querySelector('.nav');
-  let indicator = document.getElementById('net-indicator');
-  if (!indicator) {
-    indicator = document.createElement('div');
-    indicator.id = 'net-indicator';
-    indicator.style.cssText = 'margin-left:12px;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;transition:all .2s;';
-    nav.appendChild(indicator);
-  }
-  if (navigator.onLine) {
-    indicator.textContent = '● Online';
-    indicator.style.color = 'var(--green)';
-    indicator.style.background = 'var(--gbg)';
-  } else {
-    indicator.textContent = '● Offline';
-    indicator.style.color = 'var(--red)';
-    indicator.style.background = 'var(--rbg)';
-  }
+function swLoadHist(id) {
+  const h = swHist.find(x => x.id === id); if (!h) return;
+  // Reselect template button
+  const btn = document.getElementById('swtpl-' + h.tplId);
+  if (btn) swSelect(h.tplId, btn);
+  document.getElementById('sw-tech').value = h.tech;
+  document.getElementById('sw-num').value  = h.num;
+  swBuild();
 }
-window.addEventListener('online', updateOnlineStatus);
-window.addEventListener('offline', updateOnlineStatus);
-updateOnlineStatus();
+
+function swClearHistory() {
+  if (!swHist.length) return;
+  if (!confirm('Clear all history?')) return;
+  swHist = [];
+  try { localStorage.removeItem('sw_hist_v1'); } catch(e) {}
+  swRenderHist();
+}
+
+function swRenderHist() {
+  const wrap = document.getElementById('sw-hist-wrap');
+  if (!swHist.length) { wrap.innerHTML = '<div class="sw-empty">No history yet</div>'; return; }
+  const rows = swHist.map(h => {
+    const t = new Date(h.ts).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    const col = h.cls === 're' ? 'var(--green)' : 'var(--red)';
+    return `<div class="sw-hist-row" onclick="swLoadHist(${h.id})">
+      <div class="sw-hist-meta">${t} · <span style="color:${col};font-weight:600;">${esc(h.hdr)}</span></div>
+      <div class="sw-hist-snip">${esc(h.tech)} · #${esc(h.num)}</div>
+    </div>`;
+  }).join('');
+  wrap.innerHTML = '<div class="sw-hist-list">' + rows + '</div>';
+}
+
+load();
 </script>
 </body>
 </html>
