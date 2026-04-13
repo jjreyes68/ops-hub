@@ -281,7 +281,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 .toast.show{opacity:1;}
 .empty{font-size:12px;color:var(--text3);text-align:center;padding:16px 0;}
 select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;}
-/* ── SW BUILDER ─────────────────────────────────────────────────────────────── */
+/* ── Log BUILDER ─────────────────────────────────────────────────────────────── */
 .sw-wrap{display:grid;grid-template-columns:320px 1fr;gap:14px;align-items:start;}
 @media(max-width:680px){.sw-wrap{grid-template-columns:1fr;}}
 .sw-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;box-shadow:var(--shs);}
@@ -329,7 +329,7 @@ select,option{background:var(--bg3);}
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
   <button class="nav-tab" onclick="switchView('intel',this)">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this)">Tasks</button>
-  <button class="nav-tab" onclick="switchView('swbuilder',this)">SW Builder</button>
+  <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('notes',this)">Notepad</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('log',this)">Log</button>
   <div class="nav-spacer"></div>
@@ -636,7 +636,7 @@ select,option{background:var(--bg3);}
   </div>
 </div>
 
-<!-- SW BUILDER ─────────────────────────────────────────────────────────────── -->
+<!-- Log BUILDER ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-swbuilder">
   <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px;">
     <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">SoftWrench Log Builder</div>
@@ -2526,7 +2526,7 @@ function asExportCSV() {
   document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(a.href);
 }
 
-// ─── SW BUILDER ──────────────────────────────────────────────────────────────
+// ─── Log BUILDER ──────────────────────────────────────────────────────────────
 // Templates hardcoded — identical to the 6 Excel formulas provided
 const SW_TPLS = {
   'harq-de': {
