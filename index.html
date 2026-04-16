@@ -3502,6 +3502,46 @@ function pdBuildText() {
   if (d.relieved) out += `  |  Relieved by: ${d.relieved}`;
   out += '\n';
 
+  // Smart rule-based summary headline
+  const criticalIssues = [];
+  const ongoingIssues = [];
+  
+  ['bess','solar','wind'].forEach(sec => {
+    const entries = (d.sections[sec]||[]);
+    entries.forEach(e => {
+      const hasNotes = e.notes && e.notes.trim();
+      const hasLog = e.log && e.log.trim();
+      const isCritical = e.status === 'active' || (hasNotes && (e.notes.toLowerCase().includes('trip') || e.notes.toLowerCase().includes('comm loss') || e.notes.toLowerCase().includes('outage')));
+      
+      if (isCritical) {
+        criticalIssues.push(e.name);
+      } else if (e.status === 'monitor' || hasNotes || hasLog) {
+        ongoingIssues.push(e.name);
+      }
+    });
+  });
+  
+  const generalCount = (d.general || []).filter(e => e.text && e.text.trim()).length;
+  const totalIssues = criticalIssues.length + ongoingIssues.length;
+  
+  if (totalIssues === 0 && generalCount === 0) {
+    out += '✅ All sites normal operations\n\n';
+  } else {
+    let summary = '';
+    if (criticalIssues.length > 0) {
+      summary += `⚠ ${criticalIssues.length} critical (${criticalIssues.slice(0, 3).join(', ')}${criticalIssues.length > 3 ? '...' : ''})`;
+    }
+    if (ongoingIssues.length > 0) {
+      if (summary) summary += ' | ';
+      summary += `● ${ongoingIssues.length} monitoring (${ongoingIssues.slice(0, 3).join(', ')}${ongoingIssues.length > 3 ? '...' : ''})`;
+    }
+    if (generalCount > 0) {
+      if (summary) summary += ' | ';
+      summary += `📝 ${generalCount} general`;
+    }
+    out += summary + '\n\n';
+  }
+
   const SEC_LABELS = { bess:'——BESS——', solar:'——SOLAR——', wind:'——WIND——', general:'——GENERAL——' };
   ['bess','solar','wind'].forEach(sec => {
     const entries = (d.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log);
