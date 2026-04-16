@@ -994,13 +994,10 @@ select,option{background:var(--bg3);}
       <div class="pd-section-hdr" onclick="pdToggleSection('general')">
         <span class="pd-section-icon" style="background:var(--text3);"></span>
         <span class="pd-section-label">📋 General / Action Items</span>
-        <span class="pd-section-count" id="pdc-general">0 active</span>
         <span class="pd-section-arrow open" id="pda-general">▶</span>
       </div>
-      <div class="pd-section-body" id="pdb-general"></div>
-      <div class="pd-add-site-row" style="border-top:1px solid var(--border);margin-top:4px;">
-        <input class="pd-add-inp" id="pdadd-general" placeholder="Item label, e.g. CTFL Testing" onkeydown="if(event.key==='Enter')pdAddSite('general')">
-        <button class="pd-add-btn" onclick="pdAddSite('general')">+ Add</button>
+      <div class="pd-section-body" id="pdb-general" style="padding:10px;">
+        <textarea id="pd-general-notes" class="pd-notes-inp" rows="8" placeholder="Enter general notes or action items here (issues that don't fall into BESS/Solar/Wind sections)..." oninput="pdSetGeneralNotes(this.value)"></textarea>
       </div>
     </div>
 
@@ -3272,11 +3269,11 @@ function pdBlankState() {
     shift: 'Day',
     author: '',
     relieved: '',
+    generalNotes: '',
     sections: {
       bess:    PD_DEFAULTS.bess.map(s=>pdBlankEntry(s.name, s.loc)),
       solar:   PD_DEFAULTS.solar.map(s=>pdBlankEntry(s.name, s.loc)),
-      wind:    PD_DEFAULTS.wind.map(s=>pdBlankEntry(s.name, s.loc)),
-      general: [pdBlankEntry('Action Item', 'Click to edit or delete')]
+      wind:    PD_DEFAULTS.wind.map(s=>pdBlankEntry(s.name, s.loc))
     },
     collapsed: {}
   };
@@ -3309,13 +3306,14 @@ function pdInit() {
   document.getElementById('pd-shift').value = pdState.shift || 'Day';
   document.getElementById('pd-author').value = pdState.author || '';
   document.getElementById('pd-relieved').value = pdState.relieved || '';
+  document.getElementById('pd-general-notes').value = pdState.generalNotes || '';
 
   // Wire header inputs
   ['pd-date','pd-shift','pd-author','pd-relieved'].forEach(id => {
     document.getElementById(id).addEventListener('input', () => { pdReadHeader(); pdSaveDraft(); pdUpdatePreview(); });
   });
 
-  ['bess','solar','wind','general'].forEach(sec => {
+  ['bess','solar','wind'].forEach(sec => {
     pdRenderSection(sec);
     // Explicitly open each section body so display:flex is set via inline style,
     // fixing the pdToggleSection state-check which reads style.display (not CSS).
@@ -3325,6 +3323,12 @@ function pdInit() {
     body.style.display  = isCollapsed ? 'none' : 'flex';
     if (arrow) arrow.classList.toggle('open', !isCollapsed);
   });
+  // General section - open the body for the textarea
+  const generalBody = document.getElementById('pdb-general');
+  const generalArrow = document.getElementById('pda-general');
+  const generalCollapsed = pdState.collapsed && pdState.collapsed.general;
+  generalBody.style.display = generalCollapsed ? 'none' : 'block';
+  if (generalArrow) generalArrow.classList.toggle('open', !generalCollapsed);
   pdUpdatePreview();
   pdRenderHistory();
 }
@@ -3336,10 +3340,18 @@ function pdReadHeader() {
   pdState.shift    = document.getElementById('pd-shift').value;
   pdState.author   = document.getElementById('pd-author').value;
   pdState.relieved = document.getElementById('pd-relieved').value;
+  pdState.generalNotes = document.getElementById('pd-general-notes').value;
+}
+
+function pdSetGeneralNotes(value) {
+  pdState.generalNotes = value;
+  pdSaveDraft();
+  pdUpdatePreview();
 }
 
 // ── Section rendering ───────────────────────────────────────────────────────
 function pdRenderSection(sec) {
+  if (sec === 'general') return; // General section is now a textarea, not rendered entries
   const body = document.getElementById('pdb-' + sec);
   const entries = pdState.sections[sec] || [];
   body.innerHTML = entries.length === 0
@@ -3419,6 +3431,7 @@ function pdToggleSection(sec) {
 }
 
 function pdUpdateSectionCount(sec) {
+  if (sec === 'general') return; // General section is now a textarea, no count needed
   const active = (pdState.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log).length;
   const el = document.getElementById('pdc-'+sec);
   if (el) el.textContent = active > 0 ? active + ' active' : 'all clear';
@@ -3435,7 +3448,7 @@ function pdBuildText() {
   out += '\n';
 
   const SEC_LABELS = { bess:'——BESS——', solar:'——SOLAR——', wind:'——WIND——', general:'——GENERAL——' };
-  ['bess','solar','wind','general'].forEach(sec => {
+  ['bess','solar','wind'].forEach(sec => {
     const entries = (d.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log);
     if (!entries.length) return;
     out += '\n' + SEC_LABELS[sec] + '\n\n';
@@ -3450,9 +3463,15 @@ function pdBuildText() {
     });
   });
 
+  // General notes as free text
+  if (d.generalNotes && d.generalNotes.trim()) {
+    out += '\n' + SEC_LABELS.general + '\n\n';
+    out += d.generalNotes.trim() + '\n';
+  }
+
   // Report by exception: add summary line for normal sites per section
-  const SEC_NAMES = { bess:'BESS', solar:'Solar', wind:'Wind', general:'General' };
-  ['bess','solar','wind','general'].forEach(sec => {
+  const SEC_NAMES = { bess:'BESS', solar:'Solar', wind:'Wind' };
+  ['bess','solar','wind'].forEach(sec => {
     const nc = (d.sections[sec]||[]).filter(e => e.status === 'none' && !e.notes && !e.log);
     if (nc.length && (d.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log).length > 0) {
       out += `All other ${SEC_NAMES[sec]} sites: normal operations\n`;
