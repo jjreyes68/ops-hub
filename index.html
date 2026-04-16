@@ -3449,10 +3449,13 @@ function pdBuildText() {
     });
   });
 
-  // Append no-change sites per section as a compact footer
+  // Report by exception: add summary line for normal sites per section
+  const SEC_NAMES = { bess:'BESS', solar:'Solar', wind:'Wind', general:'General' };
   ['bess','solar','wind','general'].forEach(sec => {
     const nc = (d.sections[sec]||[]).filter(e => e.status === 'none' && !e.notes && !e.log);
-    if (nc.length) out += `${nc.map(e=>e.name).join(', ')}: No change\n`;
+    if (nc.length && (d.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log).length > 0) {
+      out += `All other ${SEC_NAMES[sec]} sites: normal operations\n`;
+    }
   });
 
   return out.trim();
