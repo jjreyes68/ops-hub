@@ -997,10 +997,11 @@ select,option{background:var(--bg3);}
         <span class="pd-section-count" id="pdc-general">0 active</span>
         <span class="pd-section-arrow open" id="pda-general">▶</span>
       </div>
-      <div class="pd-section-body" id="pdb-general"></div>
-      <div class="pd-add-site-row">
-        <input class="pd-add-inp" id="pdadd-general" placeholder="Item label, e.g. CTFL Testing" onkeydown="if(event.key==='Enter')pdAddSite('general')">
-        <button class="pd-add-btn" onclick="pdAddSite('general')">+ Add</button>
+      <div class="pd-section-body" id="pdb-general">
+        <div class="pd-add-site-row" style="border-top:none;margin-top:0;">
+          <input class="pd-add-inp" id="pdadd-general" placeholder="Item label, e.g. CTFL Testing" onkeydown="if(event.key==='Enter')pdAddSite('general')">
+          <button class="pd-add-btn" onclick="pdAddSite('general')">+ Add</button>
+        </div>
       </div>
     </div>
 
@@ -3342,9 +3343,15 @@ function pdReadHeader() {
 function pdRenderSection(sec) {
   const body = document.getElementById('pdb-' + sec);
   const entries = pdState.sections[sec] || [];
+  const addRow = sec === 'general'
+    ? `<div class="pd-add-site-row" style="border-top:none;margin-top:0;">
+         <input class="pd-add-inp" id="pdadd-general" placeholder="Item label, e.g. CTFL Testing" onkeydown="if(event.key==='Enter')pdAddSite('general')">
+         <button class="pd-add-btn" onclick="pdAddSite('general')">+ Add</button>
+       </div>`
+    : '';
   body.innerHTML = entries.length === 0
-    ? '<div style="font-size:12px;color:var(--text3);padding:6px 4px;">No items — add one below.</div>'
-    : entries.map((e,i) => pdRowHtml(sec, i, e)).join('');
+    ? (addRow || '<div style="font-size:12px;color:var(--text3);padding:6px 4px;">No items — add one below.</div>')
+    : entries.map((e,i) => pdRowHtml(sec, i, e)).join('') + addRow;
   // Preserve open/closed state — don't let innerHTML reset clobber style.display
   // (body.style.display is already set by pdInit/pdToggleSection; leave it alone)
   pdUpdateSectionCount(sec);
