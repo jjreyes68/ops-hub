@@ -37,6 +37,20 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 .nav-spacer{flex:1;}
 .nav-time{font-family:var(--m);font-size:11px;color:var(--text3);}
 
+/* ── Nav timezone strip ───────────────────────────────────── */
+.nav-tz-bar{display:flex;align-items:center;gap:0;flex-shrink:0;border:1px solid var(--border);border-radius:7px;overflow:hidden;height:28px;}
+.nav-tz-item{display:flex;align-items:center;gap:4px;padding:0 9px;height:100%;border-right:1px solid var(--border);cursor:default;transition:background .15s;}
+.nav-tz-item:last-child{border-right:none;}
+.nav-tz-item:hover{background:var(--bg3);}
+.nav-tz-item.local{background:var(--bg3);}
+.nav-tz-key{font-family:var(--m);font-size:9.5px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;}
+.nav-tz-item.local .nav-tz-key{color:var(--accent);}
+.nav-tz-time{font-family:var(--m);font-size:11.5px;font-weight:500;color:var(--text2);min-width:38px;}
+.nav-tz-item.local .nav-tz-time{color:var(--text);}
+.nav-tz-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);margin-right:1px;flex-shrink:0;}
+@media(max-width:1050px){.nav-tz-item.hide-md{display:none;}}
+@media(max-width:700px){.nav-tz-bar{display:none;}}
+
 /* LAYOUT */
 .view{display:none;padding:16px;}.view.active{display:block;}
 .cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
@@ -534,7 +548,7 @@ select,option{background:var(--bg3);}
   <button class="nav-tab" style="display:none;" onclick="switchView('notes',this)">Notepad</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('log',this)">Log</button>
   <div class="nav-spacer"></div>
-  <div class="nav-time" id="nav-clock"></div>
+  <div id="nav-tz-bar" class="nav-tz-bar"></div>
 </div>
 
 <!-- NOTEPAD -->
@@ -1272,7 +1286,68 @@ async function load() {
 }
 
 // ─── CLOCK ────────────────────────────────────────────────────────────────────
-setInterval(()=>{ document.getElementById('nav-clock').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'}); },1000);
+// ── Nav timezone strip ────────────────────────────────────────────────────────
+(function() {
+  const TZ_ZONES = [
+    {key:'AZ', tz:'America/Phoenix'},
+    {key:'PT', tz:'America/Los_Angeles'},
+    {key:'MT', tz:'America/Denver'},
+    {key:'CT', tz:'America/Chicago'},
+    {key:'ET', tz:'America/New_York'},
+  ];
+
+  // Detect user's local timezone and find closest match
+  const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const localMatch = TZ_ZONES.findIndex(z => z.tz === localTz);
+  // Build ordered list: local zone first (if found), then others
+  let ordered = [...TZ_ZONES];
+  if (localMatch > 0) {
+    ordered.splice(localMatch, 1);
+    ordered.unshift(TZ_ZONES[localMatch]);
+  }
+
+  const bar = document.getElementById('nav-tz-bar');
+  if (!bar) return;
+
+  // Build DOM once
+  ordered.forEach((z, i) => {
+    const item = document.createElement('div');
+    item.className = 'nav-tz-item' + (i === 0 ? ' local' : '') + (i >= 3 ? ' hide-md' : '');
+    item.title = z.tz;
+
+    if (i === 0) {
+      const dot = document.createElement('span');
+      dot.className = 'nav-tz-dot';
+      item.appendChild(dot);
+    }
+
+    const key = document.createElement('span');
+    key.className = 'nav-tz-key';
+    key.textContent = z.key;
+
+    const time = document.createElement('span');
+    time.className = 'nav-tz-time';
+    time.dataset.tz = z.tz;
+
+    item.appendChild(key);
+    item.appendChild(time);
+    bar.appendChild(item);
+  });
+
+  function tickNavTz() {
+    const now = new Date();
+    bar.querySelectorAll('.nav-tz-time').forEach(el => {
+      el.textContent = new Intl.DateTimeFormat(undefined, {
+        timeZone: el.dataset.tz,
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false
+      }).format(now);
+    });
+  }
+
+  tickNavTz();
+  setInterval(tickNavTz, 1000);
+})();
 
 // ─── NAV ──────────────────────────────────────────────────────────────────────
 function switchView(v, el) {
