@@ -34,6 +34,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 .nav-tab{padding:6px 13px;border-radius:6px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;border:none;background:transparent;font-family:var(--f);transition:all .15s;white-space:nowrap;}
 .nav-tab:hover{background:var(--bg3);color:var(--text);}
 .nav-tab.active{background:var(--bg3);color:var(--text);box-shadow:var(--shs);border:1px solid var(--border);}
+/* Overdue alert tab — red like an Excel alert tab */
+.nav-tab.tab-alert{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important;box-shadow:0 2px 8px rgba(179,48,0,.35)!important;}
+.nav-tab.tab-alert:hover{background:#cc3300!important;}
+.nav-tab.tab-alert.active{background:var(--red)!important;color:#fff!important;}
 .nav-spacer{flex:1;}
 .nav-time{font-family:var(--m);font-size:11px;color:var(--text3);}
 
@@ -537,7 +541,7 @@ select,option{background:var(--bg3);}
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
     <span class="nav-brand-text">RNWBL OPS</span>
   </div>
-  <button class="nav-tab active" onclick="switchView('scans',this)">Scans</button>
+  <button class="nav-tab active" id="nav-tab-scans" onclick="switchView('scans',this)">Scans</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
   <button class="nav-tab" onclick="switchView('intel',this)">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this)">Tasks</button>
@@ -1527,7 +1531,16 @@ function siteStatus(s){
 const STATUS_LABEL={ok:'OK',due:'Due soon',overdue:'OVERDUE',never:'Never scanned'};
 const STATUS_BADGE={ok:'b-ok',due:'b-due',overdue:'b-overdue',never:'b-never'};
 function setSiteFilter(f,el){ S.siteFilter=f; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderSites(); }
-function refreshScanStatuses(){ renderSites(); renderScanStats(); }
+function refreshScanStatuses(){ renderSites(); renderScanStats(); updateScansTabAlert(); }
+function updateScansTabAlert() {
+  const tab = document.getElementById('nav-tab-scans');
+  if (!tab) return;
+  const hasOverdue = SITES.some(s => siteStatus(s) === 'overdue');
+  tab.classList.toggle('tab-alert', hasOverdue);
+  // Update label with count badge when overdue
+  const count = SITES.filter(s => siteStatus(s) === 'overdue').length;
+  tab.textContent = hasOverdue ? `Scans (${count})` : 'Scans';
+}
 function renderScanStats(){
   const ok=SITES.filter(s=>siteStatus(s)==='ok').length, due=SITES.filter(s=>siteStatus(s)==='due').length,
         ov=SITES.filter(s=>siteStatus(s)==='overdue').length, nv=SITES.filter(s=>siteStatus(s)==='never').length;
