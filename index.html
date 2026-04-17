@@ -34,8 +34,26 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 .nav-tab{padding:6px 13px;border-radius:6px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;border:none;background:transparent;font-family:var(--f);transition:all .15s;white-space:nowrap;}
 .nav-tab:hover{background:var(--bg3);color:var(--text);}
 .nav-tab.active{background:var(--bg3);color:var(--text);box-shadow:var(--shs);border:1px solid var(--border);}
+/* Overdue alert tab — red like an Excel alert tab */
+.nav-tab.tab-alert{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important;box-shadow:0 2px 8px rgba(179,48,0,.35)!important;}
+.nav-tab.tab-alert:hover{background:#cc3300!important;}
+.nav-tab.tab-alert.active{background:var(--red)!important;color:#fff!important;}
 .nav-spacer{flex:1;}
 .nav-time{font-family:var(--m);font-size:11px;color:var(--text3);}
+
+/* ── Nav timezone strip ───────────────────────────────────── */
+.nav-tz-bar{display:flex;align-items:center;gap:0;flex-shrink:0;border:1px solid var(--border);border-radius:7px;overflow:hidden;height:28px;}
+.nav-tz-item{display:flex;align-items:center;gap:4px;padding:0 9px;height:100%;border-right:1px solid var(--border);cursor:default;transition:background .15s;}
+.nav-tz-item:last-child{border-right:none;}
+.nav-tz-item:hover{background:var(--bg3);}
+.nav-tz-item.local{background:var(--bg3);}
+.nav-tz-key{font-family:var(--m);font-size:9.5px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;}
+.nav-tz-item.local .nav-tz-key{color:var(--accent);}
+.nav-tz-time{font-family:var(--m);font-size:11.5px;font-weight:500;color:var(--text2);min-width:38px;}
+.nav-tz-item.local .nav-tz-time{color:var(--text);}
+.nav-tz-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);margin-right:1px;flex-shrink:0;}
+@media(max-width:1050px){.nav-tz-item.hide-md{display:none;}}
+@media(max-width:700px){.nav-tz-bar{display:none;}}
 
 /* LAYOUT */
 .view{display:none;padding:16px;}.view.active{display:block;}
@@ -463,6 +481,56 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .pd-copy-flash{animation:flash .4s;}
 @keyframes flash{0%,100%{background:var(--gbg);}50%{background:var(--gmid);color:#fff;}}
 
+/* General entry — flex row so textarea fills properly */
+.pd-gen-entry{display:flex;gap:6px;align-items:flex-start;padding:4px 2px;}
+.pd-gen-entry .pd-notes-inp{flex:1;min-height:52px;font-size:13px;}
+.pd-gen-entry .pd-site-del{margin-top:4px;flex-shrink:0;}
+
+/* ── Improved Live Preview ─────────────────────────────────── */
+.pd-preview-out{font-size:12.5px;line-height:1.75;color:var(--text);}
+.pd-prev-header{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 13px;margin-bottom:10px;font-family:var(--m);font-size:11.5px;color:var(--text2);line-height:1.9;}
+.pd-prev-header strong{color:var(--text);font-size:12px;}
+.pd-prev-headline{padding:7px 11px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;}
+.pd-prev-headline.all-clear{background:var(--gbg);color:var(--green);border:1px solid #a3d9bc;}
+.pd-prev-headline.has-issues{background:var(--rbg);color:var(--red);border:1px solid #f4bdb0;}
+.pd-prev-headline.monitoring{background:var(--abg);color:var(--amber);border:1px solid #f5d99a;}
+.pd-prev-section{margin-bottom:10px;}
+.pd-prev-sec-hdr{display:flex;align-items:center;gap:7px;padding:5px 10px;border-radius:6px;margin-bottom:6px;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;}
+.pd-prev-sec-hdr.bess{background:var(--bbg);color:var(--blue);border-left:3px solid var(--blue);}
+.pd-prev-sec-hdr.solar{background:var(--abg);color:var(--amber);border-left:3px solid var(--amber);}
+.pd-prev-sec-hdr.wind{background:var(--gbg);color:var(--green);border-left:3px solid var(--green);}
+.pd-prev-sec-hdr.general{background:var(--bg3);color:var(--text2);border-left:3px solid var(--border2);}
+.pd-prev-site{padding:5px 9px 5px 12px;border-radius:6px;background:var(--bg3);margin-bottom:4px;border:1px solid transparent;}
+.pd-prev-site.s-active{border-color:var(--red);background:var(--rbg);}
+.pd-prev-site.s-monitor{border-color:var(--amber);background:var(--abg);}
+.pd-prev-site.s-resolved{border-color:var(--green);background:var(--gbg);}
+.pd-prev-site-hdr{display:flex;align-items:center;gap:6px;}
+.pd-prev-site-name{font-family:var(--m);font-size:12px;font-weight:700;color:var(--text);}
+.pd-prev-status-badge{font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;}
+.pd-prev-status-badge.active{background:var(--red);color:#fff;}
+.pd-prev-status-badge.monitor{background:var(--amber);color:#fff;}
+.pd-prev-status-badge.resolved{background:var(--green);color:#fff;}
+.pd-prev-log-badge{font-family:var(--m);font-size:10px;color:var(--text3);background:var(--bg4);padding:1px 7px;border-radius:10px;}
+.pd-prev-site-notes{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.6;padding-left:2px;font-family:var(--f);}
+.pd-prev-gen-item{font-size:12.5px;color:var(--text);padding:5px 10px;border-radius:6px;background:var(--bg3);margin-bottom:4px;border-left:3px solid var(--border2);line-height:1.6;}
+.pd-prev-empty{font-size:12px;color:var(--text3);text-align:center;padding:28px 16px;font-style:italic;}
+
+/* ── Improved AI Summary ────────────────────────────────────── */
+.pd-ai-out{margin-top:12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;display:none;}
+.pd-ai-out.visible{display:block;}
+.pd-ai-out-header{background:linear-gradient(135deg,var(--bbg),var(--pbg));border-bottom:1px solid var(--border);padding:9px 14px;display:flex;align-items:center;gap:7px;}
+.pd-ai-out-header-icon{font-size:14px;}
+.pd-ai-out-header-title{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.06em;text-transform:uppercase;flex:1;}
+.pd-ai-out-header-badge{font-size:10px;font-weight:600;background:var(--bbg);color:var(--blue);border:1px solid var(--blue);padding:2px 8px;border-radius:10px;}
+.pd-ai-body{padding:12px 14px;font-size:12.5px;line-height:1.8;color:var(--text);font-family:var(--f);}
+.pd-ai-body p{margin-bottom:7px;}
+.pd-ai-body p:last-child{margin-bottom:0;}
+.pd-ai-section{margin-bottom:10px;}
+.pd-ai-section-hdr{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;padding-bottom:3px;border-bottom:1px solid var(--border);}
+.pd-ai-item{display:flex;gap:7px;padding:3px 0;font-size:12.5px;}
+.pd-ai-bullet{color:var(--blue);flex-shrink:0;font-weight:700;}
+.pd-ai-urgent{background:var(--rbg);border:1px solid #f4bdb0;border-radius:6px;padding:7px 10px;margin-bottom:8px;font-size:12.5px;color:var(--red);font-weight:500;}
+
 select,option{background:var(--bg3);}
 </style>
 </head>
@@ -473,7 +541,7 @@ select,option{background:var(--bg3);}
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
     <span class="nav-brand-text">RNWBL OPS</span>
   </div>
-  <button class="nav-tab active" onclick="switchView('scans',this)">Scans</button>
+  <button class="nav-tab active" id="nav-tab-scans" onclick="switchView('scans',this)">Scans</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
   <button class="nav-tab" onclick="switchView('intel',this)">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this)">Tasks</button>
@@ -484,7 +552,7 @@ select,option{background:var(--bg3);}
   <button class="nav-tab" style="display:none;" onclick="switchView('notes',this)">Notepad</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('log',this)">Log</button>
   <div class="nav-spacer"></div>
-  <div class="nav-time" id="nav-clock"></div>
+  <div id="nav-tz-bar" class="nav-tz-bar"></div>
 </div>
 
 <!-- NOTEPAD -->
@@ -1030,7 +1098,7 @@ select,option{background:var(--bg3);}
         <span>Generating summary…</span>
       </div>
       <div class="pd-ai-out" id="pd-ai-out"></div>
-      <div class="pd-preview-out" id="pd-preview-out">Fill in site notes to see the passdown preview here.</div>
+      <div class="pd-preview-out" id="pd-preview-out"><div class="pd-prev-empty">Fill in site notes to see the passdown preview here.</div></div>
     </div>
   </div>
 
@@ -1219,10 +1287,79 @@ async function load() {
   const rows = document.querySelectorAll('#esc-tbody tr');
   const tkeys = ['t1','t2','t3'];
   rows.forEach((row,i) => { const inp=row.querySelector('input'); if(inp) inp.value=S.escContacts[tkeys[i]]||''; });
+
+  // Restore last active tab (default: scans)
+  const TAB_VIEWS = ['scans','asset','intel','ops','swbuilder','timezones','passdown'];
+  let savedTab = 'scans';
+  try { savedTab = localStorage.getItem('rnwbl_active_tab') || 'scans'; } catch(e) {}
+  if (!TAB_VIEWS.includes(savedTab)) savedTab = 'scans';
+  const tabEl = [...document.querySelectorAll('.nav-tab')].find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes("'"+savedTab+"'"));
+  switchView(savedTab, tabEl || null);
 }
 
 // ─── CLOCK ────────────────────────────────────────────────────────────────────
-setInterval(()=>{ document.getElementById('nav-clock').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'}); },1000);
+// ── Nav timezone strip ────────────────────────────────────────────────────────
+(function() {
+  const TZ_ZONES = [
+    {key:'AZ', tz:'America/Phoenix'},
+    {key:'PT', tz:'America/Los_Angeles'},
+    {key:'MT', tz:'America/Denver'},
+    {key:'CT', tz:'America/Chicago'},
+    {key:'ET', tz:'America/New_York'},
+  ];
+
+  // Detect user's local timezone and find closest match
+  const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const localMatch = TZ_ZONES.findIndex(z => z.tz === localTz);
+  // Build ordered list: local zone first (if found), then others
+  let ordered = [...TZ_ZONES];
+  if (localMatch > 0) {
+    ordered.splice(localMatch, 1);
+    ordered.unshift(TZ_ZONES[localMatch]);
+  }
+
+  const bar = document.getElementById('nav-tz-bar');
+  if (!bar) return;
+
+  // Build DOM once
+  ordered.forEach((z, i) => {
+    const item = document.createElement('div');
+    item.className = 'nav-tz-item' + (i === 0 ? ' local' : '') + (i >= 3 ? ' hide-md' : '');
+    item.title = z.tz;
+
+    if (i === 0) {
+      const dot = document.createElement('span');
+      dot.className = 'nav-tz-dot';
+      item.appendChild(dot);
+    }
+
+    const key = document.createElement('span');
+    key.className = 'nav-tz-key';
+    key.textContent = z.key;
+
+    const time = document.createElement('span');
+    time.className = 'nav-tz-time';
+    time.dataset.tz = z.tz;
+
+    item.appendChild(key);
+    item.appendChild(time);
+    bar.appendChild(item);
+  });
+
+  function tickNavTz() {
+    const now = new Date();
+    bar.querySelectorAll('.nav-tz-time').forEach(el => {
+      el.textContent = new Intl.DateTimeFormat(undefined, {
+        timeZone: el.dataset.tz,
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false
+      }).format(now);
+    });
+  }
+
+  tickNavTz();
+  setInterval(tickNavTz, 1000);
+})();
 
 // ─── NAV ──────────────────────────────────────────────────────────────────────
 function switchView(v, el) {
@@ -1236,6 +1373,7 @@ function switchView(v, el) {
   if(v==='map') mapActivate();
   if(v==='timezones') initTimeZones();
   if(v==='passdown') pdActivate();
+  try { localStorage.setItem('rnwbl_active_tab', v); } catch(e) {}
 }
 
 // ─── TIME ZONE DASHBOARD ──────────────────────────────────────────────────────
@@ -1402,7 +1540,16 @@ function siteStatus(s){
 const STATUS_LABEL={ok:'OK',due:'Due soon',overdue:'OVERDUE',never:'Never scanned'};
 const STATUS_BADGE={ok:'b-ok',due:'b-due',overdue:'b-overdue',never:'b-never'};
 function setSiteFilter(f,el){ S.siteFilter=f; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderSites(); }
-function refreshScanStatuses(){ renderSites(); renderScanStats(); }
+function refreshScanStatuses(){ renderSites(); renderScanStats(); updateScansTabAlert(); }
+function updateScansTabAlert() {
+  const tab = document.getElementById('nav-tab-scans');
+  if (!tab) return;
+  const hasOverdue = SITES.some(s => siteStatus(s) === 'overdue');
+  tab.classList.toggle('tab-alert', hasOverdue);
+  // Update label with count badge when overdue
+  const count = SITES.filter(s => siteStatus(s) === 'overdue').length;
+  tab.textContent = hasOverdue ? `Scans (${count})` : 'Scans';
+}
 function renderScanStats(){
   const ok=SITES.filter(s=>siteStatus(s)==='ok').length, due=SITES.filter(s=>siteStatus(s)==='due').length,
         ov=SITES.filter(s=>siteStatus(s)==='overdue').length, nv=SITES.filter(s=>siteStatus(s)==='never').length;
@@ -3390,11 +3537,9 @@ function pdRenderGeneralSection() {
   let html = '';
   entries.forEach((e, i) => {
     const idStr = String(e.id);
-    html += '<div class="pd-site-row">';
-    html += '<div class="pd-site-inputs" style="flex:1;">';
+    html += '<div class="pd-gen-entry">';
     html += '<textarea class="pd-notes-inp" rows="2" placeholder="Enter general issue or action item..."';
     html += ' oninput="pdSetGeneralText(' + idStr + ', this.value)">' + esc(e.text) + '</textarea>';
-    html += '</div>';
     html += '<button class="pd-site-del" onclick="pdDelGeneralEntry(' + idStr + ')" title="Remove">✕</button>';
     html += '</div>';
   });
@@ -3580,9 +3725,92 @@ function pdBuildText() {
   return out.trim();
 }
 
+function pdBuildHtml() {
+  const d = pdState;
+  const dateStr = d.date ? new Date(d.date+'T12:00:00').toLocaleDateString([],{month:'numeric',day:'numeric',year:'numeric'}) : '—';
+  let html = '';
+
+  // Header block
+  html += `<div class="pd-prev-header">`;
+  html += `<strong>OFF-SHIFT LOG</strong> — ${dateStr}<br>`;
+  html += `Shift: <strong>${d.shift||'—'}</strong>`;
+  if (d.author)   html += `&nbsp;&nbsp;·&nbsp;&nbsp;Operator: <strong>${esc(d.author)}</strong>`;
+  if (d.relieved) html += `&nbsp;&nbsp;·&nbsp;&nbsp;Relieved by: <strong>${esc(d.relieved)}</strong>`;
+  html += `</div>`;
+
+  // Headline status badge
+  const criticals = [], monitors = [];
+  ['bess','solar','wind'].forEach(sec => {
+    (d.sections[sec]||[]).forEach(e => {
+      const nt = e.notes && e.notes.trim();
+      const isCrit = e.status === 'active' || (nt && /trip|comm loss|outage/i.test(e.notes));
+      if (isCrit) criticals.push(e.name);
+      else if (e.status === 'monitor' || nt || e.log) monitors.push(e.name);
+    });
+  });
+  const genCount = (d.general||[]).filter(e => e.text && e.text.trim()).length;
+  const totalIssues = criticals.length + monitors.length;
+
+  if (totalIssues === 0 && genCount === 0) {
+    html += `<div class="pd-prev-headline all-clear">✅ All sites — normal operations</div>`;
+  } else if (criticals.length > 0) {
+    html += `<div class="pd-prev-headline has-issues">⚠ ${criticals.length} active issue${criticals.length>1?'s':''}: ${criticals.slice(0,4).join(', ')}${criticals.length>4?'…':''}</div>`;
+  } else {
+    html += `<div class="pd-prev-headline monitoring">● ${monitors.length} monitoring${genCount>0?' · '+genCount+' general':''}`;
+    if (monitors.length <= 4) html += ` — ${monitors.join(', ')}`;
+    html += `</div>`;
+  }
+
+  // Sections
+  const SEC_META = {
+    bess:   {label:'⚡ BESS Sites',  cls:'bess'},
+    solar:  {label:'☀ Solar Sites',  cls:'solar'},
+    wind:   {label:'💨 Wind Sites',  cls:'wind'},
+  };
+  ['bess','solar','wind'].forEach(sec => {
+    const entries = (d.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log);
+    if (!entries.length) return;
+    const m = SEC_META[sec];
+    html += `<div class="pd-prev-section">`;
+    html += `<div class="pd-prev-sec-hdr ${m.cls}">${m.label}</div>`;
+    entries.forEach(e => {
+      const cls = e.status !== 'none' ? ` s-${e.status}` : '';
+      html += `<div class="pd-prev-site${cls}">`;
+      html += `<div class="pd-prev-site-hdr">`;
+      html += `<span class="pd-prev-site-name">${esc(e.name)}</span>`;
+      if (e.status === 'active')   html += `<span class="pd-prev-status-badge active">ACTIVE</span>`;
+      if (e.status === 'monitor')  html += `<span class="pd-prev-status-badge monitor">MONITOR</span>`;
+      if (e.status === 'resolved') html += `<span class="pd-prev-status-badge resolved">RESOLVED</span>`;
+      if (e.log) html += `<span class="pd-prev-log-badge">LOG: ${esc(e.log)}</span>`;
+      html += `</div>`;
+      if (e.notes) html += `<div class="pd-prev-site-notes">${esc(e.notes).replace(/\n/g,'<br>')}</div>`;
+      html += `</div>`;
+    });
+    html += `</div>`;
+  });
+
+  // General section
+  const genEntries = (d.general||[]).filter(e => e.text && e.text.trim());
+  if (genEntries.length) {
+    html += `<div class="pd-prev-section">`;
+    html += `<div class="pd-prev-sec-hdr general">📋 General / Action Items</div>`;
+    genEntries.forEach(e => {
+      html += `<div class="pd-prev-gen-item">${esc(e.text.trim()).replace(/\n/g,'<br>')}</div>`;
+    });
+    html += `</div>`;
+  }
+
+  if (!html.includes('pd-prev-section')) {
+    if (totalIssues === 0 && genCount === 0) {
+      html += `<div class="pd-prev-empty">Fill in site notes to see the passdown preview here.</div>`;
+    }
+  }
+  return html;
+}
+
 function pdUpdatePreview() {
   const el = document.getElementById('pd-preview-out');
-  if (el) el.textContent = pdBuildText();
+  if (el) el.innerHTML = pdBuildHtml();
 }
 
 // ── Copy ────────────────────────────────────────────────────────────────────
@@ -3640,6 +3868,46 @@ function pdRenderHistory() {
 }
 
 // ── AI Summary via Claude API ────────────────────────────────────────────────
+function pdFormatAiResponse(text) {
+  if (!text) return '';
+  const lines = text.split('\n');
+  let html = '';
+  let inSection = false;
+
+  lines.forEach(line => {
+    const trimmed = line.trim();
+    if (!trimmed) {
+      if (inSection) { html += '</div>'; inSection = false; }
+      return;
+    }
+    // Detect urgent/active lines (⚠ or ACTIVE or contains capital keyword)
+    if (/^[⚠🚨]/.test(trimmed) || /ACTIVE ISSUE|CRITICAL|OUTAGE|CURTAIL/.test(trimmed)) {
+      html += `<div class="pd-ai-urgent">${esc(trimmed)}</div>`;
+      return;
+    }
+    // Numbered section header (e.g. "1. ACTIVE ISSUES" or "## BESS")
+    if (/^(#{1,3}\s|[1-4]\.\s)/i.test(trimmed) || /^(ACTIVE ISSUES|BESS|SOLAR|WIND|GENERAL|MONITOR|ALL CLEAR|WATCH LIST)/i.test(trimmed)) {
+      if (inSection) { html += '</div>'; inSection = false; }
+      const label = trimmed.replace(/^#{1,3}\s|^[1-4]\.\s/, '').replace(/[*_]/g,'');
+      html += `<div class="pd-ai-section"><div class="pd-ai-section-hdr">${esc(label)}</div>`;
+      inSection = true;
+      return;
+    }
+    // Bullet/dash items
+    if (/^[-•*]\s/.test(trimmed) || /^\d+\)\s/.test(trimmed)) {
+      const content = trimmed.replace(/^[-•*]\s|^\d+\)\s/, '').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+      html += `<div class="pd-ai-item"><span class="pd-ai-bullet">▸</span><span>${content}</span></div>`;
+      return;
+    }
+    // Regular paragraph line
+    const fmtLine = esc(trimmed).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+    html += `<p>${fmtLine}</p>`;
+  });
+
+  if (inSection) html += '</div>';
+  return html;
+}
+
 async function pdSummarize() {
   const text = pdBuildText();
   if (text.length < 40) { showToast('Fill in some site notes first'); return; }
@@ -3648,7 +3916,7 @@ async function pdSummarize() {
   const out     = document.getElementById('pd-ai-out');
   loading.classList.add('visible');
   out.classList.remove('visible');
-  out.textContent = '';
+  out.innerHTML = '';
 
   const prompt =
     `You are an ops center summarizer for a renewable energy remote operations center (ROC).\n` +
@@ -3672,10 +3940,20 @@ async function pdSummarize() {
     });
     const data = await res.json();
     const reply = (data.content||[]).map(b=>b.type==='text'?b.text:'').join('').trim();
-    out.textContent = reply || 'No response received.';
+    if (reply) {
+      out.innerHTML = `
+        <div class="pd-ai-out-header">
+          <span class="pd-ai-out-header-icon">✦</span>
+          <span class="pd-ai-out-header-title">AI Shift Summary</span>
+          <span class="pd-ai-out-header-badge">Claude</span>
+        </div>
+        <div class="pd-ai-body">${pdFormatAiResponse(reply)}</div>`;
+    } else {
+      out.innerHTML = `<div class="pd-ai-body"><p>No response received.</p></div>`;
+    }
     out.classList.add('visible');
   } catch(e) {
-    out.textContent = 'API error — check network connection.';
+    out.innerHTML = `<div class="pd-ai-body"><p style="color:var(--red);">API error — check network connection.</p></div>`;
     out.classList.add('visible');
   } finally {
     loading.classList.remove('visible');
