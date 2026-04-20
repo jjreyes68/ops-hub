@@ -1144,6 +1144,7 @@ select,option{background:var(--bg3);}
         <button class="schedule-view-btn" id="btn-view-embed2" onclick="setScheduleView('embed2')">Upcoming Outages</button>
         <button class="schedule-view-btn" id="btn-view-srd" onclick="setScheduleView('srd')">SRD Combo</button>
         <div style="flex:1;"></div>
+        <button class="schedule-kiosk-btn" id="btn-refresh" onclick="refreshSchedule()">↻ Refresh</button>
         <button class="schedule-kiosk-btn" id="btn-kiosk" onclick="toggleKioskMode()">⛶ Kiosk Mode</button>
       </div>
     </div>
@@ -4102,6 +4103,16 @@ function toggleKioskMode() {
     btn.style.borderColor = 'var(--blue)';
     btn.style.color = 'var(--blue)';
   }
+}
+
+function refreshSchedule() {
+  const iframes = document.querySelectorAll('#schedule-view iframe');
+  iframes.forEach(iframe => {
+    const src = iframe.src;
+    iframe.src = '';
+    iframe.src = src;
+  });
+  showToast('Schedule refreshed');
 }
 
 load();
