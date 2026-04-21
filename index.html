@@ -334,6 +334,75 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .sw-hist-row:hover{border-color:var(--border2);}
 .sw-hist-meta{font-size:10px;color:var(--text3);font-family:var(--m);}
 .sw-hist-snip{font-size:11px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;}
+/* ── SW CUSTOM TEMPLATES ────────────────────────────────────────────────────── */
+.sw-tpl-stripe.other{background:var(--blue);}
+.sw-tpl.sel-other{border-color:var(--blue)!important;background:var(--bbg)!important;color:var(--blue)!important;}
+.sw-tpl.sel-other .sw-tpl-site{color:inherit;opacity:.75;}
+.sw-tpl-actions{display:flex;gap:2px;flex-shrink:0;padding-right:6px;opacity:0;transition:opacity .15s;}
+.sw-tpl:hover .sw-tpl-actions{opacity:1;}
+.sw-tpl-act-btn{background:none;border:none;cursor:pointer;font-size:12px;color:var(--text3);padding:3px 5px;border-radius:4px;transition:all .15s;line-height:1;}
+.sw-tpl-act-btn:hover{color:var(--text);background:var(--bg4);}
+.sw-tpl-lock{font-size:9px;color:var(--text3);padding:0 8px 0 4px;flex-shrink:0;opacity:.45;align-self:center;}
+.sw-new-tpl-btn{width:100%;padding:7px;border:1.5px dashed var(--border2);border-radius:7px;background:transparent;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s;margin-bottom:6px;margin-top:4px;}
+.sw-new-tpl-btn:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
+.sw-result-hdr.other{background:var(--bbg);color:var(--blue);}
+/* ── CHRON LOG ──────────────────────────────────────────────────────────────── */
+.cl-input-bar{display:flex;gap:6px;align-items:stretch;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:10px 12px;box-shadow:var(--shs);margin-bottom:12px;flex-wrap:wrap;}
+.cl-input-bar input{flex:1;min-width:160px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;}
+.cl-input-bar input:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
+.cl-input-bar select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;flex-shrink:0;}
+.cl-log-btn{padding:7px 16px;background:var(--green);border:1px solid var(--green);border-radius:6px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--f);white-space:nowrap;transition:all .15s;flex-shrink:0;}
+.cl-log-btn:hover{background:var(--gmid);}
+.cl-feed{display:flex;flex-direction:column;gap:4px;max-width:900px;}
+.cl-entry{display:flex;gap:8px;align-items:flex-start;background:var(--bg2);border:1px solid var(--border);border-left:3px solid transparent;border-radius:8px;padding:8px 10px;transition:border-color .15s;}
+.cl-entry:hover{border-color:var(--border2);border-left-color:transparent;}
+.cl-entry.starred{border-left-color:var(--amber)!important;}
+.cl-time{font-family:var(--m);font-size:11px;color:var(--text3);white-space:nowrap;margin-top:2px;min-width:38px;flex-shrink:0;}
+.cl-cat{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:1px;align-self:flex-start;line-height:1.5;}
+.cl-cat-alarm{background:var(--rbg);color:var(--red);}
+.cl-cat-curtailment{background:var(--abg);color:var(--amber);}
+.cl-cat-dispatch{background:var(--bbg);color:var(--blue);}
+.cl-cat-fieldtech{background:var(--pbg);color:var(--purple);}
+.cl-cat-monitor{background:#fffaeb;color:#92600a;}
+.cl-cat-normal{background:var(--bg4);color:var(--text3);}
+.cl-site-tag{font-family:var(--m);font-size:10px;font-weight:600;background:var(--bg4);border:1px solid var(--border2);padding:1px 6px;border-radius:4px;color:var(--text2);flex-shrink:0;align-self:flex-start;margin-top:2px;white-space:nowrap;}
+.cl-body{flex:1;font-size:13px;line-height:1.5;color:var(--text);word-break:break-word;}
+.cl-star{background:none;border:none;cursor:pointer;font-size:14px;padding:0 2px;color:var(--border2);transition:all .15s;flex-shrink:0;line-height:1;margin-top:1px;}
+.cl-star:hover,.cl-star.on{color:var(--amber);}
+.cl-del{background:none;border:none;cursor:pointer;font-size:11px;color:var(--text3);padding:2px 4px;border-radius:4px;opacity:.35;transition:all .15s;flex-shrink:0;line-height:1;margin-top:1px;}
+.cl-del:hover{color:var(--red);opacity:1;background:var(--rbg);}
+.cl-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;max-width:900px;}
+.cl-starred-count{font-size:10px;color:var(--amber);background:var(--abg);padding:2px 8px;border-radius:10px;font-weight:600;border:1px solid #e8c84a;}
+/* ── FLEET WEATHER ──────────────────────────────────────────────────────────── */
+.wx-fleet-section{margin-top:24px;padding-top:20px;border-top:2px solid var(--border);max-width:960px;}
+.wx-fleet-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap;}
+.wx-fleet-title{font-size:15px;font-weight:600;margin-bottom:2px;}
+.wx-pin-row{display:flex;gap:6px;margin-bottom:6px;position:relative;}
+.wx-pin-row input{flex:1;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;box-shadow:var(--shs);}
+.wx-pin-row input:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
+.wx-pin-matches{display:none;position:absolute;top:100%;left:0;right:0;z-index:20;background:var(--bg2);border:1px solid var(--border2);border-radius:7px;box-shadow:0 4px 16px rgba(0,0,0,.1);overflow:hidden;margin-top:2px;}
+.wx-pin-match-item{padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--border);}
+.wx-pin-match-item:last-child{border-bottom:none;}
+.wx-pin-match-item:hover{background:var(--bbg);}
+.wx-pins-list{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;min-height:10px;}
+.wx-pin-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 6px 4px 11px;background:var(--bg2);border:1px solid var(--border2);border-radius:20px;font-size:12px;font-weight:600;color:var(--text);box-shadow:var(--shs);}
+.wx-pin-chip-del{background:none;border:none;cursor:pointer;font-size:12px;color:var(--text3);padding:0 2px;line-height:1;border-radius:50%;transition:all .15s;}
+.wx-pin-chip-del:hover{color:var(--red);background:var(--rbg);}
+.wx-fleet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;}
+.wx-fleet-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;box-shadow:var(--shs);transition:border-color .2s,background .2s;}
+.wx-fleet-card.wind-warn{border-color:var(--amber);background:#fffbf0;}
+.wx-fleet-card.wind-alert{border-color:var(--red);background:var(--rbg);}
+.wx-fc-site{font-family:var(--m);font-size:13px;font-weight:700;color:var(--text);}
+.wx-fc-loc{font-size:10px;color:var(--text3);margin-top:1px;margin-bottom:8px;line-height:1.3;}
+.wx-fc-main{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.wx-fc-icon{font-size:26px;line-height:1;}
+.wx-fc-temp{font-size:22px;font-weight:700;font-family:var(--m);color:var(--text);}
+.wx-fc-desc{font-size:11px;color:var(--text2);margin-bottom:4px;}
+.wx-fc-wind{font-size:11px;color:var(--text2);margin-bottom:2px;}
+.wx-fc-hum{font-size:11px;color:var(--text3);}
+.wx-fc-ts{font-size:10px;color:var(--text3);font-family:var(--m);margin-top:7px;border-top:1px solid var(--border);padding-top:5px;}
+.wx-fc-loading{text-align:center;padding:16px 0;color:var(--text3);font-size:12px;font-style:italic;}
+.wx-fc-err{font-size:11px;color:var(--red);padding:8px 0;font-style:italic;}
 /* ── MAP VIEW ───────────────────────────────────────────────────────────────── */
 #view-map{padding:0;display:none;flex-direction:column;height:calc(100vh - 48px);}
 #view-map.active{display:flex;}
@@ -749,8 +818,8 @@ select,option{background:var(--bg3);}
     </div>
     <div class="wx-pin-row">
       <input id="wx-pin-inp" placeholder="Search site to pin…" oninput="wxPinFilter()" autocomplete="off">
+      <div class="wx-pin-matches" id="wx-pin-matches"></div>
     </div>
-    <div class="wx-pin-matches" id="wx-pin-matches"></div>
     <div class="wx-pins-list" id="wx-pins-list"></div>
     <div class="wx-fleet-grid" id="wx-fleet-grid"></div>
   </div>
