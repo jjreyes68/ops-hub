@@ -373,6 +373,13 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .cl-del:hover{color:var(--red);opacity:1;background:var(--rbg);}
 .cl-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;max-width:900px;}
 .cl-starred-count{font-size:10px;color:var(--amber);background:var(--abg);padding:2px 8px;border-radius:10px;font-weight:600;border:1px solid #e8c84a;}
+/* Inline site select on each entry */
+.cl-inline-site{font-family:var(--m);font-size:10px;font-weight:600;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1px 4px;color:var(--text2);flex-shrink:0;align-self:flex-start;margin-top:2px;max-width:110px;cursor:pointer;}
+.cl-inline-site:focus{outline:none;border-color:var(--blue);}
+/* Click-to-edit body */
+.cl-body{flex:1;font-size:13px;line-height:1.5;color:var(--text);word-break:break-word;cursor:text;border-radius:3px;padding:1px 3px;margin:-1px -3px;}
+.cl-body:hover{background:var(--bg3);}
+.cl-edit-inp{flex:1;font-size:13px;font-family:var(--f);color:var(--text);background:var(--bg2);border:1px solid var(--blue);border-radius:5px;padding:2px 7px;outline:none;min-width:100px;}
 .cl-preview{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;max-height:400px;overflow-y:auto;font-family:var(--m);font-size:12px;line-height:1.6;color:var(--text);}
 .cl-preview-section{margin-bottom:12px;}
 .cl-preview-section:last-child{margin-bottom:0;}
@@ -927,8 +934,16 @@ select,option{background:var(--bg3);}
     <span style="font-size:12px;color:var(--text3);">Chronological shift event feed</span>
   </div>
   <div class="cl-input-bar">
-    <select id="cl-site" style="max-width:180px;"></select>
-    <input id="cl-text" placeholder="Log entry… press Enter to submit" onkeydown="if(event.key==='Enter')clAdd()">
+    <select id="cl-cat" title="Category">
+      <option value="Normal">Normal</option>
+      <option value="Alarm">⚠ Alarm</option>
+      <option value="Curtailment">⚡ Curtailment</option>
+      <option value="Dispatch">📋 Dispatch</option>
+      <option value="Field Tech">🔧 Field Tech</option>
+      <option value="Monitor">👁 Monitor</option>
+    </select>
+    <select id="cl-site" style="max-width:160px;" title="Site (resets after each entry)"></select>
+    <input id="cl-text" placeholder="Log entry… Enter to submit" onkeydown="if(event.key==='Enter')clAdd()">
     <button class="cl-log-btn" onclick="clAdd()">Log It</button>
   </div>
   <div class="cl-header-row">
@@ -943,11 +958,11 @@ select,option{background:var(--bg3);}
   </div>
   <div class="cl-feed" id="cl-feed"><div class="empty">No entries yet — log the first event above</div></div>
 
-  <!-- Live Summary Preview -->
-  <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-      <span style="font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;">Live Summary Preview</span>
-      <span style="font-size:12px;color:var(--text3);">Grouped by site</span>
+  <!-- Notable Events summary -->
+  <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);max-width:900px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <span style="font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;">Notable Events</span>
+      <span style="font-size:11px;color:var(--text3);">★ starred · alarms · curtailments</span>
     </div>
     <div id="cl-preview" class="cl-preview"></div>
   </div>
@@ -1777,6 +1792,7 @@ function logWeather(){
 // ─── OPERATOR LOG ────────────────────────────────────────────────────────────────
 const CL_KEY = 'rnwbl_chron_v1';
 let clEntries = [];
+let clSiteOptions = ''; // cached options HTML for inline selects
 
 function clInit() {
   try { clEntries = JSON.parse(localStorage.getItem(CL_KEY) || '[]'); } catch(e) { clEntries = []; }
@@ -1786,22 +1802,26 @@ function clInit() {
 function clPopulateSiteSelect() {
   const sel = document.getElementById('cl-site');
   if (!sel) return;
-  const allSites = [
-    {name:'(no site)'},
-    ...[...SITES, ...WX_LOCS].sort((a,b) => (a.name||'').localeCompare(b.name||''))
-  ];
-  sel.innerHTML = allSites.map(s => `<option value="${esc(s.name==='(no site)'?'':s.name)}">${esc(s.name)}</option>`).join('');
+  const allSites = [...SITES, ...WX_LOCS].sort((a,b) => (a.name||'').localeCompare(b.name||''));
+  const opts = allSites.map(s => `<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('');
+  const baseOpts = `<option value="">(no site)</option>` + opts;
+  sel.innerHTML = baseOpts;
+  sel.value = '';
+  // Cache for inline per-entry selects
+  clSiteOptions = baseOpts;
 }
 
 function clAdd() {
   const text = document.getElementById('cl-text').value.trim();
   if (!text) { showToast('Enter a log entry first'); return; }
+  const cat  = document.getElementById('cl-cat')?.value || 'Normal';
   const site = document.getElementById('cl-site').value;
   const now  = new Date();
   const entry = {
     id: Date.now(),
     ts: now.getTime(),
     time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
+    cat,
     site,
     text,
     starred: false
@@ -1809,6 +1829,8 @@ function clAdd() {
   clEntries.unshift(entry);
   try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e) {}
   document.getElementById('cl-text').value = '';
+  // Reset site to no-site; preserve category (useful to keep when logging multiple of same type)
+  document.getElementById('cl-site').value = '';
   clRender();
   showToast('Logged');
 }
@@ -1816,7 +1838,36 @@ function clAdd() {
 function clToggleStar(id) {
   const e = clEntries.find(x => x.id === id); if (!e) return;
   e.starred = !e.starred;
-  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e) {}
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
+  clRender();
+}
+
+function clSetSite(id, val) {
+  const e = clEntries.find(x => x.id === id); if (!e) return;
+  e.site = val;
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
+  clRender();
+}
+
+function clStartEdit(id) {
+  const e = clEntries.find(x => x.id === id); if (!e) return;
+  const bodyEl = document.querySelector(`.cl-body[data-id="${id}"]`);
+  if (!bodyEl) return;
+  const inp = document.createElement('input');
+  inp.value = e.text;
+  inp.className = 'cl-edit-inp';
+  inp.onblur = () => { clSaveEdit(id, inp.value); };
+  inp.onkeydown = (ev) => { if (ev.key === 'Enter') inp.blur(); if (ev.key === 'Escape') clRender(); };
+  bodyEl.replaceWith(inp);
+  inp.focus();
+  inp.select();
+}
+
+function clSaveEdit(id, val) {
+  const e = clEntries.find(x => x.id === id); if (!e) return;
+  const trimmed = val.trim();
+  if (trimmed) e.text = trimmed;
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
   clRender();
 }
 
@@ -1838,12 +1889,17 @@ function clCopyStarred() {
   const starred = clEntries.filter(x => x.starred);
   if (!starred.length) { showToast('No starred entries'); return; }
   const lines = starred.map(e =>
-    `[${e.time}]${e.site?' '+e.site:''} ${e.text}`
+    `[${e.time}]${e.site?' ['+e.site+']':''} ${e.cat && e.cat!=='Normal'?'('+e.cat+') ':''}${e.text}`
   ).join('\n');
   navigator.clipboard.writeText(lines)
     .then(() => showToast('Starred entries copied'))
     .catch(() => showToast('Clipboard blocked — try Ctrl+C'));
 }
+
+const CL_CAT_CLS = {
+  'Alarm':'cl-cat-alarm','Curtailment':'cl-cat-curtailment','Dispatch':'cl-cat-dispatch',
+  'Field Tech':'cl-cat-fieldtech','Monitor':'cl-cat-monitor','Normal':'cl-cat-normal'
+};
 
 function clRender() {
   const feed = document.getElementById('cl-feed'); if (!feed) return;
@@ -1855,66 +1911,62 @@ function clRender() {
     feed.innerHTML = '<div class="empty">No entries yet — log the first event above</div>';
   } else {
     feed.innerHTML = clEntries.map(e => {
-      const siteTag = e.site ? `<span class="cl-site-tag">${esc(e.site)}</span>` : '';
+      const catCls = CL_CAT_CLS[e.cat] || 'cl-cat-normal';
+      const catBadge = e.cat && e.cat !== 'Normal' ? `<span class="cl-cat ${catCls}">${esc(e.cat)}</span>` : '';
+      // Inline site select — compact, always editable
+      const siteSelect = `<select class="cl-inline-site" title="Edit site" onchange="clSetSite(${e.id},this.value)">${clSiteOptions}</select>`;
       return `<div class="cl-entry${e.starred?' starred':''}">
         <span class="cl-time">${esc(e.time)}</span>
-        ${siteTag}
-        <span class="cl-body">${esc(e.text)}</span>
+        ${catBadge}
+        ${siteSelect}
+        <span class="cl-body" data-id="${e.id}" title="Click to edit" onclick="clStartEdit(${e.id})">${esc(e.text)}</span>
         <button class="cl-star${e.starred?' on':''}" title="Star for passdown" onclick="clToggleStar(${e.id})">★</button>
         <button class="cl-del" title="Delete entry" onclick="clDelete(${e.id})">✕</button>
       </div>`;
     }).join('');
+    // Set each inline select to current site value
+    clEntries.forEach(e => {
+      const sel = feed.querySelector(`select[onchange="clSetSite(${e.id},this.value)"]`);
+      if (sel) sel.value = e.site || '';
+    });
   }
-
   clRenderPreview();
 }
 
 function clRenderPreview() {
   const preview = document.getElementById('cl-preview'); if (!preview) return;
 
-  if (!clEntries.length) {
-    preview.innerHTML = '<div style="color:var(--text3);font-style:italic;">No entries to preview</div>';
+  const notable = clEntries.filter(e =>
+    e.starred || e.cat === 'Alarm' || e.cat === 'Curtailment'
+  );
+
+  if (!notable.length) {
+    preview.innerHTML = '<div style="color:var(--text3);font-style:italic;font-size:12px;">Nothing flagged yet — star entries or log Alarms/Curtailments to see them here.</div>';
     return;
   }
 
-  // Group entries by site
-  const grouped = {};
-  clEntries.forEach(e => {
-    const site = e.site || 'General';
-    if (!grouped[site]) grouped[site] = [];
-    grouped[site].push(e);
+  // Group notable entries by category priority
+  const order = ['Alarm','Curtailment','Dispatch','Field Tech','Monitor','Normal'];
+  const groups = {};
+  notable.forEach(e => {
+    const g = e.starred && (e.cat === 'Normal' || !e.cat) ? '★ Starred' : e.cat || 'Normal';
+    if (!groups[g]) groups[g] = [];
+    groups[g].push(e);
   });
 
-  // Get site type for grouping
-  const getSiteType = (siteName) => {
-    if (siteName === 'General') return 'General';
-    const site = SITES.find(s => s.name === siteName) || WX_LOCS.find(w => w.name === siteName);
-    return site ? (site.type || 'General') : 'General';
-  };
-
-  // Group by type
-  const byType = {};
-  Object.keys(grouped).forEach(site => {
-    const type = getSiteType(site);
-    if (!byType[type]) byType[type] = {};
-    byType[type][site] = grouped[site];
-  });
-
-  // Render
+  const catOrder = ['Alarm','Curtailment','★ Starred',...order.slice(2)];
   let html = '';
-  const typeOrder = ['BESS', 'Solar', 'Wind', 'General'];
-  typeOrder.forEach(type => {
-    if (byType[type]) {
-      html += `<div class="cl-preview-section"><div class="cl-preview-section-title">${esc(type)}</div>`;
-      Object.keys(byType[type]).forEach(site => {
-        byType[type][site].forEach(e => {
-          html += `<div class="cl-preview-entry${e.starred?' starred':''}">[${esc(e.time)}] ${esc(e.text)}</div>`;
-        });
-      });
-      html += '</div>';
-    }
+  catOrder.forEach(cat => {
+    if (!groups[cat]) return;
+    const cls = CL_CAT_CLS[cat] || 'cl-cat-normal';
+    html += `<div class="cl-preview-section">
+      <div class="cl-preview-section-title">${esc(cat)}</div>`;
+    groups[cat].forEach(e => {
+      const site = e.site ? `<span style="font-family:var(--m);font-size:10px;opacity:.7;margin-right:4px;">[${esc(e.site)}]</span>` : '';
+      html += `<div class="cl-preview-entry${e.starred?' starred':''}">[${esc(e.time)}] ${site}${esc(e.text)}</div>`;
+    });
+    html += '</div>';
   });
-
   preview.innerHTML = html;
 }
 
