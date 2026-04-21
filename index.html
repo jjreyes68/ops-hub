@@ -346,7 +346,7 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .sw-new-tpl-btn{width:100%;padding:7px;border:1.5px dashed var(--border2);border-radius:7px;background:transparent;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s;margin-bottom:6px;margin-top:4px;}
 .sw-new-tpl-btn:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
 .sw-result-hdr.other{background:var(--bbg);color:var(--blue);}
-/* ── CHRON LOG ──────────────────────────────────────────────────────────────── */
+/* ── OPERATOR LOG ──────────────────────────────────────────────────────────────── */
 .cl-input-bar{display:flex;gap:6px;align-items:stretch;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:10px 12px;box-shadow:var(--shs);margin-bottom:12px;flex-wrap:wrap;}
 .cl-input-bar input{flex:1;min-width:160px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;}
 .cl-input-bar input:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
@@ -507,7 +507,7 @@ select,option{background:var(--bg3);}
   <button class="nav-tab" onclick="switchView('intel',this)">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this)">Tasks</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
-  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Chron Log</button>
+  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Operator Log</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('map',this)">Map</button>
   <button class="nav-tab" onclick="switchView('timezones',this)">Time Zones</button>
   <button class="nav-tab" onclick="switchView('schedule',this)">Schedule</button>
@@ -920,10 +920,10 @@ select,option{background:var(--bg3);}
   </div>
 </div>
 
-<!-- CHRON LOG ─────────────────────────────────────────────────────────────── -->
+<!-- OPERATOR LOG ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-chron">
   <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px;">
-    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Chron Log</div>
+    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Operator Log</div>
     <span style="font-size:12px;color:var(--text3);">Chronological shift event feed</span>
   </div>
   <div class="cl-input-bar">
@@ -1774,7 +1774,7 @@ function logWeather(){
   switchView('notes',document.querySelectorAll('.nav-tab')[0]); showToast('Weather logged');
 }
 
-// ─── CHRON LOG ────────────────────────────────────────────────────────────────
+// ─── OPERATOR LOG ────────────────────────────────────────────────────────────────
 const CL_KEY = 'rnwbl_chron_v1';
 let clEntries = [];
 
@@ -1828,7 +1828,7 @@ function clDelete(id) {
 
 function clClear() {
   if (!clEntries.length) return;
-  if (!confirm('Clear all Chron Log entries for this shift?')) return;
+  if (!confirm('Clear all Operator Log entries for this shift?')) return;
   clEntries = [];
   try { localStorage.removeItem(CL_KEY); } catch(e) {}
   clRender();
