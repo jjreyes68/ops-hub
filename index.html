@@ -346,7 +346,7 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .sw-new-tpl-btn{width:100%;padding:7px;border:1.5px dashed var(--border2);border-radius:7px;background:transparent;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s;margin-bottom:6px;margin-top:4px;}
 .sw-new-tpl-btn:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
 .sw-result-hdr.other{background:var(--bbg);color:var(--blue);}
-/* ── CHRON LOG ──────────────────────────────────────────────────────────────── */
+/* ── OPERATOR LOG ──────────────────────────────────────────────────────────────── */
 .cl-input-bar{display:flex;gap:6px;align-items:stretch;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:10px 12px;box-shadow:var(--shs);margin-bottom:12px;flex-wrap:wrap;}
 .cl-input-bar input{flex:1;min-width:160px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;}
 .cl-input-bar input:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
@@ -373,6 +373,41 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .cl-del:hover{color:var(--red);opacity:1;background:var(--rbg);}
 .cl-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;max-width:900px;}
 .cl-starred-count{font-size:10px;color:var(--amber);background:var(--abg);padding:2px 8px;border-radius:10px;font-weight:600;border:1px solid #e8c84a;}
+/* Handoff draft preview */
+.cl-handoff-preview{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:0;overflow:hidden;box-shadow:var(--shs);}
+.cl-hd-empty{padding:16px;color:var(--text3);font-size:12px;font-style:italic;}
+.cl-hd-section{border-bottom:1px solid var(--border);}
+.cl-hd-section:last-child{border-bottom:none;}
+.cl-hd-section-hdr{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--bg3);border-bottom:1px solid var(--border);}
+.cl-hd-section-icon{font-size:13px;}
+.cl-hd-section-label{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text2);}
+.cl-hd-section-count{font-size:10px;color:var(--text3);background:var(--bg4);padding:1px 6px;border-radius:8px;font-family:var(--m);}
+.cl-hd-sites{padding:8px 14px;display:flex;flex-direction:column;gap:10px;}
+.cl-hd-site{display:flex;flex-direction:column;gap:3px;}
+.cl-hd-site-name{font-family:var(--m);font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.cl-hd-item{display:flex;align-items:baseline;gap:6px;padding-left:4px;}
+.cl-hd-bullet{color:var(--text3);font-size:11px;flex-shrink:0;}
+.cl-hd-text{font-size:12px;color:var(--text2);line-height:1.5;flex:1;}
+.cl-hd-time{font-family:var(--m);font-size:10px;color:var(--text3);flex-shrink:0;white-space:nowrap;}
+.cl-hd-badge{font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;flex-shrink:0;white-space:nowrap;}
+.cl-hd-badge-alarm{background:var(--rbg);color:var(--red);}
+.cl-hd-badge-curtail{background:var(--abg);color:var(--amber);}
+.cl-hd-badge-star{background:#fff8e0;color:#8a6000;}
+.cl-hd-badge-dispatch{background:var(--bbg);color:var(--blue);}
+.cl-hd-badge-ft{background:var(--pbg);color:var(--purple);}
+/* Inline site select on each entry */
+.cl-inline-site{font-family:var(--m);font-size:10px;font-weight:600;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1px 4px;color:var(--text2);flex-shrink:0;align-self:flex-start;margin-top:2px;max-width:110px;cursor:pointer;}
+.cl-inline-site:focus{outline:none;border-color:var(--blue);}
+/* Click-to-edit body */
+.cl-body{flex:1;font-size:13px;line-height:1.5;color:var(--text);word-break:break-word;cursor:text;border-radius:3px;padding:1px 3px;margin:-1px -3px;}
+.cl-body:hover{background:var(--bg3);}
+.cl-edit-inp{flex:1;font-size:13px;font-family:var(--f);color:var(--text);background:var(--bg2);border:1px solid var(--blue);border-radius:5px;padding:2px 7px;outline:none;min-width:100px;}
+.cl-preview{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;max-height:400px;overflow-y:auto;font-family:var(--m);font-size:12px;line-height:1.6;color:var(--text);}
+.cl-preview-section{margin-bottom:12px;}
+.cl-preview-section:last-child{margin-bottom:0;}
+.cl-preview-section-title{font-weight:600;color:var(--accent);margin-bottom:6px;border-bottom:1px solid var(--border);padding-bottom:4px;}
+.cl-preview-entry{margin-bottom:4px;color:var(--text2);}
+.cl-preview-entry.starred{color:var(--amber);font-weight:500;}
 /* ── FLEET WEATHER ──────────────────────────────────────────────────────────── */
 .wx-fleet-section{margin-top:24px;padding-top:20px;border-top:2px solid var(--border);max-width:960px;}
 .wx-fleet-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap;}
@@ -461,9 +496,6 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .tz-sites .tz-loc{color:var(--text2);font-size:12px}
 .tz-footer{font-size:11px;color:var(--text2);margin-top:16px}
 
-/* ── PASSDOWN ────────────────────────────────────────────────────────────────── */
-#view-passdown{padding:0;}
-
 /* ── SCHEDULE (SharePoint iframe) ────────────────────────────────────────────── */
 .schedule-iframe-container{width:100%;max-width:1400px;margin:0 auto;}
 .schedule-iframe-container iframe{width:100%;height:800px;border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--shs);}
@@ -483,147 +515,11 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .schedule-view.kiosk-mode .schedule-iframe-container{max-width:none;height:100%;margin:0;padding:16px;}
 .schedule-view.kiosk-mode .schedule-iframe-container iframe{height:100%;border:none;}
 .schedule-view.kiosk-mode .schedule-srd-combo{height:100%;}
-/* SRD combo view - side by side */
+/* Combined View - side by side */
 .schedule-srd-combo{display:grid;grid-template-columns:1fr 1fr;gap:12px;height:800px;}
 @media(max-width:900px){.schedule-srd-combo{grid-template-columns:1fr;height:600px;}}
 @media(max-width:600px){.schedule-srd-combo{grid-template-columns:1fr;height:500px;}}
 .schedule-srd-combo iframe{width:100%;height:100%;border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--shs);}
-.pd-shell{display:grid;grid-template-columns:1fr 420px;height:calc(100vh - 48px);overflow:hidden;}
-@media(max-width:960px){.pd-shell{grid-template-columns:1fr;height:auto;overflow:visible;}}
-.pd-editor{overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;}
-.pd-preview-col{border-left:1px solid var(--border);display:flex;flex-direction:column;background:var(--bg2);overflow:hidden;}
-.pd-preview-toolbar{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
-.pd-preview-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;flex:1;}
-.pd-preview-body{flex:1;overflow-y:auto;padding:16px;}
-.pd-preview-out{font-family:var(--m);font-size:12px;line-height:1.8;white-space:pre-wrap;color:var(--text);}
-.pd-ai-out{margin-top:12px;background:var(--bbg);border:1px solid var(--blue);border-radius:8px;padding:14px;font-size:12.5px;line-height:1.75;color:var(--text);display:none;font-family:var(--f);}
-.pd-ai-out.visible{display:block;}
-.pd-ai-loading{display:none;align-items:center;gap:8px;padding:10px 14px;font-size:12px;color:var(--blue);font-family:var(--m);}
-.pd-ai-loading.visible{display:flex;}
-.pd-ai-spinner{width:14px;height:14px;border:2px solid var(--bbg);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg);}}
-
-/* Header card */
-.pd-hdr-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;box-shadow:var(--shs);}
-.pd-hdr-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-.pd-hdr-field{display:flex;flex-direction:column;gap:3px;flex:1;min-width:120px;}
-.pd-hdr-field label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;}
-.pd-hdr-field input,.pd-hdr-field select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);font-family:var(--f);}
-.pd-hdr-field input:focus,.pd-hdr-field select:focus{outline:none;border-color:var(--blue);}
-
-/* Section */
-.pd-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--shs);overflow:hidden;}
-.pd-section-hdr{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;user-select:none;border-bottom:1px solid var(--border);}
-.pd-section-hdr:hover{background:var(--bg3);}
-.pd-section-icon{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.pd-section-label{font-size:12px;font-weight:700;letter-spacing:.04em;flex:1;}
-.pd-section-count{font-size:11px;color:var(--text3);font-family:var(--m);}
-.pd-section-arrow{font-size:10px;color:var(--text3);transition:transform .2s;}
-.pd-section-arrow.open{transform:rotate(90deg);}
-.pd-section-body{
-  display: none;
-  padding: 8px 10px;
-  flex-direction: column;
-  gap: 5px;
-  max-height: 460px;   /* tall enough for ~6 sites with notes */
-  min-height: 30px;    /* ensure visible when empty */
-  overflow-y: auto;
-  padding-right: 6px;  /* space for scrollbar */
-  scroll-behavior: smooth;
-}
-.pd-section-body.open{
-  display: flex;
-}
-
-
-/* Site row */
-.pd-site-row{display:grid;grid-template-columns:auto 1fr auto;gap:6px;align-items:start;padding:8px 10px;border-radius:7px;background:var(--bg3);border:1px solid transparent;transition:border-color .15s;}
-.pd-site-row:hover{border-color:var(--border);}
-.pd-site-row.has-note{background:var(--bg2);border-color:var(--border);}
-.pd-site-name-col{display:flex;flex-direction:column;gap:3px;min-width:80px;}
-.pd-site-name{font-size:12px;font-weight:700;color:var(--text);font-family:var(--m);}
-.pd-site-loc{font-size:10px;color:var(--text3);}
-.pd-site-inputs{display:flex;flex-direction:column;gap:4px;}
-.pd-site-top{display:flex;gap:5px;align-items:center;flex-wrap:wrap;}
-.pd-status-btns{display:flex;gap:3px;}
-.pd-status-btn{padding:3px 8px;border-radius:10px;border:1px solid var(--border);background:var(--bg4);color:var(--text3);font-size:10px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .12s;white-space:nowrap;}
-.pd-status-btn:hover{border-color:var(--border2);color:var(--text2);}
-.pd-status-btn.s-none{background:var(--bg4);color:var(--text3);}
-.pd-status-btn.s-none.active{background:var(--bg4);color:var(--text2);border-color:var(--border2);}
-.pd-status-btn.s-monitor.active{background:var(--abg);color:var(--amber);border-color:var(--amber);}
-.pd-status-btn.s-active.active{background:var(--rbg);color:var(--red);border-color:var(--red);}
-.pd-status-btn.s-resolved.active{background:var(--gbg);color:var(--green);border-color:var(--green);}
-.pd-log-inp{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:3px 7px;font-size:11px;font-family:var(--m);color:var(--text2);width:90px;}
-.pd-log-inp:focus{outline:none;border-color:var(--blue);}
-.pd-notes-inp{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:5px 8px;font-size:12px;font-family:var(--f);color:var(--text);resize:vertical;min-height:34px;line-height:1.5;}
-.pd-notes-inp:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
-.pd-site-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px;padding:3px;border-radius:4px;opacity:.5;align-self:flex-start;margin-top:2px;}
-.pd-site-del:hover{color:var(--red);opacity:1;background:var(--rbg);}
-.pd-add-site-row{display:flex;gap:6px;padding:8px 10px;border-top:1px solid var(--border);margin-top:4px;}
-.pd-add-inp{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 9px;font-size:12px;font-family:var(--m);color:var(--text);}
-.pd-add-inp:focus{outline:none;border-color:var(--green);}
-.pd-add-btn{padding:4px 10px;background:var(--gbg);border:1px solid var(--green);border-radius:6px;color:var(--green);font-size:12px;font-weight:600;cursor:pointer;}
-.pd-add-btn:hover{background:var(--green);color:#fff;}
-
-/* History sidebar item */
-.pd-hist-item{padding:9px 11px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:border-color .15s;}
-.pd-hist-item:hover{border-color:var(--border2);}
-.pd-hist-meta{font-size:10px;color:var(--text3);font-family:var(--m);margin-bottom:2px;}
-.pd-hist-snip{font-size:12px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-
-/* Copy flash */
-.pd-copy-flash{animation:flash .4s;}
-@keyframes flash{0%,100%{background:var(--gbg);}50%{background:var(--gmid);color:#fff;}}
-
-/* General entry — flex row so textarea fills properly */
-.pd-gen-entry{display:flex;gap:6px;align-items:flex-start;padding:4px 2px;}
-.pd-gen-entry .pd-notes-inp{flex:1;min-height:52px;font-size:13px;}
-.pd-gen-entry .pd-site-del{margin-top:4px;flex-shrink:0;}
-
-/* ── Improved Live Preview ─────────────────────────────────── */
-.pd-preview-out{font-size:12.5px;line-height:1.75;color:var(--text);}
-.pd-prev-header{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 13px;margin-bottom:10px;font-family:var(--m);font-size:11.5px;color:var(--text2);line-height:1.9;}
-.pd-prev-header strong{color:var(--text);font-size:12px;}
-.pd-prev-headline{padding:7px 11px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;}
-.pd-prev-headline.all-clear{background:var(--gbg);color:var(--green);border:1px solid #a3d9bc;}
-.pd-prev-headline.has-issues{background:var(--rbg);color:var(--red);border:1px solid #f4bdb0;}
-.pd-prev-headline.monitoring{background:var(--abg);color:var(--amber);border:1px solid #f5d99a;}
-.pd-prev-section{margin-bottom:10px;}
-.pd-prev-sec-hdr{display:flex;align-items:center;gap:7px;padding:5px 10px;border-radius:6px;margin-bottom:6px;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;}
-.pd-prev-sec-hdr.bess{background:var(--bbg);color:var(--blue);border-left:3px solid var(--blue);}
-.pd-prev-sec-hdr.solar{background:var(--abg);color:var(--amber);border-left:3px solid var(--amber);}
-.pd-prev-sec-hdr.wind{background:var(--gbg);color:var(--green);border-left:3px solid var(--green);}
-.pd-prev-sec-hdr.general{background:var(--bg3);color:var(--text2);border-left:3px solid var(--border2);}
-.pd-prev-site{padding:5px 9px 5px 12px;border-radius:6px;background:var(--bg3);margin-bottom:4px;border:1px solid transparent;}
-.pd-prev-site.s-active{border-color:var(--red);background:var(--rbg);}
-.pd-prev-site.s-monitor{border-color:var(--amber);background:var(--abg);}
-.pd-prev-site.s-resolved{border-color:var(--green);background:var(--gbg);}
-.pd-prev-site-hdr{display:flex;align-items:center;gap:6px;}
-.pd-prev-site-name{font-family:var(--m);font-size:12px;font-weight:700;color:var(--text);}
-.pd-prev-status-badge{font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;}
-.pd-prev-status-badge.active{background:var(--red);color:#fff;}
-.pd-prev-status-badge.monitor{background:var(--amber);color:#fff;}
-.pd-prev-status-badge.resolved{background:var(--green);color:#fff;}
-.pd-prev-log-badge{font-family:var(--m);font-size:10px;color:var(--text3);background:var(--bg4);padding:1px 7px;border-radius:10px;}
-.pd-prev-site-notes{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.6;padding-left:2px;font-family:var(--f);}
-.pd-prev-gen-item{font-size:12.5px;color:var(--text);padding:5px 10px;border-radius:6px;background:var(--bg3);margin-bottom:4px;border-left:3px solid var(--border2);line-height:1.6;}
-.pd-prev-empty{font-size:12px;color:var(--text3);text-align:center;padding:28px 16px;font-style:italic;}
-
-/* ── Improved AI Summary ────────────────────────────────────── */
-.pd-ai-out{margin-top:12px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;display:none;}
-.pd-ai-out.visible{display:block;}
-.pd-ai-out-header{background:linear-gradient(135deg,var(--bbg),var(--pbg));border-bottom:1px solid var(--border);padding:9px 14px;display:flex;align-items:center;gap:7px;}
-.pd-ai-out-header-icon{font-size:14px;}
-.pd-ai-out-header-title{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.06em;text-transform:uppercase;flex:1;}
-.pd-ai-out-header-badge{font-size:10px;font-weight:600;background:var(--bbg);color:var(--blue);border:1px solid var(--blue);padding:2px 8px;border-radius:10px;}
-.pd-ai-body{padding:12px 14px;font-size:12.5px;line-height:1.8;color:var(--text);font-family:var(--f);}
-.pd-ai-body p{margin-bottom:7px;}
-.pd-ai-body p:last-child{margin-bottom:0;}
-.pd-ai-section{margin-bottom:10px;}
-.pd-ai-section-hdr{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;padding-bottom:3px;border-bottom:1px solid var(--border);}
-.pd-ai-item{display:flex;gap:7px;padding:3px 0;font-size:12.5px;}
-.pd-ai-bullet{color:var(--blue);flex-shrink:0;font-weight:700;}
-.pd-ai-urgent{background:var(--rbg);border:1px solid #f4bdb0;border-radius:6px;padding:7px 10px;margin-bottom:8px;font-size:12.5px;color:var(--red);font-weight:500;}
 
 select,option{background:var(--bg3);}
 </style>
@@ -640,10 +536,9 @@ select,option{background:var(--bg3);}
   <button class="nav-tab" onclick="switchView('intel',this)">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this)">Tasks</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
-  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Chron Log</button>
+  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Operator Log</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('map',this)">Map</button>
   <button class="nav-tab" onclick="switchView('timezones',this)">Time Zones</button>
-  <button class="nav-tab" onclick="switchView('passdown',this)">Passdown</button>
   <button class="nav-tab" onclick="switchView('schedule',this)">Schedule</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('notes',this)">Notepad</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('log',this)">Log</button>
@@ -1054,14 +949,14 @@ select,option{background:var(--bg3);}
   </div>
 </div>
 
-<!-- CHRON LOG ─────────────────────────────────────────────────────────────── -->
+<!-- OPERATOR LOG ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-chron">
   <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px;">
-    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Chron Log</div>
+    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Operator Log</div>
     <span style="font-size:12px;color:var(--text3);">Chronological shift event feed</span>
   </div>
   <div class="cl-input-bar">
-    <select id="cl-cat">
+    <select id="cl-cat" title="Category">
       <option value="Normal">Normal</option>
       <option value="Alarm">⚠ Alarm</option>
       <option value="Curtailment">⚡ Curtailment</option>
@@ -1069,8 +964,8 @@ select,option{background:var(--bg3);}
       <option value="Field Tech">🔧 Field Tech</option>
       <option value="Monitor">👁 Monitor</option>
     </select>
-    <select id="cl-site" style="max-width:140px;"></select>
-    <input id="cl-text" placeholder="Log entry… press Enter to submit" onkeydown="if(event.key==='Enter')clAdd()">
+    <select id="cl-site" style="max-width:160px;" title="Site (resets after each entry)"></select>
+    <input id="cl-text" placeholder="Log entry… Enter to submit" onkeydown="if(event.key==='Enter')clAdd()">
     <button class="cl-log-btn" onclick="clAdd()">Log It</button>
   </div>
   <div class="cl-header-row">
@@ -1079,11 +974,25 @@ select,option{background:var(--bg3);}
       <span class="cl-starred-count" id="cl-starred-count" style="display:none;"></span>
     </div>
     <div style="display:flex;gap:6px;">
-      <button class="tbtn" style="font-size:11px;" onclick="clCopyStarred()">Copy ★ for passdown</button>
+      <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">Copy ★ for passdown</button>
       <button class="tbtn" style="font-size:11px;color:var(--red);" onclick="clClear()">Clear shift</button>
     </div>
   </div>
   <div class="cl-feed" id="cl-feed"><div class="empty">No entries yet — log the first event above</div></div>
+
+  <!-- Shift Handoff Draft -->
+  <div style="margin-top:20px;padding-top:16px;border-top:2px solid var(--border);max-width:900px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+      <div>
+        <span style="font-size:13px;font-weight:700;color:var(--text);">Shift Handoff Draft</span>
+        <span style="font-size:11px;color:var(--text3);margin-left:8px;">★ starred · Alarm · Curtailment · grouped by asset type</span>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">📋 Copy Handoff</button>
+      </div>
+    </div>
+    <div id="cl-preview" class="cl-handoff-preview"></div>
+  </div>
 </div>
 
 <!-- MAP VIEW ────────────────────────────────────────────────────────────────── -->
@@ -1120,136 +1029,6 @@ select,option{background:var(--bg3);}
   </div>
 </div>
 
-<!-- PASSDOWN ─────────────────────────────────────────────────────────────────── -->
-<div class="view" id="view-passdown">
-<div class="pd-shell">
-
-  <!-- LEFT: EDITOR ──────────────────────────────────────────────── -->
-  <div class="pd-editor" id="pd-editor">
-
-    <!-- Header -->
-    <div class="pd-hdr-card">
-      <div class="pd-hdr-row">
-        <div class="pd-hdr-field">
-          <label>Date</label>
-          <input type="date" id="pd-date">
-        </div>
-        <div class="pd-hdr-field">
-          <label>Shift</label>
-          <select id="pd-shift">
-            <option value="Day">Day Shift</option>
-            <option value="Night">Night Shift</option>
-          </select>
-        </div>
-        <div class="pd-hdr-field" style="min-width:160px;">
-          <label>Author</label>
-          <input id="pd-author" list="pd-auth-list" placeholder="Your name">
-          <datalist id="pd-auth-list">
-            <option>Adam McCauley</option><option>Alexander Conway</option><option>Christopher Hill</option>
-            <option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option><option>Mar'Cell Edwards</option>
-            <option>Morgan Shearer</option><option>Rob Seffern</option><option>Sergio Torres</option>
-          </datalist>
-        </div>
-        <div class="pd-hdr-field" style="min-width:160px;">
-          <label>Relieved by</label>
-          <input id="pd-relieved" list="pd-auth-list" placeholder="Incoming operator">
-        </div>
-      </div>
-    </div>
-
-    <!-- BESS section -->
-    <div class="pd-section" id="pds-bess">
-      <div class="pd-section-hdr" onclick="pdToggleSection('bess')">
-        <span class="pd-section-icon" style="background:#1a4d8a;"></span>
-        <span class="pd-section-label" style="color:var(--blue);">⚡ BESS Sites</span>
-        <span class="pd-section-count" id="pdc-bess">0 active</span>
-        <span class="pd-section-arrow open" id="pda-bess">▶</span>
-      </div>
-      <div class="pd-section-body" id="pdb-bess"></div>
-      <div class="pd-add-site-row">
-        <input class="pd-add-inp" id="pdadd-bess" placeholder="Site code, e.g. BYPS" onkeydown="if(event.key==='Enter')pdAddSite('bess')">
-        <button class="pd-add-btn" onclick="pdAddSite('bess')">+ Add</button>
-      </div>
-    </div>
-
-    <!-- Solar section -->
-    <div class="pd-section" id="pds-solar">
-      <div class="pd-section-hdr" onclick="pdToggleSection('solar')">
-        <span class="pd-section-icon" style="background:#b36b00;"></span>
-        <span class="pd-section-label" style="color:var(--amber);">☀ Solar (PV) Sites</span>
-        <span class="pd-section-count" id="pdc-solar">0 active</span>
-        <span class="pd-section-arrow open" id="pda-solar">▶</span>
-      </div>
-      <div class="pd-section-body" id="pdb-solar"></div>
-      <div class="pd-add-site-row">
-        <input class="pd-add-inp" id="pdadd-solar" placeholder="Site code, e.g. NSTR1" onkeydown="if(event.key==='Enter')pdAddSite('solar')">
-        <button class="pd-add-btn" onclick="pdAddSite('solar')">+ Add</button>
-      </div>
-    </div>
-
-    <!-- Wind section -->
-    <div class="pd-section" id="pds-wind">
-      <div class="pd-section-hdr" onclick="pdToggleSection('wind')">
-        <span class="pd-section-icon" style="background:#1a6e4a;"></span>
-        <span class="pd-section-label" style="color:var(--green);">💨 Wind Sites</span>
-        <span class="pd-section-count" id="pdc-wind">0 active</span>
-        <span class="pd-section-arrow open" id="pda-wind">▶</span>
-      </div>
-      <div class="pd-section-body" id="pdb-wind"></div>
-      <div class="pd-add-site-row">
-        <input class="pd-add-inp" id="pdadd-wind" placeholder="Site code, e.g. MCLM1" onkeydown="if(event.key==='Enter')pdAddSite('wind')">
-        <button class="pd-add-btn" onclick="pdAddSite('wind')">+ Add</button>
-      </div>
-    </div>
-
-    <!-- General section -->
-    <div class="pd-section" id="pds-general">
-      <div class="pd-section-hdr" onclick="pdToggleSection('general')">
-        <span class="pd-section-icon" style="background:var(--text3);"></span>
-        <span class="pd-section-label">📋 General / Action Items</span>
-        <span class="pd-section-count" id="pdc-general">0 items</span>
-        <span class="pd-section-arrow open" id="pda-general">▶</span>
-      </div>
-      <div class="pd-section-body" id="pdb-general" style="display:flex;min-height:30px;max-height:460px;overflow-y:auto;padding:8px 10px;">
-        <div style="font-size:12px;color:var(--text3);padding:6px 4px;">No general items — add one below.</div>
-      </div>
-      <div class="pd-add-site-row" style="border-top:1px solid var(--border);margin-top:4px;padding:8px 10px;display:flex;gap:6px;">
-        <button class="pd-add-btn" onclick="pdAddGeneralEntry()">+ Add General Item</button>
-      </div>
-    </div>
-
-    <!-- History -->
-    <div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-        <span style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;">Saved Passdowns</span>
-        <button class="tbtn" style="font-size:11px;padding:2px 8px;" onclick="pdClearHistory()">Clear all</button>
-      </div>
-      <div id="pd-history" style="display:flex;flex-direction:column;gap:5px;"></div>
-    </div>
-
-  </div><!-- /pd-editor -->
-
-  <!-- RIGHT: LIVE PREVIEW ───────────────────────────────────────── -->
-  <div class="pd-preview-col">
-    <div class="pd-preview-toolbar">
-      <span class="pd-preview-title">Live Preview</span>
-      <button class="tbtn" style="font-size:11px;padding:4px 10px;" id="pd-copy-btn" onclick="pdCopy()">Copy</button>
-      <button class="btn-p" style="font-size:11px;padding:4px 12px;" onclick="pdSave()">Save</button>
-      <button class="tbtn" style="font-size:11px;padding:4px 10px;border-color:var(--blue);color:var(--blue);" onclick="pdSummarize()">✦ AI Summary</button>
-    </div>
-    <div class="pd-preview-body">
-      <div class="pd-ai-loading" id="pd-ai-loading">
-        <div class="pd-ai-spinner"></div>
-        <span>Generating summary…</span>
-      </div>
-      <div class="pd-ai-out" id="pd-ai-out"></div>
-      <div class="pd-preview-out" id="pd-preview-out"><div class="pd-prev-empty">Fill in site notes to see the passdown preview here.</div></div>
-    </div>
-  </div>
-
-</div>
-</div><!-- /view-passdown -->
-
 <!-- SCHEDULE (SharePoint) ──────────────────────────────────────────────────────────── -->
 <div class="view" id="view-schedule">
   <div class="schedule-view" id="schedule-view">
@@ -1259,22 +1038,22 @@ select,option{background:var(--bg3);}
         <span style="font-size:12px;color:var(--text3);">SharePoint schedule view</span>
       </div>
       <div class="schedule-controls">
-        <button class="schedule-view-btn active" id="btn-view-embed1" onclick="setScheduleView('embed1')">Outages Schedule</button>
+        <button class="schedule-view-btn" id="btn-view-embed1" onclick="setScheduleView('embed1')">Outages Schedule</button>
         <button class="schedule-view-btn" id="btn-view-embed2" onclick="setScheduleView('embed2')">Upcoming Outages</button>
-        <button class="schedule-view-btn" id="btn-view-srd" onclick="setScheduleView('srd')">SRD Combo</button>
+        <button class="schedule-view-btn active" id="btn-view-srd" onclick="setScheduleView('srd')">Combined View</button>
         <div style="flex:1;"></div>
         <button class="schedule-kiosk-btn" id="btn-refresh" onclick="refreshSchedule()">↻ Refresh</button>
         <button class="schedule-kiosk-btn" id="btn-kiosk" onclick="toggleKioskMode()">⛶ Kiosk Mode</button>
       </div>
     </div>
     <div style="padding:0 16px 16px;">
-      <div class="schedule-iframe-container" id="schedule-embed1">
+      <div class="schedule-iframe-container" id="schedule-embed1" style="display:none;">
         <iframe frameborder="0" scrolling="no" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={1afbe310-d1bc-407d-838a-528698f0e3d3}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A2%3AI35&wdHideGridlines=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
       </div>
       <div class="schedule-iframe-container" id="schedule-embed2" style="display:none;">
         <iframe frameborder="0" scrolling="no" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={5c8f1191-ff95-46c8-b02e-d75e7d808278}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AM30&wdHideGridlines=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
       </div>
-      <div class="schedule-srd-combo" id="schedule-srd" style="display:none;">
+      <div class="schedule-srd-combo" id="schedule-srd">
         <iframe frameborder="0" scrolling="no" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={1afbe310-d1bc-407d-838a-528698f0e3d3}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A2%3AI35&wdHideGridlines=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
         <iframe frameborder="0" scrolling="no" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={5c8f1191-ff95-46c8-b02e-d75e7d808278}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AM30&wdHideGridlines=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
       </div>
@@ -1456,7 +1235,6 @@ async function load() {
   restoreAdhocTimers();
   asInit();
   swInit();
-  pdInit();
   clInit();
   wxFleetInit();
   // Restore escalation contacts
@@ -1465,7 +1243,7 @@ async function load() {
   rows.forEach((row,i) => { const inp=row.querySelector('input'); if(inp) inp.value=S.escContacts[tkeys[i]]||''; });
 
   // Restore last active tab (default: scans)
-  const TAB_VIEWS = ['scans','asset','intel','ops','swbuilder','chron','timezones','passdown'];
+  const TAB_VIEWS = ['scans','asset','intel','ops','swbuilder','chron','timezones','schedule'];
   let savedTab = 'scans';
   try { savedTab = localStorage.getItem('rnwbl_active_tab') || 'scans'; } catch(e) {}
   if (!TAB_VIEWS.includes(savedTab)) savedTab = 'scans';
@@ -1548,7 +1326,6 @@ function switchView(v, el) {
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
   if(v==='map') mapActivate();
   if(v==='timezones') initTimeZones();
-  if(v==='passdown') pdActivate();
   if(v==='chron') clRender();
   if(v==='intel') wxFleetInit();
   try { localStorage.setItem('rnwbl_active_tab', v); } catch(e) {}
@@ -2039,18 +1816,10 @@ function logWeather(){
   switchView('notes',document.querySelectorAll('.nav-tab')[0]); showToast('Weather logged');
 }
 
-// ─── CHRON LOG ────────────────────────────────────────────────────────────────
+// ─── OPERATOR LOG ────────────────────────────────────────────────────────────────
 const CL_KEY = 'rnwbl_chron_v1';
 let clEntries = [];
-
-const CL_CAT_CLS = {
-  'Alarm':       'cl-cat-alarm',
-  'Curtailment': 'cl-cat-curtailment',
-  'Dispatch':    'cl-cat-dispatch',
-  'Field Tech':  'cl-cat-fieldtech',
-  'Monitor':     'cl-cat-monitor',
-  'Normal':      'cl-cat-normal'
-};
+let clSiteOptions = ''; // cached options HTML for inline selects
 
 function clInit() {
   try { clEntries = JSON.parse(localStorage.getItem(CL_KEY) || '[]'); } catch(e) { clEntries = []; }
@@ -2060,17 +1829,19 @@ function clInit() {
 function clPopulateSiteSelect() {
   const sel = document.getElementById('cl-site');
   if (!sel) return;
-  const allSites = [
-    {name:'(no site)'},
-    ...[...SITES, ...WX_LOCS].sort((a,b) => (a.name||'').localeCompare(b.name||''))
-  ];
-  sel.innerHTML = allSites.map(s => `<option value="${esc(s.name==='(no site)'?'':s.name)}">${esc(s.name)}</option>`).join('');
+  const allSites = [...SITES, ...WX_LOCS].sort((a,b) => (a.name||'').localeCompare(b.name||''));
+  const opts = allSites.map(s => `<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('');
+  const baseOpts = `<option value="">(no site)</option>` + opts;
+  sel.innerHTML = baseOpts;
+  sel.value = '';
+  // Cache for inline per-entry selects
+  clSiteOptions = baseOpts;
 }
 
 function clAdd() {
   const text = document.getElementById('cl-text').value.trim();
   if (!text) { showToast('Enter a log entry first'); return; }
-  const cat  = document.getElementById('cl-cat').value;
+  const cat  = document.getElementById('cl-cat')?.value || 'Normal';
   const site = document.getElementById('cl-site').value;
   const now  = new Date();
   const entry = {
@@ -2085,6 +1856,8 @@ function clAdd() {
   clEntries.unshift(entry);
   try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e) {}
   document.getElementById('cl-text').value = '';
+  // Reset site to no-site; preserve category (useful to keep when logging multiple of same type)
+  document.getElementById('cl-site').value = '';
   clRender();
   showToast('Logged');
 }
@@ -2092,7 +1865,36 @@ function clAdd() {
 function clToggleStar(id) {
   const e = clEntries.find(x => x.id === id); if (!e) return;
   e.starred = !e.starred;
-  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e) {}
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
+  clRender();
+}
+
+function clSetSite(id, val) {
+  const e = clEntries.find(x => x.id === id); if (!e) return;
+  e.site = val;
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
+  clRender();
+}
+
+function clStartEdit(id) {
+  const e = clEntries.find(x => x.id === id); if (!e) return;
+  const bodyEl = document.querySelector(`.cl-body[data-id="${id}"]`);
+  if (!bodyEl) return;
+  const inp = document.createElement('input');
+  inp.value = e.text;
+  inp.className = 'cl-edit-inp';
+  inp.onblur = () => { clSaveEdit(id, inp.value); };
+  inp.onkeydown = (ev) => { if (ev.key === 'Enter') inp.blur(); if (ev.key === 'Escape') clRender(); };
+  bodyEl.replaceWith(inp);
+  inp.focus();
+  inp.select();
+}
+
+function clSaveEdit(id, val) {
+  const e = clEntries.find(x => x.id === id); if (!e) return;
+  const trimmed = val.trim();
+  if (trimmed) e.text = trimmed;
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
   clRender();
 }
 
@@ -2104,22 +1906,82 @@ function clDelete(id) {
 
 function clClear() {
   if (!clEntries.length) return;
-  if (!confirm('Clear all Chron Log entries for this shift?')) return;
+  if (!confirm('Clear all Operator Log entries for this shift?')) return;
   clEntries = [];
   try { localStorage.removeItem(CL_KEY); } catch(e) {}
   clRender();
 }
 
-function clCopyStarred() {
-  const starred = clEntries.filter(x => x.starred);
-  if (!starred.length) { showToast('No starred entries'); return; }
-  const lines = starred.map(e =>
-    `[${e.time}]${e.site?' '+e.site:''} [${e.cat}] ${e.text}`
-  ).join('\n');
-  navigator.clipboard.writeText(lines)
-    .then(() => showToast('Starred entries copied'))
+function clCopyHandoff() {
+  const notable = clEntries.filter(e => e.starred || e.cat === 'Alarm' || e.cat === 'Curtailment' || e.cat === 'Dispatch' || e.cat === 'Monitor');
+  if (!notable.length) { showToast('No notable entries to copy'); return; }
+
+  const grouped = clGroupByAsset(notable);
+  const ASSET_ORDER = ['BESS','Solar','Wind','General'];
+  const SEP = '─'.repeat(32);
+
+  let lines = [];
+  ASSET_ORDER.forEach(type => {
+    if (!grouped[type] || !Object.keys(grouped[type]).length) return;
+    lines.push(`\n──${type.toUpperCase()}──${SEP.slice(type.length + 4)}`);
+    Object.keys(grouped[type]).forEach(site => {
+      lines.push(site + ':');
+      grouped[type][site].forEach(e => {
+        const catTag = e.cat && e.cat !== 'Normal' ? ` (${e.cat})` : '';
+        lines.push(`– ${e.text}${catTag}`);
+      });
+    });
+  });
+
+  const text = lines.join('\n').trim();
+  navigator.clipboard.writeText(text)
+    .then(() => showToast('Handoff copied'))
     .catch(() => showToast('Clipboard blocked — try Ctrl+C'));
 }
+
+// Classify a site name → 'BESS' | 'Solar' | 'Wind' | 'General'
+const CL_SITE_TYPES = {
+  // BESS
+  CNDR1:'BESS',PRGN1:'BESS',PRGV1:'BESS',HARQ2:'BESS',KUNA1:'BESS',GLTA1:'BESS',COSO1:'BESS',DBLO1:'BESS',
+  BYPS1:'BESS',CTLF1:'BESS',CTLF:'BESS',PDMT1:'BESS',MRCP1:'BESS',FRDN1:'BESS',ANGF1:'BESS',AVLN1:'BESS',TSMS1:'BESS',
+  // Solar
+  HARQ1:'Solar',NCLS1:'Solar',AVLN2:'Solar',BLKW1:'Solar',LSTH2:'Solar',NSTR1:'Solar',
+  FRMV1:'Solar',HNFD1:'Solar',LSTH1:'Solar',PRTV1:'Solar',TLRE1:'Solar',TRPC1:'Solar',
+  // Wind
+  DFRN1:'Wind',MCLM1:'Wind',GDWL1:'Wind',LNDL1:'Wind',ORGN1:'Wind',RKRD1:'Wind',RKRG1:'Wind',PRRS1:'Wind',PRSE1:'Wind'
+};
+
+function clGetAssetType(siteName) {
+  if (!siteName) return 'General';
+  const upper = siteName.toUpperCase().trim();
+  if (CL_SITE_TYPES[upper]) return CL_SITE_TYPES[upper];
+  // Fall back to SITES array id ranges: 1xx=BESS, 2xx=Solar, 3xx=Wind
+  const s = SITES.find(x => x.name.toUpperCase() === upper);
+  if (s) {
+    if (s.id >= 100 && s.id < 200) return 'BESS';
+    if (s.id >= 200 && s.id < 300) return 'Solar';
+    if (s.id >= 300 && s.id < 400) return 'Wind';
+  }
+  return 'General';
+}
+
+function clGroupByAsset(entries) {
+  // Returns { 'BESS': { 'CNDR1': [...], ... }, 'Solar': {...}, 'Wind': {...}, 'General': {...} }
+  const out = {};
+  entries.forEach(e => {
+    const type = clGetAssetType(e.site);
+    const site = e.site || 'General';
+    if (!out[type]) out[type] = {};
+    if (!out[type][site]) out[type][site] = [];
+    out[type][site].push(e);
+  });
+  return out;
+}
+
+const CL_CAT_CLS = {
+  'Alarm':'cl-cat-alarm','Curtailment':'cl-cat-curtailment','Dispatch':'cl-cat-dispatch',
+  'Field Tech':'cl-cat-fieldtech','Monitor':'cl-cat-monitor','Normal':'cl-cat-normal'
+};
 
 function clRender() {
   const feed = document.getElementById('cl-feed'); if (!feed) return;
@@ -2129,20 +1991,85 @@ function clRender() {
 
   if (!clEntries.length) {
     feed.innerHTML = '<div class="empty">No entries yet — log the first event above</div>';
+  } else {
+    feed.innerHTML = clEntries.map(e => {
+      const catCls = CL_CAT_CLS[e.cat] || 'cl-cat-normal';
+      const catBadge = e.cat && e.cat !== 'Normal' ? `<span class="cl-cat ${catCls}">${esc(e.cat)}</span>` : '';
+      const siteSelect = `<select class="cl-inline-site" title="Edit site" onchange="clSetSite(${e.id},this.value)">${clSiteOptions}</select>`;
+      return `<div class="cl-entry${e.starred?' starred':''}">
+        <span class="cl-time">${esc(e.time)}</span>
+        ${catBadge}
+        ${siteSelect}
+        <span class="cl-body" data-id="${e.id}" title="Click to edit" onclick="clStartEdit(${e.id})">${esc(e.text)}</span>
+        <button class="cl-star${e.starred?' on':''}" title="Star for passdown" onclick="clToggleStar(${e.id})">★</button>
+        <button class="cl-del" title="Delete entry" onclick="clDelete(${e.id})">✕</button>
+      </div>`;
+    }).join('');
+    clEntries.forEach(e => {
+      const sel = feed.querySelector(`select[onchange="clSetSite(${e.id},this.value)"]`);
+      if (sel) sel.value = e.site || '';
+    });
+  }
+  clRenderPreview();
+}
+
+function clRenderPreview() {
+  const preview = document.getElementById('cl-preview'); if (!preview) return;
+
+  const notable = clEntries.filter(e =>
+    e.starred || e.cat === 'Alarm' || e.cat === 'Curtailment' || e.cat === 'Dispatch' || e.cat === 'Monitor'
+  );
+
+  if (!notable.length) {
+    preview.innerHTML = '<div class="cl-hd-empty">Nothing here yet — star entries or log Alarms / Curtailments and they\'ll appear grouped and ready to copy.</div>';
     return;
   }
-  feed.innerHTML = clEntries.map(e => {
-    const catCls = CL_CAT_CLS[e.cat] || 'cl-cat-normal';
-    const siteTag = e.site ? `<span class="cl-site-tag">${esc(e.site)}</span>` : '';
-    return `<div class="cl-entry${e.starred?' starred':''}">
-      <span class="cl-time">${esc(e.time)}</span>
-      <span class="cl-cat ${catCls}">${esc(e.cat)}</span>
-      ${siteTag}
-      <span class="cl-body">${esc(e.text)}</span>
-      <button class="cl-star${e.starred?' on':''}" title="Star for passdown" onclick="clToggleStar(${e.id})">★</button>
-      <button class="cl-del" title="Delete entry" onclick="clDelete(${e.id})">✕</button>
-    </div>`;
-  }).join('');
+
+  const grouped = clGroupByAsset(notable);
+  const ASSET_ORDER = [
+    {key:'BESS',   icon:'🔋', color:'var(--blue)'},
+    {key:'Solar',  icon:'☀️',  color:'var(--amber)'},
+    {key:'Wind',   icon:'💨',  color:'var(--green)'},
+    {key:'General',icon:'📋', color:'var(--text3)'}
+  ];
+
+  const badgeFor = (e) => {
+    if (e.cat === 'Alarm')       return `<span class="cl-hd-badge cl-hd-badge-alarm">⚠ Alarm</span>`;
+    if (e.cat === 'Curtailment') return `<span class="cl-hd-badge cl-hd-badge-curtail">⚡ Curtail</span>`;
+    if (e.cat === 'Dispatch')    return `<span class="cl-hd-badge cl-hd-badge-dispatch">📋 Dispatch</span>`;
+    if (e.cat === 'Field Tech')  return `<span class="cl-hd-badge cl-hd-badge-ft">🔧 FT</span>`;
+    if (e.starred)               return `<span class="cl-hd-badge cl-hd-badge-star">★</span>`;
+    return '';
+  };
+
+  let html = '';
+  ASSET_ORDER.forEach(({key, icon}) => {
+    const section = grouped[key];
+    if (!section || !Object.keys(section).length) return;
+    const totalItems = Object.values(section).flat().length;
+    html += `<div class="cl-hd-section">
+      <div class="cl-hd-section-hdr">
+        <span class="cl-hd-section-icon">${icon}</span>
+        <span class="cl-hd-section-label">${key}</span>
+        <span class="cl-hd-section-count">${totalItems} item${totalItems!==1?'s':''}</span>
+      </div>
+      <div class="cl-hd-sites">`;
+    Object.keys(section).forEach(site => {
+      html += `<div class="cl-hd-site"><div class="cl-hd-site-name">${esc(site)}:</div>`;
+      section[site].forEach(e => {
+        html += `<div class="cl-hd-item">
+          <span class="cl-hd-bullet">–</span>
+          <span class="cl-hd-text">${esc(e.text)}</span>
+          ${badgeFor(e)}
+          <span class="cl-hd-time">${esc(e.time)}</span>
+        </div>`;
+      });
+      html += '</div>';
+    });
+    html += '</div></div>';
+  });
+
+  preview.innerHTML = html;
 }
 
 // ─── FLEET WEATHER ────────────────────────────────────────────────────────────
@@ -2154,10 +2081,25 @@ let wxFleetInited = false;
 function wxFleetInit() {
   if (!wxFleetInited) {
     try { wxPins = JSON.parse(localStorage.getItem(WX_PINS_KEY) || '[]'); } catch(e) { wxPins = []; }
+    // Pre-populate top 5 sites if no pins exist
+    if (!wxPins.length) {
+      wxPins = [
+        {name:'ROCC1', location:'Tempe, AZ'},
+        {name:'BYPS1', location:'Richmond, TX'},
+        {name:'RKRG1', location:'Hobart, OK'},
+        {name:'PRSE1', location:'Hardwick, MN'},
+        {name:'ANGF1', location:'Angel Fire, NM'}
+      ];
+      try { localStorage.setItem(WX_PINS_KEY, JSON.stringify(wxPins)); } catch(e) {}
+    }
     wxFleetInited = true;
   }
   wxRenderPins();
   wxRenderFleetGrid();
+  // Auto-fetch weather for pinned sites
+  if (wxPins.length) {
+    wxFetchAll();
+  }
 }
 
 function wxPinFilter() {
@@ -2563,7 +2505,6 @@ const AS_SITES = [
       ]},
       { title:'2-OUTPUT: PV1 & BESS1', fields:[
         {n:'PV1 MW',   t:'text', unit:'MW'},
-        {n:'PV1 MWh',  t:'text', unit:'MWh'},
         {n:'PV1 kV',   t:'text', unit:'kV'},
         {n:'PV1 MVAR', t:'text', unit:'MVAR'},
         {n:'BESS1 MW',            t:'text',   unit:'MW'},
@@ -2574,7 +2515,6 @@ const AS_SITES = [
       ]},
       { title:'2-OUTPUT: PV2 & BESS2', fields:[
         {n:'PV2 MW',   t:'text', unit:'MW'},
-        {n:'PV2 MWh',  t:'text', unit:'MWh'},
         {n:'PV2 kV',   t:'text', unit:'kV'},
         {n:'PV2 MVAR', t:'text', unit:'MVAR'},
         {n:'BESS2 MW',            t:'text',   unit:'MW'},
@@ -2585,7 +2525,6 @@ const AS_SITES = [
       ]},
       { title:'2-OUTPUT: PV3 & BESS3', fields:[
         {n:'PV3 MW',   t:'text', unit:'MW'},
-        {n:'PV3 MWh',  t:'text', unit:'MWh'},
         {n:'PV3 kV',   t:'text', unit:'kV'},
         {n:'PV3 MVAR', t:'text', unit:'MVAR'},
         {n:'BESS3 MW',            t:'text',   unit:'MW'},
@@ -2783,7 +2722,6 @@ const AS_SITES = [
       ]},
       { title:'2-OUTPUT: PV LS', fields:[
         {n:'PV LS MW',   t:'text', unit:'MW'},
-        {n:'PV LS MWh',  t:'text', unit:'MWh'},
         {n:'PV LS kV',   t:'text', unit:'kV'},
         {n:'PV LS MVAR', t:'text', unit:'MVAR'},
       ]},
@@ -4450,7 +4388,7 @@ function pdNew() {
 }
 
 // ── Schedule View Controls ─────────────────────────────────────────────────────
-let scheduleCurrentView = 'embed1';
+let scheduleCurrentView = 'srd';
 let scheduleKioskMode = false;
 
 function setScheduleView(view) {
