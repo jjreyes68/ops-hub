@@ -736,12 +736,12 @@ select,option{background:var(--bg3);}
       <div class="intel-content">
         <div class="ifield">
           <label>Search site name</label>
-          <input id="wx-site-inp" placeholder="Type site name..." oninput="wxFilter()" autocomplete="off">
+          <input id="wx-site-inp" placeholder="Type site name..." oninput="wxFilter()" onblur="setTimeout(wxCloseMatches,180)" autocomplete="off">
           <div class="wx-matches" id="wx-matches"></div>
         </div>
         <div class="ifield">
-          <label>Location (auto-filled or override)</label>
-          <input id="wx-location" placeholder="e.g. Tehachapi, CA">
+          <label>Location — auto-filled or type any city/state</label>
+          <input id="wx-location" placeholder="e.g. Tehachapi, CA" autocomplete="off">
         </div>
         <div style="margin-top:10px;">
           <div class="wx-section">
@@ -1839,22 +1839,37 @@ function wxFilter(){
   const box=document.getElementById('wx-matches');
   if(!q){ box.style.display='none'; return; }
   const siteHits=SITES.filter(s=>s.name.toLowerCase().includes(q)||(s.location||'').toLowerCase().includes(q));
-  const wxHits=WX_LOCS.filter(s=>s.name.toLowerCase().includes(q)||(s.location||'').toLowerCase().includes(q));
+  // Keep the actual WX_LOCS index so wxPickWx resolves correctly
+  const wxHitsWithIdx=WX_LOCS.map((s,i)=>({...s,_wxIdx:i}))
+    .filter(s=>s.name.toLowerCase().includes(q)||(s.location||'').toLowerCase().includes(q));
   const allHits=[
     ...siteHits.map(s=>({...s,_src:'site'})),
-    ...wxHits.map((s,i)=>({...s,_src:'wx',_i:i}))
+    ...wxHitsWithIdx.map(s=>({...s,_src:'wx'}))
   ].slice(0,8);
   if(!allHits.length){ box.style.display='none'; return; }
   box.style.display='block';
   box.innerHTML=allHits.map(s=>{
-    const onclick=s._src==='site'?`wxPick(${s.id})`:`wxPickWx(${s._i})`;
+    const onclick=s._src==='site'?`wxPick(${s.id})`:`wxPickWx(${s._wxIdx})`;
     return `<div class="wx-match-item" onclick="${onclick}">
     <strong>${esc(s.name)}</strong>${s.location?' — <span style="color:var(--text3);font-size:11px;">'+esc(s.location)+'</span>':''}
     </div>`;
   }).join('');
 }
-function wxPick(id){ const s=SITES.find(x=>x.id===id); if(!s)return; document.getElementById('wx-site-inp').value=s.name; document.getElementById('wx-location').value=s.location||s.name; document.getElementById('wx-matches').style.display='none'; }
-function wxPickWx(i){ const s=WX_LOCS[i]; if(!s)return; document.getElementById('wx-site-inp').value=s.name; document.getElementById('wx-location').value=s.location||s.name; document.getElementById('wx-matches').style.display='none'; }
+function wxCloseMatches(){ document.getElementById('wx-matches').style.display='none'; }
+function wxPick(id){
+  const s=SITES.find(x=>x.id===id); if(!s)return;
+  document.getElementById('wx-site-inp').value=s.name;
+  document.getElementById('wx-location').value=s.location||s.name;
+  wxCloseMatches();
+  document.getElementById('wx-location').focus();
+}
+function wxPickWx(i){
+  const s=WX_LOCS[i]; if(!s)return;
+  document.getElementById('wx-site-inp').value=s.name;
+  document.getElementById('wx-location').value=s.location||s.name;
+  wxCloseMatches();
+  document.getElementById('wx-location').focus();
+}
 async function fetchWeather(){
   const loc=document.getElementById('wx-location').value.trim(); if(!loc){showToast('Enter a location first');return;}
   document.getElementById('wx-desc').textContent='Fetching...';
