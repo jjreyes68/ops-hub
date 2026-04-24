@@ -251,6 +251,38 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 .site-acts{display:flex;gap:5px;flex-wrap:wrap;}
 .scan-btn{padding:5px 11px;border-radius:5px;border:1px solid var(--green);background:var(--gbg);color:var(--green);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;}
 .scan-btn:hover{background:var(--green);color:#fff;}
+/* Compact Sites Table Layout */
+.sites-table{display:flex;flex-direction:column;gap:2px;margin-top:6px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:4px;}
+.status-section{display:flex;flex-direction:column;gap:2px;margin-bottom:4px;}
+.status-section:last-child{margin-bottom:0;}
+.status-sep{display:flex;align-items:center;gap:10px;padding:6px 10px;background:var(--bg2);border-radius:4px;font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;}
+.status-sep-line{flex:1;height:1px;background:var(--border);}
+.site-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg2);border-radius:6px;transition:background .15s;border-left:3px solid transparent;}
+.site-row:hover{background:var(--bg1);}
+.site-row.ok{border-left-color:var(--green);}
+.site-row.due{border-left-color:var(--amber);}
+.site-row.overdue{border-left-color:var(--red);}
+.site-row.never{border-left-color:var(--text3);}
+.site-row-main{flex:1;display:flex;align-items:center;gap:12px;min-width:0;}
+.site-row-name{font-size:13px;font-weight:600;min-width:70px;}
+.site-row-status{flex-shrink:0;}
+.site-row-time{font-size:11px;color:var(--text3);font-family:var(--m);min-width:80px;}
+.site-row-actions{display:flex;gap:6px;flex-shrink:0;}
+.btn-icon{width:28px;height:28px;border-radius:5px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.btn-icon:hover{border-color:var(--text);color:var(--text);}
+.btn-icon.ok{border-color:var(--green);background:var(--gbg);color:var(--green);}
+.btn-icon.ok:hover{background:var(--green);color:#fff;}
+.btn-icon.notes{border-color:var(--blue);background:var(--bbg);color:var(--blue);}
+.btn-icon.notes:hover{background:var(--blue);color:#fff;}
+.btn-icon.expand{border-color:var(--border2);}
+.site-row-expanded{margin:4px 0 8px 24px;padding:10px 14px;background:var(--bg1);border:1px solid var(--border);border-radius:6px;}
+.scan-history{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
+.history-title{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+.history-item{display:flex;gap:10px;font-size:11px;font-family:var(--m);}
+.history-time{color:var(--text3);min-width:50px;}
+.history-note{color:var(--text);flex:1;}
+.ref-data{font-size:11px;color:var(--text2);line-height:1.6;padding-top:8px;border-top:1px solid var(--border);}
+.ref-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;}
 .filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;align-items:center;}
 .filter-btn{padding:5px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;}
 .filter-btn.active{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
@@ -589,7 +621,7 @@ select,option{background:var(--bg3);}
   <button class="nav-tab active" id="nav-tab-scans" onclick="switchView('scans',this)">Scans</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
   <button class="nav-tab" onclick="switchView('intel',this)">Weather</button>
-  <button class="nav-tab" onclick="switchView('ops',this)">Tasks</button>
+  <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
   <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Operator Log</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('map',this)">Map</button>
@@ -658,9 +690,20 @@ select,option{background:var(--bg3);}
   <div class="sites-grid" id="sites-grid"></div>
 </div>
 
-<!-- TASKS -->
+<!-- TOOLBOX -->
 <div class="view" id="view-ops">
   <div class="cols3">
+    <div class="card">
+      <div class="card-title">Phonetic Converter</div>
+      <div class="phonetic-wrap">
+        <input id="phonetic-inp" placeholder="Type text to convert..." oninput="convertPhonetic()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;margin-bottom:8px;">
+        <div id="phonetic-out" style="font-family:var(--m);font-size:14px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:40px;word-break:break-all;"></div>
+        <div style="display:flex;gap:6px;margin-top:8px;">
+          <button class="tbtn" onclick="copyPhonetic()">Copy</button>
+          <button class="tbtn" onclick="clearPhonetic()">Clear</button>
+        </div>
+      </div>
+    </div>
     <div class="card">
       <div class="card-title">Recurring tasks</div>
       <div id="rec-list"></div>
@@ -1577,22 +1620,29 @@ function renderScanStats(){
   const next=SITES.filter(s=>s.lastScan&&siteStatus(s)==='ok').sort((a,b)=>((a.interval||30)-((Date.now()-a.lastScan)/60000))-((b.interval||30)-((Date.now()-b.lastScan)/60000)))[0];
   document.getElementById('scan-next-due').textContent=next?'Next: '+esc(next.name)+' ~'+Math.ceil(Math.max(0,(next.interval||30)-((Date.now()-next.lastScan)/60000)))+'min':'';
 }
-function siteCard(site){
+function siteRow(site){
   const st=siteStatus(site), last=site.lastScan?timeSince(site.lastScan):'—';
-  const tip=site.notes?`<div class="site-tip"><span class="site-tip-title">${esc(site.name)}</span>${esc(site.notes)}</div>`:'';
-  return `<div class="site-card ${st}">
-    ${tip}
-    <div class="site-hdr">
-      <span class="site-name">${esc(site.name)}</span>
-      ${site.nerc?'<span class="badge b-nerc">NERC</span>':''}
-      <span class="badge ${STATUS_BADGE[st]}">${STATUS_LABEL[st]}</span>
+  const expanded=site._expanded?' expanded':'';
+  const expandIcon=site._expanded?'▲':'▼';
+  const history=getSiteScanHistory(site.id);
+  const refData=site.notes?`<div class="ref-data"><div class="ref-label">Reference Data</div>${esc(site.notes).replace(/\n/g,'<br>')}</div>`:'';
+  const historyHtml=history.length?`<div class="scan-history"><div class="history-title">Recent Scans</div>${history.slice(0,5).map(h=>`<div class="history-item"><span class="history-time">${fmtTime(h.ts)}</span><span class="history-note">${esc(h.detail||'All clear')}</span></div>`).join('')}</div>`:'<div class="scan-history"><div class="history-title">No scan history</div></div>';
+  return `<div class="site-row-wrap" data-site-id="${site.id}">
+    <div class="site-row ${st}${expanded}">
+      <div class="site-row-main">
+        <span class="site-row-name">${esc(site.name)}</span>
+        ${site.nerc?'<span class="badge b-nerc">NERC</span>':''}
+        <span class="badge ${STATUS_BADGE[st]}">${STATUS_LABEL[st]}</span>
+        <span class="site-row-time">${last}</span>
+      </div>
+      <div class="site-row-actions">
+        <button class="btn-icon ok" title="Quick OK" onclick="quickScan(${site.id})">✓</button>
+        <button class="btn-icon notes" title="Log with notes" onclick="openScanNote(${site.id})">📝</button>
+        <button class="btn-icon expand" title="Show history" onclick="toggleSiteExpand(${site.id})">${expandIcon}</button>
+        <button class="btn-icon" title="Edit" onclick="editSite(${site.id})">✎</button>
+      </div>
     </div>
-    <div class="site-meta">Last: ${last} · ${site.interval||30}min</div>
-    <div class="site-acts">
-      <button class="scan-btn" onclick="openScanNote(${site.id})">Log scan</button>
-      <button class="tbtn" style="font-size:11px;padding:3px 9px;" onclick="editSite(${site.id})">Edit</button>
-      <button class="tbtn" style="font-size:11px;padding:3px 9px;color:var(--red);border-color:var(--red);" onclick="deleteSite(${site.id})">Del</button>
-    </div>
+    ${site._expanded?`<div class="site-row-expanded">${historyHtml}${refData}</div>`:''}
   </div>`;
 }
 function renderSites(){
@@ -1604,26 +1654,38 @@ function renderSites(){
   else if(f!=='all') sites=sites.filter(s=>siteStatus(s)===f);
   sites.sort((a,b)=>(order[siteStatus(a)]||0)-(order[siteStatus(b)]||0));
   const el=document.getElementById('sites-grid');
-  if(!sites.length){ el.innerHTML='<div class="empty" style="grid-column:1/-1;">No sites'+(f!=='all'?' matching filter':' added yet')+'</div>'; return; }
-  if(f==='all'){
-    const nerc=sites.filter(s=>s.nerc), non=sites.filter(s=>!s.nerc);
-    el.innerHTML=
-      (nerc.length?`<div class="nerc-sep"><div class="nerc-sep-line"></div><span class="nerc-sep-lbl">NERC Sites</span><div class="nerc-sep-line"></div></div>${nerc.map(siteCard).join('')}`:'') +
-      (non.length?`<div class="nerc-sep"><div class="nerc-sep-line"></div><span class="nerc-sep-lbl">Non-NERC Sites</span><div class="nerc-sep-line"></div></div>${non.map(siteCard).join('')}`:'');
-  } else {
-    el.innerHTML=sites.map(siteCard).join('');
-  }
+  if(!sites.length){ el.innerHTML='<div class="empty">No sites'+(f!=='all'?' matching filter':' added yet')+'</div>'; return; }
+  
+  // Group by status for visual separation
+  const grouped={overdue:[],due:[],never:[],ok:[]};
+  sites.forEach(s=>{ const st=siteStatus(s); if(grouped[st]) grouped[st].push(s); });
+  
+  let html='<div class="sites-table">';
+  const statusOrder=['overdue','due','never','ok'];
+  const statusLabels={overdue:'OVERDUE',due:'Due Soon',never:'Never Scanned',ok:'OK'};
+  statusOrder.forEach(st=>{
+    const group=grouped[st];
+    if(!group.length) return;
+    html+=`<div class="status-section"><div class="status-sep"><div class="status-sep-line"></div><span>${statusLabels[st]} (${group.length})</span><div class="status-sep-line"></div></div>${group.map(siteRow).join('')}</div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
 }
 function timeSince(ts){ const m=Math.floor((Date.now()-ts)/60000); return m<1?'just now':m<60?m+'min ago':Math.floor(m/60)+'h '+m%60+'m ago'; }
 function openScanNote(id){ const s=SITES.find(x=>x.id===id); if(!s)return; document.getElementById('scan-note-title').textContent='Log scan — '+s.name; document.getElementById('scan-note-site-id').value=id; document.getElementById('scan-note-body').value=''; openModal('modal-scan-note'); }
 function confirmScan(){
   const id=parseInt(document.getElementById('scan-note-site-id').value), s=SITES.find(x=>x.id===id); if(!s)return;
-  s.lastScan=Date.now(); addLog({type:'scan',title:'Scan: '+s.name,detail:document.getElementById('scan-note-body').value.trim()||'All clear'});
+  const detail=document.getElementById('scan-note-body').value.trim()||'All clear';
+  s.lastScan=Date.now();
+  addSiteScanHistory(id,detail);
+  addLog({type:'scan',title:'Scan: '+s.name,detail:detail});
   closeModal('modal-scan-note'); saveSites(SITES); renderSites(); showToast('Scan logged');
 }
 function scanAll(){
   const nerc=SITES.filter(s=>s.nerc); if(!nerc.length){showToast('No NERC sites');return;}
-  nerc.forEach(s=>s.lastScan=Date.now()); addLog({type:'scan',title:'Scan all NERC ('+nerc.length+')',detail:nerc.map(s=>s.name).join(', ')});
+  const now=Date.now();
+  nerc.forEach(s=>{ s.lastScan=now; addSiteScanHistory(s.id,'All clear (batch scan)'); });
+  addLog({type:'scan',title:'Scan all NERC ('+nerc.length+')',detail:nerc.map(s=>s.name).join(', ')});
   saveSites(SITES); renderSites(); showToast('All NERC sites scanned');
 }
 function saveSite(){
@@ -1659,6 +1721,50 @@ function editSite(id){
   openModal('modal-add-site');
 }
 function deleteSite(id){ if(!confirm('Delete this site?'))return; SITES=SITES.filter(x=>x.id!==id); saveSites(SITES); renderSites(); }
+
+// ─── PER-SITE SCAN HISTORY ────────────────────────────────────────────────────
+const SCAN_HISTORY_KEY='rnwbl_scan_history_v1';
+function getSiteScanHistory(siteId){
+  try{
+    const raw=localStorage.getItem(SCAN_HISTORY_KEY);
+    if(raw){
+      const all=JSON.parse(raw);
+      return (all[siteId]||[]).sort((a,b)=>b.ts-a.ts);
+    }
+  }catch(e){}
+  return [];
+}
+function addSiteScanHistory(siteId,detail){
+  try{
+    let all={};
+    const raw=localStorage.getItem(SCAN_HISTORY_KEY);
+    if(raw) all=JSON.parse(raw);
+    if(!all[siteId]) all[siteId]=[];
+    all[siteId].push({ts:Date.now(),detail:detail||'All clear'});
+    // Keep only last 20 entries per site
+    if(all[siteId].length>20) all[siteId]=all[siteId].slice(-20);
+    localStorage.setItem(SCAN_HISTORY_KEY,JSON.stringify(all));
+  }catch(e){}
+}
+function fmtTime(ts){
+  return new Date(ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+}
+function toggleSiteExpand(siteId){
+  const s=SITES.find(x=>x.id===siteId);
+  if(!s) return;
+  s._expanded=!s._expanded;
+  renderSites();
+}
+function quickScan(siteId){
+  const s=SITES.find(x=>x.id===siteId);
+  if(!s) return;
+  s.lastScan=Date.now();
+  addSiteScanHistory(siteId,'All clear');
+  addLog({type:'scan',title:'Scan: '+s.name,detail:'All clear'});
+  saveSites(SITES);
+  renderSites();
+  showToast('Scan logged: '+s.name);
+}
 
 // ─── TEMPLATES ────────────────────────────────────────────────────────────────
 const TEMPLATES=[
@@ -4548,7 +4654,43 @@ function dmToggle() {
   try { localStorage.setItem('rnwbl_darkmode', isDark ? '0' : '1'); } catch(e) {}
 }
 
+/* ── PHONETIC CONVERTER ─────────────────────────────────────────────────────── */
+const phoneticMap = {
+  'A':'Alpha','B':'Bravo','C':'Charlie','D':'Delta','E':'Echo','F':'Foxtrot',
+  'G':'Golf','H':'Hotel','I':'India','J':'Juliet','K':'Kilo','L':'Lima',
+  'M':'Mike','N':'November','O':'Oscar','P':'Papa','Q':'Quebec','R':'Romeo',
+  'S':'Sierra','T':'Tango','U':'Uniform','V':'Victor','W':'Whiskey','X':'X-ray',
+  'Y':'Yankee','Z':'Zulu',
+  '0':'Zero','1':'One','2':'Two','3':'Three','4':'Four',
+  '5':'Five','6':'Six','7':'Seven','8':'Eight','9':'Nine'
+};
+function convertPhonetic(){
+  const inp = document.getElementById('phonetic-inp').value.toUpperCase();
+  const out = [];
+  for(const ch of inp){
+    if(phoneticMap[ch]) out.push(phoneticMap[ch]);
+    else if(ch === ' ') out.push('•');
+    else out.push(ch);
+  }
+  document.getElementById('phonetic-out').textContent = out.join(' ');
+}
+function copyPhonetic(){
+  const text = document.getElementById('phonetic-out').textContent;
+  if(!text) return;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.querySelector('.phonetic-wrap .tbtn');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(()=>btn.textContent = orig, 1200);
+  });
+}
+function clearPhonetic(){
+  document.getElementById('phonetic-inp').value = '';
+  document.getElementById('phonetic-out').textContent = '';
+}
+
 load();
 </script>
 </body>
 </html>
+
