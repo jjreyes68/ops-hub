@@ -120,18 +120,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;box-shadow:var(--shs);}
 .card-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px;}
 
-/* OPS TOOLBOX WIDGETS */
-.standing-check-item{padding:8px 0;border-bottom:1px solid var(--border3);}
-.standing-check-item:last-child{border-bottom:none;}
-.check-item{display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:13px;color:var(--text2);line-height:1.4;}
-.check-item input[type="checkbox"]{margin-top:2px;cursor:pointer;}
-.check-item:hover{color:var(--text);}
-.verifier-section{padding-bottom:12px;border-bottom:1px solid var(--border3);}
-.verifier-section:last-child{border-bottom:none;padding-bottom:0;}
-.scratchpad-item{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;color:var(--text2);}
-.scratchpad-item button{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:2px;border-radius:4px;}
-.scratchpad-item button:hover{background:var(--rbg);color:var(--red);}
-
 /* BUTTONS */
 .tbtn{padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;font-family:var(--f);font-weight:500;transition:all .15s;box-shadow:var(--shs);}
 .tbtn:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
@@ -601,7 +589,7 @@ select,option{background:var(--bg3);}
   <button class="nav-tab active" id="nav-tab-scans" onclick="switchView('scans',this)">Scans</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
   <button class="nav-tab" onclick="switchView('intel',this)">Weather</button>
-  <button class="nav-tab" onclick="switchView('ops',this)">Ops Toolbox</button>
+  <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
   <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Operator Log</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('map',this)">Map</button>
@@ -670,118 +658,56 @@ select,option{background:var(--bg3);}
   <div class="sites-grid" id="sites-grid"></div>
 </div>
 
-<!-- OPS TOOLBOX -->
+<!-- TOOLBOX -->
 <div class="view" id="view-ops">
-  <div style="padding:16px;">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-      <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Ops Toolbox</div>
-      <span style="font-size:12px;color:var(--text3);">Quick tools for the moment</span>
+  <div class="cols3">
+    <div class="card">
+      <div class="card-title">Phonetic Converter</div>
+      <div class="phonetic-wrap">
+        <input id="phonetic-inp" placeholder="Type text to convert..." oninput="convertPhonetic()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;margin-bottom:8px;">
+        <div id="phonetic-out" style="font-family:var(--m);font-size:14px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:40px;word-break:break-all;"></div>
+        <div style="display:flex;gap:6px;margin-top:8px;">
+          <button class="tbtn" onclick="copyPhonetic()">Copy</button>
+          <button class="tbtn" onclick="clearPhonetic()">Clear</button>
+        </div>
+      </div>
     </div>
-
-    <div class="cols3">
-      <!-- COLUMN 1: Scratchpad & Timers -->
-      <div class="card">
-        <div class="card-title">Scratchpad & Timers</div>
-        <div style="font-size:11px;color:var(--text3);margin-bottom:12px;">Quick jot-downs and countdowns. Clears on shift end.</div>
-        
-        <!-- Scratchpad items -->
-        <div id="scratchpad-list" style="max-height:200px;overflow-y:auto;margin-bottom:12px;"></div>
-        <div class="add-row">
-          <input id="scratchpad-inp" placeholder="Quick note..." onkeydown="if(event.key==='Enter')addScratchpadItem()">
-          <button onclick="addScratchpadItem()">+</button>
-        </div>
-        
-        <!-- Quick timer -->
-        <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border);">
-          <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:8px;">Quick Timer</div>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <input id="quick-timer-min" type="number" min="1" max="60" placeholder="min" style="width:60px;">
-            <button class="btn-p" onclick="startQuickTimer()" style="flex:1;">Start</button>
-          </div>
-          <div id="quick-timer-display" style="font-family:var(--m);font-size:24px;font-weight:700;color:var(--text);text-align:center;padding:12px 0;display:none;"></div>
-        </div>
-
-        <!-- Phonetic converter -->
-        <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border);">
-          <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:8px;">Phonetic Converter</div>
-          <input id="phonetic-inp" placeholder="e.g. 589IR54pp" oninput="convertPhonetic()" style="width:100%;margin-bottom:8px;">
-          <div id="phonetic-output" style="font-family:var(--m);font-size:13px;color:var(--text2);min-height:20px;"></div>
-        </div>
-
-        <button class="btn-c" onclick="clearScratchpad()" style="width:100%;margin-top:12px;font-size:12px;">Clear All</button>
+    <div class="card">
+      <div class="card-title">Recurring tasks</div>
+      <div id="rec-list"></div>
+      <div class="add-row">
+        <input id="rec-inp" placeholder="Add recurring task..." onkeydown="if(event.key==='Enter')addRec()">
+        <button onclick="addRec()">+</button>
       </div>
-
-      <!-- COLUMN 2: Standing Checks -->
-      <div class="card">
-        <div class="card-title">Standing Checks</div>
-        <div style="font-size:11px;color:var(--text3);margin-bottom:12px;">Reference reminders. No overdue state.</div>
-        
-        <div id="standing-checks-list">
-          <!-- Pre-populated standing checks -->
-          <div class="standing-check-item">
-            <label class="check-item">
-              <input type="checkbox" class="standing-check">
-              <span>Confirm ADS visibility after vendor work</span>
-            </label>
-          </div>
-          <div class="standing-check-item">
-            <label class="check-item">
-              <input type="checkbox" class="standing-check">
-              <span>Verify TO notices reviewed</span>
-            </label>
-          </div>
-          <div class="standing-check-item">
-            <label class="check-item">
-              <input type="checkbox" class="standing-check">
-              <span>Check field tech callback status</span>
-            </label>
-          </div>
-          <div class="standing-check-item">
-            <label class="check-item">
-              <input type="checkbox" class="standing-check">
-              <span>Review shift handoff notes</span>
-            </label>
-          </div>
-          <div class="standing-check-item">
-            <label class="check-item">
-              <input type="checkbox" class="standing-check">
-              <span>Verify communication channels active</span>
-            </label>
-          </div>
-        </div>
-        
-        <button class="btn-c" onclick="resetStandingChecks()" style="width:100%;margin-top:12px;font-size:12px;">Reset Checks</button>
+    </div>
+    <div class="card">
+      <div class="card-title">Ad hoc tasks</div>
+      <div id="adhoc-list" style="max-height:260px;overflow-y:auto;"></div>
+      <div class="adhoc-row">
+        <input id="adhoc-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addAdhoc()">
+        <input id="adhoc-t" class="t-inp" type="number" min="0" placeholder="min">
+        <span class="min-lbl">min</span>
+        <button class="add-btn" onclick="addAdhoc()">+ Add</button>
       </div>
-
-      <!-- COLUMN 3: Quick Verifiers -->
-      <div class="card">
-        <div class="card-title">Quick Verifiers</div>
-        <div style="font-size:11px;color:var(--text3);margin-bottom:12px;">One-click confirmation gates.</div>
-        
-        <!-- Safety Checklist -->
-        <div class="verifier-section">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <span style="font-size:13px;font-weight:500;">Safety Check</span>
-            <button class="btn-p" onclick="logSafetyVerification()" style="font-size:11px;padding:4px 8px;">Log ✓</button>
-          </div>
-          <div id="toolbox-safety-checks" style="font-size:12px;"></div>
-        </div>
-        
-        <!-- NERC Checklist -->
-        <div class="verifier-section" style="margin-top:16px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <span style="font-size:13px;font-weight:500;">NERC Check</span>
-            <button class="btn-p" onclick="logNercVerification()" style="font-size:11px;padding:4px 8px;">Log ✓</button>
-          </div>
-          <div id="toolbox-nerc-checks" style="font-size:12px;"></div>
-        </div>
-        
-        <!-- Quick Log -->
-        <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border);">
-          <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:8px;">Quick Log Entry</div>
-          <input id="quick-log-inp" placeholder="Log to Operator Log..." onkeydown="if(event.key==='Enter')quickLogEntry()">
-          <button class="btn-p" onclick="quickLogEntry()" style="width:100%;margin-top:8px;">Log Entry</button>
-        </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Checklists</div>
+      <div class="cl-add-row">
+        <input id="cl-list-inp" placeholder="New checklist name..." onkeydown="if(event.key==='Enter')addClList()">
+        <button onclick="addClList()">+ New list</button>
+      </div>
+      <div class="cl-hdr" id="cl-hdr" style="display:none;">
+        <select class="cl-sel" id="cl-sel" onchange="switchClFromSelect()"></select>
+        <button class="cl-del" onclick="delActiveClList()">🗑 Delete</button>
+      </div>
+      <div class="prog-row" id="cl-prog-row" style="display:none;">
+        <div class="prog-bar"><div class="prog-fill" id="cl-prog-fill" style="width:0%"></div></div>
+        <div class="prog-txt" id="cl-prog-txt">0/0</div>
+      </div>
+      <div id="cl-items" style="max-height:180px;overflow-y:auto;"></div>
+      <div class="cl-item-row" id="cl-item-row" style="display:none;">
+        <input id="cl-item-inp" placeholder="Add item..." onkeydown="if(event.key==='Enter')addClItem()">
+        <button onclick="addClItem()">+ Item</button>
       </div>
     </div>
   </div>
@@ -1382,7 +1308,6 @@ async function load() {
   clInit();
   wxFleetInit();
   dmInit();
-  initToolbox();
   // Restore escalation contacts
   const rows = document.querySelectorAll('#esc-tbody tr');
   const tkeys = ['t1','t2','t3'];
@@ -1891,175 +1816,6 @@ function clearLog(){ if(confirm('Clear all log entries?')){ S.logEntries=[]; sav
 // ─── MODAL ────────────────────────────────────────────────────────────────────
 function openModal(id){ document.getElementById(id).classList.remove('hidden'); }
 function closeModal(id){ document.getElementById(id).classList.add('hidden'); }
-
-// ─── OPS TOOLBOX ────────────────────────────────────────────────────────────────
-// Scratchpad state
-let scratchpadItems = [];
-
-function addScratchpadItem(){
-  const inp = document.getElementById('scratchpad-inp');
-  const val = inp.value.trim();
-  if(!val) return;
-  scratchpadItems.push({id:Date.now(), text:val});
-  inp.value = '';
-  renderScratchpad();
-  saveScratchpad();
-}
-
-function removeScratchpadItem(id){
-  scratchpadItems = scratchpadItems.filter(i => i.id !== id);
-  renderScratchpad();
-  saveScratchpad();
-}
-
-function clearScratchpad(){
-  if(confirm('Clear all scratchpad items?')){
-    scratchpadItems = [];
-    renderScratchpad();
-    saveScratchpad();
-  }
-}
-
-function renderScratchpad(){
-  const el = document.getElementById('scratchpad-list');
-  if(!scratchpadItems.length){
-    el.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:8px 0;">No items</div>';
-    return;
-  }
-  el.innerHTML = scratchpadItems.map(i => `
-    <div class="scratchpad-item">
-      <span style="flex:1;">${esc(i.text)}</span>
-      <button onclick="removeScratchpadItem(${i.id})">✕</button>
-    </div>
-  `).join('');
-}
-
-function saveScratchpad(){
-  try{ localStorage.setItem('rnwbl_scratchpad', JSON.stringify(scratchpadItems)); }catch(e){}
-}
-
-function loadScratchpad(){
-  try{ scratchpadItems = JSON.parse(localStorage.getItem('rnwbl_scratchpad') || '[]'); }catch(e){ scratchpadItems = []; }
-  renderScratchpad();
-}
-
-// Quick Timer
-let quickTimerInterval = null;
-let quickTimerSeconds = 0;
-
-function startQuickTimer(){
-  const min = parseInt(document.getElementById('quick-timer-min').value);
-  if(!min || min < 1) return;
-  quickTimerSeconds = min * 60;
-  document.getElementById('quick-timer-min').value = '';
-  document.getElementById('quick-timer-display').style.display = 'block';
-  updateQuickTimerDisplay();
-  if(quickTimerInterval) clearInterval(quickTimerInterval);
-  quickTimerInterval = setInterval(() => {
-    quickTimerSeconds--;
-    updateQuickTimerDisplay();
-    if(quickTimerSeconds <= 0){
-      clearInterval(quickTimerInterval);
-      quickTimerInterval = null;
-      showToast('Timer complete!');
-    }
-  }, 1000);
-}
-
-function updateQuickTimerDisplay(){
-  const m = Math.floor(quickTimerSeconds / 60);
-  const s = quickTimerSeconds % 60;
-  document.getElementById('quick-timer-display').textContent = `${m}:${s.toString().padStart(2,'0')}`;
-}
-
-// Standing Checks
-function resetStandingChecks(){
-  document.querySelectorAll('.standing-check').forEach(cb => cb.checked = false);
-  showToast('Checks reset');
-}
-
-// Quick Verifiers - Safety
-function renderToolboxSafety(){
-  const el = document.getElementById('toolbox-safety-checks');
-  if(!el) return;
-  el.innerHTML = SAFETY.map(i => `
-    <label class="check-item" style="font-size:12px;">
-      <input type="checkbox" class="toolbox-safety-cb" data-item="${esc(i)}">
-      <span>${i}</span>
-    </label>
-  `).join('');
-}
-
-function logSafetyVerification(){
-  const cbs = document.querySelectorAll('.toolbox-safety-cb');
-  const checked = Array.from(cbs).filter(cb => cb.checked).length;
-  const total = cbs.length;
-  const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-  addLog({type:'task', title:`Safety verification — ${checked}/${total}`, detail:checked===total?'All verified':'Partial verification'});
-  showToast(`Safety logged: ${checked}/${total}`);
-}
-
-// Quick Verifiers - NERC
-function renderToolboxNerc(){
-  const el = document.getElementById('toolbox-nerc-checks');
-  if(!el) return;
-  el.innerHTML = NERC_ITEMS.map(i => `
-    <label class="check-item" style="font-size:12px;">
-      <input type="checkbox" class="toolbox-nerc-cb" data-item="${esc(i)}">
-      <span>${i}</span>
-    </label>
-  `).join('');
-}
-
-function logNercVerification(){
-  const cbs = document.querySelectorAll('.toolbox-nerc-cb');
-  const checked = Array.from(cbs).filter(cb => cb.checked).length;
-  const total = cbs.length;
-  const now = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-  addLog({type:'task', title:`NERC verification — ${checked}/${total}`, detail:checked===total?'All verified':'Partial verification'});
-  showToast(`NERC logged: ${checked}/${total}`);
-}
-
-// Quick Log Entry
-function quickLogEntry(){
-  const inp = document.getElementById('quick-log-inp');
-  const val = inp.value.trim();
-  if(!val) return;
-  addLog({type:'note', title:val});
-  inp.value = '';
-  showToast('Logged to Operator Log');
-}
-
-// Initialize toolbox on page load
-function initToolbox(){
-  loadScratchpad();
-  renderToolboxSafety();
-  renderToolboxNerc();
-}
-
-// Phonetic Converter
-const PHONETIC_MAP = {
-  '0': 'Zero', '1': 'One', '2': 'Two', '3': 'Three', '4': 'Four',
-  '5': 'Five', '6': 'Six', '7': 'Seven', '8': 'Eight', '9': 'Nine',
-  'a': 'Alpha', 'b': 'Bravo', 'c': 'Charlie', 'd': 'Delta', 'e': 'Echo',
-  'f': 'Foxtrot', 'g': 'Golf', 'h': 'Hotel', 'i': 'India', 'j': 'Juliet',
-  'k': 'Kilo', 'l': 'Lima', 'm': 'Mike', 'n': 'November', 'o': 'Oscar',
-  'p': 'Papa', 'q': 'Quebec', 'r': 'Romeo', 's': 'Sierra', 't': 'Tango',
-  'u': 'Uniform', 'v': 'Victor', 'w': 'Whiskey', 'x': 'X-ray', 'y': 'Yankee', 'z': 'Zulu'
-};
-
-function convertPhonetic(){
-  const inp = document.getElementById('phonetic-inp').value;
-  const output = document.getElementById('phonetic-output');
-  if(!inp){
-    output.textContent = '';
-    return;
-  }
-  const result = inp.toLowerCase().split('').map(char => {
-    return PHONETIC_MAP[char] || char;
-  }).join('-');
-  output.textContent = result;
-}
 
 // ─── WEATHER ──────────────────────────────────────────────────────────────────
 // Additional weather-only locations (not part of NERC/site-management)
@@ -4803,7 +4559,43 @@ function dmToggle() {
   try { localStorage.setItem('rnwbl_darkmode', isDark ? '0' : '1'); } catch(e) {}
 }
 
+/* ── PHONETIC CONVERTER ─────────────────────────────────────────────────────── */
+const phoneticMap = {
+  'A':'Alpha','B':'Bravo','C':'Charlie','D':'Delta','E':'Echo','F':'Foxtrot',
+  'G':'Golf','H':'Hotel','I':'India','J':'Juliet','K':'Kilo','L':'Lima',
+  'M':'Mike','N':'November','O':'Oscar','P':'Papa','Q':'Quebec','R':'Romeo',
+  'S':'Sierra','T':'Tango','U':'Uniform','V':'Victor','W':'Whiskey','X':'X-ray',
+  'Y':'Yankee','Z':'Zulu',
+  '0':'Zero','1':'One','2':'Two','3':'Three','4':'Four',
+  '5':'Five','6':'Six','7':'Seven','8':'Eight','9':'Nine'
+};
+function convertPhonetic(){
+  const inp = document.getElementById('phonetic-inp').value.toUpperCase();
+  const out = [];
+  for(const ch of inp){
+    if(phoneticMap[ch]) out.push(phoneticMap[ch]);
+    else if(ch === ' ') out.push('•');
+    else out.push(ch);
+  }
+  document.getElementById('phonetic-out').textContent = out.join(' ');
+}
+function copyPhonetic(){
+  const text = document.getElementById('phonetic-out').textContent;
+  if(!text) return;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.querySelector('.phonetic-wrap .tbtn');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(()=>btn.textContent = orig, 1200);
+  });
+}
+function clearPhonetic(){
+  document.getElementById('phonetic-inp').value = '';
+  document.getElementById('phonetic-out').textContent = '';
+}
+
 load();
 </script>
 </body>
 </html>
+
