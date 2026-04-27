@@ -116,7 +116,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 @media(max-width:700px){.nav-tz-bar{display:none;}}
 
 /* LAYOUT */
-.view{display:none;padding:16px;}.view.active{display:block;}
+.view{display:none;padding:16px;}
+@keyframes viewSlideIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+.view.active{display:block;animation:viewSlideIn .2s cubic-bezier(.22,1,.36,1) both;}
 .cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
 @media(max-width:800px){.cols3{grid-template-columns:1fr 1fr;}}
 @media(max-width:500px){.cols3{grid-template-columns:1fr;}}
@@ -235,12 +237,19 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 .nerc-sep-line{flex:1;height:1px;background:var(--border);}
 .nerc-sep-lbl{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;}
 /* Site cards + hover tooltip */
-.site-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:13px;box-shadow:var(--shs);transition:box-shadow .15s;position:relative;}
+.site-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:13px;box-shadow:var(--shs);transition:box-shadow .15s,transform .15s;position:relative;}
 .site-card:hover{box-shadow:var(--sh);}
 .site-card.ok{border-left:3px solid var(--green);}
 .site-card.due{border-left:3px solid var(--amber);}
 .site-card.overdue{border-left:3px solid var(--red);}
 .site-card.never{border-left:3px solid var(--text3);}
+@keyframes scanPulse{
+  0%  {box-shadow:var(--shs);}
+  18% {box-shadow:0 0 0 3px var(--green),0 0 18px 4px rgba(43,189,122,.28),var(--sh);transform:scale(1.012);}
+  55% {box-shadow:0 0 0 1px var(--green),0 0 8px 2px rgba(43,189,122,.12),var(--sh);transform:scale(1.004);}
+  100%{box-shadow:var(--shs);transform:scale(1);}
+}
+.site-card.scan-flash{animation:scanPulse .7s cubic-bezier(.22,1,.36,1) both;}
 .site-tip{display:none;position:absolute;bottom:calc(100% + 8px);left:0;right:0;background:#1a1917;color:#e8eaf0;border-radius:8px;padding:10px 12px;font-size:11px;font-family:var(--m);line-height:1.75;z-index:300;box-shadow:0 4px 20px rgba(0,0,0,.3);pointer-events:none;white-space:pre-wrap;min-width:200px;}
 .site-tip-title{font-weight:600;font-size:12px;color:#fff;margin-bottom:4px;font-family:var(--f);display:block;}
 .site-card:hover .site-tip{display:block;}
@@ -408,8 +417,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 @media(max-width:600px){.as-row{grid-template-columns:1fr;}.as-lbl{font-size:12px;}}
 
 /* Toast */
-.toast{position:fixed;bottom:20px;right:20px;background:var(--text);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;z-index:200;font-family:var(--m);box-shadow:0 4px 20px rgba(0,0,0,.2);}
-.toast.show{opacity:1;}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--text);color:var(--bg);padding:10px 18px 10px 14px;border-radius:8px;font-size:13px;font-weight:500;opacity:0;pointer-events:none;z-index:200;font-family:var(--m);box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(14px) scale(.97);transition:opacity .22s,transform .38s cubic-bezier(.34,1.4,.64,1);border-left:3px solid var(--text3);display:flex;align-items:center;gap:8px;}
+.toast.show{opacity:1;transform:translateY(0) scale(1);}
+.toast-icon{font-size:14px;flex-shrink:0;}
+.toast.t-ok{border-left-color:var(--green);}
+.toast.t-warn{border-left-color:var(--amber);}
+.toast.t-err{border-left-color:var(--red);}
+.toast.t-info{border-left-color:var(--blue);}
 .empty{font-size:12px;color:var(--text3);text-align:center;padding:16px 0;}
 select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;}
 /* ── Log BUILDER ─────────────────────────────────────────────────────────────── */
@@ -551,7 +565,7 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .wx-fc-err{font-size:11px;color:var(--red);padding:8px 0;font-style:italic;}
 /* ── MAP VIEW ───────────────────────────────────────────────────────────────── */
 #view-map{padding:0;display:none;flex-direction:column;height:calc(100vh - 48px);}
-#view-map.active{display:flex;}
+#view-map.active{display:flex;animation:viewSlideIn .2s cubic-bezier(.22,1,.36,1) both;}
 .map-toolbar{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;height:44px;}
 .map-toolbar-title{font-size:13px;font-weight:600;margin-right:4px;}
 #batchgeo-embed{flex:1;width:100%;border:none;display:block;min-height:0;}
@@ -606,6 +620,23 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .tz-sites li{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:13px}
 .tz-sites .tz-loc{color:var(--text2);font-size:12px}
 .tz-footer{font-size:11px;color:var(--text2);margin-top:16px}
+/* ── TIMEZONE KIOSK MODE ──────────────────────────────────────────────────── */
+.tz-kiosk-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--blue);background:var(--bbg);color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
+.tz-kiosk-btn:hover{background:var(--blue);color:#fff;}
+.tz-kiosk-btn.active{background:var(--blue);color:#fff;}
+#view-timezones.tz-kiosk{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;height:100vh;overflow:auto;display:flex;flex-direction:column;}
+#view-timezones.tz-kiosk .tz-container{flex:1;display:flex;flex-direction:column;max-width:none;padding:12px 16px;}
+#view-timezones.tz-kiosk .tz-header{margin-bottom:10px;}
+#view-timezones.tz-kiosk .tz-header h1{font-size:16px;}
+#view-timezones.tz-kiosk .tz-muted{display:none;}
+#view-timezones.tz-kiosk .tz-search{display:none;}
+#view-timezones.tz-kiosk .tz-strip{margin-bottom:10px;}
+#view-timezones.tz-kiosk .tz-grid{flex:1;align-content:start;}
+#view-timezones.tz-kiosk .tz-footer{display:none;}
+#view-timezones.tz-kiosk .tz-clock{font-size:52px;}
+#view-timezones.tz-kiosk .tz-card{border-radius:12px;}
+#view-timezones.tz-kiosk .tz-card-header{padding:12px 14px;}
+#view-timezones.tz-kiosk .tz-card-content{padding:12px 14px;}
 
 /* ── SCHEDULE (SharePoint iframe) ────────────────────────────────────────────── */
 .schedule-iframe-container{width:100%;max-width:1400px;margin:0 auto;background:var(--bg2);border-radius:var(--rl);overflow:hidden;}
@@ -1146,6 +1177,7 @@ select,option{background:var(--bg3);}
       <div class="tz-controls">
         <button id="tz-btn24" class="tz-btn active">24h</button>
         <button id="tz-btn12" class="tz-btn">12h</button>
+        <button id="tz-kiosk-btn" class="tz-kiosk-btn" onclick="toggleTzKiosk()">⛶ Kiosk</button>
       </div>
     </div>
     <div class="tz-strip" id="tz-strip"></div>
@@ -1190,7 +1222,7 @@ select,option{background:var(--bg3);}
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast"><span class="toast-icon" id="toast-icon"></span><span id="toast-msg"></span></div>
 
 <script>
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
@@ -1489,6 +1521,24 @@ function renderTzCards(now){const q=(document.getElementById('tz-search')?.value
 function updateTzAll(){const now=new Date();renderTzStrip(now);const clocks=document.querySelectorAll('.tz-clock');if(clocks.length){clocks.forEach(c=>c.textContent=fmtTzTime(now,c.dataset.tz))}else{renderTzCards(now)}document.getElementById('tz-lastUpdate').textContent=new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(now)}
 function initTimeZones(){if(tzInterval)return;document.getElementById('tz-btn24').onclick=()=>{tzHour12=false;document.getElementById('tz-btn24').classList.add('active');document.getElementById('tz-btn12').classList.remove('active');updateTzAll()};document.getElementById('tz-btn12').onclick=()=>{tzHour12=true;document.getElementById('tz-btn12').classList.add('active');document.getElementById('tz-btn24').classList.remove('active');updateTzAll()};document.getElementById('tz-search').oninput=()=>{renderTzCards(new Date())};updateTzAll();tzInterval=setInterval(updateTzAll,1000)}
 
+function toggleTzKiosk(){
+  const view=document.getElementById('view-timezones');
+  const btn=document.getElementById('tz-kiosk-btn');
+  const isKiosk=view.classList.toggle('tz-kiosk');
+  btn.classList.toggle('active',isKiosk);
+  btn.textContent=isKiosk?'✕ Exit Kiosk':'⛶ Kiosk';
+  if(isKiosk){
+    // Hide nav so full screen is just the clocks
+    document.querySelector('.nav').style.display='none';
+    // ESC key to exit
+    document._tzKioskEsc=function(e){if(e.key==='Escape')toggleTzKiosk();};
+    document.addEventListener('keydown',document._tzKioskEsc);
+  } else {
+    document.querySelector('.nav').style.display='';
+    if(document._tzKioskEsc) document.removeEventListener('keydown',document._tzKioskEsc);
+  }
+}
+
 // ─── 30-MIN TIMER ─────────────────────────────────────────────────────────────
 let timerInt=null;
 const TOTAL=1800;
@@ -1719,6 +1769,9 @@ function logOKDirect(id, e){
   site.lastScan=Date.now();
   addLog({type:'scan',title:'Scan: '+site.name,detail:'All clear'});
   saveSites(SITES); renderSites(); showToast('✓ '+site.name+' scanned OK');
+  // pulse the card
+  const card=document.querySelector(`.st-row-wrap[data-id="${id}"] .site-card`)||document.querySelector(`.st-row-wrap[data-id="${id}"]`);
+  if(card){card.classList.remove('scan-flash');void card.offsetWidth;card.classList.add('scan-flash');card.addEventListener('animationend',()=>card.classList.remove('scan-flash'),{once:true});}
 }
 
 function siteRow(site){
@@ -1793,6 +1846,8 @@ function confirmScan(){
   const id=parseInt(document.getElementById('scan-note-site-id').value), s=SITES.find(x=>x.id===id); if(!s)return;
   s.lastScan=Date.now(); addLog({type:'scan',title:'Scan: '+s.name,detail:document.getElementById('scan-note-body').value.trim()||'All clear'});
   closeModal('modal-scan-note'); saveSites(SITES); renderSites(); showToast('Scan logged');
+  const card=document.querySelector(`.st-row-wrap[data-id="${id}"] .site-card`)||document.querySelector(`.st-row-wrap[data-id="${id}"]`);
+  if(card){card.classList.remove('scan-flash');void card.offsetWidth;card.classList.add('scan-flash');card.addEventListener('animationend',()=>card.classList.remove('scan-flash'),{once:true});}
 }
 function scanAll(){
   const nerc=SITES.filter(s=>s.nerc); if(!nerc.length){showToast('No NERC sites');return;}
@@ -2512,7 +2567,25 @@ function saveEscContacts(){
 
 // ─── UTILS ────────────────────────────────────────────────────────────────────
 function fireAlert(msg){ showToast(msg); try{const ctx=new AudioContext();[880,660].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;g.gain.setValueAtTime(.25,ctx.currentTime+i*.15);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+i*.15+.4);o.start(ctx.currentTime+i*.15);o.stop(ctx.currentTime+i*.15+.4);});}catch(e){} }
-function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  const icon=document.getElementById('toast-icon');
+  const txt=document.getElementById('toast-msg');
+  if(!type){
+    if(/error|fail|invalid|blocked/i.test(msg)) type='err';
+    else if(/warn|overdue|alert|max /i.test(msg)) type='warn';
+    else if(/✓|saved|logged|copied|scanned|done|complete|submitted/i.test(msg)) type='ok';
+    else type='info';
+  }
+  const icons={ok:'✓',warn:'⚠',err:'✕',info:'ℹ'};
+  t.className='toast t-'+type;
+  icon.textContent=icons[type]||'';
+  txt.textContent=msg;
+  void t.offsetWidth;
+  t.classList.add('show');
+  clearTimeout(t._hide);
+  t._hide=setTimeout(()=>t.classList.remove('show'),2600);
+}
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function renderAll(){ renderRec(); renderAdhoc(); renderCl(); renderNotes(); renderTemplates(); updateTimerUI(); renderSites(); }
 
