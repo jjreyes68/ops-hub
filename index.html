@@ -68,16 +68,21 @@ body.dark .dm-thumb{
   transform:translateX(18px);
   background:#f5c842;
 }
-/* ── FLASH OVERLAY ───────────────────────────────────────────────────────────── */
+/* ── LIGHTNING TRANSITION ─────────────────────────────────────────────────── */
 #dm-flash{
   position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;
-  background:radial-gradient(ellipse at center,rgba(255,255,255,.95) 0%,rgba(255,255,255,0) 70%);
+  background:radial-gradient(ellipse at center,rgba(255,255,255,.92) 0%,rgba(255,255,255,0) 65%);
 }
 body.dark #dm-flash{
-  background:radial-gradient(ellipse at center,rgba(15,17,23,.95) 0%,rgba(15,17,23,0) 70%);
+  background:radial-gradient(ellipse at center,rgba(15,17,23,.92) 0%,rgba(15,17,23,0) 65%);
 }
-@keyframes dmFlash{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
-#dm-flash.flash{animation:dmFlash .5s ease-out forwards;}
+@keyframes dmFlash{0%{opacity:0}8%{opacity:1}60%{opacity:.6}100%{opacity:0}}
+#dm-flash.flash{animation:dmFlash .55s ease-out forwards;}
+#dm-lightning-canvas{
+  position:fixed;inset:0;z-index:10000;pointer-events:none;
+}
+@keyframes ltBoltIn{0%{opacity:0}5%{opacity:1}70%{opacity:.85}100%{opacity:0}}
+@keyframes ltGlow{0%{box-shadow:none}20%{box-shadow:0 0 80px 40px rgba(180,160,255,.18)}100%{box-shadow:none}}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;min-height:100vh;}
 ::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
@@ -601,6 +606,23 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .tz-sites li{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:13px}
 .tz-sites .tz-loc{color:var(--text2);font-size:12px}
 .tz-footer{font-size:11px;color:var(--text2);margin-top:16px}
+/* ── TIMEZONE KIOSK MODE ──────────────────────────────────────────────────── */
+.tz-kiosk-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--blue);background:var(--bbg);color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
+.tz-kiosk-btn:hover{background:var(--blue);color:#fff;}
+.tz-kiosk-btn.active{background:var(--blue);color:#fff;}
+#view-timezones.tz-kiosk{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;height:100vh;overflow:auto;display:flex;flex-direction:column;}
+#view-timezones.tz-kiosk .tz-container{flex:1;display:flex;flex-direction:column;max-width:none;padding:12px 16px;}
+#view-timezones.tz-kiosk .tz-header{margin-bottom:10px;}
+#view-timezones.tz-kiosk .tz-header h1{font-size:16px;}
+#view-timezones.tz-kiosk .tz-muted{display:none;}
+#view-timezones.tz-kiosk .tz-search{display:none;}
+#view-timezones.tz-kiosk .tz-strip{margin-bottom:10px;}
+#view-timezones.tz-kiosk .tz-grid{flex:1;align-content:start;}
+#view-timezones.tz-kiosk .tz-footer{display:none;}
+#view-timezones.tz-kiosk .tz-clock{font-size:52px;}
+#view-timezones.tz-kiosk .tz-card{border-radius:12px;}
+#view-timezones.tz-kiosk .tz-card-header{padding:12px 14px;}
+#view-timezones.tz-kiosk .tz-card-content{padding:12px 14px;}
 
 /* ── SCHEDULE (SharePoint iframe) ────────────────────────────────────────────── */
 .schedule-iframe-container{width:100%;max-width:1400px;margin:0 auto;background:var(--bg2);border-radius:var(--rl);overflow:hidden;}
@@ -655,6 +677,7 @@ select,option{background:var(--bg3);}
   </button>
 </div>
 <div id="dm-flash"></div>
+<canvas id="dm-lightning-canvas"></canvas>
 
 <!-- NOTEPAD -->
 <div class="view" id="view-notes" style="display:none!important">
@@ -1140,6 +1163,7 @@ select,option{background:var(--bg3);}
       <div class="tz-controls">
         <button id="tz-btn24" class="tz-btn active">24h</button>
         <button id="tz-btn12" class="tz-btn">12h</button>
+        <button id="tz-kiosk-btn" class="tz-kiosk-btn" onclick="toggleTzKiosk()">⛶ Kiosk</button>
       </div>
     </div>
     <div class="tz-strip" id="tz-strip"></div>
@@ -1482,6 +1506,24 @@ function renderTzStrip(now){const el=document.getElementById('tz-strip');if(!el)
 function renderTzCards(now){const q=(document.getElementById('tz-search')?.value||'').toLowerCase();const grid=document.getElementById('tz-grid');if(!grid)return;grid.innerHTML='';TZ_ZONES.forEach(z=>{const filtered=q?z.sites.filter(s=>s.name.toLowerCase().includes(q)||s.location.toLowerCase().includes(q)||z.label.toLowerCase().includes(q)):z.sites;if(q&&filtered.length===0)return;const card=document.createElement('div');card.className='tz-card';card.innerHTML=`<div class="tz-card-header"><div class="tz-card-left"><div class="tz-icon" style="background:linear-gradient(135deg,${z.accent[0]},${z.accent[1]})"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><div><div class="tz-card-title">${z.label}</div><div style="display:flex;gap:6px;margin-top:2px"><span class="tz-badge">${z.tz}</span>${tzOffset(now,z.tz)?`<span class="tz-badge">${tzOffset(now,z.tz)}</span>`:''}</div></div></div></div><div class="tz-card-content"><div><div class="tz-clock" data-tz="${z.tz}">${fmtTzTime(now,z.tz)}</div><div class="tz-date">${fmtTzDate(now,z.tz)}</div></div><div class="tz-divider"></div><div><div class="tz-sites-hdr">Sites (${filtered.length})</div><ul class="tz-sites">${filtered.map(s=>`<li><span>${s.name}</span><span class="tz-loc">${s.location}</span></li>`).join('')}</ul></div></div>`;grid.appendChild(card)})}
 function updateTzAll(){const now=new Date();renderTzStrip(now);const clocks=document.querySelectorAll('.tz-clock');if(clocks.length){clocks.forEach(c=>c.textContent=fmtTzTime(now,c.dataset.tz))}else{renderTzCards(now)}document.getElementById('tz-lastUpdate').textContent=new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(now)}
 function initTimeZones(){if(tzInterval)return;document.getElementById('tz-btn24').onclick=()=>{tzHour12=false;document.getElementById('tz-btn24').classList.add('active');document.getElementById('tz-btn12').classList.remove('active');updateTzAll()};document.getElementById('tz-btn12').onclick=()=>{tzHour12=true;document.getElementById('tz-btn12').classList.add('active');document.getElementById('tz-btn24').classList.remove('active');updateTzAll()};document.getElementById('tz-search').oninput=()=>{renderTzCards(new Date())};updateTzAll();tzInterval=setInterval(updateTzAll,1000)}
+
+function toggleTzKiosk(){
+  const view=document.getElementById('view-timezones');
+  const btn=document.getElementById('tz-kiosk-btn');
+  const isKiosk=view.classList.toggle('tz-kiosk');
+  btn.classList.toggle('active',isKiosk);
+  btn.textContent=isKiosk?'✕ Exit Kiosk':'⛶ Kiosk';
+  if(isKiosk){
+    // Hide nav so full screen is just the clocks
+    document.querySelector('.nav').style.display='none';
+    // ESC key to exit
+    document._tzKioskEsc=function(e){if(e.key==='Escape')toggleTzKiosk();};
+    document.addEventListener('keydown',document._tzKioskEsc);
+  } else {
+    document.querySelector('.nav').style.display='';
+    if(document._tzKioskEsc) document.removeEventListener('keydown',document._tzKioskEsc);
+  }
+}
 
 // ─── 30-MIN TIMER ─────────────────────────────────────────────────────────────
 let timerInt=null;
@@ -4707,16 +4749,128 @@ function dmToggle() {
   const flash = document.getElementById('dm-flash');
   const thumb = document.getElementById('dm-thumb');
 
-  // Trigger flash
+  // Fire lightning BEFORE switching theme
+  dmLightning(isDark);
+
+  // Slight delay so lightning appears first, then theme snaps in
+  setTimeout(() => {
+    body.classList.toggle('dark', !isDark);
+    if (thumb) thumb.textContent = isDark ? '☀️' : '🌙';
+  }, 80);
+
   if (flash) {
     flash.classList.remove('flash');
-    void flash.offsetWidth; // reflow to restart animation
+    void flash.offsetWidth;
     flash.classList.add('flash');
   }
 
-  body.classList.toggle('dark', !isDark);
-  if (thumb) thumb.textContent = isDark ? '☀️' : '🌙';
   try { localStorage.setItem('rnwbl_darkmode', isDark ? '0' : '1'); } catch(e) {}
+}
+
+function dmLightning(toLight) {
+  const canvas = document.getElementById('dm-lightning-canvas');
+  if (!canvas) return;
+  const W = canvas.width  = window.innerWidth;
+  const H = canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+
+  // Color palette: going-to-light = yellow/white bolts, going-to-dark = blue/purple
+  const boltColor = toLight
+    ? ['rgba(255,240,80,', 'rgba(255,255,255,']
+    : ['rgba(160,120,255,', 'rgba(100,180,255,'];
+
+  // Generate a jagged lightning path from top to bottom
+  function makeBolt(startX) {
+    const pts = [{x: startX, y: 0}];
+    let x = startX, y = 0;
+    const steps = 10 + Math.floor(Math.random() * 8);
+    for (let i = 1; i <= steps; i++) {
+      y = (H / steps) * i;
+      x += (Math.random() - 0.48) * 140;
+      x = Math.max(40, Math.min(W - 40, x));
+      pts.push({x, y});
+    }
+    return pts;
+  }
+
+  // Draw one bolt with glow layers
+  function drawBolt(pts, alpha, color, width) {
+    // Outer glow
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+    ctx.strokeStyle = color + alpha * 0.25 + ')';
+    ctx.lineWidth = width * 6;
+    ctx.shadowColor = color + '0.9)';
+    ctx.shadowBlur = 28;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+    // Core
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+    ctx.strokeStyle = color + alpha + ')';
+    ctx.lineWidth = width;
+    ctx.shadowBlur = 12;
+    ctx.stroke();
+  }
+
+  // Draw branches off main bolt
+  function drawBranch(fromPt, alpha, color) {
+    const pts = [fromPt];
+    let x = fromPt.x, y = fromPt.y;
+    const steps = 3 + Math.floor(Math.random() * 4);
+    for (let i = 0; i < steps; i++) {
+      y += (40 + Math.random() * 50);
+      x += (Math.random() - 0.5) * 100;
+      pts.push({x, y});
+    }
+    drawBolt(pts, alpha * 0.6, color, 1.5);
+  }
+
+  // --- ANIMATION LOOP ---
+  const numBolts = 1 + Math.floor(Math.random() * 2); // 1-2 main bolts
+  const bolts = [];
+  for (let b = 0; b < numBolts; b++) {
+    const startX = W * (0.25 + Math.random() * 0.5);
+    bolts.push({pts: makeBolt(startX), color: boltColor[b % 2]});
+  }
+
+  let frame = 0;
+  const totalFrames = 28;
+
+  // Flash schedule: flicker on frames 0,2,4 then fade
+  const schedule = [1, 0.3, 0.95, 0.2, 0.85, 0.15, 0.7, 0.1, 0.55, 0.08, 0.4, 0.05, 0.25, 0.03];
+
+  function animate() {
+    ctx.clearRect(0, 0, W, H);
+    const alpha = schedule[frame] !== undefined ? schedule[frame] : Math.max(0, 0.25 - (frame - schedule.length) * 0.04);
+    if (alpha > 0) {
+      bolts.forEach(b => {
+        drawBolt(b.pts, alpha, b.color, 2.5);
+        // Add branches on bright frames
+        if (alpha > 0.5 && b.pts.length > 3) {
+          const branchPt = b.pts[2 + Math.floor(Math.random() * (b.pts.length - 3))];
+          drawBranch(branchPt, alpha, b.color);
+          if (alpha > 0.8) {
+            const branchPt2 = b.pts[1 + Math.floor(Math.random() * 2)];
+            drawBranch(branchPt2, alpha * 0.7, b.color);
+          }
+        }
+      });
+    }
+    frame++;
+    if (frame < totalFrames) {
+      requestAnimationFrame(animate);
+    } else {
+      ctx.clearRect(0, 0, W, H);
+    }
+  }
+
+  ctx.shadowColor = 'transparent';
+  requestAnimationFrame(animate);
 }
 
 /* ── PHONETIC CONVERTER ─────────────────────────────────────────────────────── */
