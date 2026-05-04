@@ -1036,8 +1036,10 @@ body.dark .as-prog-label{color:var(--text2);}
     <div class="quick-fill-wrap">
       <div class="quick-fill-title">Quick Start — Click to auto-fill</div>
       <div class="chip-grid" id="quick-fill-chips">
-        <button class="chip-btn preset-de" onclick="swQuickFill('de-energize')">⚡ De-energize Feeder</button>
-        <button class="chip-btn preset-re" onclick="swQuickFill('re-energize')">🔌 Re-energize Unit</button>
+        <button class="chip-btn preset-de" onclick="swQuickFill('de-energize')">⚡ De-energize Remotely</button>
+        <button class="chip-btn preset-de" onclick="swQuickFill('de-energize-local')">🔻 De-energize Locally</button>
+        <button class="chip-btn preset-re" onclick="swQuickFill('re-energize')">🔌 Re-energize Remotely</button>
+        <button class="chip-btn preset-re" onclick="swQuickFill('re-energize-local')">🔺 Re-energize Locally</button>
         <button class="chip-btn preset-other" onclick="swQuickFill('mvt')">📝 MVT Permit</button>
         <button class="chip-btn preset-de" onclick="swQuickFill('trip')">⚠️ Trip Reset</button>
         <button class="chip-btn preset-other" onclick="swQuickFill('comm')">📞 Comm Check</button>
@@ -1104,7 +1106,11 @@ body.dark .as-prog-label{color:var(--text2);}
     <!-- Step 3: Review & Customize -->
     <div class="wizard-step" id="wzd-step-3">
       <div class="wizard-step-title">Review and customize</div>
-      <div class="wizard-step-sub">Preview your template. Edit the body text if needed.</div>
+      <div class="wizard-step-sub">Preview your template. Name it and edit if needed.</div>
+      <div class="wizard-field">
+        <label>Template Name <span style="font-weight:400;color:var(--text3);">(how it appears in the list)</span></label>
+        <input id="wzd-display-name" placeholder="e.g., De-energize Feeder 52F16" oninput="swWizardUpdateDisplayName()">
+      </div>
       <div class="wizard-preview">
         <div class="wizard-preview-title">Template Preview</div>
         <div class="wizard-preview-body" id="wzd-preview"></div>
@@ -4133,9 +4139,11 @@ function swRenderTpls() {
            <button class="sw-tpl-act-btn" title="Edit" onclick="event.stopPropagation();swOpenEditTpl('${tpl.id}')">✎</button>
            <button class="sw-tpl-act-btn" title="Delete" onclick="event.stopPropagation();swDelTpl('${tpl.id}')">✕</button>
          </span>`;
+    const displayLabel = tpl.displayName || `${tpl.action} ${tpl.site}`;
+    const shortLabel = displayLabel.length > 35 ? displayLabel.slice(0, 35) + '…' : displayLabel;
     return `<button class="sw-tpl ${selCls}" id="swtpl-${tpl.id}" onclick="swSelect('${tpl.id}',this)">
       <span class="sw-tpl-stripe ${tpl.cls}"></span>
-      <span class="sw-tpl-body"><span class="sw-tpl-site">${esc(tpl.site)}</span>${esc(tpl.action)}</span>
+      <span class="sw-tpl-body"><span class="sw-tpl-site">${esc(tpl.site)}</span>${esc(shortLabel)}</span>
       ${actions}
     </button>`;
   }).join('');
@@ -4233,8 +4241,10 @@ let swWizardType = '';
 let swManualEdit = false;
 
 const SW_PRESETS = {
-  'de-energize': { site: 'Feeder', action: 'De-Energize', cls: 'de', numLbl: 'Feeder #', body: 'Call received from field tech {{TECH}} requesting de-energization of Feeder {{NUMBER}}:\n– Verified with control room\n– Confirmed isolation points\n– De-energization completed at {{TIME}}' },
-  're-energize': { site: 'Unit', action: 'Re-Energize', cls: 're', numLbl: 'Unit #', body: 'Call received from field tech {{TECH}} requesting re-energization of Unit {{NUMBER}}:\n– Verified clearance requirements\n– Confirmed safe to energize\n– Re-energization completed at {{TIME}}' },
+  'de-energize': { site: 'Feeder Breaker', action: 'De-Energize Remotely', cls: 'de', numLbl: 'Breaker #', body: 'Call received from field tech {{TECH}} requesting de-energization of Feeder Breaker {{NUMBER}}:\n– Associated Megapacks disabled remotely\n– MVT AC Level Breakers opened remotely\n– Feeder Breaker {{NUMBER}} opened remotely' },
+  'de-energize-local': { site: 'MVT', action: 'De-Energize Locally', cls: 'de', numLbl: 'MVT #', body: 'Call received from field tech {{TECH}} requesting permission to de-energize MVT {{NUMBER}} locally:\n– Permission was granted\n– Local switching was completed' },
+  're-energize': { site: 'Feeder Breaker', action: 'Re-Energize Remotely', cls: 're', numLbl: 'Breaker #', body: 'Call received from field tech {{TECH}} requesting energization of Feeder Breaker {{NUMBER}}:\n– Feeder Breaker {{NUMBER}} closed remotely\n– MVT AC Level Breakers closed remotely\n– Associated Megapacks enabled remotely' },
+  're-energize-local': { site: 'MVT', action: 'Re-Energize Locally', cls: 're', numLbl: 'MVT #', body: 'Call received from field tech {{TECH}} requesting permission to energize MVT {{NUMBER}} locally:\n– Permission was granted\n– Local switching was completed' },
   'mvt': { site: 'MVT', action: 'Permit Request', cls: 'other', numLbl: 'MVT #', body: 'MVT Permit {{NUMBER}} requested by {{TECH}}:\n– Purpose: _____________\n– Scope: _____________\n– Approved/Denied at {{TIME}}' },
   'trip': { site: 'Protection', action: 'Trip Reset', cls: 'de', numLbl: 'Breaker #', body: 'Trip alarm received on Breaker {{NUMBER}}:\n– Contacted field tech {{TECH}}\n– Investigated cause: _____________\n– Reset completed at {{TIME}}' },
   'comm': { site: 'Radio', action: 'Comm Check', cls: 'other', numLbl: 'Channel', body: 'Communication check with {{TECH}} on {{NUMBER}}:\n– Signal strength: ___\n– Clarity: ___\n– Check completed at {{TIME}}' },
@@ -4255,8 +4265,10 @@ function swRenderQuickFillChips() {
   // Get recent custom templates (last 4)
   const recent = swCustomTpls.slice(-4).reverse();
   let html = `
-    <button class="chip-btn preset-de" onclick="swQuickFill('de-energize')">⚡ De-energize Feeder</button>
-    <button class="chip-btn preset-re" onclick="swQuickFill('re-energize')">🔌 Re-energize Unit</button>
+    <button class="chip-btn preset-de" onclick="swQuickFill('de-energize')">⚡ De-energize Remotely</button>
+    <button class="chip-btn preset-de" onclick="swQuickFill('de-energize-local')">🔻 De-energize Locally</button>
+    <button class="chip-btn preset-re" onclick="swQuickFill('re-energize')">🔌 Re-energize Remotely</button>
+    <button class="chip-btn preset-re" onclick="swQuickFill('re-energize-local')">🔺 Re-energize Locally</button>
     <button class="chip-btn preset-other" onclick="swQuickFill('mvt')">📝 MVT Permit</button>
     <button class="chip-btn preset-de" onclick="swQuickFill('trip')">⚠️ Trip Reset</button>
     <button class="chip-btn preset-other" onclick="swQuickFill('comm')">📞 Comm Check</button>
@@ -4266,8 +4278,9 @@ function swRenderQuickFillChips() {
     html += '<div style="width:100%;height:1px;background:var(--border);margin:8px 0;"></div>';
     recent.forEach(tpl => {
       const cls = tpl.cls === 'de' ? 'preset-de' : tpl.cls === 're' ? 'preset-re' : 'preset-other';
-      const shortAction = tpl.action.length > 15 ? tpl.action.slice(0, 15) + '…' : tpl.action;
-      html += `<button class="chip-btn ${cls}" onclick="swQuickFillRecent('${tpl.id}')">🕐 ${esc(tpl.site)} · ${esc(shortAction)}</button>`;
+      const displayLabel = tpl.displayName || `${tpl.action} ${tpl.site}`;
+      const shortLabel = displayLabel.length > 25 ? displayLabel.slice(0, 25) + '…' : displayLabel;
+      html += `<button class="chip-btn ${cls}" onclick="swQuickFillRecent('${tpl.id}')">🕐 ${esc(shortLabel)}</button>`;
     });
   }
   chipGrid.innerHTML = html;
@@ -4279,6 +4292,7 @@ function swQuickFillRecent(id) {
   document.getElementById('wzd-action').value = tpl.action;
   document.getElementById('wzd-numlbl').value = tpl.numLbl || 'Number';
   document.getElementById('wzd-body').value = tpl.body;
+  document.getElementById('wzd-display-name').value = tpl.displayName || `${tpl.action} ${tpl.site}`;
   document.getElementById('sw-tpl-cls').value = tpl.cls;
   document.getElementById('sw-tpl-site').value = tpl.site;
   document.getElementById('sw-tpl-action').value = tpl.action;
@@ -4307,6 +4321,7 @@ function swOpenEditTpl(id) {
   document.getElementById('wzd-action').value = tpl.action;
   document.getElementById('wzd-numlbl').value = tpl.numLbl || 'Number';
   document.getElementById('wzd-body').value = tpl.body;
+  document.getElementById('wzd-display-name').value = tpl.displayName || `${tpl.action} ${tpl.site}`;
   swWizardType = tpl.cls;
   swManualEdit = true;
   // Go to step 3 for editing
@@ -4323,6 +4338,7 @@ function swResetWizard() {
   document.getElementById('wzd-action').value = '';
   document.getElementById('wzd-numlbl').value = 'Number';
   document.getElementById('wzd-body').value = '';
+  document.getElementById('wzd-display-name').value = '';
   document.getElementById('wzd-preview').innerHTML = '';
   document.querySelectorAll('.wizard-option').forEach(el => el.classList.remove('selected'));
   swUpdateWizardUI();
@@ -4358,6 +4374,11 @@ function swWizardNext() {
     const action = document.getElementById('wzd-action').value.trim();
     if (!site || !action) { showToast('Site and action are required'); return; }
     if (!swManualEdit) swGenerateBody();
+    // Auto-populate display name if empty
+    const displayNameInput = document.getElementById('wzd-display-name');
+    if (!displayNameInput.value.trim()) {
+      displayNameInput.value = `${action} ${site}`;
+    }
     swUpdatePreview();
     swGoToStep(3);
   } else {
@@ -4406,6 +4427,10 @@ function swWizardUpdate() {
   document.getElementById('sw-tpl-numlbl').value = numLbl;
 }
 
+function swWizardUpdateDisplayName() {
+  // Just stores in the field for swSaveTpl to read
+}
+
 function swGenerateBody() {
   const site = document.getElementById('wzd-site').value.trim();
   const action = document.getElementById('wzd-action').value.trim();
@@ -4449,14 +4474,15 @@ function swSaveTpl() {
   const cls    = document.getElementById('sw-tpl-cls').value;
   const numLbl = document.getElementById('sw-tpl-numlbl').value.trim() || document.getElementById('wzd-numlbl').value.trim() || 'Number';
   const body   = document.getElementById('sw-tpl-body').value.trim() || document.getElementById('wzd-body').value.trim();
+  const displayName = document.getElementById('wzd-display-name').value.trim() || `${action} ${site}`;
   if (!site || !action) { showToast('Site name and action label required'); return; }
   if (!body) { showToast('Template body required'); return; }
   const editId = document.getElementById('sw-tpl-edit-id').value;
   if (editId) {
     const idx = swCustomTpls.findIndex(t => t.id === editId);
-    if (idx > -1) swCustomTpls[idx] = { id:editId, site, action, cls, numLbl, numPh:'', body };
+    if (idx > -1) swCustomTpls[idx] = { id:editId, site, action, cls, numLbl, numPh:'', body, displayName };
   } else {
-    swCustomTpls.push({ id:'custom-'+Date.now(), site, action, cls, numLbl, numPh:'', body });
+    swCustomTpls.push({ id:'custom-'+Date.now(), site, action, cls, numLbl, numPh:'', body, displayName });
   }
   swSaveCustom();
   swRenderTpls();
