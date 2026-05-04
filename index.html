@@ -348,6 +348,44 @@ body.dark .card-title{color:var(--text2);}
 .m-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;}
 .handoff-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;font-family:var(--m);font-size:12px;line-height:1.9;color:var(--text2);white-space:pre-wrap;max-height:420px;overflow-y:auto;}
 
+/* ── WIZARD MODAL ───────────────────────────────────────────────────────────── */
+.wizard-step{display:none;animation:fadeIn .2s ease}
+.wizard-step.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.wizard-progress{display:flex;align-items:center;gap:6px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.wizard-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:all .2s}
+.wizard-dot.active{background:var(--blue);transform:scale(1.2)}
+.wizard-dot.completed{background:var(--green)}
+.wizard-step-title{font-size:14px;font-weight:600;margin-bottom:12px;color:var(--text)}
+.wizard-step-sub{font-size:12px;color:var(--text3);margin-bottom:16px}
+.quick-fill-wrap{margin-bottom:16px}
+.quick-fill-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.chip-grid{display:flex;flex-wrap:wrap;gap:6px}
+.chip-btn{padding:6px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s}
+.chip-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bbg)}
+.chip-btn.preset-de{border-left:3px solid var(--red)}
+.chip-btn.preset-re{border-left:3px solid var(--green)}
+.chip-btn.preset-other{border-left:3px solid var(--blue)}
+.wizard-options{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
+.wizard-option{padding:12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg3);cursor:pointer;transition:all .15s;text-align:left;font-family:var(--f)}
+.wizard-option:hover{border-color:var(--blue);background:var(--bbg)}
+.wizard-option.selected{border-color:var(--blue);background:var(--bbg);box-shadow:0 0 0 2px var(--bbg)}
+.wizard-option-icon{font-size:18px;display:block;margin-bottom:4px}
+.wizard-option-title{font-size:13px;font-weight:600;color:var(--text);display:block}
+.wizard-option-desc{font-size:11px;color:var(--text3);margin-top:2px;display:block}
+.wizard-field{margin-bottom:12px}
+.wizard-field label{font-size:11px;font-weight:600;color:var(--text2);display:block;margin-bottom:4px}
+.wizard-field input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px}
+.wizard-field input:focus{outline:none;border-color:var(--blue);background:var(--bg2)}
+.wizard-preview{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin:12px 0}
+.wizard-preview-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.wizard-preview-body{font-family:var(--m);font-size:12px;line-height:1.7;color:var(--text2);white-space:pre-wrap}
+.wizard-preview-body .placeholder{color:var(--blue);font-weight:600;background:var(--bbg);padding:1px 4px;border-radius:3px}
+.wizard-actions{display:flex;gap:8px;margin-top:16px;justify-content:space-between;align-items:center}
+.wizard-actions-right{display:flex;gap:8px}
+.wizard-back-btn{padding:7px 14px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:13px;cursor:pointer;font-family:var(--f);transition:all .15s}
+.wizard-back-btn:hover{border-color:var(--border2);color:var(--text)}
+
 /* Weather */
 .intel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
 .intel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;box-shadow:var(--shs);display:flex;flex-direction:column;gap:10px;}
@@ -978,26 +1016,114 @@ body.dark .as-prog-label{color:var(--text2);}
 
 <!-- MODALS -->
 <div class="overlay hidden" id="modal-sw-tpl">
-  <div class="modal" style="width:520px;">
+  <div class="modal" style="width:520px;max-height:85vh;">
     <h3 id="sw-tpl-modal-title">New Template</h3>
     <input type="hidden" id="sw-tpl-edit-id">
-    <label>Site / System name</label>
-    <input id="sw-tpl-site" placeholder="e.g. CNDR1, COSO, Bypass">
-    <label>Action label</label>
-    <input id="sw-tpl-action" placeholder="e.g. De-Energize, MVT Permit, Trip Reset">
-    <label>Color</label>
-    <select id="sw-tpl-cls">
-      <option value="de">Red — De-energize / Off</option>
-      <option value="re">Green — Re-energize / On</option>
-      <option value="other">Blue — Other</option>
-    </select>
-    <label>Number field label <span style="font-weight:400;color:var(--text3);">(what the operator fills in)</span></label>
-    <input id="sw-tpl-numlbl" placeholder="e.g. Feeder Breaker #, MVT #, Work Order #" value="Number">
-    <label>Template body — use <code style="background:var(--bg4);padding:1px 4px;border-radius:3px;">{{TECH}}</code> and <code style="background:var(--bg4);padding:1px 4px;border-radius:3px;">{{NUMBER}}</code></label>
-    <textarea id="sw-tpl-body" placeholder="Call received from field tech {{TECH}} requesting de-energization of Unit {{NUMBER}}:&#10;– Step one completed remotely&#10;– Step two completed locally" style="min-height:130px;font-family:var(--m);font-size:12px;line-height:1.7;"></textarea>
-    <div class="m-actions">
-      <button class="btn-c" onclick="closeModal('modal-sw-tpl')">Cancel</button>
-      <button class="btn-p" onclick="swSaveTpl()">Save template</button>
+    <input type="hidden" id="sw-tpl-site">
+    <input type="hidden" id="sw-tpl-action">
+    <input type="hidden" id="sw-tpl-cls" value="de">
+    <input type="hidden" id="sw-tpl-numlbl" value="Number">
+    <input type="hidden" id="sw-tpl-body">
+
+    <!-- Wizard Progress -->
+    <div class="wizard-progress">
+      <span class="wizard-dot active" id="wzd-dot-1"></span>
+      <span class="wizard-dot" id="wzd-dot-2"></span>
+      <span class="wizard-dot" id="wzd-dot-3"></span>
+    </div>
+
+    <!-- Quick Fill Chips (always visible) -->
+    <div class="quick-fill-wrap">
+      <div class="quick-fill-title">Quick Start — Click to auto-fill</div>
+      <div class="chip-grid" id="quick-fill-chips">
+        <button class="chip-btn preset-de" onclick="swQuickFill('de-energize')">⚡ De-energize Remotely</button>
+        <button class="chip-btn preset-de" onclick="swQuickFill('de-energize-local')">🔻 De-energize Locally</button>
+        <button class="chip-btn preset-re" onclick="swQuickFill('re-energize')">🔌 Re-energize Remotely</button>
+        <button class="chip-btn preset-re" onclick="swQuickFill('re-energize-local')">🔺 Re-energize Locally</button>
+        <button class="chip-btn preset-other" onclick="swQuickFill('mvt')">📝 MVT Permit</button>
+        <button class="chip-btn preset-de" onclick="swQuickFill('trip')">⚠️ Trip Reset</button>
+        <button class="chip-btn preset-other" onclick="swQuickFill('comm')">📞 Comm Check</button>
+        <button class="chip-btn preset-other" onclick="swQuickFill('bypass')">🔀 Bypass Switch</button>
+      </div>
+    </div>
+
+    <!-- Step 1: Choose Action Type -->
+    <div class="wizard-step active" id="wzd-step-1">
+      <div class="wizard-step-title">What type of action?</div>
+      <div class="wizard-step-sub">Select the category that best describes this template</div>
+      <div class="wizard-options">
+        <button class="wizard-option" onclick="swSelectType('de')">
+          <span class="wizard-option-icon">⚡</span>
+          <span class="wizard-option-title">De-energize / Off</span>
+          <span class="wizard-option-desc">Removing power, shutdowns, isolations</span>
+        </button>
+        <button class="wizard-option" onclick="swSelectType('re')">
+          <span class="wizard-option-icon">🔌</span>
+          <span class="wizard-option-title">Re-energize / On</span>
+          <span class="wizard-option-desc">Restoring power, restarts, enabling</span>
+        </button>
+        <button class="wizard-option" onclick="swSelectType('permit')">
+          <span class="wizard-option-icon">📝</span>
+          <span class="wizard-option-title">Permit / Clearance</span>
+          <span class="wizard-option-desc">Work permits, safety clearances</span>
+        </button>
+        <button class="wizard-option" onclick="swSelectType('reset')">
+          <span class="wizard-option-icon">↺</span>
+          <span class="wizard-option-title">Reset / Acknowledge</span>
+          <span class="wizard-option-desc">Trip resets, alarms, notifications</span>
+        </button>
+        <button class="wizard-option" onclick="swSelectType('test')">
+          <span class="wizard-option-icon">🔧</span>
+          <span class="wizard-option-title">Test / Verify</span>
+          <span class="wizard-option-desc">Testing, verification, checks</span>
+        </button>
+        <button class="wizard-option" onclick="swSelectType('other')">
+          <span class="wizard-option-icon">📋</span>
+          <span class="wizard-option-title">Other</span>
+          <span class="wizard-option-desc">General purpose template</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2: Enter Details -->
+    <div class="wizard-step" id="wzd-step-2">
+      <div class="wizard-step-title">Enter the details</div>
+      <div class="wizard-step-sub">Who called and what unit or equipment is involved?</div>
+      <div class="wizard-field">
+        <label>Site / System name <span style="font-weight:400;color:var(--text3);">(e.g., CNDR1, COSO, Bypass)</span></label>
+        <input id="wzd-site" placeholder="Enter site or system name" oninput="swWizardUpdate()">
+      </div>
+      <div class="wizard-field">
+        <label>Action label <span style="font-weight:400;color:var(--text3);">(e.g., De-Energize, MVT Permit)</span></label>
+        <input id="wzd-action" placeholder="Enter the action name" oninput="swWizardUpdate()">
+      </div>
+      <div class="wizard-field">
+        <label>What should the number field be called? <span style="font-weight:400;color:var(--text3);">(e.g., Feeder #, MVT #, Unit ID)</span></label>
+        <input id="wzd-numlbl" placeholder="Number" value="Number" oninput="swWizardUpdate()">
+      </div>
+    </div>
+
+    <!-- Step 3: Review & Customize -->
+    <div class="wizard-step" id="wzd-step-3">
+      <div class="wizard-step-title">Review and customize</div>
+      <div class="wizard-step-sub">Preview your template. Edit the body text if needed.</div>
+      <div class="wizard-preview">
+        <div class="wizard-preview-title">Template Preview</div>
+        <div class="wizard-preview-body" id="wzd-preview"></div>
+      </div>
+      <div class="wizard-field">
+        <label>Template Body <span style="font-weight:400;color:var(--text3);">Use <code style="background:var(--bg4);padding:1px 4px;border-radius:3px;">{{TECH}}</code> and <code style="background:var(--bg4);padding:1px 4px;border-radius:3px;">{{NUMBER}}</code> for auto-fill fields</span></label>
+        <textarea id="wzd-body" style="min-height:100px;width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--m);font-size:12px;line-height:1.7;resize:vertical;" oninput="swWizardManualEdit()"></textarea>
+      </div>
+    </div>
+
+    <!-- Wizard Navigation -->
+    <div class="wizard-actions">
+      <button class="wizard-back-btn" id="wzd-back-btn" onclick="swWizardPrev()" style="visibility:hidden">← Back</button>
+      <div class="wizard-actions-right">
+        <button class="btn-c" onclick="closeModal('modal-sw-tpl')">Cancel</button>
+        <button class="btn-p" id="wzd-next-btn" onclick="swWizardNext()">Next →</button>
+      </div>
     </div>
   </div>
 </div>
@@ -4104,15 +4230,71 @@ function swRenderHist() {
 }
 
 // ── Custom template CRUD ───────────────────────────────────────────────────────
+let swWizardStep = 1;
+let swWizardType = '';
+let swManualEdit = false;
+
+const SW_PRESETS = {
+  'de-energize': { site: 'Feeder Breaker', action: 'De-Energize Remotely', cls: 'de', numLbl: 'Breaker #', body: 'Call received from field tech {{TECH}} requesting de-energization of Feeder Breaker {{NUMBER}}:\n– Associated Megapacks disabled remotely\n– MVT AC Level Breakers opened remotely\n– Feeder Breaker {{NUMBER}} opened remotely' },
+  'de-energize-local': { site: 'MVT', action: 'De-Energize Locally', cls: 'de', numLbl: 'MVT #', body: 'Call received from field tech {{TECH}} requesting permission to de-energize MVT {{NUMBER}} locally:\n– Permission was granted\n– Local switching was completed' },
+  're-energize': { site: 'Feeder Breaker', action: 'Re-Energize Remotely', cls: 're', numLbl: 'Breaker #', body: 'Call received from field tech {{TECH}} requesting energization of Feeder Breaker {{NUMBER}}:\n– Feeder Breaker {{NUMBER}} closed remotely\n– MVT AC Level Breakers closed remotely\n– Associated Megapacks enabled remotely' },
+  're-energize-local': { site: 'MVT', action: 'Re-Energize Locally', cls: 're', numLbl: 'MVT #', body: 'Call received from field tech {{TECH}} requesting permission to energize MVT {{NUMBER}} locally:\n– Permission was granted\n– Local switching was completed' },
+  'mvt': { site: 'MVT', action: 'Permit Request', cls: 'other', numLbl: 'MVT #', body: 'MVT Permit {{NUMBER}} requested by {{TECH}}:\n– Purpose: _____________\n– Scope: _____________\n– Approved/Denied at {{TIME}}' },
+  'trip': { site: 'Protection', action: 'Trip Reset', cls: 'de', numLbl: 'Breaker #', body: 'Trip alarm received on Breaker {{NUMBER}}:\n– Contacted field tech {{TECH}}\n– Investigated cause: _____________\n– Reset completed at {{TIME}}' },
+  'comm': { site: 'Radio', action: 'Comm Check', cls: 'other', numLbl: 'Channel', body: 'Communication check with {{TECH}} on {{NUMBER}}:\n– Signal strength: ___\n– Clarity: ___\n– Check completed at {{TIME}}' },
+  'bypass': { site: 'Bypass', action: 'Switch Operation', cls: 'other', numLbl: 'Switch #', body: 'Bypass switch {{NUMBER}} operation requested by {{TECH}}:\n– Reason: _____________\n– Verified safe conditions\n– Operation completed at {{TIME}}' }
+};
+
 function swOpenNewTpl() {
   document.getElementById('sw-tpl-modal-title').textContent = 'New Template';
   document.getElementById('sw-tpl-edit-id').value = '';
-  document.getElementById('sw-tpl-site').value = '';
-  document.getElementById('sw-tpl-action').value = '';
-  document.getElementById('sw-tpl-cls').value = 'de';
-  document.getElementById('sw-tpl-numlbl').value = 'Number';
-  document.getElementById('sw-tpl-body').value = '';
+  swResetWizard();
+  swRenderQuickFillChips();
   openModal('modal-sw-tpl');
+}
+
+function swRenderQuickFillChips() {
+  const chipGrid = document.getElementById('quick-fill-chips');
+  if (!chipGrid) return;
+  // Get recent custom templates (last 4)
+  const recent = swCustomTpls.slice(-4).reverse();
+  let html = `
+    <button class="chip-btn preset-de" onclick="swQuickFill('de-energize')">⚡ De-energize Remotely</button>
+    <button class="chip-btn preset-de" onclick="swQuickFill('de-energize-local')">🔻 De-energize Locally</button>
+    <button class="chip-btn preset-re" onclick="swQuickFill('re-energize')">🔌 Re-energize Remotely</button>
+    <button class="chip-btn preset-re" onclick="swQuickFill('re-energize-local')">🔺 Re-energize Locally</button>
+    <button class="chip-btn preset-other" onclick="swQuickFill('mvt')">📝 MVT Permit</button>
+    <button class="chip-btn preset-de" onclick="swQuickFill('trip')">⚠️ Trip Reset</button>
+    <button class="chip-btn preset-other" onclick="swQuickFill('comm')">📞 Comm Check</button>
+    <button class="chip-btn preset-other" onclick="swQuickFill('bypass')">🔀 Bypass Switch</button>
+  `;
+  if (recent.length > 0) {
+    html += '<div style="width:100%;height:1px;background:var(--border);margin:8px 0;"></div>';
+    recent.forEach(tpl => {
+      const cls = tpl.cls === 'de' ? 'preset-de' : tpl.cls === 're' ? 'preset-re' : 'preset-other';
+      const shortAction = tpl.action.length > 15 ? tpl.action.slice(0, 15) + '…' : tpl.action;
+      html += `<button class="chip-btn ${cls}" onclick="swQuickFillRecent('${tpl.id}')">🕐 ${esc(tpl.site)} · ${esc(shortAction)}</button>`;
+    });
+  }
+  chipGrid.innerHTML = html;
+}
+
+function swQuickFillRecent(id) {
+  const tpl = swCustomTpls.find(t => t.id === id); if (!tpl) return;
+  document.getElementById('wzd-site').value = tpl.site;
+  document.getElementById('wzd-action').value = tpl.action;
+  document.getElementById('wzd-numlbl').value = tpl.numLbl || 'Number';
+  document.getElementById('wzd-body').value = tpl.body;
+  document.getElementById('sw-tpl-cls').value = tpl.cls;
+  document.getElementById('sw-tpl-site').value = tpl.site;
+  document.getElementById('sw-tpl-action').value = tpl.action;
+  document.getElementById('sw-tpl-numlbl').value = tpl.numLbl || 'Number';
+  document.getElementById('sw-tpl-body').value = tpl.body;
+  swWizardType = tpl.cls;
+  swManualEdit = true;
+  swUpdatePreview();
+  swGoToStep(3);
+  showToast('Loaded recent template — review and save');
 }
 
 function swOpenEditTpl(id) {
@@ -4124,15 +4306,155 @@ function swOpenEditTpl(id) {
   document.getElementById('sw-tpl-cls').value = tpl.cls;
   document.getElementById('sw-tpl-numlbl').value = tpl.numLbl || 'Number';
   document.getElementById('sw-tpl-body').value = tpl.body;
+  swResetWizard();
+  swRenderQuickFillChips();
+  // Pre-fill wizard fields for editing
+  document.getElementById('wzd-site').value = tpl.site;
+  document.getElementById('wzd-action').value = tpl.action;
+  document.getElementById('wzd-numlbl').value = tpl.numLbl || 'Number';
+  document.getElementById('wzd-body').value = tpl.body;
+  swWizardType = tpl.cls;
+  swManualEdit = true;
+  // Go to step 3 for editing
+  swGoToStep(3);
+  swUpdatePreview();
   openModal('modal-sw-tpl');
 }
 
+function swResetWizard() {
+  swWizardStep = 1;
+  swWizardType = '';
+  swManualEdit = false;
+  document.getElementById('wzd-site').value = '';
+  document.getElementById('wzd-action').value = '';
+  document.getElementById('wzd-numlbl').value = 'Number';
+  document.getElementById('wzd-body').value = '';
+  document.getElementById('wzd-preview').innerHTML = '';
+  document.querySelectorAll('.wizard-option').forEach(el => el.classList.remove('selected'));
+  swUpdateWizardUI();
+}
+
+function swGoToStep(step) {
+  swWizardStep = step;
+  document.querySelectorAll('.wizard-step').forEach((el, i) => {
+    el.classList.toggle('active', i + 1 === step);
+  });
+  swUpdateWizardUI();
+}
+
+function swUpdateWizardUI() {
+  // Update progress dots
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById('wzd-dot-' + i);
+    dot.classList.remove('active', 'completed');
+    if (i < swWizardStep) dot.classList.add('completed');
+    else if (i === swWizardStep) dot.classList.add('active');
+  }
+  // Update button states
+  document.getElementById('wzd-back-btn').style.visibility = swWizardStep === 1 ? 'hidden' : 'visible';
+  document.getElementById('wzd-next-btn').textContent = swWizardStep === 3 ? 'Save template' : 'Next →';
+}
+
+function swWizardNext() {
+  if (swWizardStep === 1) {
+    if (!swWizardType) { showToast('Please select a template type'); return; }
+    swGoToStep(2);
+  } else if (swWizardStep === 2) {
+    const site = document.getElementById('wzd-site').value.trim();
+    const action = document.getElementById('wzd-action').value.trim();
+    if (!site || !action) { showToast('Site and action are required'); return; }
+    if (!swManualEdit) swGenerateBody();
+    swUpdatePreview();
+    swGoToStep(3);
+  } else {
+    swSaveTpl();
+  }
+}
+
+function swWizardPrev() {
+  if (swWizardStep > 1) swGoToStep(swWizardStep - 1);
+}
+
+function swSelectType(type) {
+  swWizardType = type;
+  const typeMap = { 'de': 'de', 're': 're', 'permit': 'other', 'reset': 'de', 'test': 'other', 'other': 'other' };
+  document.getElementById('sw-tpl-cls').value = typeMap[type] || 'other';
+  document.querySelectorAll('.wizard-option').forEach(el => el.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+}
+
+function swQuickFill(presetKey) {
+  const preset = SW_PRESETS[presetKey];
+  if (!preset) return;
+  document.getElementById('wzd-site').value = preset.site;
+  document.getElementById('wzd-action').value = preset.action;
+  document.getElementById('wzd-numlbl').value = preset.numLbl;
+  document.getElementById('wzd-body').value = preset.body;
+  document.getElementById('sw-tpl-cls').value = preset.cls;
+  swWizardType = preset.cls === 'de' ? 'de' : preset.cls === 're' ? 're' : 'permit';
+  swManualEdit = true;
+  // Pre-fill hidden fields
+  document.getElementById('sw-tpl-site').value = preset.site;
+  document.getElementById('sw-tpl-action').value = preset.action;
+  document.getElementById('sw-tpl-numlbl').value = preset.numLbl;
+  document.getElementById('sw-tpl-body').value = preset.body;
+  swUpdatePreview();
+  swGoToStep(3);
+  showToast('Quick-fill applied — review and save');
+}
+
+function swWizardUpdate() {
+  const site = document.getElementById('wzd-site').value.trim();
+  const action = document.getElementById('wzd-action').value.trim();
+  const numLbl = document.getElementById('wzd-numlbl').value.trim() || 'Number';
+  document.getElementById('sw-tpl-site').value = site;
+  document.getElementById('sw-tpl-action').value = action;
+  document.getElementById('sw-tpl-numlbl').value = numLbl;
+}
+
+function swGenerateBody() {
+  const site = document.getElementById('wzd-site').value.trim();
+  const action = document.getElementById('wzd-action').value.trim();
+  const numLbl = document.getElementById('wzd-numlbl').value.trim() || 'Number';
+  const type = swWizardType;
+  let body = '';
+  if (type === 'de') {
+    body = `Call received from field tech {{TECH}} requesting ${action.toLowerCase()} of ${site} {{NUMBER}}:\n– Verified with control room\n– Confirmed isolation points\n– ${action} completed at {{TIME}}`;
+  } else if (type === 're') {
+    body = `Call received from field tech {{TECH}} requesting ${action.toLowerCase()} of ${site} {{NUMBER}}:\n– Verified clearance requirements\n– Confirmed safe to proceed\n– ${action} completed at {{TIME}}`;
+  } else if (type === 'permit') {
+    body = `${action} for ${site} {{NUMBER}} requested by {{TECH}}:\n– Purpose: _____________\n– Scope: _____________\n– Approved/Denied at {{TIME}}`;
+  } else if (type === 'reset') {
+    body = `${action} alarm received on ${site} {{NUMBER}}:\n– Contacted field tech {{TECH}}\n– Investigated cause: _____________\n– ${action} completed at {{TIME}}`;
+  } else {
+    body = `${action} for ${site} {{NUMBER}}:\n– Requested by field tech {{TECH}}\n– Details: _____________\n– Completed at {{TIME}}`;
+  }
+  document.getElementById('wzd-body').value = body;
+  document.getElementById('sw-tpl-body').value = body;
+  swManualEdit = false;
+}
+
+function swWizardManualEdit() {
+  swManualEdit = true;
+  document.getElementById('sw-tpl-body').value = document.getElementById('wzd-body').value;
+  swUpdatePreview();
+}
+
+function swUpdatePreview() {
+  const body = document.getElementById('wzd-body').value;
+  const preview = body
+    .replace(/\{\{TECH\}\}/g, '<span class="placeholder">TECH NAME</span>')
+    .replace(/\{\{NUMBER\}\}/g, '<span class="placeholder">NUMBER</span>')
+    .replace(/\{\{TIME\}\}/g, '<span class="placeholder">TIME</span>');
+  document.getElementById('wzd-preview').innerHTML = preview || '<span style="color:var(--text3);">Template body will appear here...</span>';
+}
+
 function swSaveTpl() {
-  const site   = document.getElementById('sw-tpl-site').value.trim();
-  const action = document.getElementById('sw-tpl-action').value.trim();
+  const site   = document.getElementById('sw-tpl-site').value.trim() || document.getElementById('wzd-site').value.trim();
+  const action = document.getElementById('sw-tpl-action').value.trim() || document.getElementById('wzd-action').value.trim();
   const cls    = document.getElementById('sw-tpl-cls').value;
-  const numLbl = document.getElementById('sw-tpl-numlbl').value.trim() || 'Number';
-  const body   = document.getElementById('sw-tpl-body').value.trim();
+  const numLbl = document.getElementById('sw-tpl-numlbl').value.trim() || document.getElementById('wzd-numlbl').value.trim() || 'Number';
+  const body   = document.getElementById('sw-tpl-body').value.trim() || document.getElementById('wzd-body').value.trim();
   if (!site || !action) { showToast('Site name and action label required'); return; }
   if (!body) { showToast('Template body required'); return; }
   const editId = document.getElementById('sw-tpl-edit-id').value;
