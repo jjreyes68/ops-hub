@@ -904,6 +904,7 @@ body.dark .as-prog-label{color:var(--text2);}
         <div id="phonetic-out" style="font-family:var(--m);font-size:14px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:40px;word-break:break-all;"></div>
         <div style="display:flex;gap:6px;margin-top:8px;">
           <button class="tbtn" onclick="copyPhonetic()">Copy</button>
+          <button class="tbtn" id="phonetic-speak-btn" onclick="speakPhonetic()" title="Read aloud">🔊 Speak</button>
           <button class="tbtn" onclick="clearPhonetic()">Clear</button>
         </div>
       </div>
@@ -5583,6 +5584,21 @@ function convertPhonetic(){
     else out.push(ch);
   }
   document.getElementById('phonetic-out').textContent = out.join(' ');
+}
+function speakPhonetic(){
+  const text = document.getElementById('phonetic-out').textContent;
+  if(!text) return;
+  if(!window.speechSynthesis){ alert('Speech not supported in this browser.'); return; }
+  window.speechSynthesis.cancel(); // stop any current speech
+  const utt = new SpeechSynthesisUtterance(text.replace(/•/g, ' '));
+  utt.rate = 0.88;   // slightly slower — clearer for ops use
+  utt.pitch = 1;
+  const btn = document.getElementById('phonetic-speak-btn');
+  btn.textContent = '🔊 Speaking…';
+  btn.disabled = true;
+  utt.onend = () => { btn.textContent = '🔊 Speak'; btn.disabled = false; };
+  utt.onerror = () => { btn.textContent = '🔊 Speak'; btn.disabled = false; };
+  window.speechSynthesis.speak(utt);
 }
 function copyPhonetic(){
   const text = document.getElementById('phonetic-out').textContent;
