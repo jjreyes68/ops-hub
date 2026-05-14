@@ -89,6 +89,7 @@ body.dark #dm-flash{
   background:radial-gradient(ellipse at center,rgba(15,17,23,.92) 0%,rgba(15,17,23,0) 65%);
 }
 @keyframes dmFlash{0%{opacity:0}8%{opacity:1}60%{opacity:.6}100%{opacity:0}}
+@keyframes qtPulse{0%{opacity:1}50%{opacity:.6}100%{opacity:1}}
 #dm-flash.flash{animation:dmFlash .55s ease-out forwards;}
 #dm-lightning-canvas{
   position:fixed;inset:0;z-index:10000;pointer-events:none;
@@ -438,7 +439,13 @@ body.dark .card-title{color:var(--text2);}
 .as-meta label{font-size:12px;font-weight:500;color:var(--text2);margin-right:4px;}
 .as-meta input,.as-meta select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 9px;font-size:13px;color:var(--text);font-family:var(--f);}
 .as-meta input:focus,.as-meta select:focus{outline:none;border-color:var(--blue);}
-.as-site-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.as-site-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
+.as-type-btn{padding:5px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
+.as-type-btn:hover{border-color:var(--border2);color:var(--text);}
+.as-type-btn.active{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
+.as-type-btn.bess.active{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
+.as-type-btn.solar.active{border-color:var(--amber);color:var(--amber);background:var(--abg);}
+.as-type-btn.wind.active{border-color:var(--green);color:var(--green);background:var(--gbg);}
 .as-tab{padding:5px 13px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;box-shadow:var(--shs);}
 .as-tab:hover{border-color:var(--text2);color:var(--text);}
 .as-tab.active{border-color:var(--accent);color:var(--accent);background:#fdf2f2;}
@@ -827,7 +834,12 @@ body.dark .as-prog-label{color:var(--text2);}
 <div id="dm-flash"></div>
 <canvas id="dm-lightning-canvas"></canvas>
 
-<!-- NOTEPAD -->
+<!-- QUICK TIMER ALARM BANNER -->
+<div id="qt-alarm-banner" style="display:none;position:fixed;top:48px;left:0;right:0;z-index:200;background:var(--red);color:#fff;padding:9px 16px;font-size:13px;font-weight:500;display:none;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,0,0,.25);">
+  <span style="font-size:16px;">⏰</span>
+  <span style="flex:1;" id="qt-alarm-text"></span>
+  <button onclick="qtDismissBanner()" style="padding:4px 12px;border-radius:5px;border:1.5px solid rgba(255,255,255,.6);background:transparent;color:#fff;font-size:12px;font-weight:600;cursor:pointer;">Dismiss</button>
+</div>
 <div class="view" id="view-notes" style="display:none!important">
   <div class="tpl-grid" id="tpl-grid"></div>
   <div class="notes-layout">
@@ -897,15 +909,7 @@ body.dark .as-prog-label{color:var(--text2);}
       </div>
     </div>
     <div class="card">
-      <div class="card-title">Recurring tasks</div>
-      <div id="rec-list"></div>
-      <div class="add-row">
-        <input id="rec-inp" placeholder="Add recurring task..." onkeydown="if(event.key==='Enter')addRec()">
-        <button onclick="addRec()">+</button>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">Ad hoc tasks</div>
+      <div class="card-title">Quick Timer</div>
       <div id="adhoc-list" style="max-height:260px;overflow-y:auto;"></div>
       <div class="adhoc-row">
         <input id="adhoc-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addAdhoc()">
@@ -1238,7 +1242,7 @@ body.dark .as-prog-label{color:var(--text2);}
       <input id="as-operator" list="as-ops-list" placeholder="Name">
       <datalist id="as-ops-list">
         <option>Adam McCauley</option><option>Alexander Conway</option><option>Christopher Hill</option>
-        <option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option><option>Mar'Cell Edwards</option>
+        <option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option><option>Josh Reyes</option><option>Mar'Cell Edwards</option>
         <option>Morgan Shearer</option><option>Rob Seffern</option><option>Sergio Torres</option>
       </datalist>
     </div>
@@ -1260,6 +1264,12 @@ body.dark .as-prog-label{color:var(--text2);}
     <span class="as-prog-done-badge" id="as-prog-done-badge">✓ All sites complete</span>
   </div>
   <div class="as-site-tabs" id="as-tabs"></div>
+  <div id="as-type-filters" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;margin-top:-4px;">
+    <button class="as-type-btn active" onclick="asSetTypeFilter('all',this)">All</button>
+    <button class="as-type-btn bess" onclick="asSetTypeFilter('BESS',this)">🔋 BESS</button>
+    <button class="as-type-btn solar" onclick="asSetTypeFilter('Solar',this)">☀️ Solar</button>
+    <button class="as-type-btn wind" onclick="asSetTypeFilter('Wind',this)">💨 Wind</button>
+  </div>
   <div id="as-form-wrap"></div>
 </div>
 
@@ -1851,6 +1861,36 @@ function renderRec(){
 
 // ─── ADHOC TASKS ──────────────────────────────────────────────────────────────
 let adhocInts={};
+let adhocAlarmed=new Set(); // tracks IDs that have already triggered the alarm
+
+function playQtAlarm(){
+  try {
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    function beep(freq,start,dur){
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type='square'; o.frequency.value=freq;
+      g.gain.setValueAtTime(0.28,ctx.currentTime+start);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+start+dur);
+      o.start(ctx.currentTime+start); o.stop(ctx.currentTime+start+dur+0.05);
+    }
+    beep(880,0,.12); beep(880,.18,.12); beep(1100,.36,.22); beep(1100,.62,.22);
+  } catch(e){}
+}
+
+function qtShowBanner(name){
+  const b=document.getElementById('qt-alarm-banner');
+  document.getElementById('qt-alarm-text').textContent='TIMER EXPIRED: '+name;
+  b.style.display='flex';
+  // pulse animation
+  b.style.animation='none'; void b.offsetWidth;
+  b.style.animation='qtPulse .5s ease 3';
+}
+
+function qtDismissBanner(){
+  document.getElementById('qt-alarm-banner').style.display='none';
+}
+
 function addAdhoc(){
   const v=document.getElementById('adhoc-inp').value.trim(); if(!v)return;
   const min=parseInt(document.getElementById('adhoc-t').value)||0;
@@ -1860,21 +1900,39 @@ function addAdhoc(){
   addLog({type:'task',title:'Task added: '+v,detail:min>0?min+'min timer':''});
   save(); renderAdhoc(); if(task.timerMin) startAdhocTimer(task.id);
 }
-function startAdhocTimer(id){ if(adhocInts[id])clearInterval(adhocInts[id]); adhocInts[id]=setInterval(()=>renderAdhoc(),30000); }
+function startAdhocTimer(id){
+  if(adhocInts[id])clearInterval(adhocInts[id]);
+  adhocInts[id]=setInterval(()=>renderAdhoc(),1000); // check every second
+}
 function restoreAdhocTimers(){ S.adhocTasks.forEach(t=>{if(t.timerMin&&t.timerStart&&!t.done)startAdhocTimer(t.id);}); }
 function timerDisplay(t){
   if(!t.timerMin||!t.timerStart) return null;
   const rem=(t.timerMin*60000)-(Date.now()-t.timerStart);
-  if(rem<=0) return {label:'Overdue',exp:true};
-  return {label:Math.ceil(rem/60000)+'min left',exp:false};
+  if(rem<=0) return {label:'EXPIRED',exp:true};
+  const m=Math.floor(rem/60000), s=Math.floor((rem%60000)/1000);
+  return {label:String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+' left',exp:false};
 }
 function toggleAdhoc(id){
   const t=S.adhocTasks.find(x=>x.id===id); if(!t)return;
   t.done=!t.done;
-  if(t.done){ addLog({type:'task',title:'Task done: '+t.name,detail:''}); if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];} }
+  if(t.done){
+    addLog({type:'task',title:'Task done: '+t.name,detail:''});
+    if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];}
+    adhocAlarmed.delete(id);
+    // hide banner if no other expired timers remain
+    const anyExp=S.adhocTasks.some(x=>!x.done&&timerDisplay(x)&&timerDisplay(x).exp);
+    if(!anyExp) qtDismissBanner();
+  }
   save(); renderAdhoc();
 }
-function delAdhoc(id){ if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];} S.adhocTasks=S.adhocTasks.filter(x=>x.id!==id); save(); renderAdhoc(); }
+function delAdhoc(id){
+  if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];}
+  adhocAlarmed.delete(id);
+  S.adhocTasks=S.adhocTasks.filter(x=>x.id!==id);
+  const anyExp=S.adhocTasks.some(x=>!x.done&&timerDisplay(x)&&timerDisplay(x).exp);
+  if(!anyExp) qtDismissBanner();
+  save(); renderAdhoc();
+}
 function openTaskTimer(id){
   const t=S.adhocTasks.find(x=>x.id===id); if(!t||!t.timerMin)return;
   document.getElementById('ttimer-title').textContent=esc(t.name);
@@ -1887,17 +1945,30 @@ function updateTTimerDisp(id){
   const t=S.adhocTasks.find(x=>x.id===id); if(!t)return;
   const ti=timerDisplay(t); const d=document.getElementById('ttimer-disp');
   if(!ti){d.textContent='No timer';return;}
-  if(ti.exp){d.textContent='OVERDUE';d.style.color='var(--red)';return;}
+  if(ti.exp){d.textContent='EXPIRED';d.style.color='var(--red)';return;}
   const rem=Math.max(0,(t.timerMin*60000)-(Date.now()-t.timerStart));
   d.textContent=String(Math.floor(rem/60000)).padStart(2,'0')+':'+String(Math.floor((rem%60000)/1000)).padStart(2,'0');
   d.style.color='var(--amber)';
 }
 function renderAdhoc(){
   const el=document.getElementById('adhoc-list');
-  el.innerHTML=!S.adhocTasks.length?'<div class="empty">No tasks yet</div>':
-    S.adhocTasks.map(t=>{ const ti=timerDisplay(t); return `<div class="task-item${t.done?' done':''}">
+  if(!el) return;
+
+  // Check for newly expired timers → fire alarm
+  S.adhocTasks.forEach(t=>{
+    if(t.done||!t.timerMin||!t.timerStart) return;
+    const ti=timerDisplay(t);
+    if(ti && ti.exp && !adhocAlarmed.has(t.id)){
+      adhocAlarmed.add(t.id);
+      playQtAlarm();
+      qtShowBanner(t.name);
+    }
+  });
+
+  el.innerHTML=!S.adhocTasks.length?'<div class="empty">No timers set</div>':
+    S.adhocTasks.map(t=>{ const ti=timerDisplay(t); return `<div class="task-item${t.done?' done':''}${ti&&ti.exp&&!t.done?' style="border-color:var(--red);background:var(--rbg);"':''}">
       <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleAdhoc(${t.id})">
-      <span class="task-label">${esc(t.name)}</span>
+      <span class="task-label"${ti&&ti.exp&&!t.done?' style="color:var(--red);font-weight:600;"':''}>${esc(t.name)}</span>
       ${ti?`<span class="timer-badge${ti.exp?' exp':''}" onclick="openTaskTimer(${t.id})">${ti.label}</span>`:''}
       <button class="task-del" onclick="delAdhoc(${t.id})">✕</button>
     </div>`; }).join('');
@@ -2494,7 +2565,7 @@ function clCopyHandoff() {
 const CL_SITE_TYPES = {
   // BESS
   CNDR1:'BESS',PRGN1:'BESS',PRGV1:'BESS',HARQ2:'BESS',KUNA1:'BESS',GLTA1:'BESS',COSO1:'BESS',DBLO1:'BESS',
-  BYPS1:'BESS',CTLF1:'BESS',CTLF:'BESS',PDMT1:'BESS',MRCP1:'BESS',FRDN1:'BESS',ANGF1:'BESS',AVLN1:'BESS',TSMS1:'BESS',
+  BYPS1:'BESS',CTLF1:'BESS',CTLF:'BESS',PDMT1:'BESS',MRCP1:'BESS',MRCP:'BESS',FRDN1:'BESS',ANGF1:'BESS',AVLN1:'BESS',TSMS1:'BESS',
   // Solar
   HARQ1:'Solar',NCLS1:'Solar',AVLN2:'Solar',BLKW1:'Solar',LSTH2:'Solar',NSTR1:'Solar',
   FRMV1:'Solar',HNFD1:'Solar',LSTH1:'Solar',PRTV1:'Solar',TLRE1:'Solar',TRPC1:'Solar',
@@ -3783,6 +3854,7 @@ let asVals = {};
 let asDone = {};        // {siteId: true} manually marked complete
 let asCustom = null;    // null = not yet loaded; [] or array = overrides AS_SITES
 let asActiveSite = '';
+let asTypeFilter = 'all'; // 'all' | 'BESS' | 'Solar' | 'Wind'
 
 // Effective site list: custom overrides defaults when set AND non-empty
 function asSites() { return (asCustom !== null && asCustom.length > 0) ? asCustom : AS_SITES; }
@@ -3897,14 +3969,60 @@ function asUpdateProgress() {
   wrap.classList.toggle('all-done', allDone);
 }
 
+// Returns asset type for an AS_SITES site object
+function asGetSiteType(site) {
+  if (!site || !site.id) return 'General';
+  const id = site.id.toUpperCase();
+  if (CL_SITE_TYPES[id]) return CL_SITE_TYPES[id];
+  // Fallback: scan the label for keywords
+  const lbl = (site.label || '').toUpperCase();
+  if (lbl.includes('BESS')) return 'BESS';
+  if (lbl.includes('SOLAR') || lbl.includes('PV')) return 'Solar';
+  if (lbl.includes('WIND')) return 'Wind';
+  return 'General';
+}
+
+function asSetTypeFilter(type, el) {
+  asTypeFilter = type;
+  document.querySelectorAll('.as-type-btn').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+
+  // If current site isn't in the new filter, jump to first matching site
+  if (type !== 'all') {
+    const sites = [...asSites()]
+      .filter(s => s.id !== 'ROCC1')
+      .sort((a, b) => a.id.localeCompare(b.id));
+    const inFilter = sites.filter(s => asGetSiteType(s) === type);
+    const currentStillValid = inFilter.some(s => s.id === asActiveSite);
+    if (!currentStillValid && inFilter.length > 0) {
+      asActiveSite = inFilter[0].id;
+      try { localStorage.setItem('rnwbl_asactive', asActiveSite); } catch(e) {}
+    }
+  }
+
+  asRenderTabs();
+  asRenderForm();
+}
+
 function asRenderTabs() {
-  document.getElementById('as-tabs').innerHTML = asSites().map(s=>{
-    const done=asSiteComplete(s.id), pct=asSiteFilledPct(s.id);
-    const style=done?'border-color:var(--green);color:var(--green);background:var(--gbg);'
-                :pct>0?'border-color:var(--amber);color:var(--amber);background:var(--abg);':'';
-    const icon=done?' ✓':pct>0?' …':'';
-    const isActive=s.id===asActiveSite;
-    return `<button class="as-tab${isActive?' active':''}" style="${isActive?'':style}" onclick="asSwitch('${esc(s.id)}')">${esc(s.id)}${icon}</button>`;
+  // Sort alphabetically by id, but keep ROCC1 pinned first
+  let sites = [...asSites()];
+  const rocc = sites.filter(s => s.id === 'ROCC1');
+  const rest = sites.filter(s => s.id !== 'ROCC1').sort((a, b) => a.id.localeCompare(b.id));
+  sites = [...rocc, ...rest];
+
+  // Apply type filter
+  const filtered = asTypeFilter === 'all'
+    ? sites
+    : sites.filter(s => s.id === 'ROCC1' || asGetSiteType(s) === asTypeFilter);
+
+  document.getElementById('as-tabs').innerHTML = filtered.map(s => {
+    const done = asSiteComplete(s.id), pct = asSiteFilledPct(s.id);
+    const style = done ? 'border-color:var(--green);color:var(--green);background:var(--gbg);'
+                : pct > 0 ? 'border-color:var(--amber);color:var(--amber);background:var(--abg);' : '';
+    const icon = done ? ' ✓' : pct > 0 ? ' …' : '';
+    const isActive = s.id === asActiveSite;
+    return `<button class="as-tab${isActive ? ' active' : ''}" style="${isActive ? '' : style}" onclick="asSwitch('${esc(s.id)}')">${esc(s.id)}${icon}</button>`;
   }).join('');
   asUpdateProgress();
 }
