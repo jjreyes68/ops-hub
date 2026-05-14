@@ -916,6 +916,9 @@ body.dark .as-prog-label{color:var(--text2);}
         <input id="adhoc-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addAdhoc()">
         <input id="adhoc-t" class="t-inp" type="number" min="0" placeholder="min">
         <span class="min-lbl">min</span>
+        <span class="min-lbl" style="color:var(--border2);">or</span>
+        <input id="adhoc-until" class="t-inp" type="time" style="width:88px!important;" title="Set a target clock time instead of duration">
+        <span class="min-lbl">until</span>
         <button class="add-btn" onclick="addAdhoc()">+ Add</button>
       </div>
     </div>
@@ -1919,11 +1922,24 @@ function qtDismissBanner(){
 
 function addAdhoc(){
   const v=document.getElementById('adhoc-inp').value.trim(); if(!v)return;
-  const min=parseInt(document.getElementById('adhoc-t').value)||0;
-  const task={id:Date.now(),name:v,done:false,timerMin:min>0?min:null,timerStart:min>0?Date.now():null};
+  const untilVal=document.getElementById('adhoc-until').value; // "HH:MM" or ""
+  let min=0, targetLabel=null;
+  if(untilVal){
+    const [h,m]=untilVal.split(':').map(Number);
+    const target=new Date(); target.setHours(h,m,0,0);
+    if(target<=new Date()) target.setDate(target.getDate()+1); // roll to tomorrow if past
+    min=Math.max(1,Math.round((target-new Date())/60000));
+    // Format label as "3:00 AM"
+    targetLabel=target.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+  } else {
+    min=parseInt(document.getElementById('adhoc-t').value)||0;
+  }
+  const task={id:Date.now(),name:v,done:false,timerMin:min>0?min:null,timerStart:min>0?Date.now():null,targetLabel:targetLabel||null};
   S.adhocTasks.push(task);
-  document.getElementById('adhoc-inp').value=''; document.getElementById('adhoc-t').value='';
-  addLog({type:'task',title:'Task added: '+v,detail:min>0?min+'min timer':''});
+  document.getElementById('adhoc-inp').value='';
+  document.getElementById('adhoc-t').value='';
+  document.getElementById('adhoc-until').value='';
+  addLog({type:'task',title:'Task added: '+v,detail:min>0?(targetLabel?'until '+targetLabel:min+'min timer'):''}); 
   save(); renderAdhoc(); if(task.timerMin) startAdhocTimer(task.id);
 }
 function startAdhocTimer(id){
@@ -2010,7 +2026,7 @@ function renderAdhoc(){
   el.innerHTML=!S.adhocTasks.length?'<div class="empty">No timers set</div>':
     S.adhocTasks.map(t=>{ const ti=timerDisplay(t); return `<div class="task-item${t.done?' done':''}${ti&&ti.exp&&!t.done?' style="border-color:var(--red);background:var(--rbg);"':''}">
       <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleAdhoc(${t.id})">
-      <span class="task-label"${ti&&ti.exp&&!t.done?' style="color:var(--red);font-weight:600;"':''}>${esc(t.name)}</span>
+      <span class="task-label"${ti&&ti.exp&&!t.done?' style="color:var(--red);font-weight:600;"':''}>${esc(t.name)}${t.targetLabel&&!t.done?`<span style="font-size:10px;color:var(--text3);margin-left:5px;">until ${esc(t.targetLabel)}</span>`:''}</span>
       ${ti?`<span class="timer-badge${ti.exp?' exp':''}" onclick="openTaskTimer(${t.id})">${ti.label}</span>`:''}
       <button class="task-del" onclick="delAdhoc(${t.id})">✕</button>
     </div>`; }).join('');
