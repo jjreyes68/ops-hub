@@ -1884,12 +1884,28 @@ function qtShowBanner(name){
   const b=document.getElementById('qt-alarm-banner');
   document.getElementById('qt-alarm-text').textContent='TIMER EXPIRED: '+name;
   b.style.display='flex';
-  // pulse animation
   b.style.animation='none'; void b.offsetWidth;
   b.style.animation='qtPulse .5s ease 3';
 }
 
+function qtShowBannerSilent(name){
+  // Show without audio — used on page restore for already-expired timers
+  const b=document.getElementById('qt-alarm-banner');
+  document.getElementById('qt-alarm-text').textContent='TIMER EXPIRED: '+name;
+  b.style.display='flex';
+}
+
 function qtDismissBanner(){
+  // Clear ALL expired timers in one click — no need to also hit X in the tile
+  const expiredIds=S.adhocTasks
+    .filter(t=>!t.done && timerDisplay(t) && timerDisplay(t).exp)
+    .map(t=>t.id);
+  expiredIds.forEach(id=>{
+    if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];}
+    adhocAlarmed.delete(id);
+  });
+  S.adhocTasks=S.adhocTasks.filter(t=>!expiredIds.includes(t.id));
+  save(); renderAdhoc();
   document.getElementById('qt-alarm-banner').style.display='none';
 }
 
@@ -1904,9 +1920,23 @@ function addAdhoc(){
 }
 function startAdhocTimer(id){
   if(adhocInts[id])clearInterval(adhocInts[id]);
-  adhocInts[id]=setInterval(()=>renderAdhoc(),1000); // check every second
+  adhocInts[id]=setInterval(()=>renderAdhoc(),1000);
 }
-function restoreAdhocTimers(){ S.adhocTasks.forEach(t=>{if(t.timerMin&&t.timerStart&&!t.done)startAdhocTimer(t.id);}); }
+function restoreAdhocTimers(){
+  S.adhocTasks.forEach(t=>{
+    if(!t.timerMin||!t.timerStart||t.done) return;
+    const ti=timerDisplay(t);
+    if(ti && ti.exp){
+      // Already expired before page loaded — suppress audio, just show banner silently
+      adhocAlarmed.add(t.id);
+    } else {
+      startAdhocTimer(t.id);
+    }
+  });
+  // Show banner silently for any timers that were expired on load
+  const alreadyExp=S.adhocTasks.filter(t=>!t.done && adhocAlarmed.has(t.id));
+  if(alreadyExp.length>0) qtShowBannerSilent(alreadyExp[alreadyExp.length-1].name);
+}
 function timerDisplay(t){
   if(!t.timerMin||!t.timerStart) return null;
   const rem=(t.timerMin*60000)-(Date.now()-t.timerStart);
