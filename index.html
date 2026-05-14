@@ -3927,7 +3927,22 @@ function asSetTypeFilter(type, el) {
   asTypeFilter = type;
   document.querySelectorAll('.as-type-btn').forEach(b => b.classList.remove('active'));
   if (el) el.classList.add('active');
+
+  // If current site isn't in the new filter, jump to first matching site
+  if (type !== 'all') {
+    const sites = [...asSites()]
+      .filter(s => s.id !== 'ROCC1')
+      .sort((a, b) => a.id.localeCompare(b.id));
+    const inFilter = sites.filter(s => asGetSiteType(s) === type);
+    const currentStillValid = inFilter.some(s => s.id === asActiveSite);
+    if (!currentStillValid && inFilter.length > 0) {
+      asActiveSite = inFilter[0].id;
+      try { localStorage.setItem('rnwbl_asactive', asActiveSite); } catch(e) {}
+    }
+  }
+
   asRenderTabs();
+  asRenderForm();
 }
 
 function asRenderTabs() {
