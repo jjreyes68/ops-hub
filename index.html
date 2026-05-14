@@ -1850,6 +1850,7 @@ function toggleRec(id){ const t=S.recTasks.find(x=>x.id===id); if(t)t.done=!t.do
 function delRec(id){ S.recTasks=S.recTasks.filter(x=>x.id!==id); save(); renderRec(); }
 function renderRec(){
   const el=document.getElementById('rec-list');
+  if(!el) return;
   el.innerHTML=!S.recTasks.length?'<div class="empty">No recurring tasks</div>':
     S.recTasks.map(t=>`<div class="task-item${t.done?' done':''}">
       <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleRec(${t.id})">
