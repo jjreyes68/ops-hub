@@ -1880,6 +1880,14 @@ function playQtAlarm(){
   } catch(e){}
 }
 
+function qtSpeakAlarm(name){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt=new SpeechSynthesisUtterance(name);
+  utt.rate=0.88; utt.pitch=1;
+  window.speechSynthesis.speak(utt);
+}
+
 function qtShowBanner(name){
   const b=document.getElementById('qt-alarm-banner');
   document.getElementById('qt-alarm-text').textContent='TIMER EXPIRED: '+name;
@@ -1994,6 +2002,8 @@ function renderAdhoc(){
       adhocAlarmed.add(t.id);
       playQtAlarm();
       qtShowBanner(t.name);
+      // Speak the task name after the chime finishes (~950ms)
+      setTimeout(()=>qtSpeakAlarm(t.name), 950);
     }
   });
 
