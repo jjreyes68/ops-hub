@@ -438,7 +438,13 @@ body.dark .card-title{color:var(--text2);}
 .as-meta label{font-size:12px;font-weight:500;color:var(--text2);margin-right:4px;}
 .as-meta input,.as-meta select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 9px;font-size:13px;color:var(--text);font-family:var(--f);}
 .as-meta input:focus,.as-meta select:focus{outline:none;border-color:var(--blue);}
-.as-site-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.as-site-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
+.as-type-btn{padding:5px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
+.as-type-btn:hover{border-color:var(--border2);color:var(--text);}
+.as-type-btn.active{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
+.as-type-btn.bess.active{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
+.as-type-btn.solar.active{border-color:var(--amber);color:var(--amber);background:var(--abg);}
+.as-type-btn.wind.active{border-color:var(--green);color:var(--green);background:var(--gbg);}
 .as-tab{padding:5px 13px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;box-shadow:var(--shs);}
 .as-tab:hover{border-color:var(--text2);color:var(--text);}
 .as-tab.active{border-color:var(--accent);color:var(--accent);background:#fdf2f2;}
@@ -1106,7 +1112,11 @@ body.dark .as-prog-label{color:var(--text2);}
     <!-- Step 3: Review & Customize -->
     <div class="wizard-step" id="wzd-step-3">
       <div class="wizard-step-title">Review and customize</div>
-      <div class="wizard-step-sub">Preview your template. Edit the body text if needed.</div>
+      <div class="wizard-step-sub">Preview your template. Name it and edit if needed.</div>
+      <div class="wizard-field">
+        <label>Template Name <span style="font-weight:400;color:var(--text3);">(how it appears in the list)</span></label>
+        <input id="wzd-display-name" placeholder="e.g., De-energize Feeder 52F16" oninput="swWizardUpdateDisplayName()">
+      </div>
       <div class="wizard-preview">
         <div class="wizard-preview-title">Template Preview</div>
         <div class="wizard-preview-body" id="wzd-preview"></div>
@@ -1234,7 +1244,7 @@ body.dark .as-prog-label{color:var(--text2);}
       <input id="as-operator" list="as-ops-list" placeholder="Name">
       <datalist id="as-ops-list">
         <option>Adam McCauley</option><option>Alexander Conway</option><option>Christopher Hill</option>
-        <option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option><option>Mar'Cell Edwards</option>
+        <option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option><option>Josh Reyes</option><option>Mar'Cell Edwards</option>
         <option>Morgan Shearer</option><option>Rob Seffern</option><option>Sergio Torres</option>
       </datalist>
     </div>
@@ -1256,6 +1266,12 @@ body.dark .as-prog-label{color:var(--text2);}
     <span class="as-prog-done-badge" id="as-prog-done-badge">✓ All sites complete</span>
   </div>
   <div class="as-site-tabs" id="as-tabs"></div>
+  <div id="as-type-filters" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;margin-top:-4px;">
+    <button class="as-type-btn active" onclick="asSetTypeFilter('all',this)">All</button>
+    <button class="as-type-btn bess" onclick="asSetTypeFilter('BESS',this)">🔋 BESS</button>
+    <button class="as-type-btn solar" onclick="asSetTypeFilter('Solar',this)">☀️ Solar</button>
+    <button class="as-type-btn wind" onclick="asSetTypeFilter('Wind',this)">💨 Wind</button>
+  </div>
   <div id="as-form-wrap"></div>
 </div>
 
@@ -1441,23 +1457,23 @@ body.dark .as-prog-label{color:var(--text2);}
       <div class="schedule-iframe-container" id="schedule-embed1" style="display:none;">
         <div class="iframe-veil" id="veil-embed1"></div>
         <div class="iframe-crop"></div>
-        <iframe id="fr-embed1" frameborder="0" scrolling="no" onload="document.getElementById('veil-embed1').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={1afbe310-d1bc-407d-838a-528698f0e3d3}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AI37&wdHideGridlines=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
+        <iframe id="fr-embed1" frameborder="0" scrolling="no" onload="document.getElementById('veil-embed1').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={1afbe310-d1bc-407d-838a-528698f0e3d3}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AI37&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
       </div>
       <div class="schedule-iframe-container" id="schedule-embed2" style="display:none;">
         <div class="iframe-veil" id="veil-embed2"></div>
         <div class="iframe-crop"></div>
-        <iframe id="fr-embed2" frameborder="0" scrolling="no" onload="document.getElementById('veil-embed2').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={5c8f1191-ff95-46c8-b02e-d75e7d808278}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AM28&wdHideGridlines=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
+        <iframe id="fr-embed2" frameborder="0" scrolling="no" onload="document.getElementById('veil-embed2').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={5c8f1191-ff95-46c8-b02e-d75e7d808278}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AM28&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
       </div>
       <div class="schedule-srd-combo" id="schedule-srd">
         <div class="schedule-iframe-container">
           <div class="iframe-veil" id="veil-srd1"></div>
           <div class="iframe-crop"></div>
-          <iframe id="fr-srd1" frameborder="0" scrolling="no" onload="document.getElementById('veil-srd1').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={1afbe310-d1bc-407d-838a-528698f0e3d3}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AI37&wdHideGridlines=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
+          <iframe id="fr-srd1" frameborder="0" scrolling="no" onload="document.getElementById('veil-srd1').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={1afbe310-d1bc-407d-838a-528698f0e3d3}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AI37&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
         </div>
         <div class="schedule-iframe-container">
           <div class="iframe-veil" id="veil-srd2"></div>
           <div class="iframe-crop"></div>
-          <iframe id="fr-srd2" frameborder="0" scrolling="no" onload="document.getElementById('veil-srd2').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={5c8f1191-ff95-46c8-b02e-d75e7d808278}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AM28&wdHideGridlines=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
+          <iframe id="fr-srd2" frameborder="0" scrolling="no" onload="document.getElementById('veil-srd2').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={5c8f1191-ff95-46c8-b02e-d75e7d808278}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AM28&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
         </div>
       </div>
     </div>
@@ -2490,7 +2506,7 @@ function clCopyHandoff() {
 const CL_SITE_TYPES = {
   // BESS
   CNDR1:'BESS',PRGN1:'BESS',PRGV1:'BESS',HARQ2:'BESS',KUNA1:'BESS',GLTA1:'BESS',COSO1:'BESS',DBLO1:'BESS',
-  BYPS1:'BESS',CTLF1:'BESS',CTLF:'BESS',PDMT1:'BESS',MRCP1:'BESS',FRDN1:'BESS',ANGF1:'BESS',AVLN1:'BESS',TSMS1:'BESS',
+  BYPS1:'BESS',CTLF1:'BESS',CTLF:'BESS',PDMT1:'BESS',MRCP1:'BESS',MRCP:'BESS',FRDN1:'BESS',ANGF1:'BESS',AVLN1:'BESS',TSMS1:'BESS',
   // Solar
   HARQ1:'Solar',NCLS1:'Solar',AVLN2:'Solar',BLKW1:'Solar',LSTH2:'Solar',NSTR1:'Solar',
   FRMV1:'Solar',HNFD1:'Solar',LSTH1:'Solar',PRTV1:'Solar',TLRE1:'Solar',TRPC1:'Solar',
@@ -3779,6 +3795,7 @@ let asVals = {};
 let asDone = {};        // {siteId: true} manually marked complete
 let asCustom = null;    // null = not yet loaded; [] or array = overrides AS_SITES
 let asActiveSite = '';
+let asTypeFilter = 'all'; // 'all' | 'BESS' | 'Solar' | 'Wind'
 
 // Effective site list: custom overrides defaults when set AND non-empty
 function asSites() { return (asCustom !== null && asCustom.length > 0) ? asCustom : AS_SITES; }
@@ -3893,14 +3910,45 @@ function asUpdateProgress() {
   wrap.classList.toggle('all-done', allDone);
 }
 
+// Returns asset type for an AS_SITES site object
+function asGetSiteType(site) {
+  if (!site || !site.id) return 'General';
+  const id = site.id.toUpperCase();
+  if (CL_SITE_TYPES[id]) return CL_SITE_TYPES[id];
+  // Fallback: scan the label for keywords
+  const lbl = (site.label || '').toUpperCase();
+  if (lbl.includes('BESS')) return 'BESS';
+  if (lbl.includes('SOLAR') || lbl.includes('PV')) return 'Solar';
+  if (lbl.includes('WIND')) return 'Wind';
+  return 'General';
+}
+
+function asSetTypeFilter(type, el) {
+  asTypeFilter = type;
+  document.querySelectorAll('.as-type-btn').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  asRenderTabs();
+}
+
 function asRenderTabs() {
-  document.getElementById('as-tabs').innerHTML = asSites().map(s=>{
-    const done=asSiteComplete(s.id), pct=asSiteFilledPct(s.id);
-    const style=done?'border-color:var(--green);color:var(--green);background:var(--gbg);'
-                :pct>0?'border-color:var(--amber);color:var(--amber);background:var(--abg);':'';
-    const icon=done?' ✓':pct>0?' …':'';
-    const isActive=s.id===asActiveSite;
-    return `<button class="as-tab${isActive?' active':''}" style="${isActive?'':style}" onclick="asSwitch('${esc(s.id)}')">${esc(s.id)}${icon}</button>`;
+  // Sort alphabetically by id, but keep ROCC1 pinned first
+  let sites = [...asSites()];
+  const rocc = sites.filter(s => s.id === 'ROCC1');
+  const rest = sites.filter(s => s.id !== 'ROCC1').sort((a, b) => a.id.localeCompare(b.id));
+  sites = [...rocc, ...rest];
+
+  // Apply type filter
+  const filtered = asTypeFilter === 'all'
+    ? sites
+    : sites.filter(s => s.id === 'ROCC1' || asGetSiteType(s) === asTypeFilter);
+
+  document.getElementById('as-tabs').innerHTML = filtered.map(s => {
+    const done = asSiteComplete(s.id), pct = asSiteFilledPct(s.id);
+    const style = done ? 'border-color:var(--green);color:var(--green);background:var(--gbg);'
+                : pct > 0 ? 'border-color:var(--amber);color:var(--amber);background:var(--abg);' : '';
+    const icon = done ? ' ✓' : pct > 0 ? ' …' : '';
+    const isActive = s.id === asActiveSite;
+    return `<button class="as-tab${isActive ? ' active' : ''}" style="${isActive ? '' : style}" onclick="asSwitch('${esc(s.id)}')">${esc(s.id)}${icon}</button>`;
   }).join('');
   asUpdateProgress();
 }
@@ -4135,9 +4183,11 @@ function swRenderTpls() {
            <button class="sw-tpl-act-btn" title="Edit" onclick="event.stopPropagation();swOpenEditTpl('${tpl.id}')">✎</button>
            <button class="sw-tpl-act-btn" title="Delete" onclick="event.stopPropagation();swDelTpl('${tpl.id}')">✕</button>
          </span>`;
+    const displayLabel = tpl.displayName || `${tpl.action} ${tpl.site}`;
+    const shortLabel = displayLabel.length > 35 ? displayLabel.slice(0, 35) + '…' : displayLabel;
     return `<button class="sw-tpl ${selCls}" id="swtpl-${tpl.id}" onclick="swSelect('${tpl.id}',this)">
       <span class="sw-tpl-stripe ${tpl.cls}"></span>
-      <span class="sw-tpl-body"><span class="sw-tpl-site">${esc(tpl.site)}</span>${esc(tpl.action)}</span>
+      <span class="sw-tpl-body"><span class="sw-tpl-site">${esc(tpl.site)}</span>${esc(shortLabel)}</span>
       ${actions}
     </button>`;
   }).join('');
@@ -4272,8 +4322,9 @@ function swRenderQuickFillChips() {
     html += '<div style="width:100%;height:1px;background:var(--border);margin:8px 0;"></div>';
     recent.forEach(tpl => {
       const cls = tpl.cls === 'de' ? 'preset-de' : tpl.cls === 're' ? 'preset-re' : 'preset-other';
-      const shortAction = tpl.action.length > 15 ? tpl.action.slice(0, 15) + '…' : tpl.action;
-      html += `<button class="chip-btn ${cls}" onclick="swQuickFillRecent('${tpl.id}')">🕐 ${esc(tpl.site)} · ${esc(shortAction)}</button>`;
+      const displayLabel = tpl.displayName || `${tpl.action} ${tpl.site}`;
+      const shortLabel = displayLabel.length > 25 ? displayLabel.slice(0, 25) + '…' : displayLabel;
+      html += `<button class="chip-btn ${cls}" onclick="swQuickFillRecent('${tpl.id}')">🕐 ${esc(shortLabel)}</button>`;
     });
   }
   chipGrid.innerHTML = html;
@@ -4285,6 +4336,7 @@ function swQuickFillRecent(id) {
   document.getElementById('wzd-action').value = tpl.action;
   document.getElementById('wzd-numlbl').value = tpl.numLbl || 'Number';
   document.getElementById('wzd-body').value = tpl.body;
+  document.getElementById('wzd-display-name').value = tpl.displayName || `${tpl.action} ${tpl.site}`;
   document.getElementById('sw-tpl-cls').value = tpl.cls;
   document.getElementById('sw-tpl-site').value = tpl.site;
   document.getElementById('sw-tpl-action').value = tpl.action;
@@ -4313,6 +4365,7 @@ function swOpenEditTpl(id) {
   document.getElementById('wzd-action').value = tpl.action;
   document.getElementById('wzd-numlbl').value = tpl.numLbl || 'Number';
   document.getElementById('wzd-body').value = tpl.body;
+  document.getElementById('wzd-display-name').value = tpl.displayName || `${tpl.action} ${tpl.site}`;
   swWizardType = tpl.cls;
   swManualEdit = true;
   // Go to step 3 for editing
@@ -4329,6 +4382,7 @@ function swResetWizard() {
   document.getElementById('wzd-action').value = '';
   document.getElementById('wzd-numlbl').value = 'Number';
   document.getElementById('wzd-body').value = '';
+  document.getElementById('wzd-display-name').value = '';
   document.getElementById('wzd-preview').innerHTML = '';
   document.querySelectorAll('.wizard-option').forEach(el => el.classList.remove('selected'));
   swUpdateWizardUI();
@@ -4364,6 +4418,11 @@ function swWizardNext() {
     const action = document.getElementById('wzd-action').value.trim();
     if (!site || !action) { showToast('Site and action are required'); return; }
     if (!swManualEdit) swGenerateBody();
+    // Auto-populate display name if empty
+    const displayNameInput = document.getElementById('wzd-display-name');
+    if (!displayNameInput.value.trim()) {
+      displayNameInput.value = `${action} ${site}`;
+    }
     swUpdatePreview();
     swGoToStep(3);
   } else {
@@ -4412,6 +4471,10 @@ function swWizardUpdate() {
   document.getElementById('sw-tpl-numlbl').value = numLbl;
 }
 
+function swWizardUpdateDisplayName() {
+  // Just stores in the field for swSaveTpl to read
+}
+
 function swGenerateBody() {
   const site = document.getElementById('wzd-site').value.trim();
   const action = document.getElementById('wzd-action').value.trim();
@@ -4455,14 +4518,15 @@ function swSaveTpl() {
   const cls    = document.getElementById('sw-tpl-cls').value;
   const numLbl = document.getElementById('sw-tpl-numlbl').value.trim() || document.getElementById('wzd-numlbl').value.trim() || 'Number';
   const body   = document.getElementById('sw-tpl-body').value.trim() || document.getElementById('wzd-body').value.trim();
+  const displayName = document.getElementById('wzd-display-name').value.trim() || `${action} ${site}`;
   if (!site || !action) { showToast('Site name and action label required'); return; }
   if (!body) { showToast('Template body required'); return; }
   const editId = document.getElementById('sw-tpl-edit-id').value;
   if (editId) {
     const idx = swCustomTpls.findIndex(t => t.id === editId);
-    if (idx > -1) swCustomTpls[idx] = { id:editId, site, action, cls, numLbl, numPh:'', body };
+    if (idx > -1) swCustomTpls[idx] = { id:editId, site, action, cls, numLbl, numPh:'', body, displayName };
   } else {
-    swCustomTpls.push({ id:'custom-'+Date.now(), site, action, cls, numLbl, numPh:'', body });
+    swCustomTpls.push({ id:'custom-'+Date.now(), site, action, cls, numLbl, numPh:'', body, displayName });
   }
   swSaveCustom();
   swRenderTpls();
