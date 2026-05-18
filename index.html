@@ -835,7 +835,7 @@ body.dark .as-prog-label{color:var(--text2);}
   <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Operator Log</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('map',this)">Map</button>
   <button class="nav-tab" onclick="switchView('timezones',this)">Time Zones</button>
-  <button class="nav-tab" onclick="switchView('schedule',this)">Schedule</button>
+  <button class="nav-tab" onclick="switchView('schedule',this)">Status Board</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('notes',this)">Notepad</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('log',this)">Log</button>
   <div class="nav-spacer"></div>
@@ -1470,45 +1470,25 @@ body.dark .as-prog-label{color:var(--text2);}
   </div>
 </div>
 
-<!-- SCHEDULE (SharePoint) ──────────────────────────────────────────────────────────── -->
+<!-- STATUS BOARD (SharePoint) ──────────────────────────────────────────────────────────── -->
 <div class="view" id="view-schedule">
   <div class="schedule-view" id="schedule-view">
     <div class="schedule-header" style="padding:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-        <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Schedule</div>
-        <span style="font-size:12px;color:var(--text3);">SharePoint schedule view</span>
+        <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Status Board</div>
+        <span style="font-size:12px;color:var(--text3);">Upcoming outages view</span>
       </div>
       <div class="schedule-controls">
-        <button class="schedule-view-btn" id="btn-view-embed1" onclick="setScheduleView('embed1')">Outages Schedule</button>
-        <button class="schedule-view-btn" id="btn-view-embed2" onclick="setScheduleView('embed2')">Upcoming Outages</button>
-        <button class="schedule-view-btn active" id="btn-view-srd" onclick="setScheduleView('srd')">Combined View</button>
         <div style="flex:1;"></div>
         <button class="schedule-kiosk-btn" id="btn-refresh" onclick="refreshSchedule()">↻ Refresh</button>
         <button class="schedule-kiosk-btn" id="btn-kiosk" onclick="toggleKioskMode()">⛶ Kiosk Mode</button>
       </div>
     </div>
     <div style="padding:0 16px 16px;">
-      <div class="schedule-iframe-container" id="schedule-embed1" style="display:none;">
-        <div class="iframe-veil" id="veil-embed1"></div>
-        <div class="iframe-crop"></div>
-        <iframe id="fr-embed1" frameborder="0" scrolling="no" onload="document.getElementById('veil-embed1').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={1afbe310-d1bc-407d-838a-528698f0e3d3}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AI37&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-      </div>
-      <div class="schedule-iframe-container" id="schedule-embed2" style="display:none;">
+      <div class="schedule-iframe-container" id="schedule-embed2">
         <div class="iframe-veil" id="veil-embed2"></div>
         <div class="iframe-crop"></div>
         <iframe id="fr-embed2" frameborder="0" scrolling="no" onload="document.getElementById('veil-embed2').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={5c8f1191-ff95-46c8-b02e-d75e7d808278}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AM28&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-      </div>
-      <div class="schedule-srd-combo" id="schedule-srd">
-        <div class="schedule-iframe-container">
-          <div class="iframe-veil" id="veil-srd1"></div>
-          <div class="iframe-crop"></div>
-          <iframe id="fr-srd1" frameborder="0" scrolling="no" onload="document.getElementById('veil-srd1').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={1afbe310-d1bc-407d-838a-528698f0e3d3}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AI37&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-        </div>
-        <div class="schedule-iframe-container">
-          <div class="iframe-veil" id="veil-srd2"></div>
-          <div class="iframe-crop"></div>
-          <iframe id="fr-srd2" frameborder="0" scrolling="no" onload="document.getElementById('veil-srd2').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={5c8f1191-ff95-46c8-b02e-d75e7d808278}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AM28&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-        </div>
       </div>
     </div>
   </div>
