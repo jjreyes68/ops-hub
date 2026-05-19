@@ -89,6 +89,7 @@ body.dark #dm-flash{
   background:radial-gradient(ellipse at center,rgba(15,17,23,.92) 0%,rgba(15,17,23,0) 65%);
 }
 @keyframes dmFlash{0%{opacity:0}8%{opacity:1}60%{opacity:.6}100%{opacity:0}}
+@keyframes qtPulse{0%{opacity:1}50%{opacity:.6}100%{opacity:1}}
 #dm-flash.flash{animation:dmFlash .55s ease-out forwards;}
 #dm-lightning-canvas{
   position:fixed;inset:0;z-index:10000;pointer-events:none;
@@ -484,11 +485,19 @@ body.dark .as-banner-stats{color:var(--text2);}
 .empty{font-size:12px;color:var(--text3);text-align:center;padding:16px 0;}
 select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;}
 /* ── Log BUILDER ─────────────────────────────────────────────────────────────── */
-.sw-wrap{display:grid;grid-template-columns:320px 1fr;gap:14px;align-items:start;}
+.sw-wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start;}
 @media(max-width:680px){.sw-wrap{grid-template-columns:1fr;}}
 .sw-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;box-shadow:var(--shs);}
-.sw-box-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;}
-body.dark .sw-box-title{color:var(--text2);}
+.sw-right-panel{display:flex;flex-direction:column;gap:0;}
+.sw-pg-header{margin-bottom:16px;}
+.sw-pg-title{font-size:17px;font-weight:600;letter-spacing:-.02em;color:var(--text);}
+.sw-pg-sub{font-size:12px;color:var(--text3);margin-top:2px;}
+.sw-lbl{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;}
+.sw-rule{border:none;border-top:1px solid var(--border);margin:14px 0;}
+.sw-history-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;box-shadow:var(--shs);margin-top:12px;}
+.sw-history-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.sw-history-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;display:flex;align-items:center;gap:6px;}
+.sw-history-title::before{content:'📋';font-size:13px;}
 .sw-tpls{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;}
 .sw-tpl{display:flex;align-items:center;gap:0;padding:0;border-radius:7px;border:1.5px solid var(--border);background:var(--bg3);cursor:pointer;font-family:var(--f);font-size:12px;font-weight:600;transition:all .15s;overflow:hidden;text-align:left;}
 .sw-tpl:hover{border-color:var(--border2);background:var(--bg2);}
@@ -507,6 +516,12 @@ body.dark .sw-box-title{color:var(--text2);}
 .sw-out-hdr{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
 .sw-copy{padding:5px 16px;border-radius:6px;border:1px solid var(--green);background:var(--gbg);color:var(--green);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .15s;}
 .sw-copy:hover,.sw-copy.ok{background:var(--green);color:#fff;border-color:var(--green);}
+.sw-actions{display:flex;align-items:center;gap:8px;margin-top:14px;}
+.sw-copy-main{flex:1;padding:9px 0;border-radius:7px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .15s;letter-spacing:.01em;}
+.sw-copy-main:hover{filter:brightness(1.08);}
+.sw-copy-main.ok{background:var(--blue);}
+.sw-save-btn{padding:8px 14px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;white-space:nowrap;}
+.sw-save-btn:hover{border-color:var(--border2);color:var(--text);}
 .sw-result-hdr{font-size:12px;font-weight:700;text-align:center;padding:5px 10px;border-radius:5px;margin-bottom:10px;letter-spacing:.03em;}
 .sw-result-hdr.de{background:var(--rbg);color:var(--red);}
 .sw-result-hdr.re{background:var(--gbg);color:var(--green);}
@@ -517,7 +532,6 @@ body.dark .sw-box-title{color:var(--text2);}
 .sw-hist-row:hover{border-color:var(--border2);}
 .sw-hist-meta{font-size:10px;color:var(--text3);font-family:var(--m);}
 .sw-hist-snip{font-size:11px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;}
-/* ── SW CUSTOM TEMPLATES ────────────────────────────────────────────────────── */
 .sw-tpl-stripe.other{background:var(--blue);}
 .sw-tpl.sel-other{border-color:var(--blue)!important;background:var(--bbg)!important;color:var(--blue)!important;}
 .sw-tpl.sel-other .sw-tpl-site{color:inherit;opacity:.75;}
@@ -526,7 +540,7 @@ body.dark .sw-box-title{color:var(--text2);}
 .sw-tpl-act-btn{background:none;border:none;cursor:pointer;font-size:12px;color:var(--text3);padding:3px 5px;border-radius:4px;transition:all .15s;line-height:1;}
 .sw-tpl-act-btn:hover{color:var(--text);background:var(--bg4);}
 .sw-tpl-lock{font-size:9px;color:var(--text3);padding:0 8px 0 4px;flex-shrink:0;opacity:.45;align-self:center;}
-.sw-new-tpl-btn{width:100%;padding:7px;border:1.5px dashed var(--border2);border-radius:7px;background:transparent;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s;margin-bottom:6px;margin-top:4px;}
+.sw-new-tpl-btn{width:100%;padding:7px;border:1.5px dashed var(--border2);border-radius:7px;background:transparent;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s;margin-bottom:4px;margin-top:4px;}
 .sw-new-tpl-btn:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
 .sw-result-hdr.other{background:var(--bbg);color:var(--blue);}
 /* ── OPERATOR LOG ──────────────────────────────────────────────────────────────── */
@@ -821,7 +835,7 @@ body.dark .as-prog-label{color:var(--text2);}
   <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Operator Log</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('map',this)">Map</button>
   <button class="nav-tab" onclick="switchView('timezones',this)">Time Zones</button>
-  <button class="nav-tab" onclick="switchView('schedule',this)">Schedule</button>
+  <button class="nav-tab" onclick="switchView('schedule',this)">Status Board</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('notes',this)">Notepad</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('log',this)">Log</button>
   <div class="nav-spacer"></div>
@@ -833,7 +847,12 @@ body.dark .as-prog-label{color:var(--text2);}
 <div id="dm-flash"></div>
 <canvas id="dm-lightning-canvas"></canvas>
 
-<!-- NOTEPAD -->
+<!-- QUICK TIMER ALARM BANNER -->
+<div id="qt-alarm-banner" style="display:none;position:fixed;top:48px;left:0;right:0;z-index:200;background:var(--red);color:#fff;padding:9px 16px;font-size:13px;font-weight:500;display:none;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,0,0,.25);">
+  <span style="font-size:16px;">⏰</span>
+  <span style="flex:1;" id="qt-alarm-text"></span>
+  <button onclick="qtDismissBanner()" style="padding:4px 12px;border-radius:5px;border:1.5px solid rgba(255,255,255,.6);background:transparent;color:#fff;font-size:12px;font-weight:600;cursor:pointer;">Dismiss</button>
+</div>
 <div class="view" id="view-notes" style="display:none!important">
   <div class="tpl-grid" id="tpl-grid"></div>
   <div class="notes-layout">
@@ -898,25 +917,21 @@ body.dark .as-prog-label{color:var(--text2);}
         <div id="phonetic-out" style="font-family:var(--m);font-size:14px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:40px;word-break:break-all;"></div>
         <div style="display:flex;gap:6px;margin-top:8px;">
           <button class="tbtn" onclick="copyPhonetic()">Copy</button>
+          <button class="tbtn" id="phonetic-speak-btn" onclick="speakPhonetic()" title="Read aloud">🔊 Speak</button>
           <button class="tbtn" onclick="clearPhonetic()">Clear</button>
         </div>
       </div>
     </div>
     <div class="card">
-      <div class="card-title">Recurring tasks</div>
-      <div id="rec-list"></div>
-      <div class="add-row">
-        <input id="rec-inp" placeholder="Add recurring task..." onkeydown="if(event.key==='Enter')addRec()">
-        <button onclick="addRec()">+</button>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">Ad hoc tasks</div>
+      <div class="card-title">Quick Timer</div>
       <div id="adhoc-list" style="max-height:260px;overflow-y:auto;"></div>
       <div class="adhoc-row">
         <input id="adhoc-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addAdhoc()">
         <input id="adhoc-t" class="t-inp" type="number" min="0" placeholder="min">
         <span class="min-lbl">min</span>
+        <span class="min-lbl" style="color:var(--border2);">or</span>
+        <input id="adhoc-until" class="t-inp" type="time" style="width:88px!important;" title="Set a target clock time instead of duration">
+        <span class="min-lbl">until</span>
         <button class="add-btn" onclick="addAdhoc()">+ Add</button>
       </div>
     </div>
@@ -1301,55 +1316,60 @@ body.dark .as-prog-label{color:var(--text2);}
 
 <!-- Log BUILDER ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-swbuilder">
-  <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px;">
-    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">SoftWrench Log Builder</div>
-    <span style="font-size:12px;color:var(--text3);">Select template → fill name &amp; number → copy</span>
+  <div class="sw-pg-header">
+    <div class="sw-pg-title">Log Builder</div>
+    <div class="sw-pg-sub">Pick a template · fill the fields · copy</div>
   </div>
   <div class="sw-wrap">
 
-    <!-- LEFT PANEL ─────────────────────── -->
+    <!-- LEFT: Templates + History -->
     <div>
       <div class="sw-box">
-        <div class="sw-box-title">Template</div>
-
+        <div class="sw-lbl">Templates</div>
         <div id="sw-tpls-list"></div>
         <button class="sw-new-tpl-btn" onclick="swOpenNewTpl()">＋ New template</button>
-
-        <div class="sw-field">
-          <label>Field Tech Name</label>
-          <input id="sw-tech" list="sw-tech-list" placeholder="e.g. Jake Zulaf" oninput="swBuild()">
-          <datalist id="sw-tech-list">
-            <option>Adam McCauley</option><option>Alexander Conway</option><option>Christopher Hill</option>
-            <option>Jake Zulaf</option><option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option>
-            <option>Mar'Cell Edwards</option><option>Morgan Shearer</option><option>Rob Seffern</option>
-            <option>Sergio Torres</option><option>Tineiaifi Malala</option><option>Tykeith</option>
-          </datalist>
-        </div>
-        <div class="sw-field">
-          <label id="sw-num-lbl">Number</label>
-          <input id="sw-num" type="text" placeholder="Select a template first" oninput="swBuild()">
-        </div>
-        <button class="btn-p" style="width:100%;margin-top:2px;" onclick="swSaveHistory()">Save to history</button>
       </div>
-
-      <!-- HISTORY ────────────────────── -->
-      <div style="margin-top:12px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:0 2px;margin-bottom:4px;">
-          <span style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;">Recent</span>
+      <div class="sw-history-box">
+        <div class="sw-history-header">
+          <div class="sw-history-title">Recent Entries</div>
           <button class="tbtn" style="font-size:11px;padding:2px 8px;" onclick="swClearHistory()">Clear</button>
         </div>
         <div id="sw-hist-wrap"><div class="sw-empty">No history yet</div></div>
       </div>
     </div>
 
-    <!-- RIGHT PANEL ────────────────────── -->
-    <div class="sw-box">
-      <div class="sw-out-hdr">
-        <span>Output — ready to paste into SoftWrench</span>
-        <button class="sw-copy" id="sw-copy-btn" onclick="swCopy()">Copy</button>
+    <!-- RIGHT: Fields + Output -->
+    <div class="sw-box sw-right-panel">
+
+      <!-- Fields -->
+      <div class="sw-lbl">Details</div>
+      <div class="sw-field">
+        <label>Field Tech Name</label>
+        <input id="sw-tech" list="sw-tech-list" placeholder="e.g. Jake Zulaf" oninput="swBuild()">
+        <datalist id="sw-tech-list">
+          <option>Adam McCauley</option><option>Alexander Conway</option><option>Christopher Hill</option>
+          <option>Jake Zulaf</option><option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option>
+          <option>Josh Reyes</option><option>Mar'Cell Edwards</option><option>Morgan Shearer</option>
+          <option>Rob Seffern</option><option>Sergio Torres</option><option>Tineiaifi Malala</option><option>Tykeith</option>
+        </datalist>
       </div>
+      <div class="sw-field">
+        <label id="sw-num-lbl">Number</label>
+        <input id="sw-num" type="text" placeholder="Select a template first" oninput="swBuild()">
+      </div>
+
+      <div class="sw-rule"></div>
+
+      <!-- Output -->
+      <div class="sw-lbl">Output</div>
       <div id="sw-out-hdr-badge"></div>
       <div id="sw-out-body"><div class="sw-empty">Select a template to begin</div></div>
+
+      <!-- Actions -->
+      <div class="sw-actions">
+        <button class="sw-copy-main" id="sw-copy-btn" onclick="swCopy()">Copy</button>
+        <button class="sw-save-btn" onclick="swSaveHistory()" title="Save to recent entries">💾 Save</button>
+      </div>
     </div>
 
   </div>
@@ -1436,45 +1456,25 @@ body.dark .as-prog-label{color:var(--text2);}
   </div>
 </div>
 
-<!-- SCHEDULE (SharePoint) ──────────────────────────────────────────────────────────── -->
+<!-- STATUS BOARD (SharePoint) ──────────────────────────────────────────────────────────── -->
 <div class="view" id="view-schedule">
   <div class="schedule-view" id="schedule-view">
     <div class="schedule-header" style="padding:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-        <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Schedule</div>
-        <span style="font-size:12px;color:var(--text3);">SharePoint schedule view</span>
+        <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Status Board</div>
+        <span style="font-size:12px;color:var(--text3);">Upcoming outages view</span>
       </div>
       <div class="schedule-controls">
-        <button class="schedule-view-btn" id="btn-view-embed1" onclick="setScheduleView('embed1')">Outages Schedule</button>
-        <button class="schedule-view-btn" id="btn-view-embed2" onclick="setScheduleView('embed2')">Upcoming Outages</button>
-        <button class="schedule-view-btn active" id="btn-view-srd" onclick="setScheduleView('srd')">Combined View</button>
         <div style="flex:1;"></div>
         <button class="schedule-kiosk-btn" id="btn-refresh" onclick="refreshSchedule()">↻ Refresh</button>
         <button class="schedule-kiosk-btn" id="btn-kiosk" onclick="toggleKioskMode()">⛶ Kiosk Mode</button>
       </div>
     </div>
     <div style="padding:0 16px 16px;">
-      <div class="schedule-iframe-container" id="schedule-embed1" style="display:none;">
-        <div class="iframe-veil" id="veil-embed1"></div>
-        <div class="iframe-crop"></div>
-        <iframe id="fr-embed1" frameborder="0" scrolling="no" onload="document.getElementById('veil-embed1').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={1afbe310-d1bc-407d-838a-528698f0e3d3}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AI37&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-      </div>
-      <div class="schedule-iframe-container" id="schedule-embed2" style="display:none;">
+      <div class="schedule-iframe-container" id="schedule-embed2">
         <div class="iframe-veil" id="veil-embed2"></div>
         <div class="iframe-crop"></div>
         <iframe id="fr-embed2" frameborder="0" scrolling="no" onload="document.getElementById('veil-embed2').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={5c8f1191-ff95-46c8-b02e-d75e7d808278}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AM28&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-      </div>
-      <div class="schedule-srd-combo" id="schedule-srd">
-        <div class="schedule-iframe-container">
-          <div class="iframe-veil" id="veil-srd1"></div>
-          <div class="iframe-crop"></div>
-          <iframe id="fr-srd1" frameborder="0" scrolling="no" onload="document.getElementById('veil-srd1').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={1afbe310-d1bc-407d-838a-528698f0e3d3}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AI37&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-        </div>
-        <div class="schedule-iframe-container">
-          <div class="iframe-veil" id="veil-srd2"></div>
-          <div class="iframe-crop"></div>
-          <iframe id="fr-srd2" frameborder="0" scrolling="no" onload="document.getElementById('veil-srd2').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={5c8f1191-ff95-46c8-b02e-d75e7d808278}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AM28&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-        </div>
       </div>
     </div>
   </div>
@@ -1852,6 +1852,7 @@ function toggleRec(id){ const t=S.recTasks.find(x=>x.id===id); if(t)t.done=!t.do
 function delRec(id){ S.recTasks=S.recTasks.filter(x=>x.id!==id); save(); renderRec(); }
 function renderRec(){
   const el=document.getElementById('rec-list');
+  if(!el) return;
   el.innerHTML=!S.recTasks.length?'<div class="empty">No recurring tasks</div>':
     S.recTasks.map(t=>`<div class="task-item${t.done?' done':''}">
       <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleRec(${t.id})">
@@ -1863,30 +1864,144 @@ function renderRec(){
 
 // ─── ADHOC TASKS ──────────────────────────────────────────────────────────────
 let adhocInts={};
+let adhocAlarmed=new Set(); // tracks IDs that have already triggered the alarm
+
+function playQtAlarm(){
+  try {
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    function beep(freq,start,dur){
+      const o=ctx.createOscillator(), g=ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type='square'; o.frequency.value=freq;
+      g.gain.setValueAtTime(0.28,ctx.currentTime+start);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+start+dur);
+      o.start(ctx.currentTime+start); o.stop(ctx.currentTime+start+dur+0.05);
+    }
+    beep(880,0,.12); beep(880,.18,.12); beep(1100,.36,.22); beep(1100,.62,.22);
+  } catch(e){}
+}
+
+// Female voice names across Windows, Mac, iOS, Android, Chrome
+const FEMALE_VOICE_HINTS = [
+  'zira','eva','hazel','susan','linda','victoria','karen','moira',
+  'samantha','tessa','fiona','allison','ava','joanna','salli','kimberly',
+  'kendra','ivy','female','google uk english female'
+];
+function getPreferredVoice(){
+  const voices=window.speechSynthesis.getVoices();
+  if(!voices.length) return null;
+  const en=voices.filter(v=>/^en/i.test(v.lang));
+  const pool=en.length?en:voices;
+  return pool.find(v=>FEMALE_VOICE_HINTS.some(h=>v.name.toLowerCase().includes(h))) || pool[0];
+}
+
+function qtSpeakAlarm(name){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt=new SpeechSynthesisUtterance(name);
+  utt.rate=0.88; utt.pitch=1;
+  utt.voice=getPreferredVoice();
+  window.speechSynthesis.speak(utt);
+}
+
+function qtShowBanner(name){
+  const b=document.getElementById('qt-alarm-banner');
+  document.getElementById('qt-alarm-text').textContent='TIMER EXPIRED: '+name;
+  b.style.display='flex';
+  b.style.animation='none'; void b.offsetWidth;
+  b.style.animation='qtPulse .5s ease 3';
+}
+
+function qtShowBannerSilent(name){
+  // Show without audio — used on page restore for already-expired timers
+  const b=document.getElementById('qt-alarm-banner');
+  document.getElementById('qt-alarm-text').textContent='TIMER EXPIRED: '+name;
+  b.style.display='flex';
+}
+
+function qtDismissBanner(){
+  // Clear ALL expired timers in one click — no need to also hit X in the tile
+  const expiredIds=S.adhocTasks
+    .filter(t=>!t.done && timerDisplay(t) && timerDisplay(t).exp)
+    .map(t=>t.id);
+  expiredIds.forEach(id=>{
+    if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];}
+    adhocAlarmed.delete(id);
+  });
+  S.adhocTasks=S.adhocTasks.filter(t=>!expiredIds.includes(t.id));
+  save(); renderAdhoc();
+  document.getElementById('qt-alarm-banner').style.display='none';
+}
+
 function addAdhoc(){
   const v=document.getElementById('adhoc-inp').value.trim(); if(!v)return;
-  const min=parseInt(document.getElementById('adhoc-t').value)||0;
-  const task={id:Date.now(),name:v,done:false,timerMin:min>0?min:null,timerStart:min>0?Date.now():null};
+  const untilVal=document.getElementById('adhoc-until').value; // "HH:MM" or ""
+  let min=0, targetLabel=null;
+  if(untilVal){
+    const [h,m]=untilVal.split(':').map(Number);
+    const target=new Date(); target.setHours(h,m,0,0);
+    if(target<=new Date()) target.setDate(target.getDate()+1); // roll to tomorrow if past
+    min=Math.max(1,Math.round((target-new Date())/60000));
+    // Format label as "3:00 AM"
+    targetLabel=target.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+  } else {
+    min=parseInt(document.getElementById('adhoc-t').value)||0;
+  }
+  const task={id:Date.now(),name:v,done:false,timerMin:min>0?min:null,timerStart:min>0?Date.now():null,targetLabel:targetLabel||null};
   S.adhocTasks.push(task);
-  document.getElementById('adhoc-inp').value=''; document.getElementById('adhoc-t').value='';
-  addLog({type:'task',title:'Task added: '+v,detail:min>0?min+'min timer':''});
+  document.getElementById('adhoc-inp').value='';
+  document.getElementById('adhoc-t').value='';
+  document.getElementById('adhoc-until').value='';
+  addLog({type:'task',title:'Task added: '+v,detail:min>0?(targetLabel?'until '+targetLabel:min+'min timer'):''}); 
   save(); renderAdhoc(); if(task.timerMin) startAdhocTimer(task.id);
 }
-function startAdhocTimer(id){ if(adhocInts[id])clearInterval(adhocInts[id]); adhocInts[id]=setInterval(()=>renderAdhoc(),30000); }
-function restoreAdhocTimers(){ S.adhocTasks.forEach(t=>{if(t.timerMin&&t.timerStart&&!t.done)startAdhocTimer(t.id);}); }
+function startAdhocTimer(id){
+  if(adhocInts[id])clearInterval(adhocInts[id]);
+  adhocInts[id]=setInterval(()=>renderAdhoc(),1000);
+}
+function restoreAdhocTimers(){
+  S.adhocTasks.forEach(t=>{
+    if(!t.timerMin||!t.timerStart||t.done) return;
+    const ti=timerDisplay(t);
+    if(ti && ti.exp){
+      // Already expired before page loaded — suppress audio, just show banner silently
+      adhocAlarmed.add(t.id);
+    } else {
+      startAdhocTimer(t.id);
+    }
+  });
+  // Show banner silently for any timers that were expired on load
+  const alreadyExp=S.adhocTasks.filter(t=>!t.done && adhocAlarmed.has(t.id));
+  if(alreadyExp.length>0) qtShowBannerSilent(alreadyExp[alreadyExp.length-1].name);
+}
 function timerDisplay(t){
   if(!t.timerMin||!t.timerStart) return null;
   const rem=(t.timerMin*60000)-(Date.now()-t.timerStart);
-  if(rem<=0) return {label:'Overdue',exp:true};
-  return {label:Math.ceil(rem/60000)+'min left',exp:false};
+  if(rem<=0) return {label:'EXPIRED',exp:true};
+  const m=Math.floor(rem/60000), s=Math.floor((rem%60000)/1000);
+  return {label:String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+' left',exp:false};
 }
 function toggleAdhoc(id){
   const t=S.adhocTasks.find(x=>x.id===id); if(!t)return;
   t.done=!t.done;
-  if(t.done){ addLog({type:'task',title:'Task done: '+t.name,detail:''}); if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];} }
+  if(t.done){
+    addLog({type:'task',title:'Task done: '+t.name,detail:''});
+    if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];}
+    adhocAlarmed.delete(id);
+    // hide banner if no other expired timers remain
+    const anyExp=S.adhocTasks.some(x=>!x.done&&timerDisplay(x)&&timerDisplay(x).exp);
+    if(!anyExp) qtDismissBanner();
+  }
   save(); renderAdhoc();
 }
-function delAdhoc(id){ if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];} S.adhocTasks=S.adhocTasks.filter(x=>x.id!==id); save(); renderAdhoc(); }
+function delAdhoc(id){
+  if(adhocInts[id]){clearInterval(adhocInts[id]);delete adhocInts[id];}
+  adhocAlarmed.delete(id);
+  S.adhocTasks=S.adhocTasks.filter(x=>x.id!==id);
+  const anyExp=S.adhocTasks.some(x=>!x.done&&timerDisplay(x)&&timerDisplay(x).exp);
+  if(!anyExp) qtDismissBanner();
+  save(); renderAdhoc();
+}
 function openTaskTimer(id){
   const t=S.adhocTasks.find(x=>x.id===id); if(!t||!t.timerMin)return;
   document.getElementById('ttimer-title').textContent=esc(t.name);
@@ -1899,17 +2014,32 @@ function updateTTimerDisp(id){
   const t=S.adhocTasks.find(x=>x.id===id); if(!t)return;
   const ti=timerDisplay(t); const d=document.getElementById('ttimer-disp');
   if(!ti){d.textContent='No timer';return;}
-  if(ti.exp){d.textContent='OVERDUE';d.style.color='var(--red)';return;}
+  if(ti.exp){d.textContent='EXPIRED';d.style.color='var(--red)';return;}
   const rem=Math.max(0,(t.timerMin*60000)-(Date.now()-t.timerStart));
   d.textContent=String(Math.floor(rem/60000)).padStart(2,'0')+':'+String(Math.floor((rem%60000)/1000)).padStart(2,'0');
   d.style.color='var(--amber)';
 }
 function renderAdhoc(){
   const el=document.getElementById('adhoc-list');
-  el.innerHTML=!S.adhocTasks.length?'<div class="empty">No tasks yet</div>':
-    S.adhocTasks.map(t=>{ const ti=timerDisplay(t); return `<div class="task-item${t.done?' done':''}">
+  if(!el) return;
+
+  // Check for newly expired timers → fire alarm
+  S.adhocTasks.forEach(t=>{
+    if(t.done||!t.timerMin||!t.timerStart) return;
+    const ti=timerDisplay(t);
+    if(ti && ti.exp && !adhocAlarmed.has(t.id)){
+      adhocAlarmed.add(t.id);
+      playQtAlarm();
+      qtShowBanner(t.name);
+      // Speak the task name after the chime finishes (~950ms)
+      setTimeout(()=>qtSpeakAlarm(t.name), 950);
+    }
+  });
+
+  el.innerHTML=!S.adhocTasks.length?'<div class="empty">No timers set</div>':
+    S.adhocTasks.map(t=>{ const ti=timerDisplay(t); return `<div class="task-item${t.done?' done':''}${ti&&ti.exp&&!t.done?' style="border-color:var(--red);background:var(--rbg);"':''}">
       <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleAdhoc(${t.id})">
-      <span class="task-label">${esc(t.name)}</span>
+      <span class="task-label"${ti&&ti.exp&&!t.done?' style="color:var(--red);font-weight:600;"':''}>${esc(t.name)}${t.targetLabel&&!t.done?`<span style="font-size:10px;color:var(--text3);margin-left:5px;">until ${esc(t.targetLabel)}</span>`:''}</span>
       ${ti?`<span class="timer-badge${ti.exp?' exp':''}" onclick="openTaskTimer(${t.id})">${ti.label}</span>`:''}
       <button class="task-del" onclick="delAdhoc(${t.id})">✕</button>
     </div>`; }).join('');
@@ -5523,6 +5653,22 @@ function convertPhonetic(){
     else out.push(ch);
   }
   document.getElementById('phonetic-out').textContent = out.join(' ');
+}
+function speakPhonetic(){
+  const text = document.getElementById('phonetic-out').textContent;
+  if(!text) return;
+  if(!window.speechSynthesis){ alert('Speech not supported in this browser.'); return; }
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text.replace(/•/g, ' '));
+  utt.rate = 0.88;
+  utt.pitch = 1;
+  utt.voice = getPreferredVoice();
+  const btn = document.getElementById('phonetic-speak-btn');
+  btn.textContent = '🔊 Speaking…';
+  btn.disabled = true;
+  utt.onend = () => { btn.textContent = '🔊 Speak'; btn.disabled = false; };
+  utt.onerror = () => { btn.textContent = '🔊 Speak'; btn.disabled = false; };
+  window.speechSynthesis.speak(utt);
 }
 function copyPhonetic(){
   const text = document.getElementById('phonetic-out').textContent;
