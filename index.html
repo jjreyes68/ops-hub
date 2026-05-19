@@ -485,11 +485,19 @@ body.dark .as-banner-stats{color:var(--text2);}
 .empty{font-size:12px;color:var(--text3);text-align:center;padding:16px 0;}
 select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;}
 /* ── Log BUILDER ─────────────────────────────────────────────────────────────── */
-.sw-wrap{display:grid;grid-template-columns:320px 1fr;gap:14px;align-items:start;}
+.sw-wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start;}
 @media(max-width:680px){.sw-wrap{grid-template-columns:1fr;}}
 .sw-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;box-shadow:var(--shs);}
-.sw-box-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;}
-body.dark .sw-box-title{color:var(--text2);}
+.sw-right-panel{display:flex;flex-direction:column;gap:0;}
+.sw-pg-header{margin-bottom:16px;}
+.sw-pg-title{font-size:17px;font-weight:600;letter-spacing:-.02em;color:var(--text);}
+.sw-pg-sub{font-size:12px;color:var(--text3);margin-top:2px;}
+.sw-lbl{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;}
+.sw-rule{border:none;border-top:1px solid var(--border);margin:14px 0;}
+.sw-history-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;box-shadow:var(--shs);margin-top:12px;}
+.sw-history-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.sw-history-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;display:flex;align-items:center;gap:6px;}
+.sw-history-title::before{content:'📋';font-size:13px;}
 .sw-tpls{display:flex;flex-direction:column;gap:4px;margin-bottom:14px;}
 .sw-tpl{display:flex;align-items:center;gap:0;padding:0;border-radius:7px;border:1.5px solid var(--border);background:var(--bg3);cursor:pointer;font-family:var(--f);font-size:12px;font-weight:600;transition:all .15s;overflow:hidden;text-align:left;}
 .sw-tpl:hover{border-color:var(--border2);background:var(--bg2);}
@@ -508,6 +516,12 @@ body.dark .sw-box-title{color:var(--text2);}
 .sw-out-hdr{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
 .sw-copy{padding:5px 16px;border-radius:6px;border:1px solid var(--green);background:var(--gbg);color:var(--green);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .15s;}
 .sw-copy:hover,.sw-copy.ok{background:var(--green);color:#fff;border-color:var(--green);}
+.sw-actions{display:flex;align-items:center;gap:8px;margin-top:14px;}
+.sw-copy-main{flex:1;padding:9px 0;border-radius:7px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .15s;letter-spacing:.01em;}
+.sw-copy-main:hover{filter:brightness(1.08);}
+.sw-copy-main.ok{background:var(--blue);}
+.sw-save-btn{padding:8px 14px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;white-space:nowrap;}
+.sw-save-btn:hover{border-color:var(--border2);color:var(--text);}
 .sw-result-hdr{font-size:12px;font-weight:700;text-align:center;padding:5px 10px;border-radius:5px;margin-bottom:10px;letter-spacing:.03em;}
 .sw-result-hdr.de{background:var(--rbg);color:var(--red);}
 .sw-result-hdr.re{background:var(--gbg);color:var(--green);}
@@ -518,7 +532,6 @@ body.dark .sw-box-title{color:var(--text2);}
 .sw-hist-row:hover{border-color:var(--border2);}
 .sw-hist-meta{font-size:10px;color:var(--text3);font-family:var(--m);}
 .sw-hist-snip{font-size:11px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;}
-/* ── SW CUSTOM TEMPLATES ────────────────────────────────────────────────────── */
 .sw-tpl-stripe.other{background:var(--blue);}
 .sw-tpl.sel-other{border-color:var(--blue)!important;background:var(--bbg)!important;color:var(--blue)!important;}
 .sw-tpl.sel-other .sw-tpl-site{color:inherit;opacity:.75;}
@@ -527,7 +540,7 @@ body.dark .sw-box-title{color:var(--text2);}
 .sw-tpl-act-btn{background:none;border:none;cursor:pointer;font-size:12px;color:var(--text3);padding:3px 5px;border-radius:4px;transition:all .15s;line-height:1;}
 .sw-tpl-act-btn:hover{color:var(--text);background:var(--bg4);}
 .sw-tpl-lock{font-size:9px;color:var(--text3);padding:0 8px 0 4px;flex-shrink:0;opacity:.45;align-self:center;}
-.sw-new-tpl-btn{width:100%;padding:7px;border:1.5px dashed var(--border2);border-radius:7px;background:transparent;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s;margin-bottom:6px;margin-top:4px;}
+.sw-new-tpl-btn{width:100%;padding:7px;border:1.5px dashed var(--border2);border-radius:7px;background:transparent;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s;margin-bottom:4px;margin-top:4px;}
 .sw-new-tpl-btn:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
 .sw-result-hdr.other{background:var(--bbg);color:var(--blue);}
 /* ── OPERATOR LOG ──────────────────────────────────────────────────────────────── */
@@ -558,6 +571,17 @@ body.dark .cl-time{color:var(--text2);}
 .cl-del:hover{color:var(--red);opacity:1;background:var(--rbg);}
 .cl-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;max-width:900px;}
 .cl-starred-count{font-size:10px;color:var(--amber);background:var(--abg);padding:2px 8px;border-radius:10px;font-weight:600;border:1px solid #e8c84a;}
+.cl-section-lbl{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;}
+.cl-clear-btn{color:var(--red)!important;opacity:.7;}
+.cl-clear-btn:hover{opacity:1;background:var(--rbg)!important;border-color:var(--red)!important;}
+.cl-pg-header{margin-bottom:16px;}
+.cl-pg-title{font-size:17px;font-weight:600;letter-spacing:-.02em;color:var(--text);}
+.cl-pg-sub{font-size:12px;color:var(--text3);margin-top:2px;}
+.cl-handoff-section{margin-top:20px;padding-top:16px;border-top:1px solid var(--border);max-width:900px;}
+.cl-handoff-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
+.cl-handoff-hint{font-size:11px;color:var(--text3);margin-left:8px;}
+.cl-copy-handoff-btn{padding:8px 18px;border-radius:7px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .15s;}
+.cl-copy-handoff-btn:hover{filter:brightness(1.08);}
 /* Handoff draft preview */
 .cl-handoff-preview{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:0;overflow:hidden;box-shadow:var(--shs);}
 .cl-hd-empty{padding:16px;color:var(--text3);font-size:12px;font-style:italic;}
@@ -822,7 +846,7 @@ body.dark .as-prog-label{color:var(--text2);}
   <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Operator Log</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('map',this)">Map</button>
   <button class="nav-tab" onclick="switchView('timezones',this)">Time Zones</button>
-  <button class="nav-tab" onclick="switchView('schedule',this)">Schedule</button>
+  <button class="nav-tab" onclick="switchView('schedule',this)">Status Board</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('notes',this)">Notepad</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('log',this)">Log</button>
   <div class="nav-spacer"></div>
@@ -1303,55 +1327,60 @@ body.dark .as-prog-label{color:var(--text2);}
 
 <!-- Log BUILDER ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-swbuilder">
-  <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px;">
-    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">SoftWrench Log Builder</div>
-    <span style="font-size:12px;color:var(--text3);">Select template → fill name &amp; number → copy</span>
+  <div class="sw-pg-header">
+    <div class="sw-pg-title">Log Builder</div>
+    <div class="sw-pg-sub">Pick a template · fill the fields · copy</div>
   </div>
   <div class="sw-wrap">
 
-    <!-- LEFT PANEL ─────────────────────── -->
+    <!-- LEFT: Templates + History -->
     <div>
       <div class="sw-box">
-        <div class="sw-box-title">Template</div>
-
+        <div class="sw-lbl">Templates</div>
         <div id="sw-tpls-list"></div>
         <button class="sw-new-tpl-btn" onclick="swOpenNewTpl()">＋ New template</button>
-
-        <div class="sw-field">
-          <label>Field Tech Name</label>
-          <input id="sw-tech" list="sw-tech-list" placeholder="e.g. Jake Zulaf" oninput="swBuild()">
-          <datalist id="sw-tech-list">
-            <option>Adam McCauley</option><option>Alexander Conway</option><option>Christopher Hill</option>
-            <option>Jake Zulaf</option><option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option>
-            <option>Mar'Cell Edwards</option><option>Morgan Shearer</option><option>Rob Seffern</option>
-            <option>Sergio Torres</option><option>Tineiaifi Malala</option><option>Tykeith</option>
-          </datalist>
-        </div>
-        <div class="sw-field">
-          <label id="sw-num-lbl">Number</label>
-          <input id="sw-num" type="text" placeholder="Select a template first" oninput="swBuild()">
-        </div>
-        <button class="btn-p" style="width:100%;margin-top:2px;" onclick="swSaveHistory()">Save to history</button>
       </div>
-
-      <!-- HISTORY ────────────────────── -->
-      <div style="margin-top:12px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:0 2px;margin-bottom:4px;">
-          <span style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;">Recent</span>
+      <div class="sw-history-box">
+        <div class="sw-history-header">
+          <div class="sw-history-title">Recent Entries</div>
           <button class="tbtn" style="font-size:11px;padding:2px 8px;" onclick="swClearHistory()">Clear</button>
         </div>
         <div id="sw-hist-wrap"><div class="sw-empty">No history yet</div></div>
       </div>
     </div>
 
-    <!-- RIGHT PANEL ────────────────────── -->
-    <div class="sw-box">
-      <div class="sw-out-hdr">
-        <span>Output — ready to paste into SoftWrench</span>
-        <button class="sw-copy" id="sw-copy-btn" onclick="swCopy()">Copy</button>
+    <!-- RIGHT: Fields + Output -->
+    <div class="sw-box sw-right-panel">
+
+      <!-- Fields -->
+      <div class="sw-lbl">Details</div>
+      <div class="sw-field">
+        <label>Field Tech Name</label>
+        <input id="sw-tech" list="sw-tech-list" placeholder="e.g. Jake Zulaf" oninput="swBuild()">
+        <datalist id="sw-tech-list">
+          <option>Adam McCauley</option><option>Alexander Conway</option><option>Christopher Hill</option>
+          <option>Jake Zulaf</option><option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option>
+          <option>Josh Reyes</option><option>Mar'Cell Edwards</option><option>Morgan Shearer</option>
+          <option>Rob Seffern</option><option>Sergio Torres</option><option>Tineiaifi Malala</option><option>Tykeith</option>
+        </datalist>
       </div>
+      <div class="sw-field">
+        <label id="sw-num-lbl">Number</label>
+        <input id="sw-num" type="text" placeholder="Select a template first" oninput="swBuild()">
+      </div>
+
+      <div class="sw-rule"></div>
+
+      <!-- Output -->
+      <div class="sw-lbl">Output</div>
       <div id="sw-out-hdr-badge"></div>
       <div id="sw-out-body"><div class="sw-empty">Select a template to begin</div></div>
+
+      <!-- Actions -->
+      <div class="sw-actions">
+        <button class="sw-copy-main" id="sw-copy-btn" onclick="swCopy()">Copy</button>
+        <button class="sw-save-btn" onclick="swSaveHistory()" title="Save to recent entries">💾 Save</button>
+      </div>
     </div>
 
   </div>
@@ -1359,10 +1388,13 @@ body.dark .as-prog-label{color:var(--text2);}
 
 <!-- OPERATOR LOG ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-chron">
-  <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px;">
-    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Operator Log</div>
-    <span style="font-size:12px;color:var(--text3);">Chronological shift event feed</span>
+
+  <div class="cl-pg-header">
+    <div class="cl-pg-title">Operator Log</div>
+    <div class="cl-pg-sub">Chronological shift feed · starred entries auto-populate handoff</div>
   </div>
+
+  <!-- Entry bar -->
   <div class="cl-input-bar">
     <select id="cl-cat" title="Category">
       <option value="Normal">Normal</option>
@@ -1373,34 +1405,36 @@ body.dark .as-prog-label{color:var(--text2);}
       <option value="Monitor">👁 Monitor</option>
     </select>
     <select id="cl-site" style="max-width:160px;" title="Site (resets after each entry)"></select>
-    <input id="cl-text" placeholder="Log entry… Enter to submit" onkeydown="if(event.key==='Enter')clAdd()">
+    <input id="cl-text" placeholder="What happened? Press Enter to log." onkeydown="if(event.key==='Enter')clAdd()">
     <button class="cl-log-btn" onclick="clAdd()">Log It</button>
   </div>
+
+  <!-- Feed header -->
   <div class="cl-header-row">
     <div style="display:flex;align-items:center;gap:8px;">
-      <span style="font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;">Shift Feed</span>
+      <span class="cl-section-lbl">Shift Feed</span>
       <span class="cl-starred-count" id="cl-starred-count" style="display:none;"></span>
     </div>
-    <div style="display:flex;gap:6px;">
-      <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">Copy ★ for passdown</button>
-      <button class="tbtn" style="font-size:11px;color:var(--red);" onclick="clClear()">Clear shift</button>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">Copy passdown</button>
+      <button class="tbtn cl-clear-btn" style="font-size:11px;" onclick="clClear()">Clear shift</button>
     </div>
   </div>
+
   <div class="cl-feed" id="cl-feed"><div class="empty">No entries yet — log the first event above</div></div>
 
   <!-- Shift Handoff Draft -->
-  <div style="margin-top:20px;padding-top:16px;border-top:2px solid var(--border);max-width:900px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+  <div class="cl-handoff-section">
+    <div class="cl-handoff-header">
       <div>
-        <span style="font-size:13px;font-weight:700;color:var(--text);">Shift Handoff Draft</span>
-        <span style="font-size:11px;color:var(--text3);margin-left:8px;">★ starred · Alarm · Curtailment · grouped by asset type</span>
+        <span class="cl-section-lbl">Handoff Draft</span>
+        <span class="cl-handoff-hint">★ starred · alarms · curtailments · grouped by type</span>
       </div>
-      <div style="display:flex;gap:6px;">
-        <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">📋 Copy Handoff</button>
-      </div>
+      <button class="cl-copy-handoff-btn" onclick="clCopyHandoff()">Copy Handoff</button>
     </div>
     <div id="cl-preview" class="cl-handoff-preview"></div>
   </div>
+
 </div>
 
 <!-- MAP VIEW ────────────────────────────────────────────────────────────────── -->
@@ -1438,45 +1472,25 @@ body.dark .as-prog-label{color:var(--text2);}
   </div>
 </div>
 
-<!-- SCHEDULE (SharePoint) ──────────────────────────────────────────────────────────── -->
+<!-- STATUS BOARD (SharePoint) ──────────────────────────────────────────────────────────── -->
 <div class="view" id="view-schedule">
   <div class="schedule-view" id="schedule-view">
     <div class="schedule-header" style="padding:16px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-        <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Schedule</div>
-        <span style="font-size:12px;color:var(--text3);">SharePoint schedule view</span>
+        <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Status Board</div>
+        <span style="font-size:12px;color:var(--text3);">Upcoming outages view</span>
       </div>
       <div class="schedule-controls">
-        <button class="schedule-view-btn" id="btn-view-embed1" onclick="setScheduleView('embed1')">Outages Schedule</button>
-        <button class="schedule-view-btn" id="btn-view-embed2" onclick="setScheduleView('embed2')">Upcoming Outages</button>
-        <button class="schedule-view-btn active" id="btn-view-srd" onclick="setScheduleView('srd')">Combined View</button>
         <div style="flex:1;"></div>
         <button class="schedule-kiosk-btn" id="btn-refresh" onclick="refreshSchedule()">↻ Refresh</button>
         <button class="schedule-kiosk-btn" id="btn-kiosk" onclick="toggleKioskMode()">⛶ Kiosk Mode</button>
       </div>
     </div>
     <div style="padding:0 16px 16px;">
-      <div class="schedule-iframe-container" id="schedule-embed1" style="display:none;">
-        <div class="iframe-veil" id="veil-embed1"></div>
-        <div class="iframe-crop"></div>
-        <iframe id="fr-embed1" frameborder="0" scrolling="no" onload="document.getElementById('veil-embed1').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={1afbe310-d1bc-407d-838a-528698f0e3d3}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AI37&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-      </div>
-      <div class="schedule-iframe-container" id="schedule-embed2" style="display:none;">
+      <div class="schedule-iframe-container" id="schedule-embed2">
         <div class="iframe-veil" id="veil-embed2"></div>
         <div class="iframe-crop"></div>
         <iframe id="fr-embed2" frameborder="0" scrolling="no" onload="document.getElementById('veil-embed2').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={5c8f1191-ff95-46c8-b02e-d75e7d808278}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AM28&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-      </div>
-      <div class="schedule-srd-combo" id="schedule-srd">
-        <div class="schedule-iframe-container">
-          <div class="iframe-veil" id="veil-srd1"></div>
-          <div class="iframe-crop"></div>
-          <iframe id="fr-srd1" frameborder="0" scrolling="no" onload="document.getElementById('veil-srd1').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={1afbe310-d1bc-407d-838a-528698f0e3d3}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AI37&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-        </div>
-        <div class="schedule-iframe-container">
-          <div class="iframe-veil" id="veil-srd2"></div>
-          <div class="iframe-crop"></div>
-          <iframe id="fr-srd2" frameborder="0" scrolling="no" onload="document.getElementById('veil-srd2').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={5c8f1191-ff95-46c8-b02e-d75e7d808278}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AM28&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-        </div>
       </div>
     </div>
   </div>
@@ -1883,11 +1897,26 @@ function playQtAlarm(){
   } catch(e){}
 }
 
+// Female voice names across Windows, Mac, iOS, Android, Chrome
+const FEMALE_VOICE_HINTS = [
+  'zira','eva','hazel','susan','linda','victoria','karen','moira',
+  'samantha','tessa','fiona','allison','ava','joanna','salli','kimberly',
+  'kendra','ivy','female','google uk english female'
+];
+function getPreferredVoice(){
+  const voices=window.speechSynthesis.getVoices();
+  if(!voices.length) return null;
+  const en=voices.filter(v=>/^en/i.test(v.lang));
+  const pool=en.length?en:voices;
+  return pool.find(v=>FEMALE_VOICE_HINTS.some(h=>v.name.toLowerCase().includes(h))) || pool[0];
+}
+
 function qtSpeakAlarm(name){
   if(!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const utt=new SpeechSynthesisUtterance(name);
   utt.rate=0.88; utt.pitch=1;
+  utt.voice=getPreferredVoice();
   window.speechSynthesis.speak(utt);
 }
 
@@ -5645,10 +5674,11 @@ function speakPhonetic(){
   const text = document.getElementById('phonetic-out').textContent;
   if(!text) return;
   if(!window.speechSynthesis){ alert('Speech not supported in this browser.'); return; }
-  window.speechSynthesis.cancel(); // stop any current speech
+  window.speechSynthesis.cancel();
   const utt = new SpeechSynthesisUtterance(text.replace(/•/g, ' '));
-  utt.rate = 0.88;   // slightly slower — clearer for ops use
+  utt.rate = 0.88;
   utt.pitch = 1;
+  utt.voice = getPreferredVoice();
   const btn = document.getElementById('phonetic-speak-btn');
   btn.textContent = '🔊 Speaking…';
   btn.disabled = true;
