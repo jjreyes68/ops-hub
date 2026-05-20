@@ -4144,6 +4144,8 @@ function asSetTypeFilter(type, el) {
     // Remove 'all' from array if selecting a specific type
     if (asTypeFilter.includes('all')) {
       asTypeFilter = [];
+      // Remove active class from 'All' button
+      document.querySelector('.as-type-btn').classList.remove('active');
     }
     
     // Toggle the selected type
