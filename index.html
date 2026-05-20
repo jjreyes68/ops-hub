@@ -6,6 +6,7 @@
 <title>RNWBL — Ops Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <style>
 :root{
@@ -485,20 +486,15 @@ body.dark .as-banner-stats{color:var(--text2);}
 .empty{font-size:12px;color:var(--text3);text-align:center;padding:16px 0;}
 select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;}
 /* ── Log BUILDER ─────────────────────────────────────────────────────────────── */
-.sw-wrap{display:grid;grid-template-columns:320px 1fr;gap:14px;align-items:start;}
+.sw-wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start;}
 @media(max-width:680px){.sw-wrap{grid-template-columns:1fr;}}
 .sw-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;box-shadow:var(--shs);}
-.sw-box-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;}
-body.dark .sw-box-title{color:var(--text2);}
-.sw-step{display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border);}
-.sw-step:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-.sw-step-num{width:24px;height:24px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:var(--m);flex-shrink:0;}
-.sw-step-num.step-1{background:var(--blue);}
-.sw-step-num.step-2{background:var(--amber);}
-.sw-step-num.step-3{background:var(--green);}
-.sw-step-title{font-size:12px;font-weight:600;color:var(--text);letter-spacing:-.01em;}
-.sw-section{margin-bottom:16px;}
-.sw-section:last-child{margin-bottom:0;}
+.sw-right-panel{display:flex;flex-direction:column;gap:0;}
+.sw-pg-header{margin-bottom:16px;}
+.sw-pg-title{font-size:17px;font-weight:600;letter-spacing:-.02em;color:var(--text);}
+.sw-pg-sub{font-size:12px;color:var(--text3);margin-top:2px;}
+.sw-lbl{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;}
+.sw-rule{border:none;border-top:1px solid var(--border);margin:14px 0;}
 .sw-history-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;box-shadow:var(--shs);margin-top:12px;}
 .sw-history-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
 .sw-history-title{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;display:flex;align-items:center;gap:6px;}
@@ -521,6 +517,12 @@ body.dark .sw-box-title{color:var(--text2);}
 .sw-out-hdr{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
 .sw-copy{padding:5px 16px;border-radius:6px;border:1px solid var(--green);background:var(--gbg);color:var(--green);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .15s;}
 .sw-copy:hover,.sw-copy.ok{background:var(--green);color:#fff;border-color:var(--green);}
+.sw-actions{display:flex;align-items:center;gap:8px;margin-top:14px;}
+.sw-copy-main{flex:1;padding:9px 0;border-radius:7px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .15s;letter-spacing:.01em;}
+.sw-copy-main:hover{filter:brightness(1.08);}
+.sw-copy-main.ok{background:var(--blue);}
+.sw-save-btn{padding:8px 14px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;white-space:nowrap;}
+.sw-save-btn:hover{border-color:var(--border2);color:var(--text);}
 .sw-result-hdr{font-size:12px;font-weight:700;text-align:center;padding:5px 10px;border-radius:5px;margin-bottom:10px;letter-spacing:.03em;}
 .sw-result-hdr.de{background:var(--rbg);color:var(--red);}
 .sw-result-hdr.re{background:var(--gbg);color:var(--green);}
@@ -531,7 +533,6 @@ body.dark .sw-box-title{color:var(--text2);}
 .sw-hist-row:hover{border-color:var(--border2);}
 .sw-hist-meta{font-size:10px;color:var(--text3);font-family:var(--m);}
 .sw-hist-snip{font-size:11px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;}
-/* ── SW CUSTOM TEMPLATES ────────────────────────────────────────────────────── */
 .sw-tpl-stripe.other{background:var(--blue);}
 .sw-tpl.sel-other{border-color:var(--blue)!important;background:var(--bbg)!important;color:var(--blue)!important;}
 .sw-tpl.sel-other .sw-tpl-site{color:inherit;opacity:.75;}
@@ -540,7 +541,7 @@ body.dark .sw-box-title{color:var(--text2);}
 .sw-tpl-act-btn{background:none;border:none;cursor:pointer;font-size:12px;color:var(--text3);padding:3px 5px;border-radius:4px;transition:all .15s;line-height:1;}
 .sw-tpl-act-btn:hover{color:var(--text);background:var(--bg4);}
 .sw-tpl-lock{font-size:9px;color:var(--text3);padding:0 8px 0 4px;flex-shrink:0;opacity:.45;align-self:center;}
-.sw-new-tpl-btn{width:100%;padding:7px;border:1.5px dashed var(--border2);border-radius:7px;background:transparent;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s;margin-bottom:6px;margin-top:4px;}
+.sw-new-tpl-btn{width:100%;padding:7px;border:1.5px dashed var(--border2);border-radius:7px;background:transparent;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s;margin-bottom:4px;margin-top:4px;}
 .sw-new-tpl-btn:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
 .sw-result-hdr.other{background:var(--bbg);color:var(--blue);}
 /* ── OPERATOR LOG ──────────────────────────────────────────────────────────────── */
@@ -571,6 +572,18 @@ body.dark .cl-time{color:var(--text2);}
 .cl-del:hover{color:var(--red);opacity:1;background:var(--rbg);}
 .cl-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;max-width:900px;}
 .cl-starred-count{font-size:10px;color:var(--amber);background:var(--abg);padding:2px 8px;border-radius:10px;font-weight:600;border:1px solid #e8c84a;}
+.cl-section-lbl{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;}
+.cl-clear-btn{color:var(--red)!important;opacity:.7;}
+.cl-clear-btn:hover{opacity:1;background:var(--rbg)!important;border-color:var(--red)!important;}
+.cl-pg-header{margin-bottom:16px;}
+.cl-pg-title{font-size:17px;font-weight:600;letter-spacing:-.02em;color:var(--text);}
+.cl-pg-sub{font-size:12px;color:var(--text3);margin-top:2px;}
+.cl-handoff-section{margin-top:20px;padding-top:16px;border-top:1px solid var(--border);max-width:900px;}
+.cl-handoff-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
+.cl-handoff-hint{font-size:11px;color:var(--text3);margin-left:8px;}
+.cl-copy-handoff-btn{padding:8px 18px;border-radius:7px;border:none;background:var(--green);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .15s;}
+.cl-copy-handoff-btn:hover{filter:brightness(1.08);}
+.cl-img-btn{font-size:11px;padding:6px 12px;}
 /* Handoff draft preview */
 .cl-handoff-preview{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:0;overflow:hidden;box-shadow:var(--shs);}
 .cl-hd-empty{padding:16px;color:var(--text3);font-size:12px;font-style:italic;}
@@ -1316,49 +1329,19 @@ body.dark .as-prog-label{color:var(--text2);}
 
 <!-- Log BUILDER ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-swbuilder">
-  <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px;">
-    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">SoftWrench Log Builder</div>
-    <span style="font-size:12px;color:var(--text3);">Follow the steps below to build your log entry</span>
+  <div class="sw-pg-header">
+    <div class="sw-pg-title">Log Builder</div>
+    <div class="sw-pg-sub">Pick a template · fill the fields · copy</div>
   </div>
   <div class="sw-wrap">
 
-    <!-- LEFT PANEL ─────────────────────── -->
+    <!-- LEFT: Templates + History -->
     <div>
       <div class="sw-box">
-        <!-- STEP 1: TEMPLATE -->
-        <div class="sw-step">
-          <div class="sw-step-num step-1">1</div>
-          <div class="sw-step-title">Choose Template</div>
-        </div>
-        <div class="sw-section">
-          <div id="sw-tpls-list"></div>
-          <button class="sw-new-tpl-btn" onclick="swOpenNewTpl()">＋ New template</button>
-        </div>
-
-        <!-- STEP 2: DETAILS -->
-        <div class="sw-step">
-          <div class="sw-step-num step-2">2</div>
-          <div class="sw-step-title">Fill Details</div>
-        </div>
-        <div class="sw-section">
-          <div class="sw-field">
-            <label>Field Tech Name</label>
-            <input id="sw-tech" list="sw-tech-list" placeholder="e.g. Jake Zulaf" oninput="swBuild()">
-            <datalist id="sw-tech-list">
-              <option>Adam McCauley</option><option>Alexander Conway</option><option>Christopher Hill</option>
-              <option>Jake Zulaf</option><option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option>
-              <option>Mar'Cell Edwards</option><option>Morgan Shearer</option><option>Rob Seffern</option>
-              <option>Sergio Torres</option><option>Tineiaifi Malala</option><option>Tykeith</option>
-            </datalist>
-          </div>
-          <div class="sw-field">
-            <label id="sw-num-lbl">Number</label>
-            <input id="sw-num" type="text" placeholder="Select a template first" oninput="swBuild()">
-          </div>
-        </div>
+        <div class="sw-lbl">Templates</div>
+        <div id="sw-tpls-list"></div>
+        <button class="sw-new-tpl-btn" onclick="swOpenNewTpl()">＋ New template</button>
       </div>
-
-      <!-- HISTORY ────────────────────── -->
       <div class="sw-history-box">
         <div class="sw-history-header">
           <div class="sw-history-title">Recent Entries</div>
@@ -1368,21 +1351,37 @@ body.dark .as-prog-label{color:var(--text2);}
       </div>
     </div>
 
-    <!-- RIGHT PANEL ────────────────────── -->
-    <div class="sw-box">
-      <!-- STEP 3: OUTPUT -->
-      <div class="sw-step">
-        <div class="sw-step-num step-3">3</div>
-        <div class="sw-step-title">Copy Output</div>
+    <!-- RIGHT: Fields + Output -->
+    <div class="sw-box sw-right-panel">
+
+      <!-- Fields -->
+      <div class="sw-lbl">Details</div>
+      <div class="sw-field">
+        <label>Field Tech Name</label>
+        <input id="sw-tech" list="sw-tech-list" placeholder="e.g. Jake Zulaf" oninput="swBuild()">
+        <datalist id="sw-tech-list">
+          <option>Adam McCauley</option><option>Alexander Conway</option><option>Christopher Hill</option>
+          <option>Jake Zulaf</option><option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option>
+          <option>Josh Reyes</option><option>Mar'Cell Edwards</option><option>Morgan Shearer</option>
+          <option>Rob Seffern</option><option>Sergio Torres</option><option>Tineiaifi Malala</option><option>Tykeith</option>
+        </datalist>
       </div>
-      <div class="sw-section">
-        <div class="sw-out-hdr">
-          <span>Ready to paste into SoftWrench</span>
-          <button class="sw-copy" id="sw-copy-btn" onclick="swCopy()">Copy</button>
-        </div>
-        <div id="sw-out-hdr-badge"></div>
-        <div id="sw-out-body"><div class="sw-empty">Select a template to begin</div></div>
-        <button class="btn-p" style="width:100%;margin-top:12px;" onclick="swSaveHistory()">💾 Save to History</button>
+      <div class="sw-field">
+        <label id="sw-num-lbl">Number</label>
+        <input id="sw-num" type="text" placeholder="Select a template first" oninput="swBuild()">
+      </div>
+
+      <div class="sw-rule"></div>
+
+      <!-- Output -->
+      <div class="sw-lbl">Output</div>
+      <div id="sw-out-hdr-badge"></div>
+      <div id="sw-out-body"><div class="sw-empty">Select a template to begin</div></div>
+
+      <!-- Actions -->
+      <div class="sw-actions">
+        <button class="sw-copy-main" id="sw-copy-btn" onclick="swCopy()">Copy</button>
+        <button class="sw-save-btn" onclick="swSaveHistory()" title="Save to recent entries">💾 Save</button>
       </div>
     </div>
 
@@ -1391,10 +1390,13 @@ body.dark .as-prog-label{color:var(--text2);}
 
 <!-- OPERATOR LOG ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-chron">
-  <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px;">
-    <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Operator Log</div>
-    <span style="font-size:12px;color:var(--text3);">Chronological shift event feed</span>
+
+  <div class="cl-pg-header">
+    <div class="cl-pg-title">Operator Log</div>
+    <div class="cl-pg-sub">Chronological shift feed · starred entries auto-populate handoff</div>
   </div>
+
+  <!-- Entry bar -->
   <div class="cl-input-bar">
     <select id="cl-cat" title="Category">
       <option value="Normal">Normal</option>
@@ -1405,34 +1407,39 @@ body.dark .as-prog-label{color:var(--text2);}
       <option value="Monitor">👁 Monitor</option>
     </select>
     <select id="cl-site" style="max-width:160px;" title="Site (resets after each entry)"></select>
-    <input id="cl-text" placeholder="Log entry… Enter to submit" onkeydown="if(event.key==='Enter')clAdd()">
+    <input id="cl-text" placeholder="What happened? Press Enter to log." onkeydown="if(event.key==='Enter')clAdd()">
     <button class="cl-log-btn" onclick="clAdd()">Log It</button>
   </div>
+
+  <!-- Feed header -->
   <div class="cl-header-row">
     <div style="display:flex;align-items:center;gap:8px;">
-      <span style="font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;">Shift Feed</span>
+      <span class="cl-section-lbl">Shift Feed</span>
       <span class="cl-starred-count" id="cl-starred-count" style="display:none;"></span>
     </div>
-    <div style="display:flex;gap:6px;">
-      <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">Copy ★ for passdown</button>
-      <button class="tbtn" style="font-size:11px;color:var(--red);" onclick="clClear()">Clear shift</button>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">Copy passdown</button>
+      <button class="tbtn cl-clear-btn" style="font-size:11px;" onclick="clClear()">Clear shift</button>
     </div>
   </div>
+
   <div class="cl-feed" id="cl-feed"><div class="empty">No entries yet — log the first event above</div></div>
 
   <!-- Shift Handoff Draft -->
-  <div style="margin-top:20px;padding-top:16px;border-top:2px solid var(--border);max-width:900px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+  <div class="cl-handoff-section">
+    <div class="cl-handoff-header">
       <div>
-        <span style="font-size:13px;font-weight:700;color:var(--text);">Shift Handoff Draft</span>
-        <span style="font-size:11px;color:var(--text3);margin-left:8px;">★ starred · Alarm · Curtailment · grouped by asset type</span>
+        <span class="cl-section-lbl">Handoff Draft</span>
+        <span class="cl-handoff-hint">★ starred · alarms · curtailments · grouped by type</span>
       </div>
-      <div style="display:flex;gap:6px;">
-        <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">📋 Copy Handoff</button>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="tbtn cl-img-btn" id="cl-img-btn" onclick="clSaveAsImage(event)" title="Copy or save handoff as image">📸 Image</button>
+        <button class="cl-copy-handoff-btn" onclick="clCopyHandoff()">Copy Handoff</button>
       </div>
     </div>
     <div id="cl-preview" class="cl-handoff-preview"></div>
   </div>
+
 </div>
 
 <!-- MAP VIEW ────────────────────────────────────────────────────────────────── -->
@@ -1895,11 +1902,26 @@ function playQtAlarm(){
   } catch(e){}
 }
 
+// Female voice names across Windows, Mac, iOS, Android, Chrome
+const FEMALE_VOICE_HINTS = [
+  'zira','eva','hazel','susan','linda','victoria','karen','moira',
+  'samantha','tessa','fiona','allison','ava','joanna','salli','kimberly',
+  'kendra','ivy','female','google uk english female'
+];
+function getPreferredVoice(){
+  const voices=window.speechSynthesis.getVoices();
+  if(!voices.length) return null;
+  const en=voices.filter(v=>/^en/i.test(v.lang));
+  const pool=en.length?en:voices;
+  return pool.find(v=>FEMALE_VOICE_HINTS.some(h=>v.name.toLowerCase().includes(h))) || pool[0];
+}
+
 function qtSpeakAlarm(name){
   if(!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const utt=new SpeechSynthesisUtterance(name);
   utt.rate=0.88; utt.pitch=1;
+  utt.voice=getPreferredVoice();
   window.speechSynthesis.speak(utt);
 }
 
@@ -2632,6 +2654,66 @@ function clCopyHandoff() {
 }
 
 // Classify a site name → 'BESS' | 'Solar' | 'Wind' | 'General'
+async function clSaveAsImage(e) {
+  if (typeof html2canvas === 'undefined') { showToast('Image library not loaded yet'); return; }
+  const el = document.getElementById('cl-preview');
+  if (!el || !el.children.length) { showToast('No handoff content yet'); return; }
+
+  const btn = document.getElementById('cl-img-btn');
+  btn.textContent = '⏳ Generating…'; btn.disabled = true;
+
+  // Build a clean off-screen snapshot with a header stamp
+  const snap = document.createElement('div');
+  const now = new Date().toLocaleString([], {weekday:'short',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  const isDark = document.body.classList.contains('dark');
+  const bg  = isDark ? '#1e2228' : '#ffffff';
+  const txt = isDark ? '#e2e8f0' : '#1a202c';
+  const sub = isDark ? '#94a3b8' : '#64748b';
+  const bdr = isDark ? '#334155' : '#e2e8f0';
+
+  snap.style.cssText = `position:fixed;left:-9999px;top:0;background:${bg};padding:24px 28px;width:560px;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;border-radius:12px;`;
+  snap.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;
+      margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid ${bdr};">
+      <div style="font-size:15px;font-weight:700;color:${txt};">RNWBL — Shift Handoff</div>
+      <div style="font-size:11px;color:${sub};">${now}</div>
+    </div>
+    <div style="font-size:12.5px;line-height:1.65;color:${txt};">${el.innerHTML}</div>`;
+  document.body.appendChild(snap);
+
+  try {
+    const canvas = await html2canvas(snap, {
+      backgroundColor: bg, scale: 2, useCORS: true, logging: false, width: 560
+    });
+    document.body.removeChild(snap);
+
+    const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+
+    // Try clipboard first, fallback to download
+    let clipped = false;
+    try {
+      if (navigator.clipboard?.write && window.ClipboardItem) {
+        await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+        clipped = true; showToast('Handoff copied as image — paste anywhere ✓');
+      }
+    } catch(_) {}
+
+    if (!clipped) {
+      const url = URL.createObjectURL(blob);
+      const a = Object.assign(document.createElement('a'), {
+        href: url, download: `handoff-${new Date().toISOString().slice(0,10)}.png`
+      });
+      a.click(); URL.revokeObjectURL(url);
+      showToast('Handoff saved as PNG ✓');
+    }
+  } catch(err) {
+    if (document.body.contains(snap)) document.body.removeChild(snap);
+    showToast('Image capture failed');
+  } finally {
+    btn.textContent = '📸 Image'; btn.disabled = false;
+  }
+}
 const CL_SITE_TYPES = {
   // BESS
   CNDR1:'BESS',PRGN1:'BESS',PRGV1:'BESS',HARQ2:'BESS',KUNA1:'BESS',GLTA1:'BESS',COSO1:'BESS',DBLO1:'BESS',
@@ -3924,7 +4006,7 @@ let asVals = {};
 let asDone = {};        // {siteId: true} manually marked complete
 let asCustom = null;    // null = not yet loaded; [] or array = overrides AS_SITES
 let asActiveSite = '';
-let asTypeFilter = 'all'; // 'all' | 'BESS' | 'Solar' | 'Wind'
+let asTypeFilter = ['all']; // Array of selected types: ['all'] or ['BESS','Solar','Wind']
 
 // Effective site list: custom overrides defaults when set AND non-empty
 function asSites() { return (asCustom !== null && asCustom.length > 0) ? asCustom : AS_SITES; }
@@ -4053,16 +4135,41 @@ function asGetSiteType(site) {
 }
 
 function asSetTypeFilter(type, el) {
-  asTypeFilter = type;
-  document.querySelectorAll('.as-type-btn').forEach(b => b.classList.remove('active'));
-  if (el) el.classList.add('active');
+  // Handle 'all' button - clears other selections
+  if (type === 'all') {
+    asTypeFilter = ['all'];
+    document.querySelectorAll('.as-type-btn').forEach(b => b.classList.remove('active'));
+    if (el) el.classList.add('active');
+  } else {
+    // Remove 'all' from array if selecting a specific type
+    if (asTypeFilter.includes('all')) {
+      asTypeFilter = [];
+    }
+    
+    // Toggle the selected type
+    const idx = asTypeFilter.indexOf(type);
+    if (idx > -1) {
+      asTypeFilter.splice(idx, 1);
+      if (el) el.classList.remove('active');
+    } else {
+      asTypeFilter.push(type);
+      if (el) el.classList.add('active');
+    }
+    
+    // If no types selected, default to 'all'
+    if (asTypeFilter.length === 0) {
+      asTypeFilter = ['all'];
+      document.querySelectorAll('.as-type-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('.as-type-btn').classList.add('active'); // First button is 'All'
+    }
+  }
 
   // If current site isn't in the new filter, jump to first matching site
-  if (type !== 'all') {
+  if (!asTypeFilter.includes('all')) {
     const sites = [...asSites()]
       .filter(s => s.id !== 'ROCC1')
       .sort((a, b) => a.id.localeCompare(b.id));
-    const inFilter = sites.filter(s => asGetSiteType(s) === type);
+    const inFilter = sites.filter(s => asTypeFilter.includes(asGetSiteType(s)));
     const currentStillValid = inFilter.some(s => s.id === asActiveSite);
     if (!currentStillValid && inFilter.length > 0) {
       asActiveSite = inFilter[0].id;
@@ -4082,9 +4189,9 @@ function asRenderTabs() {
   sites = [...rocc, ...rest];
 
   // Apply type filter
-  const filtered = asTypeFilter === 'all'
+  const filtered = asTypeFilter.includes('all')
     ? sites
-    : sites.filter(s => s.id === 'ROCC1' || asGetSiteType(s) === asTypeFilter);
+    : sites.filter(s => s.id === 'ROCC1' || asTypeFilter.includes(asGetSiteType(s)));
 
   document.getElementById('as-tabs').innerHTML = filtered.map(s => {
     const done = asSiteComplete(s.id), pct = asSiteFilledPct(s.id);
@@ -4262,7 +4369,8 @@ function asExportCSV() {
   })));
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download=`ROC_Asset_Scan_${op||'Op'}_${date||'nodate'}.csv`;
+  const types = asTypeFilter.includes('all') ? 'All' : asTypeFilter.join('_and_');
+  a.download=`ROC_Asset_Scan_${types}_${op||'Op'}_${date||'nodate'}.csv`;
   document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(a.href);
 }
 
@@ -5657,10 +5765,11 @@ function speakPhonetic(){
   const text = document.getElementById('phonetic-out').textContent;
   if(!text) return;
   if(!window.speechSynthesis){ alert('Speech not supported in this browser.'); return; }
-  window.speechSynthesis.cancel(); // stop any current speech
+  window.speechSynthesis.cancel();
   const utt = new SpeechSynthesisUtterance(text.replace(/•/g, ' '));
-  utt.rate = 0.88;   // slightly slower — clearer for ops use
+  utt.rate = 0.88;
   utt.pitch = 1;
+  utt.voice = getPreferredVoice();
   const btn = document.getElementById('phonetic-speak-btn');
   btn.textContent = '🔊 Speaking…';
   btn.disabled = true;
