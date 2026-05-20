@@ -906,6 +906,7 @@ body.dark .as-prog-label{color:var(--text2);}
   <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">
     <button class="btn-p" onclick="openModal('modal-add-site')">+ Add site</button>
     <button class="tbtn" onclick="scanAll()">✓ Scan all NERC</button>
+    <button class="tbtn" style="color:var(--amber);border-color:var(--amber);" onclick="resetSitesToDefaults()">↺ Reset sites to defaults</button>
     <div style="flex:1;"></div>
     <button class="ref-toggle-btn" id="ref-toggle-btn" onclick="toggleRefData(this)">Show ref data</button>
   </div>
@@ -1632,6 +1633,12 @@ function loadSites() {
 function saveSites(sites) {
   try { localStorage.setItem(SITES_KEY, JSON.stringify(sites)); } catch(e) {}
   try { window.storage && window.storage.set(SITES_KEY, JSON.stringify(sites)); } catch(e) {}
+}
+function resetSitesToDefaults() {
+  if (!confirm('Reset all sites to default list? This will clear any custom sites you added.')) return;
+  try { localStorage.removeItem(SITES_KEY); } catch(e) {}
+  try { window.storage && window.storage.remove(SITES_KEY); } catch(e) {}
+  location.reload();
 }
 async function loadSitesAsync() {
   const defaults = defaultSites();
