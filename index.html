@@ -4369,8 +4369,8 @@ function asExportCSV() {
   })));
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  const types = asTypeFilter.includes('all') ? 'All' : asTypeFilter.join('_and_');
-  a.download=`ROC_Asset_Scan_${types}_${op||'Op'}_${date||'nodate'}.csv`;
+  const types = asTypeFilter.includes('all') ? 'All' : asTypeFilter.join(' & ');
+  a.download=`${shift||'Shift'} Asset Scan ${types} ${op||'Name'}.csv`;
   document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(a.href);
 }
 
