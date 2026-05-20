@@ -564,6 +564,7 @@ body.dark .cl-time{color:var(--text2);}
 .cl-cat-fieldtech{background:var(--pbg);color:var(--purple);}
 .cl-cat-monitor{background:#fffaeb;color:#92600a;}
 .cl-cat-normal{background:var(--bg4);color:var(--text3);}
+.cl-cat-upcoming{background:var(--bbg);color:var(--blue);}
 .cl-site-tag{font-family:var(--m);font-size:10px;font-weight:600;background:var(--bg4);border:1px solid var(--border2);padding:1px 6px;border-radius:4px;color:var(--text2);flex-shrink:0;align-self:flex-start;margin-top:2px;white-space:nowrap;}
 .cl-body{flex:1;font-size:13px;line-height:1.5;color:var(--text);word-break:break-word;}
 .cl-star{background:none;border:none;cursor:pointer;font-size:14px;padding:0 2px;color:var(--border2);transition:all .15s;flex-shrink:0;line-height:1;margin-top:1px;}
@@ -906,6 +907,7 @@ body.dark .as-prog-label{color:var(--text2);}
   <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">
     <button class="btn-p" onclick="openModal('modal-add-site')">+ Add site</button>
     <button class="tbtn" onclick="scanAll()">✓ Scan all NERC</button>
+    <button class="tbtn" style="color:var(--amber);border-color:var(--amber);" onclick="resetSitesToDefaults()">↺ Reset sites to defaults</button>
     <div style="flex:1;"></div>
     <button class="ref-toggle-btn" id="ref-toggle-btn" onclick="toggleRefData(this)">Show ref data</button>
   </div>
@@ -1399,12 +1401,8 @@ body.dark .as-prog-label{color:var(--text2);}
   <!-- Entry bar -->
   <div class="cl-input-bar">
     <select id="cl-cat" title="Category">
-      <option value="Normal">Normal</option>
-      <option value="Alarm">⚠ Alarm</option>
-      <option value="Curtailment">⚡ Curtailment</option>
-      <option value="Dispatch">📋 Dispatch</option>
-      <option value="Field Tech">🔧 Field Tech</option>
-      <option value="Monitor">👁 Monitor</option>
+      <option value="Handoff" selected>📋 Handoff</option>
+      <option value="Upcoming">🕐 Upcoming</option>
     </select>
     <select id="cl-site" style="max-width:160px;" title="Site (resets after each entry)"></select>
     <input id="cl-text" placeholder="What happened? Press Enter to log." onkeydown="if(event.key==='Enter')clAdd()">
@@ -1430,7 +1428,7 @@ body.dark .as-prog-label{color:var(--text2);}
     <div class="cl-handoff-header">
       <div>
         <span class="cl-section-lbl">Handoff Draft</span>
-        <span class="cl-handoff-hint">★ starred · alarms · curtailments · grouped by type</span>
+        <span class="cl-handoff-hint">★ starred · alarms · curtailments · two-section format</span>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
         <button class="tbtn cl-img-btn" id="cl-img-btn" onclick="clSaveAsImage(event)" title="Copy or save handoff as image">📸 Image</button>
@@ -1533,6 +1531,21 @@ function defaultSites() {
     {id:107,name:'COSO1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Little Lake, CA',
      lat:36.0059762,lng:-117.8083968,
      notes:'NP: 240MWh / 60MW\nV SET: 235kV\nBAND: 230.3kV–239.7kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:108,name:'BYPS1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:35.0,lng:-118.0,
+     notes:'NP: 400MWh / 200MW\nV SET: Per SCADA\nBAND: ±4kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:109,name:'PDMT1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:35.5,lng:-118.5,
+     notes:'NP: 1000MWh / 250MW\nV SET: 236kV\nBAND: 226kV–241kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:110,name:'FRND1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:35.2,lng:-118.3,
+     notes:'NP: 800MWh / 200MW\nV SET: 142kV\nBAND: ±2kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:111,name:'CTFL',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:35.8,lng:-118.2,
+     notes:'NP: 1069MWh / 267MW\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
+    {id:112,name:'MRCP',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:35.6,lng:-118.4,
+     notes:'NP: XX / XX\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
     // Solar -------------------------------------------------------------------
     {id:201,name:'HARQ1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Tonopah, AZ',
      lat:33.46325,lng:-113.10562,
@@ -1552,6 +1565,12 @@ function defaultSites() {
     {id:214,name:'NSTR1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Mendota, CA',
      lat:36.720811,lng:-120.430143,
      notes:'PV 60MW\nNP: 60MW  V SET: 119kV  BAND: 117.81–120.19kV\nInverters inverting?\nRates about the same?'},
+    {id:215,name:'LSTH1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Lost Hills, CA',
+     lat:35.6,lng:-119.7,
+     notes:'PV 12MW\nInverters inverting?\nRates about the same?'},
+    {id:216,name:'TRPC1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:35.3,lng:-119.2,
+     notes:'PV 7MW\nInverters inverting?\nRates about the same?'},
     // Wind --------------------------------------------------------------------
     {id:301,name:'DFRN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Dufferin, Ontario',
      lat:44.152,lng:-80.109,
@@ -1577,6 +1596,15 @@ function defaultSites() {
     {id:308,name:'DBLO1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Little Lake, CA',
      lat:36.0059762,lng:-117.8083968,
      notes:'Wind 16.68MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {id:309,name:'DLBO1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:36.0,lng:-117.8,
+     notes:'Wind\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {id:310,name:'PRSE1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Elk County, KS',
+     lat:37.363,lng:-96.252,
+     notes:'Wind 200MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {id:311,name:'RKRG1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Kern County, CA',
+     lat:35.480,lng:-118.840,
+     notes:'Wind 149MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
   ];
 }
 
@@ -1602,6 +1630,12 @@ function loadSites() {
 function saveSites(sites) {
   try { localStorage.setItem(SITES_KEY, JSON.stringify(sites)); } catch(e) {}
   try { window.storage && window.storage.set(SITES_KEY, JSON.stringify(sites)); } catch(e) {}
+}
+function resetSitesToDefaults() {
+  if (!confirm('Reset all sites to default list? This will clear any custom sites you added.')) return;
+  try { localStorage.removeItem(SITES_KEY); } catch(e) {}
+  try { window.storage && window.storage.remove(SITES_KEY); } catch(e) {}
+  location.reload();
 }
 async function loadSitesAsync() {
   const defaults = defaultSites();
@@ -2627,25 +2661,33 @@ function clClear() {
 }
 
 function clCopyHandoff() {
-  const notable = clEntries.filter(e => e.starred || e.cat === 'Alarm' || e.cat === 'Curtailment' || e.cat === 'Dispatch' || e.cat === 'Monitor');
-  if (!notable.length) { showToast('No notable entries to copy'); return; }
+  const upcomingEntries = clEntries.filter(e => e.cat === 'Upcoming');
+  const handoffEntries  = clEntries.filter(e => e.cat === 'Handoff' || e.starred);
 
-  const grouped = clGroupByAsset(notable);
-  const ASSET_ORDER = ['BESS','Solar','Wind','General'];
-  const SEP = '─'.repeat(32);
+  if (!handoffEntries.length && !upcomingEntries.length) {
+    showToast('No notable entries to copy');
+    return;
+  }
 
-  let lines = [];
-  ASSET_ORDER.forEach(type => {
-    if (!grouped[type] || !Object.keys(grouped[type]).length) return;
-    lines.push(`\n──${type.toUpperCase()}──${SEP.slice(type.length + 4)}`);
-    Object.keys(grouped[type]).forEach(site => {
-      lines.push(site + ':');
-      grouped[type][site].forEach(e => {
-        const catTag = e.cat && e.cat !== 'Normal' ? ` (${e.cat})` : '';
-        lines.push(`– ${e.text}${catTag}`);
-      });
+  const lines = [];
+
+  if (handoffEntries.length) {
+    lines.push('Operator Handoff');
+    handoffEntries.forEach(e => {
+      const catTag = e.cat && e.cat !== 'Normal' ? ` (${e.cat})` : '';
+      const siteTag = e.site ? `${e.site} ` : '';
+      lines.push(`• ${siteTag}${e.text}${catTag}`);
     });
-  });
+  }
+
+  if (upcomingEntries.length) {
+    if (lines.length) lines.push('');
+    lines.push('Upcoming');
+    upcomingEntries.forEach(e => {
+      const siteTag = e.site ? `${e.site} ` : '';
+      lines.push(`• ${siteTag}${e.text}`);
+    });
+  }
 
   const text = lines.join('\n').trim();
   navigator.clipboard.writeText(text)
@@ -2753,8 +2795,8 @@ function clGroupByAsset(entries) {
 }
 
 const CL_CAT_CLS = {
-  'Alarm':'cl-cat-alarm','Curtailment':'cl-cat-curtailment','Dispatch':'cl-cat-dispatch',
-  'Field Tech':'cl-cat-fieldtech','Monitor':'cl-cat-monitor','Normal':'cl-cat-normal'
+  'Handoff':'cl-cat-dispatch',
+  'Upcoming':'cl-cat-upcoming'
 };
 
 function clRender() {
@@ -2790,22 +2832,14 @@ function clRender() {
 function clRenderPreview() {
   const preview = document.getElementById('cl-preview'); if (!preview) return;
 
-  const notable = clEntries.filter(e =>
-    e.starred || e.cat === 'Alarm' || e.cat === 'Curtailment' || e.cat === 'Dispatch' || e.cat === 'Monitor'
-  );
+  // Split entries: Upcoming vs Operator Handoff
+  const upcomingEntries = clEntries.filter(e => e.cat === 'Upcoming');
+  const handoffEntries  = clEntries.filter(e => e.cat === 'Handoff' || e.starred);
 
-  if (!notable.length) {
-    preview.innerHTML = '<div class="cl-hd-empty">Nothing here yet — star entries or log Alarms / Curtailments and they\'ll appear grouped and ready to copy.</div>';
+  if (!handoffEntries.length && !upcomingEntries.length) {
+    preview.innerHTML = '<div class="cl-hd-empty">Nothing here yet — log entries as Handoff or Upcoming and they\'ll appear here ready to copy.</div>';
     return;
   }
-
-  const grouped = clGroupByAsset(notable);
-  const ASSET_ORDER = [
-    {key:'BESS',   icon:'🔋', color:'var(--blue)'},
-    {key:'Solar',  icon:'☀️',  color:'var(--amber)'},
-    {key:'Wind',   icon:'💨',  color:'var(--green)'},
-    {key:'General',icon:'📋', color:'var(--text3)'}
-  ];
 
   const badgeFor = (e) => {
     if (e.cat === 'Alarm')       return `<span class="cl-hd-badge cl-hd-badge-alarm">⚠ Alarm</span>`;
@@ -2817,31 +2851,47 @@ function clRenderPreview() {
   };
 
   let html = '';
-  ASSET_ORDER.forEach(({key, icon}) => {
-    const section = grouped[key];
-    if (!section || !Object.keys(section).length) return;
-    const totalItems = Object.values(section).flat().length;
+
+  // ── Operator Handoff section ──────────────────────────────────────────────
+  if (handoffEntries.length) {
     html += `<div class="cl-hd-section">
       <div class="cl-hd-section-hdr">
-        <span class="cl-hd-section-icon">${icon}</span>
-        <span class="cl-hd-section-label">${key}</span>
-        <span class="cl-hd-section-count">${totalItems} item${totalItems!==1?'s':''}</span>
+        <span class="cl-hd-section-icon">📋</span>
+        <span class="cl-hd-section-label">Operator Handoff</span>
+        <span class="cl-hd-section-count">${handoffEntries.length} item${handoffEntries.length!==1?'s':''}</span>
       </div>
       <div class="cl-hd-sites">`;
-    Object.keys(section).forEach(site => {
-      html += `<div class="cl-hd-site"><div class="cl-hd-site-name">${esc(site)}:</div>`;
-      section[site].forEach(e => {
-        html += `<div class="cl-hd-item">
-          <span class="cl-hd-bullet">–</span>
-          <span class="cl-hd-text">${esc(e.text)}</span>
-          ${badgeFor(e)}
-          <span class="cl-hd-time">${esc(e.time)}</span>
-        </div>`;
-      });
-      html += '</div>';
+    handoffEntries.forEach(e => {
+      const siteLabel = e.site ? `<span class="cl-hd-site-name">${esc(e.site)}</span>` : '';
+      html += `<div class="cl-hd-item">
+        <span class="cl-hd-bullet">–</span>
+        <span class="cl-hd-text">${siteLabel ? siteLabel + ' ' : ''}${esc(e.text)}</span>
+        ${badgeFor(e)}
+        <span class="cl-hd-time">${esc(e.time)}</span>
+      </div>`;
     });
     html += '</div></div>';
-  });
+  }
+
+  // ── Upcoming section ──────────────────────────────────────────────────────
+  if (upcomingEntries.length) {
+    html += `<div class="cl-hd-section">
+      <div class="cl-hd-section-hdr">
+        <span class="cl-hd-section-icon">🕐</span>
+        <span class="cl-hd-section-label">Upcoming</span>
+        <span class="cl-hd-section-count">${upcomingEntries.length} item${upcomingEntries.length!==1?'s':''}</span>
+      </div>
+      <div class="cl-hd-sites">`;
+    upcomingEntries.forEach(e => {
+      const siteLabel = e.site ? `<span class="cl-hd-site-name">${esc(e.site)}</span>` : '';
+      html += `<div class="cl-hd-item">
+        <span class="cl-hd-bullet">–</span>
+        <span class="cl-hd-text">${siteLabel ? siteLabel + ' ' : ''}${esc(e.text)}</span>
+        <span class="cl-hd-time">${esc(e.time)}</span>
+      </div>`;
+    });
+    html += '</div></div>';
+  }
 
   preview.innerHTML = html;
 }
@@ -5217,81 +5267,38 @@ function pdBuildText() {
   out += `Shift: ${d.shift || '—'}`;
   if (d.author)   out += `  |  Operator: ${d.author}`;
   if (d.relieved) out += `  |  Relieved by: ${d.relieved}`;
-  out += '\n';
+  out += '\n\n';
 
-  // Smart rule-based summary headline
-  const criticalIssues = [];
-  const ongoingIssues = [];
-  
+  // ── OPERATOR HANDOFF section ─────────────────────────────────────────────
+  // Collect all active/notable site entries across all asset types (flat list)
+  const handoffItems = [];
   ['bess','solar','wind'].forEach(sec => {
-    const entries = (d.sections[sec]||[]);
-    entries.forEach(e => {
-      const hasNotes = e.notes && e.notes.trim();
-      const hasLog = e.log && e.log.trim();
-      const isCritical = e.status === 'active' || (hasNotes && (e.notes.toLowerCase().includes('trip') || e.notes.toLowerCase().includes('comm loss') || e.notes.toLowerCase().includes('outage')));
-      
-      if (isCritical) {
-        criticalIssues.push(e.name);
-      } else if (e.status === 'monitor' || hasNotes || hasLog) {
-        ongoingIssues.push(e.name);
-      }
+    (d.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log).forEach(e => {
+      let line = `• ${e.name}`;
+      if (e.status === 'active')   line += ' ⚠ ACTIVE ISSUE';
+      if (e.status === 'monitor')  line += ' — Monitor';
+      if (e.status === 'resolved') line += ' — Resolved';
+      if (e.notes) line += ` — ${e.notes.trim().replace(/\n/g, ' / ')}`;
+      if (e.log)   line += ` — Log ${e.log.trim()}`;
+      handoffItems.push(line);
     });
   });
-  
-  const generalCount = (d.general || []).filter(e => e.text && e.text.trim()).length;
-  const totalIssues = criticalIssues.length + ongoingIssues.length;
-  
-  if (totalIssues === 0 && generalCount === 0) {
-    out += '✅ All sites normal operations\n\n';
+
+  if (handoffItems.length > 0) {
+    out += 'Operator Handoff\n';
+    out += handoffItems.join('\n') + '\n\n';
   } else {
-    let summary = '';
-    if (criticalIssues.length > 0) {
-      summary += `⚠ ${criticalIssues.length} critical (${criticalIssues.slice(0, 3).join(', ')}${criticalIssues.length > 3 ? '...' : ''})`;
-    }
-    if (ongoingIssues.length > 0) {
-      if (summary) summary += ' | ';
-      summary += `● ${ongoingIssues.length} monitoring (${ongoingIssues.slice(0, 3).join(', ')}${ongoingIssues.length > 3 ? '...' : ''})`;
-    }
-    if (generalCount > 0) {
-      if (summary) summary += ' | ';
-      summary += `📝 ${generalCount} general`;
-    }
-    out += summary + '\n\n';
+    out += 'Operator Handoff\n• All sites — normal operations\n\n';
   }
 
-  const SEC_LABELS = { bess:'——BESS——', solar:'——SOLAR——', wind:'——WIND——', general:'——GENERAL——' };
-  ['bess','solar','wind'].forEach(sec => {
-    const entries = (d.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log);
-    if (!entries.length) return;
-    out += '\n' + SEC_LABELS[sec] + '\n\n';
-    entries.forEach(e => {
-      out += `${e.name}:\n`;
-      if (e.status === 'active')   out += `⚠ ACTIVE ISSUE\n`;
-      if (e.status === 'monitor')  out += `● Monitor\n`;
-      if (e.status === 'resolved') out += `✓ Resolved\n`;
-      if (e.notes) out += e.notes + '\n';
-      if (e.log)   out += `>LOG: ${e.log}\n`;
-      out += '\n';
+  // ── UPCOMING section ──────────────────────────────────────────────────────
+  const upcoming = (d.general || []).filter(e => e.text && e.text.trim());
+  if (upcoming.length > 0) {
+    out += 'Upcoming\n';
+    upcoming.forEach(e => {
+      const lines = e.text.trim().split('\n');
+      lines.forEach(l => { if (l.trim()) out += `• ${l.trim()}\n`; });
     });
-  });
-
-  // General entries as separate free text items
-  const generalEntries = (d.general || []).filter(e => e.text && e.text.trim());
-  if (generalEntries.length > 0) {
-    out += '\n' + SEC_LABELS.general + '\n\n';
-    generalEntries.forEach(e => {
-      out += e.text.trim() + '\n\n';
-    });
-  }
-
-  // Report by exception: single summary line for all normal sites
-  const hasNormalSites = ['bess','solar','wind'].some(sec => {
-    const nc = (d.sections[sec]||[]).filter(e => e.status === 'none' && !e.notes && !e.log);
-    const hasIssues = (d.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log).length > 0;
-    return nc.length && hasIssues;
-  });
-  if (hasNormalSites) {
-    out += `\nAll other sites: normal operations\n`;
   }
 
   return out.trim();
@@ -5310,42 +5317,21 @@ function pdBuildHtml() {
   if (d.relieved) html += `&nbsp;&nbsp;·&nbsp;&nbsp;Relieved by: <strong>${esc(d.relieved)}</strong>`;
   html += `</div>`;
 
-  // Headline status badge
-  const criticals = [], monitors = [];
+  // ── OPERATOR HANDOFF section ──────────────────────────────────────────────
+  const handoffItems = [];
   ['bess','solar','wind'].forEach(sec => {
-    (d.sections[sec]||[]).forEach(e => {
-      const nt = e.notes && e.notes.trim();
-      const isCrit = e.status === 'active' || (nt && /trip|comm loss|outage/i.test(e.notes));
-      if (isCrit) criticals.push(e.name);
-      else if (e.status === 'monitor' || nt || e.log) monitors.push(e.name);
+    (d.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log).forEach(e => {
+      handoffItems.push(e);
     });
   });
-  const genCount = (d.general||[]).filter(e => e.text && e.text.trim()).length;
-  const totalIssues = criticals.length + monitors.length;
 
-  if (totalIssues === 0 && genCount === 0) {
-    html += `<div class="pd-prev-headline all-clear">✅ All sites — normal operations</div>`;
-  } else if (criticals.length > 0) {
-    html += `<div class="pd-prev-headline has-issues">⚠ ${criticals.length} active issue${criticals.length>1?'s':''}: ${criticals.slice(0,4).join(', ')}${criticals.length>4?'…':''}</div>`;
+  html += `<div class="pd-prev-section">`;
+  html += `<div class="pd-prev-sec-hdr handoff">Operator Handoff</div>`;
+
+  if (handoffItems.length === 0) {
+    html += `<div class="pd-prev-gen-item" style="color:var(--green);">✅ All sites — normal operations</div>`;
   } else {
-    html += `<div class="pd-prev-headline monitoring">● ${monitors.length} monitoring${genCount>0?' · '+genCount+' general':''}`;
-    if (monitors.length <= 4) html += ` — ${monitors.join(', ')}`;
-    html += `</div>`;
-  }
-
-  // Sections
-  const SEC_META = {
-    bess:   {label:'⚡ BESS Sites',  cls:'bess'},
-    solar:  {label:'☀ Solar Sites',  cls:'solar'},
-    wind:   {label:'💨 Wind Sites',  cls:'wind'},
-  };
-  ['bess','solar','wind'].forEach(sec => {
-    const entries = (d.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log);
-    if (!entries.length) return;
-    const m = SEC_META[sec];
-    html += `<div class="pd-prev-section">`;
-    html += `<div class="pd-prev-sec-hdr ${m.cls}">${m.label}</div>`;
-    entries.forEach(e => {
+    handoffItems.forEach(e => {
       const cls = e.status !== 'none' ? ` s-${e.status}` : '';
       html += `<div class="pd-prev-site${cls}">`;
       html += `<div class="pd-prev-site-hdr">`;
@@ -5353,29 +5339,27 @@ function pdBuildHtml() {
       if (e.status === 'active')   html += `<span class="pd-prev-status-badge active">ACTIVE</span>`;
       if (e.status === 'monitor')  html += `<span class="pd-prev-status-badge monitor">MONITOR</span>`;
       if (e.status === 'resolved') html += `<span class="pd-prev-status-badge resolved">RESOLVED</span>`;
-      if (e.log) html += `<span class="pd-prev-log-badge">LOG: ${esc(e.log)}</span>`;
+      if (e.log) html += `<span class="pd-prev-log-badge">Log ${esc(e.log)}</span>`;
       html += `</div>`;
       if (e.notes) html += `<div class="pd-prev-site-notes">${esc(e.notes).replace(/\n/g,'<br>')}</div>`;
       html += `</div>`;
     });
-    html += `</div>`;
-  });
+  }
+  html += `</div>`;
 
-  // General section
-  const genEntries = (d.general||[]).filter(e => e.text && e.text.trim());
-  if (genEntries.length) {
+  // ── UPCOMING section ──────────────────────────────────────────────────────
+  const upcoming = (d.general||[]).filter(e => e.text && e.text.trim());
+  if (upcoming.length > 0) {
     html += `<div class="pd-prev-section">`;
-    html += `<div class="pd-prev-sec-hdr general">📋 General / Action Items</div>`;
-    genEntries.forEach(e => {
+    html += `<div class="pd-prev-sec-hdr upcoming">Upcoming</div>`;
+    upcoming.forEach(e => {
       html += `<div class="pd-prev-gen-item">${esc(e.text.trim()).replace(/\n/g,'<br>')}</div>`;
     });
     html += `</div>`;
   }
 
   if (!html.includes('pd-prev-section')) {
-    if (totalIssues === 0 && genCount === 0) {
-      html += `<div class="pd-prev-empty">Fill in site notes to see the passdown preview here.</div>`;
-    }
+    html += `<div class="pd-prev-empty">Fill in site notes or upcoming items to see the preview here.</div>`;
   }
   return html;
 }
