@@ -1533,6 +1533,21 @@ function defaultSites() {
     {id:107,name:'COSO1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Little Lake, CA',
      lat:36.0059762,lng:-117.8083968,
      notes:'NP: 240MWh / 60MW\nV SET: 235kV\nBAND: 230.3kV–239.7kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:108,name:'BYPS1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:35.0,lng:-118.0,
+     notes:'NP: 400MWh / 200MW\nV SET: Per SCADA\nBAND: ±4kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:109,name:'PDMT1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:35.5,lng:-118.5,
+     notes:'NP: 1000MWh / 250MW\nV SET: 236kV\nBAND: 226kV–241kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:110,name:'FRND1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:35.2,lng:-118.3,
+     notes:'NP: 800MWh / 200MW\nV SET: 142kV\nBAND: ±2kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
+    {id:111,name:'CTFL',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:35.8,lng:-118.2,
+     notes:'NP: 1069MWh / 267MW\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
+    {id:112,name:'MRCP',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:35.6,lng:-118.4,
+     notes:'NP: XX / XX\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
     // Solar -------------------------------------------------------------------
     {id:201,name:'HARQ1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Tonopah, AZ',
      lat:33.46325,lng:-113.10562,
@@ -1552,6 +1567,12 @@ function defaultSites() {
     {id:214,name:'NSTR1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Mendota, CA',
      lat:36.720811,lng:-120.430143,
      notes:'PV 60MW\nNP: 60MW  V SET: 119kV  BAND: 117.81–120.19kV\nInverters inverting?\nRates about the same?'},
+    {id:215,name:'LSTH1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Lost Hills, CA',
+     lat:35.6,lng:-119.7,
+     notes:'PV 12MW\nInverters inverting?\nRates about the same?'},
+    {id:216,name:'TRPC1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:35.3,lng:-119.2,
+     notes:'PV 7MW\nInverters inverting?\nRates about the same?'},
     // Wind --------------------------------------------------------------------
     {id:301,name:'DFRN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Dufferin, Ontario',
      lat:44.152,lng:-80.109,
@@ -1577,6 +1598,15 @@ function defaultSites() {
     {id:308,name:'DBLO1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Little Lake, CA',
      lat:36.0059762,lng:-117.8083968,
      notes:'Wind 16.68MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {id:309,name:'DLBO1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+     lat:36.0,lng:-117.8,
+     notes:'Wind\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {id:310,name:'PRSE1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Elk County, KS',
+     lat:37.363,lng:-96.252,
+     notes:'Wind 200MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    {id:311,name:'RKRG1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Kern County, CA',
+     lat:35.480,lng:-118.840,
+     notes:'Wind 149MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
   ];
 }
 
@@ -4006,7 +4036,7 @@ let asVals = {};
 let asDone = {};        // {siteId: true} manually marked complete
 let asCustom = null;    // null = not yet loaded; [] or array = overrides AS_SITES
 let asActiveSite = '';
-let asTypeFilter = 'all'; // 'all' | 'BESS' | 'Solar' | 'Wind'
+let asTypeFilter = ['all']; // Array of selected types: ['all'] or ['BESS','Solar','Wind']
 
 // Effective site list: custom overrides defaults when set AND non-empty
 function asSites() { return (asCustom !== null && asCustom.length > 0) ? asCustom : AS_SITES; }
@@ -4135,16 +4165,43 @@ function asGetSiteType(site) {
 }
 
 function asSetTypeFilter(type, el) {
-  asTypeFilter = type;
-  document.querySelectorAll('.as-type-btn').forEach(b => b.classList.remove('active'));
-  if (el) el.classList.add('active');
+  // Handle 'all' button - clears other selections
+  if (type === 'all') {
+    asTypeFilter = ['all'];
+    document.querySelectorAll('.as-type-btn').forEach(b => b.classList.remove('active'));
+    if (el) el.classList.add('active');
+  } else {
+    // Remove 'all' from array if selecting a specific type
+    if (asTypeFilter.includes('all')) {
+      asTypeFilter = [];
+      // Remove active class from 'All' button
+      document.querySelector('.as-type-btn').classList.remove('active');
+    }
+    
+    // Toggle the selected type
+    const idx = asTypeFilter.indexOf(type);
+    if (idx > -1) {
+      asTypeFilter.splice(idx, 1);
+      if (el) el.classList.remove('active');
+    } else {
+      asTypeFilter.push(type);
+      if (el) el.classList.add('active');
+    }
+    
+    // If no types selected, default to 'all'
+    if (asTypeFilter.length === 0) {
+      asTypeFilter = ['all'];
+      document.querySelectorAll('.as-type-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('.as-type-btn').classList.add('active'); // First button is 'All'
+    }
+  }
 
   // If current site isn't in the new filter, jump to first matching site
-  if (type !== 'all') {
+  if (!asTypeFilter.includes('all')) {
     const sites = [...asSites()]
       .filter(s => s.id !== 'ROCC1')
       .sort((a, b) => a.id.localeCompare(b.id));
-    const inFilter = sites.filter(s => asGetSiteType(s) === type);
+    const inFilter = sites.filter(s => asTypeFilter.includes(asGetSiteType(s)));
     const currentStillValid = inFilter.some(s => s.id === asActiveSite);
     if (!currentStillValid && inFilter.length > 0) {
       asActiveSite = inFilter[0].id;
@@ -4164,9 +4221,9 @@ function asRenderTabs() {
   sites = [...rocc, ...rest];
 
   // Apply type filter
-  const filtered = asTypeFilter === 'all'
+  const filtered = asTypeFilter.includes('all')
     ? sites
-    : sites.filter(s => s.id === 'ROCC1' || asGetSiteType(s) === asTypeFilter);
+    : sites.filter(s => s.id === 'ROCC1' || asTypeFilter.includes(asGetSiteType(s)));
 
   document.getElementById('as-tabs').innerHTML = filtered.map(s => {
     const done = asSiteComplete(s.id), pct = asSiteFilledPct(s.id);
@@ -4344,7 +4401,8 @@ function asExportCSV() {
   })));
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download=`ROC_Asset_Scan_${op||'Op'}_${date||'nodate'}.csv`;
+  const types = asTypeFilter.includes('all') ? 'All' : asTypeFilter.join(' & ');
+  a.download=`${shift||'Shift'} Asset Scan ${types} ${op||'Name'}.csv`;
   document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(a.href);
 }
 
