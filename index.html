@@ -850,6 +850,7 @@ body.dark .as-prog-label{color:var(--text2);}
   </div>
   <button class="nav-tab active" id="nav-tab-scans" onclick="switchView('scans',this)">Scans</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
+  <button class="nav-tab" onclick="switchView('accesslog',this)">Site Access Log</button>
   <button class="nav-tab" onclick="switchView('intel',this)">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
@@ -1312,6 +1313,108 @@ body.dark .as-prog-label{color:var(--text2);}
   <div id="as-form-wrap"></div>
 </div>
 
+<!-- SITE ACCESS LOG -->
+<div class="view" id="view-accesslog">
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
+    <div style="font-size:18px;font-weight:600;color:var(--text);">Site Access Log</div>
+    <div style="flex:1;"></div>
+    <button class="btn-p" onclick="alExportCSV()">Export CSV</button>
+  </div>
+  
+  <!-- Quick Entry Form -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;margin-bottom:12px;box-shadow:var(--shs);">
+    <div style="font-size:14px;font-weight:600;margin-bottom:10px;color:var(--text);">Quick Entry</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:10px;">
+      <div>
+        <label style="font-size:12px;color:var(--text2);">Person Name</label>
+        <input id="al-person" list="al-person-list" placeholder="Name" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);">
+        <datalist id="al-person-list"></datalist>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--text2);">Site</label>
+        <select id="al-site" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);">
+          <option value="">Select site</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--text2);">Type</label>
+        <select id="al-type" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);">
+          <option value="entry">Entry</option>
+          <option value="exit">Exit</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--text2);">Device/Group</label>
+        <input id="al-device" placeholder="Optional" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);">
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--text2);">Classification</label>
+        <select id="al-classification" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);">
+          <option value="">Select</option>
+          <option value="Contractor">Contractor</option>
+          <option value="Employee">Employee</option>
+          <option value="Vendor">Vendor</option>
+          <option value="Visitor">Visitor</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-bottom:10px;">
+      <label style="font-size:12px;color:var(--text2);">Information</label>
+      <input id="al-info" placeholder="Purpose, notes, etc." style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);">
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn-p" onclick="alAddEntry()">Add Entry</button>
+      <button class="tbtn" onclick="alClearForm()">Clear</button>
+    </div>
+  </div>
+
+  <!-- Active Snapshot -->
+  <div style="background:var(--gbg);border:1px solid var(--green);border-radius:var(--rl);padding:14px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <div style="font-size:16px;font-weight:600;color:var(--green);">Currently On Site</div>
+      <div style="font-size:24px;font-weight:700;color:var(--green);font-family:var(--m);" id="al-active-count">0</div>
+      <div style="font-size:12px;color:var(--text3);">people</div>
+    </div>
+    <div id="al-active-list" style="display:flex;flex-direction:column;gap:6px;"></div>
+  </div>
+
+  <!-- Search/Filter -->
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">
+    <input id="al-search" placeholder="Search by person, site..." oninput="alRenderHistory()" style="width:250px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);">
+    <select id="al-filter-site" onchange="alRenderHistory()" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);">
+      <option value="">All Sites</option>
+    </select>
+    <select id="al-filter-type" onchange="alRenderHistory()" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);">
+      <option value="">All Types</option>
+      <option value="entry">Entry</option>
+      <option value="exit">Exit</option>
+    </select>
+    <input id="al-filter-date-from" type="date" onchange="alRenderHistory()" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);">
+    <input id="al-filter-date-to" type="date" onchange="alRenderHistory()" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;font-size:13px;color:var(--text);">
+  </div>
+
+  <!-- History Table -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;">
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead style="background:var(--bg3);border-bottom:1px solid var(--border);">
+          <tr>
+            <th style="padding:8px 10px;text-align:left;font-weight:600;color:var(--text2);">Date/Time</th>
+            <th style="padding:8px 10px;text-align:left;font-weight:600;color:var(--text2);">Person</th>
+            <th style="padding:8px 10px;text-align:left;font-weight:600;color:var(--text2);">Site</th>
+            <th style="padding:8px 10px;text-align:left;font-weight:600;color:var(--text2);">Type</th>
+            <th style="padding:8px 10px;text-align:left;font-weight:600;color:var(--text2);">Device/Group</th>
+            <th style="padding:8px 10px;text-align:left;font-weight:600;color:var(--text2);">Classification</th>
+            <th style="padding:8px 10px;text-align:left;font-weight:600;color:var(--text2);">Information</th>
+            <th style="padding:8px 10px;text-align:left;font-weight:600;color:var(--text2);">Operator</th>
+          </tr>
+        </thead>
+        <tbody id="al-history-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <!-- ASSET SCAN EDIT MODAL -->
 <div class="overlay hidden" id="modal-as-edit">
   <div class="modal" style="width:560px;max-height:90vh;">
@@ -1719,13 +1822,14 @@ async function load() {
   clInit();
   wxFleetInit();
   dmInit();
+  alLoad();
   // Restore escalation contacts
   const rows = document.querySelectorAll('#esc-tbody tr');
   const tkeys = ['t1','t2','t3'];
   rows.forEach((row,i) => { const inp=row.querySelector('input'); if(inp) inp.value=S.escContacts[tkeys[i]]||''; });
 
   // Restore last active tab (default: scans)
-  const TAB_VIEWS = ['scans','asset','intel','ops','swbuilder','chron','timezones','schedule'];
+  const TAB_VIEWS = ['scans','asset','accesslog','intel','ops','swbuilder','chron','timezones','schedule'];
   let savedTab = 'scans';
   try { savedTab = localStorage.getItem('rnwbl_active_tab') || 'scans'; } catch(e) {}
   if (!TAB_VIEWS.includes(savedTab)) savedTab = 'scans';
@@ -5797,6 +5901,204 @@ function copyPhonetic(){
 function clearPhonetic(){
   document.getElementById('phonetic-inp').value = '';
   document.getElementById('phonetic-out').textContent = '';
+}
+
+// ─── SITE ACCESS LOG ─────────────────────────────────────────────────────────────
+const AL_KEY = 'rnwbl_accesslog_v1';
+let alEntries = [];
+
+function alLoad() {
+  try {
+    const raw = localStorage.getItem(AL_KEY);
+    if (raw) alEntries = JSON.parse(raw) || [];
+  } catch(e) {}
+  alPopulateSites();
+  alPopulatePersons();
+  alRenderActive();
+  alRenderHistory();
+}
+
+function alSave() {
+  try { localStorage.setItem(AL_KEY, JSON.stringify(alEntries)); } catch(e) {}
+}
+
+function alPopulateSites() {
+  const siteSelect = document.getElementById('al-site');
+  const filterSelect = document.getElementById('al-filter-site');
+  const sites = defaultSites();
+  
+  sites.forEach(site => {
+    const opt = document.createElement('option');
+    opt.value = site.name;
+    opt.textContent = site.name;
+    siteSelect.appendChild(opt);
+    
+    const filterOpt = document.createElement('option');
+    filterOpt.value = site.name;
+    filterOpt.textContent = site.name;
+    filterSelect.appendChild(filterOpt);
+  });
+}
+
+function alPopulatePersons() {
+  const personList = document.getElementById('al-person-list');
+  const persons = [...new Set(alEntries.map(e => e.person).filter(p => p))];
+  persons.forEach(person => {
+    const opt = document.createElement('option');
+    opt.value = person;
+    personList.appendChild(opt);
+  });
+}
+
+function alAddEntry() {
+  const person = document.getElementById('al-person').value.trim();
+  const site = document.getElementById('al-site').value;
+  const type = document.getElementById('al-type').value;
+  const device = document.getElementById('al-device').value.trim();
+  const classification = document.getElementById('al-classification').value;
+  const info = document.getElementById('al-info').value.trim();
+  
+  if (!person || !site) {
+    showToast('Person and Site are required');
+    return;
+  }
+  
+  const entry = {
+    id: Date.now(),
+    datetime: new Date().toISOString(),
+    person,
+    site,
+    type,
+    device,
+    classification,
+    info,
+    operator: document.getElementById('as-operator')?.value || 'Operator'
+  };
+  
+  alEntries.unshift(entry);
+  alSave();
+  alPopulatePersons();
+  alRenderActive();
+  alRenderHistory();
+  alClearForm();
+  showToast('Entry added');
+}
+
+function alClearForm() {
+  document.getElementById('al-person').value = '';
+  document.getElementById('al-site').value = '';
+  document.getElementById('al-type').value = 'entry';
+  document.getElementById('al-device').value = '';
+  document.getElementById('al-classification').value = '';
+  document.getElementById('al-info').value = '';
+}
+
+function alRenderActive() {
+  const activeList = document.getElementById('al-active-list');
+  const countEl = document.getElementById('al-active-count');
+  
+  // Find people currently on site (entry without matching exit)
+  const active = {};
+  alEntries.forEach(entry => {
+    if (entry.type === 'entry') {
+      active[entry.person] = entry;
+    } else if (entry.type === 'exit' && active[entry.person]) {
+      delete active[entry.person];
+    }
+  });
+  
+  const activePeople = Object.values(active);
+  countEl.textContent = activePeople.length;
+  
+  if (activePeople.length === 0) {
+    activeList.innerHTML = '<div style="font-size:12px;color:var(--text3);">No one currently on site</div>';
+    return;
+  }
+  
+  const now = new Date();
+  activeList.innerHTML = activePeople.map(entry => {
+    const entryTime = new Date(entry.datetime);
+    const duration = Math.floor((now - entryTime) / (1000 * 60 * 60)); // hours
+    let color = 'var(--green)';
+    if (duration > 8) color = 'var(--red)';
+    else if (duration > 4) color = 'var(--amber)';
+    
+    return `
+      <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg2);border-radius:6px;border:1px solid var(--border);">
+        <div style="flex:1;">
+          <div style="font-weight:600;color:var(--text);">${entry.person}</div>
+          <div style="font-size:11px;color:var(--text2);">${entry.site} · ${entryTime.toLocaleTimeString()}</div>
+        </div>
+        <div style="font-size:12px;font-weight:600;color:${color};font-family:var(--m);">${duration}h</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function alRenderHistory() {
+  const tbody = document.getElementById('al-history-body');
+  const search = document.getElementById('al-search').value.toLowerCase();
+  const filterSite = document.getElementById('al-filter-site').value;
+  const filterType = document.getElementById('al-filter-type').value;
+  const filterDateFrom = document.getElementById('al-filter-date-from').value;
+  const filterDateTo = document.getElementById('al-filter-date-to').value;
+  
+  let filtered = alEntries.filter(entry => {
+    if (search && !entry.person.toLowerCase().includes(search) && !entry.site.toLowerCase().includes(search)) return false;
+    if (filterSite && entry.site !== filterSite) return false;
+    if (filterType && entry.type !== filterType) return false;
+    if (filterDateFrom) {
+      const entryDate = new Date(entry.datetime).toISOString().split('T')[0];
+      if (entryDate < filterDateFrom) return false;
+    }
+    if (filterDateTo) {
+      const entryDate = new Date(entry.datetime).toISOString().split('T')[0];
+      if (entryDate > filterDateTo) return false;
+    }
+    return true;
+  });
+  
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="padding:20px;text-align:center;color:var(--text3);">No entries found</td></tr>';
+    return;
+  }
+  
+  tbody.innerHTML = filtered.map(entry => {
+    const datetime = new Date(entry.datetime);
+    const typeColor = entry.type === 'entry' ? 'var(--green)' : 'var(--amber)';
+    const typeLabel = entry.type === 'entry' ? 'Entry' : 'Exit';
+    
+    return `
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:8px 10px;color:var(--text);font-family:var(--m);">${datetime.toLocaleString()}</td>
+        <td style="padding:8px 10px;color:var(--text);font-weight:600;">${entry.person}</td>
+        <td style="padding:8px 10px;color:var(--text);">${entry.site}</td>
+        <td style="padding:8px 10px;color:${typeColor};font-weight:600;">${typeLabel}</td>
+        <td style="padding:8px 10px;color:var(--text2);">${entry.device || '-'}</td>
+        <td style="padding:8px 10px;color:var(--text2);">${entry.classification || '-'}</td>
+        <td style="padding:8px 10px;color:var(--text2);">${entry.info || '-'}</td>
+        <td style="padding:8px 10px;color:var(--text3);">${entry.operator}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function alExportCSV() {
+  let csv = 'Date/Time,Person,Site,Type,Device/Group,Classification,Information,Operator\n';
+  alEntries.forEach(entry => {
+    const datetime = new Date(entry.datetime).toLocaleString();
+    const device = (entry.device || '').replace(/"/g, '""');
+    const info = (entry.info || '').replace(/"/g, '""');
+    csv += `"${datetime}","${entry.person}","${entry.site}","${entry.type}","${device}","${entry.classification}","${info}","${entry.operator}"\n`;
+  });
+  
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv'}));
+  a.download = `Site_Access_Log_${new Date().toISOString().split('T')[0]}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
 }
 
 load();
