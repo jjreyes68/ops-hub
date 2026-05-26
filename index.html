@@ -920,6 +920,27 @@ body.dark .nerc-study-container{
 .nerc-study-container .nerc-stat-chip{background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-radius:7px;padding:12px;text-align:center}
 .nerc-study-container .nerc-stat-chip-val{font-family:var(--nerc-mono);font-size:18px;color:var(--nerc-green);font-weight:700}
 .nerc-study-container .nerc-stat-chip-lbl{font-size:11px;color:var(--nerc-text3);margin-top:2px;font-family:var(--nerc-mono)}
+.nerc-study-container .nerc-resources{margin-top:24px}
+.nerc-study-container .nerc-resources-hdr{font-family:var(--nerc-mono);font-size:11px;color:var(--nerc-text3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.nerc-study-container .nerc-resources-hdr::after{content:'';flex:1;height:1px;background:var(--nerc-border)}
+.nerc-study-container .nerc-coverage-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.nerc-study-container .nerc-cov-card{background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-radius:7px;padding:10px 12px}
+.nerc-study-container .nerc-cov-role{font-family:var(--nerc-mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.nerc-study-container .nerc-cov-role.to{color:var(--nerc-blue)}
+.nerc-study-container .nerc-cov-role.ba{color:var(--nerc-green)}
+.nerc-study-container .nerc-cov-role.rc{color:var(--nerc-amber)}
+.nerc-study-container .nerc-cov-role.all{color:var(--nerc-purple)}
+.nerc-study-container .nerc-cov-tag{display:inline-block;font-size:10px;background:var(--nerc-bg5);border:1px solid var(--nerc-border2);border-radius:3px;padding:2px 6px;margin:2px 2px 0 0;color:var(--nerc-text2)}
+.nerc-study-container .nerc-links{display:flex;flex-direction:column;gap:7px;margin-bottom:8px}
+.nerc-study-container .nerc-link-item{display:flex;align-items:flex-start;gap:10px;background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-radius:7px;padding:10px 12px;text-decoration:none;transition:border-color .15s}
+.nerc-study-container .nerc-link-item:hover{border-color:var(--nerc-border2)}
+.nerc-study-container .nerc-link-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.nerc-study-container .nerc-link-body{flex:1;min-width:0}
+.nerc-study-container .nerc-link-title{font-size:13px;font-weight:600;color:var(--nerc-text);margin-bottom:2px}
+.nerc-study-container .nerc-link-desc{font-size:11px;color:var(--nerc-text2);line-height:1.45}
+.nerc-study-container .nerc-link-arrow{font-size:11px;color:var(--nerc-text3);flex-shrink:0;align-self:center}
+.nerc-study-container .nerc-gap-note{background:rgba(255,179,0,.06);border:1px solid rgba(255,179,0,.2);border-radius:7px;padding:10px 14px;font-size:12px;color:var(--nerc-text2);line-height:1.6;margin-bottom:14px}
+.nerc-study-container .nerc-gap-note strong{color:var(--nerc-amber)}
 .nerc-study-container #nerc-screen-exam{background:var(--nerc-bg)}
 .nerc-study-container .nerc-exam-topbar{background:var(--nerc-bg2);border-bottom:1px solid var(--nerc-border);padding:0 24px;height:56px;display:flex;align-items:center;gap:20px;flex-shrink:0;position:sticky;top:0;z-index:100}
 .nerc-study-container .nerc-exam-timer{font-family:var(--nerc-mono);font-size:22px;font-weight:700;letter-spacing:.06em;min-width:80px;color:var(--nerc-green);transition:color .3s}
@@ -940,6 +961,13 @@ body.dark .nerc-study-container{
 .nerc-study-container .nerc-cat-N1{background:rgba(255,138,101,.1);color:var(--nerc-orange);border:1px solid rgba(255,138,101,.2)}
 .nerc-study-container .nerc-cat-Protection{background:rgba(255,71,87,.1);color:var(--nerc-red);border:1px solid rgba(255,71,87,.2)}
 .nerc-study-container .nerc-cat-Scenario{background:rgba(255,71,87,.08);color:#ff8a80;border:1px solid rgba(255,71,87,.15)}
+.nerc-study-container .nerc-cat-TLRConsCons{background:rgba(38,198,218,.1);color:var(--nerc-cyan);border:1px solid rgba(38,198,218,.2)}
+.nerc-study-container .nerc-cat-TLRConsOps{background:rgba(38,198,218,.1);color:var(--nerc-cyan);border:1px solid rgba(38,198,218,.2)}
+.nerc-study-container .nerc-cat-FACRatings{background:rgba(179,157,219,.1);color:var(--nerc-purple);border:1px solid rgba(179,157,219,.2)}
+.nerc-study-container .nerc-cat-PERFatigue{background:rgba(255,179,0,.1);color:var(--nerc-amber);border:1px solid rgba(255,179,0,.2)}
+.nerc-study-container .nerc-cat-COMSwitching{background:rgba(255,138,101,.1);color:var(--nerc-orange);border:1px solid rgba(255,138,101,.2)}
+.nerc-study-container .nerc-cat-BAOperations{background:rgba(0,229,160,.08);color:#4fffb0;border:1px solid rgba(0,229,160,.15)}
+.nerc-study-container .nerc-cat-DemandResponse{background:rgba(79,195,247,.1);color:var(--nerc-blue);border:1px solid rgba(79,195,247,.2)}
 .nerc-study-container .nerc-exam-flag-btn{background:none;border:1.5px solid var(--nerc-border2);border-radius:6px;padding:6px 12px;color:var(--nerc-text3);cursor:pointer;font-size:13px;font-family:var(--nerc-mono);transition:all .15s;white-space:nowrap}
 .nerc-study-container .nerc-exam-flag-btn:hover{border-color:var(--nerc-amber);color:var(--nerc-amber)}
 .nerc-study-container .nerc-exam-flag-btn.flagged{background:var(--nerc-amberbg);border-color:var(--nerc-amber);color:var(--nerc-amber)}
@@ -1535,13 +1563,14 @@ body.dark .nerc-study-container{
           </div>
         </div>
         <div class="nerc-setup-title">Operator Reliability<br><span>Exam Simulator</span></div>
-        <div class="nerc-setup-desc">Scenario-based training across IROL/SOL, EEA, Blackstart, Voltage Control, Frequency/ACE, N-1 Contingency, and Protection. 75-question bank, fully randomized.</div>
+        <div class="nerc-setup-desc">Scenario-based training for <strong style="color:var(--nerc-blue)">TO</strong>, <strong style="color:var(--nerc-green)">BA</strong>, and <strong style="color:var(--nerc-amber)">RC/SC</strong> certification. Covers IROL/SOL, EEA, Blackstart, Voltage, Frequency/ACE, N-1, Protection, TLR, Facility Ratings, Fatigue, Switching Orders, Reserves &amp; Demand Response. 100-question bank, fully randomized.</div>
         <div class="nerc-setup-card">
           <div class="nerc-setup-card-label">▸ Question Count</div>
           <div class="nerc-setup-opts" id="nerc-qcount-opts">
             <div class="nerc-setup-opt" data-val="25" onclick="nercExamSelOpt('qcount',25,this)"><span class="nerc-opt-main">25</span><span class="nerc-opt-sub">Quick</span></div>
             <div class="nerc-setup-opt sel" data-val="50" onclick="nercExamSelOpt('qcount',50,this)"><span class="nerc-opt-main">50</span><span class="nerc-opt-sub">Standard</span></div>
-            <div class="nerc-setup-opt" data-val="75" onclick="nercExamSelOpt('qcount',75,this)"><span class="nerc-opt-main">75</span><span class="nerc-opt-sub">Full Bank</span></div>
+            <div class="nerc-setup-opt" data-val="75" onclick="nercExamSelOpt('qcount',75,this)"><span class="nerc-opt-main">75</span><span class="nerc-opt-sub">Extended</span></div>
+            <div class="nerc-setup-opt" data-val="100" onclick="nercExamSelOpt('qcount',100,this)"><span class="nerc-opt-main">100</span><span class="nerc-opt-sub">Full Bank</span></div>
           </div>
         </div>
         <div class="nerc-setup-card">
@@ -1574,9 +1603,69 @@ body.dark .nerc-study-container{
         </div>
         <button class="nerc-setup-start" onclick="nercExamStartExam()">▶ BEGIN EXAM</button>
         <div class="nerc-setup-stats">
-          <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">75</div><div class="nerc-stat-chip-lbl">Questions</div></div>
-          <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">7</div><div class="nerc-stat-chip-lbl">Categories</div></div>
+          <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">100</div><div class="nerc-stat-chip-lbl">Questions</div></div>
+          <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">11</div><div class="nerc-stat-chip-lbl">Categories</div></div>
           <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">80%</div><div class="nerc-stat-chip-lbl">Pass Mark</div></div>
+        </div>
+
+        <!-- Role Coverage + Resources -->
+        <div class="nerc-resources">
+          <div class="nerc-resources-hdr">▸ Exam Coverage by Role</div>
+          <div class="nerc-coverage-grid">
+            <div class="nerc-cov-card">
+              <div class="nerc-cov-role to">TO — Transmission Operator</div>
+              <span class="nerc-cov-tag">IROL/SOL</span><span class="nerc-cov-tag">N-1 Contingency</span><span class="nerc-cov-tag">Protection</span><span class="nerc-cov-tag">Voltage Control</span><span class="nerc-cov-tag">Facility Ratings</span><span class="nerc-cov-tag">Switching Orders</span>
+            </div>
+            <div class="nerc-cov-card">
+              <div class="nerc-cov-role ba">BA — Balancing Authority</div>
+              <span class="nerc-cov-tag">ACE / CPS1</span><span class="nerc-cov-tag">Frequency</span><span class="nerc-cov-tag">EEA Levels</span><span class="nerc-cov-tag">Reserves / BAL-002</span><span class="nerc-cov-tag">Inadvertent</span><span class="nerc-cov-tag">Demand Response</span>
+            </div>
+            <div class="nerc-cov-card">
+              <div class="nerc-cov-role rc">RC / SC — Reliability Coordinator</div>
+              <span class="nerc-cov-tag">TLR Procedures</span><span class="nerc-cov-tag">Conservative Ops</span><span class="nerc-cov-tag">Operating Orders</span><span class="nerc-cov-tag">EEA Authority</span><span class="nerc-cov-tag">Wide-Area View</span>
+            </div>
+            <div class="nerc-cov-card">
+              <div class="nerc-cov-role all">All Roles</div>
+              <span class="nerc-cov-tag">Blackstart</span><span class="nerc-cov-tag">Restoration</span><span class="nerc-cov-tag">Fatigue / PER-006</span><span class="nerc-cov-tag">Cert Requirements</span><span class="nerc-cov-tag">Scenario-Based</span>
+            </div>
+          </div>
+          <div class="nerc-gap-note">
+            <strong>⚠ Supplement with external study for:</strong><br>
+            FAC facility modeling · MOD (power flow modeling) · COM documentation requirements · Market protocols &amp; e-Tags · Specific regional procedures (WECC, SERC, RFC, etc.)
+          </div>
+          <div class="nerc-resources-hdr">▸ Free Study Resources</div>
+          <div class="nerc-links">
+            <a class="nerc-link-item" href="https://www.nerc.com/pa/Stand/Pages/ReliabilityStandards.aspx" target="_blank" rel="noopener">
+              <span class="nerc-link-icon">📋</span>
+              <div class="nerc-link-body"><div class="nerc-link-title">NERC Reliability Standards — Official Library</div><div class="nerc-link-desc">Full text of all active standards: TOP, BAL, EOP, FAC, MOD, COM, PER. Every exam question traces back here.</div></div>
+              <span class="nerc-link-arrow">↗</span>
+            </a>
+            <a class="nerc-link-item" href="https://www.nerc.com/pa/rrm/ea/Pages/default.aspx" target="_blank" rel="noopener">
+              <span class="nerc-link-icon">📁</span>
+              <div class="nerc-link-body"><div class="nerc-link-title">NERC Event Analysis Reports</div><div class="nerc-link-desc">Real disturbance reports and lessons learned — the best scenario-based study material available. Essential for decision-making questions.</div></div>
+              <span class="nerc-link-arrow">↗</span>
+            </a>
+            <a class="nerc-link-item" href="https://www.nerc.com/pa/rrm/Pages/OperatorCertification.aspx" target="_blank" rel="noopener">
+              <span class="nerc-link-icon">🎓</span>
+              <div class="nerc-link-body"><div class="nerc-link-title">NERC System Operator Certification Program</div><div class="nerc-link-desc">Official certification exam info — candidate handbook, exam content outline by credential (RC, TOP/TO, BA/TO, GOP), and registration details.</div></div>
+              <span class="nerc-link-arrow">↗</span>
+            </a>
+            <a class="nerc-link-item" href="https://www.nerc.com/pa/rrm/TL/Pages/TransmissionLoadingRelief.aspx" target="_blank" rel="noopener">
+              <span class="nerc-link-icon">⚡</span>
+              <div class="nerc-link-body"><div class="nerc-link-title">NERC TLR Procedures</div><div class="nerc-link-desc">Transmission Loading Relief — how RCs and TOPs manage congestion and curtail schedules. Key RC/TOP knowledge.</div></div>
+              <span class="nerc-link-arrow">↗</span>
+            </a>
+            <a class="nerc-link-item" href="https://www.wecc.org/Reliability/Pages/default.aspx" target="_blank" rel="noopener">
+              <span class="nerc-link-icon">🌐</span>
+              <div class="nerc-link-body"><div class="nerc-link-title">WECC Reliability — Western Interconnection</div><div class="nerc-link-desc">Regional reliability standards, operating procedures, and training. Relevant if your sites are in the Western Interconnection.</div></div>
+              <span class="nerc-link-arrow">↗</span>
+            </a>
+            <a class="nerc-link-item" href="https://www.nerc.com/pa/rrm/Pages/default.aspx" target="_blank" rel="noopener">
+              <span class="nerc-link-icon">📊</span>
+              <div class="nerc-link-body"><div class="nerc-link-title">NERC Reliability Assessments</div><div class="nerc-link-desc">Seasonal assessments and State of Reliability reports — great context for real system conditions that appear in exam scenarios.</div></div>
+              <span class="nerc-link-arrow">↗</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -6445,7 +6534,138 @@ exp:'Reserve procurement has a hierarchy. Operators should first exhaust market 
 {id:75,cat:'Scenario',q:'SCENARIO: Following a complete area blackout, you have established two energized islands with cranking paths to large steam units. Unit A (800 MW) is at 60% load, Unit B (600 MW) is at 40% load. Island A is ready to synchronize to Island B. Your primary concern before closing the synchronizing breaker is:',
 opts:['That Island A has more MW than Island B — equalizing generation before sync','That all parameters (frequency, voltage, phase angle, phase sequence) are acceptable AND that the combined island will remain stable after synchronization, with adequate generation to supply load in both islands','That Unit A is newer than Unit B and should always take priority in restoration sequencing','That the line between the two islands has been meggered within the last 24 hours'],
 ans:'That all parameters (frequency, voltage, phase angle, phase sequence) are acceptable AND that the combined island will remain stable after synchronization, with adequate generation to supply load in both islands',
-exp:'Before synchronizing islands during restoration, the operator must confirm both the electrical synchronization parameters (frequency match, voltage match, phase angle, phase sequence via synchroscope/check sync) AND the post-synchronization stability — will the combined system have enough generation to supply the combined load? A successful sync that immediately leads to frequency collapse is not a success.'}
+exp:'Before synchronizing islands during restoration, the operator must confirm both the electrical synchronization parameters (frequency match, voltage match, phase angle, phase sequence via synchroscope/check sync) AND the post-synchronization stability — will the combined system have enough generation to supply the combined load? A successful sync that immediately leads to frequency collapse is not a success.'},
+
+// ─── TRANSMISSION LOADING RELIEF / CONSERVATIVE OPS (6) ─────────────────────
+{id:76,cat:'TLR/Cons Ops',q:'What is Transmission Loading Relief (TLR) and who initiates it?',
+opts:['A process where BAs voluntarily reduce generation output to lower transmission loading; initiated by any BA','A curtailment process initiated by the Reliability Coordinator to reduce loading on constrained transmission facilities by curtailing energy schedules contributing to the constraint','A protection scheme that automatically trips generation when transmission lines are overloaded','A market mechanism administered by FERC to compensate owners of constrained facilities'],
+ans:'A curtailment process initiated by the Reliability Coordinator to reduce loading on constrained transmission facilities by curtailing energy schedules contributing to the constraint',
+exp:'TLR (NERC IRO-006) is a coordinated curtailment process used in the Eastern Interconnection. When a transmission constraint cannot be managed by other means, the RC directs curtailment of energy schedules (from least firm to most firm) to reduce flows on the constrained facility. The RC initiates; BAs and TOPs execute.'},
+
+{id:77,cat:'TLR/Cons Ops',q:'TLR levels range from TLR Level 1 to TLR Level 6. What does TLR Level 5 specifically require?',
+opts:['Voluntary reduction of non-firm schedules only; no curtailment of firm schedules','Curtailment of firm energy schedules contributing to the constraint, as directed by the RC, after all non-firm schedules have been curtailed','Automatic load shedding at 59.7 Hz to relieve transmission loading','Emergency purchase of replacement energy from neighboring BAs'],
+ans:'Curtailment of firm energy schedules contributing to the constraint, as directed by the RC, after all non-firm schedules have been curtailed',
+exp:'TLR levels escalate from voluntary (Level 1) through curtailment of non-firm schedules (Levels 2-4) to curtailment of firm schedules (Level 5). TLR Level 6 involves physical interruption of load. BAs must curtail in priority order per the TLR procedures. Firm curtailments at Level 5 have significant commercial and reliability consequences.'},
+
+{id:78,cat:'TLR/Cons Ops',q:'What is "Conservative Operations" and under what conditions should it be implemented?',
+opts:['A mode where all generation is reduced to minimum output to minimize wear on equipment','Operating with increased reliability margins — reducing flows, increasing reserves, and limiting transactions — when conditions such as severe weather, equipment outages, or uncertainty make normal operations risky','A cost-saving mode where only the cheapest generation is dispatched regardless of reliability impact','Conservative operations is another term for N-1 contingency analysis'],
+ans:'Operating with increased reliability margins — reducing flows, increasing reserves, and limiting transactions — when conditions such as severe weather, equipment outages, or uncertainty make normal operations risky',
+exp:'Conservative operations (referenced in NERC CON-001 and entity-specific procedures) means proactively tightening margins before conditions become critical. Triggers include: severe weather forecasts, multiple planned outages, degraded situational awareness tools, GMD alerts, or approaching IROL limits. It is a proactive risk management posture, not a reactive emergency response.'},
+
+{id:79,cat:'TLR/Cons Ops',q:'SCENARIO: Your RC calls and declares Conservative Operations for the next 4 hours due to a severe thunderstorm line moving through your area. Which of the following best describes your obligations?',
+opts:['No action required — Conservative Operations is advisory only and does not bind TOPs or BAs','Follow your entity\'s conservative operations procedures: typically includes reducing pre-contingency flows, increasing reactive reserves, holding additional generation ready, and heightening situational awareness — as directed by your RC','Immediately curtail all non-firm interchange and call neighboring BAs for emergency assistance','Declare EEA Level 1 and begin preparing for load shedding'],
+ans:'Follow your entity\'s conservative operations procedures: typically includes reducing pre-contingency flows, increasing reactive reserves, holding additional generation ready, and heightening situational awareness — as directed by your RC',
+exp:'When the RC declares Conservative Operations, all entities within the RC footprint must follow their procedures. The RC has authority to direct actions. Typical measures: reduce flows below IROL/SOL margins, increase spinning reserves, defer non-essential switching, heighten monitoring. This is different from an EEA — no load interruption is required unless conditions escalate.'},
+
+{id:80,cat:'TLR/Cons Ops',q:'During a TLR Level 3 event, a BA receives a curtailment instruction from the RC but believes the curtailment will cause local reliability problems in their area. What is the correct action?',
+opts:['Refuse to curtail until a reliability assessment confirms the instruction is safe','Comply with the RC curtailment instruction immediately, then immediately notify the RC of the local reliability concern so the RC can coordinate a solution','Contact NERC headquarters before complying with any curtailment that affects firm schedules','Implement a partial curtailment and document the decision'],
+ans:'Comply with the RC curtailment instruction immediately, then immediately notify the RC of the local reliability concern so the RC can coordinate a solution',
+exp:'The RC has operating authority. BAs and TOPs must comply with RC operating instructions, even when they disagree, as long as doing so does not create an imminent safety or reliability threat to their immediate local area. The correct process is: comply, then immediately communicate the concern. The RC can then adjust the instruction with full situational awareness.'},
+
+{id:81,cat:'TLR/Cons Ops',q:'What is the correct TLR curtailment priority order — which schedules are curtailed first?',
+opts:['Firm schedules first since they are largest; non-firm schedules are protected','Non-firm point-to-point schedules first, then firm schedules if needed — in order from least firm to most firm','All schedules are curtailed proportionally (pro-rata) regardless of firmness','The RC has discretion to curtail in any order based on commercial agreements'],
+ans:'Non-firm point-to-point schedules first, then firm schedules if needed — in order from least firm to most firm',
+exp:'TLR curtailment priority (per NERC IRO-006-RTO and regional procedures) goes from least firm to most firm: non-firm non-designated schedules are curtailed first, progressing through non-firm designated, short-term firm, and finally long-term firm point-to-point. Native load and network integration service are protected. This preserves the most commercially valuable and reliability-critical schedules as long as possible.'},
+
+// ─── FAC / FACILITY RATINGS (4) ──────────────────────────────────────────────
+{id:82,cat:'FAC/Ratings',q:'What is a "Facility Rating" and who is responsible for establishing it?',
+opts:['The maximum amount of electricity a facility can generate; established by the generator owner','The maximum electric power (MW) and current (amps) that a transmission facility can carry under specified conditions without violating applicable equipment ratings; established by the Transmission Owner','The short-circuit capacity of a bus; established by the Planning Coordinator','A regulatory cap set by FERC on the maximum rate a TO can charge for use of a facility'],
+ans:'The maximum electric power (MW) and current (amps) that a transmission facility can carry under specified conditions without violating applicable equipment ratings; established by the Transmission Owner',
+exp:'Under NERC FAC-008 and FAC-009, Transmission Owners are responsible for establishing and documenting Facility Ratings based on the most limiting element in the facility (conductor thermal rating, transformer nameplate, breaker interrupting capacity, etc.). These ratings must be communicated to the TOP and PC for use in operating and planning studies.'},
+
+{id:83,cat:'FAC/Ratings',q:'A transmission line has a Normal Rating of 900 MW and an Emergency Rating of 1,100 MW. Under what conditions is it permissible to operate above the Normal Rating up to the Emergency Rating?',
+opts:['Never — Normal Rating must not be exceeded under any circumstances','After a contingency event (N-1), the Emergency Rating may be used for the time period allowed by applicable standards (typically up to 30 minutes) while corrective action is taken','The Emergency Rating can be used any time grid conditions require higher flows, with no time restriction','Emergency Ratings apply only during declared EEA conditions'],
+ans:'After a contingency event (N-1), the Emergency Rating may be used for the time period allowed by applicable standards (typically up to 30 minutes) while corrective action is taken',
+exp:'Emergency Ratings represent the maximum loading a facility can sustain for a limited time without incurring damage. They are intended for post-contingency use only — not routine operation. The facility must be returned to within Normal Rating within the allowable timeframe (typically 30 minutes per NERC standards) through corrective actions such as generation redispatch or load control.'},
+
+{id:84,cat:'FAC/Ratings',q:'SCENARIO: A Transmission Owner informs you that the summer Normal Rating on a key 345 kV line has been reduced from 1,000 MW to 850 MW due to vegetation management work reducing ground clearance. What is the immediate operational impact?',
+opts:['No impact — ratings reductions are planning matters and do not affect real-time operations','The SOL and pre-contingency operating limits on any path using that line must be reviewed and potentially reduced immediately to reflect the new rating','The line must be taken out of service until vegetation work is complete','Request NERC to issue a waiver maintaining the original rating during vegetation work'],
+ans:'The SOL and pre-contingency operating limits on any path using that line must be reviewed and potentially reduced immediately to reflect the new rating',
+exp:'Real-time ratings changes must be reflected immediately in operating limits. If a line rating is reduced, the SOL for that facility and any flowgate or path that includes it must be recalculated. Operating above the revised rating — even temporarily — violates FAC and TOP standards. The TOP must update their operating limits and EMS models to reflect the new value.'},
+
+{id:85,cat:'FAC/Ratings',q:'What is the difference between a "Normal Rating" (continuous) and a "Long-Term Emergency Rating" on a transmission facility?',
+opts:['There is no difference — all ratings are continuous by definition','Normal Rating is the maximum loading for indefinite continuous operation under normal conditions; Long-Term Emergency (LTE) Rating is a higher loading level sustainable for several hours following a contingency, before equipment damage risk increases','Long-Term Emergency Rating applies only to transformers; lines use only Normal and Short-Term Emergency ratings','Normal Rating is set by the RC; Emergency Ratings are set by NERC directly'],
+ans:'Normal Rating is the maximum loading for indefinite continuous operation under normal conditions; Long-Term Emergency (LTE) Rating is a higher loading level sustainable for several hours following a contingency, before equipment damage risk increases',
+exp:'Most facilities have a tiered rating structure: Normal (indefinite), Long-Term Emergency (LTE, typically 4 hours), and Short-Term Emergency (STE, typically 15-30 minutes). Each tier represents a trade-off between loading level and time — higher loading is tolerable for shorter durations. Operators must know which rating applies and manage the facility back to Normal Rating within the LTE or STE time window.'},
+
+// ─── PER / FATIGUE & QUALIFICATIONS (4) ──────────────────────────────────────
+{id:86,cat:'PER/Fatigue',q:'NERC PER-006 addresses operator fatigue. What is the maximum number of hours a certified System Operator may work without a mandatory rest break under this standard?',
+opts:['12 consecutive hours, with an 8-hour rest period required before the next shift','16 consecutive hours, with appropriate fatigue management provisions in place as required by PER-006 and the entity\'s fatigue management plan','There is no NERC limit — fatigue is managed entirely by entity-level HR policies','24 hours in any 72-hour period'],
+ans:'16 consecutive hours, with appropriate fatigue management provisions in place as required by PER-006 and the entity\'s fatigue management plan',
+exp:'NERC PER-006 limits certified operators to 16 consecutive work hours. Following a 16-hour work period, a minimum rest period is required before returning to the console. Entities must have written fatigue management plans. Supervisors and operators share responsibility for identifying and managing fatigue — an operator who feels impaired must notify their supervisor.'},
+
+{id:87,cat:'PER/Fatigue',q:'An operator has been on shift for 14 hours due to a system emergency that required their continued presence. The emergency is now resolved. Under NERC PER-006, what is the correct action?',
+opts:['The operator may continue indefinitely since the emergency justified the extended hours','The operator should be relieved as soon as reasonably possible; they have been on duty for 14 of the 16-hour maximum, and fatigue risk is elevated — the supervisor must actively manage the situation','The operator automatically receives a 24-hour rest period before they can return to any duty','File a NERC violation report since 14 hours has already exceeded the allowable limit'],
+ans:'The operator should be relieved as soon as reasonably possible; they have been on duty for 14 of the 16-hour maximum, and fatigue risk is elevated — the supervisor must actively manage the situation',
+exp:'PER-006 recognizes that emergencies may extend shift lengths but requires active management. The supervisor must monitor the fatigued operator, arrange relief as quickly as possible, and ensure the operator does not exceed the 16-hour limit without proper documentation and safeguards. The operator themselves has an obligation to report impairment. Emergencies do not create an indefinite exemption.'},
+
+{id:88,cat:'PER/Fatigue',q:'What is the NERC System Operator Certification requirement for maintaining an active credential?',
+opts:['No continuing education is required — certification is permanent once earned','Operators must earn Continuing Education Hours (CEHs) each certification period (3 years) and pass a recertification exam at the end of each period','Operators must pass a written exam every 12 months and complete 40 hours of classroom training annually','Certification expires after 5 years and cannot be renewed — a new exam must be taken'],
+ans:'Operators must earn Continuing Education Hours (CEHs) each certification period (3 years) and pass a recertification exam at the end of each period',
+exp:'NERC System Operator Certification (NERC PER-003) requires operators to earn CEHs during the 3-year certification period through training, education, and professional development activities. At the end of the period, operators must either pass a recertification exam or demonstrate sufficient CEHs. Losing certification means the operator cannot perform real-time reliability tasks.'},
+
+{id:89,cat:'PER/Fatigue',q:'SCENARIO: A system operator tells their supervisor they are feeling extremely fatigued and may not be functioning at full capacity, but their replacement is not due for 3 more hours. What is the supervisor\'s correct response?',
+opts:['Ask the operator to continue until the scheduled relief arrives — staffing the console is the priority','Immediately arrange for a qualified replacement, even if it means calling someone in early or the supervisor taking the console temporarily; an impaired operator cannot reliably maintain system reliability','Document the complaint and have the operator take a 30-minute break before returning','Tell the operator to drink coffee and continue — fatigue is a normal part of emergency operations'],
+ans:'Immediately arrange for a qualified replacement, even if it means calling someone in early or the supervisor taking the console temporarily; an impaired operator cannot reliably maintain system reliability',
+exp:'An operator who self-reports fatigue or impairment must be taken seriously and relieved. A fatigued operator on a transmission or balancing console is a reliability risk — slow decision-making or errors during an emergency can trigger cascading events. PER-006 places obligations on both operators (to report impairment) and supervisors (to act on those reports). Waiting for scheduled relief is not an acceptable response.'},
+
+// ─── COM / VERBAL SWITCHING ORDERS (4) ──────────────────────────────────────
+{id:90,cat:'COM/Switching',q:'Why are three-part communication protocols (say — repeat back — confirm) required for switching orders on the bulk power system?',
+opts:['To create a paper trail for NERC compliance audits','To ensure both the issuer and receiver have the same understanding of the instruction, catching errors before equipment is operated — a single miscommunication during switching can cause a fault, outage, or personnel injury','Because FERC regulations require three separate recordings of every switching instruction','To give the receiving operator extra time to look up the equipment location before operating'],
+ans:'To ensure both the issuer and receiver have the same understanding of the instruction, catching errors before equipment is operated — a single miscommunication during switching can cause a fault, outage, or personnel injury',
+exp:'Three-part communication (instruction → readback → confirm/correct) is required by NERC COM-002 for time-sensitive and reliability-related communications. The readback requirement catches errors before they become switching mistakes. In the bulk power system, a wrong breaker opened at the wrong time can fault a bus, create an unintended island, or expose a worker to live equipment.'},
+
+{id:91,cat:'COM/Switching',q:'An operator issues a switching instruction to a field technician. The technician reads back the instruction correctly, but the operator realizes the technician repeated the correct breaker number but wrong substation. What must the operator do?',
+opts:['Allow the switching to proceed — the technician read back the correct breaker number','Immediately correct the error before any switching occurs: "I need to correct that instruction — do not proceed. The correct substation is [name]." Then re-issue and re-confirm the corrected instruction','Document the discrepancy in the log and follow up after the switching is complete','Let the field tech proceed and observe the outcome — field techs know their substations better than the ROC'],
+ans:'Immediately correct the error before any switching occurs: "I need to correct that instruction — do not proceed. The correct substation is [name]." Then re-issue and re-confirm the corrected instruction',
+exp:'COM-002 requires that if the readback reveals an error, the issuer must immediately correct it before proceeding. The operator cannot allow switching to proceed on a miscommunicated instruction, even if only partially wrong. The cost of a correction is seconds; the cost of a wrong-substation switch can be a major fault or personnel exposure to live equipment.'},
+
+{id:92,cat:'COM/Switching',q:'What is the purpose of a Switching Order (or Clearance Order) as used in transmission operations?',
+opts:['A financial order processed by the market operator to schedule real power transfers between BAs','A pre-planned, numbered sequence of switching steps reviewed and approved prior to execution, ensuring all steps are performed in the correct order to safely isolate, energize, or restore a facility','A verbal-only authorization from the RC allowing a TOP to modify transmission configuration','A post-event document filed after unplanned switching occurs during a disturbance'],
+ans:'A pre-planned, numbered sequence of switching steps reviewed and approved prior to execution, ensuring all steps are performed in the correct order to safely isolate, energize, or restore a facility',
+exp:'Switching orders provide a controlled, auditable framework for complex switching sequences. Each step is numbered, verified against a one-line diagram, and checked for safety tags and protection status. Pre-approval by a qualified reviewer catches errors before field execution. During execution, each step is read back and confirmed. This process prevents the dangerous errors that can occur during ad-hoc switching.'},
+
+{id:93,cat:'COM/Switching',q:'SCENARIO: A field technician contacts the ROC and says a breaker "didn\'t feel right" when it operated but the SCADA indication shows it opened. The operator cannot verify the breaker state through any other means. What is the appropriate action?',
+opts:['Accept the SCADA indication as definitive — SCADA cannot lie','Treat the breaker state as uncertain; do not proceed with further steps that assume the breaker is open until a physical visual verification is obtained and the field technician can confirm breaker position','Continue the switching sequence — a brief delay to verify a single breaker is unacceptable','Call the breaker manufacturer for guidance on interpreting the abnormal feel'],
+ans:'Treat the breaker state as uncertain; do not proceed with further steps that assume the breaker is open until a physical visual verification is obtained and the field technician can confirm breaker position',
+exp:'SCADA indications can be incorrect — position switches fail, auxiliary contacts stick, and communication errors produce false "open" or "closed" indications. When a field technician reports uncertainty about equipment state, the operator must treat the state as unknown. Proceeding on a false "open" indication while installing grounds or energizing adjacent equipment creates a fatal hazard for field personnel.'},
+
+// ─── INADVERTENT INTERCHANGE / BA OPS (4) ────────────────────────────────────
+{id:94,cat:'BA Operations',q:'What is "Inadvertent Interchange" and how is it typically addressed?',
+opts:['Emergency energy purchased from a neighboring BA during a generation shortage; addressed by repaying the energy the following day','The unintended accumulation of energy imbalance between a BA\'s actual and scheduled interchange over time, caused by ACE deviations; typically tracked and repaid through energy payback agreements with neighboring BAs','A market settlement mechanism for under-scheduled energy; resolved through financial payment only','Inadvertent interchange refers to physical energy losses on transmission lines; addressed through transmission loss factors'],
+ans:'The unintended accumulation of energy imbalance between a BA\'s actual and scheduled interchange over time, caused by ACE deviations; typically tracked and repaid through energy payback agreements with neighboring BAs',
+exp:'Inadvertent interchange accumulates when a BA\'s ACE deviates from zero — the BA either over- or under-generates relative to its schedule, causing energy to flow unscheduled across tie lines. NERC BAL-006 requires BAs to track inadvertent and pursue payback to keep cumulative imbalance within limits. Persistent large inadvertent positions indicate chronic ACE problems.'},
+
+{id:95,cat:'BA Operations',q:'NERC BAL-002 establishes requirements for what type of reserves, and why are they critical for BA operations?',
+opts:['Transformer oil reserves at substations — critical for maintaining equipment ratings during emergencies','Contingency Reserves — generation capacity held ready to respond to a sudden loss of the largest resource in the BA; critical because they must arrest frequency decline after a large generator or tie line trip','Voltage support reserves — reactive power held available for sudden voltage emergencies','Revenue reserves — financial margin required before a BA can purchase emergency energy'],
+ans:'Contingency Reserves — generation capacity held ready to respond to a sudden loss of the largest resource in the BA; critical because they must arrest frequency decline after a large generator or tie line trip',
+exp:'BAL-002 requires BAs to hold Contingency Reserves (typically equal to the loss of the single largest contingency — often a large generator or tie line). These reserves must be deployable within 10 minutes. Without adequate contingency reserves, a large generation trip will cause sustained frequency deviation that cannot be corrected in time, potentially triggering UFLS and cascading events.'},
+
+{id:96,cat:'BA Operations',q:'What is the difference between "Spinning Reserves" and "Non-Spinning Reserves" in the context of BA contingency reserves?',
+opts:['Spinning reserves are held by wind generators; non-spinning reserves are held by thermal generators','Spinning reserves are online synchronized generation capacity available immediately (within seconds) via governor response; non-spinning (off-line) reserves can be brought online within 10 minutes but require startup time','There is no operational difference — both must respond within 10 minutes','Spinning reserves apply only to frequency regulation; non-spinning reserves are used for voltage emergencies only'],
+ans:'Spinning reserves are online synchronized generation capacity available immediately (within seconds) via governor response; non-spinning (off-line) reserves can be brought online within 10 minutes but require startup time',
+exp:'Spinning reserves respond instantaneously via governor action — they are the first line of defense after a large trip. Non-spinning (offline) reserves such as fast-start combustion turbines or hydro units can be started and synchronized within 10 minutes. BAL-002 requires a specific amount of spinning reserves (typically 50% of total contingency reserve requirement) because the immediate response is critical to arresting frequency decline before it reaches UFLS thresholds.'},
+
+{id:97,cat:'BA Operations',q:'SCENARIO: Your BA has 800 MW of spinning reserves and 600 MW of non-spinning reserves online. Your largest single contingency is a 1,200 MW nuclear unit. Your BAL-002 requirement is to hold reserves equal to the largest contingency. Are you in compliance, and why?',
+opts:['Yes — 800 + 600 = 1,400 MW total reserves exceeds the 1,200 MW requirement','No — total reserves of 1,400 MW exceed requirements, but BAL-002 also requires that at least 50% of contingency reserves (600 MW) be spinning reserves. With only 800 MW spinning against a 1,200 MW contingency, a check is needed against your specific BAL-002 required spinning amount','Yes — any combination of spinning and non-spinning reserves totaling more than the contingency is sufficient','No — BAL-002 requires 150% of the largest contingency to be held as spinning reserves at all times'],
+ans:'No — total reserves of 1,400 MW exceed requirements, but BAL-002 also requires that at least 50% of contingency reserves (600 MW) be spinning reserves. With only 800 MW spinning against a 1,200 MW contingency, a check is needed against your specific BAL-002 required spinning amount',
+exp:'BAL-002 has both a total reserve requirement and a spinning reserve sub-requirement. Simply having enough total MW is not sufficient if the spinning component is deficient. With a 1,200 MW contingency, you typically need at least 600 MW spinning. 800 MW spinning appears sufficient here, but the operator must verify against their specific BAL-002 requirement, which may specify additional spinning margins based on interconnection or regional criteria.'},
+
+// ─── DEMAND RESPONSE / INTERRUPTIBLE LOAD (3) ───────────────────────────────
+{id:98,cat:'Demand Response',q:'What is Demand Response in the context of bulk power system reliability operations?',
+opts:['An automatic load shedding scheme that activates at 59.5 Hz without operator action','The ability to reduce or shift electricity consumption by customers in response to system conditions or operator requests, used as a reliability resource to reduce load during stressed system conditions','A financial incentive program that pays customers to shift load to off-peak hours; not usable for real-time reliability operations','Demand response is another term for Automatic Generation Control (AGC)'],
+ans:'The ability to reduce or shift electricity consumption by customers in response to system conditions or operator requests, used as a reliability resource to reduce load during stressed system conditions',
+exp:'Demand Response (DR) allows system operators to call on enrolled customers to voluntarily or contractually reduce load during stressed conditions — helping to balance supply and demand, reduce flows on constrained paths, and avoid more severe actions like firm load shedding. DR resources may be dispatchable (operator-called) or automated (price or frequency-triggered). They count toward reserve requirements in some regions.'},
+
+{id:99,cat:'Demand Response',q:'SCENARIO: Your system is experiencing a capacity shortage. You have firm load, interruptible load contracts, and demand response participants available. In what order should these load reduction tools be used?',
+opts:['Firm load first — it is the largest and fastest to act','Demand response participants first (voluntary or contractual), then interruptible load per contract terms, then firm load interruption only as a last resort when all other options are exhausted','Interruptible load first, then demand response, then firm load — in alphabetical order of contract type','All three must be activated simultaneously per NERC EOP-001 requirements'],
+ans:'Demand response participants first (voluntary or contractual), then interruptible load per contract terms, then firm load interruption only as a last resort when all other options are exhausted',
+exp:'Load interruption follows a priority hierarchy from least to most disruptive. Demand response (often voluntary or lightly contracted) is activated first. Interruptible load customers have contracts specifically allowing curtailment in exchange for rate benefits — they are interrupted next per contract terms. Firm load interruption affects customers with no curtailment expectation and is the last resort, used only when all other measures are exhausted.'},
+
+{id:100,cat:'Demand Response',q:'An interruptible load customer\'s contract specifies they can be curtailed for a maximum of 4 hours per event, with 10 minutes notification. The operator has already curtailed this customer for 3.5 hours. The system emergency is ongoing. What must the operator do?',
+opts:['Continue the curtailment as long as the emergency lasts — reliability takes precedence over contracts during declared emergencies','Notify the customer that the curtailment must end within 30 minutes per contract terms; simultaneously identify alternative resources (additional DR, generation, or firm load if necessary) to replace the interruptible load capacity','Immediately restore the customer\'s load regardless of system conditions — contract terms are absolute','Request the RC to extend the curtailment contract on the operator\'s behalf'],
+ans:'Notify the customer that the curtailment must end within 30 minutes per contract terms; simultaneously identify alternative resources (additional DR, generation, or firm load if necessary) to replace the interruptible load capacity',
+exp:'Interruptible load contracts have defined terms that must be honored. Curtailing beyond contract limits can expose the utility to legal liability and damages customer trust in demand response programs. The operator must plan ahead — as the curtailment approaches its limit, alternative resources must be identified and ready. If no alternatives exist, escalation to the RC and EEA procedures may be required.'}
 ];
 
 let nercCFG = {qcount:50, timerMins:30, timerEnabled:true, mode:'exam'};
