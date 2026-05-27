@@ -555,6 +555,11 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .cl-entry{display:flex;gap:8px;align-items:flex-start;background:var(--bg2);border:1px solid var(--border);border-left:3px solid transparent;border-radius:8px;padding:8px 10px;transition:border-color .15s;}
 .cl-entry:hover{border-color:var(--border2);border-left-color:transparent;}
 .cl-entry.starred{border-left-color:var(--amber)!important;}
+.cl-cat-toggle{display:flex;gap:2px;flex-shrink:0;align-items:center;}
+.cl-cat-pill{font-size:10px;font-family:var(--mono);padding:2px 7px;border-radius:3px;border:1.5px solid var(--border);cursor:pointer;background:var(--bg4);color:var(--text3);transition:all .15s;}
+.cl-cat-pill:hover{color:var(--text2);border-color:var(--border2);}
+.cl-cat-pill.active-handoff{background:rgba(79,195,247,.12);color:var(--blue);border-color:var(--blue);}
+.cl-cat-pill.active-upcoming{background:rgba(0,229,160,.1);color:var(--green);border-color:var(--green);}
 .cl-time{font-family:var(--m);font-size:11px;color:var(--text3);white-space:nowrap;margin-top:2px;min-width:38px;flex-shrink:0;}
 body.dark .cl-time{color:var(--text2);}
 .cl-cat{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:1px;align-self:flex-start;line-height:1.5;}
@@ -3058,6 +3063,13 @@ function clSetSite(id, val) {
   clRender();
 }
 
+function clSetCat(id, cat) {
+  const e = clEntries.find(x => x.id === id); if (!e) return;
+  e.cat = e.cat === cat ? '' : cat;
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
+  clRender();
+}
+
 function clStartEdit(id) {
   const e = clEntries.find(x => x.id === id); if (!e) return;
   const bodyEl = document.querySelector(`.cl-body[data-id="${id}"]`);
@@ -3246,11 +3258,14 @@ function clRender() {
       const catCls = CL_CAT_CLS[e.cat] || 'cl-cat-normal';
       const catBadge = e.cat && e.cat !== 'Normal' ? `<span class="cl-cat ${catCls}">${esc(e.cat)}</span>` : '';
       const siteSelect = `<select class="cl-inline-site" title="Edit site" onchange="clSetSite(${e.id},this.value)">${clSiteOptions}</select>`;
+      const hPill = `<span class="cl-cat-pill${e.cat==='Handoff'?' active-handoff':''}" onclick="clSetCat(${e.id},'Handoff')">Handoff</span>`;
+      const uPill = `<span class="cl-cat-pill${e.cat==='Upcoming'?' active-upcoming':''}" onclick="clSetCat(${e.id},'Upcoming')">Upcoming</span>`;
       return `<div class="cl-entry${e.starred?' starred':''}">
         <span class="cl-time">${esc(e.time)}</span>
         ${catBadge}
         ${siteSelect}
         <span class="cl-body" data-id="${e.id}" title="Click to edit" onclick="clStartEdit(${e.id})">${esc(e.text)}</span>
+        <div class="cl-cat-toggle">${hPill}${uPill}</div>
         <button class="cl-star${e.starred?' on':''}" title="Star for passdown" onclick="clToggleStar(${e.id})">★</button>
         <button class="cl-del" title="Delete entry" onclick="clDelete(${e.id})">✕</button>
       </div>`;
@@ -3309,7 +3324,6 @@ function clRenderPreview() {
         <span class="cl-hd-section-count">${handoffEntries.length} item${handoffEntries.length!==1?'s':''}</span>
       </div>
       <div class="cl-hd-sites">${renderItems(handoffEntries)}</div>
-      <div class="cl-hd-edit-hint">Click any line to edit · ✕ to remove</div>
     </div>`;
   }
 
@@ -3322,7 +3336,6 @@ function clRenderPreview() {
         <span class="cl-hd-section-count">${upcomingEntries.length} item${upcomingEntries.length!==1?'s':''}</span>
       </div>
       <div class="cl-hd-sites">${renderItems(upcomingEntries)}</div>
-      <div class="cl-hd-edit-hint">Click any line to edit · ✕ to remove</div>
     </div>`;
   }
 
