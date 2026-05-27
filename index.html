@@ -881,9 +881,9 @@ body.dark .nerc-study-container{
 .nerc-study-container .nerc-screen{display:none}
 .nerc-study-container .nerc-screen.active{display:flex;flex-direction:column}
 
-.nerc-study-container #nerc-screen-setup{align-items:center;justify-content:center;padding:60px 20px;background:var(--bg2)}
+.nerc-study-container #nerc-screen-setup{align-items:center;justify-content:flex-start;padding:32px 24px;background:var(--bg2)}
 
-.nerc-study-container .nerc-setup-wrap{width:100%;max-width:620px}
+.nerc-study-container .nerc-setup-wrap{width:100%;max-width:960px}
 .nerc-study-container .nerc-setup-logo{display:flex;align-items:center;gap:14px;margin-bottom:32px}
 .nerc-study-container .nerc-setup-logo-icon{width:52px;height:52px;background:var(--nerc-greenbg);border:1.5px solid var(--nerc-green);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 24px rgba(0,229,160,.15)}
 .nerc-study-container .nerc-setup-logo-text{font-family:var(--nerc-cond);font-size:28px;font-weight:700;letter-spacing:.08em;color:var(--nerc-green);text-shadow:0 0 20px rgba(0,229,160,.3)}
@@ -928,7 +928,7 @@ body.dark .nerc-study-container{
 .nerc-study-container .nerc-resources{margin-top:24px}
 .nerc-study-container .nerc-resources-hdr{font-family:var(--nerc-mono);font-size:11px;color:var(--nerc-text3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .nerc-study-container .nerc-resources-hdr::after{content:\'\';flex:1;height:1px;background:var(--nerc-border)}
-.nerc-study-container .nerc-coverage-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.nerc-study-container .nerc-coverage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
 .nerc-study-container .nerc-cov-card{background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-radius:7px;padding:10px 12px}
 .nerc-study-container .nerc-cov-role{font-family:var(--nerc-mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
 .nerc-study-container .nerc-cov-role.to{color:var(--nerc-blue)}
@@ -975,7 +975,7 @@ body.dark .nerc-study-container{
 .nerc-study-container .nerc-exam-flag-btn{background:none;border:1.5px solid var(--nerc-border2);border-radius:6px;padding:6px 12px;color:var(--nerc-text3);cursor:pointer;font-size:13px;font-family:var(--nerc-mono);transition:all .15s;white-space:nowrap}
 .nerc-study-container .nerc-exam-flag-btn:hover{border-color:var(--nerc-amber);color:var(--nerc-amber)}
 .nerc-study-container .nerc-exam-flag-btn.flagged{background:var(--nerc-amberbg);border-color:var(--nerc-amber);color:var(--nerc-amber)}
-.nerc-study-container .nerc-exam-body{flex:1;max-width:860px;width:100%;margin:0 auto;padding:32px 24px 120px}
+.nerc-study-container .nerc-exam-body{flex:1;max-width:1100px;width:100%;margin:0 auto;padding:32px 24px 120px}
 .nerc-study-container .nerc-qscenario-tag{font-family:var(--nerc-mono);font-size:10px;color:var(--nerc-orange);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .nerc-study-container .nerc-qscenario-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--nerc-orange)}
 .nerc-study-container .nerc-qtext{font-size:20px;font-weight:500;line-height:1.65;margin-bottom:28px;color:var(--nerc-text)}
@@ -1017,7 +1017,7 @@ body.dark .nerc-study-container{
 .nerc-study-container .nerc-qgrid-btn.flagged-q{border-color:var(--nerc-amber);color:var(--nerc-amber)}
 .nerc-study-container .nerc-qgrid-btn.answered.flagged-q{background:var(--nerc-amberbg)}
 .nerc-study-container #nerc-screen-results{padding:40px 20px;align-items:center;background:var(--nerc-bg)}
-.nerc-study-container .nerc-results-wrap{max-width:720px;width:100%}
+.nerc-study-container .nerc-results-wrap{max-width:960px;width:100%}
 .nerc-study-container .nerc-results-header{text-align:center;margin-bottom:36px}
 .nerc-study-container .nerc-results-score-ring{width:160px;height:160px;margin:0 auto 20px;position:relative}
 .nerc-study-container .nerc-rsr-svg{width:100%;height:100%}
@@ -1060,7 +1060,7 @@ body.dark .nerc-study-container{
 .nerc-study-container .nerc-rfil-btn.active{background:var(--nerc-bg5);border-color:var(--nerc-blue);color:var(--nerc-blue)}
 .nerc-study-container .nerc-review-back{background:none;border:1.5px solid var(--nerc-border2);border-radius:6px;padding:8px 16px;color:var(--nerc-text2);cursor:pointer;font-family:var(--nerc-mono);font-size:12px;transition:all .15s}
 .nerc-study-container .nerc-review-back:hover{color:var(--nerc-text);border-color:var(--nerc-text2)}
-.nerc-study-container .nerc-review-body{max-width:860px;margin:0 auto;padding:28px 24px 60px}
+.nerc-study-container .nerc-review-body{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
 .nerc-study-container .nerc-review-item{background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-radius:10px;margin-bottom:16px;overflow:hidden}
 .nerc-study-container .nerc-review-item-hdr{padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--nerc-border)}
 .nerc-study-container .nerc-rev-qnum{font-family:var(--nerc-mono);font-size:11px;color:var(--nerc-text3)}
@@ -1693,7 +1693,7 @@ body.dark .nerc-study-container{
 
     <!-- RESULTS SCREEN -->
     <div id="nerc-screen-results" class="nerc-screen">
-      <div style="max-width:720px;width:100%;margin:0 auto;padding:40px 20px">
+      <div style="max-width:960px;width:100%;margin:0 auto;padding:40px 20px">
         <div class="nerc-results-header">
           <div class="nerc-results-score-ring">
             <svg class="nerc-rsr-svg" viewBox="0 0 160 160">
