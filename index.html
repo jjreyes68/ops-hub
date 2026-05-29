@@ -7174,7 +7174,8 @@ function processPGSC() {
 
   const dateInput = document.getElementById('pgsc-date').value;
   if (dateInput) {
-    const date = new Date(dateInput + 'T00:00:00');
+    const [year, month, day] = dateInput.split('-');
+    const date = new Date(year, month - 1, day);
     const formattedDate = date.toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
