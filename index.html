@@ -343,36 +343,14 @@
             </div>
 
             <div class="paste-section">
-                <h3>Bulk Paste from Spreadsheet</h3>
+                <h3>Paste Hourly Data from Spreadsheet</h3>
                 <p>Copy data from Excel/Google Sheets and paste below. Supports tab-separated or CSV format. Expected columns: Time, Min MW, Max MW, Min MVAR, Max MVAR, Status (in any order)</p>
                 <textarea id="pasteTextarea" class="paste-textarea" placeholder="Paste spreadsheet data here...&#10;Example:&#10;00:00	0	0	0	0	Idle&#10;01:00	0	0	0	0	Idle&#10;..."></textarea>
                 <div class="paste-actions">
-                    <button class="btn btn-info" onclick="parseAndImport()">Parse & Import Data</button>
-                    <button class="btn btn-secondary" onclick="clearPasteArea()">Clear Paste Area</button>
+                    <button class="btn btn-primary" onclick="processSchedule()">Process Schedule</button>
+                    <button class="btn btn-secondary" onclick="fillSampleData()">Load Sample Data</button>
+                    <button class="btn btn-secondary" onclick="clearPasteArea()">Clear</button>
                 </div>
-            </div>
-
-            <div class="data-table-container">
-                <table class="data-table" id="dataTable">
-                    <thead>
-                        <tr>
-                            <th>Time</th>
-                            <th>Min MW</th>
-                            <th>Max MW</th>
-                            <th>Min MVAR</th>
-                            <th>Max MVAR</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="button-group">
-                <button class="btn btn-primary" onclick="processSchedule()">Process Schedule</button>
-                <button class="btn btn-secondary" onclick="fillSampleData()">Fill Sample Data</button>
-                <button class="btn btn-secondary" onclick="clearData()">Clear Data</button>
             </div>
 
             <div class="output-section">
@@ -387,110 +365,57 @@
     </div>
 
     <script>
-        // Initialize the table with 24 hours
-        function initializeTable() {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
-
-            for (let hour = 0; hour < 24; hour++) {
-                const timeStr = hour.toString().padStart(2, '0') + ':00';
-                const row = document.createElement('tr');
-                
-                row.innerHTML = `
-                    <td class="time-cell">${timeStr}</td>
-                    <td><input type="number" step="0.001" min="0" id="minMW_${hour}" value="0"></td>
-                    <td><input type="number" step="0.001" min="0" id="maxMW_${hour}" value="0"></td>
-                    <td><input type="number" step="0.001" min="0" id="minMVAR_${hour}" value="0"></td>
-                    <td><input type="number" step="0.001" min="0" id="maxMVAR_${hour}" value="0"></td>
-                    <td>
-                        <select id="status_${hour}">
-                            <option value="Idle">Idle</option>
-                            <option value="Generating">Generating</option>
-                        </select>
-                    </td>
-                `;
-                
-                tbody.appendChild(row);
-            }
-
-            // Set default date to today
-            document.getElementById('scheduleDate').valueAsDate = new Date();
-        }
-
         // Fill sample data for testing
         function fillSampleData() {
-            const sampleData = [
-                { minMW: 0, maxMW: 0, minMVAR: 0, maxMVAR: 0, status: 'Idle' },      // 00:00
-                { minMW: 0, maxMW: 0, minMVAR: 0, maxMVAR: 0, status: 'Idle' },      // 01:00
-                { minMW: 0, maxMW: 0, minMVAR: 0, maxMVAR: 0, status: 'Idle' },      // 02:00
-                { minMW: 0, maxMW: 0, minMVAR: 0, maxMVAR: 0, status: 'Idle' },      // 03:00
-                { minMW: 0, maxMW: 2, minMVAR: 0, maxMVAR: 0, status: 'Generating' }, // 04:00
-                { minMW: 0, maxMW: 2, minMVAR: 0, maxMVAR: 0, status: 'Generating' }, // 05:00
-                { minMW: 0, maxMW: 0, minMVAR: 0, maxMVAR: 0, status: 'Idle' },      // 06:00
-                { minMW: 0, maxMW: 166.667, minMVAR: 0, maxMVAR: 0, status: 'Generating' }, // 07:00-16:00
-                { minMW: 0, maxMW: 166.667, minMVAR: 0, maxMVAR: 0, status: 'Generating' },
-                { minMW: 0, maxMW: 166.667, minMVAR: 0, maxMVAR: 0, status: 'Generating' },
-                { minMW: 0, maxMW: 166.667, minMVAR: 0, maxMVAR: 0, status: 'Generating' },
-                { minMW: 0, maxMW: 166.667, minMVAR: 0, maxMVAR: 0, status: 'Generating' },
-                { minMW: 0, maxMW: 166.667, minMVAR: 0, maxMVAR: 0, status: 'Generating' },
-                { minMW: 0, maxMW: 166.667, minMVAR: 0, maxMVAR: 0, status: 'Generating' },
-                { minMW: 0, maxMW: 166.667, minMVAR: 0, maxMVAR: 0, status: 'Generating' },
-                { minMW: 0, maxMW: 166.667, minMVAR: 0, maxMVAR: 0, status: 'Generating' },
-                { minMW: 0, maxMW: 166.667, minMVAR: 0, maxMVAR: 0, status: 'Generating' },
-                { minMW: 0, maxMW: 0, minMVAR: 0, maxMVAR: 0, status: 'Idle' },      // 17:00
-                { minMW: 0, maxMW: 0, minMVAR: 0, maxMVAR: 0, status: 'Idle' },      // 18:00
-                { minMW: 0, maxMW: 0, minMVAR: 0, maxMVAR: 0, status: 'Idle' },      // 19:00
-                { minMW: 0, maxMW: 0, minMVAR: 0, maxMVAR: 0, status: 'Idle' },      // 20:00
-                { minMW: 0, maxMW: 0, minMVAR: 0, maxMVAR: 0, status: 'Idle' },      // 21:00
-                { minMW: 0, maxMW: 0, minMVAR: 0, maxMVAR: 0, status: 'Idle' },      // 22:00
-                { minMW: 0, maxMW: 0, minMVAR: 0, maxMVAR: 0, status: 'Idle' }       // 23:00
-            ];
-
-            for (let hour = 0; hour < 24; hour++) {
-                document.getElementById(`minMW_${hour}`).value = sampleData[hour].minMW;
-                document.getElementById(`maxMW_${hour}`).value = sampleData[hour].maxMW;
-                document.getElementById(`minMVAR_${hour}`).value = sampleData[hour].minMVAR;
-                document.getElementById(`maxMVAR_${hour}`).value = sampleData[hour].maxMVAR;
-                document.getElementById(`status_${hour}`).value = sampleData[hour].status;
-            }
-
-            showStatus('Sample data loaded successfully!', 'success');
-        }
-
-        // Clear all data
-        function clearData() {
-            for (let hour = 0; hour < 24; hour++) {
-                document.getElementById(`minMW_${hour}`).value = 0;
-                document.getElementById(`maxMW_${hour}`).value = 0;
-                document.getElementById(`minMVAR_${hour}`).value = 0;
-                document.getElementById(`maxMVAR_${hour}`).value = 0;
-                document.getElementById(`status_${hour}`).value = 'Idle';
-            }
+            const sampleData = `00:00\t0\t0\t0\t0\tIdle
+01:00\t0\t0\t0\t0\tIdle
+02:00\t0\t0\t0\t0\tIdle
+03:00\t0\t0\t0\t0\tIdle
+04:00\t0\t2\t0\t0\tGenerating
+05:00\t0\t2\t0\t0\tGenerating
+06:00\t0\t0\t0\t0\tIdle
+07:00\t0\t166.667\t0\t0\tGenerating
+08:00\t0\t166.667\t0\t0\tGenerating
+09:00\t0\t166.667\t0\t0\tGenerating
+10:00\t0\t166.667\t0\t0\tGenerating
+11:00\t0\t166.667\t0\t0\tGenerating
+12:00\t0\t166.667\t0\t0\tGenerating
+13:00\t0\t166.667\t0\t0\tGenerating
+14:00\t0\t166.667\t0\t0\tGenerating
+15:00\t0\t166.667\t0\t0\tGenerating
+16:00\t0\t166.667\t0\t0\tGenerating
+17:00\t0\t0\t0\t0\tIdle
+18:00\t0\t0\t0\t0\tIdle
+19:00\t0\t0\t0\t0\tIdle
+20:00\t0\t0\t0\t0\tIdle
+21:00\t0\t0\t0\t0\tIdle
+22:00\t0\t0\t0\t0\tIdle
+23:00\t0\t0\t0\t0\tIdle`;
             
-            document.getElementById('siteName').value = '';
-            document.getElementById('outputContent').textContent = 'Click "Process Schedule" to generate consolidated output...';
-            document.getElementById('outputHeader').textContent = '';
-            
-            showStatus('Data cleared!', 'success');
+            document.getElementById('pasteTextarea').value = sampleData;
+            showStatus('Sample data loaded! Click "Process Schedule" to consolidate.', 'success');
         }
 
         // Clear paste area
         function clearPasteArea() {
             document.getElementById('pasteTextarea').value = '';
-            showStatus('Paste area cleared!', 'success');
+            document.getElementById('outputContent').textContent = 'Click "Process Schedule" to generate consolidated output...';
+            document.getElementById('outputHeader').textContent = '';
+            showStatus('Cleared!', 'success');
         }
 
-        // Parse and import data from spreadsheet paste
-        function parseAndImport() {
-            const pasteText = document.getElementById('pasteTextarea').value.trim();
-            
+        // Parse data from spreadsheet paste
+        function parseData(pasteText) {
             if (!pasteText) {
-                showStatus('Please paste data first!', 'error');
-                return;
+                return null;
             }
 
             // Detect delimiter (tab or comma)
             const lines = pasteText.split('\n').filter(line => line.trim());
+            if (lines.length === 0) {
+                return null;
+            }
+            
             const firstLine = lines[0];
             const delimiter = firstLine.includes('\t') ? '\t' : ',';
 
@@ -552,6 +477,7 @@
                     const hour = parseInt(hourMatch[1]);
                     if (hour >= 0 && hour < 24) {
                         parsedData.push({
+                            time: time,
                             hour: hour,
                             minMW: minMW || 0,
                             maxMW: maxMW || 0,
@@ -564,48 +490,53 @@
             }
 
             if (parsedData.length === 0) {
-                showStatus('Could not parse data. Please check the format.', 'error');
-                return;
+                return null;
             }
 
-            // Populate the table with parsed data
-            for (const data of parsedData) {
-                document.getElementById(`minMW_${data.hour}`).value = data.minMW;
-                document.getElementById(`maxMW_${data.hour}`).value = data.maxMW;
-                document.getElementById(`minMVAR_${data.hour}`).value = data.minMVAR;
-                document.getElementById(`maxMVAR_${data.hour}`).value = data.maxMVAR;
-                document.getElementById(`status_${data.hour}`).value = data.status;
+            // Sort by hour and ensure we have all 24 hours
+            parsedData.sort((a, b) => a.hour - b.hour);
+            
+            // Fill in missing hours with default values
+            const completeData = [];
+            for (let hour = 0; hour < 24; hour++) {
+                const found = parsedData.find(d => d.hour === hour);
+                if (found) {
+                    completeData.push(found);
+                } else {
+                    completeData.push({
+                        time: hour.toString().padStart(2, '0') + ':00',
+                        hour: hour,
+                        minMW: 0,
+                        maxMW: 0,
+                        minMVAR: 0,
+                        maxMVAR: 0,
+                        status: 'Idle'
+                    });
+                }
             }
 
-            showStatus(`Successfully imported ${parsedData.length} hours of data!`, 'success');
+            return completeData;
         }
 
         // Process the schedule and consolidate consecutive hours
         function processSchedule() {
-            const data = [];
+            const pasteText = document.getElementById('pasteTextarea').value.trim();
             
-            // Collect data from all 24 hours
-            for (let hour = 0; hour < 24; hour++) {
-                const timeStr = hour.toString().padStart(2, '0') + ':00';
-                data.push({
-                    time: timeStr,
-                    hour: hour,
-                    minMW: parseFloat(document.getElementById(`minMW_${hour}`).value) || 0,
-                    maxMW: parseFloat(document.getElementById(`maxMW_${hour}`).value) || 0,
-                    minMVAR: parseFloat(document.getElementById(`minMVAR_${hour}`).value) || 0,
-                    maxMVAR: parseFloat(document.getElementById(`maxMVAR_${hour}`).value) || 0,
-                    status: document.getElementById(`status_${hour}`).value
-                });
+            if (!pasteText) {
+                showStatus('Please paste data first!', 'error');
+                return;
+            }
+
+            const data = parseData(pasteText);
+            
+            if (!data) {
+                showStatus('Could not parse data. Please check the format.', 'error');
+                return;
             }
 
             // Consolidate consecutive identical hours
             const groups = [];
             
-            if (data.length === 0) {
-                showStatus('No data to process!', 'error');
-                return;
-            }
-
             let currentGroup = {
                 start: data[0].time,
                 startHour: data[0].hour,
@@ -722,7 +653,9 @@
         }
 
         // Initialize on page load
-        window.onload = initializeTable;
+        window.onload = function() {
+            document.getElementById('scheduleDate').valueAsDate = new Date();
+        };
     </script>
 </body>
 </html>
