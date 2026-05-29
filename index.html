@@ -253,6 +253,57 @@
             font-weight: 600;
         }
 
+        .paste-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .paste-section h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .paste-section p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .paste-textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            resize: vertical;
+            margin-bottom: 12px;
+        }
+
+        .paste-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .paste-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: #138496;
+        }
+
         @media (max-width: 768px) {
             .form-row {
                 flex-direction: column;
@@ -288,6 +339,16 @@
                         <label for="siteName">Site/Unit Name (Optional)</label>
                         <input type="text" id="siteName" placeholder="e.g., Olympus – PV Phase III">
                     </div>
+                </div>
+            </div>
+
+            <div class="paste-section">
+                <h3>Bulk Paste from Spreadsheet</h3>
+                <p>Copy data from Excel/Google Sheets and paste below. Supports tab-separated or CSV format. Expected columns: Time, Min MW, Max MW, Min MVAR, Max MVAR, Status (in any order)</p>
+                <textarea id="pasteTextarea" class="paste-textarea" placeholder="Paste spreadsheet data here...&#10;Example:&#10;00:00	0	0	0	0	Idle&#10;01:00	0	0	0	0	Idle&#10;..."></textarea>
+                <div class="paste-actions">
+                    <button class="btn btn-info" onclick="parseAndImport()">Parse & Import Data</button>
+                    <button class="btn btn-secondary" onclick="clearPasteArea()">Clear Paste Area</button>
                 </div>
             </div>
 
@@ -411,6 +472,112 @@
             document.getElementById('outputHeader').textContent = '';
             
             showStatus('Data cleared!', 'success');
+        }
+
+        // Clear paste area
+        function clearPasteArea() {
+            document.getElementById('pasteTextarea').value = '';
+            showStatus('Paste area cleared!', 'success');
+        }
+
+        // Parse and import data from spreadsheet paste
+        function parseAndImport() {
+            const pasteText = document.getElementById('pasteTextarea').value.trim();
+            
+            if (!pasteText) {
+                showStatus('Please paste data first!', 'error');
+                return;
+            }
+
+            // Detect delimiter (tab or comma)
+            const lines = pasteText.split('\n').filter(line => line.trim());
+            const firstLine = lines[0];
+            const delimiter = firstLine.includes('\t') ? '\t' : ',';
+
+            // Parse each line
+            const parsedData = [];
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                // Split by delimiter
+                const parts = line.split(delimiter).map(part => part.trim());
+                
+                // Skip header row if it contains non-numeric values in MW columns
+                if (i === 0 && isNaN(parseFloat(parts[1]))) {
+                    continue;
+                }
+                
+                // Try to identify columns by their content
+                let time, minMW, maxMW, minMVAR, maxMVAR, status;
+                
+                // Look for time pattern (HH:MM or HH)
+                const timeIndex = parts.findIndex(p => /^\d{1,2}:\d{2}$/.test(p) || /^\d{1,2}$/.test(p));
+                
+                // Look for status (Idle or Generating)
+                const statusIndex = parts.findIndex(p => p.toLowerCase() === 'idle' || p.toLowerCase() === 'generating');
+                
+                // Remaining numeric values are MW and MVAR
+                const numericValues = parts.filter(p => !isNaN(parseFloat(p)) && p.trim() !== '');
+                
+                if (numericValues.length >= 4) {
+                    minMW = parseFloat(numericValues[0]) || 0;
+                    maxMW = parseFloat(numericValues[1]) || 0;
+                    minMVAR = parseFloat(numericValues[2]) || 0;
+                    maxMVAR = parseFloat(numericValues[3]) || 0;
+                } else if (numericValues.length >= 2) {
+                    minMW = parseFloat(numericValues[0]) || 0;
+                    maxMW = parseFloat(numericValues[1]) || 0;
+                    minMVAR = 0;
+                    maxMVAR = 0;
+                }
+                
+                if (timeIndex !== -1) {
+                    time = parts[timeIndex];
+                } else {
+                    // If no time column, use row index
+                    time = parsedData.length.toString().padStart(2, '0') + ':00';
+                }
+                
+                if (statusIndex !== -1) {
+                    status = parts[statusIndex].charAt(0).toUpperCase() + parts[statusIndex].slice(1).toLowerCase();
+                } else {
+                    status = 'Idle';
+                }
+                
+                // Extract hour from time
+                const hourMatch = time.match(/^(\d{1,2})/);
+                if (hourMatch) {
+                    const hour = parseInt(hourMatch[1]);
+                    if (hour >= 0 && hour < 24) {
+                        parsedData.push({
+                            hour: hour,
+                            minMW: minMW || 0,
+                            maxMW: maxMW || 0,
+                            minMVAR: minMVAR || 0,
+                            maxMVAR: maxMVAR || 0,
+                            status: status || 'Idle'
+                        });
+                    }
+                }
+            }
+
+            if (parsedData.length === 0) {
+                showStatus('Could not parse data. Please check the format.', 'error');
+                return;
+            }
+
+            // Populate the table with parsed data
+            for (const data of parsedData) {
+                document.getElementById(`minMW_${data.hour}`).value = data.minMW;
+                document.getElementById(`maxMW_${data.hour}`).value = data.maxMW;
+                document.getElementById(`minMVAR_${data.hour}`).value = data.minMVAR;
+                document.getElementById(`maxMVAR_${data.hour}`).value = data.maxMVAR;
+                document.getElementById(`status_${data.hour}`).value = data.status;
+            }
+
+            showStatus(`Successfully imported ${parsedData.length} hours of data!`, 'success');
         }
 
         // Process the schedule and consolidate consecutive hours
