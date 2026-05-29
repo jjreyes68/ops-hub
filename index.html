@@ -332,12 +332,8 @@
             <div class="form-section">
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="scheduleDate">Schedule Date</label>
+                        <label for="scheduleDate">Date</label>
                         <input type="date" id="scheduleDate">
-                    </div>
-                    <div class="form-group">
-                        <label for="siteName">Site/Unit Name (Optional)</label>
-                        <input type="text" id="siteName" placeholder="e.g., Olympus – PV Phase III">
                     </div>
                 </div>
             </div>
@@ -348,7 +344,6 @@
                 <textarea id="pasteTextarea" class="paste-textarea" placeholder="Paste 24 rows here...&#10;Example:&#10;0	0	0	0	Idle&#10;0	0	0	0	Idle&#10;0	1	0	0	Generating&#10;..."></textarea>
                 <div class="paste-actions">
                     <button class="btn btn-primary" onclick="processSchedule()">Process Schedule</button>
-                    <button class="btn btn-secondary" onclick="fillSampleData()">Load Sample Data</button>
                     <button class="btn btn-secondary" onclick="clearPasteArea()">Clear</button>
                 </div>
             </div>
@@ -365,37 +360,6 @@
     </div>
 
     <script>
-        // Fill sample data for testing
-        function fillSampleData() {
-            const sampleData = `0	0	0	0	Idle
-0	0	0	0	Idle
-0	0	0	0	Idle
-0	0	0	0	Idle
-0	0	0	0	Idle
-0	0	0	0	Idle
-0	1	0	0	Generating
-0	87	0	0	Generating
-0	166.667	0	0	Generating
-0	166.667	0	0	Generating
-0	166.667	0	0	Generating
-0	166.667	0	0	Generating
-0	166.667	0	0	Generating
-0	166.667	0	0	Generating
-0	166.667	0	0	Generating
-0	166.667	0	0	Generating
-0	166.667	0	0	Generating
-0	116	0	0	Generating
-0	7	0	0	Generating
-0	0	0	0	Idle
-0	0	0	0	Idle
-0	0	0	0	Idle
-0	0	0	0	Idle
-0	0	0	0	Idle`;
-            
-            document.getElementById('pasteTextarea').value = sampleData;
-            showStatus('Sample data loaded! Click "Process Schedule" to consolidate.', 'success');
-        }
-
         // Clear paste area
         function clearPasteArea() {
             document.getElementById('pasteTextarea').value = '';
@@ -572,28 +536,17 @@
             output += 'Time  |  Min / Max MW  |  Min / Max MVAR  |  Status\n';
             output += '------------------------------------------------\n';
             
-            // Add header with date and site name if provided
+            // Add header with date if provided
             const dateInput = document.getElementById('scheduleDate').value;
-            const siteName = document.getElementById('siteName').value;
             
-            if (dateInput || siteName) {
-                let header = '';
-                if (dateInput) {
-                    const formattedDate = new Date(dateInput).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                    header += `Date: ${formattedDate}`;
-                }
-                if (siteName) {
-                    if (header) header += '\n';
-                    header += `Site: ${siteName}`;
-                }
-                if (header) {
-                    document.getElementById('outputHeader').textContent = header;
-                }
+            if (dateInput) {
+                const formattedDate = new Date(dateInput).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                document.getElementById('outputHeader').textContent = `Date: ${formattedDate}`;
             } else {
                 document.getElementById('outputHeader').textContent = '';
             }
