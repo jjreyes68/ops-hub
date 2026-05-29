@@ -344,8 +344,8 @@
 
             <div class="paste-section">
                 <h3>Paste Hourly Data from Spreadsheet</h3>
-                <p>Copy data from Excel/Google Sheets and paste below. Supports tab-separated or CSV format. Expected columns: Time, Min MW, Max MW, Min MVAR, Max MVAR, Status (in any order)</p>
-                <textarea id="pasteTextarea" class="paste-textarea" placeholder="Paste spreadsheet data here...&#10;Example:&#10;00:00	0	0	0	0	Idle&#10;01:00	0	0	0	0	Idle&#10;..."></textarea>
+                <p>Copy 24 rows from Excel/Google Sheets and paste below. Format: Min MW, Max MW, Min MVAR, Max MVAR, Status (tab-separated). Row 1 = 00:00, Row 2 = 01:00, etc.</p>
+                <textarea id="pasteTextarea" class="paste-textarea" placeholder="Paste 24 rows here...&#10;Example:&#10;0	0	0	0	Idle&#10;0	0	0	0	Idle&#10;0	1	0	0	Generating&#10;..."></textarea>
                 <div class="paste-actions">
                     <button class="btn btn-primary" onclick="processSchedule()">Process Schedule</button>
                     <button class="btn btn-secondary" onclick="fillSampleData()">Load Sample Data</button>
@@ -367,30 +367,30 @@
     <script>
         // Fill sample data for testing
         function fillSampleData() {
-            const sampleData = `00:00\t0\t0\t0\t0\tIdle
-01:00\t0\t0\t0\t0\tIdle
-02:00\t0\t0\t0\t0\tIdle
-03:00\t0\t0\t0\t0\tIdle
-04:00\t0\t2\t0\t0\tGenerating
-05:00\t0\t2\t0\t0\tGenerating
-06:00\t0\t0\t0\t0\tIdle
-07:00\t0\t166.667\t0\t0\tGenerating
-08:00\t0\t166.667\t0\t0\tGenerating
-09:00\t0\t166.667\t0\t0\tGenerating
-10:00\t0\t166.667\t0\t0\tGenerating
-11:00\t0\t166.667\t0\t0\tGenerating
-12:00\t0\t166.667\t0\t0\tGenerating
-13:00\t0\t166.667\t0\t0\tGenerating
-14:00\t0\t166.667\t0\t0\tGenerating
-15:00\t0\t166.667\t0\t0\tGenerating
-16:00\t0\t166.667\t0\t0\tGenerating
-17:00\t0\t0\t0\t0\tIdle
-18:00\t0\t0\t0\t0\tIdle
-19:00\t0\t0\t0\t0\tIdle
-20:00\t0\t0\t0\t0\tIdle
-21:00\t0\t0\t0\t0\tIdle
-22:00\t0\t0\t0\t0\tIdle
-23:00\t0\t0\t0\t0\tIdle`;
+            const sampleData = `0	0	0	0	Idle
+0	0	0	0	Idle
+0	0	0	0	Idle
+0	0	0	0	Idle
+0	0	0	0	Idle
+0	0	0	0	Idle
+0	1	0	0	Generating
+0	87	0	0	Generating
+0	166.667	0	0	Generating
+0	166.667	0	0	Generating
+0	166.667	0	0	Generating
+0	166.667	0	0	Generating
+0	166.667	0	0	Generating
+0	166.667	0	0	Generating
+0	166.667	0	0	Generating
+0	166.667	0	0	Generating
+0	166.667	0	0	Generating
+0	116	0	0	Generating
+0	7	0	0	Generating
+0	0	0	0	Idle
+0	0	0	0	Idle
+0	0	0	0	Idle
+0	0	0	0	Idle
+0	0	0	0	Idle`;
             
             document.getElementById('pasteTextarea').value = sampleData;
             showStatus('Sample data loaded! Click "Process Schedule" to consolidate.', 'success');
@@ -419,7 +419,7 @@
             const firstLine = lines[0];
             const delimiter = firstLine.includes('\t') ? '\t' : ',';
 
-            // Parse each line
+            // Parse each line - format: Min MW, Max MW, Min MVAR, Max MVAR, Status
             const parsedData = [];
             
             for (let i = 0; i < lines.length; i++) {
@@ -429,21 +429,18 @@
                 // Split by delimiter
                 const parts = line.split(delimiter).map(part => part.trim());
                 
-                // Skip header row if it contains non-numeric values in MW columns
-                if (i === 0 && isNaN(parseFloat(parts[1]))) {
+                // Skip header row if it contains non-numeric values in first column
+                if (i === 0 && isNaN(parseFloat(parts[0]))) {
                     continue;
                 }
                 
-                // Try to identify columns by their content
-                let time, minMW, maxMW, minMVAR, maxMVAR, status;
-                
-                // Look for time pattern (HH:MM or HH)
-                const timeIndex = parts.findIndex(p => /^\d{1,2}:\d{2}$/.test(p) || /^\d{1,2}$/.test(p));
+                // Expected format: Min MW, Max MW, Min MVAR, Max MVAR, Status
+                let minMW, maxMW, minMVAR, maxMVAR, status;
                 
                 // Look for status (Idle or Generating)
                 const statusIndex = parts.findIndex(p => p.toLowerCase() === 'idle' || p.toLowerCase() === 'generating');
                 
-                // Remaining numeric values are MW and MVAR
+                // Numeric values are MW and MVAR
                 const numericValues = parts.filter(p => !isNaN(parseFloat(p)) && p.trim() !== '');
                 
                 if (numericValues.length >= 4) {
@@ -458,43 +455,30 @@
                     maxMVAR = 0;
                 }
                 
-                if (timeIndex !== -1) {
-                    time = parts[timeIndex];
-                } else {
-                    // If no time column, use row index
-                    time = parsedData.length.toString().padStart(2, '0') + ':00';
-                }
-                
                 if (statusIndex !== -1) {
                     status = parts[statusIndex].charAt(0).toUpperCase() + parts[statusIndex].slice(1).toLowerCase();
                 } else {
                     status = 'Idle';
                 }
                 
-                // Extract hour from time
-                const hourMatch = time.match(/^(\d{1,2})/);
-                if (hourMatch) {
-                    const hour = parseInt(hourMatch[1]);
-                    if (hour >= 0 && hour < 24) {
-                        parsedData.push({
-                            time: time,
-                            hour: hour,
-                            minMW: minMW || 0,
-                            maxMW: maxMW || 0,
-                            minMVAR: minMVAR || 0,
-                            maxMVAR: maxMVAR || 0,
-                            status: status || 'Idle'
-                        });
-                    }
+                // Derive hour from row index (Row 1 = 00:00, Row 2 = 01:00, etc.)
+                const hour = parsedData.length;
+                if (hour < 24) {
+                    parsedData.push({
+                        time: hour.toString().padStart(2, '0') + ':00',
+                        hour: hour,
+                        minMW: minMW || 0,
+                        maxMW: maxMW || 0,
+                        minMVAR: minMVAR || 0,
+                        maxMVAR: maxMVAR || 0,
+                        status: status || 'Idle'
+                    });
                 }
             }
 
             if (parsedData.length === 0) {
                 return null;
             }
-
-            // Sort by hour and ensure we have all 24 hours
-            parsedData.sort((a, b) => a.hour - b.hour);
             
             // Fill in missing hours with default values
             const completeData = [];
