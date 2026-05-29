@@ -568,6 +568,10 @@
             // Format output
             let output = '';
             
+            // Add column header
+            output += 'Time  |  Min / Max MW  |  Min / Max MVAR  |  Status\n';
+            output += '------------------------------------------------\n';
+            
             // Add header with date and site name if provided
             const dateInput = document.getElementById('scheduleDate').value;
             const siteName = document.getElementById('siteName').value;
@@ -581,7 +585,7 @@
                         month: 'long',
                         day: 'numeric'
                     });
-                    header += `Schedule Date: ${formattedDate}`;
+                    header += `Date: ${formattedDate}`;
                 }
                 if (siteName) {
                     if (header) header += '\n';
