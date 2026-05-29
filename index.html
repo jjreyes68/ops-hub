@@ -7169,8 +7169,7 @@ function processPGSC() {
 
   groups.push(currentGroup);
 
-  let output = 'Time  |  Min / Max MW  |  Min / Max MVAR  |  Status\n';
-  output += '------------------------------------------------\n';
+  let output = '';
 
   const dateInput = document.getElementById('pgsc-date').value;
   if (dateInput) {
@@ -7184,6 +7183,9 @@ function processPGSC() {
     });
     output += `Date: ${formattedDate}\n\n`;
   }
+
+  output += 'Time  |  Min / Max MW  |  Min / Max MVAR  |  Status\n';
+  output += '------------------------------------------------\n';
 
   groups.forEach(group => {
     const endDisplay = group.endHour.toString().padStart(2, '0') + ':59';
