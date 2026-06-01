@@ -555,6 +555,11 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .cl-entry{display:flex;gap:8px;align-items:flex-start;background:var(--bg2);border:1px solid var(--border);border-left:3px solid transparent;border-radius:8px;padding:8px 10px;transition:border-color .15s;}
 .cl-entry:hover{border-color:var(--border2);border-left-color:transparent;}
 .cl-entry.starred{border-left-color:var(--amber)!important;}
+.cl-cat-toggle{display:flex;gap:2px;flex-shrink:0;align-items:center;}
+.cl-cat-pill{font-size:10px;font-family:var(--mono);padding:2px 7px;border-radius:3px;border:1.5px solid var(--border);cursor:pointer;background:var(--bg4);color:var(--text3);transition:all .15s;}
+.cl-cat-pill:hover{color:var(--text2);border-color:var(--border2);}
+.cl-cat-pill.active-handoff{background:rgba(79,195,247,.12);color:var(--blue);border-color:var(--blue);}
+.cl-cat-pill.active-upcoming{background:rgba(0,229,160,.1);color:var(--green);border-color:var(--green);}
 .cl-time{font-family:var(--m);font-size:11px;color:var(--text3);white-space:nowrap;margin-top:2px;min-width:38px;flex-shrink:0;}
 body.dark .cl-time{color:var(--text2);}
 .cl-cat{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:1px;align-self:flex-start;line-height:1.5;}
@@ -839,6 +844,241 @@ body.dark .as-prog-label{color:var(--text2);}
   background-size:200% 100%;
   animation:as-shimmer 1.2s ease forwards;
 }
+
+/* ── NERC STUDY SCOPED STYLES ───────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap');
+
+.nerc-study-container{
+  --nerc-bg:var(--bg2);--nerc-bg2:var(--bg3);--nerc-bg3:var(--bg4);--nerc-bg4:#e4e1dc;--nerc-bg5:#d8d4cc;
+  --nerc-border:var(--border);--nerc-border2:var(--border2);
+  --nerc-text:var(--text);--nerc-text2:var(--text2);--nerc-text3:var(--text3);
+  --nerc-green:var(--green);--nerc-greenbg:var(--gbg);--nerc-greenbdr:var(--gmid);
+  --nerc-red:var(--red);--nerc-redbg:var(--rbg);--nerc-redbdr:#c0392b;
+  --nerc-amber:var(--amber);--nerc-amberbg:var(--abg);--nerc-ambbdr:#c68600;
+  --nerc-blue:var(--blue);--nerc-bluebg:var(--bbg);--nerc-bluebdr:#0277bd;
+  --nerc-purple:var(--purple);--nerc-purplebg:var(--pbg);
+  --nerc-cyan:#26c6da;--nerc-cyanbg:#e0f7fa;
+  --nerc-orange:#ff8a65;
+  --nerc-mono:'Share Tech Mono',monospace;
+  --nerc-sans:'Barlow',sans-serif;
+  --nerc-cond:'Barlow Condensed',sans-serif;
+  background:transparent;color:var(--nerc-text);font-family:var(--nerc-sans);
+}
+
+body.dark .nerc-study-container{
+  --nerc-bg:#080c10;--nerc-bg2:#0e1419;--nerc-bg3:#151d25;--nerc-bg4:#1c2631;--nerc-bg5:#243040;
+  --nerc-border:#1e2d3d;--nerc-border2:#2a3f55;
+  --nerc-text:#d4e8f0;--nerc-text2:#7a9bb5;--nerc-text3:#4a6882;
+  --nerc-green:#00e5a0;--nerc-greenbg:#001f15;--nerc-greenbdr:#00a870;
+  --nerc-red:#ff4757;--nerc-redbg:#1f0a0c;--nerc-redbdr:#c0392b;
+  --nerc-amber:#ffb300;--nerc-amberbg:#1f1600;--nerc-ambbdr:#c68600;
+  --nerc-blue:#4fc3f7;--nerc-bluebg:#051624;--nerc-bluebdr:#0277bd;
+  --nerc-purple:#b39ddb;--nerc-purplebg:#0f0a1e;
+  --nerc-cyan:#26c6da;--nerc-cyanbg:#001f24;
+}
+
+.nerc-study-container *{box-sizing:border-box;margin:0;padding:0}
+.nerc-study-container .nerc-screen{display:none}
+.nerc-study-container .nerc-screen.active{display:flex;flex-direction:column}
+
+.nerc-study-container #nerc-screen-setup{align-items:center;justify-content:flex-start;padding:32px 24px;background:var(--bg2)}
+
+.nerc-study-container .nerc-setup-wrap{width:100%;max-width:960px}
+.nerc-study-container .nerc-setup-logo{display:flex;align-items:center;gap:14px;margin-bottom:32px}
+.nerc-study-container .nerc-setup-logo-icon{width:52px;height:52px;background:var(--nerc-greenbg);border:1.5px solid var(--nerc-green);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 24px rgba(0,229,160,.15)}
+.nerc-study-container .nerc-setup-logo-text{font-family:var(--nerc-cond);font-size:28px;font-weight:700;letter-spacing:.08em;color:var(--nerc-green);text-shadow:0 0 20px rgba(0,229,160,.3)}
+.nerc-study-container .nerc-setup-logo-sub{font-family:var(--nerc-mono);font-size:11px;color:var(--nerc-text3);letter-spacing:.12em;margin-top:2px}
+.nerc-study-container .nerc-setup-title{font-family:var(--nerc-cond);font-size:36px;font-weight:700;letter-spacing:.04em;line-height:1.1;margin-bottom:6px}
+.nerc-study-container .nerc-setup-title span{color:var(--nerc-green)}
+.nerc-study-container .nerc-setup-desc{color:var(--nerc-text2);font-size:14px;margin-bottom:32px;line-height:1.6}
+.nerc-study-container .nerc-setup-card{background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-radius:10px;padding:20px 24px;margin-bottom:14px}
+.nerc-study-container .nerc-setup-card-label{font-family:var(--nerc-mono);font-size:11px;color:var(--nerc-text3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px}
+.nerc-study-container .nerc-setup-opts{display:flex;gap:10px;flex-wrap:wrap}
+.nerc-study-container .nerc-setup-opt{flex:1;min-width:80px;background:var(--nerc-bg4);border:1.5px solid var(--nerc-border2);border-radius:7px;padding:10px 14px;cursor:pointer;text-align:center;font-family:var(--nerc-mono);font-size:14px;color:var(--nerc-text2);transition:all .15s}
+.nerc-study-container .nerc-setup-opt:hover{border-color:var(--nerc-green);color:var(--nerc-green)}
+.nerc-study-container .nerc-setup-opt.sel{background:var(--nerc-greenbg);border-color:var(--nerc-green);color:var(--nerc-green);box-shadow:0 0 14px rgba(0,229,160,.12)}
+.nerc-study-container .nerc-setup-opt .nerc-opt-main{font-size:20px;font-weight:700;display:block;margin-bottom:2px}
+.nerc-study-container .nerc-setup-opt .nerc-opt-sub{font-size:11px;color:inherit;opacity:.7}
+.nerc-study-container .nerc-setup-toggle-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nerc-study-container .nerc-setup-toggle-label{font-size:14px;color:var(--nerc-text)}
+.nerc-study-container .nerc-toggle{position:relative;width:44px;height:24px;cursor:pointer}
+.nerc-study-container .nerc-toggle input{opacity:0;width:0;height:0}
+.nerc-study-container .nerc-toggle-track{position:absolute;inset:0;background:var(--nerc-bg5);border:1px solid var(--nerc-border2);border-radius:12px;transition:all .2s}
+.nerc-study-container .nerc-toggle input:checked + .nerc-toggle-track{background:var(--nerc-greenbg);border-color:var(--nerc-green)}
+.nerc-study-container .nerc-toggle-knob{position:absolute;top:3px;left:3px;width:16px;height:16px;background:var(--nerc-text3);border-radius:50%;transition:all .2s}
+.nerc-study-container .nerc-toggle input:checked ~ .nerc-toggle-knob{left:23px;background:var(--nerc-green)}
+.nerc-study-container .nerc-timer-inp-wrap{display:flex;align-items:center;gap:10px;margin-top:14px}
+.nerc-study-container .nerc-timer-inp{background:var(--nerc-bg4);border:1.5px solid var(--nerc-border2);border-radius:7px;padding:8px 14px;color:var(--nerc-text);font-family:var(--nerc-mono);font-size:16px;width:80px;text-align:center;outline:none}
+.nerc-study-container .nerc-timer-inp:focus{border-color:var(--nerc-blue)}
+.nerc-study-container .nerc-timer-inp-label{color:var(--nerc-text2);font-size:13px}
+.nerc-study-container .nerc-mode-opts{display:flex;gap:10px}
+.nerc-study-container .nerc-mode-opt{flex:1;background:var(--nerc-bg4);border:1.5px solid var(--nerc-border2);border-radius:7px;padding:14px;cursor:pointer;transition:all .15s}
+.nerc-study-container .nerc-mode-opt:hover{border-color:var(--nerc-border2)}
+.nerc-study-container .nerc-mode-opt.sel{background:var(--nerc-bluebg);border-color:var(--nerc-blue)}
+.nerc-study-container .nerc-mode-opt-name{font-family:var(--nerc-cond);font-size:15px;font-weight:700;letter-spacing:.04em;margin-bottom:4px}
+.nerc-study-container .nerc-mode-opt.sel .nerc-mode-opt-name{color:var(--nerc-blue)}
+.nerc-study-container .nerc-mode-opt-desc{font-size:12px;color:var(--nerc-text2);line-height:1.4}
+.nerc-study-container .nerc-setup-start{width:100%;background:var(--nerc-green);border:none;border-radius:8px;padding:16px;font-family:var(--nerc-cond);font-size:20px;font-weight:700;letter-spacing:.08em;color:#000;cursor:pointer;margin-top:8px;transition:all .2s;box-shadow:0 4px 24px rgba(0,229,160,.2)}
+.nerc-study-container .nerc-setup-start:hover{transform:translateY(-1px);box-shadow:0 6px 32px rgba(0,229,160,.35)}
+.nerc-study-container .nerc-setup-start:active{transform:translateY(0)}
+.nerc-study-container .nerc-setup-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.nerc-study-container .nerc-stat-chip{background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-radius:7px;padding:12px;text-align:center}
+.nerc-study-container .nerc-stat-chip-val{font-family:var(--nerc-mono);font-size:18px;color:var(--nerc-green);font-weight:700}
+.nerc-study-container .nerc-stat-chip-lbl{font-size:11px;color:var(--nerc-text3);margin-top:2px;font-family:var(--nerc-mono)}
+.nerc-study-container .nerc-resources{margin-top:24px}
+.nerc-study-container .nerc-resources-hdr{font-family:var(--nerc-mono);font-size:11px;color:var(--nerc-text3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.nerc-study-container .nerc-resources-hdr::after{content:\'\';flex:1;height:1px;background:var(--nerc-border)}
+.nerc-study-container .nerc-coverage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.nerc-study-container .nerc-cov-card{background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-radius:7px;padding:10px 12px}
+.nerc-study-container .nerc-cov-role{font-family:var(--nerc-mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.nerc-study-container .nerc-cov-role.to{color:var(--nerc-blue)}
+.nerc-study-container .nerc-cov-role.ba{color:var(--nerc-green)}
+.nerc-study-container .nerc-cov-role.rc{color:var(--nerc-amber)}
+.nerc-study-container .nerc-cov-role.all{color:var(--nerc-purple)}
+.nerc-study-container .nerc-cov-tag{display:inline-block;font-size:10px;background:var(--nerc-bg5);border:1px solid var(--nerc-border2);border-radius:3px;padding:2px 6px;margin:2px 2px 0 0;color:var(--nerc-text2)}
+.nerc-study-container .nerc-links{display:flex;flex-direction:column;gap:7px;margin-bottom:8px}
+.nerc-study-container .nerc-link-item{display:flex;align-items:flex-start;gap:10px;background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-radius:7px;padding:10px 12px;text-decoration:none;transition:border-color .15s}
+.nerc-study-container .nerc-link-item:hover{border-color:var(--nerc-border2)}
+.nerc-study-container .nerc-link-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.nerc-study-container .nerc-link-body{flex:1;min-width:0}
+.nerc-study-container .nerc-link-title{font-size:13px;font-weight:600;color:var(--nerc-text);margin-bottom:2px}
+.nerc-study-container .nerc-link-desc{font-size:11px;color:var(--nerc-text2);line-height:1.45}
+.nerc-study-container .nerc-link-arrow{font-size:11px;color:var(--nerc-text3);flex-shrink:0;align-self:center}
+.nerc-study-container .nerc-gap-note{background:rgba(255,179,0,.06);border:1px solid rgba(255,179,0,.2);border-radius:7px;padding:10px 14px;font-size:12px;color:var(--nerc-text2);line-height:1.6;margin-bottom:14px}
+.nerc-study-container .nerc-gap-note strong{color:var(--nerc-amber)}
+.nerc-study-container #nerc-screen-exam{background:var(--nerc-bg)}
+.nerc-study-container .nerc-exam-topbar{background:var(--nerc-bg2);border-bottom:1px solid var(--nerc-border);padding:0 24px;height:56px;display:flex;align-items:center;gap:20px;flex-shrink:0;position:sticky;top:0;z-index:100}
+.nerc-study-container .nerc-exam-timer{font-family:var(--nerc-mono);font-size:22px;font-weight:700;letter-spacing:.06em;min-width:80px;color:var(--nerc-green);transition:color .3s}
+.nerc-study-container .nerc-exam-timer.warn{color:var(--nerc-amber)}
+.nerc-study-container .nerc-exam-timer.danger{color:var(--nerc-red);animation:nerc-pulse-red 1s infinite}
+@keyframes nerc-pulse-red{0%,100%{opacity:1}50%{opacity:.5}}
+.nerc-study-container .nerc-exam-timer-icon{font-size:14px;color:var(--nerc-text3);margin-right:4px}
+.nerc-study-container .nerc-exam-top-mid{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.nerc-study-container .nerc-exam-qnum{font-family:var(--nerc-mono);font-size:13px;color:var(--nerc-text2)}
+.nerc-study-container .nerc-exam-progress{width:220px;height:4px;background:var(--nerc-bg4);border-radius:2px;overflow:hidden}
+.nerc-study-container .nerc-exam-progress-fill{height:100%;background:var(--nerc-green);border-radius:2px;transition:width .3s}
+.nerc-study-container .nerc-cat-badge{font-family:var(--nerc-mono);font-size:10px;font-weight:700;letter-spacing:.12em;padding:3px 9px;border-radius:3px;text-transform:uppercase}
+.nerc-study-container .nerc-cat-IROL{background:rgba(79,195,247,.12);color:var(--nerc-blue);border:1px solid rgba(79,195,247,.25)}
+.nerc-study-container .nerc-cat-EEA{background:rgba(255,179,0,.1);color:var(--nerc-amber);border:1px solid rgba(255,179,0,.2)}
+.nerc-study-container .nerc-cat-Blackstart{background:rgba(179,157,219,.1);color:var(--nerc-purple);border:1px solid rgba(179,157,219,.2)}
+.nerc-study-container .nerc-cat-Voltage{background:rgba(38,198,218,.1);color:var(--nerc-cyan);border:1px solid rgba(38,198,218,.2)}
+.nerc-study-container .nerc-cat-Frequency{background:rgba(0,229,160,.1);color:var(--nerc-green);border:1px solid rgba(0,229,160,.2)}
+.nerc-study-container .nerc-cat-N1{background:rgba(255,138,101,.1);color:var(--nerc-orange);border:1px solid rgba(255,138,101,.2)}
+.nerc-study-container .nerc-cat-Protection{background:rgba(255,71,87,.1);color:var(--nerc-red);border:1px solid rgba(255,71,87,.2)}
+.nerc-study-container .nerc-cat-Scenario{background:rgba(255,71,87,.08);color:#ff8a80;border:1px solid rgba(255,71,87,.15)}
+.nerc-study-container .nerc-cat-TLRConsOps{background:rgba(38,198,218,.1);color:var(--nerc-cyan);border:1px solid rgba(38,198,218,.2)}
+.nerc-study-container .nerc-cat-FACRatings{background:rgba(179,157,219,.1);color:var(--nerc-purple);border:1px solid rgba(179,157,219,.2)}
+.nerc-study-container .nerc-cat-PERFatigue{background:rgba(255,179,0,.1);color:var(--nerc-amber);border:1px solid rgba(255,179,0,.2)}
+.nerc-study-container .nerc-cat-COMSwitching{background:rgba(255,138,101,.1);color:var(--nerc-orange);border:1px solid rgba(255,138,101,.2)}
+.nerc-study-container .nerc-cat-BAOperations{background:rgba(0,229,160,.08);color:#4fffb0;border:1px solid rgba(0,229,160,.15)}
+.nerc-study-container .nerc-cat-DemandResponse{background:rgba(79,195,247,.1);color:var(--nerc-blue);border:1px solid rgba(79,195,247,.2)}
+.nerc-study-container .nerc-exam-flag-btn{background:none;border:1.5px solid var(--nerc-border2);border-radius:6px;padding:6px 12px;color:var(--nerc-text3);cursor:pointer;font-size:13px;font-family:var(--nerc-mono);transition:all .15s;white-space:nowrap}
+.nerc-study-container .nerc-exam-flag-btn:hover{border-color:var(--nerc-amber);color:var(--nerc-amber)}
+.nerc-study-container .nerc-exam-flag-btn.flagged{background:var(--nerc-amberbg);border-color:var(--nerc-amber);color:var(--nerc-amber)}
+.nerc-study-container .nerc-exam-body{flex:1;max-width:1100px;width:100%;margin:0 auto;padding:32px 24px 120px}
+.nerc-study-container .nerc-qscenario-tag{font-family:var(--nerc-mono);font-size:10px;color:var(--nerc-orange);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.nerc-study-container .nerc-qscenario-tag::before{content:'';display:inline-block;width:16px;height:1px;background:var(--nerc-orange)}
+.nerc-study-container .nerc-qtext{font-size:20px;font-weight:500;line-height:1.65;margin-bottom:28px;color:var(--nerc-text)}
+.nerc-study-container .nerc-qtext-scenario{background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-left:3px solid var(--nerc-orange);border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:20px;font-size:15px;color:var(--nerc-text2);line-height:1.7;font-style:italic}
+.nerc-study-container .nerc-opts-grid{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.nerc-study-container .nerc-opt-card{background:var(--nerc-bg3);border:1.5px solid var(--nerc-border);border-radius:9px;padding:16px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:14px;transition:all .18s;position:relative;overflow:hidden}
+.nerc-study-container .nerc-opt-card:hover:not(.locked){background:var(--nerc-bg4);border-color:var(--nerc-border2)}
+.nerc-study-container .nerc-opt-card.selected{background:var(--nerc-bluebg);border-color:var(--nerc-blue)}
+.nerc-study-container .nerc-opt-card.correct{background:var(--nerc-greenbg);border-color:var(--nerc-green);cursor:default}
+.nerc-study-container .nerc-opt-card.wrong{background:var(--nerc-redbg);border-color:var(--nerc-red);cursor:default}
+.nerc-study-container .nerc-opt-card.show-correct{background:var(--nerc-greenbg);border-color:var(--nerc-green);cursor:default;animation:nerc-correct-flash .4s ease}
+@keyframes nerc-correct-flash{0%{transform:scale(1.01)}100%{transform:scale(1)}}
+.nerc-study-container .nerc-opt-letter{font-family:var(--nerc-mono);font-size:12px;font-weight:700;width:26px;height:26px;border-radius:50%;background:var(--nerc-bg5);border:1px solid var(--nerc-border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s;margin-top:1px}
+.nerc-study-container .nerc-opt-card.selected .nerc-opt-letter{background:var(--nerc-bluebg);border-color:var(--nerc-blue);color:var(--nerc-blue)}
+.nerc-study-container .nerc-opt-card.correct .nerc-opt-letter,.nerc-study-container .nerc-opt-card.show-correct .nerc-opt-letter{background:var(--nerc-greenbg);border-color:var(--nerc-green);color:var(--nerc-green)}
+.nerc-study-container .nerc-opt-card.wrong .nerc-opt-letter{background:var(--nerc-redbg);border-color:var(--nerc-red);color:var(--nerc-red)}
+.nerc-study-container .nerc-opt-text{font-size:15px;line-height:1.55;color:var(--nerc-text)}
+.nerc-study-container .nerc-opt-card.correct .nerc-opt-text,.nerc-study-container .nerc-opt-card.show-correct .nerc-opt-text{color:var(--nerc-green)}
+.nerc-study-container .nerc-opt-card.wrong .nerc-opt-text{color:var(--nerc-red)}
+.nerc-study-container .nerc-opt-icon{margin-left:auto;font-size:16px;flex-shrink:0;align-self:center}
+.nerc-study-container .nerc-explanation-box{background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-left:3px solid var(--nerc-green);border-radius:0 8px 8px 0;padding:14px 18px;margin-top:-10px;margin-bottom:16px;animation:nerc-slide-down .25s ease}
+@keyframes nerc-slide-down{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.nerc-study-container .nerc-explanation-box.wrong-exp{border-left-color:var(--nerc-red)}
+.nerc-study-container .nerc-exp-label{font-family:var(--nerc-mono);font-size:10px;color:var(--nerc-text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.nerc-study-container .nerc-exp-text{font-size:13px;color:var(--nerc-text2);line-height:1.65}
+.nerc-study-container .nerc-exam-navbar{position:fixed;bottom:0;left:0;right:0;background:var(--nerc-bg2);border-top:1px solid var(--nerc-border);padding:12px 24px;display:flex;align-items:center;gap:10px;z-index:100}
+.nerc-study-container .nerc-nav-btn{background:var(--nerc-bg4);border:1.5px solid var(--nerc-border2);border-radius:7px;padding:10px 20px;color:var(--nerc-text2);cursor:pointer;font-family:var(--nerc-cond);font-size:15px;font-weight:600;letter-spacing:.04em;transition:all .15s}
+.nerc-study-container .nerc-nav-btn:hover{border-color:var(--nerc-text2);color:var(--nerc-text)}
+.nerc-study-container .nerc-nav-btn:disabled{opacity:.3;cursor:default}
+.nerc-study-container .nerc-nav-btn.primary{background:var(--nerc-green);border-color:var(--nerc-green);color:#000}
+.nerc-study-container .nerc-nav-btn.primary:hover{box-shadow:0 0 20px rgba(0,229,160,.3)}
+.nerc-study-container .nerc-nav-btn.finish{background:var(--nerc-amber);border-color:var(--nerc-amber);color:#000}
+.nerc-study-container .nerc-nav-spacer{flex:1}
+.nerc-study-container .nerc-qgrid-wrap{overflow-x:auto;flex:1;display:flex;align-items:center;gap:4px;padding:0 4px}
+.nerc-study-container .nerc-qgrid-btn{width:28px;height:28px;border-radius:5px;border:1.5px solid var(--nerc-border2);background:var(--nerc-bg4);color:var(--nerc-text3);font-family:var(--nerc-mono);font-size:11px;cursor:pointer;flex-shrink:0;transition:all .12s;display:flex;align-items:center;justify-content:center}
+.nerc-study-container .nerc-qgrid-btn:hover{border-color:var(--nerc-text2);color:var(--nerc-text)}
+.nerc-study-container .nerc-qgrid-btn.current{border-color:var(--nerc-blue);color:var(--nerc-blue);background:var(--nerc-bluebg)}
+.nerc-study-container .nerc-qgrid-btn.answered{background:var(--nerc-bg5);border-color:var(--nerc-border2);color:var(--nerc-text2)}
+.nerc-study-container .nerc-qgrid-btn.flagged-q{border-color:var(--nerc-amber);color:var(--nerc-amber)}
+.nerc-study-container .nerc-qgrid-btn.answered.flagged-q{background:var(--nerc-amberbg)}
+.nerc-study-container #nerc-screen-results{padding:40px 20px;align-items:center;background:var(--nerc-bg)}
+.nerc-study-container .nerc-results-wrap{max-width:960px;width:100%}
+.nerc-study-container .nerc-results-header{text-align:center;margin-bottom:36px}
+.nerc-study-container .nerc-results-score-ring{width:160px;height:160px;margin:0 auto 20px;position:relative}
+.nerc-study-container .nerc-rsr-svg{width:100%;height:100%}
+.nerc-study-container .nerc-rsr-track{fill:none;stroke:var(--nerc-bg4);stroke-width:10}
+.nerc-study-container .nerc-rsr-fill{fill:none;stroke-width:10;stroke-linecap:round;transform-origin:center;transform:rotate(-90deg);transition:stroke-dashoffset 1s ease}
+.nerc-study-container .nerc-rsr-pct{font-family:var(--nerc-mono);font-size:32px;font-weight:700;fill:var(--nerc-text);text-anchor:middle;dominant-baseline:middle}
+.nerc-study-container .nerc-rsr-lbl{font-family:var(--nerc-sans);font-size:11px;fill:var(--nerc-text3);text-anchor:middle;dominant-baseline:middle}
+.nerc-study-container .nerc-results-verdict{font-family:var(--nerc-cond);font-size:32px;font-weight:700;letter-spacing:.08em;margin-bottom:6px}
+.nerc-study-container .nerc-results-verdict.pass{color:var(--nerc-green)}
+.nerc-study-container .nerc-results-verdict.fail{color:var(--nerc-red)}
+.nerc-study-container .nerc-results-summary-line{color:var(--nerc-text2);font-size:14px;font-family:var(--nerc-mono)}
+.nerc-study-container .nerc-results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.nerc-study-container .nerc-res-stat{background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-radius:9px;padding:16px;text-align:center}
+.nerc-study-container .nerc-res-stat-val{font-family:var(--nerc-mono);font-size:24px;font-weight:700;margin-bottom:4px}
+.nerc-study-container .nerc-res-stat-lbl{font-size:11px;color:var(--nerc-text3);font-family:var(--nerc-mono);letter-spacing:.08em;text-transform:uppercase}
+.nerc-study-container .nerc-cat-breakdown{background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-radius:9px;padding:20px;margin-bottom:20px}
+.nerc-study-container .nerc-cat-bd-title{font-family:var(--nerc-mono);font-size:11px;color:var(--nerc-text3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px}
+.nerc-study-container .nerc-cat-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.nerc-study-container .nerc-cat-row:last-child{margin-bottom:0}
+.nerc-study-container .nerc-cat-row-name{width:130px;font-size:13px;color:var(--nerc-text2);flex-shrink:0;font-family:var(--nerc-mono)}
+.nerc-study-container .nerc-cat-row-bar{flex:1;height:8px;background:var(--nerc-bg5);border-radius:4px;overflow:hidden}
+.nerc-study-container .nerc-cat-row-fill{height:100%;border-radius:4px;transition:width 1s ease}
+.nerc-study-container .nerc-cat-row-pct{font-family:var(--nerc-mono);font-size:13px;width:38px;text-align:right;flex-shrink:0}
+.nerc-study-container .nerc-cat-weak{color:var(--nerc-red)}
+.nerc-study-container .nerc-cat-ok{color:var(--nerc-amber)}
+.nerc-study-container .nerc-cat-good{color:var(--nerc-green)}
+.nerc-study-container .nerc-results-actions{display:flex;flex-direction:column;gap:10px}
+.nerc-study-container .nerc-res-btn{border:none;border-radius:8px;padding:14px 20px;font-family:var(--nerc-cond);font-size:17px;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:all .2s}
+.nerc-study-container .nerc-res-btn.primary{background:var(--nerc-green);color:#000;box-shadow:0 4px 20px rgba(0,229,160,.2)}
+.nerc-study-container .nerc-res-btn.primary:hover{box-shadow:0 6px 28px rgba(0,229,160,.35)}
+.nerc-study-container .nerc-res-btn.secondary{background:var(--nerc-bg4);color:var(--nerc-text);border:1.5px solid var(--nerc-border2)}
+.nerc-study-container .nerc-res-btn.secondary:hover{border-color:var(--nerc-text2)}
+.nerc-study-container .nerc-res-btn.danger{background:var(--nerc-bg4);color:var(--nerc-amber);border:1.5px solid var(--nerc-ambbdr)}
+.nerc-study-container #nerc-screen-review{background:var(--nerc-bg);padding:0}
+.nerc-study-container .nerc-review-topbar{background:var(--nerc-bg2);border-bottom:1px solid var(--nerc-border);padding:16px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100}
+.nerc-study-container .nerc-review-title{font-family:var(--nerc-cond);font-size:20px;font-weight:700;letter-spacing:.06em;flex:1}
+.nerc-study-container .nerc-review-filter{display:flex;gap:6px}
+.nerc-study-container .nerc-rfil-btn{background:var(--nerc-bg4);border:1.5px solid var(--nerc-border2);border-radius:6px;padding:6px 12px;color:var(--nerc-text2);cursor:pointer;font-family:var(--nerc-mono);font-size:12px;transition:all .15s}
+.nerc-study-container .nerc-rfil-btn:hover{color:var(--nerc-text)}
+.nerc-study-container .nerc-rfil-btn.active{background:var(--nerc-bg5);border-color:var(--nerc-blue);color:var(--nerc-blue)}
+.nerc-study-container .nerc-review-back{background:none;border:1.5px solid var(--nerc-border2);border-radius:6px;padding:8px 16px;color:var(--nerc-text2);cursor:pointer;font-family:var(--nerc-mono);font-size:12px;transition:all .15s}
+.nerc-study-container .nerc-review-back:hover{color:var(--nerc-text);border-color:var(--nerc-text2)}
+.nerc-study-container .nerc-review-body{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
+.nerc-study-container .nerc-review-item{background:var(--nerc-bg3);border:1px solid var(--nerc-border);border-radius:10px;margin-bottom:16px;overflow:hidden}
+.nerc-study-container .nerc-review-item-hdr{padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--nerc-border)}
+.nerc-study-container .nerc-rev-qnum{font-family:var(--nerc-mono);font-size:11px;color:var(--nerc-text3)}
+.nerc-study-container .nerc-rev-result{font-family:var(--nerc-mono);font-size:11px;font-weight:700;padding:3px 8px;border-radius:3px}
+.nerc-study-container .nerc-rev-result.correct{background:var(--nerc-greenbg);color:var(--nerc-green);border:1px solid var(--nerc-greenbdr)}
+.nerc-study-container .nerc-rev-result.wrong{background:var(--nerc-redbg);color:var(--nerc-red);border:1px solid var(--nerc-redbdr)}
+.nerc-study-container .nerc-rev-result.skipped{background:var(--nerc-amberbg);color:var(--nerc-amber);border:1px solid var(--nerc-ambbdr)}
+.nerc-study-container .nerc-review-item-body{padding:16px 18px}
+.nerc-study-container .nerc-rev-qtext{font-size:15px;line-height:1.6;margin-bottom:14px;color:var(--nerc-text)}
+.nerc-study-container .nerc-rev-answers{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.nerc-study-container .nerc-rev-ans{padding:9px 14px;border-radius:6px;font-size:13px;line-height:1.5;display:flex;align-items:flex-start;gap:10px}
+.nerc-study-container .nerc-rev-ans.user-correct{background:var(--nerc-greenbg);border:1px solid var(--nerc-greenbdr);color:var(--nerc-green)}
+.nerc-study-container .nerc-rev-ans.user-wrong{background:var(--nerc-redbg);border:1px solid var(--nerc-redbdr);color:var(--nerc-red)}
+.nerc-study-container .nerc-rev-ans.correct-ans{background:var(--nerc-greenbg);border:1px solid var(--nerc-greenbdr);color:var(--nerc-green)}
+.nerc-study-container .nerc-rev-ans.neutral{background:var(--nerc-bg4);border:1px solid var(--nerc-border);color:var(--nerc-text2)}
+.nerc-study-container .nerc-rev-ans-icon{flex-shrink:0;margin-top:1px}
+.nerc-study-container .nerc-rev-exp{background:var(--nerc-bg2);border-radius:6px;padding:10px 14px;font-size:13px;color:var(--nerc-text2);line-height:1.6;border-left:2px solid var(--nerc-border2)}
+.nerc-study-container .nerc-rev-exp-lbl{font-family:var(--nerc-mono);font-size:10px;color:var(--nerc-text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
 </style>
 </head>
 <body>
@@ -850,6 +1090,7 @@ body.dark .as-prog-label{color:var(--text2);}
   </div>
   <button class="nav-tab active" id="nav-tab-scans" onclick="switchView('scans',this)">Scans</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
+  <button class="nav-tab" onclick="switchView('nerc',this)">NERC Study</button>
   <button class="nav-tab" onclick="switchView('intel',this)">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
@@ -975,6 +1216,25 @@ body.dark .as-prog-label{color:var(--text2);}
       <div class="cl-item-row" id="cl-item-row" style="display:none;">
         <input id="cl-item-inp" placeholder="Add item..." onkeydown="if(event.key==='Enter')addClItem()">
         <button onclick="addClItem()">+ Item</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Tenaska Portal Converter</div>
+      <div style="margin-bottom:10px;">
+        <label style="font-size:11px;color:var(--text3);margin-bottom:4px;display:block;">Date</label>
+        <input type="date" id="pgsc-date" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;">
+      </div>
+      <div style="margin-bottom:10px;">
+        <label style="font-size:11px;color:var(--text3);margin-bottom:4px;display:block;">Paste 24 rows (Min MW, Max MW, Min MVAR, Max MVAR, Status)</label>
+        <textarea id="pgsc-paste" style="width:100%;height:100px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--m);font-size:12px;resize:vertical;" placeholder="0	0	0	0	Idle&#10;0	0	0	0	Idle&#10;..."></textarea>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button class="tbtn" onclick="processPGSC()" style="flex:1;">Process</button>
+        <button class="tbtn" onclick="clearPGSC()">Clear</button>
+      </div>
+      <div id="pgsc-output" style="margin-top:10px;font-family:var(--m);font-size:12px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:80px;max-height:200px;overflow-y:auto;white-space:pre-wrap;"></div>
+      <div style="display:flex;gap:6px;margin-top:8px;">
+        <button class="tbtn" onclick="copyPGSC()">Copy to Clipboard</button>
       </div>
     </div>
   </div>
@@ -1310,6 +1570,197 @@ body.dark .as-prog-label{color:var(--text2);}
     <button class="as-type-btn wind" onclick="asSetTypeFilter('Wind',this)">💨 Wind</button>
   </div>
   <div id="as-form-wrap"></div>
+</div>
+
+<!-- NERC STUDY -->
+<div class="view" id="view-nerc">
+  <div class="nerc-study-container">
+    <!-- SETUP SCREEN -->
+    <div id="nerc-screen-setup" class="nerc-screen active">
+      <div class="nerc-setup-wrap">
+        <div class="nerc-setup-logo">
+          <div class="nerc-setup-logo-icon">⚡</div>
+          <div>
+            <div class="nerc-setup-logo-text">NERC SIMULATOR</div>
+            <div class="nerc-setup-logo-sub">POWER SYSTEM OPERATOR · TRAINING PLATFORM</div>
+          </div>
+        </div>
+        <div class="nerc-setup-title">Operator Reliability<br><span>Exam Simulator</span></div>
+        <div class="nerc-setup-desc">Scenario-based training for <strong style="color:var(--nerc-blue)">TO</strong>, <strong style="color:var(--nerc-green)">BA</strong>, and <strong style="color:var(--nerc-amber)">RC/SC</strong> certification. Covers IROL/SOL, EEA, Blackstart, Voltage, Frequency/ACE, N-1, Protection, TLR/Conservative Ops, Facility Ratings, Fatigue &amp; Switching Orders. 100-question bank, fully randomized.</div>
+        <div class="nerc-setup-card">
+          <div class="nerc-setup-card-label">▸ Question Count</div>
+          <div class="nerc-setup-opts" id="nerc-qcount-opts">
+            <div class="nerc-setup-opt" data-val="25" onclick="nercExamSelOpt('qcount',25,this)"><span class="nerc-opt-main">25</span><span class="nerc-opt-sub">Quick</span></div>
+            <div class="nerc-setup-opt sel" data-val="50" onclick="nercExamSelOpt('qcount',50,this)"><span class="nerc-opt-main">50</span><span class="nerc-opt-sub">Standard</span></div>
+            <div class="nerc-setup-opt" data-val="75" onclick="nercExamSelOpt('qcount',75,this)"><span class="nerc-opt-main">75</span><span class="nerc-opt-sub">Extended</span></div>
+            <div class="nerc-setup-opt" data-val="100" onclick="nercExamSelOpt('qcount',100,this)"><span class="nerc-opt-main">100</span><span class="nerc-opt-sub">Full Bank</span></div>
+          </div>
+        </div>
+        <div class="nerc-setup-card">
+          <div class="nerc-setup-card-label">▸ Timer</div>
+          <div class="nerc-setup-toggle-row">
+            <span class="nerc-setup-toggle-label">Enable countdown timer</span>
+            <label class="nerc-toggle">
+              <input type="checkbox" id="nerc-timer-toggle" checked onchange="nercToggleTimerInp()">
+              <div class="nerc-toggle-track"></div>
+              <div class="nerc-toggle-knob"></div>
+            </label>
+          </div>
+          <div class="nerc-timer-inp-wrap" id="nerc-timer-inp-wrap">
+            <input type="number" class="nerc-timer-inp" id="nerc-timer-mins" value="30" min="5" max="120">
+            <span class="nerc-timer-inp-label">minutes — 0 = unlimited</span>
+          </div>
+        </div>
+        <div class="nerc-setup-card">
+          <div class="nerc-setup-card-label">▸ Mode</div>
+          <div class="nerc-mode-opts" id="nerc-mode-opts">
+            <div class="nerc-mode-opt sel" data-val="exam" onclick="nercExamSelOpt('mode','exam',this)">
+              <div class="nerc-mode-opt-name">EXAM MODE</div>
+              <div class="nerc-mode-opt-desc">No feedback until end. Simulates real NERC exam conditions.</div>
+            </div>
+            <div class="nerc-mode-opt" data-val="practice" onclick="nercExamSelOpt('mode','practice',this)">
+              <div class="nerc-mode-opt-name">PRACTICE MODE</div>
+              <div class="nerc-mode-opt-desc">Instant feedback with explanation after each answer.</div>
+            </div>
+          </div>
+        </div>
+        <button class="nerc-setup-start" onclick="nercExamStartExam()">▶ BEGIN EXAM</button>
+        <div class="nerc-setup-stats">
+          <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">100</div><div class="nerc-stat-chip-lbl">Questions</div></div>
+          <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">11</div><div class="nerc-stat-chip-lbl">Categories</div></div>
+          <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">80%</div><div class="nerc-stat-chip-lbl">Pass Mark</div></div>
+        </div>
+
+        <div class="nerc-resources">
+          <div class="nerc-resources-hdr">&#9658; Exam Coverage by Role</div>
+          <div class="nerc-coverage-grid">
+            <div class="nerc-cov-card">
+              <div class="nerc-cov-role to">TO &#8212; Transmission Operator</div>
+              <span class="nerc-cov-tag">IROL/SOL</span><span class="nerc-cov-tag">N-1 Contingency</span><span class="nerc-cov-tag">Protection</span><span class="nerc-cov-tag">Voltage Control</span><span class="nerc-cov-tag">Facility Ratings</span><span class="nerc-cov-tag">Switching Orders</span>
+            </div>
+            <div class="nerc-cov-card">
+              <div class="nerc-cov-role ba">BA &#8212; Balancing Authority</div>
+              <span class="nerc-cov-tag">ACE / CPS1</span><span class="nerc-cov-tag">Frequency</span><span class="nerc-cov-tag">EEA Levels</span><span class="nerc-cov-tag">Reserves / BAL-002</span><span class="nerc-cov-tag">Inadvertent</span><span class="nerc-cov-tag">Demand Response</span>
+            </div>
+            <div class="nerc-cov-card">
+              <div class="nerc-cov-role rc">RC / SC &#8212; Reliability Coordinator</div>
+              <span class="nerc-cov-tag">TLR Procedures</span><span class="nerc-cov-tag">Conservative Ops</span><span class="nerc-cov-tag">Operating Orders</span><span class="nerc-cov-tag">EEA Authority</span><span class="nerc-cov-tag">Wide-Area View</span>
+            </div>
+            <div class="nerc-cov-card">
+              <div class="nerc-cov-role all">All Roles</div>
+              <span class="nerc-cov-tag">Blackstart</span><span class="nerc-cov-tag">Restoration</span><span class="nerc-cov-tag">Fatigue / PER-006</span><span class="nerc-cov-tag">Cert Requirements</span><span class="nerc-cov-tag">Scenario-Based</span>
+            </div>
+          </div>
+          <div class="nerc-gap-note">
+            <strong>&#9888; Supplement with external study for:</strong><br>
+            FAC facility modeling &#183; MOD (power flow modeling) &#183; COM documentation requirements &#183; Market protocols &amp; e-Tags &#183; Specific regional procedures (WECC, SERC, RFC, etc.)
+          </div>
+          <div class="nerc-resources-hdr">&#9658; Free Study Resources</div>
+          <div class="nerc-links">
+            <a class="nerc-link-item" href="https://www.nerc.com/globalassets/programs/system-operator-certification--continuing-education/exam_resource_materials.pdf" target="_blank" rel="noopener">
+              <span class="nerc-link-icon">&#128196;</span>
+              <div class="nerc-link-body"><div class="nerc-link-title">NERC Exam Resource Materials (Official PDF)</div><div class="nerc-link-desc">The official NERC-published list of approved reference materials for the System Operator certification exam. Start here.</div></div>
+              <span class="nerc-link-arrow">&#8599;</span>
+            </a>
+            <a class="nerc-link-item" href="https://www.nerc.com/pa/Stand/Pages/ReliabilityStandards.aspx" target="_blank" rel="noopener">
+              <span class="nerc-link-icon">&#128203;</span>
+              <div class="nerc-link-body"><div class="nerc-link-title">NERC Reliability Standards Library</div><div class="nerc-link-desc">Full text of all active standards referenced in the exam materials: BAL, COM, EOP, FAC, INT, IRO, PRC, TOP. Every question traces back here.</div></div>
+              <span class="nerc-link-arrow">&#8599;</span>
+            </a>
+            <a class="nerc-link-item" href="https://www.nerc.com/pa/Stand/Glossary%20of%20Terms/Glossary_of_Terms.pdf" target="_blank" rel="noopener">
+              <span class="nerc-link-icon">&#128218;</span>
+              <div class="nerc-link-body"><div class="nerc-link-title">NERC Glossary of Terms Used in Reliability Standards</div><div class="nerc-link-desc">Definitions of all key terms used across NERC standards and exam questions. Explicitly listed as a primary reference in the Exam Resource Materials PDF.</div></div>
+              <span class="nerc-link-arrow">&#8599;</span>
+            </a>
+            <a class="nerc-link-item" href="https://www.nerc.com/pa/Train/SysOpCert/Pages/default.aspx" target="_blank" rel="noopener">
+              <span class="nerc-link-icon">&#127891;</span>
+              <div class="nerc-link-body"><div class="nerc-link-title">NERC System Operator Certification &#8212; One-Stop Shop</div><div class="nerc-link-desc">Exam scheduling, credential maintenance, CEH requirements, and candidate resources. Official NERC certification program hub.</div></div>
+              <span class="nerc-link-arrow">&#8599;</span>
+            </a>
+            <a class="nerc-link-item" href="https://www.nerc.com/globalassets/programs/system-operator-certification--continuing-education/soc_program_manual.pdf" target="_blank" rel="noopener">
+              <span class="nerc-link-icon">&#128220;</span>
+              <div class="nerc-link-body"><div class="nerc-link-title">NERC SOC Program Manual</div><div class="nerc-link-desc">Detailed program requirements including exam content outlines by credential type (RC, TOP/TO, BA/TO, GOP), CEH rules, and recertification procedures.</div></div>
+              <span class="nerc-link-arrow">&#8599;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXAM SCREEN -->
+    <div id="nerc-screen-exam" class="nerc-screen">
+      <div class="nerc-exam-topbar">
+        <div id="nerc-timer-display" style="display:flex;align-items:center;gap:4px">
+          <span class="nerc-exam-timer-icon">⏱</span>
+          <span class="nerc-exam-timer" id="nerc-timer-val">30:00</span>
+        </div>
+        <div class="nerc-exam-top-mid">
+          <div class="nerc-exam-qnum" id="nerc-qnum-display">1 / 50</div>
+          <div class="nerc-exam-progress"><div class="nerc-exam-progress-fill" id="nerc-progress-fill" style="width:2%"></div></div>
+        </div>
+        <span class="nerc-cat-badge" id="nerc-cat-badge">IROL/SOL</span>
+        <button class="nerc-exam-flag-btn" id="nerc-flag-btn" onclick="nercToggleFlag()">⚑ Flag</button>
+      </div>
+      <div class="nerc-exam-body" id="nerc-exam-body"></div>
+      <div class="nerc-exam-navbar">
+        <button class="nerc-nav-btn" id="nerc-btn-prev" onclick="nercGoQ(-1)">← Prev</button>
+        <div class="nerc-qgrid-wrap" id="nerc-qgrid"></div>
+        <button class="nerc-nav-btn" id="nerc-btn-next" onclick="nercGoQ(1)">Next →</button>
+        <button class="nerc-nav-btn finish" onclick="nercConfirmFinish()">Finish ✓</button>
+      </div>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div id="nerc-screen-results" class="nerc-screen">
+      <div style="max-width:960px;width:100%;margin:0 auto;padding:40px 20px">
+        <div class="nerc-results-header">
+          <div class="nerc-results-score-ring">
+            <svg class="nerc-rsr-svg" viewBox="0 0 160 160">
+              <circle class="nerc-rsr-track" cx="80" cy="80" r="66"/>
+              <circle class="nerc-rsr-fill" id="nerc-rsr-fill" cx="80" cy="80" r="66"/>
+              <text class="nerc-rsr-pct" id="nerc-rsr-pct" x="80" y="74">0%</text>
+              <text class="nerc-rsr-lbl" x="80" y="94" id="nerc-rsr-lbl">SCORE</text>
+            </svg>
+          </div>
+          <div class="nerc-results-verdict" id="nerc-res-verdict">PASS</div>
+          <div class="nerc-results-summary-line" id="nerc-res-summary">48 correct of 50 · 96%</div>
+        </div>
+        <div class="nerc-results-grid">
+          <div class="nerc-res-stat"><div class="nerc-res-stat-val" id="nerc-rs-correct" style="color:var(--nerc-green)">0</div><div class="nerc-res-stat-lbl">Correct</div></div>
+          <div class="nerc-res-stat"><div class="nerc-res-stat-val" id="nerc-rs-wrong" style="color:var(--nerc-red)">0</div><div class="nerc-res-stat-lbl">Wrong</div></div>
+          <div class="nerc-res-stat"><div class="nerc-res-stat-val" id="nerc-rs-skip" style="color:var(--nerc-amber)">0</div><div class="nerc-res-stat-lbl">Skipped</div></div>
+        </div>
+        <div class="nerc-results-grid" style="grid-template-columns:1fr 1fr;margin-top:-8px">
+          <div class="nerc-res-stat"><div class="nerc-res-stat-val" id="nerc-rs-time" style="color:var(--nerc-blue)">—</div><div class="nerc-res-stat-lbl">Time Used</div></div>
+          <div class="nerc-res-stat"><div class="nerc-res-stat-val" id="nerc-rs-pct" style="color:var(--nerc-text)">—%</div><div class="nerc-res-stat-lbl">Percentage</div></div>
+        </div>
+        <div class="nerc-cat-breakdown">
+          <div class="nerc-cat-bd-title">▸ Performance by Category</div>
+          <div id="nerc-cat-rows"></div>
+        </div>
+        <div class="nerc-results-actions">
+          <button class="nerc-res-btn primary" onclick="nercExamShowReview()">📋 Review All Answers</button>
+          <button class="nerc-res-btn danger" id="nerc-btn-retake-missed" onclick="nercRetakeMissed()">↺ Retake Missed Questions</button>
+          <button class="nerc-res-btn secondary" onclick="nercExamShowSetup()">◀ New Exam</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEW SCREEN -->
+    <div id="nerc-screen-review" class="nerc-screen">
+      <div class="nerc-review-topbar">
+        <div class="nerc-review-title">Answer Review</div>
+        <div class="nerc-review-filter">
+          <button class="nerc-rfil-btn active" onclick="nercExamSetFilter('all',this)">All</button>
+          <button class="nerc-rfil-btn" onclick="nercExamSetFilter('correct',this)">✓ Correct</button>
+          <button class="nerc-rfil-btn" onclick="nercExamSetFilter('wrong',this)">✗ Wrong</button>
+          <button class="nerc-rfil-btn" onclick="nercExamSetFilter('skipped',this)">— Skipped</button>
+        </div>
+        <button class="nerc-review-back" onclick="nercExamShowResults()">← Results</button>
+      </div>
+      <div class="nerc-review-body" id="nerc-review-body"></div>
+    </div>
+  </div>
 </div>
 
 <!-- ASSET SCAN EDIT MODAL -->
@@ -1712,6 +2163,10 @@ async function load() {
   initSafety();
   initNERC();
   renderCrew();
+  
+  // Initialize PGSC date to today
+  const pgscDate = document.getElementById('pgsc-date');
+  if(pgscDate) pgscDate.valueAsDate = new Date();
   renderEquip();
   restoreAdhocTimers();
   asInit();
@@ -1725,7 +2180,7 @@ async function load() {
   rows.forEach((row,i) => { const inp=row.querySelector('input'); if(inp) inp.value=S.escContacts[tkeys[i]]||''; });
 
   // Restore last active tab (default: scans)
-  const TAB_VIEWS = ['scans','asset','intel','ops','swbuilder','chron','timezones','schedule'];
+  const TAB_VIEWS = ['scans','asset','nerc','intel','ops','swbuilder','chron','timezones','schedule'];
   let savedTab = 'scans';
   try { savedTab = localStorage.getItem('rnwbl_active_tab') || 'scans'; } catch(e) {}
   if (!TAB_VIEWS.includes(savedTab)) savedTab = 'scans';
@@ -2631,6 +3086,13 @@ function clSetSite(id, val) {
   clRender();
 }
 
+function clSetCat(id, cat) {
+  const e = clEntries.find(x => x.id === id); if (!e) return;
+  e.cat = e.cat === cat ? '' : cat;
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
+  clRender();
+}
+
 function clStartEdit(id) {
   const e = clEntries.find(x => x.id === id); if (!e) return;
   const bodyEl = document.querySelector(`.cl-body[data-id="${id}"]`);
@@ -2819,11 +3281,14 @@ function clRender() {
       const catCls = CL_CAT_CLS[e.cat] || 'cl-cat-normal';
       const catBadge = e.cat && e.cat !== 'Normal' ? `<span class="cl-cat ${catCls}">${esc(e.cat)}</span>` : '';
       const siteSelect = `<select class="cl-inline-site" title="Edit site" onchange="clSetSite(${e.id},this.value)">${clSiteOptions}</select>`;
+      const hPill = `<span class="cl-cat-pill${e.cat==='Handoff'?' active-handoff':''}" onclick="clSetCat(${e.id},'Handoff')">Handoff</span>`;
+      const uPill = `<span class="cl-cat-pill${e.cat==='Upcoming'?' active-upcoming':''}" onclick="clSetCat(${e.id},'Upcoming')">Upcoming</span>`;
       return `<div class="cl-entry${e.starred?' starred':''}">
         <span class="cl-time">${esc(e.time)}</span>
         ${catBadge}
         ${siteSelect}
         <span class="cl-body" data-id="${e.id}" title="Click to edit" onclick="clStartEdit(${e.id})">${esc(e.text)}</span>
+        <div class="cl-cat-toggle">${hPill}${uPill}</div>
         <button class="cl-star${e.starred?' on':''}" title="Star for passdown" onclick="clToggleStar(${e.id})">★</button>
         <button class="cl-del" title="Delete entry" onclick="clDelete(${e.id})">✕</button>
       </div>`;
@@ -2882,7 +3347,6 @@ function clRenderPreview() {
         <span class="cl-hd-section-count">${handoffEntries.length} item${handoffEntries.length!==1?'s':''}</span>
       </div>
       <div class="cl-hd-sites">${renderItems(handoffEntries)}</div>
-      <div class="cl-hd-edit-hint">Click any line to edit · ✕ to remove</div>
     </div>`;
   }
 
@@ -2895,7 +3359,6 @@ function clRenderPreview() {
         <span class="cl-hd-section-count">${upcomingEntries.length} item${upcomingEntries.length!==1?'s':''}</span>
       </div>
       <div class="cl-hd-sites">${renderItems(upcomingEntries)}</div>
-      <div class="cl-hd-edit-hint">Click any line to edit · ✕ to remove</div>
     </div>`;
   }
 
@@ -5797,6 +6260,955 @@ function copyPhonetic(){
 function clearPhonetic(){
   document.getElementById('phonetic-inp').value = '';
   document.getElementById('phonetic-out').textContent = '';
+}
+
+// ─── NERC STUDY NAMESPACED FUNCTIONS ─────────────────────────────────────────────
+const nercQB = [
+{id:1,cat:'IROL/SOL',q:'What is the fundamental difference between a System Operating Limit (SOL) and an Interconnection Reliability Operating Limit (IROL)?',
+opts:['SOLs are thermal limits only; IROLs include voltage and stability limits','An IROL, if exceeded, could result in instability, uncontrolled separation, or cascading failures of the Interconnection','SOLs are set by TOPs; IROLs are established solely by NERC','There is no functional difference — the terms are used interchangeably by most RCs'],
+ans:'An IROL, if exceeded, could result in instability, uncontrolled separation, or cascading failures of the Interconnection',
+exp:'IROLs are a subset of SOLs with Interconnection-wide significance. The defining characteristic is consequence: exceeding an IROL puts the broader bulk power system at risk of cascading failure or wide-area blackout, not just a local reliability issue.'},
+{id:2,cat:'IROL/SOL',q:'Per NERC standard TOP-001, when an operator identifies an IROL exceedance, within what timeframe must it be corrected?',
+opts:['15 minutes','30 minutes','60 minutes','As soon as possible with no defined limit'],
+ans:'30 minutes',
+exp:'NERC TOP-001-5 requires that a Transmission Operator take corrective action to return to within IROL within 30 minutes of identifying the exceedance. If unable to comply, they must notify their RC immediately.'},
+{id:3,cat:'IROL/SOL',q:'A 500 kV line trips unexpectedly. Your EMS shows the parallel 345 kV path is now loaded at 102% of its IROL. What is your FIRST obligation as the Transmission Operator?',
+opts:['Call neighboring TOPs to inform them of the situation','Immediately begin taking corrective actions to return within the IROL','Wait to see if automatic reclosure restores the tripped line','Log the event and notify your supervisor'],
+ans:'Immediately begin taking corrective actions to return within the IROL',
+exp:'An IROL exceedance requires immediate corrective action. The 30-minute clock starts at identification. Corrective actions may include re-dispatching generation, requesting load reduction, or initiating voltage/reactive changes.'},
+{id:4,cat:'IROL/SOL',q:'Which of the following BEST defines when a Stability SOL differs from a Thermal SOL?',
+opts:['A stability SOL is always more restrictive than a thermal SOL','A stability SOL is based on the ability of the system to maintain synchronism or damped oscillations; a thermal SOL is based on conductor/equipment ratings','Thermal SOLs apply only to transformers; stability SOLs apply to transmission lines','They are calculated the same way but applied to different equipment classes'],
+ans:'A stability SOL is based on the ability of the system to maintain synchronism or damped oscillations; a thermal SOL is based on conductor/equipment ratings',
+exp:'Thermal SOLs prevent conductor overheating or equipment damage. Stability SOLs prevent loss of synchronism, voltage collapse, or undamped oscillations. The binding limit is whichever is more restrictive under current conditions.'},
+{id:5,cat:'IROL/SOL',q:'During peak summer loading, your RC advises that a critical 765 kV flowgate is at 96% of its IROL with two more hours of peak demand remaining. What pre-emptive action is MOST appropriate?',
+opts:['Do nothing — you have not exceeded the IROL yet','Request that the RC increase the IROL to accommodate peak conditions','Begin identifying and pre-positioning corrective options such as generation redispatch or interchange modification','Immediately shed 500 MW of firm load to create margin'],
+ans:'Begin identifying and pre-positioning corrective options such as generation redispatch or interchange modification',
+exp:'Operating near an IROL requires proactive management. Pre-positioning corrective options (generation redispatch, ATC reduction, voltage adjustments) ensures rapid response if the limit is exceeded. Firm load shedding is a last resort when all other options are exhausted.'},
+{id:6,cat:'IROL/SOL',q:'If a Transmission Operator cannot return to within an IROL within the required timeframe, what must they do?',
+opts:['Declare a system emergency and automatically shed load','Notify their Reliability Coordinator immediately and coordinate further action','Request a temporary waiver from NERC','Continue operating and document the exceedance in the log'],
+ans:'Notify their Reliability Coordinator immediately and coordinate further action',
+exp:'When corrective actions are insufficient to resolve an IROL exceedance within the timeframe, the TOP must immediately notify the RC. The RC may then direct load interruption or other wide-area corrective measures.'},
+{id:7,cat:'IROL/SOL',q:'Who has the primary responsibility for establishing IROLs?',
+opts:['Balancing Authorities within their areas','NERC directly for all Interconnection limits','Reliability Coordinators, with input from Transmission Operators and Planning Coordinators','The Federal Energy Regulatory Commission (FERC)'],
+ans:'Reliability Coordinators, with input from Transmission Operators and Planning Coordinators',
+exp:'RCs are responsible for identifying, establishing, and communicating IROLs. They coordinate with TOPs and Planning Coordinators to determine which operating limits have Interconnection-wide significance.'},
+{id:8,cat:'IROL/SOL',q:'A transmission path has a normal rating of 1,200 MW and an emergency rating of 1,400 MW. The operator is running the path at 1,350 MW following a line trip. The IROL for this path is 1,300 MW. Which statement is correct?',
+opts:['The operator is within limits because the emergency rating has not been exceeded','The operator has an IROL exceedance and must take immediate corrective action','The operator should wait 30 minutes before taking any action','The emergency rating supersedes the IROL in all cases'],
+ans:'The operator has an IROL exceedance and must take immediate corrective action',
+exp:'IROLs take precedence over equipment ratings. Even if the equipment can physically handle the loading (emergency rating of 1,400 MW), the IROL of 1,300 MW must not be exceeded for more than 30 minutes. Corrective action is required immediately.'},
+{id:9,cat:'IROL/SOL',q:'What is a "pre-contingency SOL"?',
+opts:['A limit that applies after a contingency has already occurred','A limit that must be maintained during normal system conditions so that no single contingency will cause a violation','A limit established by planners but not enforced by operators','A limit that applies only to N-2 contingencies'],
+ans:'A limit that must be maintained during normal system conditions so that no single contingency will cause a violation',
+exp:'Pre-contingency SOLs (also called operating limits) are the limits operators must maintain during normal operations (N-0). They are set conservatively so that if a single contingency (N-1) occurs, the post-contingency system will remain within acceptable bounds.'},
+{id:10,cat:'IROL/SOL',q:'SCENARIO: Your IROL monitoring shows a western flowgate at 104% of IROL. You have initiated generation redispatch but the EMS shows it will take 25 minutes to take effect. You have already been above the IROL for 20 minutes. What is the required action?',
+opts:['Wait for the redispatch to take effect — you have 5 more minutes','Notify your RC immediately since corrective action will not be completed within the 30-minute window','Cancel the redispatch and try a different approach','Request a 15-minute extension from NERC'],
+ans:'Notify your RC immediately since corrective action will not be completed within the 30-minute window',
+exp:'With 20 minutes elapsed and resolution 25 minutes away, you will not correct the exceedance within the 30-minute window. Immediate RC notification is required so the RC can coordinate broader corrective actions, which may include directing load interruption.'},
+{id:11,cat:'EEA',q:'An Energy Emergency Alert (EEA) Level 1 is declared. What does this signify?',
+opts:['Firm load interruption has begun','The BA has exhausted all available resources and is still short of meeting load or is unable to maintain required reserves, but firm load has not yet been interrupted','A neighboring BA has declared an EEA and assistance is requested','The BA has exceeded its IROL and cannot correct within 30 minutes'],
+ans:'The BA has exhausted all available resources and is still short of meeting load or is unable to maintain required reserves, but firm load has not yet been interrupted',
+exp:'EEA Level 1 means the BA has used all available generation, emergency purchases, and interchange, but is still deficient. Firm load interruption has NOT occurred at this level. This alerts neighboring entities to have assistance ready.'},
+{id:12,cat:'EEA',q:'What distinguishes an EEA Level 2 from an EEA Level 1?',
+opts:['EEA Level 2 requires NERC approval; Level 1 does not','At EEA Level 2, the RC has directed the BA to interrupt firm load; at Level 1, emergency actions short of firm load interruption are in progress','EEA Level 2 applies only during summer peak; Level 1 is year-round','There is no operational difference — Level 2 is simply a more severe notification'],
+ans:'At EEA Level 2, the RC has directed the BA to interrupt firm load; at Level 1, emergency actions short of firm load interruption are in progress',
+exp:'EEA Level 2 is declared when firm load must be interrupted to maintain the integrity of the Interconnection. The RC directs this action. This is a critical escalation from Level 1 and requires immediate execution by the BA.'},
+{id:13,cat:'EEA',q:'EEA Level 3 represents the most severe energy emergency. Which statement accurately describes EEA Level 3 conditions?',
+opts:['The BA is taking controlled load interruptions per RC direction and is approaching or has implemented manual load shedding','The BA has recovered and is returning to normal operating conditions','EEA Level 3 applies only when system frequency drops below 59.3 Hz','EEA Level 3 is declared when a BA requests emergency interchange'],
+ans:'The BA is taking controlled load interruptions per RC direction and is approaching or has implemented manual load shedding',
+exp:'EEA Level 3 is the highest severity level. The BA is performing controlled, directed load interruption and the system is at extreme risk. Manual load shedding (rotating or otherwise) may be underway to prevent a complete system collapse.'},
+{id:14,cat:'EEA',q:'Who has the authority to declare an Energy Emergency Alert?',
+opts:['Any Transmission Operator within the affected area','The Balancing Authority experiencing the deficiency, or the Reliability Coordinator on their behalf','NERC must authorize all EEA declarations','Only FERC-certified operators with emergency authority designation'],
+ans:'The Balancing Authority experiencing the deficiency, or the Reliability Coordinator on their behalf',
+exp:'The BA with the energy emergency declares the EEA. The RC may also declare it on behalf of a BA or when wide-area coordination is necessary. All affected entities and neighboring BAs must be notified immediately.'},
+{id:15,cat:'EEA',q:'SCENARIO: Your RC declares EEA Level 2 affecting your Balancing Area. What is your immediate required action as the BA operator?',
+opts:['Request a 30-minute extension to gather more information','Interrupt firm load as directed by the RC, and continue coordinating with neighboring entities to procure emergency assistance','Shed all interruptible load and wait for RC guidance','Notify NERC and wait for federal authorization before interrupting firm load'],
+ans:'Interrupt firm load as directed by the RC, and continue coordinating with neighboring entities to procure emergency assistance',
+exp:'EEA Level 2 requires execution. The BA must follow RC direction to interrupt firm load immediately. Simultaneously, all efforts to procure emergency assistance (emergency purchases, interchange) must continue. Speed is critical to prevent escalation to Level 3.'},
+{id:16,cat:'EEA',q:'What is the correct ascending sequence of Energy Emergency Alert levels?',
+opts:['EEA 3 → EEA 2 → EEA 1','EEA 1 → EEA 2 → EEA 3','EEA 0 → EEA 1 → EEA 2','Conservative Operations → EEA 1 → EEA 2'],
+ans:'EEA 1 → EEA 2 → EEA 3',
+exp:'EEA levels escalate 1 through 3 in increasing severity: Level 1 (exhausted resources, no firm load interruption), Level 2 (firm load interruption directed), Level 3 (manual/controlled interruption, extreme emergency).'},
+{id:17,cat:'EEA',q:'After an EEA is terminated and conditions return to normal, what must the declaring entity do?',
+opts:['File a NERC violation report within 24 hours','Submit an event analysis report within 2 hours of termination','Issue a termination notice to all entities that received the EEA declaration, and update records accordingly','No formal action is required after an EEA terminates'],
+ans:'Issue a termination notice to all entities that received the EEA declaration, and update records accordingly',
+exp:'When the energy emergency is resolved, the declaring entity must formally terminate the EEA and notify all entities that received the initial declaration. Post-event analysis and documentation is also required per NERC standards.'},
+{id:18,cat:'EEA',q:'What is the key operational difference between "Conservative Operations" and an "EEA Level 1"?',
+opts:['Conservative operations involve reducing interchange; EEA Level 1 involves increasing interchange','Conservative operations are proactive measures taken when conditions are potentially challenging; EEA is declared when a real deficiency exists or emergency conditions are imminent','There is no difference — they trigger the same operator response','Conservative operations require RC approval; EEA does not'],
+ans:'Conservative operations are proactive measures taken when conditions are potentially challenging; EEA is declared when a real deficiency exists or emergency conditions are imminent',
+exp:'Conservative operations are pre-emptive — actions taken to protect the system when conditions may become challenging (e.g., reducing non-firm interchange). EEA Level 1 is reactive — declared when an actual energy deficiency or inability to maintain reserves has occurred.'},
+{id:19,cat:'Blackstart',q:'What is a Blackstart Resource?',
+opts:['Any generator capable of starting within 10 minutes during an emergency','A generating unit that can start and energize a transmission path without an external power source, used to restore power after a blackout','A transmission switching station designated as the first to be re-energized after a blackout','A portable generator used to power substation control systems during an outage'],
+ans:'A generating unit that can start and energize a transmission path without an external power source, used to restore power after a blackout',
+exp:'Blackstart Resources are designated generators with self-start capability (they do not need grid power to start). Examples include hydro units, combustion turbines with battery start, and diesel generators. They are the foundation of any system restoration plan.'},
+{id:20,cat:'Blackstart',q:'What is a "cranking path" in the context of system restoration?',
+opts:['A pre-planned transmission switching sequence used to energize a path from a blackstart unit to a larger generation unit being started','The route field technicians travel to reach remote substations during an outage','The startup sequence for a combustion turbine blackstart unit','An emergency bypass around a failed transformer'],
+ans:'A pre-planned transmission switching sequence used to energize a path from a blackstart unit to a larger generation unit being started',
+exp:'A cranking path is a pre-planned energized transmission route that carries startup power from a blackstart resource to a dark (de-energized) generating unit. Establishing cranking paths is one of the first steps in system restoration.'},
+{id:21,cat:'Blackstart',q:'SCENARIO: After a complete blackout of your control area, two blackstart units are available: a 50 MW hydro unit (15-minute startup) and a 30 MW diesel unit (5-minute startup). Which unit should generally be started first, and why?',
+opts:['The diesel — start it immediately because it is faster; the hydro can follow later','The hydro — more MW output makes it a better cranking source regardless of startup time','Start both simultaneously to minimize total restoration time','The decision depends entirely on which unit has a cranking path to the largest nearby thermal generator'],
+ans:'The decision depends entirely on which unit has a cranking path to the largest nearby thermal generator',
+exp:'Blackstart sequencing is determined by the restoration plan, not just speed or size. The unit that can establish a cranking path to the next-largest generator in the restoration sequence takes priority. A faster but poorly positioned unit may delay restoration.'},
+{id:22,cat:'Blackstart',q:'During system restoration, what is the recommended approach for picking up load on an island being restored?',
+opts:['Pick up all available load at once to maximize frequency stabilization','Pick up load in small, incremental steps to maintain frequency stability and prevent the blackstart unit from tripping','Prioritize industrial load first since it provides frequency support','Allow automatic load pickup via underfrequency load shedding relays'],
+ans:'Pick up load in small, incremental steps to maintain frequency stability and prevent the blackstart unit from tripping',
+exp:'Stepped load pickup prevents the blackstart or cranking unit from being overloaded suddenly. Large load blocks can cause frequency collapse or unit trip in a small island. Restoration plans specify the maximum load increment and pickup intervals.'},
+{id:23,cat:'Blackstart',q:'When two electrical islands are being synchronized during system restoration, what is the MOST critical parameter to match before closing the tie?',
+opts:['Active power (MW) output of generators in each island','Voltage magnitude at the tie point — must be within 1% of each other','Frequency — islands must be at very nearly the same frequency before the breaker closes','The number of generators online in each island must be equal'],
+ans:'Frequency — islands must be at very nearly the same frequency before the breaker closes',
+exp:'Synchronizing two islands requires matching frequency (and rate of change), voltage magnitude, voltage phase angle, and phase sequence. Frequency mismatch is the most dangerous — a large frequency difference when the breaker closes can cause severe mechanical shock to generators and potential equipment damage.'},
+{id:24,cat:'Blackstart',q:'What is ferroresonance, and why is it a concern during system restoration?',
+opts:['A type of subsynchronous oscillation caused by inadequate generator damping on long lines','An overvoltage condition that can occur when a lightly loaded or unloaded transformer is energized through a long transmission line with significant capacitance','A harmonic resonance condition in HVDC converters','The resonant frequency of protective relay circuits during high-impedance faults'],
+ans:'An overvoltage condition that can occur when a lightly loaded or unloaded transformer is energized through a long transmission line with significant capacitance',
+exp:'During restoration, unloaded transformers energized through long, lightly loaded cables or lines can create an LC resonant circuit with the line capacitance. This can produce sustained overvoltages (sometimes exceeding 2x normal) that damage equipment or cause relay misoperation.'},
+{id:25,cat:'Blackstart',q:'SCENARIO: A blackstart unit is providing cranking power to a large coal unit. The coal unit trips on a protection fault during startup sequence. What is the IMMEDIATE primary concern for the blackstart operator?',
+opts:['The blackstart unit will now have excess active power with no load — risk of overspeed and frequency runaway','Coal unit startup must be reattempted immediately to prevent the restoration from failing','The cranking path voltage will collapse immediately','Notify NERC of the restoration delay'],
+ans:'The blackstart unit will now have excess active power with no load — risk of overspeed and frequency runaway',
+exp:'When the cranking unit suddenly loses its load (the coal unit trips), the blackstart generator faces a load rejection. In a small island, this can cause rapid frequency rise and potential overspeed. The operator must immediately reduce governor setpoint or trip the unit if frequency rises excessively.'},
+{id:26,cat:'Blackstart',q:'During restoration, why is "transmission-first" strategy generally preferred over "load-first"?',
+opts:['Transmission-first allows regulators to verify line ratings before load is applied','Energizing transmission paths first establishes the grid backbone, enabling more generators to synchronize and providing a more stable platform before load is introduced','Load-first is actually the preferred strategy in modern restoration plans','Transmission-first reduces the risk of transformer ferroresonance on load feeders'],
+ans:'Energizing transmission paths first establishes the grid backbone, enabling more generators to synchronize and providing a more stable platform before load is introduced',
+exp:'Establishing transmission infrastructure first allows multiple generators to come online simultaneously and share load, providing better frequency and voltage stability when load is finally picked up. Load without adequate generation support risks immediate collapse.'},
+{id:27,cat:'Blackstart',q:'What does the Ferranti effect describe, and when is it most likely to occur during restoration?',
+opts:['A voltage collapse mechanism caused by reactive power deficit during peak load','The rise in voltage at the receiving end of an energized but lightly loaded or unloaded long transmission line due to line capacitance charging','Frequency instability caused by governor droop mismatch between multiple generators','A form of inter-area oscillation on long AC tie lines'],
+ans:'The rise in voltage at the receiving end of an energized but lightly loaded or unloaded long transmission line due to line capacitance charging',
+exp:'Long transmission lines have significant shunt capacitance. When energized with little or no load, the capacitive charging current flowing through the line inductance raises the receiving-end voltage above the sending end. During restoration, operators must monitor for this and may need to connect reactors or limit line length to control overvoltage.'},
+{id:28,cat:'Blackstart',q:'SCENARIO: During restoration, you have energized a 230 kV path and bus voltage at the receiving substation is reading 108% of nominal with no load connected. What is the appropriate operator action?',
+opts:['This is acceptable during restoration — continue picking up load which will bring voltage down','Connect a shunt reactor at the receiving substation to absorb the excess reactive power and reduce voltage','Increase the sending-end generator excitation to push more reactive into the line','Open the line immediately and restart the restoration from a different path'],
+ans:'Connect a shunt reactor at the receiving substation to absorb the excess reactive power and reduce voltage',
+exp:'High receiving-end voltage on a lightly loaded line is the Ferranti effect. A shunt reactor absorbs reactive power (MVAR), reducing line charging voltage. Most substations have switched shunt reactors specifically for this purpose. Continuing without action risks equipment damage from sustained overvoltage.'},
+{id:29,cat:'Voltage',q:'A shunt reactor is switched on to a high-voltage bus. What is the primary effect on the power system?',
+opts:['It injects reactive power (MVAR) into the system, raising bus voltage','It absorbs reactive power (MVAR) from the system, lowering bus voltage','It injects real power (MW) to support frequency','It provides fault current limitation during high-voltage faults'],
+ans:'It absorbs reactive power (MVAR) from the system, lowering bus voltage',
+exp:'Shunt reactors are inductive devices that consume reactive power. They are switched in when voltage is too high — typically on lightly loaded long lines (Ferranti effect) or during low-load periods when line charging creates excess reactive. Think: Reactor = Remove reactive.'},
+{id:30,cat:'Voltage',q:'Bus voltage on a 345 kV transmission bus drops to 320 kV during heavy load. Which action will most DIRECTLY and quickly raise voltage?',
+opts:['Trip a 345 kV line to reduce reactive losses','Switch in a shunt capacitor bank at or near the low-voltage bus','Reduce real power (MW) output of local generators','Increase the load tap changer (LTC) setting on the substation transformer'],
+ans:'Switch in a shunt capacitor bank at or near the low-voltage bus',
+exp:'Shunt capacitors inject reactive power (MVAR) into the system, directly supporting voltage. They are the most common fixed reactive compensation device at substations. Switching one in provides immediate voltage support at the low-voltage bus.'},
+{id:31,cat:'Voltage',q:'An over-excited synchronous generator acts most like which type of reactive device on the power system?',
+opts:['A shunt reactor — it absorbs reactive power','A shunt capacitor — it supplies reactive power to the grid','A series capacitor — it compensates for line inductance','A transformer tap changer — it adjusts turns ratio'],
+ans:'A shunt capacitor — it supplies reactive power to the grid',
+exp:'An over-excited generator produces more reactive power than it consumes. This reactive power flows out to the connected system, raising voltage — the same effect as a capacitor bank. Conversely, under-excited generators absorb reactive, behaving like reactors and lowering voltage.'},
+{id:32,cat:'Voltage',q:'SCENARIO: A lightly loaded 500 kV line is showing 107% of nominal voltage at the remote (receiving) end with no load connected. Which device, if available, should be switched in at the remote bus?',
+opts:['A shunt capacitor bank','A series capacitor','A shunt reactor','A static VAR compensator (SVC) set to capacitive mode'],
+ans:'A shunt reactor',
+exp:'107% voltage on a lightly loaded line is the Ferranti effect — capacitive charging elevates receiving-end voltage. A shunt reactor absorbs the excess reactive power, pulling voltage back toward nominal. Switching in a capacitor would make the overvoltage worse.'},
+{id:33,cat:'Voltage',q:'Under-excited operation of a synchronous generator has what effect on system voltage?',
+opts:['It raises voltage by supplying reactive power to the grid','It has no effect on bus voltage — only active power affects voltage','It lowers voltage by absorbing reactive power from the grid','It stabilizes voltage by providing dynamic reactive support'],
+ans:'It lowers voltage by absorbing reactive power from the grid',
+exp:'Under-excited generators absorb reactive power (like a reactor), which lowers the voltage at their terminal bus. While sometimes necessary, deep under-excitation also reduces the stability margin. Operators must monitor reactive output and generator stability limits.'},
+{id:34,cat:'Voltage',q:'What is "voltage collapse," and what is the key early warning indicator operators should monitor?',
+opts:['A sudden voltage drop caused by a large generation trip; monitored by watching MW output of generators','A progressive, self-reinforcing voltage decline where reactive power demand exceeds supply; early indicator is generators reaching reactive capability limits (hitting their MVAR ceiling)','A voltage collapse is synonymous with a frequency collapse; they always occur simultaneously','Voltage collapse is caused only by overloaded transformers; the indicator is transformer winding temperature'],
+ans:'A progressive, self-reinforcing voltage decline where reactive power demand exceeds supply; early indicator is generators reaching reactive capability limits (hitting their MVAR ceiling)',
+exp:'Voltage collapse is a dynamic instability. As voltage drops, loads demand more current (especially motor loads), increasing reactive demand. When generators exhaust their reactive capability (hit Q-limits), they can no longer support voltage. This causes further voltage drop, more Q demand — a runaway process. Early warning: generators at MVAR ceiling with buses declining.'},
+{id:35,cat:'Voltage',q:'SCENARIO: Multiple generators in your area are at their reactive power ceiling (maximum MVAR output) and bus voltages continue to decline. What is the MOST critical immediate action?',
+opts:['Increase real power output of all generators to support voltage','Interrupt firm load in the affected area — load reduction directly reduces reactive demand and can arrest voltage collapse','Open the tie lines to neighboring areas to prevent voltage collapse from spreading','Request that the RC declare an EEA immediately'],
+ans:'Interrupt firm load in the affected area — load reduction directly reduces reactive demand and can arrest voltage collapse',
+exp:'When generators are at their reactive ceiling and voltage continues to fall, the only way to arrest collapse is to reduce reactive demand. Shedding load reduces both MW and MVAR demand, relieving the stressed system. This is the recognized operator procedure for voltage collapse prevention.'},
+{id:36,cat:'Voltage',q:'Why is reactive power (MVAR) difficult to transmit over long distances compared to real power (MW)?',
+opts:['Reactive power is not affected by line resistance but is highly absorbed by line inductance; the reactive losses increase with distance faster than real power losses','Environmental regulations prevent reactive power transmission on certain corridors','Reactive power cannot flow through transformers — it must be generated locally at each voltage level','Reactive power transmission requires special HVDC converters and cannot flow on AC lines'],
+ans:'Reactive power is not affected by line resistance but is highly absorbed by line inductance; the reactive losses increase with distance faster than real power losses',
+exp:'Transmission lines are inductive. Reactive power flowing through line inductance creates reactive losses (I²X losses) that consume MVAR as it travels. The further the reactive must travel, the more is consumed enroute. This is why reactive compensation (capacitors, SVCs) must be distributed throughout the system rather than centralized.'},
+{id:37,cat:'Voltage',q:'A series capacitor is installed on a long 500 kV transmission line. What is its primary purpose?',
+opts:['To reduce voltage on lightly loaded lines by absorbing line-charging current','To increase the power transfer capability of the line by compensating for a portion of the line\'s inductive reactance','To provide voltage support at the receiving end during high-load conditions','To limit fault current during short circuits on the line'],
+ans:'To increase the power transfer capability of the line by compensating for a portion of the line\'s inductive reactance',
+exp:'Series capacitors cancel a portion of the line\'s natural inductive reactance (XL), effectively making the line electrically shorter. This increases the maximum power transfer capability (P = V1·V2/X × sin δ). A lower effective X means more MW can flow for the same voltage/angle conditions.'},
+{id:38,cat:'Voltage',q:'A transformer\'s load tap changer (LTC) is set to boost voltage on the secondary side. The secondary bus voltage remains low. What is the risk of continuing to boost the LTC indefinitely?',
+opts:['The transformer will overheat immediately due to increased turns ratio','Raising secondary voltage while the system is short of reactive may pull more reactive through the transformer, worsening the primary-side voltage and potentially contributing to system-wide voltage collapse','There is no risk — LTC adjustments cannot affect system-wide voltage','The tap changer will mechanically fail after more than 5 tap changes in one hour'],
+ans:'Raising secondary voltage while the system is short of reactive may pull more reactive through the transformer, worsening the primary-side voltage and potentially contributing to system-wide voltage collapse',
+exp:'This is a well-known voltage stability concern. Boosting LTC on a voltage-stressed system increases reactive demand from the high-voltage network to support the low-voltage bus. If the system is already reactive-deficient, this draws down HV-side voltage further — a potentially destabilizing feedback loop.'},
+{id:39,cat:'Frequency',q:'Area Control Error (ACE) is a critical metric for Balancing Authorities. Which formula correctly represents ACE?',
+opts:['ACE = Actual Net Interchange – Scheduled Net Interchange','ACE = (Actual Net Interchange – Scheduled Net Interchange) – 10B(Actual Frequency – Scheduled Frequency) – Correction Factor','ACE = Generation – Load','ACE = Frequency Deviation × Inertia Constant'],
+ans:'ACE = (Actual Net Interchange – Scheduled Net Interchange) – 10B(Actual Frequency – Scheduled Frequency) – Correction Factor',
+exp:'ACE has two components: the interchange deviation (NIA – NIS) and the frequency bias component (–10B × ΔF). The frequency bias term (–10B) accounts for the BA\'s obligation to provide primary frequency response proportional to its size. Negative ACE means the BA is short (behind schedule); positive ACE means it is exporting more than scheduled.'},
+{id:40,cat:'Frequency',q:'What is the PRIMARY source of frequency control in the first few seconds after a large generation trip?',
+opts:['Automatic Generation Control (AGC) — it adjusts generation dispatch every 4 seconds','Governor response — spinning generators detect the frequency drop and automatically increase output via their speed governor','Emergency interruptible load contracts — large industrial loads automatically reduce when frequency drops','The Reliability Coordinator dispatches additional reserves via phone call'],
+ans:'Governor response — spinning generators detect the frequency drop and automatically increase output via their speed governor',
+exp:'Inertia provides the first instantaneous response (energy stored in spinning rotors), followed within seconds by governor (primary frequency) response. Governors are speed-sensitive devices that open the fuel/steam valve as frequency drops. AGC (secondary response) acts over minutes to restore frequency to scheduled value.'},
+{id:41,cat:'Frequency',q:'What is the purpose of Automatic Generation Control (AGC)?',
+opts:['To automatically trip generators when frequency drops below 59.5 Hz','To continuously adjust generator output every few seconds to maintain ACE near zero, keeping frequency and scheduled interchange on target','To automatically start blackstart units when frequency drops below 59.0 Hz','To control reactive power output of generators for voltage regulation'],
+ans:'To continuously adjust generator output every few seconds to maintain ACE near zero, keeping frequency and scheduled interchange on target',
+exp:'AGC (secondary frequency control) closes the frequency loop over a 4-second to several-minute timescale. It sends raise/lower pulses to participating generators to drive ACE toward zero, maintaining both frequency and net interchange on schedule.'},
+{id:42,cat:'Frequency',q:'Under-frequency load shedding (UFLS) schemes in the Eastern Interconnection typically begin shedding load at what frequency?',
+opts:['59.9 Hz','59.7 Hz','59.5 Hz','59.3 Hz'],
+ans:'59.7 Hz',
+exp:'Most NERC-compliant UFLS programs in the Eastern Interconnection begin the first stage of automatic load shedding at approximately 59.7 Hz, shedding roughly 10% of load. Subsequent stages shed additional load at 59.5, 59.3, and 59.0 Hz or on rate-of-change. Exact setpoints vary by regional reliability organization.'},
+{id:43,cat:'Frequency',q:'Governor droop is typically set at 5%. What does this mean operationally?',
+opts:['The governor responds only when frequency deviates more than 5% from scheduled frequency','A 5% change in frequency (from synchronous speed to zero) would produce a 100% change in generator output; for typical frequency deviations, output changes proportionally','The governor adjusts output in 5% increments only — no proportional response','5% droop means the governor will trip the unit if frequency drops below 57 Hz'],
+ans:'A 5% change in frequency (from synchronous speed to zero) would produce a 100% change in generator output; for typical frequency deviations, output changes proportionally',
+exp:'5% droop means the full output range corresponds to a 5% frequency change. For a small frequency deviation like 0.1 Hz (0.167% of 60 Hz), the generator would increase output by approximately 3.3% of its rating. Droop ensures multiple generators share the load-pickup proportionally without fighting each other.'},
+{id:44,cat:'Frequency',q:'SCENARIO: Your Balancing Area ACE has been persistently negative for 12 consecutive minutes. What does this indicate and what action should you take?',
+opts:['Persistently negative ACE means you are exporting more than scheduled; no action required','Persistently negative ACE means your area is short — generating less than load plus scheduled exports; ACE must be corrected by raising generation, curtailing exports, or both per CPS2 requirements','Negative ACE always indicates a metering error; file a trouble report','Negative ACE for 12 minutes triggers automatic EEA Level 1 declaration'],
+ans:'Persistently negative ACE means your area is short — generating less than load plus scheduled exports; ACE must be corrected by raising generation, curtailing exports, or both per CPS2 requirements',
+exp:'Negative ACE indicates the BA is pulling more power from the Interconnection than scheduled — it is under-generating relative to load. NERC CPS2 requires that the ACE must not exceed a defined limit for more than 10 consecutive minutes. Action is required: raise generation via AGC, increase imports, reduce exports, or interrupt interruptible load.'},
+{id:45,cat:'Frequency',q:'SCENARIO: A 1,200 MW generator trips unexpectedly. System frequency immediately drops to 59.6 Hz and is declining. What is the correct sequence of automatic responses that should arrest the decline?',
+opts:['UFLS trips at 59.5 Hz, followed by governor response from remaining units, followed by AGC response','Inertia response from spinning generators (immediate), followed by governor response within seconds, followed by AGC response over several minutes','AGC immediately adjusts all generators, then UFLS activates, then governor response kicks in','Governor response is only available on coal units — combined cycle and gas units rely entirely on AGC'],
+ans:'Inertia response from spinning generators (immediate), followed by governor response within seconds, followed by AGC response over several minutes',
+exp:'The frequency control sequence is: (1) Inertia — kinetic energy in spinning rotors provides instantaneous response; (2) Primary/Governor response — governors respond within 0–30 seconds, arresting the decline (frequency nadir); (3) Secondary/AGC — restores frequency to schedule over 1–10 minutes. If the decline is severe enough (below UFLS setpoints), automatic load shedding also activates.'},
+{id:46,cat:'Frequency',q:'NERC Control Performance Standard 1 (CPS1) measures what?',
+opts:['Whether a BA trips generation within 1 minute of a frequency deviation','The statistical relationship between a BA\'s ACE and system frequency deviation — a BA with good CPS1 helps the Interconnection; a BA with poor CPS1 makes frequency worse','The maximum allowable time a BA may operate with zero ACE','The percentage of time a BA\'s transmission is operated below IROL limits'],
+ans:'The statistical relationship between a BA\'s ACE and system frequency deviation — a BA with good CPS1 helps the Interconnection; a BA with poor CPS1 makes frequency worse',
+exp:'CPS1 evaluates whether a BA\'s ACE is correlated with the Interconnection\'s frequency deviation. A good CPS1 score means when frequency is low, the BA is generating more than scheduled (helping the system), and vice versa. It must be ≥ 100% averaged over a rolling 12-month period.'},
+{id:47,cat:'Frequency',q:'System frequency is at 59.8 Hz and your Balancing Area is showing a strong positive ACE of +400 MW. What is the appropriate operator response?',
+opts:['Increase generation further — positive ACE with low frequency is normal','Reduce generation or increase exports to drive ACE toward zero; a persistently positive ACE at low frequency may indicate over-generation and poor CPS1 performance','Declare a frequency emergency and request UFLS activation','Do nothing — AGC will automatically correct the ACE'],
+ans:'Reduce generation or increase exports to drive ACE toward zero; a persistently positive ACE at low frequency may indicate over-generation and poor CPS1 performance',
+exp:'While 59.8 Hz is not yet an emergency, a large positive ACE (over-generating) is undesirable — it means you are unintentionally helping, but also means another area is negative. The proper response is to reduce generation toward schedule. Operators should also investigate why ACE is so far off schedule.'},
+{id:48,cat:'Frequency',q:'What is the significance of 59.5 Hz in the Eastern Interconnection?',
+opts:['Automatic Generation Control stops operating below 59.5 Hz','59.5 Hz is the setpoint for a second stage of UFLS in most Eastern Interconnection UFLS programs and the frequency at which some generators may trip on under-frequency protection','All firm load interruption begins automatically at 59.5 Hz','59.5 Hz is the minimum frequency required to maintain synchronism with Canada'],
+ans:'59.5 Hz is the setpoint for a second stage of UFLS in most Eastern Interconnection UFLS programs and the frequency at which some generators may trip on under-frequency protection',
+exp:'59.5 Hz is a critical threshold. Most UFLS designs shed additional load blocks at this frequency (often 10-15% of load per stage). Additionally, generator under-frequency protection may begin tripping units at or below this level — potentially worsening the frequency event. Operators must act aggressively before reaching 59.5 Hz.'},
+{id:49,cat:'N-1',q:'What does "N-1 contingency" mean in bulk power system reliability?',
+opts:['A system condition where one transmission line is operating at its normal rating minus 1%','The system can withstand the loss of any single element (generator, line, transformer) without violating reliability standards, assuming the system was in a normal pre-contingency state','N-1 means the operator must maintain 1,000 MW of spinning reserves at all times','The first contingency event each calendar year for reporting purposes'],
+ans:'The system can withstand the loss of any single element (generator, line, transformer) without violating reliability standards, assuming the system was in a normal pre-contingency state',
+exp:'N-1 is the foundational reliability criterion for the bulk power system. "N" represents all system elements; "N-1" means any single element can be lost and the system must remain secure — no overloads, no voltage violations, no loss of load — within the post-contingency operating time frame.'},
+{id:50,cat:'N-1',q:'SCENARIO: A 345 kV line trips and post-contingency analysis shows the parallel 230 kV path is now loaded at 107% of its Emergency Rating. You are now in a post-N-1 condition. What is the typical timeframe for the operator to return the system to a secure state?',
+opts:['5 minutes','Up to 30 minutes for non-extreme contingencies, while taking corrective action','The system does not need to be corrected until load naturally decreases overnight','72 hours — post-contingency conditions are acceptable for one full operating day'],
+ans:'Up to 30 minutes for non-extreme contingencies, while taking corrective action',
+exp:'NERC TPL standards allow up to 30 minutes to return to a secure post-N-1 state through operator-controlled actions (redispatch, switching, load control). During this window, some equipment may be temporarily overloaded within its emergency rating. If the contingency is extreme, different time frames may apply.'},
+{id:51,cat:'N-1',q:'What is a "cascading failure" in transmission system operations?',
+opts:['A planned sequential switching procedure to de-energize a transmission corridor','An uncontrolled sequence of events in which an initial disturbance causes successive tripping of additional elements, progressively overloading the remaining system','A controlled restoration sequence following a planned outage','The simultaneous trip of multiple generators during a system test'],
+ans:'An uncontrolled sequence of events in which an initial disturbance causes successive tripping of additional elements, progressively overloading the remaining system',
+exp:'Cascading failure is the scenario NERC reliability standards are designed to prevent. One element trips → remaining elements are overloaded → those elements trip → further overloads → system collapse. The 2003 Northeast blackout is the classic example: a series of line trips caused cascading overloads affecting 55 million people.'},
+{id:52,cat:'N-1',q:'How does N-1-1 contingency analysis differ from standard N-1 analysis?',
+opts:['N-1-1 analyzes the loss of two elements simultaneously; N-1 analyzes only one','N-1-1 evaluates system security after two successive independent contingencies — first one element trips, then while the system is still recovering, a second element trips','N-1-1 is used only for planning studies; operators use only N-1 in real time','N-1-1 and N-1 are identical — the additional "1" refers to a 1-hour recovery window'],
+ans:'N-1-1 evaluates system security after two successive independent contingencies — first one element trips, then while the system is still recovering, a second element trips',
+exp:'N-1-1 (also known as a "double contingency" in some contexts) examines what happens if a second element trips while the system is still in a degraded N-1 state. This is more severe than N-1 and is used in planning and, increasingly, in real-time reliability assessments for high-risk conditions.'},
+{id:53,cat:'N-1',q:'Real-time contingency analysis shows that loss of Generator A would cause overloads on three transmission paths. What PRE-CONTINGENCY actions should the operator consider?',
+opts:['Nothing — respond only after Generator A actually trips','Redispatch generation to reduce loading on the three paths before any contingency occurs; this may involve increasing output of generators near the overloaded paths and reducing distant generators','File a contingency study request with the planning department','Trip Generator A preemptively to observe the actual response'],
+ans:'Redispatch generation to reduce loading on the three paths before any contingency occurs; this may involve increasing output of generators near the overloaded paths and reducing distant generators',
+exp:'The purpose of real-time contingency analysis is to identify vulnerabilities before they occur. When contingency analysis shows post-trip violations, operators should take pre-contingency corrective actions — typically generation redispatch, interchange adjustments, or switching — to ensure the system would remain secure after the contingency.'},
+{id:54,cat:'N-1',q:'What is the definition of an "extreme contingency" in NERC reliability standards?',
+opts:['Loss of any single 765 kV line','Loss of a nuclear generation unit above 1,000 MW','Multiple elements failing due to a single initiating event (e.g., common tower, common right-of-way, substation bus fault) that is beyond the standard N-1 design basis','Any event causing ACE to exceed 1,000 MW for more than 10 minutes'],
+ans:'Multiple elements failing due to a single initiating event (e.g., common tower, common right-of-way, substation bus fault) that is beyond the standard N-1 design basis',
+exp:'Extreme contingencies (Category P4-P7 in NERC TPL) involve multiple element failures from a single cause — such as a double-circuit tower collapse, a breaker failure clearing a bus fault, or loss of a large generating plant with multiple units. While the system may not be required to remain fully secure after these events, the consequences should be minimized.'},
+{id:55,cat:'N-1',q:'SCENARIO: Your real-time contingency analysis shows that if the 345/138 kV transformer at Westside Station trips, a 138 kV line will be loaded to 115% of its Normal Rating but only 85% of its Emergency Rating. What should the operator do?',
+opts:['No action needed — the post-contingency loading is within Emergency Rating','Pre-position for the contingency by identifying switching options; if the transformer trips, immediately execute switching to redistribute load below normal rating within the allowed timeframe','Request the transformer be placed in service with a higher rating','Immediately open the 138 kV line to preemptively prevent the overload'],
+ans:'Pre-position for the contingency by identifying switching options; if the transformer trips, immediately execute switching to redistribute load below normal rating within the allowed timeframe',
+exp:'115% of Normal Rating is acceptable temporarily in a post-contingency state if it is within Emergency Rating. The operator should not take premature action, but should pre-position by identifying specific switching actions that could quickly reduce loading. If the contingency occurs, those pre-planned actions can be executed promptly within the 30-minute window.'},
+{id:56,cat:'N-1',q:'Why is it important for operators to run contingency analysis at the START of their shift as well as continuously throughout operations?',
+opts:['NERC requires operators to document contingency analysis results at shift start for compliance records','System conditions at shift start may have changed from the previous operator\'s assessment; new contingency vulnerabilities may exist that require immediate pre-positioning or corrective action','Contingency analysis is computationally intensive and can only be run twice per shift','Starting shift contingency analysis is required only during summer peak season'],
+ans:'System conditions at shift start may have changed from the previous operator\'s assessment; new contingency vulnerabilities may exist that require immediate pre-positioning or corrective action',
+exp:'Operators inherit a system that may have changed significantly — outages completed, new outages started, load shifts, generation dispatch changes. A fresh contingency analysis at shift start identifies any new vulnerabilities before the new operator\'s shift begins. Continuous real-time contingency analysis then monitors for developing issues.'},
+{id:57,cat:'Protection',q:'A distance relay\'s Zone 1 is typically set to cover what percentage of the protected transmission line\'s impedance?',
+opts:['50% of the line impedance — to the midpoint only','80–90% of the line impedance, tripping instantaneously for faults within this zone','100% of the line impedance plus 20% of the next line','120% of the line impedance to provide backup coverage'],
+ans:'80–90% of the line impedance, tripping instantaneously for faults within this zone',
+exp:'Zone 1 is set to 80–90% of the line (not 100%) to avoid overreaching — a Zone 1 reach to 100% would risk operating for faults on adjacent lines due to measurement error. Faults in the remaining 10–20% of the line near the remote bus are cleared by Zone 2 with a time delay, or by a pilot protection scheme.'},
+{id:58,cat:'Protection',q:'SCENARIO: A 345 kV line relay operates on Zone 2 time delay (typically 20-30 cycles). What does this indicate about the fault location?',
+opts:['The fault is in the first 80% of the protected line from the relay location','The fault is likely in the remote 10–20% of the protected line, or on the adjacent bus — beyond the Zone 1 reach but within the Zone 2 overreach','The relay has malfunctioned — Zone 2 should never operate for a fault on the protected line','Zone 2 operation means the fault was on a parallel line, not the protected line'],
+ans:'The fault is likely in the remote 10–20% of the protected line, or on the adjacent bus — beyond the Zone 1 reach but within the Zone 2 overreach',
+exp:'Zone 2 (typical reach 120–130% of line impedance) trips with a time delay to allow for Zone 1 of adjacent lines to clear first. If Zone 2 operates, the fault is in the region not covered by Zone 1 — the last 10–20% of the line near the remote terminal — or possibly just beyond on the remote bus/adjacent line.'},
+{id:59,cat:'Protection',q:'SCENARIO: A 500 kV line trips simultaneously at both ends within one cycle. Which protection scheme most likely operated?',
+opts:['Zone 3 backup protection at both ends operated simultaneously by coincidence','A pilot protection scheme — either Permissive Overreach Transfer Trip (POTT), Directional Comparison Blocking (DCB), or a current differential scheme — operated, tripping both ends simultaneously','Both ends happened to operate on Zone 1 — this is normal for in-zone faults','The line tripped on thermal overload protection at both ends'],
+ans:'A pilot protection scheme — either Permissive Overreach Transfer Trip (POTT), Directional Comparison Blocking (DCB), or a current differential scheme — operated, tripping both ends simultaneously',
+exp:'Simultaneous high-speed tripping of both line ends is the signature of a pilot protection scheme. Pilot schemes (using fiber, power line carrier, or microwave) communicate between the two ends to achieve simultaneous tripping for all faults within the protected zone. Without pilot protection, one end would trip on Zone 1 (instantaneous) and the other on Zone 2 (time-delayed).'},
+{id:60,cat:'Protection',q:'What is "sympathetic tripping"?',
+opts:['A protection philosophy where a relay is designed to "sympathize" with upstream relays by delaying trip to coordinate','The unintended tripping of a healthy (unfaulted) circuit due to fault current from an adjacent faulted circuit creating a relay pickup on the healthy circuit','A test mode in which relay trip functions are inhibited while a line is in service','When two parallel relays must both agree before a trip signal is issued'],
+ans:'The unintended tripping of a healthy (unfaulted) circuit due to fault current from an adjacent faulted circuit creating a relay pickup on the healthy circuit',
+exp:'Sympathetic tripping occurs when fault current from a nearby faulted circuit flows through an adjacent healthy feeder, causing that feeder\'s overcurrent relays to pick up and trip — even though the adjacent feeder itself has no fault. It is particularly problematic in distribution systems with multiple feeders from a common bus and can complicate fault analysis.'},
+{id:61,cat:'Protection',q:'What is the purpose of an automatic reclosure relay on a transmission line?',
+opts:['To automatically close the line after a manual open, bypassing operator action','To automatically re-energize the line after a trip, on the assumption that most transmission faults are transient (caused by lightning or flashover) and will clear after the arc extinguishes','To test the line insulation integrity after a fault by applying voltage with limited current capability','To coordinate with the opposite end relay to allow simultaneous high-speed tripping'],
+ans:'To automatically re-energize the line after a trip, on the assumption that most transmission faults are transient (caused by lightning or flashover) and will clear after the arc extinguishes',
+exp:'Approximately 80–90% of transmission line faults are transient — caused by lightning, wind, tree contact that arcs and self-clears when de-energized. Auto-reclosure restores the line automatically after a brief dead time, preventing unnecessary sustained outages. Multi-shot reclosers attempt 2–3 times before locking out.'},
+{id:62,cat:'Protection',q:'What is "load encroachment" in distance relay protection?',
+opts:['The situation where growing load increases line current beyond the relay\'s design current rating','A condition in which high system loading causes the impedance measured by a distance relay to fall within the relay\'s trip characteristic — potentially causing an undesired trip on a heavily loaded but healthy line','Unauthorized transfer of load across a protection zone boundary during restoration','A form of relay test that simulates high-load conditions to verify proper operation'],
+ans:'A condition in which high system loading causes the impedance measured by a distance relay to fall within the relay\'s trip characteristic — potentially causing an undesired trip on a heavily loaded but healthy line',
+exp:'Distance relays measure apparent impedance (V/I). Under heavy loading, current is high and voltage is depressed, making the measured impedance appear small and potentially within the relay\'s tripping characteristic. Modern relays include load encroachment blinders to distinguish between heavy load and actual faults, preventing false trips.'},
+{id:63,cat:'Protection',q:'A 345 kV line is taken out of service for planned maintenance. The line protection relays have been removed from service. What is the operator\'s primary reliability obligation?',
+opts:['None — protection is a maintenance department responsibility, not an operator concern','Recognize that the system is now operating without N-1 protection for that line and take pre-contingency actions to ensure no other single contingency creates an unmitigated problem; possibly reduce loading on adjacent paths','Request that maintenance work faster to restore protection as quickly as possible','Reduce line ratings on all 345 kV lines in the area by 50% until protection is restored'],
+ans:'Recognize that the system is now operating without N-1 protection for that line and take pre-contingency actions to ensure no other single contingency creates an unmitigated problem; possibly reduce loading on adjacent paths',
+exp:'When protection is out of service, the system\'s ability to quickly isolate a fault on that element is compromised. Operators must account for this degraded state — often called "operating in a protection-out-of-service" condition. Actions may include reducing flows on adjacent paths, canceling other outages, and increasing situational awareness.'},
+{id:64,cat:'Protection',q:'A current differential relay operates by comparing what?',
+opts:['The voltage at both ends of a protected element','The current entering one end of the protected element versus the current leaving the other end — a difference indicates a fault in the zone','The impedance seen from each end of the line','The rate of current rise at the relay location'],
+ans:'The current entering one end of the protected element versus the current leaving the other end — a difference indicates a fault in the zone',
+exp:'Differential protection is based on Kirchhoff\'s current law: in a fault-free element, current in = current out. If more current enters one end than leaves the other (differential current), a fault exists within the protected zone. Differential protection is highly selective (only trips for in-zone faults) and is used for transformers, buses, generators, and some line applications.'},
+{id:65,cat:'Protection',q:'What is the role of breaker failure (BF) protection and why is it important for operator awareness?',
+opts:['Breaker failure protection prevents operators from opening a breaker when the line is energized','If a breaker fails to open when commanded by a protection trip, breaker failure protection initiates a backup trip of all adjacent breakers to clear the fault — potentially causing a much larger outage than the original fault','Breaker failure protection automatically recalibrates the breaker after every trip operation','BF protection is used only on generator step-up transformers and has no impact on transmission switching'],
+ans:'If a breaker fails to open when commanded by a protection trip, breaker failure protection initiates a backup trip of all adjacent breakers to clear the fault — potentially causing a much larger outage than the original fault',
+exp:'BF protection is critical for fault clearing. If a breaker fails to interrupt during a fault, the fault current continues flowing. BF protection (activated after a short time delay) trips all breakers connected to the same bus, clearing the fault at the cost of losing the entire bus. Operators should be aware that a suspected breaker failure will produce a larger-than-expected outage.'},
+{id:66,cat:'Scenario',q:'SCENARIO: Your system is experiencing high system loading and you are operating near IROL limits on two flowgates. A unit trips, causing one flowgate to exceed IROL. You initiate generation redispatch but your RC then issues a direct order to immediately interrupt 300 MW of firm load. What must you do?',
+opts:['Continue with your own redispatch plan — RC orders are advisory, not mandatory for TOPs','Immediately comply with the RC\'s order and interrupt 300 MW of firm load; the RC has authority to direct load interruption and you must follow the operating order','Request a 30-minute delay to first try all other options before interrupting firm load','Notify NERC before complying with any firm load interruption order'],
+ans:'Immediately comply with the RC\'s order and interrupt 300 MW of firm load; the RC has authority to direct load interruption and you must follow the operating order',
+exp:'Reliability Coordinators have operating authority over TOPs in their footprint. When the RC issues a direct operating order, the TOP must comply immediately. The RC has the widest view of the Interconnection and their direction takes precedence over the individual operator\'s own plan.'},
+{id:67,cat:'Scenario',q:'SCENARIO: NOAA issues a geomagnetic storm (GMD) alert warning of a strong G3 storm expected in 4 hours. What is the most appropriate immediate action for the system operator?',
+opts:['Wait for the storm to begin before taking any action — GMD forecasts are often inaccurate','Review and execute your entity\'s GMD Operating Procedure: increase reactive reserves, evaluate transformer GIC susceptibility, be prepared to manually increase reactive margins, and brief incoming shift operators','Immediately shed load to create a 30% margin across all paths','Contact FERC to request a temporary increase to all IROL limits'],
+ans:'Review and execute your entity\'s GMD Operating Procedure: increase reactive reserves, evaluate transformer GIC susceptibility, be prepared to manually increase reactive margins, and brief incoming shift operators',
+exp:'GMDs can cause geomagnetically induced currents (GICs) that saturate power transformers, dramatically increasing reactive demand and heating transformer cores. NERC EOP-010 requires entities to have GMD operating procedures. Pre-event actions include increasing reactive reserves, monitoring transformer temperatures and reactive output, and reducing pre-contingency flows.'},
+{id:68,cat:'Scenario',q:'SCENARIO: Your SCADA system loses telemetry to approximately 40% of your substations due to a communication system failure. How should you maintain situational awareness?',
+opts:['Declare a system emergency immediately — operators cannot work without SCADA','Attempt to recover communications while simultaneously contacting affected substations for voice reads, coordinating with neighboring entities for boundary readings, and reducing system stress by returning to conservative operations','Wait up to 2 hours for the SCADA system to automatically recover','Hand control to the neighboring RC until SCADA is restored'],
+ans:'Attempt to recover communications while simultaneously contacting affected substations for voice reads, coordinating with neighboring entities for boundary readings, and reducing system stress by returning to conservative operations',
+exp:'NERC EOP-008 requires backup plans for loss of situational awareness tools. Operators must maintain awareness through voice communication with field personnel, data from neighboring entities, and their own system knowledge. Conservative operations (reducing flows, increasing margins) reduce the risk while visibility is degraded.'},
+{id:69,cat:'Scenario',q:'SCENARIO: While reviewing your shift passdown, you note that a major 500 kV/230 kV auto-transformer at Central Station has just tripped during peak load. What parameters should you assess FIRST?',
+opts:['The transformer oil temperature and winding temperature on the tripped unit','Loading on remaining transformers at Central Station, voltage on the 230 kV bus, and any resulting transmission path overloads or voltage violations','Request a 2-hour work window for the maintenance crew to inspect and return the transformer','Check the weather report to determine if the trip was caused by a storm'],
+ans:'Loading on remaining transformers at Central Station, voltage on the 230 kV bus, and any resulting transmission path overloads or voltage violations',
+exp:'An auto-transformer trip at a key 500/230 kV station immediately impacts system security. Priority assessment: (1) Are remaining transformers overloaded? (2) Is 230 kV bus voltage acceptable? (3) Are there transmission path overloads? (4) Is there a contingency now that makes the system vulnerable to the next N-1? These must be assessed and corrected within the 30-minute window.'},
+{id:70,cat:'Scenario',q:'SCENARIO: During a severe ice storm, multiple 345 kV lines trip over a 2-hour period. You are now operating radially into a load center and your remaining path is at 95% of IROL. Restoration attempts for the tripped lines have failed. What is the decision sequence?',
+opts:['Continue operating and hope load naturally decreases before the IROL is exceeded','Declare a conservative operations posture, notify the RC, begin pre-positioning load interruption options, identify available generation redispatch, and prepare to execute load shedding at the RC\'s direction before the IROL is exceeded','Immediately drop the entire load center and let protection clear it','Request neighboring utilities to extend their IROL limits temporarily'],
+ans:'Declare a conservative operations posture, notify the RC, begin pre-positioning load interruption options, identify available generation redispatch, and prepare to execute load shedding at the RC\'s direction before the IROL is exceeded',
+exp:'When approaching an IROL under degraded conditions, proactive communication with the RC and pre-positioning of corrective actions is essential. Controlled load interruption before an IROL exceedance is far preferable to an uncontrolled cascade. The RC must be notified of the situation so they can coordinate wide-area actions.'},
+{id:71,cat:'Scenario',q:'SCENARIO: System frequency has been at 59.73 Hz for 3 minutes and is not recovering. Your ACE is −600 MW. AGC is active. What should the operator do?',
+opts:['Disable AGC and manually set all generators to maximum output','Verify AGC is actually sending raise pulses and generators are responding; if not recovering, manually commit additional reserves, contact neighboring BAs for emergency assistance, and prepare to implement emergency procedures','Wait 10 more minutes for frequency to recover on its own before taking manual action','Activate UFLS manually by calling the load dispatcher'],
+ans:'Verify AGC is actually sending raise pulses and generators are responding; if not recovering, manually commit additional generators, contact neighboring BAs for emergency assistance, and prepare to implement emergency procedures',
+exp:'Sustained low frequency with large negative ACE indicates a significant generation deficiency. If AGC is working but frequency isn\'t recovering, available headroom is exhausted. Manual actions: check for uncommitted reserves, contact neighboring BAs for emergency energy, consider requesting interruptible load, and be prepared to implement EEA procedures.'},
+{id:72,cat:'Scenario',q:'SCENARIO: You are instructed to perform a switching sequence that would return a 345 kV line to service, but your real-time contingency analysis shows this would result in a post-N-1 violation if the adjacent transformer were to trip. What should you do?',
+opts:['Complete the switching — contingency analysis shows a possible future violation, not a current one','Do not complete the switching without first resolving the contingency concern; consult with your RC, and take corrective pre-contingency actions (redispatch, other switching) to eliminate the post-contingency violation before energizing the line','Call the planning department to revise the contingency model','Energize the line and immediately begin corrective actions in parallel'],
+ans:'Do not complete the switching without first resolving the contingency concern; consult with your RC, and take corrective pre-contingency actions (redispatch, other switching) to eliminate the post-contingency violation before energizing the line',
+exp:'Operators must not knowingly place the system in a state that violates N-1 criteria without a plan to immediately correct it. Returning a line that creates a post-N-1 violation requires either resolving the contingency concern first, or at minimum obtaining RC concurrence and having an immediate corrective action ready.'},
+{id:73,cat:'Scenario',q:'SCENARIO: Two islands have formed in your system following a major disturbance. Island A is at 59.9 Hz, Island B is at 60.1 Hz. An operator proposes to immediately close the tie breaker to reconnect them. Is this correct?',
+opts:['Yes — the islands are very close in frequency, close the breaker immediately','No — frequency must be within approximately ±0.1 Hz BUT voltage magnitude, phase angle, and phase sequence must also be verified before closing; use synchroscope or check sync relay to confirm all parameters are acceptable before closing','Yes — any time two islands are formed, they should be reconnected as fast as possible regardless of parameters','No — islands must be at exactly 60.0 Hz before synchronizing; 59.9 and 60.1 Hz are unacceptable'],
+ans:'No — frequency must be within approximately ±0.1 Hz BUT voltage magnitude, phase angle, and phase sequence must also be verified before closing; use synchroscope or check sync relay to confirm all parameters are acceptable before closing',
+exp:'Synchronizing two islands requires all four conditions: matched frequency (within ~0.05–0.1 Hz), matched voltage magnitude (within ~5%), correct phase angle (breaker closing when phase difference is small and decreasing), and correct phase sequence. Closing out of sync — especially with a large phase angle difference — can cause severe mechanical shock to generators, potentially tripping them and worsening the event.'},
+{id:74,cat:'Scenario',q:'SCENARIO: Generation reserves in your Balancing Area have fallen below the required minimum due to multiple unit trips. You have 30 minutes to restore reserves. Which actions are available to the operator?',
+opts:['Only one option exists: immediately shed firm load equal to the reserve deficiency','Options include: calling for non-spinning reserves to come online, purchasing emergency energy from neighbors, curtailing exports, activating demand response programs, coordinating interruptible load agreements, and if necessary interrupting firm load as a last resort','The operator can only wait for the market to procure reserves — direct operator action is prohibited','Request NERC to waive the reserve requirement for the current operating hour'],
+ans:'Options include: calling for non-spinning reserves to come online, purchasing emergency energy from neighbors, curtailing exports, activating demand response programs, coordinating interruptible load agreements, and if necessary interrupting firm load as a last resort',
+exp:'Reserve procurement has a hierarchy. Operators should first exhaust market and non-spinning reserve options (fastest online units, emergency purchases, curtailed exports) before resorting to load interruption. All actions must be documented. If reserves cannot be restored within the required timeframe, escalation to EEA procedures may be necessary.'},
+{id:75,cat:'Scenario',q:'SCENARIO: Following a complete area blackout, you have established two energized islands with cranking paths to large steam units. Unit A (800 MW) is at 60% load, Unit B (600 MW) is at 40% load. Island A is ready to synchronize to Island B. Your primary concern before closing the synchronizing breaker is:',
+opts:['That Island A has more MW than Island B — equalizing generation before sync','That all parameters (frequency, voltage, phase angle, phase sequence) are acceptable AND that the combined island will remain stable after synchronization, with adequate generation to supply load in both islands','That Unit A is newer than Unit B and should always take priority in restoration sequencing','That the line between the two islands has been meggered within the last 24 hours'],
+ans:'That all parameters (frequency, voltage, phase angle, phase sequence) are acceptable AND that the combined island will remain stable after synchronization, with adequate generation to supply load in both islands',
+exp:'Before synchronizing islands during restoration, the operator must confirm both the electrical synchronization parameters (frequency match, voltage match, phase angle, phase sequence via synchroscope/check sync) AND the post-synchronization stability — will the combined system have enough generation to supply the combined load? A successful sync that immediately leads to frequency collapse is not a success.'},
+
+// ─── TLR / CONSERVATIVE OPS (6) ──────────────────────────────────────────────
+{id:76,cat:'TLR/Cons Ops',q:'What is Transmission Loading Relief (TLR) and who initiates it?',
+opts:['A process where BAs voluntarily reduce generation output to lower transmission loading; initiated by any BA','A curtailment process initiated by the Reliability Coordinator to reduce loading on constrained transmission facilities by curtailing energy schedules contributing to the constraint','A protection scheme that automatically trips generation when transmission lines are overloaded','A market mechanism administered by FERC to compensate owners of constrained facilities'],
+ans:'A curtailment process initiated by the Reliability Coordinator to reduce loading on constrained transmission facilities by curtailing energy schedules contributing to the constraint',
+exp:'TLR (NERC IRO-006) is a coordinated curtailment process used in the Eastern Interconnection. When a transmission constraint cannot be managed by other means, the RC directs curtailment of energy schedules (from least firm to most firm) to reduce flows on the constrained facility. The RC initiates; BAs and TOPs execute.'},
+
+{id:77,cat:'TLR/Cons Ops',q:'TLR levels range from TLR Level 1 to TLR Level 6. What does TLR Level 5 specifically require?',
+opts:['Voluntary reduction of non-firm schedules only; no curtailment of firm schedules','Curtailment of firm energy schedules contributing to the constraint, as directed by the RC, after all non-firm schedules have been curtailed','Automatic load shedding at 59.7 Hz to relieve transmission loading','Emergency purchase of replacement energy from neighboring BAs'],
+ans:'Curtailment of firm energy schedules contributing to the constraint, as directed by the RC, after all non-firm schedules have been curtailed',
+exp:'TLR levels escalate from voluntary (Level 1) through curtailment of non-firm schedules (Levels 2-4) to curtailment of firm schedules (Level 5). TLR Level 6 involves physical interruption of load. BAs must curtail in priority order per the TLR procedures. Firm curtailments at Level 5 have significant commercial and reliability consequences.'},
+
+{id:78,cat:'TLR/Cons Ops',q:'What is "Conservative Operations" and under what conditions should it be implemented?',
+opts:['A mode where all generation is reduced to minimum output to minimize wear on equipment','Operating with increased reliability margins — reducing flows, increasing reserves, and limiting transactions — when conditions such as severe weather, equipment outages, or uncertainty make normal operations risky','A cost-saving mode where only the cheapest generation is dispatched regardless of reliability impact','Conservative operations is another term for N-1 contingency analysis'],
+ans:'Operating with increased reliability margins — reducing flows, increasing reserves, and limiting transactions — when conditions such as severe weather, equipment outages, or uncertainty make normal operations risky',
+exp:'Conservative operations means proactively tightening margins before conditions become critical. Triggers include: severe weather forecasts, multiple planned outages, degraded situational awareness tools, GMD alerts, or approaching IROL limits. It is a proactive risk management posture, not a reactive emergency response.'},
+
+{id:79,cat:'TLR/Cons Ops',q:'SCENARIO: Your RC declares Conservative Operations for 4 hours due to a severe thunderstorm moving through your area. Which best describes your obligations as a TOP?',
+opts:['No action required — Conservative Operations is advisory only and does not bind TOPs or BAs','Follow your entity\'s conservative operations procedures: reduce pre-contingency flows, increase reactive reserves, hold additional generation ready, and heighten situational awareness as directed by your RC','Immediately curtail all non-firm interchange and call neighboring BAs for emergency assistance','Declare EEA Level 1 and begin preparing for load shedding'],
+ans:'Follow your entity\'s conservative operations procedures: reduce pre-contingency flows, increase reactive reserves, hold additional generation ready, and heighten situational awareness as directed by your RC',
+exp:'When the RC declares Conservative Operations, all entities within the RC footprint must follow their procedures. The RC has authority to direct actions. Typical measures: reduce flows below IROL/SOL margins, increase spinning reserves, defer non-essential switching, heighten monitoring. This is different from an EEA — no load interruption is required unless conditions escalate.'},
+
+{id:80,cat:'TLR/Cons Ops',q:'During a TLR Level 3 event, a BA receives a curtailment instruction from the RC but believes the curtailment will cause local reliability problems. What is the correct action?',
+opts:['Refuse to curtail until a reliability assessment confirms the instruction is safe','Comply with the RC curtailment instruction immediately, then notify the RC of the local reliability concern so the RC can coordinate a solution','Contact NERC headquarters before complying with any curtailment that affects firm schedules','Implement a partial curtailment and document the decision'],
+ans:'Comply with the RC curtailment instruction immediately, then notify the RC of the local reliability concern so the RC can coordinate a solution',
+exp:'The RC has operating authority. BAs and TOPs must comply with RC operating instructions even when they disagree, as long as doing so does not create an imminent safety or reliability threat to their immediate local area. The correct process is: comply, then immediately communicate the concern. The RC can then adjust the instruction with full situational awareness.'},
+
+{id:81,cat:'TLR/Cons Ops',q:'What is the correct TLR curtailment priority order — which schedules are curtailed first?',
+opts:['Firm schedules first since they are largest; non-firm schedules are protected','Non-firm point-to-point schedules first, then firm schedules if needed — in order from least firm to most firm','All schedules are curtailed proportionally regardless of firmness','The RC has discretion to curtail in any order based on commercial agreements'],
+ans:'Non-firm point-to-point schedules first, then firm schedules if needed — in order from least firm to most firm',
+exp:'TLR curtailment priority goes from least firm to most firm: non-firm non-designated schedules are curtailed first, progressing through non-firm designated, short-term firm, and finally long-term firm point-to-point. Native load and network integration service are protected. This preserves the most commercially valuable and reliability-critical schedules as long as possible.'},
+
+// ─── FAC / RATINGS (4) ──────────────────────────────────────────────────────
+{id:82,cat:'FAC/Ratings',q:'What is a "Facility Rating" and who is responsible for establishing it?',
+opts:['The maximum amount of electricity a facility can generate; established by the generator owner','The maximum electric power and current that a transmission facility can carry under specified conditions without violating applicable equipment ratings; established by the Transmission Owner','The short-circuit capacity of a bus; established by the Planning Coordinator','A regulatory cap set by FERC on the maximum rate a TO can charge for use of a facility'],
+ans:'The maximum electric power and current that a transmission facility can carry under specified conditions without violating applicable equipment ratings; established by the Transmission Owner',
+exp:'Under NERC FAC-008 and FAC-009, Transmission Owners are responsible for establishing and documenting Facility Ratings based on the most limiting element in the facility (conductor thermal rating, transformer nameplate, breaker interrupting capacity, etc.). These ratings must be communicated to the TOP and PC for use in operating and planning studies.'},
+
+{id:83,cat:'FAC/Ratings',q:'A transmission line has a Normal Rating of 900 MW and an Emergency Rating of 1,100 MW. Under what conditions is it permissible to operate above the Normal Rating up to the Emergency Rating?',
+opts:['Never — Normal Rating must not be exceeded under any circumstances','After a contingency event, the Emergency Rating may be used for the time period allowed by applicable standards (typically up to 30 minutes) while corrective action is taken','The Emergency Rating can be used any time grid conditions require higher flows, with no time restriction','Emergency Ratings apply only during declared EEA conditions'],
+ans:'After a contingency event, the Emergency Rating may be used for the time period allowed by applicable standards (typically up to 30 minutes) while corrective action is taken',
+exp:'Emergency Ratings represent the maximum loading a facility can sustain for a limited time without damage. They are intended for post-contingency use only — not routine operation. The facility must be returned to within Normal Rating within the allowable timeframe through corrective actions such as generation redispatch or load control.'},
+
+{id:84,cat:'FAC/Ratings',q:'SCENARIO: A Transmission Owner informs you that the summer Normal Rating on a key 345 kV line has been reduced from 1,000 MW to 850 MW due to vegetation work reducing ground clearance. What is the immediate operational impact?',
+opts:['No impact — ratings reductions are planning matters and do not affect real-time operations','The SOL and pre-contingency operating limits on any path using that line must be reviewed and potentially reduced immediately to reflect the new rating','The line must be taken out of service until vegetation work is complete','Request NERC to issue a waiver maintaining the original rating during vegetation work'],
+ans:'The SOL and pre-contingency operating limits on any path using that line must be reviewed and potentially reduced immediately to reflect the new rating',
+exp:'Real-time ratings changes must be reflected immediately in operating limits. If a line rating is reduced, the SOL for that facility and any flowgate or path that includes it must be recalculated. Operating above the revised rating violates FAC and TOP standards. The TOP must update their operating limits and EMS models to reflect the new value.'},
+
+{id:85,cat:'FAC/Ratings',q:'What is the difference between a "Normal Rating" and a "Long-Term Emergency Rating" on a transmission facility?',
+opts:['There is no difference — all ratings are continuous by definition','Normal Rating is the maximum loading for indefinite continuous operation; Long-Term Emergency Rating is a higher loading level sustainable for several hours following a contingency before equipment damage risk increases','Long-Term Emergency Rating applies only to transformers; lines use only Normal and Short-Term Emergency ratings','Normal Rating is set by the RC; Emergency Ratings are set by NERC directly'],
+ans:'Normal Rating is the maximum loading for indefinite continuous operation; Long-Term Emergency Rating is a higher loading level sustainable for several hours following a contingency before equipment damage risk increases',
+exp:'Most facilities have a tiered rating structure: Normal (indefinite), Long-Term Emergency (LTE, typically 4 hours), and Short-Term Emergency (STE, typically 15-30 minutes). Each tier represents a trade-off between loading level and time. Operators must manage the facility back to Normal Rating within the LTE or STE time window.'},
+
+// ─── PER / FATIGUE (4) ──────────────────────────────────────────────────────
+{id:86,cat:'PER/Fatigue',q:'NERC PER-006 addresses operator fatigue. What is the maximum number of consecutive hours a certified System Operator may work under this standard?',
+opts:['12 consecutive hours, with an 8-hour rest period required before the next shift','16 consecutive hours, with appropriate fatigue management provisions as required by PER-006 and the entity\'s fatigue management plan','There is no NERC limit — fatigue is managed entirely by entity-level HR policies','24 hours in any 72-hour period'],
+ans:'16 consecutive hours, with appropriate fatigue management provisions as required by PER-006 and the entity\'s fatigue management plan',
+exp:'NERC PER-006 limits certified operators to 16 consecutive work hours. Following a 16-hour work period, a minimum rest period is required before returning to the console. Entities must have written fatigue management plans. Supervisors and operators share responsibility for identifying and managing fatigue — an operator who feels impaired must notify their supervisor.'},
+
+{id:87,cat:'PER/Fatigue',q:'An operator has been on shift for 14 hours due to a system emergency. The emergency is now resolved. What is the correct action under NERC PER-006?',
+opts:['The operator may continue indefinitely since the emergency justified the extended hours','The operator should be relieved as soon as reasonably possible — they are at 14 of the 16-hour maximum and fatigue risk is elevated; the supervisor must actively manage the situation','The operator automatically receives a 24-hour rest period before returning to any duty','File a NERC violation report since 14 hours has already exceeded the allowable limit'],
+ans:'The operator should be relieved as soon as reasonably possible — they are at 14 of the 16-hour maximum and fatigue risk is elevated; the supervisor must actively manage the situation',
+exp:'PER-006 recognizes that emergencies may extend shift lengths but requires active management. The supervisor must arrange relief as quickly as possible and ensure the operator does not exceed the 16-hour limit. The operator has an obligation to report impairment. Emergencies do not create an indefinite exemption.'},
+
+{id:88,cat:'PER/Fatigue',q:'What is the NERC System Operator Certification requirement for maintaining an active credential after initial certification?',
+opts:['No continuing education is required — certification is permanent once earned','Operators must earn Continuing Education Hours (CEHs) each 3-year certification period and pass a recertification exam or demonstrate sufficient CEHs at the end of each period','Operators must pass a written exam every 12 months and complete 40 hours of classroom training annually','Certification expires after 5 years and cannot be renewed — a new exam must be taken'],
+ans:'Operators must earn Continuing Education Hours (CEHs) each 3-year certification period and pass a recertification exam or demonstrate sufficient CEHs at the end of each period',
+exp:'NERC System Operator Certification (NERC PER-003) requires operators to earn CEHs during the 3-year certification period through training, education, and professional development. At the end of the period, operators must either pass a recertification exam or demonstrate sufficient CEHs. Losing certification means the operator cannot perform real-time reliability tasks.'},
+
+{id:89,cat:'PER/Fatigue',q:'SCENARIO: A system operator tells their supervisor they are extremely fatigued and may not be functioning at full capacity, but relief is not due for 3 more hours. What is the supervisor\'s correct response?',
+opts:['Ask the operator to continue until scheduled relief — staffing the console is the priority','Immediately arrange for a qualified replacement, even if it means calling someone in early or the supervisor taking the console; an impaired operator cannot reliably maintain system reliability','Document the complaint and have the operator take a 30-minute break before returning','Tell the operator to drink coffee and continue — fatigue is a normal part of emergency operations'],
+ans:'Immediately arrange for a qualified replacement, even if it means calling someone in early or the supervisor taking the console; an impaired operator cannot reliably maintain system reliability',
+exp:'An operator who self-reports fatigue must be taken seriously and relieved promptly. A fatigued operator on a transmission or balancing console is a reliability risk. PER-006 places obligations on both operators (to report impairment) and supervisors (to act on those reports). Waiting for scheduled relief is not acceptable.'},
+
+// ─── COM / SWITCHING ORDERS (4) ─────────────────────────────────────────────
+{id:90,cat:'COM/Switching',q:'Why are three-part communication protocols (instruction → readback → confirm) required for switching orders on the bulk power system per NERC COM-002?',
+opts:['To create a paper trail for NERC compliance audits','To ensure both the issuer and receiver have the same understanding of the instruction before equipment is operated — a single miscommunication can cause a fault, outage, or personnel injury','Because FERC regulations require three separate recordings of every switching instruction','To give the receiving operator extra time to look up equipment location'],
+ans:'To ensure both the issuer and receiver have the same understanding of the instruction before equipment is operated — a single miscommunication can cause a fault, outage, or personnel injury',
+exp:'Three-part communication (instruction → readback → confirm/correct) is required by NERC COM-002 for time-sensitive and reliability-related communications. The readback requirement catches errors before they become switching mistakes. In the bulk power system, a wrong breaker operated at the wrong time can fault a bus, create an unintended island, or expose a worker to live equipment.'},
+
+{id:91,cat:'COM/Switching',q:'An operator issues a switching instruction. The field technician reads back the correct breaker number but the wrong substation name. What must the operator do?',
+opts:['Allow the switching to proceed — the technician read back the correct breaker number','Immediately stop and correct the error before any switching occurs, then re-issue the corrected instruction and obtain a new readback confirmation','Document the discrepancy in the log and follow up after switching is complete','Let the field tech proceed — field techs know their substations better than the ROC'],
+ans:'Immediately stop and correct the error before any switching occurs, then re-issue the corrected instruction and obtain a new readback confirmation',
+exp:'COM-002 requires that if the readback reveals any error, the issuer must immediately correct it before proceeding. The operator cannot allow switching to proceed on a miscommunicated instruction. The cost of a correction is seconds; the cost of a wrong-substation switch can be a major fault or fatal personnel hazard.'},
+
+{id:92,cat:'COM/Switching',q:'What is the purpose of a Switching Order as used in transmission operations?',
+opts:['A financial order processed by the market operator to schedule real power transfers','A pre-planned, numbered sequence of switching steps reviewed and approved prior to execution, ensuring all steps are performed in the correct order to safely isolate, energize, or restore a facility','A verbal-only authorization from the RC allowing a TOP to modify transmission configuration','A post-event document filed after unplanned switching occurs during a disturbance'],
+ans:'A pre-planned, numbered sequence of switching steps reviewed and approved prior to execution, ensuring all steps are performed in the correct order to safely isolate, energize, or restore a facility',
+exp:'Switching orders provide a controlled, auditable framework for complex switching sequences. Each step is numbered, verified against a one-line diagram, and checked for safety tags and protection status. Pre-approval catches errors before field execution. During execution, each step is read back and confirmed — preventing the dangerous errors that can occur during ad-hoc switching.'},
+
+{id:93,cat:'COM/Switching',q:'SCENARIO: A field technician reports a breaker "did not feel right" when it operated but SCADA shows it opened. No other verification is available. What is the appropriate operator action?',
+opts:['Accept the SCADA indication as definitive — SCADA cannot lie','Treat the breaker state as uncertain and do not proceed with further steps that assume the breaker is open until physical visual verification is obtained from the field technician','Continue the switching sequence — a delay to verify a single breaker is unacceptable','Call the breaker manufacturer for guidance on interpreting the abnormal feel'],
+ans:'Treat the breaker state as uncertain and do not proceed with further steps that assume the breaker is open until physical visual verification is obtained from the field technician',
+exp:'SCADA indications can be incorrect — position switches fail, auxiliary contacts stick, and communication errors produce false indications. When a field technician reports uncertainty about equipment state, the operator must treat the state as unknown. Proceeding on a false open indication while installing grounds or energizing adjacent equipment creates a fatal hazard for field personnel.'},
+
+// ─── BA OPERATIONS (4) ──────────────────────────────────────────────────────
+{id:94,cat:'BA Operations',q:'What is "Inadvertent Interchange" and how is it typically addressed under NERC standards?',
+opts:['Emergency energy purchased from a neighboring BA during a shortage; repaid the following day','The unintended accumulation of energy imbalance between a BA\'s actual and scheduled interchange over time, caused by ACE deviations; tracked and repaid through energy payback agreements with neighboring BAs per BAL-006','A market settlement mechanism for under-scheduled energy; resolved through financial payment only','Physical energy losses on transmission lines; addressed through transmission loss factors'],
+ans:'The unintended accumulation of energy imbalance between a BA\'s actual and scheduled interchange over time, caused by ACE deviations; tracked and repaid through energy payback agreements with neighboring BAs per BAL-006',
+exp:'Inadvertent interchange accumulates when a BA\'s ACE deviates from zero — the BA either over- or under-generates relative to its schedule, causing energy to flow unscheduled across tie lines. NERC BAL-006 requires BAs to track inadvertent and pursue payback to keep cumulative imbalance within limits. Persistent large inadvertent positions indicate chronic ACE problems.'},
+
+{id:95,cat:'BA Operations',q:'NERC BAL-002 establishes Contingency Reserve requirements. Why are contingency reserves critical for BA operations?',
+opts:['They are transformer oil reserves at substations — critical for maintaining equipment ratings during emergencies','They are generation capacity held ready to respond to sudden loss of the largest resource in the BA, critical because they must arrest frequency decline after a large generator or tie line trip','They are voltage support reserves — reactive power held for sudden voltage emergencies','They are revenue reserves — financial margin required before a BA can purchase emergency energy'],
+ans:'They are generation capacity held ready to respond to sudden loss of the largest resource in the BA, critical because they must arrest frequency decline after a large generator or tie line trip',
+exp:'BAL-002 requires BAs to hold Contingency Reserves equal to the loss of the single largest contingency — often a large generator or tie line. These reserves must be deployable within 10 minutes. Without adequate contingency reserves, a large generation trip will cause sustained frequency deviation that cannot be corrected in time, potentially triggering UFLS and cascading events.'},
+
+{id:96,cat:'BA Operations',q:'What is the operational difference between Spinning Reserves and Non-Spinning Reserves for BA contingency reserve purposes?',
+opts:['Spinning reserves are held by wind generators; non-spinning by thermal generators','Spinning reserves are online synchronized generation capacity available immediately via governor response; non-spinning reserves can be brought online within 10 minutes but require startup time','There is no operational difference — both must respond within 10 minutes','Spinning reserves apply only to frequency regulation; non-spinning are used for voltage emergencies'],
+ans:'Spinning reserves are online synchronized generation capacity available immediately via governor response; non-spinning reserves can be brought online within 10 minutes but require startup time',
+exp:'Spinning reserves respond instantaneously via governor action — they are the first line of defense after a large trip. Non-spinning (offline) reserves such as fast-start combustion turbines or hydro units can be started and synchronized within 10 minutes. BAL-002 requires a specific spinning reserve sub-requirement because the immediate response is critical to arresting frequency decline before it reaches UFLS thresholds.'},
+
+{id:97,cat:'BA Operations',q:'SCENARIO: Your BA has 800 MW spinning and 600 MW non-spinning reserves. Your largest contingency is 1,200 MW. BAL-002 requires total reserves equal to the largest contingency with at least 50% spinning. Are you in compliance?',
+opts:['Yes — 800 + 600 = 1,400 MW total exceeds the 1,200 MW requirement','Yes — total reserves of 1,400 MW exceed requirements and 800 MW spinning exceeds the 600 MW (50%) spinning minimum, so both tests pass','No — BAL-002 requires 150% of the largest contingency to be held as spinning reserves','No — non-spinning reserves cannot count toward BAL-002 contingency reserve requirements'],
+ans:'Yes — total reserves of 1,400 MW exceed requirements and 800 MW spinning exceeds the 600 MW (50%) spinning minimum, so both tests pass',
+exp:'With a 1,200 MW contingency: total reserve requirement = 1,200 MW (met: 1,400 MW total); spinning requirement = 50% x 1,200 MW = 600 MW (met: 800 MW spinning). Both tests pass. Operators must verify against their specific BAL-002 requirement, which may specify additional margins based on interconnection or regional criteria.'},
+
+// ─── DEMAND RESPONSE (3) ─────────────────────────────────────────────────────
+{id:98,cat:'Demand Response',q:'What is Demand Response in the context of bulk power system reliability operations?',
+opts:['An automatic load shedding scheme that activates at 59.5 Hz without operator action','The ability to reduce or shift electricity consumption by customers in response to system conditions or operator requests, used as a reliability resource to reduce load during stressed system conditions','A financial incentive program that pays customers to shift load to off-peak hours; not usable for real-time reliability operations','Another term for Automatic Generation Control (AGC)'],
+ans:'The ability to reduce or shift electricity consumption by customers in response to system conditions or operator requests, used as a reliability resource to reduce load during stressed system conditions',
+exp:'Demand Response (DR) allows system operators to call on enrolled customers to voluntarily or contractually reduce load during stressed conditions — helping balance supply and demand, reduce flows on constrained paths, and avoid more severe actions like firm load shedding. DR resources may be dispatchable (operator-called) or automated (price or frequency-triggered).'},
+
+{id:99,cat:'Demand Response',q:'During a capacity shortage you have demand response participants, interruptible load contracts, and firm load available. In what order should these load reduction tools be used?',
+opts:['Firm load first — it is the largest and fastest','Demand response participants first, then interruptible load per contract terms, then firm load only as a last resort when all other options are exhausted','Interruptible load first, then demand response, then firm load','All three must be activated simultaneously per NERC EOP-001'],
+ans:'Demand response participants first, then interruptible load per contract terms, then firm load only as a last resort when all other options are exhausted',
+exp:'Load interruption follows a priority hierarchy from least to most disruptive. Demand response (often voluntary or lightly contracted) is activated first. Interruptible load customers have contracts specifically allowing curtailment in exchange for rate benefits — interrupted next per contract terms. Firm load interruption affects customers with no curtailment expectation and is the last resort.'},
+
+{id:100,cat:'Demand Response',q:'An interruptible load contract allows a maximum of 4 hours curtailment per event with 10 minutes notice. The operator has curtailed this customer for 3.5 hours and the emergency is ongoing. What must the operator do?',
+opts:['Continue curtailment as long as the emergency lasts — reliability takes precedence over contracts','Notify the customer that curtailment must end within 30 minutes per contract terms, and simultaneously identify alternative resources to replace the capacity before the limit is reached','Immediately restore the customer\'s load regardless of system conditions','Request the RC to extend the curtailment contract on the operator\'s behalf'],
+ans:'Notify the customer that curtailment must end within 30 minutes per contract terms, and simultaneously identify alternative resources to replace the capacity before the limit is reached',
+exp:'Interruptible load contracts have defined terms that must be honored. Curtailing beyond contract limits exposes the utility to legal liability and damages customer trust in demand response programs. The operator must plan ahead — as curtailment approaches its limit, alternative resources must be identified and ready. If no alternatives exist, escalation to the RC and EEA procedures may be required.'}
+];
+
+let nercCFG = {qcount:50, timerMins:30, timerEnabled:true, mode:'exam'};
+let nercExamS = {
+  questions:[], answers:[], flagged:[], current:0,
+  timeLeft:0, timerInterval:null, startTime:null, endTime:null,
+  retakeMode:false, retakeSrc:[]
+};
+let nercReviewFilter = 'all';
+
+function nercExamSelOpt(group, val, el){
+  if(group==='qcount'){
+    nercCFG.qcount = val;
+    document.querySelectorAll('#nerc-qcount-opts .nerc-setup-opt').forEach(e=>e.classList.remove('sel'));
+  } else if(group==='mode'){
+    nercCFG.mode = val;
+    document.querySelectorAll('#nerc-mode-opts .nerc-mode-opt').forEach(e=>e.classList.remove('sel'));
+  }
+  el.classList.add('sel');
+}
+
+function nercToggleTimerInp(){
+  const on = document.getElementById('nerc-timer-toggle').checked;
+  document.getElementById('nerc-timer-inp-wrap').style.display = on ? 'flex' : 'none';
+}
+
+function nercExamShuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function nercExamStartExam(isMissed){
+  nercCFG.timerEnabled = document.getElementById('nerc-timer-toggle').checked;
+  nercCFG.timerMins = parseInt(document.getElementById('nerc-timer-mins').value)||30;
+
+  let pool = isMissed ? nercExamS.retakeSrc : nercQB;
+  let count = isMissed ? pool.length : Math.min(nercCFG.qcount, nercQB.length);
+
+  let picked = nercExamShuffle(pool).slice(0, count);
+
+  nercExamS.questions = picked.map(q => ({
+    ...q,
+    shuffOpts: nercExamShuffle(q.opts)
+  }));
+
+  nercExamS.answers  = new Array(nercExamS.questions.length).fill(null);
+  nercExamS.flagged  = new Array(nercExamS.questions.length).fill(false);
+  nercExamS.current  = 0;
+  nercExamS.startTime= Date.now();
+  nercExamS.endTime  = null;
+  nercExamS.retakeMode = !!isMissed;
+
+  if(nercCFG.timerEnabled && nercCFG.timerMins > 0){
+    nercExamS.timeLeft = nercCFG.timerMins * 60;
+  } else {
+    nercExamS.timeLeft = -1;
+  }
+
+  nercExamShowScreen('exam');
+  nercRenderQuestion();
+  nercExamStartTimer();
+}
+
+function nercRetakeMissed(){
+  const missed = nercExamS.questions.filter((_,i) => {
+    const u = nercExamS.answers[i];
+    return u === null || u !== nercExamS.questions[i].ans;
+  });
+  if(!missed.length){ alert('No missed questions to retake!'); return; }
+  nercExamS.retakeSrc = missed.map(q => nercQB.find(x => x.id === q.id)).filter(Boolean);
+  nercExamStartExam(true);
+}
+
+function nercExamStartTimer(){
+  clearInterval(nercExamS.timerInterval);
+  const disp = document.getElementById('nerc-timer-display');
+  if(nercExamS.timeLeft < 0){ disp.style.display='none'; return; }
+  disp.style.display='flex';
+  nercUpdateTimerDisplay();
+  nercExamS.timerInterval = setInterval(()=>{
+    nercExamS.timeLeft--;
+    nercUpdateTimerDisplay();
+    if(nercExamS.timeLeft<=0){ clearInterval(nercExamS.timerInterval); nercFinishExam(true); }
+  },1000);
+}
+
+function nercUpdateTimerDisplay(){
+  if(nercExamS.timeLeft < 0) return;
+  const el = document.getElementById('nerc-timer-val');
+  const m = Math.floor(nercExamS.timeLeft/60);
+  const s = nercExamS.timeLeft%60;
+  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  el.className = 'nerc-exam-timer' + (nercExamS.timeLeft<=300&&nercExamS.timeLeft>60?' warn':nercExamS.timeLeft<=60?' danger':'');
+}
+
+function nercCatKey(cat){ return cat.replace(/[^a-zA-Z0-9]/g,''); }
+
+function nercRenderQuestion(){
+  const q = nercExamS.questions[nercExamS.current];
+  const body = document.getElementById('nerc-exam-body');
+  const isScenario = q.cat === 'Scenario' || q.q.startsWith('SCENARIO:');
+  const userAns = nercExamS.answers[nercExamS.current];
+  const revealed = nercCFG.mode==='practice' && userAns !== null;
+
+  document.getElementById('nerc-cat-badge').textContent = q.cat;
+  document.getElementById('nerc-cat-badge').className = 'nerc-cat-badge nerc-cat-'+nercCatKey(q.cat);
+
+  document.getElementById('nerc-flag-btn').className = 'nerc-exam-flag-btn' + (nercExamS.flagged[nercExamS.current]?' flagged':'');
+
+  const n = nercExamS.questions.length;
+  document.getElementById('nerc-qnum-display').textContent = `${nercExamS.current+1} / ${n}`;
+  document.getElementById('nerc-progress-fill').style.width = ((nercExamS.current+1)/n*100)+'%';
+
+  let qHtml = '';
+  if(isScenario) qHtml += `<div class="nerc-qscenario-tag">Scenario-Based Question</div>`;
+
+  const qText = q.q.replace(/^SCENARIO:\s*/,'');
+  if(isScenario){
+    qHtml += `<div class="nerc-qtext-scenario">${qText}</div>`;
+    qHtml += `<div class="nerc-qtext" style="font-size:17px;margin-bottom:24px;color:var(--nerc-text2)">Which of the following is the most appropriate operator action?</div>`;
+  } else {
+    qHtml += `<div class="nerc-qtext">${qText}</div>`;
+  }
+
+  const letters = ['A','B','C','D','E'];
+  qHtml += '<div class="nerc-opts-grid">';
+  q.shuffOpts.forEach((opt, i) => {
+    let cls = 'nerc-opt-card';
+    let icon = '';
+    if(revealed){
+      cls += ' locked';
+      if(opt === q.ans && userAns === opt){ cls += ' correct'; icon='<span class="nerc-opt-icon">✓</span>'; }
+      else if(opt === q.ans){ cls += ' show-correct'; icon='<span class="nerc-opt-icon">✓</span>'; }
+      else if(opt === userAns){ cls += ' wrong'; icon='<span class="nerc-opt-icon">✗</span>'; }
+    } else if(userAns === opt){ cls += ' selected'; }
+    qHtml += `<div class="${cls}" onclick="nercExamSelectAns('${nercEscQ(opt)}')">
+      <span class="nerc-opt-letter">${letters[i]}</span>
+      <span class="nerc-opt-text">${opt}</span>
+      ${icon}
+    </div>`;
+  });
+  qHtml += '</div>';
+
+  if(revealed){
+    const correct = userAns === q.ans;
+    qHtml += `<div class="nerc-explanation-box ${correct?'':'wrong-exp'}">
+      <div class="nerc-exp-label">Explanation</div>
+      <div class="nerc-exp-text">${q.exp}</div>
+    </div>`;
+  }
+
+  body.innerHTML = qHtml;
+
+  document.getElementById('nerc-btn-prev').disabled = nercExamS.current === 0;
+  document.getElementById('nerc-btn-next').disabled = nercExamS.current === n-1;
+  nercRenderQGrid();
+  window.scrollTo(0,0);
+}
+
+function nercEscQ(s){ return s.replace(/'/g,"\\x27"); }
+
+function nercExamSelectAns(opt){
+  const userAns = nercExamS.answers[nercExamS.current];
+  if(nercCFG.mode==='practice' && userAns !== null) return;
+  nercExamS.answers[nercExamS.current] = opt;
+  nercRenderQuestion();
+}
+
+function nercToggleFlag(){
+  nercExamS.flagged[nercExamS.current] = !nercExamS.flagged[nercExamS.current];
+  nercRenderQuestion();
+}
+
+function nercGoQ(dir){
+  const next = nercExamS.current + dir;
+  if(next>=0 && next<nercExamS.questions.length){ nercExamS.current=next; nercRenderQuestion(); }
+}
+
+function nercJumpQ(n){
+  nercExamS.current = n;
+  nercRenderQuestion();
+}
+
+function nercRenderQGrid(){
+  const grid = document.getElementById('nerc-qgrid');
+  grid.innerHTML = nercExamS.questions.map((_,i)=>{
+    let cls = 'nerc-qgrid-btn';
+    if(i===nercExamS.current) cls+=' current';
+    else if(nercExamS.answers[i]!==null) cls+=' answered';
+    if(nercExamS.flagged[i]) cls+=' flagged-q';
+    return `<button class="${cls}" onclick="nercJumpQ(${i})">${i+1}</button>`;
+  }).join('');
+}
+
+function nercConfirmFinish(){
+  const unanswered = nercExamS.answers.filter(a=>a===null).length;
+  if(unanswered>0){
+    if(!confirm(`You have ${unanswered} unanswered question${unanswered>1?'s':''}. Finish anyway?`)) return;
+  }
+  nercFinishExam(false);
+}
+
+function nercFinishExam(timeout){
+  clearInterval(nercExamS.timerInterval);
+  nercExamS.endTime = Date.now();
+  if(timeout) alert('⏱ Time\'s up! Submitting your exam.');
+  nercRenderResults();
+  nercExamShowScreen('results');
+}
+
+function nercRenderResults(){
+  const qs = nercExamS.questions;
+  const n = qs.length;
+  let correct=0, wrong=0, skipped=0;
+  const catStats = {};
+
+  qs.forEach((q,i)=>{
+    const u = nercExamS.answers[i];
+    const c = q.cat;
+    if(!catStats[c]) catStats[c]={correct:0,total:0};
+    catStats[c].total++;
+    if(u===null){ skipped++; }
+    else if(u===q.ans){ correct++; catStats[c].correct++; }
+    else { wrong++; }
+  });
+
+  const pct = Math.round(correct/n*100);
+  const pass = pct >= 80;
+
+  const r = 66; const circ = 2*Math.PI*r;
+  const fill = document.getElementById('nerc-rsr-fill');
+  fill.style.strokeDasharray = circ;
+  fill.style.strokeDashoffset = circ;
+  fill.style.stroke = pass ? 'var(--nerc-green)' : 'var(--nerc-red)';
+  setTimeout(()=>{ fill.style.strokeDashoffset = circ - (pct/100)*circ; },100);
+  document.getElementById('nerc-rsr-pct').textContent = pct+'%';
+  document.getElementById('nerc-rsr-lbl').textContent = pass ? 'PASS' : 'FAIL';
+  document.getElementById('nerc-rsr-lbl').style.fill = pass ? 'var(--nerc-green)' : 'var(--nerc-red)';
+
+  document.getElementById('nerc-res-verdict').textContent = pass ? '✓ PASS' : '✗ FAIL';
+  document.getElementById('nerc-res-verdict').className = 'nerc-results-verdict '+(pass?'pass':'fail');
+  document.getElementById('nerc-res-summary').textContent = `${correct} correct of ${n} · ${pct}% · Pass mark: 80%`;
+  document.getElementById('nerc-rs-correct').textContent = correct;
+  document.getElementById('nerc-rs-wrong').textContent = wrong;
+  document.getElementById('nerc-rs-skip').textContent = skipped;
+  document.getElementById('nerc-rs-pct').textContent = pct+'%';
+  document.getElementById('nerc-rs-pct').style.color = pass ? 'var(--nerc-green)' : 'var(--nerc-red)';
+
+  const elapsed = nercExamS.endTime - nercExamS.startTime;
+  const em = Math.floor(elapsed/60000), es = Math.floor((elapsed%60000)/1000);
+  document.getElementById('nerc-rs-time').textContent = `${em}m ${es}s`;
+
+  const catRows = document.getElementById('nerc-cat-rows');
+  catRows.innerHTML = Object.entries(catStats).sort((a,b)=>a[1].correct/a[1].total - b[1].correct/b[1].total).map(([cat,st])=>{
+    const p = st.total>0 ? Math.round(st.correct/st.total*100) : 0;
+    const cls = p<60?'nerc-cat-weak':p<80?'nerc-cat-ok':'nerc-cat-good';
+    const barColor = p<60?'var(--nerc-red)':p<80?'var(--nerc-amber)':'var(--nerc-green)';
+    return `<div class="nerc-cat-row">
+      <span class="nerc-cat-row-name">${cat}</span>
+      <div class="nerc-cat-row-bar"><div class="nerc-cat-row-fill" style="width:${p}%;background:${barColor}"></div></div>
+      <span class="nerc-cat-row-pct ${cls}">${p}%</span>
+    </div>`;
+  }).join('');
+
+  const hasMissed = qs.some((_,i)=>nercExamS.answers[i]===null || nercExamS.answers[i]!==qs[i].ans);
+  document.getElementById('nerc-btn-retake-missed').style.display = hasMissed ? 'block' : 'none';
+}
+
+function nercExamShowReview(){
+  nercRenderReview();
+  nercExamShowScreen('review');
+}
+
+function nercExamSetFilter(f, el){
+  nercReviewFilter = f;
+  document.querySelectorAll('.nerc-rfil-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  nercRenderReview();
+}
+
+function nercRenderReview(){
+  const body = document.getElementById('nerc-review-body');
+  const qs = nercExamS.questions;
+
+  const items = qs.map((q,i)=>{
+    const u = nercExamS.answers[i];
+    const isCorrect = u !== null && u === q.ans;
+    const isSkipped = u === null;
+    const isWrong = !isCorrect && !isSkipped;
+
+    if(nercReviewFilter==='correct' && !isCorrect) return null;
+    if(nercReviewFilter==='wrong' && !isWrong) return null;
+    if(nercReviewFilter==='skipped' && !isSkipped) return null;
+
+    const status = isCorrect ? 'correct' : isSkipped ? 'skipped' : 'wrong';
+    const statusLabel = isCorrect ? '✓ CORRECT' : isSkipped ? '— SKIPPED' : '✗ WRONG';
+
+    let ansHtml = '';
+    q.shuffOpts.forEach(opt=>{
+      const isAns = opt === q.ans;
+      const isUser = opt === u;
+      let cls = 'nerc-rev-ans neutral';
+      let icon = '○';
+      if(isUser && isCorrect){ cls='nerc-rev-ans user-correct'; icon='✓'; }
+      else if(isUser && !isCorrect){ cls='nerc-rev-ans user-wrong'; icon='✗'; }
+      else if(isAns && !isCorrect){ cls='nerc-rev-ans correct-ans'; icon='✓'; }
+      ansHtml += `<div class="${cls}"><span class="nerc-rev-ans-icon">${icon}</span><span>${opt}</span></div>`;
+    });
+
+    return `<div class="nerc-review-item">
+      <div class="nerc-review-item-hdr">
+        <span class="nerc-rev-qnum">Q${i+1}</span>
+        <span class="nerc-cat-badge nerc-cat-${nercCatKey(q.cat)}">${q.cat}</span>
+        <span class="nerc-rev-result ${status}">${statusLabel}</span>
+      </div>
+      <div class="nerc-review-item-body">
+        <div class="nerc-rev-qtext">${q.q.replace(/^SCENARIO:\s*/,'')}</div>
+        <div class="nerc-rev-answers">${ansHtml}</div>
+        <div class="nerc-rev-exp"><div class="nerc-rev-exp-lbl">Explanation</div>${q.exp}</div>
+      </div>
+    </div>`;
+  }).filter(Boolean);
+
+  body.innerHTML = items.length ? items.join('') : '<div style="text-align:center;padding:60px;color:var(--nerc-text3);font-family:var(--nerc-mono)">No questions match this filter.</div>';
+}
+
+function nercExamShowScreen(id){
+  document.querySelectorAll('.nerc-screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('nerc-screen-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function nercExamShowSetup(){ clearInterval(nercExamS.timerInterval); nercExamShowScreen('setup'); }
+function nercExamShowResults(){ nercExamShowScreen('results'); }
+
+// Tenaska Portal Converter
+function clearPGSC() {
+  document.getElementById('pgsc-paste').value = '';
+  document.getElementById('pgsc-output').textContent = '';
+}
+
+function parsePGSCData(pasteText) {
+  if (!pasteText) return null;
+
+  const lines = pasteText.split('\n').filter(line => line.trim());
+  if (lines.length === 0) return null;
+
+  const firstLine = lines[0];
+  const delimiter = firstLine.includes('\t') ? '\t' : ',';
+
+  // Detect which column index holds the status by scanning the first data row.
+  // Status = the first column that is non-numeric and not a time/hour value.
+  // This means no hardcoded list needed — whatever the portal sends is used as-is.
+  const isStatusCol = val => {
+    const t = val.trim();
+    return t !== '' && isNaN(parseFloat(t)) && !/^\d{1,2}:\d{2}$/.test(t);
+  };
+
+  const parsedData = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    const parts = line.split(delimiter).map(p => p.trim());
+
+    // Skip header row (first row where first col is non-numeric)
+    if (i === 0 && isNaN(parseFloat(parts[0]))) continue;
+
+    // Pull all numeric values for MW/MVAR
+    const numericValues = parts.filter(p => !isNaN(parseFloat(p)) && p !== '');
+    const minMW   = parseFloat(numericValues[0]) || 0;
+    const maxMW   = parseFloat(numericValues[1]) || 0;
+    const minMVAR = parseFloat(numericValues[2]) || 0;
+    const maxMVAR = parseFloat(numericValues[3]) || 0;
+
+    // Status = last non-numeric, non-time column (handles any value the portal sends)
+    const textCols = parts.filter(isStatusCol);
+    let status = 'Idle';
+    if (textCols.length > 0) {
+      const raw = textCols[textCols.length - 1].trim();
+      status = raw.charAt(0).toUpperCase() + raw.slice(1);
+    }
+
+    const hour = parsedData.length;
+    if (hour < 24) {
+      parsedData.push({ time: hour.toString().padStart(2,'0')+':00', hour, minMW, maxMW, minMVAR, maxMVAR, status });
+    }
+  }
+
+  if (parsedData.length === 0) return null;
+
+  // Fill any missing hours
+  const completeData = [];
+  for (let hour = 0; hour < 24; hour++) {
+    const found = parsedData.find(d => d.hour === hour);
+    completeData.push(found || { time: hour.toString().padStart(2,'0')+':00', hour, minMW:0, maxMW:0, minMVAR:0, maxMVAR:0, status:'Idle' });
+  }
+
+  return completeData;
+}
+
+function processPGSC() {
+  const pasteText = document.getElementById('pgsc-paste').value.trim();
+  if (!pasteText) {
+    document.getElementById('pgsc-output').textContent = 'Please paste data first!';
+    return;
+  }
+
+  const data = parsePGSCData(pasteText);
+  if (!data) {
+    document.getElementById('pgsc-output').textContent = 'Could not parse data. Please check the format.';
+    return;
+  }
+
+  // Detect inconsistent status: Idle with non-zero values
+  const inconsistentHours = [];
+  data.forEach(hour => {
+    const hasNonZeroMW = hour.minMW > 0 || hour.maxMW > 0;
+    const hasNonZeroMVAR = hour.minMVAR !== 0 || hour.maxMVAR !== 0;
+    const isIdle = hour.status.toLowerCase() === 'idle';
+    
+    if (isIdle && (hasNonZeroMW || hasNonZeroMVAR)) {
+      inconsistentHours.push(hour);
+    }
+  });
+
+  const groups = [];
+  let currentGroup = {
+    start: data[0].time,
+    startHour: data[0].hour,
+    end: data[0].time,
+    endHour: data[0].hour,
+    minMW: data[0].minMW,
+    maxMW: data[0].maxMW,
+    minMVAR: data[0].minMVAR,
+    maxMVAR: data[0].maxMVAR,
+    status: data[0].status
+  };
+
+  for (let i = 1; i < data.length; i++) {
+    const hour = data[i];
+    if (hour.minMW === currentGroup.minMW &&
+        hour.maxMW === currentGroup.maxMW &&
+        hour.minMVAR === currentGroup.minMVAR &&
+        hour.maxMVAR === currentGroup.maxMVAR &&
+        hour.status === currentGroup.status) {
+      currentGroup.end = hour.time;
+      currentGroup.endHour = hour.hour;
+    } else {
+      groups.push({...currentGroup});
+      currentGroup = {
+        start: hour.time,
+        startHour: hour.hour,
+        end: hour.time,
+        endHour: hour.hour,
+        minMW: hour.minMW,
+        maxMW: hour.maxMW,
+        minMVAR: hour.minMVAR,
+        maxMVAR: hour.maxMVAR,
+        status: hour.status
+      };
+    }
+  }
+
+  groups.push(currentGroup);
+
+  let output = '';
+
+  const dateInput = document.getElementById('pgsc-date').value;
+  if (dateInput) {
+    const [year, month, day] = dateInput.split('-');
+    const date = new Date(year, month - 1, day);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    output += `Date: ${formattedDate}\n\n`;
+  }
+
+  // Add warning for inconsistent status
+  if (inconsistentHours.length > 0) {
+    output += '⚠️ WARNING: Found ' + inconsistentHours.length + ' hour(s) with non-zero values but status "Idle":\n';
+    inconsistentHours.forEach(hour => {
+      output += `   ${hour.time}: MW ${hour.minMW}/${hour.maxMW}, MVAR ${hour.minMVAR}/${hour.maxMVAR}\n`;
+    });
+    output += '   Please review and correct the status in your input data.\n\n';
+  }
+
+  output += 'Time  |  Min / Max MW  |  Min / Max MVAR  |  Status\n';
+  output += '------------------------------------------------\n';
+
+  groups.forEach(group => {
+    const endDisplay = group.endHour.toString().padStart(2, '0') + ':59';
+    const line = `${group.start} – ${endDisplay}    ${group.minMW} / ${group.maxMW} MW    ${group.minMVAR} / ${group.maxMVAR} MVAR    (${group.status})`;
+    output += line + '\n';
+  });
+
+  document.getElementById('pgsc-output').textContent = output;
+}
+
+function copyPGSC() {
+  const outputContent = document.getElementById('pgsc-output').textContent;
+  navigator.clipboard.writeText(outputContent).then(() => {
+    const btn = event.target;
+    const originalText = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = originalText, 1500);
+  }).catch(err => {
+    console.error('Failed to copy:', err);
+  });
 }
 
 load();
