@@ -719,6 +719,12 @@ body.dark .cl-time{color:var(--text2);}
 .tz-sites li{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:13px}
 .tz-sites .tz-loc{color:var(--text2);font-size:12px}
 .tz-footer{font-size:11px;color:var(--text2);margin-top:16px}
+/* ── TIMEZONE MAP SECTION ─────────────────────────────────────────────────── */
+.tz-map-section{margin-top:24px;border:1px solid var(--border);border-radius:14px;background:var(--bg2);overflow:hidden}
+.tz-map-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--bg3)}
+.tz-map-header h3{font-size:15px;margin:0;font-weight:600}
+.tz-map-container{position:relative;width:100%;height:400px;background:var(--bg)}
+.tz-map-container iframe{width:100%;height:100%;border:none}
 /* ── TIMEZONE KIOSK MODE ──────────────────────────────────────────────────── */
 .tz-kiosk-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--blue);background:var(--bbg);color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
 .tz-kiosk-btn:hover{background:var(--blue);color:#fff;}
@@ -1216,6 +1222,25 @@ body.dark .nerc-study-container{
       <div class="cl-item-row" id="cl-item-row" style="display:none;">
         <input id="cl-item-inp" placeholder="Add item..." onkeydown="if(event.key==='Enter')addClItem()">
         <button onclick="addClItem()">+ Item</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Tenaska Portal Converter</div>
+      <div style="margin-bottom:10px;">
+        <label style="font-size:11px;color:var(--text3);margin-bottom:4px;display:block;">Date</label>
+        <input type="date" id="pgsc-date" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;">
+      </div>
+      <div style="margin-bottom:10px;">
+        <label style="font-size:11px;color:var(--text3);margin-bottom:4px;display:block;">Paste 24 rows (Min MW, Max MW, Min MVAR, Max MVAR, Status)</label>
+        <textarea id="pgsc-paste" style="width:100%;height:100px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--m);font-size:12px;resize:vertical;" placeholder="0	0	0	0	Idle&#10;0	0	0	0	Idle&#10;..."></textarea>
+      </div>
+      <div style="display:flex;gap:6px;">
+        <button class="tbtn" onclick="processPGSC()" style="flex:1;">Process</button>
+        <button class="tbtn" onclick="clearPGSC()">Clear</button>
+      </div>
+      <div id="pgsc-output" style="margin-top:10px;font-family:var(--m);font-size:12px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:80px;max-height:200px;overflow-y:auto;white-space:pre-wrap;"></div>
+      <div style="display:flex;gap:6px;margin-top:8px;">
+        <button class="tbtn" onclick="copyPGSC()">Copy to Clipboard</button>
       </div>
     </div>
   </div>
@@ -1895,8 +1920,8 @@ body.dark .nerc-study-container{
   <div class="tz-container">
     <div class="tz-header">
       <div>
-        <h1>Control Room – Time Zone Dashboard</h1>
-        <div class="tz-muted">Live clocks for all RNWBL sites. Arizona does not observe DST.</div>
+        <h1>Control Room – Map/Timezones</h1>
+        <div class="tz-muted">Live clocks and site locations for all RNWBL sites. Arizona does not observe DST.</div>
       </div>
       <div class="tz-controls">
         <button id="tz-btn24" class="tz-btn active">24h</button>
@@ -1910,6 +1935,18 @@ body.dark .nerc-study-container{
       <input id="tz-search" placeholder="Search site, city, or zone…" />
     </div>
     <div class="tz-grid" id="tz-grid"></div>
+    
+    <!-- Site Map Section -->
+    <div class="tz-map-section">
+      <div class="tz-map-header">
+        <h3>Site Locations</h3>
+        <span style="font-size:11px;color:var(--text3);">Interactive map of all RNWBL sites</span>
+      </div>
+      <div class="tz-map-container">
+        <iframe src="https://www.google.com/maps/d/embed?mid=14GNXruAbp2_YUo3YPIXjMnO7d_k7LcQ&ehbc=2E312F&noprof=1" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+    
     <div class="tz-footer">Last update: <span id="tz-lastUpdate"></span> (auto-refreshing)</div>
   </div>
 </div>
@@ -2144,6 +2181,10 @@ async function load() {
   initSafety();
   initNERC();
   renderCrew();
+  
+  // Initialize PGSC date to today
+  const pgscDate = document.getElementById('pgsc-date');
+  if(pgscDate) pgscDate.valueAsDate = new Date();
   renderEquip();
   restoreAdhocTimers();
   asInit();
@@ -7007,6 +7048,185 @@ function nercExamShowScreen(id){
 
 function nercExamShowSetup(){ clearInterval(nercExamS.timerInterval); nercExamShowScreen('setup'); }
 function nercExamShowResults(){ nercExamShowScreen('results'); }
+
+// Tenaska Portal Converter
+function clearPGSC() {
+  document.getElementById('pgsc-paste').value = '';
+  document.getElementById('pgsc-output').textContent = '';
+}
+
+function parsePGSCData(pasteText) {
+  if (!pasteText) return null;
+
+  const lines = pasteText.split('\n').filter(line => line.trim());
+  if (lines.length === 0) return null;
+
+  const firstLine = lines[0];
+  const delimiter = firstLine.includes('\t') ? '\t' : ',';
+
+  // Detect which column index holds the status by scanning the first data row.
+  // Status = the first column that is non-numeric and not a time/hour value.
+  // This means no hardcoded list needed — whatever the portal sends is used as-is.
+  const isStatusCol = val => {
+    const t = val.trim();
+    return t !== '' && isNaN(parseFloat(t)) && !/^\d{1,2}:\d{2}$/.test(t);
+  };
+
+  const parsedData = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    const parts = line.split(delimiter).map(p => p.trim());
+
+    // Skip header row (first row where first col is non-numeric)
+    if (i === 0 && isNaN(parseFloat(parts[0]))) continue;
+
+    // Pull all numeric values for MW/MVAR
+    const numericValues = parts.filter(p => !isNaN(parseFloat(p)) && p !== '');
+    const minMW   = parseFloat(numericValues[0]) || 0;
+    const maxMW   = parseFloat(numericValues[1]) || 0;
+    const minMVAR = parseFloat(numericValues[2]) || 0;
+    const maxMVAR = parseFloat(numericValues[3]) || 0;
+
+    // Status = last non-numeric, non-time column (handles any value the portal sends)
+    const textCols = parts.filter(isStatusCol);
+    let status = 'Idle';
+    if (textCols.length > 0) {
+      const raw = textCols[textCols.length - 1].trim();
+      status = raw.charAt(0).toUpperCase() + raw.slice(1);
+    }
+
+    const hour = parsedData.length;
+    if (hour < 24) {
+      parsedData.push({ time: hour.toString().padStart(2,'0')+':00', hour, minMW, maxMW, minMVAR, maxMVAR, status });
+    }
+  }
+
+  if (parsedData.length === 0) return null;
+
+  // Fill any missing hours
+  const completeData = [];
+  for (let hour = 0; hour < 24; hour++) {
+    const found = parsedData.find(d => d.hour === hour);
+    completeData.push(found || { time: hour.toString().padStart(2,'0')+':00', hour, minMW:0, maxMW:0, minMVAR:0, maxMVAR:0, status:'Idle' });
+  }
+
+  return completeData;
+}
+
+function processPGSC() {
+  const pasteText = document.getElementById('pgsc-paste').value.trim();
+  if (!pasteText) {
+    document.getElementById('pgsc-output').textContent = 'Please paste data first!';
+    return;
+  }
+
+  const data = parsePGSCData(pasteText);
+  if (!data) {
+    document.getElementById('pgsc-output').textContent = 'Could not parse data. Please check the format.';
+    return;
+  }
+
+  // Detect inconsistent status: Idle with non-zero MW values
+  const inconsistentHours = [];
+  data.forEach(hour => {
+    const hasNonZeroMW = hour.minMW > 0 || hour.maxMW > 0;
+    const isIdle = hour.status.toLowerCase() === 'idle';
+    
+    if (isIdle && hasNonZeroMW) {
+      inconsistentHours.push(hour);
+    }
+  });
+
+  const groups = [];
+  let currentGroup = {
+    start: data[0].time,
+    startHour: data[0].hour,
+    end: data[0].time,
+    endHour: data[0].hour,
+    minMW: data[0].minMW,
+    maxMW: data[0].maxMW,
+    minMVAR: data[0].minMVAR,
+    maxMVAR: data[0].maxMVAR,
+    status: data[0].status
+  };
+
+  for (let i = 1; i < data.length; i++) {
+    const hour = data[i];
+    if (hour.minMW === currentGroup.minMW &&
+        hour.maxMW === currentGroup.maxMW &&
+        hour.minMVAR === currentGroup.minMVAR &&
+        hour.maxMVAR === currentGroup.maxMVAR &&
+        hour.status === currentGroup.status) {
+      currentGroup.end = hour.time;
+      currentGroup.endHour = hour.hour;
+    } else {
+      groups.push({...currentGroup});
+      currentGroup = {
+        start: hour.time,
+        startHour: hour.hour,
+        end: hour.time,
+        endHour: hour.hour,
+        minMW: hour.minMW,
+        maxMW: hour.maxMW,
+        minMVAR: hour.minMVAR,
+        maxMVAR: hour.maxMVAR,
+        status: hour.status
+      };
+    }
+  }
+
+  groups.push(currentGroup);
+
+  let output = '';
+
+  const dateInput = document.getElementById('pgsc-date').value;
+  if (dateInput) {
+    const [year, month, day] = dateInput.split('-');
+    const date = new Date(year, month - 1, day);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    output += `Date: ${formattedDate}\n\n`;
+  }
+
+  // Add warning for inconsistent status
+  if (inconsistentHours.length > 0) {
+    output += '⚠️ WARNING: Found ' + inconsistentHours.length + ' hour(s) with non-zero MW values but status "Idle":\n';
+    inconsistentHours.forEach(hour => {
+      output += `   ${hour.time}: MW ${hour.minMW}/${hour.maxMW}\n`;
+    });
+    output += '   Please review and correct the status in your input data.\n\n';
+  }
+
+  output += 'Time  |  Min / Max MW  |  Min / Max MVAR  |  Status\n';
+  output += '------------------------------------------------\n';
+
+  groups.forEach(group => {
+    const endDisplay = group.endHour.toString().padStart(2, '0') + ':59';
+    const line = `${group.start} – ${endDisplay}    ${group.minMW} / ${group.maxMW} MW    ${group.minMVAR} / ${group.maxMVAR} MVAR    (${group.status})`;
+    output += line + '\n';
+  });
+
+  document.getElementById('pgsc-output').textContent = output;
+}
+
+function copyPGSC() {
+  const outputContent = document.getElementById('pgsc-output').textContent;
+  navigator.clipboard.writeText(outputContent).then(() => {
+    const btn = event.target;
+    const originalText = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = originalText, 1500);
+  }).catch(err => {
+    console.error('Failed to copy:', err);
+  });
+}
 
 load();
 </script>
