@@ -7111,14 +7111,13 @@ function processPGSC() {
     return;
   }
 
-  // Detect inconsistent status: Idle with non-zero values
+  // Detect inconsistent status: Idle with non-zero MW values
   const inconsistentHours = [];
   data.forEach(hour => {
     const hasNonZeroMW = hour.minMW > 0 || hour.maxMW > 0;
-    const hasNonZeroMVAR = hour.minMVAR !== 0 || hour.maxMVAR !== 0;
     const isIdle = hour.status.toLowerCase() === 'idle';
     
-    if (isIdle && (hasNonZeroMW || hasNonZeroMVAR)) {
+    if (isIdle && hasNonZeroMW) {
       inconsistentHours.push(hour);
     }
   });
@@ -7180,9 +7179,9 @@ function processPGSC() {
 
   // Add warning for inconsistent status
   if (inconsistentHours.length > 0) {
-    output += '⚠️ WARNING: Found ' + inconsistentHours.length + ' hour(s) with non-zero values but status "Idle":\n';
+    output += '⚠️ WARNING: Found ' + inconsistentHours.length + ' hour(s) with non-zero MW values but status "Idle":\n';
     inconsistentHours.forEach(hour => {
-      output += `   ${hour.time}: MW ${hour.minMW}/${hour.maxMW}, MVAR ${hour.minMVAR}/${hour.maxMVAR}\n`;
+      output += `   ${hour.time}: MW ${hour.minMW}/${hour.maxMW}\n`;
     });
     output += '   Please review and correct the status in your input data.\n\n';
   }
