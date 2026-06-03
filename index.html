@@ -719,6 +719,12 @@ body.dark .cl-time{color:var(--text2);}
 .tz-sites li{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:13px}
 .tz-sites .tz-loc{color:var(--text2);font-size:12px}
 .tz-footer{font-size:11px;color:var(--text2);margin-top:16px}
+/* ── TIMEZONE MAP SECTION ─────────────────────────────────────────────────── */
+.tz-map-section{margin-top:24px;border:1px solid var(--border);border-radius:14px;background:var(--bg2);overflow:hidden}
+.tz-map-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--bg3)}
+.tz-map-header h3{font-size:15px;margin:0;font-weight:600}
+.tz-map-container{position:relative;width:100%;height:400px;background:var(--bg)}
+.tz-map-container iframe{width:100%;height:100%;border:none}
 /* ── TIMEZONE KIOSK MODE ──────────────────────────────────────────────────── */
 .tz-kiosk-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--blue);background:var(--bbg);color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
 .tz-kiosk-btn:hover{background:var(--blue);color:#fff;}
@@ -1079,6 +1085,92 @@ body.dark .nerc-study-container{
 .nerc-study-container .nerc-rev-ans-icon{flex-shrink:0;margin-top:1px}
 .nerc-study-container .nerc-rev-exp{background:var(--nerc-bg2);border-radius:6px;padding:10px 14px;font-size:13px;color:var(--nerc-text2);line-height:1.6;border-left:2px solid var(--nerc-border2)}
 .nerc-study-container .nerc-rev-exp-lbl{font-family:var(--nerc-mono);font-size:10px;color:var(--nerc-text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+
+/* ── ROC STUDY GUIDE ──────────────────────────────────────────────────────── */
+.roc-wrap{max-width:900px;margin:0 auto;padding:4px 0 60px;}
+.roc-topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--shs);}
+.roc-title{font-family:var(--m);font-size:13px;font-weight:600;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;flex:1;}
+.roc-filter-row{display:flex;gap:6px;flex-wrap:wrap;}
+.roc-ftag{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.roc-ftag:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
+.roc-ftag.active{border-color:var(--green);color:var(--green);background:var(--gbg);}
+.roc-stats-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.roc-stat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center;flex:1;min-width:80px;box-shadow:var(--shs);}
+.roc-stat-val{font-family:var(--m);font-size:20px;font-weight:700;color:var(--green);}
+.roc-stat-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-top:2px;}
+.roc-drill-bar{display:flex;gap:8px;align-items:center;margin-bottom:18px;padding:12px 14px;background:var(--abg);border:1px solid var(--amber);border-radius:var(--r);flex-wrap:wrap;}
+.roc-drill-bar .roc-drill-lbl{font-size:12px;color:var(--amber);font-weight:600;flex:1;}
+.roc-section{margin-bottom:10px;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;background:var(--bg2);box-shadow:var(--shs);}
+.roc-section-hdr{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;user-select:none;transition:background .15s;border-bottom:1px solid transparent;}
+.roc-section-hdr:hover{background:var(--bg3);}
+.roc-section.open .roc-section-hdr{border-bottom-color:var(--border);background:var(--bg3);}
+.roc-section-icon{font-size:16px;flex-shrink:0;}
+.roc-section-name{flex:1;font-size:13px;font-weight:600;}
+.roc-section-count{font-size:11px;color:var(--text3);font-family:var(--m);}
+.roc-section-prog{width:80px;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;flex-shrink:0;}
+.roc-section-prog-fill{height:100%;background:var(--gmid);border-radius:2px;transition:width .4s;}
+.roc-section-chevron{font-size:11px;color:var(--text3);transition:transform .2s;flex-shrink:0;}
+.roc-section.open .roc-section-chevron{transform:rotate(180deg);}
+.roc-questions{display:none;padding:0;}
+.roc-section.open .roc-questions{display:block;}
+.roc-q{padding:14px 16px;border-bottom:1px solid var(--border);}
+.roc-q:last-child{border-bottom:none;}
+.roc-q-top{display:flex;align-items:flex-start;gap:10px;}
+.roc-q-num{font-family:var(--m);font-size:10px;color:var(--text3);min-width:28px;padding-top:3px;flex-shrink:0;}
+.roc-q-type-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:1px;}
+.roc-qt-conceptual{background:var(--bbg);color:var(--blue);}
+.roc-qt-scenario{background:var(--rbg);color:var(--red);}
+.roc-qt-application{background:var(--pbg);color:var(--purple);}
+.roc-qt-terminology{background:var(--abg);color:var(--amber);}
+.roc-qt-procedure{background:var(--gbg);color:var(--green);}
+.roc-qt-standard{background:#f0eaf8;color:#5a3a8a;}
+body.dark .roc-qt-standard{background:#1a1030;color:#9b72e8;}
+.roc-qt-recognition{background:var(--bg4);color:var(--text2);}
+.roc-qt-rapid{background:#fff4e0;color:#b36b00;}
+body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
+.roc-qt-simulation{background:var(--rbg);color:var(--red);border:1px solid var(--red);}
+.roc-q-text{flex:1;font-size:13.5px;line-height:1.6;color:var(--text);}
+.roc-q-actions{display:flex;gap:6px;align-items:center;margin-top:10px;margin-left:38px;flex-wrap:wrap;}
+.roc-show-btn{padding:4px 12px;border-radius:5px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-size:11px;font-weight:500;cursor:pointer;transition:all .15s;}
+.roc-show-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
+.roc-confidence{display:flex;gap:4px;}
+.roc-conf-btn{padding:3px 9px;border-radius:5px;border:1px solid var(--border);background:var(--bg3);font-size:10px;font-weight:600;cursor:pointer;transition:all .15s;}
+.roc-conf-btn.got-it{color:var(--green);border-color:var(--green);background:var(--gbg);}
+.roc-conf-btn.review-it{color:var(--amber);border-color:var(--amber);background:var(--abg);}
+.roc-conf-btn.missed{color:var(--red);border-color:var(--red);background:var(--rbg);}
+.roc-answer{display:none;margin:10px 0 0 38px;padding:12px 14px;background:var(--bg3);border-left:3px solid var(--green);border-radius:0 6px 6px 0;font-size:13px;line-height:1.7;color:var(--text2);}
+.roc-answer.show{display:block;animation:roc-fadein .2s ease;}
+@keyframes roc-fadein{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.roc-answer strong{color:var(--green);font-weight:600;}
+.roc-answer .roc-a-label{font-family:var(--m);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;display:block;}
+.roc-answer ul{margin:6px 0 0 14px;display:flex;flex-direction:column;gap:3px;}
+.roc-answer li{font-size:12.5px;line-height:1.55;}
+.roc-sim-block{padding:16px;background:var(--rbg);border-top:1px solid var(--border);}
+.roc-sim-scenario{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:14px;margin-bottom:12px;}
+.roc-sim-scenario-title{font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;}
+.roc-sim-inputs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;}
+.roc-sim-input{background:var(--rbg);border:1px solid var(--red);border-radius:6px;padding:5px 10px;font-size:12px;color:var(--red);font-weight:500;}
+.roc-sim-tasks{display:flex;flex-direction:column;gap:8px;}
+.roc-sim-task{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;}
+.roc-sim-task-q{font-size:13px;font-weight:600;margin-bottom:8px;}
+.roc-sim-textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 10px;color:var(--text);font-family:var(--m);font-size:12px;resize:vertical;min-height:60px;line-height:1.6;}
+.roc-sim-textarea:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
+.roc-sim-reveal{padding:10px 12px;background:var(--gbg);border-top:1px solid var(--green);border-radius:0 0 5px 5px;font-size:12px;color:var(--text2);line-height:1.6;display:none;}
+.roc-sim-reveal.show{display:block;}
+.roc-drill-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px;backdrop-filter:blur(4px);}
+.roc-drill-modal.hidden{display:none;}
+.roc-drill-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);width:600px;max-width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 12px 48px rgba(0,0,0,.2);}
+.roc-drill-hdr{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.roc-drill-title{flex:1;font-size:14px;font-weight:600;}
+.roc-drill-progress{font-family:var(--m);font-size:12px;color:var(--text3);}
+.roc-drill-body{padding:20px;}
+.roc-drill-q-type{margin-bottom:8px;}
+.roc-drill-q-text{font-size:15px;line-height:1.65;margin-bottom:16px;font-weight:500;}
+.roc-drill-answer-area{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:14px;font-size:13px;color:var(--text2);line-height:1.7;display:none;}
+.roc-drill-answer-area.show{display:block;}
+.roc-drill-footer{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center;}
+.roc-drill-conf-row{display:flex;gap:6px;}
+.roc-section-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--bg4);color:var(--text3);}
 </style>
 </head>
 <body>
@@ -1091,13 +1183,14 @@ body.dark .nerc-study-container{
   <button class="nav-tab active" id="nav-tab-scans" onclick="switchView('scans',this)">Scans</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
   <button class="nav-tab" onclick="switchView('nerc',this)">NERC Study</button>
+  <button class="nav-tab" onclick="switchView('roc',this)">ROC Study</button>
   <button class="nav-tab" onclick="switchView('intel',this)">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
   <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Operator Log</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('map',this)">Map</button>
-  <button class="nav-tab" onclick="switchView('timezones',this)">Time Zones</button>
-  <button class="nav-tab" onclick="switchView('schedule',this)">Status Board</button>
+  <button class="nav-tab" onclick="switchView('timezones',this)">Map/Timezones</button>
+
   <button class="nav-tab" style="display:none;" onclick="switchView('notes',this)">Notepad</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('log',this)">Log</button>
   <div class="nav-spacer"></div>
@@ -1763,6 +1856,70 @@ body.dark .nerc-study-container{
   </div>
 </div>
 
+<!-- ROC STUDY GUIDE -->
+<div class="view" id="view-roc">
+  <div class="roc-wrap">
+    <div class="roc-topbar">
+      <div class="roc-title">⚡ ROC Study Guide</div>
+      <div class="roc-filter-row" id="roc-filter-row">
+        <button class="roc-ftag active" data-filter="all" onclick="rocSetFilter('all',this)">All Topics</button>
+        <button class="roc-ftag" data-filter="voltage" onclick="rocSetFilter('voltage',this)">Voltage / VARs</button>
+        <button class="roc-ftag" data-filter="dispatch" onclick="rocSetFilter('dispatch',this)">Dispatch</button>
+        <button class="roc-ftag" data-filter="grid" onclick="rocSetFilter('grid',this)">Grid Roles</button>
+        <button class="roc-ftag" data-filter="scada" onclick="rocSetFilter('scada',this)">SCADA / Alarms</button>
+        <button class="roc-ftag" data-filter="standards" onclick="rocSetFilter('standards',this)">Standards</button>
+        <button class="roc-ftag" data-filter="operations" onclick="rocSetFilter('operations',this)">Operations</button>
+        <button class="roc-ftag" data-filter="rapid" onclick="rocSetFilter('rapid',this)">Rapid Fire</button>
+      </div>
+    </div>
+
+    <div class="roc-stats-row">
+      <div class="roc-stat"><div class="roc-stat-val" id="roc-stat-total">0</div><div class="roc-stat-lbl">Questions</div></div>
+      <div class="roc-stat"><div class="roc-stat-val" id="roc-stat-done" style="color:var(--green)">0</div><div class="roc-stat-lbl">Got It</div></div>
+      <div class="roc-stat"><div class="roc-stat-val" id="roc-stat-review" style="color:var(--amber)">0</div><div class="roc-stat-lbl">Review</div></div>
+      <div class="roc-stat"><div class="roc-stat-val" id="roc-stat-missed" style="color:var(--red)">0</div><div class="roc-stat-lbl">Missed</div></div>
+    </div>
+
+    <div class="roc-drill-bar">
+      <span class="roc-drill-lbl">🎯 Daily Drill — 10 random questions from the full bank</span>
+      <button class="tbtn" style="border-color:var(--amber);color:var(--amber);" onclick="rocStartDrill()">Start Daily Drill</button>
+      <button class="tbtn" onclick="rocResetProgress()">Reset Progress</button>
+    </div>
+
+    <div id="roc-sections"></div>
+  </div>
+</div>
+
+<!-- ROC DAILY DRILL MODAL -->
+<div class="roc-drill-modal hidden" id="roc-drill-modal">
+  <div class="roc-drill-card">
+    <div class="roc-drill-hdr">
+      <div class="roc-drill-title">⚡ Daily Drill</div>
+      <div class="roc-drill-progress" id="roc-drill-prog">1 / 10</div>
+      <button class="btn-c" style="padding:4px 10px;font-size:12px;" onclick="rocCloseDrill()">✕ Exit</button>
+    </div>
+    <div class="roc-drill-body">
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
+        <span id="roc-drill-type-badge" class="roc-q-type-badge roc-qt-conceptual">Conceptual</span>
+        <span class="roc-section-badge" id="roc-drill-section-badge">Grid Roles</span>
+      </div>
+      <div class="roc-drill-q-text" id="roc-drill-q-text">Loading...</div>
+      <div class="roc-drill-answer-area" id="roc-drill-answer">Answer will appear here.</div>
+      <div class="roc-drill-footer">
+        <button class="roc-show-btn" id="roc-drill-show-btn" onclick="rocDrillShowAnswer()">Show Answer</button>
+        <div class="roc-drill-conf-row" id="roc-drill-conf-row" style="display:none;">
+          <button class="roc-conf-btn got-it" onclick="rocDrillNext('got-it')">✓ Got it</button>
+          <button class="roc-conf-btn review-it" onclick="rocDrillNext('review-it')">~ Review</button>
+          <button class="roc-conf-btn missed" onclick="rocDrillNext('missed')">✗ Missed</button>
+        </div>
+        <div id="roc-drill-progress-bar" style="width:100%;height:3px;background:var(--bg4);border-radius:2px;margin-top:12px;overflow:hidden;">
+          <div id="roc-drill-prog-fill" style="height:100%;background:var(--gmid);border-radius:2px;width:10%;transition:width .3s;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ASSET SCAN EDIT MODAL -->
 <div class="overlay hidden" id="modal-as-edit">
   <div class="modal" style="width:560px;max-height:90vh;">
@@ -1914,8 +2071,8 @@ body.dark .nerc-study-container{
   <div class="tz-container">
     <div class="tz-header">
       <div>
-        <h1>Control Room – Time Zone Dashboard</h1>
-        <div class="tz-muted">Live clocks for all RNWBL sites. Arizona does not observe DST.</div>
+        <h1>Control Room – Map/Timezones</h1>
+        <div class="tz-muted">Live clocks and site locations for all RNWBL sites. Arizona does not observe DST.</div>
       </div>
       <div class="tz-controls">
         <button id="tz-btn24" class="tz-btn active">24h</button>
@@ -1929,34 +2086,23 @@ body.dark .nerc-study-container{
       <input id="tz-search" placeholder="Search site, city, or zone…" />
     </div>
     <div class="tz-grid" id="tz-grid"></div>
+    
+    <!-- Site Map Section -->
+    <div class="tz-map-section">
+      <div class="tz-map-header">
+        <h3>Site Locations</h3>
+        <span style="font-size:11px;color:var(--text3);">Interactive map of all RNWBL sites</span>
+      </div>
+      <div class="tz-map-container">
+        <iframe src="https://www.google.com/maps/d/embed?mid=14GNXruAbp2_YUo3YPIXjMnO7d_k7LcQ&ehbc=2E312F&noprof=1" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+    
     <div class="tz-footer">Last update: <span id="tz-lastUpdate"></span> (auto-refreshing)</div>
   </div>
 </div>
 
 <!-- STATUS BOARD (SharePoint) ──────────────────────────────────────────────────────────── -->
-<div class="view" id="view-schedule">
-  <div class="schedule-view" id="schedule-view">
-    <div class="schedule-header" style="padding:16px;">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-        <div style="font-size:17px;font-weight:600;letter-spacing:-.02em;">Status Board</div>
-        <span style="font-size:12px;color:var(--text3);">Upcoming outages view</span>
-      </div>
-      <div class="schedule-controls">
-        <div style="flex:1;"></div>
-        <button class="schedule-kiosk-btn" id="btn-refresh" onclick="refreshSchedule()">↻ Refresh</button>
-        <button class="schedule-kiosk-btn" id="btn-kiosk" onclick="toggleKioskMode()">⛶ Kiosk Mode</button>
-      </div>
-    </div>
-    <div style="padding:0 16px 16px;">
-      <div class="schedule-iframe-container" id="schedule-embed2">
-        <div class="iframe-veil" id="veil-embed2"></div>
-        <div class="iframe-crop"></div>
-        <iframe id="fr-embed2" frameborder="0" scrolling="no" onload="document.getElementById('veil-embed2').classList.add('loaded')" src="https://dsptch.sharepoint.com/sites/TonianRenewables-RNWBLOperationsCenter/_layouts/15/Doc.aspx?sourcedoc={5c8f1191-ff95-46c8-b02e-d75e7d808278}&action=embedview&wdAllowInteractivity=False&Item='Sheet1'!A1%3AM28&wdHideGridlines=True&wdHideHeaders=True&wdDownloadButton=True&wdInConfigurator=True&wdInConfigurator=True&edaebf=rslc0"></iframe>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="toast" id="toast"><span class="toast-icon" id="toast-icon"></span><span id="toast-msg"></span></div>
 
 <script>
@@ -2265,6 +2411,7 @@ function switchView(v, el) {
   if(v==='timezones') initTimeZones();
   if(v==='chron') clRender();
   if(v==='intel') wxFleetInit();
+  if(v==='roc') { rocLoad(); rocRender(); }
   try { localStorage.setItem('rnwbl_active_tab', v); } catch(e) {}
 }
 
@@ -4929,7 +5076,13 @@ const SW_HARDCODED = [
     body:'Call received from field tech {{TECH}} requesting permission to de-energize MVT {{NUMBER}} Locally. Permission was granted, and local switching was completed.' },
   { id:'cndr-re',  site:'Condor · MVT Local', action:'Re-Energize', cls:'re',
     numLbl:'MVT #', numPh:'e.g. 8',
-    body:'Call received from field tech {{TECH}} requesting permission to Energize MVT {{NUMBER}} Locally. Permission was granted, and local switching was completed.' }
+    body:'Call received from field tech {{TECH}} requesting permission to Energize MVT {{NUMBER}} Locally. Permission was granted, and local switching was completed.' },
+  { id:'pdmt-de',  site:'Pediment · PCS', action:'De-Energize', cls:'de',
+    numLbl:'PCS #', numPh:'e.g. 1',
+    body:'Call received from field tech {{TECH}} requesting de-energization of PCS {{NUMBER}}:\n– Associated Megapacks disabled remotely\n– Megapack Breakers opened remotely' },
+  { id:'pdmt-re',  site:'Pediment · PCS', action:'Re-Energize', cls:'re',
+    numLbl:'PCS #', numPh:'e.g. 1',
+    body:'Call received from field tech {{TECH}} requesting energization of PCS {{NUMBER}}:\n– Megapack Breakers closed remotely\n– Associated Megapacks enabled remotely' }
 ];
 
 const SW_CUSTOM_KEY = 'rnwbl_sw_custom_v1';
@@ -7111,6 +7264,17 @@ function processPGSC() {
     return;
   }
 
+  // Detect inconsistent status: Idle with non-zero MW values
+  const inconsistentHours = [];
+  data.forEach(hour => {
+    const hasNonZeroMW = hour.minMW > 0 || hour.maxMW > 0;
+    const isIdle = hour.status.toLowerCase() === 'idle';
+    
+    if (isIdle && hasNonZeroMW) {
+      inconsistentHours.push(hour);
+    }
+  });
+
   const groups = [];
   let currentGroup = {
     start: data[0].time,
@@ -7166,6 +7330,15 @@ function processPGSC() {
     output += `Date: ${formattedDate}\n\n`;
   }
 
+  // Add warning for inconsistent status
+  if (inconsistentHours.length > 0) {
+    output += '⚠️ WARNING: Found ' + inconsistentHours.length + ' hour(s) with non-zero MW values but status "Idle":\n';
+    inconsistentHours.forEach(hour => {
+      output += `   ${hour.time}: MW ${hour.minMW}/${hour.maxMW}\n`;
+    });
+    output += '   Please review and correct the status in your input data.\n\n';
+  }
+
   output += 'Time  |  Min / Max MW  |  Min / Max MVAR  |  Status\n';
   output += '------------------------------------------------\n';
 
@@ -7188,6 +7361,445 @@ function copyPGSC() {
   }).catch(err => {
     console.error('Failed to copy:', err);
   });
+}
+
+/* ══════════════════════════════════════════════════════════
+   ROC STUDY GUIDE — Question Bank + Self-Test System
+   ══════════════════════════════════════════════════════════ */
+
+const ROC_QUESTIONS = [
+  // ── GRID ROLES ──────────────────────────────────────────────────────────────
+  {id:'g1', cat:'grid', type:'conceptual',
+   q:'Explain the difference between PSE, SC, and BA — what does each one actually do?',
+   a:'<strong>PSE (Purchasing-Selling Entity)</strong> buys and sells energy in the market — they\'re a market participant, not an operator.<br><strong>SC (Scheduling Coordinator)</strong> submits the energy schedules on behalf of generators or load to the BA — they\'re the administrative link between market deals and grid execution.<br><strong>BA (Balancing Authority)</strong> is the real-time operator — they physically balance generation with load every moment to maintain frequency and reliability. The flow is: <strong>SC plans → BA executes.</strong>'},
+
+  {id:'g2', cat:'grid', type:'conceptual',
+   q:'Why does the RC (Reliability Coordinator) not care about market transactions?',
+   a:'The RC\'s job is <strong>grid reliability — not energy commerce</strong>. They oversee the big picture: are flows within limits? Is the system stable? Is there enough reserve? Energy prices, buy/sell deals, and financial contracts are invisible to the RC. Their authority is reliability. The market is someone else\'s problem.'},
+
+  {id:'g3', cat:'grid', type:'conceptual',
+   q:'Why does the BA control frequency but not energy ownership?',
+   a:'The BA balances <em>physical electrons</em> — they respond to frequency deviations, dispatch resources, and issue AGC signals. But they don\'t own or trade the energy. Ownership belongs to PSEs. The BA is the <strong>grid operator</strong>, not the market. Think of them as air traffic control: they manage the movement, not who owns the planes.'},
+
+  {id:'g4', cat:'grid', type:'application',
+   q:'PSE schedules 100 MW into the BA\'s area. The BA only dispatches 80 MW. Explain why these numbers can differ and who is responsible for each.',
+   a:'The PSE schedules 100 MW as a <strong>market/commercial commitment</strong> — that\'s their plan. The BA dispatches 80 MW based on <strong>real-time grid conditions</strong>: actual load, frequency, reserves, and ACE. The BA is not required to match the schedule exactly in real time — they balance the system. The gap is tracked as inadvertent interchange and reconciled later. SC submits the plan; BA operates reality.'},
+
+  {id:'g5', cat:'grid', type:'recognition',
+   q:'ISO (like CAISO) — what dual role does it often play, and why does that make it unique?',
+   a:'An ISO (Independent System Operator) like CAISO typically acts as <strong>both BA and market operator</strong>. It balances the grid in real time AND clears the energy market. This is unusual because it combines reliability operations with commercial coordination — most entities only do one. This is why CAISO\'s dispatch signals affect both reliability and settlement simultaneously.'},
+
+  // ── VOLTAGE & REACTIVE POWER ─────────────────────────────────────────────
+  {id:'v1', cat:'voltage', type:'conceptual',
+   q:'Why does injecting MVARs (capacitive reactive power) raise voltage?',
+   a:'Reactive power (MVARs) supports the electromagnetic field in the power system. <strong>Capacitors inject leading current</strong>, which raises the voltage at the bus they\'re connected to — they "push" the voltage up. The rule: <strong>Voltage follows VARs.</strong> Add VARs → voltage rises. Remove VARs → voltage falls.'},
+
+  {id:'v2', cat:'voltage', type:'conceptual',
+   q:'Why does light load cause high voltage? Walk through the logic.',
+   a:'During light load, the system is <strong>capacitive</strong>. Transmission lines and cables have natural capacitance that generates MVARs even when load is low. With little load consuming those VARs, they accumulate and drive voltage up. Less load = less inductive demand = excess capacitive VARs = high voltage. Solution: switch in a reactor to absorb the excess VARs.'},
+
+  {id:'v3', cat:'voltage', type:'conceptual',
+   q:'What does a "VAR-starved" system mean, and why is it dangerous?',
+   a:'A VAR-starved system has <strong>insufficient reactive power support</strong>. Voltage drops because the inductive load demand exceeds the available MVAR supply. Generators hit their reactive power limits, capacitor banks may already be on, but voltage keeps falling. This can cascade into a <strong>voltage collapse</strong> — a blackout. It progresses faster than operators can respond.'},
+
+  {id:'v4', cat:'voltage', type:'terminology',
+   q:'WRONG statement: "Capacitors absorb vars." What\'s the correct version and why does this distinction matter operationally?',
+   a:'<strong>CORRECT: Capacitors SUPPLY (inject) VARs — they do NOT absorb them.</strong><br>Reactors ABSORB VARs.<br><ul><li>Capacitor ON → adds MVARs → raises voltage</li><li>Reactor ON → absorbs MVARs → lowers voltage</li></ul>Getting this backwards causes the wrong action during a voltage event. Injecting MVARs (wrong device) when voltage is already high can cause equipment damage or protection trips.'},
+
+  {id:'v5', cat:'voltage', type:'terminology',
+   q:'Define leading vs lagging power factor in terms of VARs and voltage impact.',
+   a:'<strong>Leading PF (capacitive)</strong>: current leads voltage. Load is generating MVARs. This raises voltage — common during light load or with capacitors on.<br><strong>Lagging PF (inductive)</strong>: current lags voltage. Load is consuming MVARs. This depresses voltage — common during heavy load or with motors/transformers heavily loaded.<br>Generators can operate in either mode by adjusting excitation (AVR setpoint).'},
+
+  {id:'v6', cat:'voltage', type:'scenario',
+   q:'SCENARIO: High voltage, low load, capacitor banks already ON. What are your priority actions?',
+   a:'<ul><li><strong>1. Switch off capacitor banks</strong> — they\'re adding MVARs to an already high-voltage system</li><li><strong>2. Switch in reactor banks</strong> (if available) — to absorb excess VARs</li><li><strong>3. Check AVR</strong> — is it in auto? Is the voltage setpoint appropriate?</li><li><strong>4. Notify grid operator / BA</strong> if voltage exceeds operational limits</li><li><strong>5. Log all actions</strong> with timestamps</li></ul><strong>Key rule:</strong> Never add MVARs to a high-voltage system.'},
+
+  {id:'v7', cat:'voltage', type:'scenario',
+   q:'SCENARIO: Voltage is dropping, load is heavy, reactor is ON. What is your action and reasoning?',
+   a:'<ul><li><strong>Immediately switch the reactor OFF</strong> — it\'s absorbing MVARs in a system already starved of them</li><li>Check if capacitor banks are available — switch them ON to inject MVARs</li><li>Verify generator output is at max reactive capability</li><li>Notify BA/RC if voltage cannot be recovered — this may be a reliability event</li><li>Log actions with times and reason</li></ul><strong>Reactor + heavy load = voltage death spiral.</strong> The reactor must come off first.'},
+
+  {id:'v8', cat:'voltage', type:'conceptual',
+   q:'What affects voltage more — MW or MVAR? Why?',
+   a:'<strong>MVAR affects voltage more directly.</strong> Reactive power controls the electromagnetic field that sustains voltage magnitude. MW (real power) primarily affects frequency and flow. For voltage control: change MVARs → change voltage. This is why VAR control devices (caps, reactors, AVR) are voltage-control tools, and why the operator\'s first lever in a voltage event is reactive power, not real power.'},
+
+  // ── AVR / VOLTAGE CONTROL AUTOMATION ───────────────────────────────────
+  {id:'a1', cat:'voltage', type:'conceptual',
+   q:'What does AVR (Automatic Voltage Regulator) solve automatically, and what would break without it?',
+   a:'AVR automatically adjusts generator excitation to maintain the terminal voltage setpoint. Without it:<ul><li>Voltage would drift with every load change</li><li>Reactive power sharing between generators would be uncontrolled</li><li>Operators would have to manually adjust excitation constantly</li><li>System voltage stability during disturbances would be at risk</li></ul>AVR is the automatic reactive power / voltage control loop. <strong>NERC VAR-002 requires it to stay in automatic</strong>.'},
+
+  {id:'a2', cat:'voltage', type:'conceptual',
+   q:'What happens if AVR is switched to manual (off-auto)? What risks does this create?',
+   a:'In manual mode the excitation is fixed — it will NOT respond to voltage changes. Risks:<ul><li>Voltage excursions go uncontrolled during load changes or faults</li><li>Generator may absorb or inject excessive VARs, tripping on limits</li><li>NERC VAR-002 violation — must notify BA immediately</li><li>During a disturbance, the generator can\'t provide automatic reactive support</li></ul>Operators must notify the BA whenever AVR is taken off auto and restore it ASAP.'},
+
+  // ── DISPATCH ───────────────────────────────────────────────────────────────
+  {id:'d1', cat:'dispatch', type:'conceptual',
+   q:'What does AGC control — and what does it NOT control?',
+   a:'AGC (Automatic Generation Control) controls <strong>MW output (real power / frequency)</strong>. It receives signals from the BA to raise or lower generation to correct Area Control Error (ACE).<br><br>AGC does <strong>NOT control voltage</strong>. That is AVR\'s job.<ul><li>AGC = MW = frequency control</li><li>AVR = MVAR = voltage control</li></ul>If voltage is drifting, adjusting AGC setpoints won\'t fix it.'},
+
+  {id:'d2', cat:'dispatch', type:'scenario',
+   q:'SCENARIO: Setpoint ≠ actual MW output. What do you check first?',
+   a:'<ul><li><strong>1. Verify AGC is enabled and in auto</strong> — check ADS/SCADA for AGC mode status</li><li><strong>2. Check inverter/generator status</strong> — is the unit in remote/auto control mode?</li><li><strong>3. Check for active alarms</strong> — derate, trip, communication loss, or protective relay operation</li><li><strong>4. Verify communication link</strong> between SCADA and the unit — comm loss = no AGC signal</li><li><strong>5. Compare setpoint history</strong> — was the setpoint recently changed?</li><li><strong>6. Log findings and notify</strong> BA if deviation is persistent or significant</li></ul>'},
+
+  {id:'d3', cat:'dispatch', type:'scenario',
+   q:'SCENARIO: AGC is not responding. List 3 possible causes.',
+   a:'<ul><li><strong>1. Communication failure</strong> — the AGC signal from the BA isn\'t reaching the plant</li><li><strong>2. Unit in local/manual control</strong> — inverter or DCS set to manual, not following remote setpoint</li><li><strong>3. Plant derating or protective limit active</strong> — unit can\'t respond because it\'s capped by a protection or thermal limit</li></ul>Also possible: AGC software fault at BA, telemetry point mis-tagged, or unit in forced outage mode.'},
+
+  {id:'d4', cat:'dispatch', type:'terminology',
+   q:'What does ±0 MW capability mean, and when would an operator see this on a BESS?',
+   a:'±0 MW capability means the BESS has <strong>no available charge or discharge headroom</strong> at that moment — the battery is either full (can\'t charge) or empty (can\'t discharge), or it\'s in a protective state. An operator would see this when the battery is at SoC limits, has a fault condition, or HVAC/thermal limits are preventing operation. This must be reported to the BA as it affects their dispatch plans.'},
+
+  // ── SCADA / ALARMS ─────────────────────────────────────────────────────
+  {id:'s1', cat:'scada', type:'conceptual',
+   q:'Alarms must be prioritized by risk. What is the primary triage question an operator asks when an alarm fires?',
+   a:'"<strong>Does this indicate a condition that could affect grid reliability, equipment safety, or personnel safety — right now?"</strong><br><br>Triage hierarchy:<ol style="margin-left:14px;"><li>Safety-critical (fire, HVAC failure with thermal risk, imminent trip)</li><li>Equipment protection (overcurrent, overtemp, relay operation)</li><li>Operational (derate, communication, status change)</li><li>Informational</li></ol>Never silence an unacknowledged alarm without understanding the cause.'},
+
+  {id:'s2', cat:'scada', type:'scenario',
+   q:'SCENARIO: Loss of comms alarm fires on a solar site. What matters most — and what do you NOT assume?',
+   a:'<strong>What matters most: Is the equipment actually in a safe state?</strong><br><ul><li>Confirm last known status before comm loss (was it generating? Any alarms pre-loss?)</li><li>A comm alarm means you\'ve lost visibility — it does NOT confirm the equipment failed or tripped</li><li>Check if other sites on the same network show comms issues (network problem vs. site-specific)</li><li>Notify BA if the loss affects telemetry or AGC control signals (COM-002)</li><li>Dispatch field personnel if comm cannot be restored or safety concern exists</li></ul><strong>Do NOT assume: comm loss ≠ equipment failure.</strong>'},
+
+  {id:'s3', cat:'scada', type:'scenario',
+   q:'SCENARIO: Battery temperature is rising AND an HVAC alarm is active. Why is this dangerous and what do you do?',
+   a:'<strong>Thermal runaway risk.</strong> BESS cells generate heat during operation. HVAC removes that heat. If HVAC fails while the battery is operating:<ul><li>Cell temps rise → accelerated degradation → potential venting, fire, or explosion</li><li>This is a <strong>safety-critical cascade</strong></li></ul><strong>Immediate actions:</strong><ol style="margin-left:14px;"><li>Derate or take BESS offline per emergency procedure</li><li>Notify site management and fire/safety response teams</li><li>Notify BA of loss of resource</li><li>Do not restore until HVAC is confirmed operational and temps are safe</li><li>Log all actions with exact times</li></ol>'},
+
+  // ── SOLAR & WIND / OPERATIONS ──────────────────────────────────────────
+  {id:'op1', cat:'operations', type:'application',
+   q:'Solar site is underperforming with high irradiance levels. How do you determine if it\'s a grid issue or asset issue?',
+   a:'Compare these data sources:<ul><li><strong>Inverters show fault/trip + high irradiance</strong> → asset issue (inverter trip, DC string problem, comms loss)</li><li><strong>Inverters show normal + MW is low</strong> → possible active derate (curtailment, thermal limit, AGC setpoint)</li><li><strong>Other nearby solar sites also underperforming</strong> → grid/curtailment order likely</li></ul>Key diagnostic: <strong>inverter status vs. irradiance vs. AGC setpoint vs. active alarms.</strong> Never assume without checking all four.'},
+
+  {id:'op2', cat:'operations', type:'application',
+   q:'A hail stow was activated on a solar tracker farm. The storm has passed but stow was never reversed. What type of issue is this?',
+   a:'This is an <strong>operations/procedure gap</strong> — not a technical fault. Hail stow protects panels by rotating them to a safe angle. If not reversed:<ul><li>Panels are no longer tracking the sun → significant generation loss</li><li>No alarm will typically fire for "stuck in stow" (it\'s a normal command state)</li><li>Shows as low generation despite good irradiance</li></ul>Fix: manual stow release command from SCADA or DCS. Operators must verify stow is cleared after every weather event.'},
+
+  {id:'op3', cat:'operations', type:'application',
+   q:'You are performing switching operations on a BESS connected to a solar farm. You proceed without disabling the battery. What is the risk?',
+   a:'<strong>Arc flash / energized equipment hazard.</strong> A BESS can source fault current independently of the grid. Without first ensuring the BESS is offline:<ul><li>Battery can still push current through the switching point</li><li>Backfeed risk to workers or equipment</li><li>Switching transients can damage battery management systems</li><li>May cause unwanted protection trips taking the entire interconnection offline</li></ul><strong>Always: disable/isolate BESS before performing switching on connected equipment.</strong>'},
+
+  // ── SHIFT OPERATIONS & PROCEDURES ─────────────────────────────────────
+  {id:'pr1', cat:'operations', type:'procedure',
+   q:'Why must the relieving operator be logged in and verified before the on-duty operator can leave?',
+   a:'<strong>The control room cannot be without qualified operator coverage — ever.</strong><ul><li>NERC standards require continuous staffing of control functions</li><li>A grid event can occur at any moment — the transition moment is highest vulnerability</li><li>The on-duty operator carries legal/regulatory accountability until relief is confirmed</li><li>The relieving operator must be briefed on grid conditions, open alarms, ongoing events, and pending actions</li></ul>Leaving before relief is signed on is a <strong>serious compliance and safety violation</strong>.'},
+
+  {id:'pr2', cat:'operations', type:'procedure',
+   q:'Why must a Transmission Owner (TOP) approve high-voltage switching operations before they are performed?',
+   a:'HV switching affects the transmission system, not just the generating asset. TOP approval ensures:<ul><li>The switching won\'t violate system operating limits (SOLs)</li><li>The grid is in a state where switching can be safely performed</li><li>Proper switching orders are in place and documented</li><li>Coordination with other operators who may be affected</li></ul>Performing HV switching without TOP approval is a <strong>TOP-002 violation</strong> and can cause system stability issues or protection failures.'},
+
+  {id:'pr3', cat:'operations', type:'procedure',
+   q:'Why is repeat-back (read-back) required for verbal instructions in control room operations?',
+   a:'<strong>COM-002 requirement.</strong> Repeat-back confirms:<ul><li>The receiver heard the instruction correctly</li><li>Both parties are operating on the same understanding</li><li>The instruction is documented in the conversation record</li></ul>Without repeat-back, a misheard setpoint, wrong MW value, or incorrect breaker number can go undetected and cause a reliability event. <strong>Closed-loop communication eliminates assumption.</strong>'},
+
+  // ── NERC STANDARDS ─────────────────────────────────────────────────────
+  {id:'n1', cat:'standards', type:'standard',
+   q:'Why must AVR stay in automatic mode under VAR-002? What does this standard require?',
+   a:'VAR-002 (Generator Operation for Maintaining Network Voltage Schedules) requires generators to:<ul><li>Operate AVR in automatic voltage control mode</li><li>Maintain terminal voltage within the BA\'s scheduled voltage range</li><li>Report any inability to comply to the BA immediately</li></ul>If AVR is off auto, the generator loses automatic reactive contribution during disturbances. <strong>Any deviation from auto AVR must be immediately reported to the BA.</strong>'},
+
+  {id:'n2', cat:'standards', type:'standard',
+   q:'Why is a communication failure a reliability risk under COM-002?',
+   a:'COM-002 (Communications and Coordination) requires:<ul><li>Documented, reliable communication between reliability entities</li><li>Read-back verification on directives</li><li>Alternative communication methods if primary fails</li></ul>If communication fails between operator and BA, reliability directives cannot be issued or received. Grid events evolve in minutes — <strong>comm failure during an event is a reliability gap, not just an IT problem.</strong>'},
+
+  {id:'n3', cat:'standards', type:'standard',
+   q:'Why does NERC require protection system knowledge under PER-006?',
+   a:'PER-006 (Specific Training for Personnel) requires operators to understand the protection systems on their systems because:<ul><li>Protection systems are the last line of defense before equipment damage or cascading outages</li><li>An operator who doesn\'t understand why a relay tripped can\'t assess whether it was correct or spurious</li><li>Incorrect response to a protection operation (e.g., re-closing into a fault) can cause catastrophic damage</li><li>Understanding protection helps diagnose whether a condition is an equipment issue or a grid issue</li></ul>'},
+
+  // ── RECOGNITION ────────────────────────────────────────────────────────
+  {id:'r1', cat:'scada', type:'recognition',
+   q:'What device absorbs VARs and why would you use it?',
+   a:'A <strong>Reactor (shunt reactor)</strong> absorbs MVARs from the system. You would use it when:<ul><li>Voltage is too HIGH (light load, capacitive system)</li><li>Capacitor banks are already off and voltage is still elevated</li><li>Transmission line charging is creating excess VARs</li></ul>Reactor = absorb = lower voltage. Capacitor = supply = raise voltage.'},
+
+  {id:'r2', cat:'standards', type:'recognition',
+   q:'ANSI Device 86 — what does it indicate and what does the operator do when it fires?',
+   a:'ANSI 86 is the <strong>Lockout Relay</strong>. When it trips:<ul><li>It locks out the associated equipment — it will NOT auto-reclose</li><li>The equipment cannot be returned to service until the 86 is manually reset</li><li>An 86 operation indicates a <strong>serious fault was detected</strong></li></ul><strong>Operator action: Do NOT reset the 86 without authorization and investigation. Log the event, notify supervision and BA, follow outage management procedures.</strong>'},
+
+  // ── RAPID FIRE ──────────────────────────────────────────────────────────
+  {id:'rf1', cat:'rapid', type:'rapid',
+   q:'What is HE 12?',
+   a:'HE 12 = <strong>Hour Ending 12</strong>. In power scheduling, time is expressed as the hour ending at that time — HE 12 is the hour from 11:00 to 12:00 (noon). Standard format used in energy schedules and dispatch tables.'},
+
+  {id:'rf2', cat:'rapid', type:'rapid',
+   q:'Who balances load in real time?',
+   a:'The <strong>Balancing Authority (BA)</strong>.'},
+
+  {id:'rf3', cat:'rapid', type:'rapid',
+   q:'AVR vs AGC — one word each for what each controls.',
+   a:'<strong>AVR → Voltage</strong> (via reactive power / excitation)<br><strong>AGC → MW</strong> (real power / frequency)'},
+
+  {id:'rf4', cat:'rapid', type:'rapid',
+   q:'Who submits energy schedules to the BA?',
+   a:'The <strong>Scheduling Coordinator (SC)</strong>.'},
+
+  {id:'rf5', cat:'rapid', type:'rapid',
+   q:'What happens to frequency when load exceeds generation?',
+   a:'<strong>Frequency drops.</strong> More load than generation = more drag on the system = generators slow down = frequency decreases. The BA must respond by increasing generation or shedding load.'},
+
+  {id:'rf6', cat:'rapid', type:'rapid',
+   q:'MW vs MWh — why do both matter to an operator?',
+   a:'<strong>MW</strong> = rate of power flow (what\'s happening NOW — real-time dispatch/generation)<br><strong>MWh</strong> = energy over time (what was produced/consumed — used for BESS state of charge and schedule settlement)<br>An operator needs MW to manage dispatch, and MWh to track BESS capacity.'},
+
+  {id:'rf7', cat:'rapid', type:'rapid',
+   q:'What does it mean when a generator is "at its reactive limit"?',
+   a:'The generator cannot produce or absorb any more MVARs — it\'s maxed out on excitation. The AVR will still try to hold voltage but physically cannot provide more reactive support. The BA must find reactive resources elsewhere. Critical condition during voltage stress.'},
+
+  // ── FULL SIMULATION SCENARIO ─────────────────────────────────────────
+  {id:'sim1', cat:'operations', type:'simulation',
+   q:'START-OF-SHIFT SCENARIO — Incoming conditions: Solar derate active | High voltage across the plant bus | Reactor offline for maintenance | One inverter tripped | High temp alarm on BESS | HVAC alarm also active',
+   a:'',
+   sim: {
+     inputs: ['Solar derate active','High voltage — plant bus elevated','Reactor offline (maintenance outage)','Inverter trip — Unit 3','BESS high temp alarm','BESS HVAC alarm'],
+     tasks: [
+       {q:'1. Priority Actions — what do you do first, second, third?',
+        a:'<strong>1st — BESS safety:</strong> HVAC alarm + high temp = thermal runaway risk. Derate or take BESS offline per emergency procedure. Notify BA immediately.<br><strong>2nd — Voltage:</strong> High voltage + reactor offline = no reactive absorption. Notify BA. Check if caps can be switched off. Report if voltage exceeds limits.<br><strong>3rd — Inverter trip:</strong> Investigate cause (fault? comm? protection?). Log. Notify BA of reduced capacity.<br><strong>4th — Solar derate:</strong> Confirm derate is a valid BA curtailment order — is it logged? Is it the expected amount?'},
+       {q:'2. Root Cause Thinking — what is the most dangerous cascade risk right now?',
+        a:'The BESS thermal situation is most dangerous because it can escalate to fire. The high voltage is the biggest grid reliability risk because with the reactor offline, there\'s no automatic MVAR absorption. If voltage continues rising and a protection relay trips an interconnection line, you could lose the entire plant output simultaneously.'},
+       {q:'3. What logs are required before you can leave this shift?',
+        a:'<ul><li>BESS thermal event — time, temp readings, HVAC alarm, actions taken, BA notification time</li><li>Inverter trip — unit, time, cause (if determined), restoration status</li><li>Voltage exceedance — if voltage exceeded limits, log time, peak value, actions, BA contact</li><li>Solar derate — log the derate order, MW level, time received, source</li><li>All BA/RC communications with times and exact content</li></ul>'},
+       {q:'4. What grid condition are you handing off to the next operator?',
+        a:'Plant operating at reduced capacity. BESS offline (thermal event under investigation). Solar derate active per BA order. Unit 3 inverter offline — cause under investigation. High voltage condition — reactor still offline for maintenance, voltage being monitored. BA has been notified of all conditions. Next operator should: confirm BESS status with maintenance, monitor voltage closely, and verify derate order is still in effect.'}
+     ]
+   }
+  }
+];
+
+const ROC_CATEGORIES = [
+  {key:'grid',       label:'Grid Roles & Entities',       icon:'🌐'},
+  {key:'voltage',    label:'Voltage, Reactive Power & AVR', icon:'⚡'},
+  {key:'dispatch',   label:'Dispatch: AGC & ADS',          icon:'📡'},
+  {key:'scada',      label:'SCADA, Alarms & Recognition',  icon:'🖥️'},
+  {key:'operations', label:'Operations, Solar & Procedures', icon:'📋'},
+  {key:'standards',  label:'NERC Standards',               icon:'📜'},
+  {key:'rapid',      label:'Rapid Fire',                   icon:'🎯'},
+];
+
+let rocProgress = {};
+let rocFilter = 'all';
+let rocDrillQueue = [];
+let rocDrillIdx = 0;
+
+function rocLoad() {
+  try { rocProgress = JSON.parse(localStorage.getItem('roc_progress') || '{}'); } catch(e) { rocProgress = {}; }
+}
+
+function rocSave() {
+  localStorage.setItem('roc_progress', JSON.stringify(rocProgress));
+}
+
+function rocResetProgress() {
+  if (!confirm('Reset all ROC Study Guide progress? This cannot be undone.')) return;
+  rocProgress = {};
+  rocSave();
+  rocRender();
+}
+
+function rocSetFilter(f, btn) {
+  rocFilter = f;
+  document.querySelectorAll('.roc-ftag').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  rocRender();
+}
+
+function rocGetFilteredQs() {
+  if (rocFilter === 'all') return ROC_QUESTIONS;
+  return ROC_QUESTIONS.filter(q => q.cat === rocFilter);
+}
+
+function rocUpdateStats() {
+  let done = 0, review = 0, missed = 0;
+  ROC_QUESTIONS.forEach(q => {
+    const p = rocProgress[q.id];
+    if (p === 'got-it') done++;
+    else if (p === 'review-it') review++;
+    else if (p === 'missed') missed++;
+  });
+  document.getElementById('roc-stat-total').textContent = ROC_QUESTIONS.length;
+  document.getElementById('roc-stat-done').textContent = done;
+  document.getElementById('roc-stat-review').textContent = review;
+  document.getElementById('roc-stat-missed').textContent = missed;
+}
+
+function rocTypeBadge(type) {
+  const map = {
+    conceptual: ['roc-qt-conceptual','Conceptual'],
+    scenario:   ['roc-qt-scenario','Scenario'],
+    application:['roc-qt-application','Application'],
+    terminology:['roc-qt-terminology','Terminology'],
+    procedure:  ['roc-qt-procedure','Procedure'],
+    standard:   ['roc-qt-standard','Standard'],
+    recognition:['roc-qt-recognition','Recognition'],
+    rapid:      ['roc-qt-rapid','Rapid Fire'],
+    simulation: ['roc-qt-simulation','Simulation'],
+  };
+  const t = map[type] || ['roc-qt-conceptual', type];
+  return `<span class="roc-q-type-badge ${t[0]}">${t[1]}</span>`;
+}
+
+function rocConfButtons(qid) {
+  const p = rocProgress[qid];
+  return `<button class="roc-conf-btn${p==='got-it'?' got-it':''}" onclick="rocMark('${qid}','got-it')">✓ Got it</button>
+    <button class="roc-conf-btn${p==='review-it'?' review-it':''}" onclick="rocMark('${qid}','review-it')">~ Review</button>
+    <button class="roc-conf-btn${p==='missed'?' missed':''}" onclick="rocMark('${qid}','missed')">✗ Missed</button>`;
+}
+
+function rocMark(qid, val) {
+  rocProgress[qid] = val;
+  rocSave();
+  const el = document.querySelector(`[data-conf="${qid}"]`);
+  if (el) el.innerHTML = rocConfButtons(qid);
+  const catKey = (ROC_QUESTIONS.find(x=>x.id===qid)||{}).cat;
+  if (catKey) {
+    const catQs = ROC_QUESTIONS.filter(x=>x.cat===catKey);
+    const done = catQs.filter(x=>rocProgress[x.id]).length;
+    const fill = document.querySelector(`[data-sect-fill="${catKey}"]`);
+    if (fill) fill.style.width = Math.round(done/catQs.length*100)+'%';
+  }
+  rocUpdateStats();
+}
+
+function rocToggleAnswer(qid) {
+  const el = document.getElementById(`roc-ans-${qid}`);
+  const btn = document.getElementById(`roc-show-${qid}`);
+  if (!el) return;
+  const showing = el.classList.contains('show');
+  el.classList.toggle('show');
+  if (btn) btn.textContent = showing ? 'Show Answer' : 'Hide Answer';
+}
+
+function rocToggleSimReveal(qid, idx) {
+  const el = document.getElementById(`roc-sim-reveal-${qid}-${idx}`);
+  const btn = document.getElementById(`roc-sim-revbtn-${qid}-${idx}`);
+  if (!el) return;
+  const showing = el.classList.contains('show');
+  el.classList.toggle('show');
+  if (btn) btn.textContent = showing ? 'Show Answer' : 'Hide Answer';
+}
+
+function rocToggleSection(el) { el.classList.toggle('open'); }
+
+function rocRender() {
+  rocUpdateStats();
+  const container = document.getElementById('roc-sections');
+  if (!container) return;
+  const filtered = rocGetFilteredQs();
+  const usedCats = [...new Set(filtered.map(q => q.cat))];
+  const openCats = new Set();
+  document.querySelectorAll('.roc-section.open').forEach(el => openCats.add(el.dataset.cat));
+  let html = '';
+  usedCats.forEach((catKey, ci) => {
+    const catDef = ROC_CATEGORIES.find(c=>c.key===catKey)||{label:catKey,icon:'📋'};
+    const catQs = filtered.filter(q=>q.cat===catKey);
+    const doneCount = catQs.filter(q=>rocProgress[q.id]).length;
+    const pct = catQs.length ? Math.round(doneCount/catQs.length*100) : 0;
+    const isOpen = openCats.size ? openCats.has(catKey) : ci===0;
+    html += `<div class="roc-section${isOpen?' open':''}" data-cat="${catKey}">
+      <div class="roc-section-hdr" onclick="rocToggleSection(this.parentElement)">
+        <span class="roc-section-icon">${catDef.icon}</span>
+        <span class="roc-section-name">${catDef.label}</span>
+        <span class="roc-section-count">${catQs.length} questions</span>
+        <div class="roc-section-prog"><div class="roc-section-prog-fill" data-sect-fill="${catKey}" style="width:${pct}%"></div></div>
+        <span class="roc-section-chevron">▼</span>
+      </div>
+      <div class="roc-questions">`;
+    catQs.forEach((q, qi) => {
+      if (q.type === 'simulation' && q.sim) {
+        html += `<div class="roc-sim-block">
+          <div class="roc-q-top" style="margin-bottom:10px;">
+            ${rocTypeBadge(q.type)}
+            <div class="roc-q-text" style="font-weight:600;flex:1;">${q.q}</div>
+          </div>
+          <div class="roc-sim-scenario">
+            <div class="roc-sim-scenario-title">📋 Incoming Conditions</div>
+            <div class="roc-sim-inputs">${q.sim.inputs.map(i=>`<span class="roc-sim-input">⚠ ${i}</span>`).join('')}</div>
+          </div>
+          <div class="roc-sim-tasks">`;
+        q.sim.tasks.forEach((t,ti) => {
+          html += `<div class="roc-sim-task">
+            <div class="roc-sim-task-q">${t.q}</div>
+            <textarea class="roc-sim-textarea" placeholder="Write your answer before revealing..."></textarea>
+            <div style="display:flex;gap:8px;margin-top:8px;">
+              <button id="roc-sim-revbtn-${q.id}-${ti}" class="roc-show-btn" onclick="rocToggleSimReveal('${q.id}',${ti})">Show Answer</button>
+            </div>
+            <div class="roc-sim-reveal" id="roc-sim-reveal-${q.id}-${ti}">${t.a}</div>
+          </div>`;
+        });
+        html += `</div>
+          <div class="roc-confidence" data-conf="${q.id}" style="padding:12px 0 4px 0;">${rocConfButtons(q.id)}</div>
+        </div>`;
+      } else {
+        html += `<div class="roc-q" data-qid="${q.id}">
+          <div class="roc-q-top">
+            <span class="roc-q-num">Q${qi+1}</span>
+            ${rocTypeBadge(q.type)}
+            <div class="roc-q-text">${q.q}</div>
+          </div>
+          <div class="roc-answer" id="roc-ans-${q.id}">
+            <span class="roc-a-label">Answer</span>${q.a}
+          </div>
+          <div class="roc-q-actions">
+            <button class="roc-show-btn" id="roc-show-${q.id}" onclick="rocToggleAnswer('${q.id}')">Show Answer</button>
+            <div class="roc-confidence" data-conf="${q.id}">${rocConfButtons(q.id)}</div>
+          </div>
+        </div>`;
+      }
+    });
+    html += `</div></div>`;
+  });
+  container.innerHTML = html;
+}
+
+// ── DAILY DRILL ────────────────────────────────────────────────────────────
+function rocStartDrill() {
+  const pool = ROC_QUESTIONS.filter(q=>q.type!=='simulation');
+  const shuffled = [...pool].sort(()=>Math.random()-.5);
+  rocDrillQueue = shuffled.slice(0,10);
+  rocDrillIdx = 0;
+  document.getElementById('roc-drill-modal').classList.remove('hidden');
+  rocDrillShowQ();
+}
+
+function rocCloseDrill() {
+  document.getElementById('roc-drill-modal').classList.add('hidden');
+}
+
+function rocDrillShowQ() {
+  const q = rocDrillQueue[rocDrillIdx];
+  if (!q) { rocDrillFinish(); return; }
+  const n = rocDrillIdx+1, total = rocDrillQueue.length;
+  document.getElementById('roc-drill-prog').textContent = `${n} / ${total}`;
+  document.getElementById('roc-drill-prog-fill').style.width = (n/total*100)+'%';
+  const typeMap = {conceptual:['roc-qt-conceptual','Conceptual'],scenario:['roc-qt-scenario','Scenario'],
+    application:['roc-qt-application','Application'],terminology:['roc-qt-terminology','Terminology'],
+    procedure:['roc-qt-procedure','Procedure'],standard:['roc-qt-standard','Standard'],
+    recognition:['roc-qt-recognition','Recognition'],rapid:['roc-qt-rapid','Rapid Fire']};
+  const t = typeMap[q.type]||['roc-qt-conceptual',q.type];
+  const tb = document.getElementById('roc-drill-type-badge');
+  tb.className = 'roc-q-type-badge '+t[0]; tb.textContent = t[1];
+  const catDef = ROC_CATEGORIES.find(c=>c.key===q.cat);
+  document.getElementById('roc-drill-section-badge').textContent = catDef?catDef.label:q.cat;
+  document.getElementById('roc-drill-q-text').textContent = q.q;
+  const ans = document.getElementById('roc-drill-answer');
+  ans.innerHTML = q.a; ans.classList.remove('show');
+  const showBtn = document.getElementById('roc-drill-show-btn');
+  showBtn.style.display=''; showBtn.textContent='Show Answer';
+  document.getElementById('roc-drill-conf-row').style.display='none';
+}
+
+function rocDrillShowAnswer() {
+  document.getElementById('roc-drill-answer').classList.add('show');
+  document.getElementById('roc-drill-show-btn').style.display='none';
+  document.getElementById('roc-drill-conf-row').style.display='flex';
+}
+
+function rocDrillNext(conf) {
+  const q = rocDrillQueue[rocDrillIdx];
+  if (q) { rocProgress[q.id]=conf; rocSave(); }
+  rocDrillIdx++;
+  if (rocDrillIdx>=rocDrillQueue.length) rocDrillFinish();
+  else rocDrillShowQ();
+}
+
+function rocDrillFinish() {
+  document.getElementById('roc-drill-modal').classList.add('hidden');
+  const got = rocDrillQueue.filter(q=>rocProgress[q.id]==='got-it').length;
+  const missed = rocDrillQueue.filter(q=>rocProgress[q.id]==='missed').length;
+  rocRender();
+  alert(`Daily Drill Complete! ⚡\n\n✓ Got it: ${got} / ${rocDrillQueue.length}\n✗ Missed: ${missed}\n\nKeep going — review the missed ones.`);
 }
 
 load();
