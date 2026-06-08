@@ -1115,6 +1115,80 @@ body.dark .nerc-study-container{
 .roc-section.open .roc-questions{display:block;}
 .roc-q{padding:14px 16px;border-bottom:1px solid var(--border);}
 .roc-q:last-child{border-bottom:none;}
+
+/* ── GRID HIERARCHY WIDGET ──────────────────────────────────────────────────── */
+.gh-wrap{padding:0 0 8px;}
+.gh-subtitle{font-size:12px;color:var(--text3);margin-bottom:12px;}
+.gh-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.gh-tab{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--f);transition:all .15s;}
+.gh-tab:hover{background:var(--bg3);color:var(--text);}
+.gh-tab.active{background:var(--bg3);color:var(--text);border-color:var(--border2);}
+.gh-panel{display:none;}
+.gh-panel.active{display:block;}
+/* Hierarchy tier nodes */
+.gh-tier{display:flex;justify-content:center;margin-bottom:5px;}
+.gh-tier-row{display:flex;justify-content:center;gap:8px;margin-bottom:5px;}
+.gh-conn{display:flex;justify-content:center;height:16px;}
+.gh-node{border:1px solid;border-radius:8px;padding:7px 13px;cursor:pointer;text-align:center;font-family:var(--f);transition:all .15s;min-width:114px;}
+.gh-node:hover{opacity:.85;transform:translateY(-1px);}
+.gh-node-lbl{font-size:12px;font-weight:600;}
+.gh-node-sub{font-size:10px;margin-top:1px;opacity:.75;}
+.gh-separator{text-align:center;font-size:10px;color:var(--text3);margin:6px 0 4px;font-family:var(--m);letter-spacing:.06em;}
+/* Node color themes */
+.ghn-nerc {background:#3C3489;border-color:#26215C;color:#EEEDFE;}
+.ghn-wecc {background:#534AB7;border-color:#3C3489;color:#EEEDFE;}
+.ghn-rc   {background:#185FA5;border-color:#0C447C;color:#E6F1FB;}
+.ghn-caiso{background:#0F6E56;border-color:#085041;color:#E1F5EE;}
+.ghn-ba   {background:#2d9e6b;border-color:#1a6e4a;color:#e8f5ee;}
+.ghn-to   {background:#3B6D11;border-color:#27500A;color:#EAF3DE;}
+.ghn-dp   {background:#888780;border-color:#5F5E5A;color:#F1EFE8;}
+.ghn-go   {background:#854F0B;border-color:#633806;color:#FAEEDA;}
+.ghn-gop  {background:#993C1D;border-color:#712B13;color:#FAECE7;}
+.ghn-ppa  {background:#993556;border-color:#72243E;color:#FBEAF0;}
+.ghn-pse  {background:#5F5E5A;border-color:#444441;color:#F1EFE8;}
+/* Detail card */
+.gh-detail{margin-top:14px;border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--bg2);animation:roc-fadein .2s ease;}
+.gh-detail h3{font-size:14px;font-weight:700;margin-bottom:2px;color:var(--text);}
+.gh-detail .gh-role{font-size:11px;color:var(--text3);margin-bottom:12px;font-family:var(--m);}
+.gh-dgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.gh-ditem{background:var(--bg3);border-radius:7px;padding:10px 12px;}
+.gh-ditem-k{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px;font-family:var(--m);}
+.gh-ditem-v{font-size:12px;color:var(--text);line-height:1.55;}
+.gh-mental{border-left:3px solid var(--blue);padding:8px 12px;font-size:12px;font-style:italic;color:var(--text2);background:var(--bbg);border-radius:0 7px 7px 0;margin-top:8px;}
+body.dark .gh-mental{background:#0d1e38;}
+/* Two chains */
+.gh-chains{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.gh-chain-col{border:1px solid var(--border);border-radius:9px;padding:12px 14px;background:var(--bg2);}
+.gh-chain-col h4{font-size:12px;font-weight:600;margin-bottom:10px;}
+.gh-ch-node{border-radius:6px;padding:6px 10px;text-align:center;font-size:11px;font-weight:600;margin-bottom:2px;}
+.gh-ch-arr{text-align:center;font-size:12px;color:var(--text3);line-height:1;margin-bottom:2px;}
+.gh-ch-rel{text-align:center;font-size:10px;color:var(--text3);margin-bottom:3px;font-family:var(--m);}
+.gh-conflict{margin-top:12px;border:1px solid var(--amber);border-radius:8px;padding:12px 14px;background:var(--abg);}
+.gh-conflict h4{font-size:12px;font-weight:700;color:var(--amber);margin-bottom:6px;}
+.gh-conflict p{font-size:12px;color:var(--text2);line-height:1.6;}
+/* Priority list */
+.gh-prio-list{display:flex;flex-direction:column;gap:0;}
+.gh-prio-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.gh-prio-item:last-child{border-bottom:none;}
+.gh-prio-num{min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:#fff;}
+.gh-prio-item strong{font-size:13px;display:block;margin-bottom:2px;color:var(--text);}
+.gh-prio-item p{font-size:12px;color:var(--text2);line-height:1.5;margin:0;}
+/* Scenarios */
+.gh-scen{border:1px solid var(--border);border-radius:9px;padding:13px 15px;background:var(--bg2);margin-bottom:8px;}
+.gh-scen-hdr{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;}
+.gh-scen-hdr h4{font-size:13px;font-weight:600;flex:1;color:var(--text);}
+.gh-scen-badge{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;white-space:nowrap;}
+.gh-scen-chev{font-size:11px;color:var(--text3);transition:transform .2s;}
+.gh-scen-chev.open{transform:rotate(180deg);}
+.gh-scen-body{display:none;margin-top:12px;}
+.gh-scen-body.open{display:block;}
+.gh-scen-setup{font-size:12px;color:var(--text3);margin-bottom:10px;font-style:italic;}
+.gh-step{display:flex;gap:10px;margin-bottom:8px;}
+.gh-step-num{min-width:20px;height:20px;border-radius:50%;background:var(--bg4);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text2);}
+.gh-step-txt{font-size:12px;color:var(--text2);line-height:1.6;}
+.gh-step-txt strong{color:var(--text);font-weight:600;}
+.gh-op-action{margin-top:10px;border-left:3px solid var(--green);padding:8px 12px;font-size:12px;background:var(--gbg);border-radius:0 7px 7px 0;color:var(--green);font-weight:500;}
+.gh-note{margin-top:10px;background:var(--bg3);border-radius:7px;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.6;font-style:italic;}
 .roc-q-top{display:flex;align-items:flex-start;gap:10px;}
 .roc-q-num{font-family:var(--m);font-size:10px;color:var(--text3);min-width:28px;padding-top:3px;flex-shrink:0;}
 .roc-q-type-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:1px;}
@@ -1860,15 +1934,16 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 <div class="view" id="view-roc">
   <div class="roc-wrap">
     <div class="roc-topbar">
-      <div class="roc-title">⚡ ROC Study Guide</div>
+      <div class="roc-title">⚡ ROC Study</div>
       <div class="roc-filter-row" id="roc-filter-row">
         <button class="roc-ftag active" data-filter="all" onclick="rocSetFilter('all',this)">All Topics</button>
+        <button class="roc-ftag" data-filter="grid" onclick="rocSetFilter('grid',this)">Grid Entities</button>
         <button class="roc-ftag" data-filter="voltage" onclick="rocSetFilter('voltage',this)">Voltage / VARs</button>
         <button class="roc-ftag" data-filter="dispatch" onclick="rocSetFilter('dispatch',this)">Dispatch</button>
-        <button class="roc-ftag" data-filter="grid" onclick="rocSetFilter('grid',this)">Grid Roles</button>
         <button class="roc-ftag" data-filter="scada" onclick="rocSetFilter('scada',this)">SCADA / Alarms</button>
-        <button class="roc-ftag" data-filter="standards" onclick="rocSetFilter('standards',this)">Standards</button>
         <button class="roc-ftag" data-filter="operations" onclick="rocSetFilter('operations',this)">Operations</button>
+        <button class="roc-ftag" data-filter="standards" onclick="rocSetFilter('standards',this)">Standards</button>
+        <button class="roc-ftag" data-filter="plant" onclick="rocSetFilter('plant',this)">Plant Architecture</button>
         <button class="roc-ftag" data-filter="rapid" onclick="rocSetFilter('rapid',this)">Rapid Fire</button>
       </div>
     </div>
@@ -1885,6 +1960,181 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
       <button class="tbtn" style="border-color:var(--amber);color:var(--amber);" onclick="rocStartDrill()">Start Daily Drill</button>
       <button class="tbtn" onclick="rocResetProgress()">Reset Progress</button>
     </div>
+
+    <!-- ── GRID HIERARCHY WIDGET ─────────────────────────────────────────── -->
+    <div style="margin-bottom:18px;border:1px solid var(--border);border-radius:var(--rl);background:var(--bg2);overflow:hidden;box-shadow:var(--shs);">
+      <div style="padding:12px 16px 0;border-bottom:1px solid transparent;" id="gh-widget-hdr">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <span style="font-size:15px;">🗺️</span>
+          <span style="font-size:13px;font-weight:700;color:var(--text);">Grid Entity Hierarchy</span>
+          <span style="font-size:11px;color:var(--text3);font-family:var(--m);">GOP → NERC · Tap any node</span>
+          <button onclick="ghToggleWidget()" id="gh-toggle-btn" style="margin-left:auto;font-size:11px;padding:3px 10px;border:1px solid var(--border);border-radius:5px;background:transparent;color:var(--text2);cursor:pointer;font-family:var(--f);">Hide</button>
+        </div>
+        <div id="gh-widget-body">
+          <div class="gh-wrap">
+            <div class="gh-tabs">
+              <button class="gh-tab active" onclick="ghTab('hierarchy',this)">Hierarchy</button>
+              <button class="gh-tab" onclick="ghTab('chains',this)">Two Chains</button>
+              <button class="gh-tab" onclick="ghTab('priority',this)">Priority Order</button>
+              <button class="gh-tab" onclick="ghTab('scenarios',this)">Scenarios</button>
+            </div>
+
+            <!-- HIERARCHY TAB -->
+            <div class="gh-panel active" id="gh-panel-hierarchy">
+              <div class="gh-subtitle">Tap any entity for its real-world role, authority, and mental model.</div>
+              <div class="gh-tier"><button class="gh-node ghn-nerc" onclick="ghDetail('nerc')"><div class="gh-node-lbl">NERC</div><div class="gh-node-sub">North American regulator</div></button></div>
+              <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
+              <div class="gh-tier"><button class="gh-node ghn-wecc" onclick="ghDetail('wecc')"><div class="gh-node-lbl">WECC</div><div class="gh-node-sub">Regional Entity (West)</div></button></div>
+              <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
+              <div class="gh-tier"><button class="gh-node ghn-rc" onclick="ghDetail('rc')"><div class="gh-node-lbl">RC</div><div class="gh-node-sub">Reliability Coordinator</div></button></div>
+              <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
+              <div class="gh-tier"><button class="gh-node ghn-caiso" onclick="ghDetail('caiso')"><div class="gh-node-lbl">CAISO</div><div class="gh-node-sub">ISO / Balancing Authority</div></button></div>
+              <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
+              <div class="gh-tier-row">
+                <button class="gh-node ghn-ba" onclick="ghDetail('ba')" style="min-width:108px;"><div class="gh-node-lbl">BA</div><div class="gh-node-sub">Balancing Authority</div></button>
+                <button class="gh-node ghn-to" onclick="ghDetail('to')" style="min-width:108px;"><div class="gh-node-lbl">TO / TOP</div><div class="gh-node-sub">Transmission Owner/Operator</div></button>
+                <button class="gh-node ghn-dp" onclick="ghDetail('dp')" style="min-width:108px;"><div class="gh-node-lbl">DP</div><div class="gh-node-sub">Distribution Provider</div></button>
+              </div>
+              <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
+              <div class="gh-tier"><button class="gh-node ghn-go" onclick="ghDetail('go')"><div class="gh-node-lbl">GO</div><div class="gh-node-sub">Generator Owner</div></button></div>
+              <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
+              <div class="gh-tier"><button class="gh-node ghn-gop" onclick="ghDetail('gop')"><div class="gh-node-lbl">GOP — You</div><div class="gh-node-sub">Generator Operator (ROC)</div></button></div>
+              <div class="gh-separator">── Commercial layer (parallel, not above you) ──</div>
+              <div class="gh-tier-row">
+                <button class="gh-node ghn-ppa" onclick="ghDetail('ppa')" style="min-width:108px;"><div class="gh-node-lbl">PPA</div><div class="gh-node-sub">Power Purchase Agreement</div></button>
+                <button class="gh-node ghn-pse" onclick="ghDetail('pse')" style="min-width:108px;"><div class="gh-node-lbl">PSE / SC</div><div class="gh-node-sub">Scheduling Coordinator</div></button>
+              </div>
+              <div id="gh-detail-box" style="display:none;"></div>
+            </div>
+
+            <!-- TWO CHAINS TAB -->
+            <div class="gh-panel" id="gh-panel-chains">
+              <div class="gh-chains">
+                <div class="gh-chain-col">
+                  <h4 style="color:var(--blue);">⚡ Reliability / Operations</h4>
+                  <div class="gh-ch-node" style="background:#3C3489;color:#EEEDFE;">NERC</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">sets standards</div>
+                  <div class="gh-ch-node" style="background:#534AB7;color:#EEEDFE;">WECC</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">audits &amp; enforces</div>
+                  <div class="gh-ch-node" style="background:#185FA5;color:#E6F1FB;">RC (WECC RC)</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">wide-area oversight</div>
+                  <div class="gh-ch-node" style="background:#0F6E56;color:#E1F5EE;">CAISO (ISO / BA)</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">real-time dispatch</div>
+                  <div class="gh-ch-node" style="background:#3B6D11;color:#EAF3DE;">TO / TOP</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">transmission limits</div>
+                  <div class="gh-ch-node" style="background:#993C1D;color:#FAECE7;">GOP (you)</div>
+                  <div style="margin-top:8px;font-size:11px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Mandatory.</strong> Non-compliance = NERC violation. RC can override everyone except emergency safety.</div>
+                </div>
+                <div class="gh-chain-col">
+                  <h4 style="color:var(--amber);">💰 Commercial / Merchant</h4>
+                  <div class="gh-ch-node" style="background:#5F5E5A;color:#F1EFE8;">PSE / Merchant Owner</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">owns the revenue</div>
+                  <div class="gh-ch-node" style="background:#993556;color:#FBEAF0;">PPA (contract limit)</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">defines max MW &amp; price</div>
+                  <div class="gh-ch-node" style="background:#854F0B;color:#FAEEDA;">SC (market bid)</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">submits bids to CAISO</div>
+                  <div class="gh-ch-node" style="background:#993C1D;color:#FAECE7;">GOP (you)</div>
+                  <div style="margin-top:8px;font-size:11px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Contractual.</strong> Violating PPA is financial, not a grid violation — but still matters commercially.</div>
+                </div>
+              </div>
+              <div class="gh-conflict">
+                <h4>⚠ When the two chains conflict</h4>
+                <p>CAISO dispatches you to 80 MW. Your PPA cap is 75 MW. <strong>Follow CAISO.</strong> Log the exceedance, notify SC/PSE, document it.<br><br>
+                RC issues an emergency directive to reduce output immediately. <strong>RC overrides everything</strong> — execute first, document simultaneously, notify SC after.<br><br>
+                The DP limits interconnection because of distribution voltage issues. That's a reliability constraint — follow it like a TOP curtailment.</p>
+              </div>
+            </div>
+
+            <!-- PRIORITY TAB -->
+            <div class="gh-panel" id="gh-panel-priority">
+              <div class="gh-note">When instructions stack up and conflict, this is the order you follow. No exceptions.</div>
+              <div class="gh-prio-list" style="margin-top:12px;">
+                <div class="gh-prio-item">
+                  <div class="gh-prio-num" style="background:#3C3489;">1</div>
+                  <div><strong>Emergency / Safety</strong><p>Immediate threat to life, equipment, or grid stability. Your SOPs and judgment. Nothing overrides this.</p></div>
+                </div>
+                <div class="gh-prio-item">
+                  <div class="gh-prio-num" style="background:#185FA5;">2</div>
+                  <div><strong>RC Emergency Directive</strong><p>The RC has wider-area visibility. Their emergency instruction can override the ISO. Rare — but when it comes, it takes the chain.</p></div>
+                </div>
+                <div class="gh-prio-item">
+                  <div class="gh-prio-num" style="background:#0F6E56;">3</div>
+                  <div><strong>CAISO real-time dispatch</strong><p>A DOP or direct CAISO instruction is a reliability obligation. Log it, execute it, document deviations with justification.</p></div>
+                </div>
+                <div class="gh-prio-item">
+                  <div class="gh-prio-num" style="background:#3B6D11;">4</div>
+                  <div><strong>Transmission constraint (TOP / DP)</strong><p>TOP curtailment orders, DP interconnection limits — both are reliability constraints overriding your dispatch target.</p></div>
+                </div>
+                <div class="gh-prio-item">
+                  <div class="gh-prio-num" style="background:#854F0B;">5</div>
+                  <div><strong>Plant physical limits</strong><p>Ramp rates, inverter limits, transformer ratings. Never dispatch to a point that damages equipment.</p></div>
+                </div>
+                <div class="gh-prio-item">
+                  <div class="gh-prio-num" style="background:#993556;">6</div>
+                  <div><strong>PPA / Commercial limits</strong><p>Last in the reliability stack. Exceeding or missing it due to grid instructions is force-majeure, not a violation on your part.</p></div>
+                </div>
+              </div>
+              <div class="gh-note" style="margin-top:12px;">"Grid first, plant second, contract third. Log everything, call everybody, explain later."</div>
+            </div>
+
+            <!-- SCENARIOS TAB -->
+            <div class="gh-panel" id="gh-panel-scenarios">
+
+              <div class="gh-scen">
+                <div class="gh-scen-hdr" onclick="ghToggleScen(this)">
+                  <span class="gh-scen-badge" style="background:var(--bbg);color:var(--blue);">RC Directive</span>
+                  <h4>RC issues wide-area emergency curtailment</h4>
+                  <span class="gh-scen-chev">▾</span>
+                </div>
+                <div class="gh-scen-body">
+                  <div class="gh-scen-setup">Setup: Grid event in the Western Interconnection. WECC RC calls CAISO and issues an emergency directive to curtail specific resources including yours. CAISO may not yet have updated your DOP.</div>
+                  <div class="gh-step"><div class="gh-step-num">1</div><div class="gh-step-txt"><strong>RC directive received (via CAISO or directly).</strong> This is a wide-area stability instruction — highest reliability authority below emergency safety.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">2</div><div class="gh-step-txt"><strong>Execute immediately.</strong> Read back per COM-002. Do not wait for your DOP to update — RC instructions act on the grid faster than market signals.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">3</div><div class="gh-step-txt"><strong>Notify SC and log.</strong> Timestamp the directive receipt, who issued it, the MW instruction, and your confirmation. This is your paper trail.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">4</div><div class="gh-step-txt"><strong>Monitor for CAISO DOP update.</strong> CAISO will catch up — but you executed on RC authority. The two should align quickly.</div></div>
+                  <div class="gh-op-action">Operator action: RC authority &gt; CAISO DOP. Execute, read back, notify SC, log everything.</div>
+                </div>
+              </div>
+
+              <div class="gh-scen">
+                <div class="gh-scen-hdr" onclick="ghToggleScen(this)">
+                  <span class="gh-scen-badge" style="background:var(--abg);color:var(--amber);">DP Constraint</span>
+                  <h4>Distribution Provider limits your interconnection output</h4>
+                  <span class="gh-scen-chev">▾</span>
+                </div>
+                <div class="gh-scen-body">
+                  <div class="gh-scen-setup">Setup: Your plant interconnects at distribution voltage. The DP calls with a curtailment — local distribution feeder is overloaded and voltage is out of band. Your CAISO DOP is 50 MW but the DP says hold to 30 MW.</div>
+                  <div class="gh-step"><div class="gh-step-num">1</div><div class="gh-step-txt"><strong>DP curtailment received.</strong> This is a distribution-level reliability constraint. Treat it like a TOP curtailment — it's a physical limit on what the grid can safely absorb at your POI.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">2</div><div class="gh-step-txt"><strong>Confirm and read back.</strong> "Confirmed, holding to 30 MW, feeder voltage constraint." Log time and who issued.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">3</div><div class="gh-step-txt"><strong>Execute curtailment.</strong> You are now deviating from your CAISO DOP — this needs to be documented.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">4</div><div class="gh-step-txt"><strong>Notify CAISO of deviation.</strong> Log the DOP vs actual discrepancy and the reason (DP constraint, feeder name/ID). CAISO state estimator needs to know.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">5</div><div class="gh-step-txt"><strong>Notify SC/PSE.</strong> Lost 20 MW — commercial position is affected. SC needs to adjust their market exposure.</div></div>
+                  <div class="gh-op-action">Operator action: DP limit is a reliability constraint. Follow it, notify CAISO, then notify SC.</div>
+                </div>
+              </div>
+
+              <div class="gh-scen">
+                <div class="gh-scen-hdr" onclick="ghToggleScen(this)">
+                  <span class="gh-scen-badge" style="background:var(--rbg);color:var(--red);">PPA Conflict</span>
+                  <h4>CAISO dispatches below PPA minimum</h4>
+                  <span class="gh-scen-chev">▾</span>
+                </div>
+                <div class="gh-scen-body">
+                  <div class="gh-scen-setup">Setup: PPA requires 60 MW minimum. CAISO sends a 40 MW DOP due to local congestion.</div>
+                  <div class="gh-step"><div class="gh-step-num">1</div><div class="gh-step-txt"><strong>CAISO sends DOP: 40 MW.</strong> This lands in your EMS as a new dispatch target.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">2</div><div class="gh-step-txt"><strong>Execute.</strong> Ramp to 40 MW per your unit's ramp rate. Do not hold at 60 MW "for the PPA."</div></div>
+                  <div class="gh-step"><div class="gh-step-num">3</div><div class="gh-step-txt"><strong>Notify SC/PSE immediately.</strong> Call or log that a CAISO curtailment is active and you are below PPA minimum. Give them MW and timestamp.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">4</div><div class="gh-step-txt"><strong>Document everything.</strong> DOP receipt time, ramp, PPA deviation, notification. This is your force-majeure paper trail.</div></div>
+                  <div class="gh-op-action">Operator action: Follow CAISO, notify SC, document. The commercial fix is not your problem to solve in real time.</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ── END GRID HIERARCHY WIDGET ─────────────────────────────────────── -->
 
     <div id="roc-sections"></div>
   </div>
@@ -7368,203 +7618,265 @@ function copyPGSC() {
    ══════════════════════════════════════════════════════════ */
 
 const ROC_QUESTIONS = [
-  // ── GRID ROLES ──────────────────────────────────────────────────────────────
+
+  // ══ GRID ENTITIES ═════════════════════════════════════════════════════════
+  // Scope: GO, GOP, TO, TOP, PSE, SC — plus ISO context (CAISO/ERCOT).
+  // RC and BA-as-entity removed; ISO is used where the team sees BA function.
+
   {id:'g1', cat:'grid', type:'conceptual',
-   q:'Explain the difference between PSE, SC, and BA — what does each one actually do?',
-   a:'<strong>PSE (Purchasing-Selling Entity)</strong> buys and sells energy in the market — they\'re a market participant, not an operator.<br><strong>SC (Scheduling Coordinator)</strong> submits the energy schedules on behalf of generators or load to the BA — they\'re the administrative link between market deals and grid execution.<br><strong>BA (Balancing Authority)</strong> is the real-time operator — they physically balance generation with load every moment to maintain frequency and reliability. The flow is: <strong>SC plans → BA executes.</strong>'},
+   q:'What is the difference between a Generator Owner (GO) and a Generator Operator (GOP)?',
+   a:'<strong>GO (Generator Owner)</strong> owns the physical generation facility — the land, equipment, and assets. They bear the capital and compliance burden for the hardware.<br><strong>GOP (Generator Operator)</strong> operates the facility in real time — monitoring output, responding to dispatch instructions, maintaining reliability compliance, and communicating with the grid. At RNWBL, the ROC operators are acting in the <strong>GOP role</strong>. A single entity can be both GO and GOP, or they can be separate companies under contract.'},
 
   {id:'g2', cat:'grid', type:'conceptual',
-   q:'Why does the RC (Reliability Coordinator) not care about market transactions?',
-   a:'The RC\'s job is <strong>grid reliability — not energy commerce</strong>. They oversee the big picture: are flows within limits? Is the system stable? Is there enough reserve? Energy prices, buy/sell deals, and financial contracts are invisible to the RC. Their authority is reliability. The market is someone else\'s problem.'},
+   q:'What does a Scheduling Coordinator (SC) do, and why does the GOP depend on them?',
+   a:'The <strong>SC (Scheduling Coordinator)</strong> submits energy schedules, bids, and resource plans to the ISO (like CAISO or ERCOT) on behalf of the generator. They are the administrative interface between the plant\'s commercial commitments and the ISO\'s market systems.<br><br>The GOP depends on the SC because:<ul><li>Derate and outage notifications often flow through the SC to the ISO</li><li>Dispatch setpoints the GOP receives trace back to schedules the SC submitted</li><li>When a plant event changes capability, the GOP notifies the SC so they can update the market position</li></ul>Think of the SC as the <strong>scheduler and communicator</strong>; the GOP is the <strong>operator executing in the field</strong>.'},
 
   {id:'g3', cat:'grid', type:'conceptual',
-   q:'Why does the BA control frequency but not energy ownership?',
-   a:'The BA balances <em>physical electrons</em> — they respond to frequency deviations, dispatch resources, and issue AGC signals. But they don\'t own or trade the energy. Ownership belongs to PSEs. The BA is the <strong>grid operator</strong>, not the market. Think of them as air traffic control: they manage the movement, not who owns the planes.'},
+   q:'What is a PSE (Purchasing-Selling Entity) and what is their relationship to the plant?',
+   a:'A <strong>PSE (Purchasing-Selling Entity)</strong> buys and sells electricity in the market — they\'re a commercial participant, not an operator. They hold contracts for the energy the plant produces and are the "owner" of the electrons commercially.<br><br>From a GOP perspective: the PSE\'s schedule drives what the SC submits, which drives what setpoint the plant receives. The GOP doesn\'t interact with the PSE directly in real time — but understanding the chain matters when a derate or outage affects committed schedules. The PSE is ultimately the one affected financially when the plant can\'t deliver.'},
 
-  {id:'g4', cat:'grid', type:'application',
-   q:'PSE schedules 100 MW into the BA\'s area. The BA only dispatches 80 MW. Explain why these numbers can differ and who is responsible for each.',
-   a:'The PSE schedules 100 MW as a <strong>market/commercial commitment</strong> — that\'s their plan. The BA dispatches 80 MW based on <strong>real-time grid conditions</strong>: actual load, frequency, reserves, and ACE. The BA is not required to match the schedule exactly in real time — they balance the system. The gap is tracked as inadvertent interchange and reconciled later. SC submits the plan; BA operates reality.'},
+  {id:'g4', cat:'grid', type:'conceptual',
+   q:'What does the TOP (Transmission Operator) do, and when does a GOP need to interact with them?',
+   a:'The <strong>TOP (Transmission Operator)</strong> manages the transmission system in real time — they control the high-voltage network the plant interconnects to. The TO (Transmission Owner) owns the infrastructure; the TOP operates it.<br><br>A GOP must contact the TOP when:<ul><li>Performing <strong>HV breaker operations</strong> — TOP permission is required before opening or closing the high-voltage interconnect</li><li>A plant event affects transmission flows or limits</li><li>Planned outages require coordination with the transmission system</li></ul>The switching SOP is clear: <strong>request permission from TOP before any HV breaker operation.</strong> This is a TOP-003 requirement.'},
 
-  {id:'g5', cat:'grid', type:'recognition',
-   q:'ISO (like CAISO) — what dual role does it often play, and why does that make it unique?',
-   a:'An ISO (Independent System Operator) like CAISO typically acts as <strong>both BA and market operator</strong>. It balances the grid in real time AND clears the energy market. This is unusual because it combines reliability operations with commercial coordination — most entities only do one. This is why CAISO\'s dispatch signals affect both reliability and settlement simultaneously.'},
+  {id:'g5', cat:'grid', type:'application',
+   q:'CAISO issues a curtailment order reducing your plant\'s output. Walk through the chain of entities involved before that instruction reaches the GOP.',
+   a:'<ol style="margin-left:14px;"><li><strong>CAISO</strong> (the ISO — acting as market operator and grid balancer) determines that the plant needs to reduce output based on grid conditions or economic dispatch</li><li>The curtailment instruction flows to the <strong>SC</strong> (Scheduling Coordinator), who holds the scheduling position with CAISO</li><li>The SC communicates the revised schedule or curtailment order to the <strong>PSE/GO</strong></li><li>The dispatch setpoint reaches the plant via <strong>ADS/AGC</strong>, and the <strong>GOP (ROC operator)</strong> verifies the site is responding accordingly on SCADA</li></ol>The GOP\'s job: confirm the ADS setpoint was received, verify site output is tracking it, and log it. If the site isn\'t responding, investigate and notify the SC.'},
 
-  // ── VOLTAGE & REACTIVE POWER ─────────────────────────────────────────────
+  {id:'g6', cat:'grid', type:'recognition',
+   q:'Quick check: match each entity to its one-line function — GO, GOP, TO, TOP, SC, PSE.',
+   a:'<ul><li><strong>GO</strong> — Owns the generation facility</li><li><strong>GOP</strong> — Operates the generation facility in real time (you)</li><li><strong>TO</strong> — Owns the transmission infrastructure</li><li><strong>TOP</strong> — Manages the transmission system in real time; permission required for HV switching</li><li><strong>SC</strong> — Submits schedules and bids to the ISO; communicates outages and derates</li><li><strong>PSE</strong> — Buys and sells electricity; the commercial entity behind the energy contracts</li></ul>And the ISO (CAISO, ERCOT): <strong>Operates the market and balances the grid in real time</strong> — in most contexts where you\'d hear "BA," in this market the ISO is that entity.'},
+
+  {id:'g7', cat:'grid', type:'conceptual',
+   q:'What is the RC (Reliability Coordinator), and how does their authority differ from CAISO\'s?',
+   a:'The <strong>RC (Reliability Coordinator)</strong> has the highest level of real-time operational authority on the grid — above the ISO/BA. The RC\'s job is wide-area reliability: they monitor the entire interconnection (not just one BA\'s footprint) and can issue emergency instructions to any entity within their area when they see a threat to system integrity.<br><br>In the West, <strong>WECC RC Services</strong> fills this role.<br><br>How RC differs from CAISO:<ul><li><strong>CAISO</strong> dispatches for economic efficiency and balance within California — their instructions are routine market operations</li><li><strong>RC</strong> acts for wide-area stability — their instructions are emergency reliability actions that override normal market operations</li><li>RC can direct CAISO, not the other way around</li></ul><strong>Operationally:</strong> You will rarely hear from the RC directly — usually the RC instructs CAISO, and CAISO relays it to you. But if the RC contacts you directly in an emergency, their instruction takes priority over any existing DOP. Execute, read back, document, then notify SC.'},
+
+  {id:'g8', cat:'grid', type:'application',
+   q:'SCENARIO: The RC issues an emergency directive to curtail your plant. Your current CAISO DOP is higher than the RC\'s target. What do you do?',
+   a:'<ol style="margin-left:14px;"><li><strong>Execute the RC directive immediately.</strong> RC authority is above the ISO in a reliability emergency. The DOP reflects market-normal operations; the RC is acting on a wide-area reliability threat.</li><li><strong>Verbal read-back per COM-002.</strong> Confirm the MW target, who issued it, and the time. Do not execute without closing the communication loop.</li><li><strong>Log everything with timestamps.</strong> RC contact name/ID, time received, MW instruction, time of execution, actual output achieved.</li><li><strong>Notify CAISO of the deviation.</strong> You are delivering less than your DOP — CAISO\'s state estimator needs to know why. They will update accordingly.</li><li><strong>Notify SC/PSE.</strong> Commercial position is affected. They need the timestamps and MW numbers to manage market exposure.</li></ol><strong>Key principle:</strong> RC instructions don\'t go through your normal dispatch chain — they arrive because something is wrong at the interconnection level. Speed and documentation matter equally.'},
+
+  {id:'g9', cat:'grid', type:'conceptual',
+   q:'What is the DP (Distribution Provider), and when does a GOP interact with them?',
+   a:'The <strong>DP (Distribution Provider)</strong> owns and operates the distribution system — the lower-voltage network (typically below 35 kV) that serves end consumers. Most large generation interconnects at transmission voltage (HV), where the TOP is the relevant authority. But some smaller or behind-the-meter resources interconnect at distribution voltage — that\'s where the DP becomes your grid interface.<br><br>Situations where a GOP may interact with the DP:<ul><li><strong>Distribution-connected generation</strong> — your POI is on the distribution system. The DP manages the interconnection agreement and operating constraints.</li><li><strong>Feeder voltage issues</strong> — the DP may call to curtail your output if local feeder voltage is out of band. Treat this like a TOP curtailment: it\'s a reliability constraint, not a request.</li><li><strong>Planned outages</strong> — if distribution infrastructure adjacent to your interconnect needs maintenance, the DP coordinates the switching and may require temporary curtailment.</li></ul><strong>Authority:</strong> The DP\'s curtailment orders are reliability instructions on their system. They don\'t have CAISO dispatch authority, but they do have the right and obligation to protect the distribution system — which means they can limit your output when necessary.'},
+
+  {id:'g10', cat:'grid', type:'recognition',
+   q:'Where does the RC sit relative to CAISO and WECC in the reliability hierarchy? What is the RC\'s one job?',
+   a:'<strong>Hierarchy:</strong> NERC → WECC (Regional Entity) → <strong>RC</strong> → CAISO (ISO/BA) → TOP → GOP<br><br>The RC sits between WECC and the ISO. WECC does compliance and planning; the RC does real-time wide-area operations.<br><br><strong>The RC\'s one job:</strong> Maintain reliability across the entire interconnection in real time. They watch flows, stability limits, and contingency exposure across multiple BA areas simultaneously. When they see a wide-area threat that a single BA can\'t resolve on their own, the RC acts.<br><br><strong>Mental model:</strong> \"CAISO manages the California grid. The RC manages everything the California grid is connected to.\"'},
+
+  // ══ VOLTAGE & REACTIVE POWER ══════════════════════════════════════════════
+
   {id:'v1', cat:'voltage', type:'conceptual',
-   q:'Why does injecting MVARs (capacitive reactive power) raise voltage?',
-   a:'Reactive power (MVARs) supports the electromagnetic field in the power system. <strong>Capacitors inject leading current</strong>, which raises the voltage at the bus they\'re connected to — they "push" the voltage up. The rule: <strong>Voltage follows VARs.</strong> Add VARs → voltage rises. Remove VARs → voltage falls.'},
+   q:'What is the purpose of AVR, and what does the voltage setpoint/band mean in practice?',
+   a:'<strong>AVR (Automatic Voltage Regulator)</strong> automatically adjusts the generator\'s excitation to hold the terminal voltage at a defined setpoint. Without it, voltage would drift with every load change and the operator would have to manually adjust excitation constantly.<br><br><strong>Voltage Setpoint</strong>: the target voltage the AVR is trying to maintain (e.g., 115 kV, 525 kV — set per the interconnection agreement).<br><strong>Voltage Band</strong>: the acceptable operating range around that setpoint (e.g., 498.75 kV–551.25 kV for a 525 kV system). The plant must stay within this band. Exceedance triggers notification to the ISO/TOP and may require action.<br><br>NERC <strong>VAR-002</strong> requires AVR to remain in automatic mode.'},
 
   {id:'v2', cat:'voltage', type:'conceptual',
-   q:'Why does light load cause high voltage? Walk through the logic.',
-   a:'During light load, the system is <strong>capacitive</strong>. Transmission lines and cables have natural capacitance that generates MVARs even when load is low. With little load consuming those VARs, they accumulate and drive voltage up. Less load = less inductive demand = excess capacitive VARs = high voltage. Solution: switch in a reactor to absorb the excess VARs.'},
+   q:'Why does injecting MVARs raise voltage? Why does light load cause high voltage?',
+   a:'<strong>MVARs and voltage:</strong> Reactive power (MVARs) sustains the electromagnetic field that maintains voltage magnitude. Capacitor banks inject MVARs → voltage rises. Reactors absorb MVARs → voltage drops. The rule: <strong>Voltage follows VARs.</strong><br><br><strong>Light load and high voltage:</strong> Transmission lines have natural capacitance that generates MVARs constantly. At light load, there\'s little inductive demand to consume those VARs — they accumulate and push voltage up. Heavy load is the opposite: high inductive demand pulls voltage down.<br><ul><li>Light load → capacitive system → high voltage → switch in reactor or switch off caps</li><li>Heavy load → inductive system → low voltage → switch in caps or switch off reactor</li></ul>'},
 
-  {id:'v3', cat:'voltage', type:'conceptual',
-   q:'What does a "VAR-starved" system mean, and why is it dangerous?',
-   a:'A VAR-starved system has <strong>insufficient reactive power support</strong>. Voltage drops because the inductive load demand exceeds the available MVAR supply. Generators hit their reactive power limits, capacitor banks may already be on, but voltage keeps falling. This can cascade into a <strong>voltage collapse</strong> — a blackout. It progresses faster than operators can respond.'},
+  {id:'v3', cat:'voltage', type:'terminology',
+   q:'State the correct function of each: Capacitor Bank vs Reactor Bank (Inductor). Which one raises voltage and which lowers it?',
+   a:'<strong>Capacitor Bank</strong>: <em>Supplies</em> MVARs → <strong>raises voltage</strong><br><strong>Reactor Bank (Inductor)</strong>: <em>Absorbs</em> MVARs → <strong>lowers voltage</strong><br><br>A common mistake is saying "capacitors absorb vars" — that is wrong. Capacitors <em>inject/supply</em> VARs. Reactors absorb them.<br><br>Operationally: if voltage is too high, switch in the reactor (absorb VARs). If voltage is too low, switch in the capacitor bank (supply VARs). Getting this backwards during a voltage event causes the wrong action and can damage equipment or trip protection.'},
 
   {id:'v4', cat:'voltage', type:'terminology',
-   q:'WRONG statement: "Capacitors absorb vars." What\'s the correct version and why does this distinction matter operationally?',
-   a:'<strong>CORRECT: Capacitors SUPPLY (inject) VARs — they do NOT absorb them.</strong><br>Reactors ABSORB VARs.<br><ul><li>Capacitor ON → adds MVARs → raises voltage</li><li>Reactor ON → absorbs MVARs → lowers voltage</li></ul>Getting this backwards causes the wrong action during a voltage event. Injecting MVARs (wrong device) when voltage is already high can cause equipment damage or protection trips.'},
+   q:'Define leading vs lagging power factor. When does each apply?',
+   a:'<strong>Leading PF (capacitive)</strong>: current leads voltage — the system is generating MVARs. This raises voltage. Typical during light load or when capacitor banks are on.<br><strong>Lagging PF (inductive)</strong>: current lags voltage — the system is consuming MVARs. This depresses voltage. Typical during heavy load or when motors and transformers are heavily loaded.<br><br>Generators can operate in either mode by adjusting AVR excitation. Understanding PF helps diagnose whether a voltage condition is being driven by the load profile or the reactive power balance.'},
 
-  {id:'v5', cat:'voltage', type:'terminology',
-   q:'Define leading vs lagging power factor in terms of VARs and voltage impact.',
-   a:'<strong>Leading PF (capacitive)</strong>: current leads voltage. Load is generating MVARs. This raises voltage — common during light load or with capacitors on.<br><strong>Lagging PF (inductive)</strong>: current lags voltage. Load is consuming MVARs. This depresses voltage — common during heavy load or with motors/transformers heavily loaded.<br>Generators can operate in either mode by adjusting excitation (AVR setpoint).'},
+  {id:'v5', cat:'voltage', type:'scenario',
+   q:'SCENARIO: High voltage, low load, capacitor banks already ON. What are your priority actions?',
+   a:'<ul><li><strong>1. Switch off capacitor banks</strong> — they\'re supplying MVARs into a system that already has too many</li><li><strong>2. Switch in reactor banks</strong> (if available) — absorb the excess VARs</li><li><strong>3. Verify AVR</strong> is in automatic and setpoint is correct</li><li><strong>4. Notify ISO/TOP</strong> if voltage exceeds the operating band — this is reportable</li><li><strong>5. Log all actions</strong> with timestamps and notify SC if output is affected</li></ul><strong>Never add MVARs (capacitors) to a high-voltage system.</strong>'},
 
   {id:'v6', cat:'voltage', type:'scenario',
-   q:'SCENARIO: High voltage, low load, capacitor banks already ON. What are your priority actions?',
-   a:'<ul><li><strong>1. Switch off capacitor banks</strong> — they\'re adding MVARs to an already high-voltage system</li><li><strong>2. Switch in reactor banks</strong> (if available) — to absorb excess VARs</li><li><strong>3. Check AVR</strong> — is it in auto? Is the voltage setpoint appropriate?</li><li><strong>4. Notify grid operator / BA</strong> if voltage exceeds operational limits</li><li><strong>5. Log all actions</strong> with timestamps</li></ul><strong>Key rule:</strong> Never add MVARs to a high-voltage system.'},
+   q:'SCENARIO: Voltage is dropping, load is heavy, reactor is ON. What is your first action and why?',
+   a:'<strong>Immediately switch the reactor OFF.</strong> A reactor absorbs MVARs — with voltage already falling under heavy load, the reactor is making the problem worse. Leaving it on is a voltage death spiral.<br><ul><li>Switch reactor off → stop absorbing VARs</li><li>Check if capacitor banks are available → switch on to inject MVARs</li><li>Verify AVR is in auto and generator is contributing max reactive support</li><li>Notify ISO/TOP if voltage cannot be recovered within operating limits</li><li>Log all actions with times and reasoning</li></ul>'},
 
-  {id:'v7', cat:'voltage', type:'scenario',
-   q:'SCENARIO: Voltage is dropping, load is heavy, reactor is ON. What is your action and reasoning?',
-   a:'<ul><li><strong>Immediately switch the reactor OFF</strong> — it\'s absorbing MVARs in a system already starved of them</li><li>Check if capacitor banks are available — switch them ON to inject MVARs</li><li>Verify generator output is at max reactive capability</li><li>Notify BA/RC if voltage cannot be recovered — this may be a reliability event</li><li>Log actions with times and reason</li></ul><strong>Reactor + heavy load = voltage death spiral.</strong> The reactor must come off first.'},
+  {id:'v7', cat:'voltage', type:'conceptual',
+   q:'What affects voltage more — MW or MVAR? Why does this matter operationally?',
+   a:'<strong>MVAR affects voltage more directly.</strong> Reactive power controls the electromagnetic field that sustains voltage magnitude. MW (real power) primarily affects frequency and real power flow.<br><br>This matters because during a voltage event, the first lever is <strong>reactive power</strong> — not real power. Adjusting MW dispatch won\'t fix a voltage problem. You need caps, reactors, or AVR action. Understanding this prevents operators from chasing the wrong variable.'},
 
+  // ── AVR continued
   {id:'v8', cat:'voltage', type:'conceptual',
-   q:'What affects voltage more — MW or MVAR? Why?',
-   a:'<strong>MVAR affects voltage more directly.</strong> Reactive power controls the electromagnetic field that sustains voltage magnitude. MW (real power) primarily affects frequency and flow. For voltage control: change MVARs → change voltage. This is why VAR control devices (caps, reactors, AVR) are voltage-control tools, and why the operator\'s first lever in a voltage event is reactive power, not real power.'},
+   q:'What happens if AVR is taken off automatic (switched to manual)? What is required?',
+   a:'In manual mode, excitation is fixed and will NOT respond to voltage changes or disturbances. Risks:<ul><li>Voltage drifts uncontrolled with load changes</li><li>Generator may inject or absorb excessive VARs and trip on limits</li><li>Automatic reactive support during a grid disturbance is lost</li><li>This is a <strong>VAR-002 deviation</strong> — immediate notification required</li></ul><strong>Required action:</strong> Notify the ISO and/or SC immediately. Document time off auto, reason, and restoration. Restore AVR to automatic as soon as possible.'},
 
-  // ── AVR / VOLTAGE CONTROL AUTOMATION ───────────────────────────────────
-  {id:'a1', cat:'voltage', type:'conceptual',
-   q:'What does AVR (Automatic Voltage Regulator) solve automatically, and what would break without it?',
-   a:'AVR automatically adjusts generator excitation to maintain the terminal voltage setpoint. Without it:<ul><li>Voltage would drift with every load change</li><li>Reactive power sharing between generators would be uncontrolled</li><li>Operators would have to manually adjust excitation constantly</li><li>System voltage stability during disturbances would be at risk</li></ul>AVR is the automatic reactive power / voltage control loop. <strong>NERC VAR-002 requires it to stay in automatic</strong>.'},
+  // ══ DISPATCH: ADS / AGC ═══════════════════════════════════════════════════
 
-  {id:'a2', cat:'voltage', type:'conceptual',
-   q:'What happens if AVR is switched to manual (off-auto)? What risks does this create?',
-   a:'In manual mode the excitation is fixed — it will NOT respond to voltage changes. Risks:<ul><li>Voltage excursions go uncontrolled during load changes or faults</li><li>Generator may absorb or inject excessive VARs, tripping on limits</li><li>NERC VAR-002 violation — must notify BA immediately</li><li>During a disturbance, the generator can\'t provide automatic reactive support</li></ul>Operators must notify the BA whenever AVR is taken off auto and restore it ASAP.'},
-
-  // ── DISPATCH ───────────────────────────────────────────────────────────────
   {id:'d1', cat:'dispatch', type:'conceptual',
-   q:'What does AGC control — and what does it NOT control?',
-   a:'AGC (Automatic Generation Control) controls <strong>MW output (real power / frequency)</strong>. It receives signals from the BA to raise or lower generation to correct Area Control Error (ACE).<br><br>AGC does <strong>NOT control voltage</strong>. That is AVR\'s job.<ul><li>AGC = MW = frequency control</li><li>AVR = MVAR = voltage control</li></ul>If voltage is drifting, adjusting AGC setpoints won\'t fix it.'},
+   q:'Walk through how ADS/AGC dispatch works from the ISO down to the plant. What is the operator verifying at each step?',
+   a:'<ol style="margin-left:14px;"><li><strong>ISO (CAISO/ERCOT)</strong> sends a dispatch signal — the MW setpoint the plant should be producing</li><li>The setpoint appears on the <strong>ADS board</strong> — the operator identifies the Resource ID and the target setpoint</li><li>The operator checks <strong>on-site SCADA</strong> to confirm the setpoint was received by the plant\'s control system</li><li>The operator verifies the site is <strong>responding accordingly</strong> — actual MW output is tracking toward the setpoint</li></ol>If the site is not responding, that\'s a deviating asset and requires investigation and notification to the SC.'},
 
   {id:'d2', cat:'dispatch', type:'scenario',
-   q:'SCENARIO: Setpoint ≠ actual MW output. What do you check first?',
-   a:'<ul><li><strong>1. Verify AGC is enabled and in auto</strong> — check ADS/SCADA for AGC mode status</li><li><strong>2. Check inverter/generator status</strong> — is the unit in remote/auto control mode?</li><li><strong>3. Check for active alarms</strong> — derate, trip, communication loss, or protective relay operation</li><li><strong>4. Verify communication link</strong> between SCADA and the unit — comm loss = no AGC signal</li><li><strong>5. Compare setpoint history</strong> — was the setpoint recently changed?</li><li><strong>6. Log findings and notify</strong> BA if deviation is persistent or significant</li></ul>'},
+   q:'SCENARIO: The ADS setpoint changed but actual MW output hasn\'t moved. What do you check?',
+   a:'<ul><li><strong>1. ADS board</strong> — confirm the new setpoint is there and assigned to the correct Resource ID</li><li><strong>2. On-site SCADA</strong> — did the plant\'s control system receive the new setpoint?</li><li><strong>3. Site response mode</strong> — is the inverter/BESS in Remote/Auto or stuck in Local/Manual?</li><li><strong>4. Active alarms</strong> — derate, trip, communication loss, or protective limit?</li><li><strong>5. Communication link</strong> — comm loss between SCADA and the unit means no signal gets through</li><li><strong>6. Log and notify</strong> SC if the deviation is persistent — the ISO schedule is at risk</li></ul>'},
 
   {id:'d3', cat:'dispatch', type:'scenario',
    q:'SCENARIO: AGC is not responding. List 3 possible causes.',
-   a:'<ul><li><strong>1. Communication failure</strong> — the AGC signal from the BA isn\'t reaching the plant</li><li><strong>2. Unit in local/manual control</strong> — inverter or DCS set to manual, not following remote setpoint</li><li><strong>3. Plant derating or protective limit active</strong> — unit can\'t respond because it\'s capped by a protection or thermal limit</li></ul>Also possible: AGC software fault at BA, telemetry point mis-tagged, or unit in forced outage mode.'},
+   a:'<ul><li><strong>1. Communication failure</strong> — the dispatch signal from the ISO/ADS isn\'t reaching the plant (check comm link status)</li><li><strong>2. Unit in local/manual control</strong> — inverter or BESS control system set to manual, ignoring remote setpoints</li><li><strong>3. Protective limit active</strong> — plant is capped by a derate, thermal limit, or SoC constraint and cannot respond further</li></ul>Also possible: telemetry mis-tag, ADS software fault, or unit in forced outage mode. Log findings and notify SC.'},
 
   {id:'d4', cat:'dispatch', type:'terminology',
-   q:'What does ±0 MW capability mean, and when would an operator see this on a BESS?',
-   a:'±0 MW capability means the BESS has <strong>no available charge or discharge headroom</strong> at that moment — the battery is either full (can\'t charge) or empty (can\'t discharge), or it\'s in a protective state. An operator would see this when the battery is at SoC limits, has a fault condition, or HVAC/thermal limits are preventing operation. This must be reported to the BA as it affects their dispatch plans.'},
+   q:'What does ±0 MW capability mean on a BESS, and who needs to know?',
+   a:'±0 MW capability means the BESS has <strong>no available charge or discharge headroom</strong> — either the battery is fully charged (can\'t take more), fully depleted (nothing to dispatch), or a protective condition is preventing operation (thermal limit, HVAC fault, protection trip).<br><br>The SC and ISO need to know because their dispatch plans assume the resource is available. A ±0 BESS that isn\'t reported looks like a non-responding asset and can cause schedule deviation penalties. <strong>Report immediately via the outage/derate process.</strong>'},
 
-  // ── SCADA / ALARMS ─────────────────────────────────────────────────────
+  // ══ SCADA, ALARMS & RECOGNITION ══════════════════════════════════════════
+
   {id:'s1', cat:'scada', type:'conceptual',
-   q:'Alarms must be prioritized by risk. What is the primary triage question an operator asks when an alarm fires?',
-   a:'"<strong>Does this indicate a condition that could affect grid reliability, equipment safety, or personnel safety — right now?"</strong><br><br>Triage hierarchy:<ol style="margin-left:14px;"><li>Safety-critical (fire, HVAC failure with thermal risk, imminent trip)</li><li>Equipment protection (overcurrent, overtemp, relay operation)</li><li>Operational (derate, communication, status change)</li><li>Informational</li></ol>Never silence an unacknowledged alarm without understanding the cause.'},
+   q:'What are the 8 key things an operator needs to be able to navigate to on SCADA/HMI?',
+   a:'Per the competency framework:<ul><li><strong>1. AVR status / Voltage at POI / Cap bank status</strong></li><li><strong>2. Site setpoint vs. actual power</strong> (ADS/AGC)</li><li><strong>3. Site current MWh capability / ±0 MW state</strong></li><li><strong>4. Alarms pages</strong> — active and historical</li><li><strong>5. Breaker statuses and breaker controls</strong></li><li><strong>6. Battery status and battery controls</strong></li><li><strong>7. HMI / Manual control screens</strong></li><li><strong>8. Power setpoint and voltage setpoint screens</strong></li></ul>Being able to navigate to all eight without hesitation is the baseline for independent operations.'},
 
-  {id:'s2', cat:'scada', type:'scenario',
-   q:'SCENARIO: Loss of comms alarm fires on a solar site. What matters most — and what do you NOT assume?',
-   a:'<strong>What matters most: Is the equipment actually in a safe state?</strong><br><ul><li>Confirm last known status before comm loss (was it generating? Any alarms pre-loss?)</li><li>A comm alarm means you\'ve lost visibility — it does NOT confirm the equipment failed or tripped</li><li>Check if other sites on the same network show comms issues (network problem vs. site-specific)</li><li>Notify BA if the loss affects telemetry or AGC control signals (COM-002)</li><li>Dispatch field personnel if comm cannot be restored or safety concern exists</li></ul><strong>Do NOT assume: comm loss ≠ equipment failure.</strong>'},
+  {id:'s2', cat:'scada', type:'conceptual',
+   q:'What alarm categories require immediate action vs. logging and monitoring? Walk through the priority tiers.',
+   a:'<strong>Immediate action required:</strong><ul><li><strong>Fire / Smoke alarms</strong> — follow emergency protocol, notify authorities</li><li><strong>Battery overheating / Thermal runaway risk</strong> — derate or take offline, notify site management</li><li><strong>HVAC failure with rising temps</strong> — BESS must be derated; thermal runaway risk</li></ul><strong>Investigate and communicate:</strong><ul><li><strong>Breaker/inverter trips</strong> — determine cause, log, notify SC of reduced capability</li><li><strong>Transformer alarms</strong> — assess severity, notify</li><li><strong>Loss of communications</strong> — confirm last known status, check network, notify SC (COM-002)</li></ul><strong>Log and monitor:</strong><ul><li><strong>Security alarms</strong> — log and notify site team</li></ul>Rule: never silence an unacknowledged alarm without understanding the cause.'},
 
   {id:'s3', cat:'scada', type:'scenario',
-   q:'SCENARIO: Battery temperature is rising AND an HVAC alarm is active. Why is this dangerous and what do you do?',
-   a:'<strong>Thermal runaway risk.</strong> BESS cells generate heat during operation. HVAC removes that heat. If HVAC fails while the battery is operating:<ul><li>Cell temps rise → accelerated degradation → potential venting, fire, or explosion</li><li>This is a <strong>safety-critical cascade</strong></li></ul><strong>Immediate actions:</strong><ol style="margin-left:14px;"><li>Derate or take BESS offline per emergency procedure</li><li>Notify site management and fire/safety response teams</li><li>Notify BA of loss of resource</li><li>Do not restore until HVAC is confirmed operational and temps are safe</li><li>Log all actions with exact times</li></ol>'},
+   q:'SCENARIO: Loss of comms alarm fires on a solar site. What matters most — and what do you NOT assume?',
+   a:'<strong>First: Is the equipment in a safe state?</strong><ul><li>Note last known status before comm loss — was it generating normally? Any active alarms before it went dark?</li><li>Comm loss = loss of visibility. It does <strong>NOT</strong> mean equipment tripped or failed.</li><li>Check if other sites on the same network path are affected — network issue vs. site-specific</li><li>Notify SC — comm loss may affect their telemetry and AGC signal (COM-002 trigger)</li><li>If comm cannot be restored quickly or safety is uncertain, dispatch field personnel</li></ul><strong>Do NOT assume: comm loss ≠ equipment failure.</strong> Treat them as separate problems.'},
 
-  // ── SOLAR & WIND / OPERATIONS ──────────────────────────────────────────
+  {id:'s4', cat:'scada', type:'scenario',
+   q:'SCENARIO: Battery temperature is rising AND an HVAC alarm is active. Why is this combination dangerous?',
+   a:'<strong>Thermal runaway risk.</strong> BESS cells generate heat during charge/discharge. HVAC removes that heat. If HVAC fails while the battery is running, there is no cooling — temperature climbs unchecked.<br><ul><li>Cell temps rising → accelerated degradation → venting → potential fire or explosion</li><li>This is a <strong>safety-critical cascade</strong>, not just an equipment alarm</li></ul><strong>Immediate actions:</strong><ol style="margin-left:14px;"><li>Derate or take BESS offline per emergency SOP</li><li>Notify site management and fire/safety teams</li><li>Notify SC of loss of resource capability</li><li>Do not restore until HVAC is confirmed operational and temps have returned to safe range</li><li>Log every action with exact timestamps</li></ol>'},
+
+  {id:'r1', cat:'scada', type:'recognition',
+   q:'State the ANSI device number for: Breaker, Switch, Relay Overvoltage, Relay Undervoltage, Relay Lockout.',
+   a:'<ul><li><strong>ANSI 52</strong> — Breaker (AC circuit breaker)</li><li><strong>ANSI 89</strong> — Switch (disconnect/isolating switch)</li><li><strong>ANSI 59</strong> — Overvoltage Relay</li><li><strong>ANSI 27</strong> — Undervoltage Relay</li><li><strong>ANSI 86</strong> — Lockout Relay</li></ul>The ANSI 86 is critical: it locks out equipment after a serious fault and will <strong>not</strong> auto-reclose. Do not reset an 86 without authorization and investigation.'},
+
+  {id:'r2', cat:'scada', type:'recognition',
+   q:'What device absorbs VARs vs. supplies VARs? Which SCADA check tells you if each is active?',
+   a:'<strong>Reactor (absorbs MVARs → lowers voltage)</strong>: Check breaker status on SCADA — if the reactor breaker is closed, it\'s absorbing VARs. During high-voltage conditions, you want this ON.<br><strong>Capacitor Bank (supplies MVARs → raises voltage)</strong>: Check cap bank status on SCADA — breaker closed = injecting VARs. During low-voltage conditions, you want this ON.<br><br>Quick check on SCADA: AVR status screen or the voltage/reactive power display will show POI voltage, MVAR output, and cap/reactor bank status together.'},
+
+  // ══ OPERATIONS: SOLAR, WIND, BESS, SWITCHING ════════════════════════════
+
   {id:'op1', cat:'operations', type:'application',
-   q:'Solar site is underperforming with high irradiance levels. How do you determine if it\'s a grid issue or asset issue?',
-   a:'Compare these data sources:<ul><li><strong>Inverters show fault/trip + high irradiance</strong> → asset issue (inverter trip, DC string problem, comms loss)</li><li><strong>Inverters show normal + MW is low</strong> → possible active derate (curtailment, thermal limit, AGC setpoint)</li><li><strong>Other nearby solar sites also underperforming</strong> → grid/curtailment order likely</li></ul>Key diagnostic: <strong>inverter status vs. irradiance vs. AGC setpoint vs. active alarms.</strong> Never assume without checking all four.'},
+   q:'Walk through the solar monitoring procedure: what are the 4 steps and what is each looking for?',
+   a:'Per the competency framework:<ol style="margin-left:14px;"><li><strong>Identify each inverter\'s status</strong> — Online, Offline, or Comms Loss. A comms loss is not the same as an offline inverter.</li><li><strong>Locate current irradiance</strong> — what is the available sunlight? This is the benchmark for expected output.</li><li><strong>Identify each inverter\'s output and site total</strong> — actual MW vs. expected given irradiance.</li><li><strong>Identify any derated inverters</strong> — is the underperformance due to a derate (intentional) or a fault (unintentional)?</li></ol>If irradiance is high and output is low with no derate active → investigate. Check inverter alarms, then check AGC setpoint, then notify SC if unexplained.'},
 
   {id:'op2', cat:'operations', type:'application',
-   q:'A hail stow was activated on a solar tracker farm. The storm has passed but stow was never reversed. What type of issue is this?',
-   a:'This is an <strong>operations/procedure gap</strong> — not a technical fault. Hail stow protects panels by rotating them to a safe angle. If not reversed:<ul><li>Panels are no longer tracking the sun → significant generation loss</li><li>No alarm will typically fire for "stuck in stow" (it\'s a normal command state)</li><li>Shows as low generation despite good irradiance</li></ul>Fix: manual stow release command from SCADA or DCS. Operators must verify stow is cleared after every weather event.'},
+   q:'A tripped wind turbine needs to be reset. Walk through the steps and when you escalate.',
+   a:'<ol style="margin-left:14px;"><li><strong>Identify the tripped turbine</strong> on SCADA — confirm it\'s a genuine trip vs. a comms loss or planned outage</li><li><strong>Reset the turbine per SOP</strong> — follow the site-specific reset procedure exactly</li><li><strong>Notify site team if needed</strong> — if the turbine trips again after reset, or if the trip reason is unclear, escalate to field team</li><li><strong>Create or update the operator log</strong> — document the trip time, reset time, cause if known, and any escalation</li></ol>Repeated trips on the same turbine = do not keep resetting. Escalate to maintenance and log accordingly.'},
 
   {id:'op3', cat:'operations', type:'application',
-   q:'You are performing switching operations on a BESS connected to a solar farm. You proceed without disabling the battery. What is the risk?',
-   a:'<strong>Arc flash / energized equipment hazard.</strong> A BESS can source fault current independently of the grid. Without first ensuring the BESS is offline:<ul><li>Battery can still push current through the switching point</li><li>Backfeed risk to workers or equipment</li><li>Switching transients can damage battery management systems</li><li>May cause unwanted protection trips taking the entire interconnection offline</li></ul><strong>Always: disable/isolate BESS before performing switching on connected equipment.</strong>'},
+   q:'Solar site is underperforming with high irradiance. How do you determine if it\'s an asset issue vs. a curtailment order?',
+   a:'Cross-reference these four data points:<ul><li><strong>Inverter status</strong> — are they online, faulted, or showing comms loss?</li><li><strong>Current irradiance</strong> — is there actually enough sun to justify higher output?</li><li><strong>ADS setpoint</strong> — is there an active curtailment or derate reducing the setpoint?</li><li><strong>Active alarms</strong> — any inverter trips, thermal limits, or protection flags?</li></ul><strong>If inverters show faults with good irradiance</strong> → asset issue (inverter trip, string problem). Investigate, log, notify SC.<br><strong>If inverters show normal but setpoint is low</strong> → curtailment is the cause. Confirm it\'s logged as a valid order.<br><strong>If other nearby sites are also low</strong> → likely a grid curtailment affecting the area.'},
 
-  // ── SHIFT OPERATIONS & PROCEDURES ─────────────────────────────────────
+  {id:'op4', cat:'operations', type:'application',
+   q:'Hail stow procedure for HARQ 1/2 or C-Flats: what are the 7 steps and what is the trigger?',
+   a:'<strong>Trigger:</strong> Damaging hail alert — hail ≥ 1 inch in diameter forecasted or active.<ol style="margin-left:14px;"><li>Identify the alert</li><li>Log into NXNavigator</li><li>Stow the site (panels rotate to protective angle)</li><li>Notify Site Owner, Field team, and SC</li><li>Unstow <strong>15 minutes after the storm has passed</strong></li><li>Notify Site Owner, Field team, and SC again</li><li>Log all steps with timestamps</li></ol><strong>Common gap:</strong> stow is never reversed after the storm. Panels will show low output with good irradiance and no alarm will fire — it\'s a "normal" stow state. Always verify stow is cleared post-event.'},
+
+  {id:'op5', cat:'operations', type:'procedure',
+   q:'Walk through the BESS identify/derate procedure. What are the 6 steps?',
+   a:'<ol style="margin-left:14px;"><li><strong>Identify BESS nameplate info</strong> — MW capacity, MWh capacity, voltage setpoint, operating band</li><li><strong>Determine if BESS is Fully Available or Derated</strong> — check SCADA for actual capability vs. nameplate</li><li><strong>Submit derate/outage to QSE and notify Owner Contacts</strong> — use the proper template/email; this goes to the SC</li><li><strong>Update the Outage Board and create an Operator Log</strong> — document start time, cause, expected duration</li><li><strong>Update/End Outage</strong> when the condition clears</li><li><strong>Update Outage Board, Operator Log, and notify Owner Contacts</strong> again at close-out</li></ol>'},
+
+  {id:'op6', cat:'operations', type:'procedure',
+   q:'Walk through feeder switching — what are the 15 steps and what is the critical step that requires TOP permission?',
+   a:'<ol style="margin-left:14px;"><li>Receive switching procedures</li><li>Ensure proper outage/derate is in place</li><li>Follow along with tech confirming all pre-deenergization steps are complete</li><li>Confirm field is clear</li><li>Disable Megapack / Sole Bank → Standby Mode</li><li>Open AC Breakers / Shutdown PE inverters</li><li>Open Feeder/MV Breakers</li><li><strong>Request permission from TOP to open HV Breaker</strong> ← critical step</li><li>Open/Close HV Breaker</li><li>Close MV/Feeder Breakers (allow MVARs to stabilize)</li><li>Close AC Breakers / Turn on PE Inverters</li><li>Enable Megapacks / Sole Bank → "BESS On"</li><li>Follow along with tech confirming all energization steps complete</li><li>End Outage/Derate</li><li>Notify Owner Contacts and log accordingly</li></ol><strong>Step 8 is the critical gate: no HV breaker operation without TOP permission.</strong>'},
+
+  // ── SHIFT PROCEDURES ──────────────────────────────────────────────────────
+
   {id:'pr1', cat:'operations', type:'procedure',
-   q:'Why must the relieving operator be logged in and verified before the on-duty operator can leave?',
-   a:'<strong>The control room cannot be without qualified operator coverage — ever.</strong><ul><li>NERC standards require continuous staffing of control functions</li><li>A grid event can occur at any moment — the transition moment is highest vulnerability</li><li>The on-duty operator carries legal/regulatory accountability until relief is confirmed</li><li>The relieving operator must be briefed on grid conditions, open alarms, ongoing events, and pending actions</li></ul>Leaving before relief is signed on is a <strong>serious compliance and safety violation</strong>.'},
+   q:'Walk through the start-of-shift turnover — 12 steps in order.',
+   a:'<ol style="margin-left:14px;"><li>Notify ROC in Teams chat that you are on the way</li><li>Clock in at the office door (DSPTCH)</li><li>Check the dry-erase / outage board</li><li>Receive instructions from offgoing operator (Teams or in person)</li><li>Log into D1/D2 duty site SCADAs</li><li>Fill out (ROCC1) Operator Log — Onsite</li><li>Complete Asset Scanning Tool and upload</li><li>Leave instructions for oncoming operator in Teams/turnover</li><li>Fill out (ROCC1) Operator Log — Offsite</li><li>Ensure you log out of all sites directly</li><li>Leave the ROCC only after relief is logged into their sites</li><li>Clock out (DSPTCH)</li></ol><strong>Step 11 is non-negotiable:</strong> the ROCC cannot be without coverage. Your accountability doesn\'t end until relief is confirmed online.'},
 
   {id:'pr2', cat:'operations', type:'procedure',
-   q:'Why must a Transmission Owner (TOP) approve high-voltage switching operations before they are performed?',
-   a:'HV switching affects the transmission system, not just the generating asset. TOP approval ensures:<ul><li>The switching won\'t violate system operating limits (SOLs)</li><li>The grid is in a state where switching can be safely performed</li><li>Proper switching orders are in place and documented</li><li>Coordination with other operators who may be affected</li></ul>Performing HV switching without TOP approval is a <strong>TOP-002 violation</strong> and can cause system stability issues or protection failures.'},
+   q:'What is the StaySafe Lone Worker protocol? Walk through the 4 steps.',
+   a:'<ol style="margin-left:14px;"><li><strong>Alarm received via StaySafe</strong> — a lone worker check-in was missed</li><li><strong>Operator makes a single attempt to reach the tech</strong> — call or message once</li><li><strong>Attempt to reach Supervisor or a nearby employee</strong> — escalate immediately if tech is unreachable</li><li><strong>Once 10 minutes have passed without contact — call local emergency authorities</strong> and request a well-being check</li></ol>Do not delay past 10 minutes waiting for a callback. The protocol exists because a worker may be incapacitated. Err on the side of the well-being check.'},
 
   {id:'pr3', cat:'operations', type:'procedure',
-   q:'Why is repeat-back (read-back) required for verbal instructions in control room operations?',
-   a:'<strong>COM-002 requirement.</strong> Repeat-back confirms:<ul><li>The receiver heard the instruction correctly</li><li>Both parties are operating on the same understanding</li><li>The instruction is documented in the conversation record</li></ul>Without repeat-back, a misheard setpoint, wrong MW value, or incorrect breaker number can go undetected and cause a reliability event. <strong>Closed-loop communication eliminates assumption.</strong>'},
+   q:'What information is required when creating an Operator Log, and what extra fields are required for a Visitor Log?',
+   a:'<strong>Standard Operator Log fields:</strong><ul><li>Select Site / Equipment</li><li>Log Type</li><li>GADS Code</li><li>Start and Forecast Dates</li><li>Sub-log (details of why the log was created)</li></ul><strong>Visitor Log — additional required fields:</strong><ul><li>Visitor First and Last Name</li><li>Company they work for</li><li>Cell phone number</li><li>Nature of work</li></ul>Incomplete logs are a compliance gap. If it wasn\'t logged, it didn\'t happen.'},
 
-  // ── NERC STANDARDS ─────────────────────────────────────────────────────
+  {id:'pr4', cat:'operations', type:'procedure',
+   q:'Walk through the Operating Instruction procedure under COM-002 — 5 steps.',
+   a:'<ol style="margin-left:14px;"><li><strong>Receive</strong> the Operating Instruction from the issuing authority (ISO, TOP, SC)</li><li><strong>Repeat the instruction back correctly</strong> — verbatim repeat-back confirms both parties have the same understanding</li><li><strong>Execute</strong> the Operating Instruction</li><li><strong>Respond to the authority</strong> — confirm success or failure of execution</li><li><strong>Log in accordance</strong> — document instruction received, time, who issued it, action taken, outcome</li></ol>COM-002 makes the repeat-back mandatory — it is not optional. A missed readback is a standard violation even if the instruction was executed correctly.'},
+
+  // ══ NERC STANDARDS ════════════════════════════════════════════════════════
+
   {id:'n1', cat:'standards', type:'standard',
-   q:'Why must AVR stay in automatic mode under VAR-002? What does this standard require?',
-   a:'VAR-002 (Generator Operation for Maintaining Network Voltage Schedules) requires generators to:<ul><li>Operate AVR in automatic voltage control mode</li><li>Maintain terminal voltage within the BA\'s scheduled voltage range</li><li>Report any inability to comply to the BA immediately</li></ul>If AVR is off auto, the generator loses automatic reactive contribution during disturbances. <strong>Any deviation from auto AVR must be immediately reported to the BA.</strong>'},
+   q:'VAR-002: What does it require of a GOP and when is a violation triggered?',
+   a:'<strong>VAR-002 (Voltage and Reactive)</strong> requires Generator Operators to:<ul><li>Operate AVR in <strong>automatic voltage control mode</strong> at all times</li><li>Maintain terminal voltage within the ISO\'s scheduled voltage band</li><li>Manage reactive power resources to support the voltage schedule</li><li><strong>Report immediately to the ISO/SC</strong> any time AVR cannot remain in automatic</li></ul>A violation is triggered when AVR is off auto and the GOP fails to notify. Even planned maintenance requiring manual mode must be pre-coordinated and reported. <strong>There is no grace period — notification is immediate.</strong>'},
 
   {id:'n2', cat:'standards', type:'standard',
-   q:'Why is a communication failure a reliability risk under COM-002?',
-   a:'COM-002 (Communications and Coordination) requires:<ul><li>Documented, reliable communication between reliability entities</li><li>Read-back verification on directives</li><li>Alternative communication methods if primary fails</li></ul>If communication fails between operator and BA, reliability directives cannot be issued or received. Grid events evolve in minutes — <strong>comm failure during an event is a reliability gap, not just an IT problem.</strong>'},
+   q:'TOP-003: What does it require a GOP to supply, and what does this look like day-to-day?',
+   a:'<strong>TOP-003 (Operational Planning)</strong> requires GOPs to provide data to the TOP and ISO as defined, including:<ul><li><strong>Planned outage data</strong> — upcoming maintenance, switching, or derates need to be submitted in advance</li><li><strong>Operating limits</strong> — current capability, any active constraints</li></ul>Day-to-day: when you submit an outage ticket or derate notification to the SC/QSE, you\'re fulfilling a TOP-003 data obligation. The ISO uses this data for their reliability planning. Failing to report a planned outage in advance is a TOP-003 issue.'},
 
   {id:'n3', cat:'standards', type:'standard',
-   q:'Why does NERC require protection system knowledge under PER-006?',
-   a:'PER-006 (Specific Training for Personnel) requires operators to understand the protection systems on their systems because:<ul><li>Protection systems are the last line of defense before equipment damage or cascading outages</li><li>An operator who doesn\'t understand why a relay tripped can\'t assess whether it was correct or spurious</li><li>Incorrect response to a protection operation (e.g., re-closing into a fault) can cause catastrophic damage</li><li>Understanding protection helps diagnose whether a condition is an equipment issue or a grid issue</li></ul>'},
+   q:'COM-002: What does it require, and what does the repeat-back rule specifically apply to?',
+   a:'<strong>COM-002 (Communications and Coordination)</strong> requires:<ul><li>GOPs to use <strong>verbal repeat-back</strong> when receiving Operating Instructions from the issuing authority</li><li>The issuing authority must confirm the readback or correct it before execution</li><li>Documentation of the communication and action taken</li></ul>The repeat-back rule applies specifically to <strong>Operating Instructions</strong> — a directive requiring real-time action (open this breaker, reduce output to X MW, etc.). It does not apply to every phone call. But when an authoritative instruction is issued, the loop must be closed.'},
 
-  // ── RECOGNITION ────────────────────────────────────────────────────────
-  {id:'r1', cat:'scada', type:'recognition',
-   q:'What device absorbs VARs and why would you use it?',
-   a:'A <strong>Reactor (shunt reactor)</strong> absorbs MVARs from the system. You would use it when:<ul><li>Voltage is too HIGH (light load, capacitive system)</li><li>Capacitor banks are already off and voltage is still elevated</li><li>Transmission line charging is creating excess VARs</li></ul>Reactor = absorb = lower voltage. Capacitor = supply = raise voltage.'},
+  {id:'n4', cat:'standards', type:'standard',
+   q:'PER-006: Why does NERC require GOPs to train operators on protection systems and RAS?',
+   a:'<strong>PER-006 (Specific Training for Personnel)</strong> requires GOP operators to understand the protection systems and Remedial Action Schemes (RAS) affecting their generators because:<ul><li>A relay trip is only meaningful if the operator understands <em>why</em> it tripped — spurious vs. valid</li><li>Wrong response to a protection operation (e.g., re-energizing into a fault) can cause catastrophic equipment damage or cascade failures</li><li>RAS schemes take automatic action during grid disturbances — operators must know what the scheme does and what their role is before and after it fires</li><li>Protection system knowledge is the difference between a controlled response and making a bad situation worse</li></ul>'},
 
-  {id:'r2', cat:'standards', type:'recognition',
-   q:'ANSI Device 86 — what does it indicate and what does the operator do when it fires?',
-   a:'ANSI 86 is the <strong>Lockout Relay</strong>. When it trips:<ul><li>It locks out the associated equipment — it will NOT auto-reclose</li><li>The equipment cannot be returned to service until the 86 is manually reset</li><li>An 86 operation indicates a <strong>serious fault was detected</strong></li></ul><strong>Operator action: Do NOT reset the 86 without authorization and investigation. Log the event, notify supervision and BA, follow outage management procedures.</strong>'},
+  // ══ PLANT ARCHITECTURE ════════════════════════════════════════════════════
 
-  // ── RAPID FIRE ──────────────────────────────────────────────────────────
+  {id:'pa1', cat:'plant', type:'conceptual',
+   q:'What are the voltage classifications used in power plant architecture? Give the ranges.',
+   a:'<ul><li><strong>Extra-Low Voltage (ELV)</strong>: Less than 50V — DC string level at solar panels</li><li><strong>Low Voltage (LV)</strong>: 1V to 1,000V — inverter AC output, battery module level</li><li><strong>Medium Voltage (MV)</strong>: 1 kV to 35 kV — collector system, step-up transformers</li><li><strong>High Voltage (HV)</strong>: Above 35 kV — transmission interconnect, POI</li></ul>Operationally: when you\'re requesting TOP permission, you\'re working in the HV zone. When field techs are working on inverters, that\'s LV/MV.'},
+
+  {id:'pa2', cat:'plant', type:'conceptual',
+   q:'Explain the energy conversion chain for PV solar, wind, and battery storage.',
+   a:'<strong>PV Solar:</strong> Solar irradiance → photovoltaic cells convert sunlight to DC (extra-low voltage) → panels connect in series (strings) to increase voltage → strings connect to combiner boxes to form an array → DC fed into an inverter → inverter outputs AC → stepped up through transformer to MV/HV.<br><br><strong>Wind:</strong> Kinetic energy (wind) → turbine blades capture energy → mechanical rotation → generator converts to AC electricity → stepped up through transformer.<br><br><strong>Battery (BESS):</strong> Chemical energy stored as DC → DC inverter converts to AC → stepped up through transformer → returned to grid. Charging reverses the flow: AC from grid → stepped down → converted to DC → stored in batteries.'},
+
+  // ══ RAPID FIRE ════════════════════════════════════════════════════════════
+
   {id:'rf1', cat:'rapid', type:'rapid',
    q:'What is HE 12?',
-   a:'HE 12 = <strong>Hour Ending 12</strong>. In power scheduling, time is expressed as the hour ending at that time — HE 12 is the hour from 11:00 to 12:00 (noon). Standard format used in energy schedules and dispatch tables.'},
+   a:'<strong>Hour Ending 12</strong> — the hour from 11:00 to 12:00 (noon). Power schedules use hour-ending notation. HE 1 = midnight to 1 AM. HE 24 = 11 PM to midnight.'},
 
   {id:'rf2', cat:'rapid', type:'rapid',
-   q:'Who balances load in real time?',
-   a:'The <strong>Balancing Authority (BA)</strong>.'},
+   q:'In CAISO\'s market, who is performing the function of balancing load in real time?',
+   a:'<strong>CAISO</strong> (the ISO) — acting as the Balancing Authority for the grid. They issue dispatch signals and AGC instructions that the GOP executes.'},
 
   {id:'rf3', cat:'rapid', type:'rapid',
-   q:'AVR vs AGC — one word each for what each controls.',
-   a:'<strong>AVR → Voltage</strong> (via reactive power / excitation)<br><strong>AGC → MW</strong> (real power / frequency)'},
+   q:'AVR vs AGC — one line each on what each controls.',
+   a:'<strong>AVR → Voltage</strong> (adjusts excitation to hold terminal voltage / reactive power)<br><strong>AGC → MW</strong> (adjusts real power output per ISO dispatch signal)'},
 
   {id:'rf4', cat:'rapid', type:'rapid',
-   q:'Who submits energy schedules to the BA?',
-   a:'The <strong>Scheduling Coordinator (SC)</strong>.'},
+   q:'Who submits the energy schedule to CAISO — the GO, the GOP, or the SC?',
+   a:'The <strong>SC (Scheduling Coordinator)</strong> submits schedules to CAISO. The GO/GOP provides the capability data and outage information; the SC handles the market-facing submission.'},
 
   {id:'rf5', cat:'rapid', type:'rapid',
    q:'What happens to frequency when load exceeds generation?',
-   a:'<strong>Frequency drops.</strong> More load than generation = more drag on the system = generators slow down = frequency decreases. The BA must respond by increasing generation or shedding load.'},
+   a:'<strong>Frequency drops.</strong> More demand than supply = generators slow down under the drag = frequency decreases below 60 Hz. The ISO responds with AGC dispatch to increase generation.'},
 
   {id:'rf6', cat:'rapid', type:'rapid',
-   q:'MW vs MWh — why do both matter to an operator?',
-   a:'<strong>MW</strong> = rate of power flow (what\'s happening NOW — real-time dispatch/generation)<br><strong>MWh</strong> = energy over time (what was produced/consumed — used for BESS state of charge and schedule settlement)<br>An operator needs MW to manage dispatch, and MWh to track BESS capacity.'},
+   q:'MW vs MWh — one line each.',
+   a:'<strong>MW</strong> = power rate right now (dispatch setpoint, real-time output)<br><strong>MWh</strong> = energy over time (BESS state of charge, schedule settlement, production totals)'},
 
   {id:'rf7', cat:'rapid', type:'rapid',
-   q:'What does it mean when a generator is "at its reactive limit"?',
-   a:'The generator cannot produce or absorb any more MVARs — it\'s maxed out on excitation. The AVR will still try to hold voltage but physically cannot provide more reactive support. The BA must find reactive resources elsewhere. Critical condition during voltage stress.'},
+   q:'ANSI 86 fires — what does the operator do first?',
+   a:'<strong>Do not reset it.</strong> ANSI 86 is the Lockout Relay — it fired because a serious fault was detected. Log the event, notify supervision and SC, follow outage procedures. Investigation must happen before the 86 is reset and equipment is re-energized.'},
 
-  // ── FULL SIMULATION SCENARIO ─────────────────────────────────────────
+  {id:'rf8', cat:'rapid', type:'rapid',
+   q:'You receive an Operating Instruction from CAISO. What must you do before executing it?',
+   a:'<strong>Repeat it back verbatim</strong> and wait for confirmation from the issuing authority. COM-002 requirement. No execution until the loop is closed.'},
+
+  // ══ FULL SIMULATION SCENARIO ══════════════════════════════════════════════
+
   {id:'sim1', cat:'operations', type:'simulation',
-   q:'START-OF-SHIFT SCENARIO — Incoming conditions: Solar derate active | High voltage across the plant bus | Reactor offline for maintenance | One inverter tripped | High temp alarm on BESS | HVAC alarm also active',
+   q:'START-OF-SHIFT SCENARIO — Incoming conditions: CAISO curtailment active on solar | High voltage across the plant bus | Reactor offline for maintenance | Inverter Unit 3 tripped | BESS high temp alarm | BESS HVAC alarm active',
    a:'',
    sim: {
-     inputs: ['Solar derate active','High voltage — plant bus elevated','Reactor offline (maintenance outage)','Inverter trip — Unit 3','BESS high temp alarm','BESS HVAC alarm'],
+     inputs: ['CAISO curtailment active — solar derate in effect','High voltage — plant bus elevated above band','Reactor offline (maintenance outage)','Inverter trip — Unit 3','BESS high temp alarm','BESS HVAC alarm'],
      tasks: [
-       {q:'1. Priority Actions — what do you do first, second, third?',
-        a:'<strong>1st — BESS safety:</strong> HVAC alarm + high temp = thermal runaway risk. Derate or take BESS offline per emergency procedure. Notify BA immediately.<br><strong>2nd — Voltage:</strong> High voltage + reactor offline = no reactive absorption. Notify BA. Check if caps can be switched off. Report if voltage exceeds limits.<br><strong>3rd — Inverter trip:</strong> Investigate cause (fault? comm? protection?). Log. Notify BA of reduced capacity.<br><strong>4th — Solar derate:</strong> Confirm derate is a valid BA curtailment order — is it logged? Is it the expected amount?'},
-       {q:'2. Root Cause Thinking — what is the most dangerous cascade risk right now?',
-        a:'The BESS thermal situation is most dangerous because it can escalate to fire. The high voltage is the biggest grid reliability risk because with the reactor offline, there\'s no automatic MVAR absorption. If voltage continues rising and a protection relay trips an interconnection line, you could lose the entire plant output simultaneously.'},
+       {q:'1. Priority Actions — what do you do first, second, third? Who do you call?',
+        a:'<strong>1st — BESS safety (immediate):</strong> HVAC alarm + rising temps = thermal runaway risk. Derate or take BESS offline per emergency SOP. Notify site management. Notify SC of loss of resource capability.<br><strong>2nd — High voltage:</strong> Reactor is offline, so there\'s no automatic MVAR absorption. Check if cap banks can be switched off. Notify SC/ISO if voltage is outside operating band — this is a reportable condition under VAR-002.<br><strong>3rd — Unit 3 inverter trip:</strong> Investigate cause on SCADA (fault? comms? protection?). Log it. Notify SC of reduced solar capability.<br><strong>4th — Curtailment confirmation:</strong> Confirm the CAISO curtailment order is logged with correct MW level, time received, and source. Verify site is tracking the reduced setpoint.'},
+       {q:'2. Root cause thinking — what is the highest-risk cascade at this moment?',
+        a:'The BESS thermal condition is the most immediate safety risk — it can escalate to fire without warning. The high voltage situation is the biggest grid reliability risk: with the reactor offline and no reactive absorption available, if voltage keeps rising it could trip a protection relay on the interconnect line and take the entire plant offline simultaneously. The cascade: high volt → relay trip → more inverters trip → plant goes dark → SC scrambles with CAISO.'},
        {q:'3. What logs are required before you can leave this shift?',
-        a:'<ul><li>BESS thermal event — time, temp readings, HVAC alarm, actions taken, BA notification time</li><li>Inverter trip — unit, time, cause (if determined), restoration status</li><li>Voltage exceedance — if voltage exceeded limits, log time, peak value, actions, BA contact</li><li>Solar derate — log the derate order, MW level, time received, source</li><li>All BA/RC communications with times and exact content</li></ul>'},
+        a:'<ul><li><strong>BESS thermal event:</strong> time, temp readings, HVAC alarm, actions taken, who was notified and when</li><li><strong>Unit 3 inverter trip:</strong> unit ID, trip time, cause if determined, restoration status, SC notification</li><li><strong>Voltage exceedance:</strong> if voltage left the operating band — log time, peak value, actions taken, ISO/SC notification</li><li><strong>CAISO curtailment:</strong> order source, MW level, time received, confirmed on SCADA, logged as outage/derate</li><li><strong>All communications</strong> with SC, ISO, site management — time, content, outcome</li></ul>'},
        {q:'4. What grid condition are you handing off to the next operator?',
-        a:'Plant operating at reduced capacity. BESS offline (thermal event under investigation). Solar derate active per BA order. Unit 3 inverter offline — cause under investigation. High voltage condition — reactor still offline for maintenance, voltage being monitored. BA has been notified of all conditions. Next operator should: confirm BESS status with maintenance, monitor voltage closely, and verify derate order is still in effect.'}
+        a:'Plant at reduced capacity. BESS offline — thermal event under investigation, do not restore without HVAC confirmed operational and temperature cleared. Unit 3 inverter offline — cause under investigation, do not reset without maintenance authorization. CAISO curtailment still active — confirm with SC if it has been extended or released. High voltage condition ongoing — reactor still out for maintenance, voltage being monitored, SC aware. Relief operator should: check BESS status with maintenance before shift end, watch voltage closely, and confirm curtailment status with SC.'}
      ]
    }
   }
 ];
 
 const ROC_CATEGORIES = [
-  {key:'grid',       label:'Grid Roles & Entities',       icon:'🌐'},
+  {key:'grid',       label:'Grid Entities',                icon:'🌐'},
   {key:'voltage',    label:'Voltage, Reactive Power & AVR', icon:'⚡'},
-  {key:'dispatch',   label:'Dispatch: AGC & ADS',          icon:'📡'},
+  {key:'dispatch',   label:'Dispatch: ADS / AGC',          icon:'📡'},
   {key:'scada',      label:'SCADA, Alarms & Recognition',  icon:'🖥️'},
-  {key:'operations', label:'Operations, Solar & Procedures', icon:'📋'},
+  {key:'operations', label:'Operations & Procedures',      icon:'📋'},
   {key:'standards',  label:'NERC Standards',               icon:'📜'},
+  {key:'plant',      label:'Plant Architecture',           icon:'🏭'},
   {key:'rapid',      label:'Rapid Fire',                   icon:'🎯'},
 ];
 
@@ -7572,6 +7884,113 @@ let rocProgress = {};
 let rocFilter = 'all';
 let rocDrillQueue = [];
 let rocDrillIdx = 0;
+
+// ── GRID HIERARCHY WIDGET JS ─────────────────────────────────────────────────
+const GH_DATA = {
+  nerc:{name:'NERC',full:'North American Electric Reliability Corporation',
+    what:'Writes the reliability standards (CIP, FAC, MOD, VAR, COM, etc.) that every functional entity must follow. Does not operate anything — it sets the rules and investigates violations.',
+    auth:'Can issue fines up to $1M/day per violation. Requires corrective action plans. No day-to-day dispatch authority.',
+    signal:'Rules only. No real-time instructions. You\'ll see them in audit findings and violation notices — not on your phone during a shift.',
+    mental:'"NERC is the rulebook. You never talk to them in real time — but their standards live in every SOP you follow."'},
+  wecc:{name:'WECC',full:'Western Electricity Coordinating Council',
+    what:'The Regional Entity for the Western Interconnection. Enforces NERC standards through audits, spot checks, and self-reports. Also does long-term reliability assessments for the West.',
+    auth:'Conducts compliance audits. Issues Notices of Alleged Violation (NAVs). Delegates enforcement to NERC.',
+    signal:'Audit requests, compliance questionnaires, self-report forms. Not calling you during a shift.',
+    mental:'"WECC is the referee for the West. They watch the film after the game, not during it."'},
+  rc:{name:'RC',full:'Reliability Coordinator — WECC RC Services (West)',
+    what:'Highest real-time operational authority. Monitors the entire Western Interconnection across multiple BA areas simultaneously. Issues emergency directives when wide-area stability is threatened. Can override ISO instructions.',
+    auth:'Can direct any entity — including CAISO — to take immediate action to preserve interconnection reliability. RC directives are the highest operational priority below emergency safety.',
+    signal:'Emergency phone calls, direct real-time instructions. Rare, but when they call, everything else waits. Usually their instructions reach you via CAISO — but in a true emergency they may contact you directly.',
+    mental:'"CAISO manages California. The RC manages everything California is connected to. When the RC calls, the ISO follows."'},
+  caiso:{name:'CAISO',full:'California Independent System Operator',
+    what:'Operates the bulk transmission grid in California in real time. Runs the wholesale electricity market (DAM, RTM, ancillary services). Issues Dispatch Operating Points (DOPs) and emergency instructions. Acts as both ISO and BA in California.',
+    auth:'Full real-time dispatch authority over all resources in the CAISO BAA. Can curtail, redispatch, or emergency-instruct any unit. Non-compliance is a NERC violation.',
+    signal:'DOPs via SCADA/EMS, phone calls from CAISO control room (DMO), market instructions via SIBR. This is your primary day-to-day operational authority.',
+    mental:'"CAISO is the air traffic controller. When they say descend to 40 MW, you descend — you don\'t argue about your PPA."'},
+  ba:{name:'BA',full:'Balancing Authority',
+    what:'Maintains real-time balance between load and generation within a defined area (ACE = 0). In California, CAISO IS the BA. Some utilities are their own BA.',
+    auth:'Dispatch authority within their balancing area. Can issue emergency instructions to correct area control error.',
+    signal:'In the CAISO footprint, BA function is transparent — CAISO\'s dispatch instructions are the BA instructions.',
+    mental:'"The BA keeps the bathtub level. Too much water (generation) or too little — they adjust the faucet (dispatch)."'},
+  to:{name:'TO / TOP',full:'Transmission Owner / Transmission Operator',
+    what:'Owns and operates the high-voltage transmission lines. TOPs monitor line flows, voltage, and stability limits in real time. They can issue curtailment orders when thermal, voltage, or stability limits are threatened.',
+    auth:'Can curtail generation output for transmission reliability, even overriding CAISO dispatch. Their curtailment is a reliability instruction.',
+    signal:'Phone calls, written curtailment orders, SCADA alarms. When a TOP calls, treat it like a CAISO instruction. HV breaker operations require TOP permission.',
+    mental:'"The TOP owns the highway. If the on-ramp is backed up, they control the metering light — regardless of what the GPS says."'},
+  dp:{name:'DP',full:'Distribution Provider',
+    what:'Owns and operates the distribution system — lower-voltage network (typically below 35 kV) serving end consumers. Relevant for generation interconnected at distribution voltage rather than transmission voltage.',
+    auth:'Can curtail or limit generation connected to their distribution system for reliability reasons. No CAISO dispatch authority, but they protect their own system. Their curtailment orders are reliability instructions on their system.',
+    signal:'Phone calls for curtailment, interconnection coordination, planned switching. Treat their curtailment like a TOP curtailment — reliability constraint, not optional.',
+    mental:'"The DP owns the side street. If the side street is overloaded, they can limit how much traffic comes on from your driveway — regardless of what CAISO scheduled."'},
+  go:{name:'GO',full:'Generator Owner',
+    what:'Owns the physical asset — the land, panels, inverters, transformers. Responsible for the plant\'s interconnection agreement, maintenance, and NERC standards compliance as an asset owner.',
+    auth:'Sets plant operating limits and maintenance windows. Defines what the asset is capable of. Has authority over long-term plant decisions, not day-to-day dispatch.',
+    signal:'Outage requests, capability ratings, maintenance schedules, NERC compliance programs.',
+    mental:'"The GO owns the car. The GOP drives it. The GO sets the speed governor limit — the GOP decides how fast to go within that."'},
+  gop:{name:'GOP',full:'Generator Operator — That\'s You (ROC)',
+    what:'Operates the plant in real time. Executes dispatch from CAISO. Monitors plant health, equipment limits, and grid conditions. Communicates deviations to CAISO and the SC. First line of defense for both reliability and commercial performance.',
+    auth:'Authority to operate within CAISO dispatch and plant limits. Can take equipment out of service for safety. Must follow CAISO instructions or formally declare unable to comply.',
+    signal:'You receive signals from everyone above. You generate data (SCADA output) and notifications (deviations, limitations, COM-002 readbacks).',
+    mental:'"The GOP is the pilot. CAISO is ATC. RC is ARTCC (wider area). You fly the plane — but when ATC says turn, you turn, and when ARTCC calls an emergency, you land."'},
+  ppa:{name:'PPA',full:'Power Purchase Agreement',
+    what:'A contract between the generator (GO/PSE) and an offtaker (utility, corporate buyer) defining price, term, and volume of energy sold. Sets a maximum (and sometimes minimum) MW delivery obligation.',
+    auth:'No operational authority. It\'s a contract, not an operator. Violating it triggers financial consequences — not grid violations.',
+    signal:'Defines the commercial envelope your SC bids within. The PPA cap is not a hard SCADA limit.',
+    mental:'"The PPA is the lease agreement on the car. Breaking it doesn\'t crash the car — but it costs you money."'},
+  pse:{name:'PSE / SC',full:'Purchasing-Selling Entity / Scheduling Coordinator',
+    what:'The commercial entity that bids your plant\'s capacity into the CAISO market. Submits Resource Plans and energy bids for the Day-Ahead and Real-Time markets.',
+    auth:'No direct operational authority over the plant. Sets commercial strategy — what you bid, at what price. You execute; they bid.',
+    signal:'Market bids, resource plans, commercial instructions. If they ask you to do something that conflicts with CAISO, CAISO wins.',
+    mental:'"The PSE is your ticket agent. They book the flights (bids). You fly the plane (operate). If ATC reroutes you, the ticket agent\'s plan changes — not yours."'}
+};
+
+function ghTab(id, btn) {
+  document.querySelectorAll('.gh-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.gh-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('gh-panel-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function ghDetail(key) {
+  const d = GH_DATA[key];
+  const box = document.getElementById('gh-detail-box');
+  box.style.display = 'block';
+  box.innerHTML = `
+    <div class="gh-detail">
+      <h3>${d.name}</h3>
+      <div class="gh-role">${d.full}</div>
+      <div class="gh-dgrid">
+        <div class="gh-ditem"><div class="gh-ditem-k">What they do</div><div class="gh-ditem-v">${d.what}</div></div>
+        <div class="gh-ditem"><div class="gh-ditem-k">Authority over plant</div><div class="gh-ditem-v">${d.auth}</div></div>
+        <div class="gh-ditem" style="grid-column:1/-1"><div class="gh-ditem-k">How they signal you</div><div class="gh-ditem-v">${d.signal}</div></div>
+      </div>
+      <div class="gh-mental">${d.mental}</div>
+    </div>`;
+  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function ghToggleScen(hdr) {
+  const body = hdr.nextElementSibling;
+  const chev = hdr.querySelector('.gh-scen-chev');
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+function ghToggleWidget() {
+  const body = document.getElementById('gh-widget-body');
+  const btn = document.getElementById('gh-toggle-btn');
+  const hdr = document.getElementById('gh-widget-hdr');
+  if (body.style.display === 'none') {
+    body.style.display = '';
+    btn.textContent = 'Hide';
+    hdr.style.borderBottom = '1px solid transparent';
+  } else {
+    body.style.display = 'none';
+    btn.textContent = 'Show';
+    hdr.style.borderBottom = 'none';
+  }
+}
+// ── END GRID HIERARCHY WIDGET JS ─────────────────────────────────────────────
 
 function rocLoad() {
   try { rocProgress = JSON.parse(localStorage.getItem('roc_progress') || '{}'); } catch(e) { rocProgress = {}; }
@@ -7582,7 +8001,7 @@ function rocSave() {
 }
 
 function rocResetProgress() {
-  if (!confirm('Reset all ROC Study Guide progress? This cannot be undone.')) return;
+  if (!confirm('Reset all ROC Study progress? This cannot be undone.')) return;
   rocProgress = {};
   rocSave();
   rocRender();
