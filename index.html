@@ -1094,10 +1094,15 @@ body.dark .nerc-study-container{
 .roc-ftag{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap;}
 .roc-ftag:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
 .roc-ftag.active{border-color:var(--green);color:var(--green);background:var(--gbg);}
+.roc-ftag-dropdown{display:block;width:100%;text-align:left;padding:6px 10px;border-radius:4px;font-size:12px;font-weight:500;border:1px solid transparent;background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;margin-bottom:2px;}
+.roc-ftag-dropdown:hover{background:var(--bg3);color:var(--text);}
+.roc-ftag-dropdown.active{background:var(--gbg);color:var(--green);border-color:var(--green);}
 .roc-stats-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
 .roc-stat{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center;flex:1;min-width:80px;box-shadow:var(--shs);}
 .roc-stat-val{font-family:var(--m);font-size:20px;font-weight:700;color:var(--green);}
 .roc-stat-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-top:2px;}
+.roc-stats-compact{display:flex;gap:12px;margin-bottom:12px;padding:8px 12px;background:var(--bg3);border-radius:6px;flex-wrap:wrap;}
+.roc-stat-badge{font-size:11px;font-family:var(--m);color:var(--text2);white-space:nowrap;}
 .roc-drill-bar{display:flex;gap:8px;align-items:center;margin-bottom:18px;padding:12px 14px;background:var(--abg);border:1px solid var(--amber);border-radius:var(--r);flex-wrap:wrap;}
 .roc-drill-bar .roc-drill-lbl{font-size:12px;color:var(--amber);font-weight:600;flex:1;}
 .roc-section{margin-bottom:10px;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;background:var(--bg2);box-shadow:var(--shs);}
@@ -1115,6 +1120,80 @@ body.dark .nerc-study-container{
 .roc-section.open .roc-questions{display:block;}
 .roc-q{padding:14px 16px;border-bottom:1px solid var(--border);}
 .roc-q:last-child{border-bottom:none;}
+
+/* ── GRID HIERARCHY WIDGET ──────────────────────────────────────────────────── */
+.gh-wrap{padding:0 0 8px;}
+.gh-subtitle{font-size:12px;color:var(--text3);margin-bottom:12px;}
+.gh-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.gh-tab{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--f);transition:all .15s;}
+.gh-tab:hover{background:var(--bg3);color:var(--text);}
+.gh-tab.active{background:var(--bg3);color:var(--text);border-color:var(--border2);}
+.gh-panel{display:none;}
+.gh-panel.active{display:block;}
+/* Hierarchy tier nodes */
+.gh-tier{display:flex;justify-content:center;margin-bottom:5px;}
+.gh-tier-row{display:flex;justify-content:center;gap:8px;margin-bottom:5px;}
+.gh-conn{display:flex;justify-content:center;height:16px;}
+.gh-node{border:1px solid;border-radius:8px;padding:7px 13px;cursor:pointer;text-align:center;font-family:var(--f);transition:all .15s;min-width:114px;}
+.gh-node:hover{opacity:.85;transform:translateY(-1px);}
+.gh-node-lbl{font-size:12px;font-weight:600;}
+.gh-node-sub{font-size:10px;margin-top:1px;opacity:.75;}
+.gh-separator{text-align:center;font-size:10px;color:var(--text3);margin:6px 0 4px;font-family:var(--m);letter-spacing:.06em;}
+/* Node color themes */
+.ghn-nerc {background:#3C3489;border-color:#26215C;color:#EEEDFE;}
+.ghn-wecc {background:#534AB7;border-color:#3C3489;color:#EEEDFE;}
+.ghn-rc   {background:#185FA5;border-color:#0C447C;color:#E6F1FB;}
+.ghn-caiso{background:#0F6E56;border-color:#085041;color:#E1F5EE;}
+.ghn-ba   {background:#2d9e6b;border-color:#1a6e4a;color:#e8f5ee;}
+.ghn-to   {background:#3B6D11;border-color:#27500A;color:#EAF3DE;}
+.ghn-dp   {background:#888780;border-color:#5F5E5A;color:#F1EFE8;}
+.ghn-go   {background:#854F0B;border-color:#633806;color:#FAEEDA;}
+.ghn-gop  {background:#993C1D;border-color:#712B13;color:#FAECE7;}
+.ghn-ppa  {background:#993556;border-color:#72243E;color:#FBEAF0;}
+.ghn-pse  {background:#5F5E5A;border-color:#444441;color:#F1EFE8;}
+/* Detail card */
+.gh-detail{margin-top:14px;border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--bg2);animation:roc-fadein .2s ease;}
+.gh-detail h3{font-size:14px;font-weight:700;margin-bottom:2px;color:var(--text);}
+.gh-detail .gh-role{font-size:11px;color:var(--text3);margin-bottom:12px;font-family:var(--m);}
+.gh-dgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.gh-ditem{background:var(--bg3);border-radius:7px;padding:10px 12px;}
+.gh-ditem-k{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px;font-family:var(--m);}
+.gh-ditem-v{font-size:12px;color:var(--text);line-height:1.55;}
+.gh-mental{border-left:3px solid var(--blue);padding:8px 12px;font-size:12px;font-style:italic;color:var(--text2);background:var(--bbg);border-radius:0 7px 7px 0;margin-top:8px;}
+body.dark .gh-mental{background:#0d1e38;}
+/* Two chains */
+.gh-chains{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.gh-chain-col{border:1px solid var(--border);border-radius:9px;padding:12px 14px;background:var(--bg2);}
+.gh-chain-col h4{font-size:12px;font-weight:600;margin-bottom:10px;}
+.gh-ch-node{border-radius:6px;padding:6px 10px;text-align:center;font-size:11px;font-weight:600;margin-bottom:2px;}
+.gh-ch-arr{text-align:center;font-size:12px;color:var(--text3);line-height:1;margin-bottom:2px;}
+.gh-ch-rel{text-align:center;font-size:10px;color:var(--text3);margin-bottom:3px;font-family:var(--m);}
+.gh-conflict{margin-top:12px;border:1px solid var(--amber);border-radius:8px;padding:12px 14px;background:var(--abg);}
+.gh-conflict h4{font-size:12px;font-weight:700;color:var(--amber);margin-bottom:6px;}
+.gh-conflict p{font-size:12px;color:var(--text2);line-height:1.6;}
+/* Priority list */
+.gh-prio-list{display:flex;flex-direction:column;gap:0;}
+.gh-prio-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.gh-prio-item:last-child{border-bottom:none;}
+.gh-prio-num{min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:#fff;}
+.gh-prio-item strong{font-size:13px;display:block;margin-bottom:2px;color:var(--text);}
+.gh-prio-item p{font-size:12px;color:var(--text2);line-height:1.5;margin:0;}
+/* Scenarios */
+.gh-scen{border:1px solid var(--border);border-radius:9px;padding:13px 15px;background:var(--bg2);margin-bottom:8px;}
+.gh-scen-hdr{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;}
+.gh-scen-hdr h4{font-size:13px;font-weight:600;flex:1;color:var(--text);}
+.gh-scen-badge{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;white-space:nowrap;}
+.gh-scen-chev{font-size:11px;color:var(--text3);transition:transform .2s;}
+.gh-scen-chev.open{transform:rotate(180deg);}
+.gh-scen-body{display:none;margin-top:12px;}
+.gh-scen-body.open{display:block;}
+.gh-scen-setup{font-size:12px;color:var(--text3);margin-bottom:10px;font-style:italic;}
+.gh-step{display:flex;gap:10px;margin-bottom:8px;}
+.gh-step-num{min-width:20px;height:20px;border-radius:50%;background:var(--bg4);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text2);}
+.gh-step-txt{font-size:12px;color:var(--text2);line-height:1.6;}
+.gh-step-txt strong{color:var(--text);font-weight:600;}
+.gh-op-action{margin-top:10px;border-left:3px solid var(--green);padding:8px 12px;font-size:12px;background:var(--gbg);border-radius:0 7px 7px 0;color:var(--green);font-weight:500;}
+.gh-note{margin-top:10px;background:var(--bg3);border-radius:7px;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.6;font-style:italic;}
 .roc-q-top{display:flex;align-items:flex-start;gap:10px;}
 .roc-q-num{font-family:var(--m);font-size:10px;color:var(--text3);min-width:28px;padding-top:3px;flex-shrink:0;}
 .roc-q-type-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0;margin-top:1px;}
@@ -1861,31 +1940,207 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
   <div class="roc-wrap">
     <div class="roc-topbar">
       <div class="roc-title">⚡ ROC Study</div>
-      <div class="roc-filter-row" id="roc-filter-row">
-        <button class="roc-ftag active" data-filter="all" onclick="rocSetFilter('all',this)">All Topics</button>
-        <button class="roc-ftag" data-filter="grid" onclick="rocSetFilter('grid',this)">Grid Entities</button>
-        <button class="roc-ftag" data-filter="voltage" onclick="rocSetFilter('voltage',this)">Voltage / VARs</button>
-        <button class="roc-ftag" data-filter="dispatch" onclick="rocSetFilter('dispatch',this)">Dispatch</button>
-        <button class="roc-ftag" data-filter="scada" onclick="rocSetFilter('scada',this)">SCADA / Alarms</button>
-        <button class="roc-ftag" data-filter="operations" onclick="rocSetFilter('operations',this)">Operations</button>
-        <button class="roc-ftag" data-filter="standards" onclick="rocSetFilter('standards',this)">Standards</button>
-        <button class="roc-ftag" data-filter="plant" onclick="rocSetFilter('plant',this)">Plant Architecture</button>
-        <button class="roc-ftag" data-filter="rapid" onclick="rocSetFilter('rapid',this)">Rapid Fire</button>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button id="roc-filter-dropdown-btn" class="tbtn" style="padding:5px 12px;" onclick="rocToggleFilterDropdown()">
+          <span id="roc-current-filter">All Topics</span> ▾
+        </button>
+        <button class="tbtn" style="border-color:var(--amber);color:var(--amber);padding:5px 12px;" onclick="rocStartDrill()" title="Daily Drill - 10 random questions">🎯 Drill</button>
+        <button class="tbtn" style="padding:5px 10px;font-size:11px;" onclick="rocResetProgress()" title="Reset all progress">↺</button>
+        <div id="roc-filter-dropdown" style="display:none;position:absolute;top:60px;right:16px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px;box-shadow:var(--sh);z-index:100;min-width:180px;">
+          <button class="roc-ftag-dropdown active" data-filter="all" onclick="rocSetFilter('all',this)">All Topics</button>
+          <button class="roc-ftag-dropdown" data-filter="grid" onclick="rocSetFilter('grid',this)">Grid Entities</button>
+          <button class="roc-ftag-dropdown" data-filter="voltage" onclick="rocSetFilter('voltage',this)">Voltage / VARs</button>
+          <button class="roc-ftag-dropdown" data-filter="dispatch" onclick="rocSetFilter('dispatch',this)">Dispatch</button>
+          <button class="roc-ftag-dropdown" data-filter="scada" onclick="rocSetFilter('scada',this)">SCADA / Alarms</button>
+          <button class="roc-ftag-dropdown" data-filter="operations" onclick="rocSetFilter('operations',this)">Operations</button>
+          <button class="roc-ftag-dropdown" data-filter="standards" onclick="rocSetFilter('standards',this)">Standards</button>
+          <button class="roc-ftag-dropdown" data-filter="plant" onclick="rocSetFilter('plant',this)">Plant Architecture</button>
+          <button class="roc-ftag-dropdown" data-filter="rapid" onclick="rocSetFilter('rapid',this)">Rapid Fire</button>
+        </div>
       </div>
     </div>
 
-    <div class="roc-stats-row">
-      <div class="roc-stat"><div class="roc-stat-val" id="roc-stat-total">0</div><div class="roc-stat-lbl">Questions</div></div>
-      <div class="roc-stat"><div class="roc-stat-val" id="roc-stat-done" style="color:var(--green)">0</div><div class="roc-stat-lbl">Got It</div></div>
-      <div class="roc-stat"><div class="roc-stat-val" id="roc-stat-review" style="color:var(--amber)">0</div><div class="roc-stat-lbl">Review</div></div>
-      <div class="roc-stat"><div class="roc-stat-val" id="roc-stat-missed" style="color:var(--red)">0</div><div class="roc-stat-lbl">Missed</div></div>
+    <div class="roc-stats-compact">
+      <span class="roc-stat-badge" id="roc-stat-total">0 questions</span>
+      <span class="roc-stat-badge" style="color:var(--green);" id="roc-stat-done">0 got it</span>
+      <span class="roc-stat-badge" style="color:var(--amber);" id="roc-stat-review">0 review</span>
+      <span class="roc-stat-badge" style="color:var(--red);" id="roc-stat-missed">0 missed</span>
     </div>
 
-    <div class="roc-drill-bar">
-      <span class="roc-drill-lbl">🎯 Daily Drill — 10 random questions from the full bank</span>
-      <button class="tbtn" style="border-color:var(--amber);color:var(--amber);" onclick="rocStartDrill()">Start Daily Drill</button>
-      <button class="tbtn" onclick="rocResetProgress()">Reset Progress</button>
+    <!-- ── GRID HIERARCHY WIDGET ─────────────────────────────────────────── -->
+    <div style="margin-bottom:18px;border:1px solid var(--border);border-radius:var(--rl);background:var(--bg2);overflow:hidden;box-shadow:var(--shs);">
+      <div style="padding:12px 16px;border-bottom:1px solid transparent;" id="gh-widget-hdr">
+        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="ghToggleWidget()">
+          <span style="font-size:15px;">🗺️</span>
+          <span style="font-size:13px;font-weight:700;color:var(--text);">Grid Entity Hierarchy</span>
+          <span style="font-size:11px;color:var(--text3);font-family:var(--m);">GOP → NERC · Tap to expand</span>
+          <span id="gh-chevron" style="margin-left:auto;font-size:11px;color:var(--text3);">▸</span>
+        </div>
+        <div id="gh-widget-body" style="display:none;">
+          <div class="gh-wrap">
+            <div class="gh-tabs">
+              <button class="gh-tab active" onclick="ghTab('hierarchy',this)">Hierarchy</button>
+              <button class="gh-tab" onclick="ghTab('chains',this)">Two Chains</button>
+              <button class="gh-tab" onclick="ghTab('priority',this)">Priority Order</button>
+              <button class="gh-tab" onclick="ghTab('scenarios',this)">Scenarios</button>
+            </div>
+
+            <!-- HIERARCHY TAB -->
+            <div class="gh-panel active" id="gh-panel-hierarchy">
+              <div class="gh-subtitle">Tap any entity for its real-world role, authority, and mental model.</div>
+              <div class="gh-tier"><button class="gh-node ghn-nerc" onclick="ghDetail('nerc')"><div class="gh-node-lbl">NERC</div><div class="gh-node-sub">North American regulator</div></button></div>
+              <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
+              <div class="gh-tier"><button class="gh-node ghn-wecc" onclick="ghDetail('wecc')"><div class="gh-node-lbl">WECC</div><div class="gh-node-sub">Regional Entity (West)</div></button></div>
+              <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
+              <div class="gh-tier"><button class="gh-node ghn-rc" onclick="ghDetail('rc')"><div class="gh-node-lbl">RC</div><div class="gh-node-sub">Reliability Coordinator</div></button></div>
+              <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
+              <div class="gh-tier"><button class="gh-node ghn-caiso" onclick="ghDetail('caiso')"><div class="gh-node-lbl">CAISO</div><div class="gh-node-sub">ISO / Balancing Authority</div></button></div>
+              <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
+              <div class="gh-tier-row">
+                <button class="gh-node ghn-ba" onclick="ghDetail('ba')" style="min-width:108px;"><div class="gh-node-lbl">BA</div><div class="gh-node-sub">Balancing Authority</div></button>
+                <button class="gh-node ghn-to" onclick="ghDetail('to')" style="min-width:108px;"><div class="gh-node-lbl">TO / TOP</div><div class="gh-node-sub">Transmission Owner/Operator</div></button>
+                <button class="gh-node ghn-dp" onclick="ghDetail('dp')" style="min-width:108px;"><div class="gh-node-lbl">DP</div><div class="gh-node-sub">Distribution Provider</div></button>
+              </div>
+              <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
+              <div class="gh-tier"><button class="gh-node ghn-go" onclick="ghDetail('go')"><div class="gh-node-lbl">GO</div><div class="gh-node-sub">Generator Owner</div></button></div>
+              <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
+              <div class="gh-tier"><button class="gh-node ghn-gop" onclick="ghDetail('gop')"><div class="gh-node-lbl">GOP — You</div><div class="gh-node-sub">Generator Operator (ROC)</div></button></div>
+              <div class="gh-separator">── Commercial layer (parallel, not above you) ──</div>
+              <div class="gh-tier-row">
+                <button class="gh-node ghn-ppa" onclick="ghDetail('ppa')" style="min-width:108px;"><div class="gh-node-lbl">PPA</div><div class="gh-node-sub">Power Purchase Agreement</div></button>
+                <button class="gh-node ghn-pse" onclick="ghDetail('pse')" style="min-width:108px;"><div class="gh-node-lbl">PSE / SC</div><div class="gh-node-sub">Scheduling Coordinator</div></button>
+              </div>
+              <div id="gh-detail-box" style="display:none;"></div>
+            </div>
+
+            <!-- TWO CHAINS TAB -->
+            <div class="gh-panel" id="gh-panel-chains">
+              <div class="gh-chains">
+                <div class="gh-chain-col">
+                  <h4 style="color:var(--blue);">⚡ Reliability / Operations</h4>
+                  <div class="gh-ch-node" style="background:#3C3489;color:#EEEDFE;">NERC</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">sets standards</div>
+                  <div class="gh-ch-node" style="background:#534AB7;color:#EEEDFE;">WECC</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">audits &amp; enforces</div>
+                  <div class="gh-ch-node" style="background:#185FA5;color:#E6F1FB;">RC (WECC RC)</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">wide-area oversight</div>
+                  <div class="gh-ch-node" style="background:#0F6E56;color:#E1F5EE;">CAISO (ISO / BA)</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">real-time dispatch</div>
+                  <div class="gh-ch-node" style="background:#3B6D11;color:#EAF3DE;">TO / TOP</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">transmission limits</div>
+                  <div class="gh-ch-node" style="background:#993C1D;color:#FAECE7;">GOP (you)</div>
+                  <div style="margin-top:8px;font-size:11px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Mandatory.</strong> Non-compliance = NERC violation. RC can override everyone except emergency safety.</div>
+                </div>
+                <div class="gh-chain-col">
+                  <h4 style="color:var(--amber);">💰 Commercial / Merchant</h4>
+                  <div class="gh-ch-node" style="background:#5F5E5A;color:#F1EFE8;">PSE / Merchant Owner</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">owns the revenue</div>
+                  <div class="gh-ch-node" style="background:#993556;color:#FBEAF0;">PPA (contract limit)</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">defines max MW &amp; price</div>
+                  <div class="gh-ch-node" style="background:#854F0B;color:#FAEEDA;">SC (market bid)</div>
+                  <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">submits bids to CAISO</div>
+                  <div class="gh-ch-node" style="background:#993C1D;color:#FAECE7;">GOP (you)</div>
+                  <div style="margin-top:8px;font-size:11px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Contractual.</strong> Violating PPA is financial, not a grid violation — but still matters commercially.</div>
+                </div>
+              </div>
+              <div class="gh-conflict">
+                <h4>⚠ When the two chains conflict</h4>
+                <p>CAISO dispatches you to 80 MW. Your PPA cap is 75 MW. <strong>Follow CAISO.</strong> Log the exceedance, notify SC/PSE, document it.<br><br>
+                RC issues an emergency directive to reduce output immediately. <strong>RC overrides everything</strong> — execute first, document simultaneously, notify SC after.<br><br>
+                The DP limits interconnection because of distribution voltage issues. That's a reliability constraint — follow it like a TOP curtailment.</p>
+              </div>
+            </div>
+
+            <!-- PRIORITY TAB -->
+            <div class="gh-panel" id="gh-panel-priority">
+              <div class="gh-note">When instructions stack up and conflict, this is the order you follow. No exceptions.</div>
+              <div class="gh-prio-list" style="margin-top:12px;">
+                <div class="gh-prio-item">
+                  <div class="gh-prio-num" style="background:#3C3489;">1</div>
+                  <div><strong>Emergency / Safety</strong><p>Immediate threat to life, equipment, or grid stability. Your SOPs and judgment. Nothing overrides this.</p></div>
+                </div>
+                <div class="gh-prio-item">
+                  <div class="gh-prio-num" style="background:#185FA5;">2</div>
+                  <div><strong>RC Emergency Directive</strong><p>The RC has wider-area visibility. Their emergency instruction can override the ISO. Rare — but when it comes, it takes the chain.</p></div>
+                </div>
+                <div class="gh-prio-item">
+                  <div class="gh-prio-num" style="background:#0F6E56;">3</div>
+                  <div><strong>CAISO real-time dispatch</strong><p>A DOP or direct CAISO instruction is a reliability obligation. Log it, execute it, document deviations with justification.</p></div>
+                </div>
+                <div class="gh-prio-item">
+                  <div class="gh-prio-num" style="background:#3B6D11;">4</div>
+                  <div><strong>Transmission constraint (TOP / DP)</strong><p>TOP curtailment orders, DP interconnection limits — both are reliability constraints overriding your dispatch target.</p></div>
+                </div>
+                <div class="gh-prio-item">
+                  <div class="gh-prio-num" style="background:#854F0B;">5</div>
+                  <div><strong>Plant physical limits</strong><p>Ramp rates, inverter limits, transformer ratings. Never dispatch to a point that damages equipment.</p></div>
+                </div>
+                <div class="gh-prio-item">
+                  <div class="gh-prio-num" style="background:#993556;">6</div>
+                  <div><strong>PPA / Commercial limits</strong><p>Last in the reliability stack. Exceeding or missing it due to grid instructions is force-majeure, not a violation on your part.</p></div>
+                </div>
+              </div>
+              <div class="gh-note" style="margin-top:12px;">"Grid first, plant second, contract third. Log everything, call everybody, explain later."</div>
+            </div>
+
+            <!-- SCENARIOS TAB -->
+            <div class="gh-panel" id="gh-panel-scenarios">
+
+              <div class="gh-scen">
+                <div class="gh-scen-hdr" onclick="ghToggleScen(this)">
+                  <span class="gh-scen-badge" style="background:var(--bbg);color:var(--blue);">RC Directive</span>
+                  <h4>RC issues wide-area emergency curtailment</h4>
+                  <span class="gh-scen-chev">▾</span>
+                </div>
+                <div class="gh-scen-body">
+                  <div class="gh-scen-setup">Setup: Grid event in the Western Interconnection. WECC RC calls CAISO and issues an emergency directive to curtail specific resources including yours. CAISO may not yet have updated your DOP.</div>
+                  <div class="gh-step"><div class="gh-step-num">1</div><div class="gh-step-txt"><strong>RC directive received (via CAISO or directly).</strong> This is a wide-area stability instruction — highest reliability authority below emergency safety.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">2</div><div class="gh-step-txt"><strong>Execute immediately.</strong> Read back per COM-002. Do not wait for your DOP to update — RC instructions act on the grid faster than market signals.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">3</div><div class="gh-step-txt"><strong>Notify SC and log.</strong> Timestamp the directive receipt, who issued it, the MW instruction, and your confirmation. This is your paper trail.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">4</div><div class="gh-step-txt"><strong>Monitor for CAISO DOP update.</strong> CAISO will catch up — but you executed on RC authority. The two should align quickly.</div></div>
+                  <div class="gh-op-action">Operator action: RC authority &gt; CAISO DOP. Execute, read back, notify SC, log everything.</div>
+                </div>
+              </div>
+
+              <div class="gh-scen">
+                <div class="gh-scen-hdr" onclick="ghToggleScen(this)">
+                  <span class="gh-scen-badge" style="background:var(--abg);color:var(--amber);">DP Constraint</span>
+                  <h4>Distribution Provider limits your interconnection output</h4>
+                  <span class="gh-scen-chev">▾</span>
+                </div>
+                <div class="gh-scen-body">
+                  <div class="gh-scen-setup">Setup: Your plant interconnects at distribution voltage. The DP calls with a curtailment — local distribution feeder is overloaded and voltage is out of band. Your CAISO DOP is 50 MW but the DP says hold to 30 MW.</div>
+                  <div class="gh-step"><div class="gh-step-num">1</div><div class="gh-step-txt"><strong>DP curtailment received.</strong> This is a distribution-level reliability constraint. Treat it like a TOP curtailment — it's a physical limit on what the grid can safely absorb at your POI.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">2</div><div class="gh-step-txt"><strong>Confirm and read back.</strong> "Confirmed, holding to 30 MW, feeder voltage constraint." Log time and who issued.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">3</div><div class="gh-step-txt"><strong>Execute curtailment.</strong> You are now deviating from your CAISO DOP — this needs to be documented.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">4</div><div class="gh-step-txt"><strong>Notify CAISO of deviation.</strong> Log the DOP vs actual discrepancy and the reason (DP constraint, feeder name/ID). CAISO state estimator needs to know.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">5</div><div class="gh-step-txt"><strong>Notify SC/PSE.</strong> Lost 20 MW — commercial position is affected. SC needs to adjust their market exposure.</div></div>
+                  <div class="gh-op-action">Operator action: DP limit is a reliability constraint. Follow it, notify CAISO, then notify SC.</div>
+                </div>
+              </div>
+
+              <div class="gh-scen">
+                <div class="gh-scen-hdr" onclick="ghToggleScen(this)">
+                  <span class="gh-scen-badge" style="background:var(--rbg);color:var(--red);">PPA Conflict</span>
+                  <h4>CAISO dispatches below PPA minimum</h4>
+                  <span class="gh-scen-chev">▾</span>
+                </div>
+                <div class="gh-scen-body">
+                  <div class="gh-scen-setup">Setup: PPA requires 60 MW minimum. CAISO sends a 40 MW DOP due to local congestion.</div>
+                  <div class="gh-step"><div class="gh-step-num">1</div><div class="gh-step-txt"><strong>CAISO sends DOP: 40 MW.</strong> This lands in your EMS as a new dispatch target.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">2</div><div class="gh-step-txt"><strong>Execute.</strong> Ramp to 40 MW per your unit's ramp rate. Do not hold at 60 MW "for the PPA."</div></div>
+                  <div class="gh-step"><div class="gh-step-num">3</div><div class="gh-step-txt"><strong>Notify SC/PSE immediately.</strong> Call or log that a CAISO curtailment is active and you are below PPA minimum. Give them MW and timestamp.</div></div>
+                  <div class="gh-step"><div class="gh-step-num">4</div><div class="gh-step-txt"><strong>Document everything.</strong> DOP receipt time, ramp, PPA deviation, notification. This is your force-majeure paper trail.</div></div>
+                  <div class="gh-op-action">Operator action: Follow CAISO, notify SC, document. The commercial fix is not your problem to solve in real time.</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- ── END GRID HIERARCHY WIDGET ─────────────────────────────────────── -->
 
     <div id="roc-sections"></div>
   </div>
@@ -7398,6 +7653,22 @@ const ROC_QUESTIONS = [
    q:'Quick check: match each entity to its one-line function — GO, GOP, TO, TOP, SC, PSE.',
    a:'<ul><li><strong>GO</strong> — Owns the generation facility</li><li><strong>GOP</strong> — Operates the generation facility in real time (you)</li><li><strong>TO</strong> — Owns the transmission infrastructure</li><li><strong>TOP</strong> — Manages the transmission system in real time; permission required for HV switching</li><li><strong>SC</strong> — Submits schedules and bids to the ISO; communicates outages and derates</li><li><strong>PSE</strong> — Buys and sells electricity; the commercial entity behind the energy contracts</li></ul>And the ISO (CAISO, ERCOT): <strong>Operates the market and balances the grid in real time</strong> — in most contexts where you\'d hear "BA," in this market the ISO is that entity.'},
 
+  {id:'g7', cat:'grid', type:'conceptual',
+   q:'What is the RC (Reliability Coordinator), and how does their authority differ from CAISO\'s?',
+   a:'The <strong>RC (Reliability Coordinator)</strong> has the highest level of real-time operational authority on the grid — above the ISO/BA. The RC\'s job is wide-area reliability: they monitor the entire interconnection (not just one BA\'s footprint) and can issue emergency instructions to any entity within their area when they see a threat to system integrity.<br><br>In the West, <strong>WECC RC Services</strong> fills this role.<br><br>How RC differs from CAISO:<ul><li><strong>CAISO</strong> dispatches for economic efficiency and balance within California — their instructions are routine market operations</li><li><strong>RC</strong> acts for wide-area stability — their instructions are emergency reliability actions that override normal market operations</li><li>RC can direct CAISO, not the other way around</li></ul><strong>Operationally:</strong> You will rarely hear from the RC directly — usually the RC instructs CAISO, and CAISO relays it to you. But if the RC contacts you directly in an emergency, their instruction takes priority over any existing DOP. Execute, read back, document, then notify SC.'},
+
+  {id:'g8', cat:'grid', type:'application',
+   q:'SCENARIO: The RC issues an emergency directive to curtail your plant. Your current CAISO DOP is higher than the RC\'s target. What do you do?',
+   a:'<ol style="margin-left:14px;"><li><strong>Execute the RC directive immediately.</strong> RC authority is above the ISO in a reliability emergency. The DOP reflects market-normal operations; the RC is acting on a wide-area reliability threat.</li><li><strong>Verbal read-back per COM-002.</strong> Confirm the MW target, who issued it, and the time. Do not execute without closing the communication loop.</li><li><strong>Log everything with timestamps.</strong> RC contact name/ID, time received, MW instruction, time of execution, actual output achieved.</li><li><strong>Notify CAISO of the deviation.</strong> You are delivering less than your DOP — CAISO\'s state estimator needs to know why. They will update accordingly.</li><li><strong>Notify SC/PSE.</strong> Commercial position is affected. They need the timestamps and MW numbers to manage market exposure.</li></ol><strong>Key principle:</strong> RC instructions don\'t go through your normal dispatch chain — they arrive because something is wrong at the interconnection level. Speed and documentation matter equally.'},
+
+  {id:'g9', cat:'grid', type:'conceptual',
+   q:'What is the DP (Distribution Provider), and when does a GOP interact with them?',
+   a:'The <strong>DP (Distribution Provider)</strong> owns and operates the distribution system — the lower-voltage network (typically below 35 kV) that serves end consumers. Most large generation interconnects at transmission voltage (HV), where the TOP is the relevant authority. But some smaller or behind-the-meter resources interconnect at distribution voltage — that\'s where the DP becomes your grid interface.<br><br>Situations where a GOP may interact with the DP:<ul><li><strong>Distribution-connected generation</strong> — your POI is on the distribution system. The DP manages the interconnection agreement and operating constraints.</li><li><strong>Feeder voltage issues</strong> — the DP may call to curtail your output if local feeder voltage is out of band. Treat this like a TOP curtailment: it\'s a reliability constraint, not a request.</li><li><strong>Planned outages</strong> — if distribution infrastructure adjacent to your interconnect needs maintenance, the DP coordinates the switching and may require temporary curtailment.</li></ul><strong>Authority:</strong> The DP\'s curtailment orders are reliability instructions on their system. They don\'t have CAISO dispatch authority, but they do have the right and obligation to protect the distribution system — which means they can limit your output when necessary.'},
+
+  {id:'g10', cat:'grid', type:'recognition',
+   q:'Where does the RC sit relative to CAISO and WECC in the reliability hierarchy? What is the RC\'s one job?',
+   a:'<strong>Hierarchy:</strong> NERC → WECC (Regional Entity) → <strong>RC</strong> → CAISO (ISO/BA) → TOP → GOP<br><br>The RC sits between WECC and the ISO. WECC does compliance and planning; the RC does real-time wide-area operations.<br><br><strong>The RC\'s one job:</strong> Maintain reliability across the entire interconnection in real time. They watch flows, stability limits, and contingency exposure across multiple BA areas simultaneously. When they see a wide-area threat that a single BA can\'t resolve on their own, the RC acts.<br><br><strong>Mental model:</strong> \"CAISO manages the California grid. The RC manages everything the California grid is connected to.\"'},
+
   // ══ VOLTAGE & REACTIVE POWER ══════════════════════════════════════════════
 
   {id:'v1', cat:'voltage', type:'conceptual',
@@ -7620,6 +7891,113 @@ let rocFilter = 'all';
 let rocDrillQueue = [];
 let rocDrillIdx = 0;
 
+// ── GRID HIERARCHY WIDGET JS ─────────────────────────────────────────────────
+const GH_DATA = {
+  nerc:{name:'NERC',full:'North American Electric Reliability Corporation',
+    what:'Writes the reliability standards (CIP, FAC, MOD, VAR, COM, etc.) that every functional entity must follow. Does not operate anything — it sets the rules and investigates violations.',
+    auth:'Can issue fines up to $1M/day per violation. Requires corrective action plans. No day-to-day dispatch authority.',
+    signal:'Rules only. No real-time instructions. You\'ll see them in audit findings and violation notices — not on your phone during a shift.',
+    mental:'"NERC is the rulebook. You never talk to them in real time — but their standards live in every SOP you follow."'},
+  wecc:{name:'WECC',full:'Western Electricity Coordinating Council',
+    what:'The Regional Entity for the Western Interconnection. Enforces NERC standards through audits, spot checks, and self-reports. Also does long-term reliability assessments for the West.',
+    auth:'Conducts compliance audits. Issues Notices of Alleged Violation (NAVs). Delegates enforcement to NERC.',
+    signal:'Audit requests, compliance questionnaires, self-report forms. Not calling you during a shift.',
+    mental:'"WECC is the referee for the West. They watch the film after the game, not during it."'},
+  rc:{name:'RC',full:'Reliability Coordinator — WECC RC Services (West)',
+    what:'Highest real-time operational authority. Monitors the entire Western Interconnection across multiple BA areas simultaneously. Issues emergency directives when wide-area stability is threatened. Can override ISO instructions.',
+    auth:'Can direct any entity — including CAISO — to take immediate action to preserve interconnection reliability. RC directives are the highest operational priority below emergency safety.',
+    signal:'Emergency phone calls, direct real-time instructions. Rare, but when they call, everything else waits. Usually their instructions reach you via CAISO — but in a true emergency they may contact you directly.',
+    mental:'"CAISO manages California. The RC manages everything California is connected to. When the RC calls, the ISO follows."'},
+  caiso:{name:'CAISO',full:'California Independent System Operator',
+    what:'Operates the bulk transmission grid in California in real time. Runs the wholesale electricity market (DAM, RTM, ancillary services). Issues Dispatch Operating Points (DOPs) and emergency instructions. Acts as both ISO and BA in California.',
+    auth:'Full real-time dispatch authority over all resources in the CAISO BAA. Can curtail, redispatch, or emergency-instruct any unit. Non-compliance is a NERC violation.',
+    signal:'DOPs via SCADA/EMS, phone calls from CAISO control room (DMO), market instructions via SIBR. This is your primary day-to-day operational authority.',
+    mental:'"CAISO is the air traffic controller. When they say descend to 40 MW, you descend — you don\'t argue about your PPA."'},
+  ba:{name:'BA',full:'Balancing Authority',
+    what:'Maintains real-time balance between load and generation within a defined area (ACE = 0). In California, CAISO IS the BA. Some utilities are their own BA.',
+    auth:'Dispatch authority within their balancing area. Can issue emergency instructions to correct area control error.',
+    signal:'In the CAISO footprint, BA function is transparent — CAISO\'s dispatch instructions are the BA instructions.',
+    mental:'"The BA keeps the bathtub level. Too much water (generation) or too little — they adjust the faucet (dispatch)."'},
+  to:{name:'TO / TOP',full:'Transmission Owner / Transmission Operator',
+    what:'Owns and operates the high-voltage transmission lines. TOPs monitor line flows, voltage, and stability limits in real time. They can issue curtailment orders when thermal, voltage, or stability limits are threatened.',
+    auth:'Can curtail generation output for transmission reliability, even overriding CAISO dispatch. Their curtailment is a reliability instruction.',
+    signal:'Phone calls, written curtailment orders, SCADA alarms. When a TOP calls, treat it like a CAISO instruction. HV breaker operations require TOP permission.',
+    mental:'"The TOP owns the highway. If the on-ramp is backed up, they control the metering light — regardless of what the GPS says."'},
+  dp:{name:'DP',full:'Distribution Provider',
+    what:'Owns and operates the distribution system — lower-voltage network (typically below 35 kV) serving end consumers. Relevant for generation interconnected at distribution voltage rather than transmission voltage.',
+    auth:'Can curtail or limit generation connected to their distribution system for reliability reasons. No CAISO dispatch authority, but they protect their own system. Their curtailment orders are reliability instructions on their system.',
+    signal:'Phone calls for curtailment, interconnection coordination, planned switching. Treat their curtailment like a TOP curtailment — reliability constraint, not optional.',
+    mental:'"The DP owns the side street. If the side street is overloaded, they can limit how much traffic comes on from your driveway — regardless of what CAISO scheduled."'},
+  go:{name:'GO',full:'Generator Owner',
+    what:'Owns the physical asset — the land, panels, inverters, transformers. Responsible for the plant\'s interconnection agreement, maintenance, and NERC standards compliance as an asset owner.',
+    auth:'Sets plant operating limits and maintenance windows. Defines what the asset is capable of. Has authority over long-term plant decisions, not day-to-day dispatch.',
+    signal:'Outage requests, capability ratings, maintenance schedules, NERC compliance programs.',
+    mental:'"The GO owns the car. The GOP drives it. The GO sets the speed governor limit — the GOP decides how fast to go within that."'},
+  gop:{name:'GOP',full:'Generator Operator — That\'s You (ROC)',
+    what:'Operates the plant in real time. Executes dispatch from CAISO. Monitors plant health, equipment limits, and grid conditions. Communicates deviations to CAISO and the SC. First line of defense for both reliability and commercial performance.',
+    auth:'Authority to operate within CAISO dispatch and plant limits. Can take equipment out of service for safety. Must follow CAISO instructions or formally declare unable to comply.',
+    signal:'You receive signals from everyone above. You generate data (SCADA output) and notifications (deviations, limitations, COM-002 readbacks).',
+    mental:'"The GOP is the pilot. CAISO is ATC. RC is ARTCC (wider area). You fly the plane — but when ATC says turn, you turn, and when ARTCC calls an emergency, you land."'},
+  ppa:{name:'PPA',full:'Power Purchase Agreement',
+    what:'A contract between the generator (GO/PSE) and an offtaker (utility, corporate buyer) defining price, term, and volume of energy sold. Sets a maximum (and sometimes minimum) MW delivery obligation.',
+    auth:'No operational authority. It\'s a contract, not an operator. Violating it triggers financial consequences — not grid violations.',
+    signal:'Defines the commercial envelope your SC bids within. The PPA cap is not a hard SCADA limit.',
+    mental:'"The PPA is the lease agreement on the car. Breaking it doesn\'t crash the car — but it costs you money."'},
+  pse:{name:'PSE / SC',full:'Purchasing-Selling Entity / Scheduling Coordinator',
+    what:'The commercial entity that bids your plant\'s capacity into the CAISO market. Submits Resource Plans and energy bids for the Day-Ahead and Real-Time markets.',
+    auth:'No direct operational authority over the plant. Sets commercial strategy — what you bid, at what price. You execute; they bid.',
+    signal:'Market bids, resource plans, commercial instructions. If they ask you to do something that conflicts with CAISO, CAISO wins.',
+    mental:'"The PSE is your ticket agent. They book the flights (bids). You fly the plane (operate). If ATC reroutes you, the ticket agent\'s plan changes — not yours."'}
+};
+
+function ghTab(id, btn) {
+  document.querySelectorAll('.gh-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.gh-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('gh-panel-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function ghDetail(key) {
+  const d = GH_DATA[key];
+  const box = document.getElementById('gh-detail-box');
+  box.style.display = 'block';
+  box.innerHTML = `
+    <div class="gh-detail">
+      <h3>${d.name}</h3>
+      <div class="gh-role">${d.full}</div>
+      <div class="gh-dgrid">
+        <div class="gh-ditem"><div class="gh-ditem-k">What they do</div><div class="gh-ditem-v">${d.what}</div></div>
+        <div class="gh-ditem"><div class="gh-ditem-k">Authority over plant</div><div class="gh-ditem-v">${d.auth}</div></div>
+        <div class="gh-ditem" style="grid-column:1/-1"><div class="gh-ditem-k">How they signal you</div><div class="gh-ditem-v">${d.signal}</div></div>
+      </div>
+      <div class="gh-mental">${d.mental}</div>
+    </div>`;
+  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function ghToggleScen(hdr) {
+  const body = hdr.nextElementSibling;
+  const chev = hdr.querySelector('.gh-scen-chev');
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+function ghToggleWidget() {
+  const body = document.getElementById('gh-widget-body');
+  const chevron = document.getElementById('gh-chevron');
+  const hdr = document.getElementById('gh-widget-hdr');
+  if (body.style.display === 'none') {
+    body.style.display = '';
+    chevron.textContent = '▾';
+    hdr.style.borderBottom = '1px solid var(--border)';
+  } else {
+    body.style.display = 'none';
+    chevron.textContent = '▸';
+    hdr.style.borderBottom = '1px solid transparent';
+  }
+}
+// ── END GRID HIERARCHY WIDGET JS ─────────────────────────────────────────────
+
 function rocLoad() {
   try { rocProgress = JSON.parse(localStorage.getItem('roc_progress') || '{}'); } catch(e) { rocProgress = {}; }
 }
@@ -7635,10 +8013,17 @@ function rocResetProgress() {
   rocRender();
 }
 
+function rocToggleFilterDropdown() {
+  const dropdown = document.getElementById('roc-filter-dropdown');
+  dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+}
+
 function rocSetFilter(f, btn) {
   rocFilter = f;
-  document.querySelectorAll('.roc-ftag').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.roc-ftag-dropdown').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  document.getElementById('roc-current-filter').textContent = btn.textContent;
+  document.getElementById('roc-filter-dropdown').style.display = 'none';
   rocRender();
 }
 
@@ -7655,10 +8040,10 @@ function rocUpdateStats() {
     else if (p === 'review-it') review++;
     else if (p === 'missed') missed++;
   });
-  document.getElementById('roc-stat-total').textContent = ROC_QUESTIONS.length;
-  document.getElementById('roc-stat-done').textContent = done;
-  document.getElementById('roc-stat-review').textContent = review;
-  document.getElementById('roc-stat-missed').textContent = missed;
+  document.getElementById('roc-stat-total').textContent = ROC_QUESTIONS.length + ' questions';
+  document.getElementById('roc-stat-done').textContent = done + ' got it';
+  document.getElementById('roc-stat-review').textContent = review + ' review';
+  document.getElementById('roc-stat-missed').textContent = missed + ' missed';
 }
 
 function rocTypeBadge(type) {
