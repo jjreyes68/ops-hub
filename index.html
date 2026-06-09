@@ -1391,9 +1391,12 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
       </div>
     </div>
     <div class="card">
-      <div class="card-title">Voltage Check</div>
+      <div class="card-title">Site Check</div>
+
+      <!-- ── VOLTAGE ─────────────────────────────────────────────────────── -->
+      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Voltage</div>
       <div style="margin-bottom:8px;">
-        <select id="vchk-sel" onchange="vchkSiteChange()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;cursor:pointer;">
+        <select id="vchk-sel" onchange="vchkSiteChange()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;cursor:pointer;">
           <option value="">— Select site —</option>
           <option value="CNDR1">CNDR1 — Condor</option>
           <option value="COSO1">COSO1 — Coso</option>
@@ -1418,13 +1421,65 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
         <div id="vchk-band-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:6px;"></div>
         <div style="display:flex;gap:6px;align-items:center;">
           <input id="vchk-inp" type="number" step="0.01" placeholder="Enter kV…" oninput="vchkCheck()"
-            style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
+            style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
           <span style="font-size:12px;color:var(--text3);">kV</span>
         </div>
       </div>
-      <div id="vchk-result" style="display:none;border-radius:8px;padding:10px 12px;text-align:center;margin-top:4px;">
-        <div id="vchk-verdict" style="font-size:18px;font-weight:700;letter-spacing:-.01em;"></div>
+      <div id="vchk-result" style="display:none;border-radius:7px;padding:9px 12px;text-align:center;margin-bottom:4px;">
+        <div id="vchk-verdict" style="font-size:16px;font-weight:700;letter-spacing:-.01em;"></div>
         <div id="vchk-detail" style="font-size:11px;margin-top:3px;opacity:.8;font-family:var(--m);"></div>
+      </div>
+
+      <!-- ── DIVIDER ─────────────────────────────────────────────────────── -->
+      <div style="border-top:1px solid var(--border);margin:12px 0;"></div>
+
+      <!-- ── NAMEPLATE ───────────────────────────────────────────────────── -->
+      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Nameplate</div>
+      <div style="margin-bottom:8px;">
+        <select id="npchk-sel" onchange="npchkSiteChange()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;cursor:pointer;">
+          <option value="">— Select site —</option>
+          <option value="BYPS1">BYPS1 — Bypass</option>
+          <option value="CNDR1">CNDR1 — Condor</option>
+          <option value="COSO1">COSO1 — Coso</option>
+          <option value="CTFL">CTFL — Centennial Flats</option>
+          <option value="FRND1">FRND1 — Ferdinand</option>
+          <option value="GLTA1">GLTA1 — Goleta</option>
+          <option value="HARQ1">HARQ1 — Harquahala 1</option>
+          <option value="HARQ2">HARQ2 — Harquahala 2</option>
+          <option value="KUNA1">KUNA1 — Kuna</option>
+          <option value="LSTH2">LSTH2 — Lost Hills 2</option>
+          <option value="NSTR">NSTR — Northstar Solar</option>
+          <option value="PDMT1">PDMT1 — Pediment</option>
+          <option value="PRGN1">PRGN1 — Peregrine</option>
+          <option value="BLKW1">BLKW1 — Blackwell</option>
+        </select>
+      </div>
+      <div id="npchk-body" style="display:none;">
+        <div id="npchk-np-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:8px;"></div>
+        <div id="npchk-mw-row" style="display:none;margin-bottom:6px;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">MW</div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <input id="npchk-mw-inp" type="number" step="0.1" placeholder="Enter MW…" oninput="npchkEval()"
+              style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
+            <span style="font-size:12px;color:var(--text3);">MW</span>
+          </div>
+          <div id="npchk-mw-result" style="display:none;border-radius:6px;padding:7px 10px;margin-top:4px;text-align:center;">
+            <div id="npchk-mw-verdict" style="font-size:15px;font-weight:700;"></div>
+            <div id="npchk-mw-detail" style="font-size:11px;margin-top:2px;opacity:.8;font-family:var(--m);"></div>
+          </div>
+        </div>
+        <div id="npchk-mwh-row" style="display:none;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">MWh</div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <input id="npchk-mwh-inp" type="number" step="1" placeholder="Enter MWh…" oninput="npchkEval()"
+              style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
+            <span style="font-size:12px;color:var(--text3);">MWh</span>
+          </div>
+          <div id="npchk-mwh-result" style="display:none;border-radius:6px;padding:7px 10px;margin-top:4px;text-align:center;">
+            <div id="npchk-mwh-verdict" style="font-size:15px;font-weight:700;"></div>
+            <div id="npchk-mwh-detail" style="font-size:11px;margin-top:2px;opacity:.8;font-family:var(--m);"></div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="card">
@@ -7498,7 +7553,7 @@ const VCHK_BANDS = {
   RKRG1: {min:139.2,  max:143.4,  sp:null},
 };
 function vchkSiteChange() {
-  const id = document.getElementById('vchk-sel').value;
+  const id      = document.getElementById('vchk-sel').value;
   const bandRow = document.getElementById('vchk-band-row');
   const result  = document.getElementById('vchk-result');
   const inp     = document.getElementById('vchk-inp');
@@ -7508,8 +7563,8 @@ function vchkSiteChange() {
   result.style.display  = 'none';
   inp.value = '';
   inp.focus();
-  const sp = b.sp ? ` · SP ${b.sp}` : '';
-  document.getElementById('vchk-band-lbl').textContent = `Band: ${b.min} – ${b.max} kV${sp}`;
+  const sp = b.sp ? ' · SP ' + b.sp : '';
+  document.getElementById('vchk-band-lbl').textContent = 'Band: ' + b.min + ' – ' + b.max + ' kV' + sp;
 }
 function vchkCheck() {
   const id  = document.getElementById('vchk-sel').value;
@@ -7523,14 +7578,93 @@ function vchkCheck() {
     res.style.background = 'var(--gbg)';
     document.getElementById('vchk-verdict').style.color = 'var(--green)';
     document.getElementById('vchk-verdict').textContent = '✓ In Band';
-    document.getElementById('vchk-detail').textContent  = `${val} kV is within ${b.min}–${b.max} kV`;
+    document.getElementById('vchk-detail').textContent  = val + ' kV is within ' + b.min + '–' + b.max + ' kV';
   } else {
-    const low = val < b.min;
+    const low   = val < b.min;
+    const delta = low ? (b.min - val).toFixed(2) : (val - b.max).toFixed(2);
     res.style.background = 'var(--rbg)';
     document.getElementById('vchk-verdict').style.color = 'var(--red)';
     document.getElementById('vchk-verdict').textContent = '✗ Out of Band';
-    const delta = low ? (b.min - val).toFixed(2) : (val - b.max).toFixed(2);
-    document.getElementById('vchk-detail').textContent  = `${val} kV — ${delta} kV ${low?'below floor':'above ceiling'}`;
+    document.getElementById('vchk-detail').textContent  = val + ' kV — ' + delta + ' kV ' + (low ? 'below floor' : 'above ceiling');
+  }
+}
+
+// Nameplate Check
+const NPCHK_SITES = {
+  BYPS1: {mw:200,    mwh:400,   label:'NP: 400 MWh / 200 MW'},
+  CNDR1: {mw:200,    mwh:818,   label:'NP: 818 MWh / 200 MW'},
+  COSO1: {mw:60,     mwh:240,   label:'NP: 240 MWh / 60 MW'},
+  CTFL:  {mw:267,    mwh:1069,  label:'NP: 1069 MWh / ±267 MW'},
+  FRND1: {mw:200,    mwh:800,   label:'NP: 800 MWh / 200 MW'},
+  GLTA1: {mw:60,     mwh:160,   label:'NP: 160 MWh / 60 MW'},
+  HARQ1: {mw:150,    mwh:null,  label:'NP: +150 MW (solar)'},
+  HARQ2: {mw:300,    mwh:1200,  label:'NP: 1200 MWh / 300 MW'},
+  KUNA1: {mw:150,    mwh:600,   label:'NP: 600 MWh / 150 MW'},
+  LSTH2: {mw:20,     mwh:null,  label:'NP: 20 MW (solar)'},
+  NSTR:  {mw:60,     mwh:null,  label:'NP: 60 MW (solar)'},
+  PDMT1: {mw:250,    mwh:1000,  label:'NP: 1000 MWh / 250 MW'},
+  PRGN1: {mw:200,    mwh:430,   label:'NP: 430 MWh / 200 MW'},
+  BLKW1: {mw:12,     mwh:null,  label:'NP: 12 MW (solar)'},
+};
+// tolerance: within 2% of nameplate counts as passing
+const NP_TOL = 0.02;
+function npchkSiteChange() {
+  const id   = document.getElementById('npchk-sel').value;
+  const body = document.getElementById('npchk-body');
+  if (!id) { body.style.display='none'; return; }
+  const s = NPCHK_SITES[id];
+  body.style.display = '';
+  document.getElementById('npchk-np-lbl').textContent = s.label;
+  // MW row always shown
+  const mwRow  = document.getElementById('npchk-mw-row');
+  const mwhRow = document.getElementById('npchk-mwh-row');
+  mwRow.style.display  = '';
+  mwhRow.style.display = s.mwh != null ? '' : 'none';
+  // clear inputs and results
+  document.getElementById('npchk-mw-inp').value  = '';
+  document.getElementById('npchk-mwh-inp').value = '';
+  document.getElementById('npchk-mw-result').style.display  = 'none';
+  document.getElementById('npchk-mwh-result').style.display = 'none';
+  document.getElementById('npchk-mw-inp').focus();
+}
+function npchkEval() {
+  const id = document.getElementById('npchk-sel').value;
+  if (!id) return;
+  const s = NPCHK_SITES[id];
+  // MW check
+  const mwVal = parseFloat(document.getElementById('npchk-mw-inp').value);
+  const mwRes = document.getElementById('npchk-mw-result');
+  if (!isNaN(mwVal)) {
+    mwRes.style.display = '';
+    const pct  = mwVal / s.mw;
+    const pass = pct >= (1 - NP_TOL);
+    const short = ((1 - pct) * 100).toFixed(1);
+    mwRes.style.background = pass ? 'var(--gbg)' : 'var(--rbg)';
+    document.getElementById('npchk-mw-verdict').style.color = pass ? 'var(--green)' : 'var(--red)';
+    document.getElementById('npchk-mw-verdict').textContent  = pass ? '✓ MW OK' : '✗ Below NP';
+    document.getElementById('npchk-mw-detail').textContent   = pass
+      ? mwVal + ' MW ≥ ' + s.mw + ' MW NP'
+      : mwVal + ' MW — ' + short + '% short of ' + s.mw + ' MW NP';
+  } else {
+    mwRes.style.display = 'none';
+  }
+  // MWh check (only if site has MWh NP)
+  if (s.mwh == null) return;
+  const mwhVal = parseFloat(document.getElementById('npchk-mwh-inp').value);
+  const mwhRes = document.getElementById('npchk-mwh-result');
+  if (!isNaN(mwhVal)) {
+    mwhRes.style.display = '';
+    const pct  = mwhVal / s.mwh;
+    const pass = pct >= (1 - NP_TOL);
+    const short = ((1 - pct) * 100).toFixed(1);
+    mwhRes.style.background = pass ? 'var(--gbg)' : 'var(--rbg)';
+    document.getElementById('npchk-mwh-verdict').style.color = pass ? 'var(--green)' : 'var(--red)';
+    document.getElementById('npchk-mwh-verdict').textContent  = pass ? '✓ MWh OK' : '✗ Below NP';
+    document.getElementById('npchk-mwh-detail').textContent   = pass
+      ? mwhVal + ' MWh ≥ ' + s.mwh + ' MWh NP'
+      : mwhVal + ' MWh — ' + short + '% short of ' + s.mwh + ' MWh NP';
+  } else {
+    mwhRes.style.display = 'none';
   }
 }
 
