@@ -1391,6 +1391,119 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
       </div>
     </div>
     <div class="card">
+      <div class="card-title">Site Check</div>
+
+      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Voltage</div>
+      <div style="margin-bottom:8px;">
+        <select id="vchk-sel" onchange="vchkSiteChange()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;cursor:pointer;">
+          <option value="">— Select site —</option>
+          <option value="ANGF1">ANGF1 — Angel Fire</option>
+          <option value="AVLN1">AVLN1 — Avalon</option>
+          <option value="BLKW1">BLKW1 — Blackwell</option>
+          <option value="CNDR1">CNDR1 — Condor</option>
+          <option value="COSO1">COSO1 — Coso</option>
+          <option value="CTFL">CTFL — Centennial Flats</option>
+          <option value="DLBO1">DLBO1 — Diablo Wind</option>
+          <option value="FRND1">FRND1 — Ferdinand</option>
+          <option value="GDWL1">GDWL1 — Goodwell Wind</option>
+          <option value="GLTA1">GLTA1 — Goleta</option>
+          <option value="HARQ1">HARQ1 — Harquahala 1</option>
+          <option value="HARQ2">HARQ2 — Harquahala 2</option>
+          <option value="KUNA1">KUNA1 — Kuna</option>
+          <option value="LNDL1">LNDL1 — Lindal Wind</option>
+          <option value="LSTH2">LSTH2 — Lost Hills 2</option>
+          <option value="MRCP">MRCP</option>
+          <option value="NSTR">NSTR — Northstar Solar</option>
+          <option value="ORGN1">ORGN1 — Origin Wind</option>
+          <option value="PDMT1">PDMT1 — Pediment</option>
+          <option value="PRGN1">PRGN1 — Peregrine</option>
+          <option value="RKRG1">RKRG1 — Rocky Ridge Wind</option>
+        </select>
+      </div>
+      <div id="vchk-band-row" style="display:none;margin-bottom:8px;">
+        <div id="vchk-band-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:6px;"></div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <input id="vchk-inp" type="number" step="0.01" placeholder="Enter kV…" oninput="vchkCheck()"
+            style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
+          <span style="font-size:12px;color:var(--text3);">kV</span>
+        </div>
+      </div>
+      <div id="vchk-result" style="display:none;border-radius:7px;padding:9px 12px;text-align:center;margin-bottom:4px;">
+        <div id="vchk-verdict" style="font-size:16px;font-weight:700;letter-spacing:-.01em;"></div>
+        <div id="vchk-detail" style="font-size:11px;margin-top:3px;opacity:.8;font-family:var(--m);"></div>
+      </div>
+
+      <div style="border-top:1px solid var(--border);margin:12px 0;"></div>
+
+      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Nameplate</div>
+      <div style="margin-bottom:8px;">
+        <select id="npchk-sel" onchange="npchkSiteChange()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;cursor:pointer;">
+          <option value="">— Select site —</option>
+          <option value="ANGF1">ANGF1 — Angel Fire</option>
+          <option value="AVLN1">AVLN1 — Avalon</option>
+          <option value="BLKW1">BLKW1 — Blackwell</option>
+          <option value="BYPS1">BYPS1 — Bypass</option>
+          <option value="CNDR1">CNDR1 — Condor</option>
+          <option value="COSO1">COSO1 — Coso</option>
+          <option value="CTFL">CTFL — Centennial Flats</option>
+          <option value="DBLO1">DBLO1 — Diablo</option>
+          <option value="DFRN1">DFRN1 — Dufferin Wind</option>
+          <option value="DLBO1">DLBO1 — Diablo Wind</option>
+          <option value="FRMV1">FRMV1 — Farmersville</option>
+          <option value="FRND1">FRND1 — Ferdinand</option>
+          <option value="GDWL1">GDWL1 — Goodwell Wind</option>
+          <option value="GLTA1">GLTA1 — Goleta</option>
+          <option value="HARQ1">HARQ1 — Harquahala 1</option>
+          <option value="HARQ2">HARQ2 — Harquahala 2</option>
+          <option value="HNFD1">HNFD1 — Handford</option>
+          <option value="KUNA1">KUNA1 — Kuna</option>
+          <option value="LNDL1">LNDL1 — Lindal Wind</option>
+          <option value="LSTH1">LSTH1 — Lost Hills 1</option>
+          <option value="LSTH2">LSTH2 — Lost Hills 2</option>
+          <option value="MCLM1">MCLM1 — McLeans Mountain</option>
+          <option value="MRCP">MRCP</option>
+          <option value="NCLS1">NCLS1 — Nicolas</option>
+          <option value="NSTR">NSTR — Northstar Solar</option>
+          <option value="ORGN1">ORGN1 — Origin Wind</option>
+          <option value="PDMT1">PDMT1 — Pediment</option>
+          <option value="PRGN1">PRGN1 — Peregrine</option>
+          <option value="PRSE1">PRSE1 — Prairie SE Wind</option>
+          <option value="PRTV1">PRTV1 — Porterville</option>
+          <option value="RKRG1">RKRG1 — Rocky Ridge Wind</option>
+          <option value="TLRE1">TLRE1 — Tularé</option>
+          <option value="TRPC1">TRPC1 — Tropico</option>
+          <option value="TSMS1">TSMS1 — Taos Mesa</option>
+        </select>
+      </div>
+      <div id="npchk-body" style="display:none;">
+        <div id="npchk-np-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:8px;"></div>
+        <div id="npchk-mw-row" style="display:none;margin-bottom:6px;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">MW</div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <input id="npchk-mw-inp" type="number" step="0.1" placeholder="Enter MW…" oninput="npchkEval()"
+              style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
+            <span style="font-size:12px;color:var(--text3);">MW</span>
+          </div>
+          <div id="npchk-mw-result" style="display:none;border-radius:6px;padding:7px 10px;margin-top:4px;text-align:center;">
+            <div id="npchk-mw-verdict" style="font-size:15px;font-weight:700;"></div>
+            <div id="npchk-mw-detail" style="font-size:11px;margin-top:2px;opacity:.8;font-family:var(--m);"></div>
+          </div>
+        </div>
+        <div id="npchk-mwh-row" style="display:none;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">MWh</div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <input id="npchk-mwh-inp" type="number" step="1" placeholder="Enter MWh…" oninput="npchkEval()"
+              style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
+            <span style="font-size:12px;color:var(--text3);">MWh</span>
+          </div>
+          <div id="npchk-mwh-result" style="display:none;border-radius:6px;padding:7px 10px;margin-top:4px;text-align:center;">
+            <div id="npchk-mwh-verdict" style="font-size:15px;font-weight:700;"></div>
+            <div id="npchk-mwh-detail" style="font-size:11px;margin-top:2px;opacity:.8;font-family:var(--m);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
       <div class="card-title">Tenaska Portal Converter</div>
       <div style="margin-bottom:10px;">
         <label style="font-size:11px;color:var(--text3);margin-bottom:4px;display:block;">Date</label>
@@ -2582,7 +2695,7 @@ async function load() {
   rows.forEach((row,i) => { const inp=row.querySelector('input'); if(inp) inp.value=S.escContacts[tkeys[i]]||''; });
 
   // Restore last active tab (default: scans)
-  const TAB_VIEWS = ['scans','asset','nerc','intel','ops','swbuilder','chron','timezones','schedule'];
+  const TAB_VIEWS = ['scans','asset','nerc','roc','intel','ops','swbuilder','chron','timezones','schedule'];
   let savedTab = 'scans';
   try { savedTab = localStorage.getItem('rnwbl_active_tab') || 'scans'; } catch(e) {}
   if (!TAB_VIEWS.includes(savedTab)) savedTab = 'scans';
@@ -3546,7 +3659,7 @@ function clCopyHandoff() {
   if (handoffEntries.length) {
     lines.push('Operator Handoff');
     handoffEntries.forEach(e => {
-      const catTag = e.cat && e.cat !== 'Normal' ? ` (${e.cat})` : '';
+      const catTag = e.cat && e.cat !== 'Normal' && e.cat !== 'Handoff' ? ` (${e.cat})` : '';
       const siteTag = e.site ? `${e.site} ` : '';
       lines.push(`• ${siteTag}${e.text}${catTag}`);
     });
@@ -7439,6 +7552,153 @@ function nercExamShowScreen(id){
 
 function nercExamShowSetup(){ clearInterval(nercExamS.timerInterval); nercExamShowScreen('setup'); }
 function nercExamShowResults(){ nercExamShowScreen('results'); }
+
+// Voltage Check
+const VCHK_BANDS = {
+  ANGF1: {min:12.16,  max:13.44,  sp:'12.8kV'},
+  AVLN1: {min:43.7,   max:48.3,   sp:'46kV'},
+  BLKW1: {min:11.4,   max:12.6,   sp:'12kV'},
+  CNDR1: {min:109.25, max:120.75, sp:'115kV'},
+  COSO1: {min:230.3,  max:239.7,  sp:'235kV'},
+  CTFL:  {min:521,    max:540,    sp:'525kV'},
+  DLBO1: {min:228,    max:232,    sp:'230kV'},
+  FRND1: {min:140,    max:144,    sp:'142kV'},
+  GDWL1: {min:109.25, max:120.75, sp:'115kV'},
+  GLTA1: {min:63.17,  max:69.83,  sp:'66kV'},
+  HARQ1: {min:499,    max:551,    sp:'525kV'},
+  HARQ2: {min:498.75, max:551.25, sp:'525kV'},
+  KUNA1: {min:138,    max:144.9,  sp:'142kV'},
+  LNDL1: {min:109,    max:121,    sp:'115kV'},
+  LSTH2: {min:70.29,  max:71.71,  sp:'71kV'},
+  MRCP:  {min:498.75, max:551.25, sp:'525kV'},
+  NSTR:  {min:117.81, max:120.19, sp:'119kV'},
+  ORGN1: {min:138.8,  max:142.8,  sp:'140.8kV'},
+  PDMT1: {min:226,    max:241,    sp:'236kV'},
+  PRGN1: {min:228,    max:234,    sp:'231.3kV'},
+  RKRG1: {min:139.2,  max:143.4,  sp:'141.3kV'},
+};
+function vchkSiteChange() {
+  const id      = document.getElementById('vchk-sel').value;
+  const bandRow = document.getElementById('vchk-band-row');
+  const result  = document.getElementById('vchk-result');
+  const inp     = document.getElementById('vchk-inp');
+  if (!id) { bandRow.style.display='none'; result.style.display='none'; return; }
+  const b = VCHK_BANDS[id];
+  bandRow.style.display = '';
+  result.style.display  = 'none';
+  inp.value = '';
+  inp.focus();
+  const sp = b.sp ? ' · SP ' + b.sp : '';
+  document.getElementById('vchk-band-lbl').textContent = 'Band: ' + b.min + ' – ' + b.max + ' kV' + sp;
+}
+function vchkCheck() {
+  const id  = document.getElementById('vchk-sel').value;
+  const val = parseFloat(document.getElementById('vchk-inp').value);
+  const res = document.getElementById('vchk-result');
+  if (!id || isNaN(val)) { res.style.display='none'; return; }
+  const b = VCHK_BANDS[id];
+  const inBand = val >= b.min && val <= b.max;
+  res.style.display = '';
+  if (inBand) {
+    res.style.background = 'var(--gbg)';
+    document.getElementById('vchk-verdict').style.color = 'var(--green)';
+    document.getElementById('vchk-verdict').textContent = '✓ In Band';
+    document.getElementById('vchk-detail').textContent  = val + ' kV is within ' + b.min + '–' + b.max + ' kV';
+  } else {
+    const low   = val < b.min;
+    const delta = low ? (b.min - val).toFixed(2) : (val - b.max).toFixed(2);
+    res.style.background = 'var(--rbg)';
+    document.getElementById('vchk-verdict').style.color = 'var(--red)';
+    document.getElementById('vchk-verdict').textContent = '✗ Out of Band';
+    document.getElementById('vchk-detail').textContent  = val + ' kV — ' + delta + ' kV ' + (low ? 'below floor' : 'above ceiling');
+  }
+}
+
+// Nameplate Check — pass if value >= (NP - 1)
+const NPCHK_SITES = {
+  ANGF1: {mw:3.5,    mwh:7,      label:'NP: 7 MWh / 3.5 MW'},
+  AVLN1: {mw:35,     mwh:null,   label:'NP: 35 MW (solar)'},
+  BLKW1: {mw:12,     mwh:null,   label:'NP: 12 MW (solar)'},
+  BYPS1: {mw:200,    mwh:400,    label:'NP: 400 MWh / 200 MW'},
+  CNDR1: {mw:200,    mwh:818,    label:'NP: 818 MWh / 200 MW'},
+  COSO1: {mw:60,     mwh:240,    label:'NP: 240 MWh / 60 MW'},
+  CTFL:  {mw:267,    mwh:1069,   label:'NP: 1069 MWh / 267 MW'},
+  DBLO1: {mw:16.68,  mwh:null,   label:'NP: 16.68 MW (wind)'},
+  DFRN1: {mw:91,     mwh:null,   label:'NP: 91 MW (wind)'},
+  DLBO1: {mw:null,   mwh:null,   label:'NP: unknown — no data'},
+  FRMV1: {mw:5.4,    mwh:null,   label:'NP: 5.4 MW (solar)'},
+  FRND1: {mw:200,    mwh:800,    label:'NP: 800 MWh / 200 MW'},
+  GDWL1: {mw:200,    mwh:null,   label:'NP: 200 MW (wind)'},
+  GLTA1: {mw:60,     mwh:160,    label:'NP: 160 MWh / 60 MW'},
+  HARQ1: {mw:150,    mwh:null,   label:'NP: 150 MW (solar)'},
+  HARQ2: {mw:300,    mwh:1200,   label:'NP: 1200 MWh / 300 MW'},
+  HNFD1: {mw:3.6,    mwh:null,   label:'NP: 3.6 MW (solar)'},
+  KUNA1: {mw:150,    mwh:600,    label:'NP: 600 MWh / 150 MW'},
+  LNDL1: {mw:150,    mwh:null,   label:'NP: 150 MW (wind)'},
+  LSTH1: {mw:26,     mwh:null,   label:'NP: 26 MW (solar)'},
+  LSTH2: {mw:20,     mwh:null,   label:'NP: 20 MW (solar)'},
+  MCLM1: {mw:60,     mwh:null,   label:'NP: 60 MW (wind)'},
+  MRCP:  {mw:183.33, mwh:733.32, label:'NP: 733.32 MWh / 183.33 MW'},
+  NCLS1: {mw:26,     mwh:null,   label:'NP: 26 MW (solar)'},
+  NSTR:  {mw:60,     mwh:null,   label:'NP: 60 MW (solar)'},
+  ORGN1: {mw:150,    mwh:null,   label:'NP: 150 MW (wind)'},
+  PDMT1: {mw:250,    mwh:1000,   label:'NP: 1000 MWh / 250 MW'},
+  PRGN1: {mw:200,    mwh:430,    label:'NP: 430 MWh / 200 MW'},
+  PRSE1: {mw:200,    mwh:null,   label:'NP: 200 MW (wind)'},
+  PRTV1: {mw:3.6,    mwh:null,   label:'NP: 3.6 MW (solar)'},
+  RKRG1: {mw:149,    mwh:null,   label:'NP: 149 MW (wind)'},
+  TLRE1: {mw:3.6,    mwh:null,   label:'NP: 3.6 MW (solar)'},
+  TRPC1: {mw:18.2,   mwh:null,   label:'NP: 18.2 MW (solar)'},
+  TSMS1: {mw:12,     mwh:24,     label:'NP: 24 MWh / 12 MW'},
+};
+function npchkSiteChange() {
+  const id   = document.getElementById('npchk-sel').value;
+  const body = document.getElementById('npchk-body');
+  if (!id) { body.style.display='none'; return; }
+  const s = NPCHK_SITES[id];
+  body.style.display = '';
+  document.getElementById('npchk-np-lbl').textContent = s.label;
+  document.getElementById('npchk-mw-row').style.display  = s.mw  != null ? '' : 'none';
+  document.getElementById('npchk-mwh-row').style.display = s.mwh != null ? '' : 'none';
+  document.getElementById('npchk-mw-inp').value  = '';
+  document.getElementById('npchk-mwh-inp').value = '';
+  document.getElementById('npchk-mw-result').style.display  = 'none';
+  document.getElementById('npchk-mwh-result').style.display = 'none';
+  if (s.mw != null) document.getElementById('npchk-mw-inp').focus();
+}
+function npchkEval() {
+  const id = document.getElementById('npchk-sel').value;
+  if (!id) return;
+  const s = NPCHK_SITES[id];
+  // MW
+  const mwVal = parseFloat(document.getElementById('npchk-mw-inp').value);
+  const mwRes = document.getElementById('npchk-mw-result');
+  if (s.mw != null && !isNaN(mwVal)) {
+    mwRes.style.display = '';
+    const pass  = mwVal >= (s.mw - 1);
+    const short = (s.mw - mwVal).toFixed(2);
+    mwRes.style.background = pass ? 'var(--gbg)' : 'var(--rbg)';
+    document.getElementById('npchk-mw-verdict').style.color = pass ? 'var(--green)' : 'var(--red)';
+    document.getElementById('npchk-mw-verdict').textContent = pass ? '✓ MW OK' : '✗ Below NP';
+    document.getElementById('npchk-mw-detail').textContent  = pass
+      ? mwVal + ' MW — within 1 MW of ' + s.mw + ' MW NP'
+      : mwVal + ' MW — ' + short + ' MW short of ' + s.mw + ' MW NP';
+  } else { mwRes.style.display = 'none'; }
+  // MWh
+  const mwhVal = parseFloat(document.getElementById('npchk-mwh-inp').value);
+  const mwhRes = document.getElementById('npchk-mwh-result');
+  if (s.mwh != null && !isNaN(mwhVal)) {
+    mwhRes.style.display = '';
+    const pass  = mwhVal >= (s.mwh - 1);
+    const short = (s.mwh - mwhVal).toFixed(2);
+    mwhRes.style.background = pass ? 'var(--gbg)' : 'var(--rbg)';
+    document.getElementById('npchk-mwh-verdict').style.color = pass ? 'var(--green)' : 'var(--red)';
+    document.getElementById('npchk-mwh-verdict').textContent = pass ? '✓ MWh OK' : '✗ Below NP';
+    document.getElementById('npchk-mwh-detail').textContent  = pass
+      ? mwhVal + ' MWh — within 1 MWh of ' + s.mwh + ' MWh NP'
+      : mwhVal + ' MWh — ' + short + ' MWh short of ' + s.mwh + ' MWh NP';
+  } else { mwhRes.style.display = 'none'; }
+}
 
 // Tenaska Portal Converter
 function clearPGSC() {
