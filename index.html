@@ -2840,7 +2840,7 @@ const SC_SITES = [
 ];
 
 let scLog        = [];          // [{ts, operator, shift, sites, group}]
-let scActiveSites= [];          // site IDs selected for this operator
+let scActiveSites= SC_SITES.map(s => s.id);  // site IDs selected for this operator (default all)
 let scLastScanned= {};          // {siteId: timestamp ms}
 let scTimerSecs  = 1800;
 let scTimerRunning = false;
@@ -3141,7 +3141,6 @@ function switchView(v, el) {
   document.getElementById('view-'+v).classList.add('active');
   if(el) el.classList.add('active');
   if(v==='log') renderLog();
-  if(v==='scans') { refreshScanStatuses(); renderSites(); }
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
   if(v==='map') mapActivate();
   if(v==='timezones') initTimeZones();
