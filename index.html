@@ -239,58 +239,6 @@ body.dark .card-title{color:var(--text2);}
 
 /* SCANS */
 .timer-strip{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:12px 16px;margin-bottom:14px;flex-wrap:wrap;box-shadow:var(--shs);}
-
-/* ── NERC SCAN LOG ─────────────────────────────────────────────────────────── */
-.sc-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
-.sc-topbar-left{display:flex;flex-direction:column;gap:2px;}
-.sc-topbar-right{display:flex;align-items:center;gap:8px;}
-.sc-title{font-size:15px;font-weight:700;color:var(--text);}
-.sc-subtitle{font-size:11px;color:var(--text3);font-family:var(--m);}
-.sc-timer-pill{display:flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-family:var(--m);font-size:13px;font-weight:500;color:var(--green);min-width:72px;justify-content:center;}
-.sc-timer-pill.urgent{color:var(--red);border-color:var(--red);animation:pulse 1s infinite;}
-.sc-timer-icon{font-size:12px;}
-.sc-setup-bar{display:flex;align-items:flex-start;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:12px 14px;margin-bottom:14px;flex-wrap:wrap;}
-.sc-setup-field{display:flex;flex-direction:column;gap:4px;}
-.sc-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);}
-.sc-site-pills{display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
-.sc-site-pill{font-size:11px;font-family:var(--m);padding:3px 9px;border-radius:12px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all .15s;user-select:none;}
-.sc-site-pill.active{background:var(--blue);border-color:var(--blue);color:#fff;}
-.sc-section-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin-bottom:8px;}
-.sc-quick-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px;}
-.sc-quick-btn{border-radius:var(--rl);padding:12px 8px;border:1px solid var(--border);background:var(--bg2);cursor:pointer;font-family:var(--f);transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:3px;}
-.sc-quick-btn:active{transform:scale(.97);}
-.sc-qb-icon{font-size:18px;}
-.sc-qb-label{font-size:12px;font-weight:600;color:var(--text);}
-.sc-qb-count{font-size:10px;font-family:var(--m);color:var(--text3);}
-.sc-all-btn:hover{border-color:var(--green);background:var(--gbg);}
-.sc-bess-btn:hover{border-color:var(--blue);background:var(--bbg);}
-.sc-solar-btn:hover{border-color:var(--amber);background:var(--abg);}
-.sc-wind-btn:hover{border-color:var(--text2);background:var(--bg3);}
-.sc-sites-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:6px;margin-bottom:4px;}
-.sc-site-card{border:1px solid var(--border);border-radius:8px;padding:10px 8px;text-align:center;cursor:pointer;background:var(--bg2);transition:all .15s;position:relative;}
-.sc-site-card:hover{border-color:var(--green);background:var(--gbg);}
-.sc-site-card:active{transform:scale(.96);}
-.sc-site-card.sc-just-scanned{border-color:var(--green);background:var(--gbg);}
-.sc-card-id{font-size:12px;font-weight:700;font-family:var(--m);color:var(--text);}
-.sc-card-type{font-size:10px;color:var(--text3);margin-top:1px;}
-.sc-card-ago{font-size:10px;font-family:var(--m);color:var(--text3);margin-top:4px;}
-.sc-card-ago.sc-due{color:var(--amber);}
-.sc-card-ago.sc-overdue{color:var(--red);}
-.sc-card-ago.sc-ok{color:var(--green);}
-.sc-card-check{position:absolute;top:4px;right:5px;font-size:10px;color:var(--green);opacity:0;transition:opacity .2s;}
-.sc-site-card.sc-just-scanned .sc-card-check{opacity:1;}
-.sc-log{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);max-height:320px;overflow-y:auto;padding:4px 0;}
-.sc-log-empty{padding:16px;text-align:center;font-size:12px;color:var(--text3);}
-.sc-log-row{display:flex;align-items:baseline;gap:10px;padding:7px 14px;border-bottom:1px solid var(--border);font-size:12px;}
-.sc-log-row:last-child{border-bottom:none;}
-.sc-log-time{font-family:var(--m);font-size:11px;color:var(--text3);min-width:50px;flex-shrink:0;}
-.sc-log-op{font-weight:600;color:var(--text);flex-shrink:0;}
-.sc-log-sites{color:var(--text2);font-family:var(--m);font-size:11px;flex:1;flex-wrap:wrap;}
-.sc-log-badge{display:inline-block;font-size:10px;padding:1px 6px;border-radius:10px;margin-right:3px;font-weight:500;}
-.sc-badge-bess{background:var(--bbg);color:var(--blue);}
-.sc-badge-solar{background:var(--abg);color:var(--amber);}
-.sc-badge-wind{background:var(--bg3);color:var(--text2);}
-.sc-badge-all{background:var(--gbg);color:var(--green);}
 .timer-big{font-family:var(--m);font-size:26px;font-weight:500;color:var(--green);min-width:70px;}
 .timer-big.urgent{color:var(--red);animation:pulse 1s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
@@ -1368,95 +1316,30 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 
 <!-- SCANS -->
 <div class="view active" id="view-scans">
-
-  <!-- ── HEADER BAR ──────────────────────────────────────────────────────── -->
-  <div class="sc-topbar">
-    <div class="sc-topbar-left">
-      <span class="sc-title">NERC Scan Log</span>
-      <span class="sc-subtitle">30-min accountability · local session only</span>
-    </div>
-    <div class="sc-topbar-right">
-      <div class="sc-timer-pill" id="sc-timer-pill">
-        <span class="sc-timer-icon" id="sc-timer-icon">⏱</span>
-        <span id="sc-timer-disp">30:00</span>
-      </div>
-      <button class="tbtn" id="sc-timer-btn" onclick="scToggleTimer()">Start</button>
-      <button class="tbtn" onclick="scExport()">&#8675; Export</button>
-    </div>
+  <div class="timer-strip">
+    <div class="timer-big" id="timer-disp">30:00</div>
+    <div class="timer-bar-wrap"><div class="timer-bar-fill" id="timer-fill" style="width:100%"></div></div>
+    <span class="cycles-badge" id="cycles-badge">0 cycles</span>
+    <button class="tbtn" id="timer-btn" onclick="toggleTimer()">Start</button>
+    <button class="tbtn" onclick="resetTimer()">Reset</button>
+    <span id="scan-next-due" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-left:4px;"></span>
   </div>
-
-  <!-- ── OPERATOR + SHIFT SETUP ──────────────────────────────────────────── -->
-  <div class="sc-setup-bar">
-    <div class="sc-setup-field">
-      <label class="sc-lbl">Operator</label>
-      <select id="sc-operator" onchange="scOperatorChange()" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--f);font-size:13px;cursor:pointer;">
-        <option value="">— Select —</option>
-        <option>Josh</option>
-        <option>Alex</option>
-        <option>Morgan</option>
-        <option>Taylor</option>
-        <option>Jordan</option>
-        <option>Casey</option>
-        <option>Riley</option>
-        <option>Drew</option>
-        <option>Blake</option>
-        <option>Avery</option>
-      </select>
-    </div>
-    <div class="sc-setup-field">
-      <label class="sc-lbl">Shift</label>
-      <select id="sc-shift" style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text);font-family:var(--f);font-size:13px;cursor:pointer;">
-        <option value="Day 06:00-18:00">Day 06:00–18:00</option>
-        <option value="Night 18:00-06:00">Night 18:00–06:00</option>
-      </select>
-    </div>
-    <div class="sc-setup-field" style="flex:1;">
-      <label class="sc-lbl">My sites this shift</label>
-      <div class="sc-site-pills" id="sc-site-pills"></div>
-    </div>
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap;">
+    <button class="btn-p" onclick="openModal('modal-add-site')">+ Add site</button>
+    <button class="tbtn" onclick="scanAll()">✓ Scan all NERC</button>
+    <button class="tbtn" style="color:var(--amber);border-color:var(--amber);" onclick="resetSitesToDefaults()">↺ Reset sites to defaults</button>
+    <div style="flex:1;"></div>
+    <button class="ref-toggle-btn" id="ref-toggle-btn" onclick="toggleRefData(this)">Show ref data</button>
   </div>
-
-  <!-- ── SCAN BUTTONS ─────────────────────────────────────────────────────── -->
-  <div class="sc-section-lbl">Quick Scan</div>
-  <div class="sc-quick-row">
-    <button class="sc-quick-btn sc-all-btn" onclick="scScanGroup('all')">
-      <span class="sc-qb-icon">✓</span>
-      <span class="sc-qb-label">All NERC Sites</span>
-      <span class="sc-qb-count" id="sc-count-all"></span>
-    </button>
-    <button class="sc-quick-btn sc-bess-btn" onclick="scScanGroup('BESS')">
-      <span class="sc-qb-icon">⚡</span>
-      <span class="sc-qb-label">BESS</span>
-      <span class="sc-qb-count" id="sc-count-bess"></span>
-    </button>
-    <button class="sc-quick-btn sc-solar-btn" onclick="scScanGroup('Solar')">
-      <span class="sc-qb-icon">☀</span>
-      <span class="sc-qb-label">Solar</span>
-      <span class="sc-qb-count" id="sc-count-solar"></span>
-    </button>
-    <button class="sc-quick-btn sc-wind-btn" onclick="scScanGroup('Wind')">
-      <span class="sc-qb-icon">△</span>
-      <span class="sc-qb-label">Wind</span>
-      <span class="sc-qb-count" id="sc-count-wind"></span>
-    </button>
+  <div class="stat-row" id="scan-stats"></div>
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setSiteFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setSiteFilter('overdue',this)">Overdue</button>
+    <button class="filter-btn" onclick="setSiteFilter('due',this)">Due soon</button>
+    <button class="filter-btn" onclick="setSiteFilter('ok',this)">OK</button>
+    <button class="filter-btn" onclick="setSiteFilter('nerc',this)">NERC only</button>
   </div>
-
-  <!-- ── INDIVIDUAL SITES ─────────────────────────────────────────────────── -->
-  <div class="sc-section-lbl" style="margin-top:14px;">Individual Sites
-    <span style="font-weight:400;color:var(--text3);font-size:11px;margin-left:6px;">tap to log a scan for that site</span>
-  </div>
-  <div class="sc-sites-grid" id="sc-sites-grid"></div>
-
-  <!-- ── LOG ──────────────────────────────────────────────────────────────── -->
-  <div class="sc-section-lbl" style="margin-top:14px;">
-    Scan Log
-    <span id="sc-log-count" style="font-weight:400;color:var(--text3);font-size:11px;margin-left:6px;">0 entries</span>
-    <button onclick="scClearLog()" style="float:right;font-size:11px;padding:2px 8px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--text3);cursor:pointer;font-family:var(--f);">Clear</button>
-  </div>
-  <div class="sc-log" id="sc-log">
-    <div class="sc-log-empty">No scans logged yet. Select an operator and start scanning.</div>
-  </div>
-
+  <div id="sites-table-wrap"></div>
 </div>
 
 <!-- TOOLBOX -->
@@ -2802,7 +2685,6 @@ async function load() {
   renderEquip();
   restoreAdhocTimers();
   asInit();
-  scInit();
   swInit();
   clInit();
   wxFleetInit();
@@ -2820,255 +2702,6 @@ async function load() {
   const tabEl = [...document.querySelectorAll('.nav-tab')].find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes("'"+savedTab+"'"));
   switchView(savedTab, tabEl || null);
 }
-
-// ─── NERC SCAN LOG ────────────────────────────────────────────────────────────
-const SC_SITES = [
-  // BESS
-  {id:'CNDR1', type:'BESS'}, {id:'PRGN1', type:'BESS'}, {id:'HARQ2', type:'BESS'},
-  {id:'KUNA1', type:'BESS'}, {id:'GLTA1', type:'BESS'}, {id:'COSO1', type:'BESS'},
-  {id:'BYPS1', type:'BESS'}, {id:'PDMT1', type:'BESS'}, {id:'FRND1', type:'BESS'},
-  {id:'CTFL',  type:'BESS'}, {id:'MRCP',  type:'BESS'},
-  // Solar
-  {id:'HARQ1', type:'Solar'}, {id:'AVLN1', type:'Solar'}, {id:'NCLS1', type:'Solar'},
-  {id:'AVLN2', type:'Solar'}, {id:'LSTH2', type:'Solar'}, {id:'NSTR1', type:'Solar'},
-  {id:'LSTH1', type:'Solar'}, {id:'TRPC1', type:'Solar'}, {id:'BLKW1', type:'Solar'},
-  // Wind
-  {id:'DFRN1', type:'Wind'},  {id:'MCLM1', type:'Wind'},  {id:'GDWL1', type:'Wind'},
-  {id:'LNDL1', type:'Wind'},  {id:'ORGN1', type:'Wind'},  {id:'RKRD1', type:'Wind'},
-  {id:'PRRS1', type:'Wind'},  {id:'DBLO1', type:'Wind'},  {id:'DLBO1', type:'Wind'},
-  {id:'PRSE1', type:'Wind'},  {id:'RKRG1', type:'Wind'},
-];
-
-let scLog        = [];          // [{ts, operator, shift, sites, group}]
-let scActiveSites= SC_SITES.map(s => s.id);  // site IDs selected for this operator (default all)
-let scLastScanned= {};          // {siteId: timestamp ms}
-let scTimerSecs  = 1800;
-let scTimerRunning = false;
-let scTimerInterval = null;
-
-function scInit() {
-  scRenderSitePills();
-  scRenderGrid();
-  scUpdateCounts();
-  scRenderLog();
-  scUpdateTimerUI();
-}
-
-function scOperatorChange() {
-  // Reset active sites when operator changes — they'll pick their own
-  scActiveSites = SC_SITES.map(s => s.id); // default: all selected
-  scRenderSitePills();
-  scRenderGrid();
-  scUpdateCounts();
-}
-
-function scRenderSitePills() {
-  const wrap = document.getElementById('sc-site-pills');
-  if (!wrap) return;
-  wrap.innerHTML = SC_SITES.map(s => {
-    const active = scActiveSites.length === 0 || scActiveSites.includes(s.id);
-    const cls    = active ? 'sc-site-pill active' : 'sc-site-pill';
-    return `<span class="${cls}" onclick="scToggleSite('${s.id}',this)" title="${s.type}">${s.id}</span>`;
-  }).join('');
-}
-
-function scToggleSite(id, el) {
-  if (scActiveSites.includes(id)) {
-    scActiveSites = scActiveSites.filter(s => s !== id);
-    el.classList.remove('active');
-  } else {
-    scActiveSites.push(id);
-    el.classList.add('active');
-  }
-  scUpdateCounts();
-  scRenderGrid();
-}
-
-function scActiveSitesOfType(type) {
-  const my = scActiveSites.length ? scActiveSites : SC_SITES.map(s=>s.id);
-  return SC_SITES.filter(s => s.type === type && my.includes(s.id)).map(s=>s.id);
-}
-
-function scUpdateCounts() {
-  const my = scActiveSites.length ? scActiveSites : SC_SITES.map(s=>s.id);
-  document.getElementById('sc-count-all').textContent   = my.length + ' sites';
-  document.getElementById('sc-count-bess').textContent  = scActiveSitesOfType('BESS').length + ' sites';
-  document.getElementById('sc-count-solar').textContent = scActiveSitesOfType('Solar').length + ' sites';
-  document.getElementById('sc-count-wind').textContent  = scActiveSitesOfType('Wind').length + ' sites';
-}
-
-function scRenderGrid() {
-  const grid = document.getElementById('sc-sites-grid');
-  if (!grid) return;
-  const my = scActiveSites.length ? scActiveSites : SC_SITES.map(s=>s.id);
-  const now = Date.now();
-  grid.innerHTML = SC_SITES.filter(s => my.includes(s.id)).map(s => {
-    const last  = scLastScanned[s.id];
-    const mins  = last ? Math.floor((now - last) / 60000) : null;
-    let agoCls  = '', agoTxt = 'Not scanned';
-    if (mins !== null) {
-      if      (mins < 25)  { agoCls = 'sc-ok';      agoTxt = mins + 'm ago'; }
-      else if (mins < 30)  { agoCls = 'sc-due';     agoTxt = mins + 'm ago'; }
-      else                 { agoCls = 'sc-overdue';  agoTxt = mins + 'm — overdue'; }
-    }
-    const justScanned = last && (now - last) < 5000;
-    const cardCls = justScanned ? 'sc-site-card sc-just-scanned' : 'sc-site-card';
-    const typeDot = s.type === 'BESS' ? '⚡' : s.type === 'Solar' ? '☀' : '△';
-    return `<div class="${cardCls}" id="sc-card-${s.id}" onclick="scLogSite('${s.id}')">
-      <span class="sc-card-check">✓</span>
-      <div class="sc-card-id">${s.id}</div>
-      <div class="sc-card-type">${typeDot} ${s.type}</div>
-      <div class="sc-card-ago ${agoCls}">${agoTxt}</div>
-    </div>`;
-  }).join('');
-}
-
-function scGetOperator() {
-  return document.getElementById('sc-operator')?.value || '';
-}
-function scGetShift() {
-  return document.getElementById('sc-shift')?.value || '';
-}
-
-function scLogSite(id) {
-  const op = scGetOperator();
-  if (!op) { showToast('Select an operator first'); return; }
-  const now = Date.now();
-  scLastScanned[id] = now;
-  const site = SC_SITES.find(s => s.id === id);
-  scLog.unshift({ts: now, operator: op, shift: scGetShift(), sites: [id], type: site?.type || '', group: null});
-  scRenderGrid();
-  scRenderLog();
-  // flash the card
-  const card = document.getElementById('sc-card-' + id);
-  if (card) {
-    card.classList.add('sc-just-scanned');
-    setTimeout(() => { card.classList.remove('sc-just-scanned'); scRenderGrid(); }, 3000);
-  }
-}
-
-function scScanGroup(group) {
-  const op = scGetOperator();
-  if (!op) { showToast('Select an operator first'); return; }
-  const now = Date.now();
-  let sites;
-  if (group === 'all') {
-    sites = scActiveSites.length ? [...scActiveSites] : SC_SITES.map(s=>s.id);
-  } else {
-    sites = scActiveSitesOfType(group);
-  }
-  if (!sites.length) { showToast('No active sites in this group'); return; }
-  sites.forEach(id => { scLastScanned[id] = now; });
-  scLog.unshift({ts: now, operator: op, shift: scGetShift(), sites, type: group, group});
-  scRenderGrid();
-  scRenderLog();
-  showToast('✓ ' + sites.length + ' site' + (sites.length > 1 ? 's' : '') + ' logged');
-}
-
-function scRenderLog() {
-  const log = document.getElementById('sc-log');
-  const ctr = document.getElementById('sc-log-count');
-  if (!log) return;
-  ctr.textContent = scLog.length + ' entr' + (scLog.length === 1 ? 'y' : 'ies');
-  if (!scLog.length) {
-    log.innerHTML = '<div class="sc-log-empty">No scans logged yet. Select an operator and start scanning.</div>';
-    return;
-  }
-  log.innerHTML = scLog.map(entry => {
-    const t   = new Date(entry.ts);
-    const ts  = t.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false});
-    const badgeCls = entry.group === 'all' ? 'sc-badge-all'
-                   : entry.type  === 'BESS'  ? 'sc-badge-bess'
-                   : entry.type  === 'Solar' ? 'sc-badge-solar'
-                   : entry.type  === 'Wind'  ? 'sc-badge-wind'
-                   : 'sc-badge-all';
-    const groupLabel = entry.group === 'all' ? 'All NERC'
-                     : entry.group ? entry.group
-                     : null;
-    const siteList = groupLabel
-      ? `<span class="sc-log-badge ${badgeCls}">${groupLabel}</span>`
-      : entry.sites.map(id => {
-          const s = SC_SITES.find(x=>x.id===id);
-          const bc = s?.type === 'BESS' ? 'sc-badge-bess' : s?.type === 'Solar' ? 'sc-badge-solar' : s?.type === 'Wind' ? 'sc-badge-wind' : 'sc-badge-all';
-          return `<span class="sc-log-badge ${bc}">${id}</span>`;
-        }).join('');
-    return `<div class="sc-log-row">
-      <span class="sc-log-time">${ts}</span>
-      <span class="sc-log-op">${entry.operator}</span>
-      <span class="sc-log-sites">${siteList}</span>
-    </div>`;
-  }).join('');
-}
-
-function scClearLog() {
-  if (!scLog.length) return;
-  if (!confirm('Clear all scan log entries?')) return;
-  scLog = [];
-  scLastScanned = {};
-  scRenderGrid();
-  scRenderLog();
-}
-
-// ── Timer ──────────────────────────────────────────────────────────────────
-function scToggleTimer() {
-  if (scTimerRunning) {
-    scTimerRunning = false;
-    clearInterval(scTimerInterval);
-    document.getElementById('sc-timer-btn').textContent = 'Start';
-  } else {
-    scTimerRunning = true;
-    scTimerInterval = setInterval(scTickTimer, 1000);
-    document.getElementById('sc-timer-btn').textContent = 'Pause';
-  }
-}
-function scTickTimer() {
-  scTimerSecs--;
-  if (scTimerSecs <= 0) {
-    scTimerSecs = 1800;
-    showToast('⏰ 30-minute scan due');
-  }
-  scUpdateTimerUI();
-}
-function scUpdateTimerUI() {
-  const m = String(Math.floor(scTimerSecs / 60)).padStart(2,'0');
-  const s = String(scTimerSecs % 60).padStart(2,'0');
-  const disp = document.getElementById('sc-timer-disp');
-  const pill = document.getElementById('sc-timer-pill');
-  if (disp) disp.textContent = m + ':' + s;
-  if (pill) {
-    pill.classList.toggle('urgent', scTimerSecs <= 300);
-  }
-}
-
-// ── Export to CSV (SoftWrench-ready) ──────────────────────────────────────
-function scExport() {
-  if (!scLog.length) { showToast('No scan log to export'); return; }
-  const rows = [['Timestamp','Date','Time','Operator','Shift','Sites','Site Count','Scan Type']];
-  [...scLog].reverse().forEach(e => {
-    const d  = new Date(e.ts);
-    const dt = d.toLocaleDateString('en-US', {month:'2-digit',day:'2-digit',year:'numeric'});
-    const tm = d.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
-    const iso = d.toISOString();
-    const siteStr = e.sites.join(', ');
-    const scanType = e.group === 'all' ? 'All NERC' : e.group ? e.group + ' Group' : 'Individual';
-    rows.push([iso, dt, tm, e.operator, e.shift, siteStr, e.sites.length, scanType]);
-  });
-  const csv = rows.map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(',')).join('
-');
-  const blob = new Blob([csv], {type:'text/csv'});
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  const dt   = new Date().toISOString().slice(0,10);
-  const op   = scGetOperator() || 'unknown';
-  a.href     = url;
-  a.download = `NERC_Scan_Log_${op}_${dt}.csv`;
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('Exported');
-}
-
-// Refresh "ago" times every 30 seconds
-setInterval(() => { if (document.getElementById('view-scans')?.classList.contains('active')) scRenderGrid(); }, 30000);
 
 // ─── CLOCK ────────────────────────────────────────────────────────────────────
 // ── Nav timezone strip ────────────────────────────────────────────────────────
@@ -3141,13 +2774,13 @@ function switchView(v, el) {
   document.getElementById('view-'+v).classList.add('active');
   if(el) el.classList.add('active');
   if(v==='log') renderLog();
+  if(v==='scans') { refreshScanStatuses(); renderSites(); }
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
   if(v==='map') mapActivate();
   if(v==='timezones') initTimeZones();
   if(v==='chron') clRender();
   if(v==='intel') wxFleetInit();
   if(v==='roc') { rocLoad(); rocRender(); }
-  if(v==='scans') { scRenderGrid(); }
   try { localStorage.setItem('rnwbl_active_tab', v); } catch(e) {}
 }
 
@@ -5679,6 +5312,14 @@ function asRenderForm() {
 
 function asChange(k, alertId, siteId, si, el) {
   asVals[k]=el.value; asSaveVals();
+  // Update site edited timestamp when field values change
+  if(asCustom!==null){
+    const site=asCustom.find(s=>s.id===siteId);
+    if(site){
+      site.edited=new Date().toISOString();
+      asSaveCustom();
+    }
+  }
   if(alertId){
     const pill=document.getElementById(alertId);
     const site=asSites().find(s=>s.id===siteId);
@@ -5759,8 +5400,8 @@ function asEditSave(){
   let sections=[];
   const raw=document.getElementById('as-ejson').value.trim();
   if(raw){try{sections=JSON.parse(raw);}catch(e){showToast('JSON error: '+e.message);return;}}
-  const site={id,label:document.getElementById('as-elabel').value.trim()||id,stats:document.getElementById('as-estats').value.trim(),sections};
-  if(asCustom===null) asCustom=[...AS_SITES]; // clone defaults on first edit
+  const site={id,label:document.getElementById('as-elabel').value.trim()||id,stats:document.getElementById('as-estats').value.trim(),sections,edited:new Date().toISOString()};
+  if(asCustom===null) asCustom=[...AS_SITES].map(s=>({...s,edited:s.edited||new Date().toISOString()})); // clone defaults on first edit, add edited timestamp
   const idx=parseInt(document.getElementById('as-edit-idx').value);
   if(!isNaN(idx)&&idx>=0) asCustom[idx]=site;
   else {
@@ -5781,10 +5422,11 @@ function asEditDel(idx){
 
 function asExportCSV() {
   const date=document.getElementById('as-date').value, op=document.getElementById('as-operator').value, shift=document.getElementById('as-shift').value;
-  let csv='Date,Operator,Shift,Site,Section,Field,Value\n';
+  let csv='Date,Operator,Shift,Site,Section,Field,Value,Site Last Edited\n';
   asSites().forEach(site=>site.sections.forEach((sec,si)=>sec.fields.forEach((f,fi)=>{
     const v=(asVals[asKey(site.id,si,fi)]||'').replace(/"/g,'""');
-    csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","${f.n}","${v}"\n`;
+    const edited=(site.edited||'').replace(/"/g,'""');
+    csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","${f.n}","${v}","${edited}"\n`;
   })));
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
