@@ -2695,7 +2695,7 @@ async function load() {
   rows.forEach((row,i) => { const inp=row.querySelector('input'); if(inp) inp.value=S.escContacts[tkeys[i]]||''; });
 
   // Restore last active tab (default: scans)
-  const TAB_VIEWS = ['scans','asset','nerc','intel','ops','swbuilder','chron','timezones','schedule'];
+  const TAB_VIEWS = ['scans','asset','nerc','roc','intel','ops','swbuilder','chron','timezones','schedule'];
   let savedTab = 'scans';
   try { savedTab = localStorage.getItem('rnwbl_active_tab') || 'scans'; } catch(e) {}
   if (!TAB_VIEWS.includes(savedTab)) savedTab = 'scans';
@@ -3659,7 +3659,7 @@ function clCopyHandoff() {
   if (handoffEntries.length) {
     lines.push('Operator Handoff');
     handoffEntries.forEach(e => {
-      const catTag = e.cat && e.cat !== 'Normal' ? ` (${e.cat})` : '';
+      const catTag = e.cat && e.cat !== 'Normal' && e.cat !== 'Handoff' ? ` (${e.cat})` : '';
       const siteTag = e.site ? `${e.site} ` : '';
       lines.push(`• ${siteTag}${e.text}${catTag}`);
     });
@@ -4133,7 +4133,7 @@ const AS_SITES = [
       { title:'OUTPUT', fields:[
         {n:'MW',   t:'text', unit:'MW'},
         {n:'MWh',  t:'text', unit:'MWh'},
-        {n:'kV',   t:'text', unit:'kV'},
+        {n:'kV',   t:'text', unit:'kV', kvMin:12.16, kvMax:13.44},
         {n:'MVAR', t:'text', unit:'MVAR'},
       ]},
       { title:'SUBSTATION EQUIPMENT', fields:[
@@ -4158,7 +4158,7 @@ const AS_SITES = [
       ]},
       { title:'OUTPUT', fields:[
         {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV'},
+        {n:'kV',   t:'text', unit:'kV', kvMin:43.7, kvMax:48.3},
         {n:'MVAR', t:'text', unit:'MVAR'},
       ]},
       { title:'SUBSTATION EQUIPMENT', fields:[
@@ -4174,7 +4174,7 @@ const AS_SITES = [
       ]},
     ]
   },
-  { id:'BLKW1', label:'BLKW1-Blackwell[PV]', stats:'NP: 12MW<br />Voltage SP: 11.7kV<br />Voltage: No Band',
+  { id:'BLKW1', label:'BLKW1-Blackwell[PV]', stats:'NP: 12MW<br />V SET POINT: 12kV<br />BAND: 11.4kV-12.6kV',
     sections:[
       { title:'STATUS', fields:[
         {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
@@ -4189,7 +4189,7 @@ const AS_SITES = [
       { title:'OUTPUT', fields:[
         {n:'MW',                t:'text',   unit:'MW'},
         {n:'Following Setpoint',t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'kV',                t:'text',   unit:'kV'},
+        {n:'kV',                t:'text',   unit:'kV', kvMin:11.4, kvMax:12.6},
         {n:'MVAR',              t:'text',   unit:'MVAR'},
       ]},
       { title:'SUBSTATION EQUIPMENT', fields:[
@@ -4312,7 +4312,7 @@ const AS_SITES = [
       ]},
     ]
   },
-  { id:'CTFL', label:'CTFL-Centennial Flats[PV-BESS]', stats:'NP: 1069 MWh ±267 MW <br />V SET POINT: 525kV<br />BAND:498.75kV-551.25kV',
+  { id:'CTFL', label:'CTFL-Centennial Flats[PV-BESS]', stats:'NP: 1069 MWh ±267 MW <br />V SET POINT: 525kV<br />BAND: 521kV-540kV',
     sections:[
       { title:'STATUS', fields:[
         {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
@@ -4325,7 +4325,7 @@ const AS_SITES = [
       { title:'OUTPUT: HS', fields:[
         {n:'HS MW',   t:'text', unit:'MW'},
         {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'HS kV',   t:'text', unit:'kV', kvMin:498.75, kvMax:551.25},
+        {n:'HS kV',   t:'text', unit:'kV', kvMin:521, kvMax:540},
         {n:'HS MVAR', t:'text', unit:'MVAR'},
       ]},
       { title:'OUTPUT: PV1 & BESS1', fields:[
@@ -4384,7 +4384,7 @@ const AS_SITES = [
       ]},
       { title:'OUTPUT', fields:[
         {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV', kvMin:227.7, kvMax:232.3},
+        {n:'kV',   t:'text', unit:'kV', kvMin:228, kvMax:232},
         {n:'MVAR', t:'text', unit:'MVAR'},
       ]},
       { title:'FIELD EQUIPMENT', fields:[
@@ -4507,7 +4507,7 @@ const AS_SITES = [
       ]},
       { title:'OUTPUT', fields:[
         {n:'MW[COMP]',   t:'text', unit:'MW'},
-        {n:'kV',         t:'text', unit:'kV'},
+        {n:'kV',         t:'text', unit:'kV', kvMin:499, kvMax:551},
         {n:'MVAR[COMP]', t:'text', unit:'MVAR'},
       ]},
       { title:'CAPACITY', fields:[
