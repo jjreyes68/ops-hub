@@ -5425,7 +5425,7 @@ function asExportCSV() {
   let csv='Date,Operator,Shift,Site,Section,Field,Value,Site Last Edited\n';
   asSites().forEach(site=>site.sections.forEach((sec,si)=>sec.fields.forEach((f,fi)=>{
     const v=(asVals[asKey(site.id,si,fi)]||'').replace(/"/g,'""');
-    const edited=(site.edited||'').replace(/"/g,'""');
+    const edited=(site.edited||new Date().toISOString()).replace(/"/g,'""');
     csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","${f.n}","${v}","${edited}"\n`;
   })));
   const a=document.createElement('a');
