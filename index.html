@@ -5051,8 +5051,10 @@ const AS_SITES = [
 const AS_VAL_KEY  = 'rnwbl_asvals_v1';
 const AS_DONE_KEY = 'rnwbl_asdone_v1';
 const AS_CUSTOM_KEY = 'rnwbl_ascustom_v1'; // user-added/edited sites stored here
+const AS_TIME_KEY = 'rnwbl_astimes_v1'; // per-field last-edited timestamps
 
 let asVals = {};
+let asTimes = {};       // {fieldKey: ISOtimestamp} per-field last-edited
 let asDone = {};        // {siteId: true} manually marked complete
 let asCustom = null;    // null = not yet loaded; [] or array = overrides AS_SITES
 let asActiveSite = '';
@@ -5064,10 +5066,12 @@ function asSites() { return (asCustom !== null && asCustom.length > 0) ? asCusto
 function asLoadAll() {
   try { const r=localStorage.getItem(AS_VAL_KEY); if(r) asVals=JSON.parse(r)||{}; } catch(e){}
   try { const r=localStorage.getItem(AS_DONE_KEY); if(r) asDone=JSON.parse(r)||{}; } catch(e){}
+  try { const r=localStorage.getItem(AS_TIME_KEY); if(r) asTimes=JSON.parse(r)||{}; } catch(e){}
   try { const r=localStorage.getItem(AS_CUSTOM_KEY); if(r) { const p=JSON.parse(r); if(Array.isArray(p) && p.length > 0) asCustom=p; } } catch(e){}
 }
 function asSaveVals() { try{localStorage.setItem(AS_VAL_KEY,JSON.stringify(asVals));}catch(e){} }
 function asSaveDone() { try{localStorage.setItem(AS_DONE_KEY,JSON.stringify(asDone));}catch(e){} }
+function asSaveTimes() { try{localStorage.setItem(AS_TIME_KEY,JSON.stringify(asTimes));}catch(e){} }
 function asSaveCustom() { try{localStorage.setItem(AS_CUSTOM_KEY,JSON.stringify(asSites()));}catch(e){} }
 
 function asKey(siteId, si, fi) { return siteId+'|'+si+'|'+fi; }
@@ -5311,7 +5315,16 @@ function asRenderForm() {
 }
 
 function asChange(k, alertId, siteId, si, el) {
+  if(asVals[k]!==el.value){ asTimes[k]=new Date().toISOString(); asSaveTimes(); }
   asVals[k]=el.value; asSaveVals();
+  // Update site edited timestamp when field values change
+  if(asCustom!==null){
+    const site=asCustom.find(s=>s.id===siteId);
+    if(site){
+      site.edited=new Date().toISOString();
+      asSaveCustom();
+    }
+  }
   if(alertId){
     const pill=document.getElementById(alertId);
     const site=asSites().find(s=>s.id===siteId);
@@ -5336,13 +5349,20 @@ function asChange(k, alertId, siteId, si, el) {
 function asTextBlur(k, kvId, siteId, si, el) {
   const unit=el.getAttribute('data-unit')||'', kvMin=el.getAttribute('data-kv-min'), kvMax=el.getAttribute('data-kv-max');
   let v=el.value.trim();
-  if(!v){asVals[k]='';asSaveVals();return;}
+  if(!v){
+    if(asVals[k]!==''){asTimes[k]=new Date().toISOString();asSaveTimes();}
+    asVals[k]='';asSaveVals();return;
+  }
   if(unit&&v.endsWith(unit)) v=v.slice(0,-unit.length).trim();
   if(!isNaN(parseFloat(v))&&isFinite(v)){
     if(unit) el.value=v+unit;
+    if(asVals[k]!==el.value){asTimes[k]=new Date().toISOString();asSaveTimes();}
     asVals[k]=el.value;
     if(kvMin&&kvMax) asUpdateKv(kvId,parseFloat(v),parseFloat(kvMin),parseFloat(kvMax));
-  } else { asVals[k]=el.value; }
+  } else {
+    if(asVals[k]!==el.value){asTimes[k]=new Date().toISOString();asSaveTimes();}
+    asVals[k]=el.value;
+  }
   asSaveVals(); asRenderTabs();
 }
 
@@ -5357,7 +5377,7 @@ function asUnmarkDone(siteId){delete asDone[siteId];asSaveDone();asRenderTabs();
 
 function asStartFresh(){
   if(!confirm('Clear all Asset Scan values and completion flags? Site definitions are kept.')) return;
-  asVals={};asDone={};asSaveVals();asSaveDone();asRenderTabs();asRenderForm();showToast('Asset Scan cleared — ready for next round');
+  asVals={};asDone={};asTimes={};asSaveVals();asSaveDone();asSaveTimes();asRenderTabs();asRenderForm();showToast('Asset Scan cleared — ready for next round');
 }
 
 // ── edit sites ────────────────────────────────────────────────────────────────
@@ -5392,8 +5412,8 @@ function asEditSave(){
   let sections=[];
   const raw=document.getElementById('as-ejson').value.trim();
   if(raw){try{sections=JSON.parse(raw);}catch(e){showToast('JSON error: '+e.message);return;}}
-  const site={id,label:document.getElementById('as-elabel').value.trim()||id,stats:document.getElementById('as-estats').value.trim(),sections};
-  if(asCustom===null) asCustom=[...AS_SITES]; // clone defaults on first edit
+  const site={id,label:document.getElementById('as-elabel').value.trim()||id,stats:document.getElementById('as-estats').value.trim(),sections,edited:new Date().toISOString()};
+  if(asCustom===null) asCustom=[...AS_SITES].map(s=>({...s,edited:s.edited||new Date().toISOString()})); // clone defaults on first edit, add edited timestamp
   const idx=parseInt(document.getElementById('as-edit-idx').value);
   if(!isNaN(idx)&&idx>=0) asCustom[idx]=site;
   else {
@@ -5412,13 +5432,29 @@ function asEditDel(idx){
   asSaveCustom(); asRenderEditList(); asRenderTabs(); asRenderForm();
 }
 
+function asFmtAZ(iso) {
+  if(!iso) return '';
+  try {
+    return new Date(iso).toLocaleString('en-US',{timeZone:'America/Phoenix',month:'2-digit',day:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})+' AZ';
+  } catch(e){ return iso; }
+}
+
 function asExportCSV() {
   const date=document.getElementById('as-date').value, op=document.getElementById('as-operator').value, shift=document.getElementById('as-shift').value;
-  let csv='Date,Operator,Shift,Site,Section,Field,Value\n';
-  asSites().forEach(site=>site.sections.forEach((sec,si)=>sec.fields.forEach((f,fi)=>{
-    const v=(asVals[asKey(site.id,si,fi)]||'').replace(/"/g,'""');
-    csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","${f.n}","${v}"\n`;
-  })));
+  let csv='Date,Operator,Shift,Site,Section,Field,Value,Field Last Edited\n';
+  // Only export sites matching the currently selected type filter (mirrors what's shown in the tabs)
+  let sites=[...asSites()];
+  if(!asTypeFilter.includes('all')){
+    sites=sites.filter(s=>s.id==='ROCC1'||asTypeFilter.includes(asGetSiteType(s)));
+  }
+  sites.forEach(site=>{
+    site.sections.forEach((sec,si)=>sec.fields.forEach((f,fi)=>{
+      const k=asKey(site.id,si,fi);
+      const v=(asVals[k]||'').replace(/"/g,'""');
+      const fieldEdited=asFmtAZ(asTimes[k]).replace(/"/g,'""');
+      csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","${f.n}","${v}","${fieldEdited}"\n`;
+    }));
+  });
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
   const types = asTypeFilter.includes('all') ? 'All' : asTypeFilter.join(' & ');
