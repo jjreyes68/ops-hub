@@ -717,7 +717,7 @@ body.dark .cl-time{color:var(--text2);}
 
 /* ── TIME ZONE DASHBOARD ───────────────────────────────────────────────────── */
 #view-timezones{padding:0;height:calc(100vh - 48px);overflow:auto;background:var(--bg);}
-.tz-container{max-width:1400px;margin:0 auto;padding:16px}
+.tz-container{padding:16px}
 .tz-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:16px}
 .tz-header h1{font-size:20px;margin:0;font-weight:600}
 .tz-muted{color:var(--text2);font-size:12px}
@@ -1121,7 +1121,7 @@ body.dark .nerc-study-container{
 .nerc-study-container .nerc-rev-exp-lbl{font-family:var(--nerc-mono);font-size:10px;color:var(--nerc-text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
 
 /* ── ROC STUDY GUIDE ──────────────────────────────────────────────────────── */
-.roc-wrap{max-width:900px;margin:0 auto;padding:4px 0 60px;}
+.roc-wrap{padding:4px 0 60px;}
 .roc-topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--shs);}
 .roc-title{font-size:19px;font-weight:600;color:var(--text);letter-spacing:-.01em;flex:1;display:flex;flex-direction:column;gap:2px;}
 .roc-title-sub{font-size:12.5px;font-weight:400;color:var(--text3);letter-spacing:0;font-family:var(--f);}
@@ -2114,12 +2114,12 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 <!-- ROC STUDY GUIDE -->
 <div class="view" id="view-roc">
   <div class="roc-wrap">
-    <div class="roc-topbar">
-      <div class="roc-title">
-        <span>⚡ ROC Study</span>
-        <span class="roc-title-sub">GOP-scoped questions, SOPs &amp; simulation scenarios</span>
+    <div class="page-header">
+      <div>
+        <div class="page-title">ROC Study</div>
+        <div class="page-subtitle">GOP-scoped questions, SOPs &amp; simulation scenarios</div>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;">
+      <div class="page-header-actions">
         <button id="roc-filter-dropdown-btn" class="tbtn" style="padding:5px 12px;" onclick="rocToggleFilterDropdown()">
           <span id="roc-current-filter">Grid Entities</span> ▾
         </button>
@@ -2506,7 +2506,7 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
   <div class="tz-container">
     <div class="tz-header">
       <div>
-        <h1>Control Room – Map/Timezones</h1>
+        <h1>Map/Timezones</h1>
         <div class="tz-muted">Live clocks and site locations for all RNWBL sites. Arizona does not observe DST.</div>
       </div>
       <div class="tz-controls">
