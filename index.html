@@ -937,10 +937,10 @@ body.dark .nerc-study-container{
 .nerc-study-container *{box-sizing:border-box;margin:0;padding:0}
 .nerc-study-container .nerc-screen{display:none}
 .nerc-study-container .nerc-screen.active{display:flex;flex-direction:column}
+.nerc-study-container #nerc-screen-setup{align-items:flex-start;justify-content:flex-start;background:transparent}
+.nerc-hdr-stat{font-family:var(--m);font-size:11px;color:var(--text3);white-space:nowrap;}
 
-.nerc-study-container #nerc-screen-setup{align-items:center;justify-content:flex-start;padding:32px 24px;background:var(--bg2)}
-
-.nerc-study-container .nerc-setup-wrap{width:100%;max-width:960px}
+.nerc-study-container .nerc-setup-wrap{width:100%;}
 .nerc-study-container .nerc-setup-logo{display:flex;align-items:center;gap:14px;margin-bottom:32px}
 .nerc-study-container .nerc-setup-logo-icon{width:52px;height:52px;background:var(--nerc-greenbg);border:1.5px solid var(--nerc-green);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 24px rgba(0,229,160,.15)}
 .nerc-study-container .nerc-setup-logo-text{font-family:var(--nerc-cond);font-size:28px;font-weight:700;letter-spacing:.08em;color:var(--nerc-green);text-shadow:0 0 20px rgba(0,229,160,.3)}
@@ -1951,19 +1951,26 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 
 <!-- NERC STUDY -->
 <div class="view" id="view-nerc">
+
+  <!-- PAGE HEADER (always visible) -->
+  <div class="page-header">
+    <div>
+      <div class="page-title">NERC Simulator</div>
+      <div class="page-subtitle">Scenario-based exam training — TO, BA, RC/SC certification</div>
+    </div>
+    <div class="page-header-actions" id="nerc-hdr-actions">
+      <span class="nerc-hdr-stat"><span style="color:var(--green);font-weight:700;">100</span> questions</span>
+      <span class="nerc-hdr-stat"><span style="color:var(--blue);font-weight:700;">11</span> categories</span>
+      <span class="nerc-hdr-stat"><span style="color:var(--amber);font-weight:700;">80%</span> pass mark</span>
+    </div>
+  </div>
+
   <div class="nerc-study-container">
     <!-- SETUP SCREEN -->
     <div id="nerc-screen-setup" class="nerc-screen active">
       <div class="nerc-setup-wrap">
-        <div class="nerc-setup-logo">
-          <div class="nerc-setup-logo-icon">⚡</div>
-          <div>
-            <div class="nerc-setup-logo-text">NERC SIMULATOR</div>
-            <div class="nerc-setup-logo-sub">POWER SYSTEM OPERATOR · TRAINING PLATFORM</div>
-          </div>
-        </div>
-        <div class="nerc-setup-title">Operator Reliability<br><span>Exam Simulator</span></div>
-        <div class="nerc-setup-desc">Scenario-based training for <strong style="color:var(--nerc-blue)">TO</strong>, <strong style="color:var(--nerc-green)">BA</strong>, and <strong style="color:var(--nerc-amber)">RC/SC</strong> certification. Covers IROL/SOL, EEA, Blackstart, Voltage, Frequency/ACE, N-1, Protection, TLR/Conservative Ops, Facility Ratings, Fatigue &amp; Switching Orders. 100-question bank, fully randomized.</div>
+
+        <!-- setup options cards -->
         <div class="nerc-setup-card">
           <div class="nerc-setup-card-label">▸ Question Count</div>
           <div class="nerc-setup-opts" id="nerc-qcount-opts">
@@ -2002,11 +2009,6 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
           </div>
         </div>
         <button class="nerc-setup-start" onclick="nercExamStartExam()">▶ BEGIN EXAM</button>
-        <div class="nerc-setup-stats">
-          <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">100</div><div class="nerc-stat-chip-lbl">Questions</div></div>
-          <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">11</div><div class="nerc-stat-chip-lbl">Categories</div></div>
-          <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">80%</div><div class="nerc-stat-chip-lbl">Pass Mark</div></div>
-        </div>
 
         <div class="nerc-resources">
           <div class="nerc-resources-hdr">&#9658; Exam Coverage by Role</div>
