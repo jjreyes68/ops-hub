@@ -1121,6 +1121,18 @@ body.dark .nerc-study-container{
 .nerc-study-container .nerc-rev-exp-lbl{font-family:var(--nerc-mono);font-size:10px;color:var(--nerc-text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
 
 /* ── ROC STUDY GUIDE ──────────────────────────────────────────────────────── */
+/* ── ROC TOPIC GRID ──────────────────────────────────────────────────────── */
+.roc-topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;}
+@media(max-width:700px){.roc-topic-grid{grid-template-columns:repeat(2,1fr);}}
+.roc-topic-card{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px 14px;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-family:var(--f);text-align:left;transition:all .16s;box-shadow:var(--shs);}
+.roc-topic-card:hover{border-color:var(--border2);background:var(--bg3);transform:translateY(-1px);box-shadow:var(--sh);}
+.roc-topic-card:active{transform:translateY(0);}
+.roc-topic-card.active{border-color:var(--blue);background:var(--bbg);box-shadow:0 0 0 3px var(--bbg);}
+.roc-topic-icon{font-size:18px;line-height:1;}
+.roc-topic-name{font-size:12.5px;font-weight:600;color:var(--text);line-height:1.2;}
+.roc-topic-card.active .roc-topic-name{color:var(--blue);}
+.roc-topic-count{font-family:var(--m);font-size:10px;color:var(--text3);margin-top:1px;}
+.roc-topic-card.active .roc-topic-count{color:var(--blue);opacity:.7;}
 .roc-wrap{padding:4px 0 60px;}
 .roc-topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--shs);}
 .roc-title{font-size:19px;font-weight:600;color:var(--text);letter-spacing:-.01em;flex:1;display:flex;flex-direction:column;gap:2px;}
@@ -2114,29 +2126,64 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 <!-- ROC STUDY GUIDE -->
 <div class="view" id="view-roc">
   <div class="roc-wrap">
-    <div class="roc-topbar">
-      <div class="roc-title">
-        <span>ROC Study</span>
-        <span class="roc-title-sub">GOP-scoped questions, SOPs &amp; simulation scenarios</span>
+    <div class="page-header">
+      <div>
+        <div class="page-title">ROC Study</div>
+        <div class="page-subtitle">GOP-scoped questions, SOPs &amp; simulation scenarios</div>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <button id="roc-filter-dropdown-btn" class="tbtn" style="padding:5px 12px;" onclick="rocToggleFilterDropdown()">
-          <span id="roc-current-filter">Grid Entities</span> ▾
-        </button>
+      <div class="page-header-actions">
         <button class="tbtn" style="border-color:var(--amber);color:var(--amber);padding:5px 12px;" onclick="rocStartDrill()" title="Daily Drill - 10 random questions">🎯 Drill</button>
-        <button class="tbtn" style="padding:5px 10px;font-size:11px;" onclick="rocResetProgress()" title="Reset all progress">↺</button>
-        <div id="roc-filter-dropdown" style="display:none;position:absolute;top:60px;right:16px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px;box-shadow:var(--sh);z-index:100;min-width:180px;">
-          <button class="roc-ftag-dropdown" data-filter="all" onclick="rocSetFilter('all',this)">All Topics</button>
-          <button class="roc-ftag-dropdown active" data-filter="grid" onclick="rocSetFilter('grid',this)">Grid Entities</button>
-          <button class="roc-ftag-dropdown" data-filter="voltage" onclick="rocSetFilter('voltage',this)">Voltage / VARs</button>
-          <button class="roc-ftag-dropdown" data-filter="dispatch" onclick="rocSetFilter('dispatch',this)">Dispatch</button>
-          <button class="roc-ftag-dropdown" data-filter="scada" onclick="rocSetFilter('scada',this)">SCADA / Alarms</button>
-          <button class="roc-ftag-dropdown" data-filter="operations" onclick="rocSetFilter('operations',this)">Operations</button>
-          <button class="roc-ftag-dropdown" data-filter="standards" onclick="rocSetFilter('standards',this)">Standards</button>
-          <button class="roc-ftag-dropdown" data-filter="plant" onclick="rocSetFilter('plant',this)">Plant Architecture</button>
-          <button class="roc-ftag-dropdown" data-filter="rapid" onclick="rocSetFilter('rapid',this)">Rapid Fire</button>
-        </div>
+        <button class="tbtn" style="padding:5px 10px;font-size:11px;" onclick="rocResetProgress()" title="Reset all progress">↺ Reset</button>
       </div>
+    </div>
+
+    <!-- TOPIC PICKER -->
+    <div class="roc-topic-grid" id="roc-topic-grid">
+      <button class="roc-topic-card" data-filter="all" onclick="rocSetFilter('all',this)">
+        <span class="roc-topic-icon">📚</span>
+        <span class="roc-topic-name">All Topics</span>
+        <span class="roc-topic-count" id="roc-tc-all"></span>
+      </button>
+      <button class="roc-topic-card active" data-filter="grid" onclick="rocSetFilter('grid',this)">
+        <span class="roc-topic-icon">🗺️</span>
+        <span class="roc-topic-name">Grid Entities</span>
+        <span class="roc-topic-count" id="roc-tc-grid"></span>
+      </button>
+      <button class="roc-topic-card" data-filter="voltage" onclick="rocSetFilter('voltage',this)">
+        <span class="roc-topic-icon">⚡</span>
+        <span class="roc-topic-name">Voltage / VARs</span>
+        <span class="roc-topic-count" id="roc-tc-voltage"></span>
+      </button>
+      <button class="roc-topic-card" data-filter="dispatch" onclick="rocSetFilter('dispatch',this)">
+        <span class="roc-topic-icon">📡</span>
+        <span class="roc-topic-name">Dispatch</span>
+        <span class="roc-topic-count" id="roc-tc-dispatch"></span>
+      </button>
+      <button class="roc-topic-card" data-filter="scada" onclick="rocSetFilter('scada',this)">
+        <span class="roc-topic-icon">🖥️</span>
+        <span class="roc-topic-name">SCADA / Alarms</span>
+        <span class="roc-topic-count" id="roc-tc-scada"></span>
+      </button>
+      <button class="roc-topic-card" data-filter="operations" onclick="rocSetFilter('operations',this)">
+        <span class="roc-topic-icon">🔧</span>
+        <span class="roc-topic-name">Operations</span>
+        <span class="roc-topic-count" id="roc-tc-operations"></span>
+      </button>
+      <button class="roc-topic-card" data-filter="standards" onclick="rocSetFilter('standards',this)">
+        <span class="roc-topic-icon">📋</span>
+        <span class="roc-topic-name">Standards</span>
+        <span class="roc-topic-count" id="roc-tc-standards"></span>
+      </button>
+      <button class="roc-topic-card" data-filter="plant" onclick="rocSetFilter('plant',this)">
+        <span class="roc-topic-icon">🏭</span>
+        <span class="roc-topic-name">Plant Architecture</span>
+        <span class="roc-topic-count" id="roc-tc-plant"></span>
+      </button>
+      <button class="roc-topic-card" data-filter="rapid" onclick="rocSetFilter('rapid',this)" style="border-color:var(--amber);">
+        <span class="roc-topic-icon">⚡</span>
+        <span class="roc-topic-name" style="color:var(--amber);">Rapid Fire</span>
+        <span class="roc-topic-count" id="roc-tc-rapid"></span>
+      </button>
     </div>
 
     <div class="roc-stats-compact">
@@ -2444,8 +2491,8 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 <div class="view" id="view-chron">
 
   <div class="cl-pg-header">
-    <div class="cl-pg-title">Operator Log</div>
-    <div class="cl-pg-sub">Chronological shift feed · starred entries auto-populate handoff</div>
+    <div class="cl-pg-title">Handoff</div>
+    <div class="cl-pg-sub">Chronological shift feed · starred entries auto-populate handoff notes</div>
   </div>
 
   <!-- Entry bar -->
@@ -3650,7 +3697,7 @@ function logWeather(){
   switchView('notes',document.querySelectorAll('.nav-tab')[0]); showToast('Weather logged');
 }
 
-// ─── OPERATOR LOG ────────────────────────────────────────────────────────────────
+// ─── HANDOFF ────────────────────────────────────────────────────────────────
 const CL_KEY = 'rnwbl_chron_v1';
 let clEntries = [];
 let clSiteOptions = ''; // cached options HTML for inline selects
@@ -3747,7 +3794,7 @@ function clDelete(id) {
 
 function clClear() {
   if (!clEntries.length) return;
-  if (!confirm('Clear all Operator Log entries for this shift?')) return;
+  if (!confirm('Clear all Handoff entries for this shift?')) return;
   clEntries = [];
   try { localStorage.removeItem(CL_KEY); } catch(e) {}
   clRender();
@@ -8421,24 +8468,29 @@ function rocResetProgress() {
 }
 
 function rocToggleFilterDropdown() {
-  const dropdown = document.getElementById('roc-filter-dropdown');
-  dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+  // No-op — dropdown replaced by topic grid
 }
 
 function rocSetFilter(f, btn) {
   rocFilter = f;
-  document.querySelectorAll('.roc-ftag-dropdown').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('roc-current-filter').textContent = btn.textContent;
-  document.getElementById('roc-filter-dropdown').style.display = 'none';
-  
+  document.querySelectorAll('.roc-topic-card,.roc-ftag-dropdown').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
   // Show/hide Grid Hierarchy widget based on filter
   const ghWidget = document.getElementById('gh-widget-container');
-  if (ghWidget) {
-    ghWidget.style.display = f === 'grid' ? 'block' : 'none';
-  }
-  
+  if (ghWidget) ghWidget.style.display = f === 'grid' ? 'block' : 'none';
+
   rocRender();
+}
+
+function rocPopulateTopicCounts() {
+  const cats = ['all','grid','voltage','dispatch','scada','operations','standards','plant','rapid'];
+  cats.forEach(c => {
+    const el = document.getElementById('roc-tc-' + c);
+    if (!el) return;
+    const count = c === 'all' ? ROC_QUESTIONS.length : ROC_QUESTIONS.filter(q => q.cat === c).length;
+    el.textContent = count + ' Q';
+  });
 }
 
 function rocGetFilteredQs() {
@@ -8520,6 +8572,7 @@ function rocToggleSection(el) { el.classList.toggle('open'); }
 
 function rocRender() {
   rocUpdateStats();
+  rocPopulateTopicCounts();
   const container = document.getElementById('roc-sections');
   if (!container) return;
   const filtered = rocGetFilteredQs();
