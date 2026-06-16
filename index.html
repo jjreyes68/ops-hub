@@ -1318,7 +1318,7 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
   <button class="nav-tab" onclick="switchView('intel',this)">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
-  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Operator Log</button>
+  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Handoff</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('map',this)">Map</button>
   <button class="nav-tab" onclick="switchView('timezones',this)">Map/Timezones</button>
 
@@ -2487,7 +2487,7 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
   </div>
 </div>
 
-<!-- OPERATOR LOG ─────────────────────────────────────────────────────────────── -->
+<!-- HANDOFF ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-chron">
 
   <div class="cl-pg-header">
@@ -4217,7 +4217,7 @@ function completeSafety(){
 function resetSafety(){ SAFETY.forEach(i=>safetyS[i]=false); renderSafety(); }
 
 // ─── NERC CHECK ───────────────────────────────────────────────────────────────
-const NERC_ITEMS=['Physical access log reviewed','Electronic access controls verified','Security perimeter inspected','Unauthorized access attempts checked','Backup communications tested','SCADA/EMS communication verified','Protection relay status confirmed','Transmission constraint monitoring active','Outage coordination reviewed','Operator log current and complete'];
+const NERC_ITEMS=['Physical access log reviewed','Electronic access controls verified','Security perimeter inspected','Unauthorized access attempts checked','Backup communications tested','SCADA/EMS communication verified','Protection relay status confirmed','Transmission constraint monitoring active','Outage coordination reviewed','Handoff log current and complete'];
 let nercS={};
 function initNERC(){ NERC_ITEMS.forEach(i=>{if(nercS[i]===undefined)nercS[i]=false;}); renderNERC(); }
 function toggleNERC(i){ nercS[i]=!nercS[i]; renderNERC(); }
