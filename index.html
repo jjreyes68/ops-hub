@@ -1124,14 +1124,14 @@ body.dark .nerc-study-container{
 /* ── ROC TOPIC GRID ──────────────────────────────────────────────────────── */
 .roc-topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;}
 @media(max-width:700px){.roc-topic-grid{grid-template-columns:repeat(2,1fr);}}
-.roc-topic-card{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px 14px;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-family:var(--f);text-align:left;transition:all .16s;box-shadow:var(--shs);}
+.roc-topic-card{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 10px;background:var(--bg2);border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-family:var(--f);text-align:left;transition:all .16s;box-shadow:var(--shs);}
 .roc-topic-card:hover{border-color:var(--border2);background:var(--bg3);transform:translateY(-1px);box-shadow:var(--sh);}
 .roc-topic-card:active{transform:translateY(0);}
 .roc-topic-card.active{border-color:var(--blue);background:var(--bbg);box-shadow:0 0 0 3px var(--bbg);}
-.roc-topic-icon{font-size:18px;line-height:1;}
-.roc-topic-name{font-size:12.5px;font-weight:600;color:var(--text);line-height:1.2;}
+.roc-topic-icon{font-size:14px;line-height:1;}
+.roc-topic-name{font-size:11px;font-weight:600;color:var(--text);line-height:1.2;}
 .roc-topic-card.active .roc-topic-name{color:var(--blue);}
-.roc-topic-count{font-family:var(--m);font-size:10px;color:var(--text3);margin-top:1px;}
+.roc-topic-count{font-family:var(--m);font-size:9px;color:var(--text3);margin-top:1px;}
 .roc-topic-card.active .roc-topic-count{color:var(--blue);opacity:.7;}
 .roc-wrap{padding:4px 0 60px;}
 .roc-topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--shs);}
@@ -1318,7 +1318,7 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
   <button class="nav-tab" onclick="switchView('intel',this)">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
-  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Operator Log</button>
+  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Handoff</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('map',this)">Map</button>
   <button class="nav-tab" onclick="switchView('timezones',this)">Map/Timezones</button>
 
@@ -2487,12 +2487,12 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
   </div>
 </div>
 
-<!-- OPERATOR LOG ─────────────────────────────────────────────────────────────── -->
+<!-- HANDOFF ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-chron">
 
   <div class="cl-pg-header">
-    <div class="cl-pg-title">Operator Log</div>
-    <div class="cl-pg-sub">Chronological shift feed · starred entries auto-populate handoff</div>
+    <div class="cl-pg-title">Handoff</div>
+    <div class="cl-pg-sub">Chronological shift feed · starred entries auto-populate handoff notes</div>
   </div>
 
   <!-- Entry bar -->
@@ -3697,7 +3697,7 @@ function logWeather(){
   switchView('notes',document.querySelectorAll('.nav-tab')[0]); showToast('Weather logged');
 }
 
-// ─── OPERATOR LOG ────────────────────────────────────────────────────────────────
+// ─── HANDOFF ────────────────────────────────────────────────────────────────
 const CL_KEY = 'rnwbl_chron_v1';
 let clEntries = [];
 let clSiteOptions = ''; // cached options HTML for inline selects
@@ -3794,7 +3794,7 @@ function clDelete(id) {
 
 function clClear() {
   if (!clEntries.length) return;
-  if (!confirm('Clear all Operator Log entries for this shift?')) return;
+  if (!confirm('Clear all Handoff entries for this shift?')) return;
   clEntries = [];
   try { localStorage.removeItem(CL_KEY); } catch(e) {}
   clRender();
@@ -4217,7 +4217,7 @@ function completeSafety(){
 function resetSafety(){ SAFETY.forEach(i=>safetyS[i]=false); renderSafety(); }
 
 // ─── NERC CHECK ───────────────────────────────────────────────────────────────
-const NERC_ITEMS=['Physical access log reviewed','Electronic access controls verified','Security perimeter inspected','Unauthorized access attempts checked','Backup communications tested','SCADA/EMS communication verified','Protection relay status confirmed','Transmission constraint monitoring active','Outage coordination reviewed','Operator log current and complete'];
+const NERC_ITEMS=['Physical access log reviewed','Electronic access controls verified','Security perimeter inspected','Unauthorized access attempts checked','Backup communications tested','SCADA/EMS communication verified','Protection relay status confirmed','Transmission constraint monitoring active','Outage coordination reviewed','Handoff log current and complete'];
 let nercS={};
 function initNERC(){ NERC_ITEMS.forEach(i=>{if(nercS[i]===undefined)nercS[i]=false;}); renderNERC(); }
 function toggleNERC(i){ nercS[i]=!nercS[i]; renderNERC(); }
