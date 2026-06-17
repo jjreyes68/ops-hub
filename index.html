@@ -1453,6 +1453,19 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
         <span class="min-lbl">until</span>
         <button class="add-btn" onclick="addAdhoc()">+ Add</button>
       </div>
+
+      <div style="border-top:1px solid var(--border);margin:12px 0;"></div>
+
+      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Recurring Timer</div>
+      <div id="recurring-list" style="max-height:200px;overflow-y:auto;margin-bottom:8px;"></div>
+      <div class="adhoc-row">
+        <input id="rec-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addRecurring()">
+        <input id="rec-interval" class="t-inp" type="number" min="1" placeholder="min" title="Interval in minutes">
+        <span class="min-lbl">every</span>
+        <input id="rec-duration" class="t-inp" type="number" min="1" placeholder="hrs" title="Duration in hours">
+        <span class="min-lbl">for</span>
+        <button class="add-btn" onclick="addRecurring()">+ Add</button>
+      </div>
     </div>
     <div class="card">
       <div class="card-title">Checklists</div>
@@ -2766,7 +2779,7 @@ async function loadSitesAsync() {
 }
 
 let S = {
-  recTasks:[], adhocTasks:[], checklists:{}, activeList:null,
+  recTasks:[], adhocTasks:[], recurringTasks:[], checklists:{}, activeList:null,
   notes:[], activeNote:null, logEntries:[],
   siteFilter:'all', scanGroupsOpen:{},
   timerRunning:false, timerElapsed:0, timerCycles:0,
@@ -2816,6 +2829,7 @@ async function load() {
   if(pgscDate) pgscDate.valueAsDate = new Date();
   renderEquip();
   restoreAdhocTimers();
+  restoreRecurringTimers();
   asInit();
   swInit();
   clInit();
@@ -3030,6 +3044,135 @@ function renderRec(){
 // ─── ADHOC TASKS ──────────────────────────────────────────────────────────────
 let adhocInts={};
 let adhocAlarmed=new Set(); // tracks IDs that have already triggered the alarm
+
+// ─── RECURRING TIMERS ─────────────────────────────────────────────────────────
+let recurringInts={};
+let recurringAlarmed=new Set(); // tracks IDs that have already triggered the alarm
+
+function addRecurring(){
+  const v=document.getElementById('rec-inp').value.trim(); if(!v)return;
+  const interval=parseInt(document.getElementById('rec-interval').value)||0;
+  const duration=parseInt(document.getElementById('rec-duration').value)||0;
+  if(interval<=0 || duration<=0) return;
+  
+  const task={
+    id:Date.now(),
+    name:v,
+    done:false,
+    intervalMin:interval,
+    durationHours:duration,
+    startTime:Date.now(),
+    endTime:Date.now() + (duration * 60 * 60 * 1000),
+    nextTrigger:Date.now() + (interval * 60 * 1000),
+    triggerCount:0
+  };
+  S.recurringTasks.push(task);
+  document.getElementById('rec-inp').value='';
+  document.getElementById('rec-interval').value='';
+  document.getElementById('rec-duration').value='';
+  addLog({type:'task',title:'Recurring timer added: '+v,detail:'Every '+interval+'min for '+duration+'hrs'});
+  save(); renderRecurring(); startRecurringTimer(task.id);
+}
+
+function startRecurringTimer(id){
+  if(recurringInts[id])clearInterval(recurringInts[id]);
+  recurringInts[id]=setInterval(()=>checkRecurringTimer(id),1000);
+}
+
+function checkRecurringTimer(id){
+  const t=S.recurringTasks.find(x=>x.id===id);
+  if(!t || t.done) {
+    if(recurringInts[id]){clearInterval(recurringInts[id]);delete recurringInts[id];}
+    return;
+  }
+  
+  const now=Date.now();
+  if(now>=t.endTime){
+    // Duration expired
+    if(recurringInts[id]){clearInterval(recurringInts[id]);delete recurringInts[id];}
+    t.done=true;
+    save(); renderRecurring();
+    return;
+  }
+  
+  if(now>=t.nextTrigger && !recurringAlarmed.has(id)){
+    recurringAlarmed.add(id);
+    t.triggerCount++;
+    playQtAlarm();
+    qtShowBanner(t.name);
+    setTimeout(()=>speak(t.name),950);
+    
+    // Schedule next trigger
+    t.nextTrigger=now + (t.intervalMin * 60 * 1000);
+    save(); renderRecurring();
+    
+    // Clear alarm flag after a delay to allow next trigger
+    setTimeout(()=>recurringAlarmed.delete(id),2000);
+  }
+  
+  renderRecurring();
+}
+
+function toggleRecurring(id){
+  const t=S.recurringTasks.find(x=>x.id===id); if(!t)return;
+  t.done=!t.done;
+  if(t.done){
+    addLog({type:'task',title:'Recurring timer stopped: '+t.name,detail:''});
+    if(recurringInts[id]){clearInterval(recurringInts[id]);delete recurringInts[id];}
+    recurringAlarmed.delete(id);
+  }
+  save(); renderRecurring();
+}
+
+function delRecurring(id){
+  if(recurringInts[id]){clearInterval(recurringInts[id]);delete recurringInts[id];}
+  recurringAlarmed.delete(id);
+  S.recurringTasks=S.recurringTasks.filter(x=>x.id!==id);
+  save(); renderRecurring();
+}
+
+function renderRecurring(){
+  const el=document.getElementById('recurring-list');
+  if(!el) return;
+  
+  const now=Date.now();
+  el.innerHTML=!S.recurringTasks.length?'<div class="empty-state compact"><div class="empty-state-icon">🔄</div><div class="empty-state-title">No recurring timers</div><div class="empty-state-sub">Add timers that repeat on a schedule above.</div></div>':
+    S.recurringTasks.map(t=>{
+      const isExpired=now>=t.endTime;
+      const timeToNext=Math.max(0,t.nextTrigger-now);
+      const minsToNext=Math.floor(timeToNext/60000);
+      const secsToNext=Math.floor((timeToNext%60000)/1000);
+      const timeToEnd=Math.max(0,t.endTime-now);
+      const hrsToEnd=Math.floor(timeToEnd/3600000);
+      const minsToEnd=Math.floor((timeToEnd%3600000)/60000);
+      
+      return `<div class="task-item${t.done?' done':''}">
+        <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleRecurring(${t.id})">
+        <div class="task-label">
+          <div>${esc(t.name)}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px;">
+            ${t.done?'Stopped':isExpired?'Expired':'Next: '+minsToNext+'m '+secsToNext+'s'} • 
+            Every ${t.intervalMin}min • 
+            ${t.done?'':hrsToEnd+'h '+minsToEnd+'m remaining'}
+          </div>
+        </div>
+        <button class="task-del" onclick="delRecurring(${t.id})">✕</button>
+      </div>`;
+    }).join('');
+}
+
+function restoreRecurringTimers(){
+  S.recurringTasks.forEach(t=>{
+    if(t.done) return;
+    const now=Date.now();
+    if(now>=t.endTime){
+      t.done=true;
+    } else {
+      startRecurringTimer(t.id);
+    }
+  });
+  save(); renderRecurring();
+}
 
 function playQtAlarm(){
   try {
@@ -5637,7 +5780,8 @@ function asExportCSV() {
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
   const types = asTypeFilter.includes('all') ? 'All' : asTypeFilter.join(' & ');
-  a.download=`${shift||'Shift'} Asset Scan ${types} ${op||'Name'}.csv`;
+  const dateSuffix = date ? (()=>{ const [y,m,d]=date.split('-'); return `${parseInt(m)}${parseInt(d)}${y.slice(-2)}`; })() : '';
+  a.download=`${shift||'Shift'} Asset Scan ${types} ${op||'Name'}${dateSuffix?' '+dateSuffix:''}.csv`;
   document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(a.href);
 }
 
