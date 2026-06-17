@@ -115,6 +115,12 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 
 .nav-spacer{flex:1;}
 .nav-time{font-family:var(--m);font-size:11px;color:var(--text3);}
+.nav-version{font-family:var(--m);font-size:10px;font-weight:600;color:var(--text3);white-space:nowrap;padding:0 10px;letter-spacing:.02em;}
+
+/* FIXED FOOTER */
+.app-footer{position:fixed;bottom:0;left:0;right:0;height:28px;display:flex;align-items:center;justify-content:center;gap:5px;background:var(--bg2);border-top:1px solid var(--border);font-family:var(--m);font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.03em;z-index:40;}
+.app-footer-v{opacity:.5;font-weight:400;}
+body{padding-bottom:28px;}
 
 /* ── Nav timezone strip ───────────────────────────────────── */
 .nav-tz-bar{display:flex;align-items:center;gap:0;flex-shrink:0;border:1px solid var(--border);border-radius:7px;overflow:hidden;height:28px;}
@@ -518,6 +524,17 @@ body.dark .as-banner-stats{color:var(--text2);}
 .toast.t-err{border-left-color:var(--red);}
 .toast.t-info{border-left-color:var(--blue);}
 .empty{font-size:12px;color:var(--text3);text-align:center;padding:16px 0;}
+
+/* EMPTY STATE COMPONENT */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:32px 16px;text-align:center;}
+.empty-state-icon{font-size:28px;line-height:1;opacity:.4;margin-bottom:2px;}
+.empty-state-title{font-size:13px;font-weight:600;color:var(--text2);}
+.empty-state-sub{font-size:12px;color:var(--text3);line-height:1.5;max-width:260px;}
+.empty-state-action{margin-top:4px;padding:6px 14px;border-radius:7px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
+.empty-state-action:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
+.empty-state.compact{padding:20px 16px;gap:4px;}
+.empty-state.compact .empty-state-icon{font-size:20px;margin-bottom:0;}
+.empty-state.compact .empty-state-title{font-size:12px;}
 select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;}
 /* ── Log BUILDER ─────────────────────────────────────────────────────────────── */
 .sw-wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start;}
@@ -920,10 +937,10 @@ body.dark .nerc-study-container{
 .nerc-study-container *{box-sizing:border-box;margin:0;padding:0}
 .nerc-study-container .nerc-screen{display:none}
 .nerc-study-container .nerc-screen.active{display:flex;flex-direction:column}
+.nerc-study-container #nerc-screen-setup{align-items:flex-start;justify-content:flex-start;background:transparent}
+.nerc-hdr-stat{font-family:var(--m);font-size:11px;color:var(--text3);white-space:nowrap;}
 
-.nerc-study-container #nerc-screen-setup{align-items:center;justify-content:flex-start;padding:32px 24px;background:var(--bg2)}
-
-.nerc-study-container .nerc-setup-wrap{width:100%;max-width:960px}
+.nerc-study-container .nerc-setup-wrap{width:100%;}
 .nerc-study-container .nerc-setup-logo{display:flex;align-items:center;gap:14px;margin-bottom:32px}
 .nerc-study-container .nerc-setup-logo-icon{width:52px;height:52px;background:var(--nerc-greenbg);border:1.5px solid var(--nerc-green);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 24px rgba(0,229,160,.15)}
 .nerc-study-container .nerc-setup-logo-text{font-family:var(--nerc-cond);font-size:28px;font-weight:700;letter-spacing:.08em;color:var(--nerc-green);text-shadow:0 0 20px rgba(0,229,160,.3)}
@@ -1436,6 +1453,21 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
         <span class="min-lbl">until</span>
         <button class="add-btn" onclick="addAdhoc()">+ Add</button>
       </div>
+
+      <div style="border-top:1px solid var(--border);margin:12px 0;"></div>
+
+      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Recurring Timer</div>
+      <div id="recurring-list" style="max-height:200px;overflow-y:auto;margin-bottom:8px;"></div>
+      <div class="adhoc-row">
+        <input id="rec-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addRecurring()">
+        <span class="min-lbl">every</span>
+        <input id="rec-interval" class="t-inp" type="number" min="1" placeholder="min" title="Interval in minutes">
+        <span class="min-lbl">for</span>
+        <input id="rec-duration" class="t-inp" type="number" min="1" placeholder="hrs" title="Duration in hours">
+        <button class="add-btn" onclick="addRecurring()">+ Add</button>
+        <button class="add-btn" onclick="saveRecurringPreset()" style="background:var(--bbg);border-color:var(--blue);color:var(--blue);" title="Save as preset">💾</button>
+      </div>
+      <div id="rec-presets" style="margin-top:8px;"></div>
     </div>
     <div class="card">
       <div class="card-title">Checklists</div>
@@ -1934,19 +1966,26 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 
 <!-- NERC STUDY -->
 <div class="view" id="view-nerc">
+
+  <!-- PAGE HEADER (always visible) -->
+  <div class="page-header">
+    <div>
+      <div class="page-title">NERC Simulator</div>
+      <div class="page-subtitle">Scenario-based exam training — TO, BA, RC/SC certification</div>
+    </div>
+    <div class="page-header-actions" id="nerc-hdr-actions">
+      <span class="nerc-hdr-stat"><span style="color:var(--green);font-weight:700;">100</span> questions</span>
+      <span class="nerc-hdr-stat"><span style="color:var(--blue);font-weight:700;">11</span> categories</span>
+      <span class="nerc-hdr-stat"><span style="color:var(--amber);font-weight:700;">80%</span> pass mark</span>
+    </div>
+  </div>
+
   <div class="nerc-study-container">
     <!-- SETUP SCREEN -->
     <div id="nerc-screen-setup" class="nerc-screen active">
       <div class="nerc-setup-wrap">
-        <div class="nerc-setup-logo">
-          <div class="nerc-setup-logo-icon">⚡</div>
-          <div>
-            <div class="nerc-setup-logo-text">NERC SIMULATOR</div>
-            <div class="nerc-setup-logo-sub">POWER SYSTEM OPERATOR · TRAINING PLATFORM</div>
-          </div>
-        </div>
-        <div class="nerc-setup-title">Operator Reliability<br><span>Exam Simulator</span></div>
-        <div class="nerc-setup-desc">Scenario-based training for <strong style="color:var(--nerc-blue)">TO</strong>, <strong style="color:var(--nerc-green)">BA</strong>, and <strong style="color:var(--nerc-amber)">RC/SC</strong> certification. Covers IROL/SOL, EEA, Blackstart, Voltage, Frequency/ACE, N-1, Protection, TLR/Conservative Ops, Facility Ratings, Fatigue &amp; Switching Orders. 100-question bank, fully randomized.</div>
+
+        <!-- setup options cards -->
         <div class="nerc-setup-card">
           <div class="nerc-setup-card-label">▸ Question Count</div>
           <div class="nerc-setup-opts" id="nerc-qcount-opts">
@@ -1985,11 +2024,6 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
           </div>
         </div>
         <button class="nerc-setup-start" onclick="nercExamStartExam()">▶ BEGIN EXAM</button>
-        <div class="nerc-setup-stats">
-          <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">100</div><div class="nerc-stat-chip-lbl">Questions</div></div>
-          <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">11</div><div class="nerc-stat-chip-lbl">Categories</div></div>
-          <div class="nerc-stat-chip"><div class="nerc-stat-chip-val">80%</div><div class="nerc-stat-chip-lbl">Pass Mark</div></div>
-        </div>
 
         <div class="nerc-resources">
           <div class="nerc-resources-hdr">&#9658; Exam Coverage by Role</div>
@@ -2446,7 +2480,7 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
           <div class="sw-history-title">Recent Entries</div>
           <button class="tbtn" style="font-size:11px;padding:2px 8px;" onclick="swClearHistory()">Clear</button>
         </div>
-        <div id="sw-hist-wrap"><div class="sw-empty">No history yet</div></div>
+        <div id="sw-hist-wrap"><div class="empty-state compact"><div class="empty-state-icon">🕓</div><div class="empty-state-title">No history yet</div><div class="empty-state-sub">Generated logs will appear here.</div></div></div>
       </div>
     </div>
 
@@ -2475,7 +2509,7 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
       <!-- Output -->
       <div class="sw-lbl">Output</div>
       <div id="sw-out-hdr-badge"></div>
-      <div id="sw-out-body"><div class="sw-empty">Select a template to begin</div></div>
+      <div id="sw-out-body"><div class="empty-state"><div class="empty-state-icon">📄</div><div class="empty-state-title">Select a template to begin</div><div class="empty-state-sub">Choose a log type from the left to fill out the form.</div></div></div>
 
       <!-- Actions -->
       <div class="sw-actions">
@@ -2518,7 +2552,7 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
     </div>
   </div>
 
-  <div class="cl-feed" id="cl-feed"><div class="empty">No entries yet — log the first event above</div></div>
+  <div class="cl-feed" id="cl-feed"><div class="empty-state compact"><div class="empty-state-icon">📡</div><div class="empty-state-title">No entries yet</div><div class="empty-state-sub">Log the first event using the form above.</div></div></div>
 
   <!-- Shift Handoff Draft -->
   <div class="cl-handoff-section">
@@ -2747,7 +2781,7 @@ async function loadSitesAsync() {
 }
 
 let S = {
-  recTasks:[], adhocTasks:[], checklists:{}, activeList:null,
+  recTasks:[], adhocTasks:[], recurringTasks:[], recurringPresets:[], checklists:{}, activeList:null,
   notes:[], activeNote:null, logEntries:[],
   siteFilter:'all', scanGroupsOpen:{},
   timerRunning:false, timerElapsed:0, timerCycles:0,
@@ -2797,6 +2831,8 @@ async function load() {
   if(pgscDate) pgscDate.valueAsDate = new Date();
   renderEquip();
   restoreAdhocTimers();
+  restoreRecurringTimers();
+  renderRecurringPresets();
   asInit();
   swInit();
   clInit();
@@ -2999,7 +3035,7 @@ function delRec(id){ S.recTasks=S.recTasks.filter(x=>x.id!==id); save(); renderR
 function renderRec(){
   const el=document.getElementById('rec-list');
   if(!el) return;
-  el.innerHTML=!S.recTasks.length?'<div class="empty">No recurring tasks</div>':
+  el.innerHTML=!S.recTasks.length?'<div class="empty-state compact"><div class="empty-state-icon">🔄</div><div class="empty-state-title">No recurring tasks</div><div class="empty-state-sub">Add tasks that repeat on a schedule above.</div></div>':
     S.recTasks.map(t=>`<div class="task-item${t.done?' done':''}">
       <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleRec(${t.id})">
       <span class="task-label">${esc(t.name)}</span>
@@ -3011,6 +3047,184 @@ function renderRec(){
 // ─── ADHOC TASKS ──────────────────────────────────────────────────────────────
 let adhocInts={};
 let adhocAlarmed=new Set(); // tracks IDs that have already triggered the alarm
+
+// ─── RECURRING TIMERS ─────────────────────────────────────────────────────────
+let recurringInts={};
+let recurringAlarmed=new Set(); // tracks IDs that have already triggered the alarm
+
+function addRecurring(){
+  const v=document.getElementById('rec-inp').value.trim(); if(!v)return;
+  const interval=parseInt(document.getElementById('rec-interval').value)||0;
+  const duration=parseInt(document.getElementById('rec-duration').value)||0;
+  if(interval<=0 || duration<=0) return;
+  
+  const task={
+    id:Date.now(),
+    name:v,
+    done:false,
+    intervalMin:interval,
+    durationHours:duration,
+    startTime:Date.now(),
+    endTime:Date.now() + (duration * 60 * 60 * 1000),
+    nextTrigger:Date.now() + (interval * 60 * 1000),
+    triggerCount:0
+  };
+  S.recurringTasks.push(task);
+  document.getElementById('rec-inp').value='';
+  document.getElementById('rec-interval').value='';
+  document.getElementById('rec-duration').value='';
+  addLog({type:'task',title:'Recurring timer added: '+v,detail:'Every '+interval+'min for '+duration+'hrs'});
+  save(); renderRecurring(); startRecurringTimer(task.id);
+}
+
+function startRecurringTimer(id){
+  if(recurringInts[id])clearInterval(recurringInts[id]);
+  recurringInts[id]=setInterval(()=>checkRecurringTimer(id),1000);
+}
+
+function checkRecurringTimer(id){
+  const t=S.recurringTasks.find(x=>x.id===id);
+  if(!t || t.done) {
+    if(recurringInts[id]){clearInterval(recurringInts[id]);delete recurringInts[id];}
+    return;
+  }
+  
+  const now=Date.now();
+  if(now>=t.endTime){
+    // Duration expired
+    if(recurringInts[id]){clearInterval(recurringInts[id]);delete recurringInts[id];}
+    t.done=true;
+    save(); renderRecurring();
+    return;
+  }
+  
+  if(now>=t.nextTrigger && !recurringAlarmed.has(id)){
+    recurringAlarmed.add(id);
+    t.triggerCount++;
+    playQtAlarm();
+    qtShowBanner(t.name);
+    setTimeout(()=>speak(t.name),950);
+    
+    // Schedule next trigger
+    t.nextTrigger=now + (t.intervalMin * 60 * 1000);
+    save(); renderRecurring();
+    
+    // Clear alarm flag after a delay to allow next trigger
+    setTimeout(()=>recurringAlarmed.delete(id),2000);
+  }
+  
+  renderRecurring();
+}
+
+function toggleRecurring(id){
+  const t=S.recurringTasks.find(x=>x.id===id); if(!t)return;
+  t.done=!t.done;
+  if(t.done){
+    addLog({type:'task',title:'Recurring timer stopped: '+t.name,detail:''});
+    if(recurringInts[id]){clearInterval(recurringInts[id]);delete recurringInts[id];}
+    recurringAlarmed.delete(id);
+  }
+  save(); renderRecurring();
+}
+
+function delRecurring(id){
+  if(recurringInts[id]){clearInterval(recurringInts[id]);delete recurringInts[id];}
+  recurringAlarmed.delete(id);
+  S.recurringTasks=S.recurringTasks.filter(x=>x.id!==id);
+  save(); renderRecurring();
+}
+
+function renderRecurring(){
+  const el=document.getElementById('recurring-list');
+  if(!el) return;
+  
+  const now=Date.now();
+  el.innerHTML=!S.recurringTasks.length?'<div class="empty-state compact"><div class="empty-state-icon">🔄</div><div class="empty-state-title">No recurring timers</div><div class="empty-state-sub">Add timers that repeat on a schedule above.</div></div>':
+    S.recurringTasks.map(t=>{
+      const isExpired=now>=t.endTime;
+      const timeToNext=Math.max(0,t.nextTrigger-now);
+      const minsToNext=Math.floor(timeToNext/60000);
+      const secsToNext=Math.floor((timeToNext%60000)/1000);
+      const timeToEnd=Math.max(0,t.endTime-now);
+      const hrsToEnd=Math.floor(timeToEnd/3600000);
+      const minsToEnd=Math.floor((timeToEnd%3600000)/60000);
+      
+      return `<div class="task-item${t.done?' done':''}">
+        <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleRecurring(${t.id})">
+        <div class="task-label">
+          <div>${esc(t.name)}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px;">
+            ${t.done?'Stopped':isExpired?'Expired':'Next: '+minsToNext+'m '+secsToNext+'s'} • 
+            Every ${t.intervalMin}min • 
+            ${t.done?'':hrsToEnd+'h '+minsToEnd+'m remaining'}
+          </div>
+        </div>
+        <button class="task-del" onclick="delRecurring(${t.id})">✕</button>
+      </div>`;
+    }).join('');
+}
+
+function restoreRecurringTimers(){
+  S.recurringTasks.forEach(t=>{
+    if(t.done) return;
+    const now=Date.now();
+    if(now>=t.endTime){
+      t.done=true;
+    } else {
+      startRecurringTimer(t.id);
+    }
+  });
+  save(); renderRecurring();
+}
+
+function saveRecurringPreset(){
+  const v=document.getElementById('rec-inp').value.trim();
+  const interval=parseInt(document.getElementById('rec-interval').value)||0;
+  const duration=parseInt(document.getElementById('rec-duration').value)||0;
+  if(!v || interval<=0 || duration<=0) return;
+  
+  const preset={
+    id:Date.now(),
+    name:v,
+    intervalMin:interval,
+    durationHours:duration
+  };
+  S.recurringPresets.push(preset);
+  save(); renderRecurringPresets();
+  addLog({type:'task',title:'Recurring timer preset saved: '+v,detail:'Every '+interval+'min for '+duration+'hrs'});
+}
+
+function loadRecurringPreset(id){
+  const preset=S.recurringPresets.find(p=>p.id===id);
+  if(!preset) return;
+  
+  document.getElementById('rec-inp').value=preset.name;
+  document.getElementById('rec-interval').value=preset.intervalMin;
+  document.getElementById('rec-duration').value=preset.durationHours;
+}
+
+function deleteRecurringPreset(id){
+  S.recurringPresets=S.recurringPresets.filter(p=>p.id!==id);
+  save(); renderRecurringPresets();
+}
+
+function renderRecurringPresets(){
+  const el=document.getElementById('rec-presets');
+  if(!el) return;
+  
+  if(!S.recurringPresets.length){
+    el.innerHTML='';
+    return;
+  }
+  
+  el.innerHTML='<div style="font-size:10px;color:var(--text3);margin-bottom:4px;">Saved presets:</div>'+
+    S.recurringPresets.map(p=>
+      `<div style="display:flex;gap:4px;align-items:center;margin-bottom:4px;padding:4px 6px;background:var(--bg3);border-radius:4px;font-size:12px;">
+        <span style="flex:1;cursor:pointer;" onclick="loadRecurringPreset(${p.id})">${esc(p.name)} (${p.intervalMin}min / ${p.durationHours}h)</span>
+        <button onclick="deleteRecurringPreset(${p.id})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;padding:2px;">✕</button>
+      </div>`
+    ).join('');
+}
 
 function playQtAlarm(){
   try {
@@ -3182,7 +3396,7 @@ function renderAdhoc(){
     }
   });
 
-  el.innerHTML=!S.adhocTasks.length?'<div class="empty">No timers set</div>':
+  el.innerHTML=!S.adhocTasks.length?'<div class="empty-state compact"><div class="empty-state-icon">⏱️</div><div class="empty-state-title">No timers set</div><div class="empty-state-sub">Add a one-off timer using the field above.</div></div>':
     S.adhocTasks.map(t=>{ const ti=timerDisplay(t); return `<div class="task-item${t.done?' done':''}${ti&&ti.exp&&!t.done?' style="border-color:var(--red);background:var(--rbg);"':''}">
       <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleAdhoc(${t.id})">
       <span class="task-label"${ti&&ti.exp&&!t.done?' style="color:var(--red);font-weight:600;"':''}>${esc(t.name)}${t.targetLabel&&!t.done?`<span style="font-size:10px;color:var(--text3);margin-left:5px;">until ${esc(t.targetLabel)}</span>`:''}</span>
@@ -3201,14 +3415,14 @@ function delCl(id){ if(!S.activeList)return; S.checklists[S.activeList]=S.checkl
 function renderCl(){
   const keys=Object.keys(S.checklists);
   const hdr=document.getElementById('cl-hdr'), ir=document.getElementById('cl-item-row'), pr=document.getElementById('cl-prog-row'), el=document.getElementById('cl-items');
-  if(!keys.length){ hdr.style.display='none'; ir.style.display='none'; pr.style.display='none'; el.innerHTML='<div class="empty">Create your first checklist above</div>'; return; }
+  if(!keys.length){ hdr.style.display='none'; ir.style.display='none'; pr.style.display='none'; el.innerHTML='<div class="empty-state compact"><div class="empty-state-icon">✅</div><div class="empty-state-title">No checklists yet</div><div class="empty-state-sub">Create your first checklist using the field above.</div></div>'; return; }
   if(!S.activeList||!S.checklists[S.activeList]) S.activeList=keys[0];
   hdr.style.display='flex';
   document.getElementById('cl-sel').innerHTML=keys.map(k=>`<option value="${esc(k)}"${S.activeList===k?' selected':''}>${esc(k)}</option>`).join('');
   const list=S.checklists[S.activeList], done=list.filter(x=>x.done).length, tot=list.length;
   if(tot>0){ pr.style.display='flex'; document.getElementById('cl-prog-fill').style.width=Math.round(done/tot*100)+'%'; document.getElementById('cl-prog-txt').textContent=done+'/'+tot; } else pr.style.display='none';
   ir.style.display='flex';
-  el.innerHTML=!list.length?'<div class="empty">No items yet — add one below</div>':
+  el.innerHTML=!list.length?'<div class="empty-state compact"><div class="empty-state-icon">📝</div><div class="empty-state-title">No items yet</div><div class="empty-state-sub">Add your first item below.</div></div>':
     list.map(t=>`<div class="task-item${t.done?' done':''}">
       <input type="checkbox" class="task-cb" ${t.done?'checked':''} onchange="toggleCl(${t.id})">
       <span class="task-label">${esc(t.name)}</span>
@@ -3280,7 +3494,7 @@ function toggleSiteRow(id){
       const site=SITES.find(x=>x.id===id);
       const entries=getSiteHistory(site?site.name:'');
       if(!entries.length){
-        hist.innerHTML='<div class="st-hist-title">Scan History</div><div class="st-hist-empty">No history yet for this site.</div>';
+        hist.innerHTML='<div class="st-hist-title">Scan History</div><div class="empty-state compact"><div class="empty-state-icon">🕓</div><div class="empty-state-title">No history yet</div><div class="empty-state-sub">Scan this site to start building a history.</div></div>';
       } else {
         hist.innerHTML='<div class="st-hist-title">Recent Scans</div>'+entries.map(e=>{
           const d=new Date(e.ts);
@@ -3352,7 +3566,12 @@ function renderSites(){
   else if(f!=='all') sites=sites.filter(s=>siteStatus(s)===f);
   sites.sort((a,b)=>(order[siteStatus(a)]||0)-(order[siteStatus(b)]||0));
   const el=document.getElementById('sites-table-wrap');
-  if(!sites.length){ el.innerHTML='<div style="padding:20px;text-align:center;color:var(--text3);font-size:13px;">No sites'+(f!=='all'?' matching filter':' added yet')+'</div>'; return; }
+  if(!sites.length){
+    const msg = f!=='all'
+      ? `<div class="empty-state compact"><div class="empty-state-icon">🔍</div><div class="empty-state-title">No sites match this filter</div><div class="empty-state-sub">Try a different filter or check All.</div></div>`
+      : `<div class="empty-state"><div class="empty-state-icon">📡</div><div class="empty-state-title">No sites yet</div><div class="empty-state-sub">Add your first site to start tracking scan times and status.</div><button class="empty-state-action" onclick="openAddSite()">+ Add site</button></div>`;
+    el.innerHTML=msg; return;
+  }
 
   const hdr=`<div class="scan-tbl-hdr">
     <div></div>
@@ -3523,7 +3742,7 @@ const TAG_LABEL={obs:'Observation',incident:'Incident',response:'Response',task:
 const TAG_CLS={obs:'tag-obs',incident:'tag-incident',response:'tag-response',task:'tag-task'};
 function renderNotes(){
   const el=document.getElementById('notes-list');
-  el.innerHTML=!S.notes.length?'<div class="empty">No notes yet</div>':
+  el.innerHTML=!S.notes.length?'<div class="empty-state compact"><div class="empty-state-icon">🗒️</div><div class="empty-state-title">No notes yet</div><div class="empty-state-sub">Notes you create will appear here.</div></div>':
     S.notes.map(n=>`<div class="note-entry${S.activeNote===n.id?' active':''}" onclick="selectNote(${n.id})">
       <div class="note-entry-time">${new Date(n.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
       <div class="note-entry-title">${esc(n.title)}</div>
@@ -3592,7 +3811,7 @@ function addLog(e){ S.logEntries.unshift({...e,ts:Date.now(),id:Date.now()}); if
 function renderLog(){
   const f=document.getElementById('log-filter').value;
   const entries=f==='all'?S.logEntries:S.logEntries.filter(e=>e.type===f);
-  document.getElementById('log-list').innerHTML=!entries.length?'<div class="empty">No entries yet</div>':
+  document.getElementById('log-list').innerHTML=!entries.length?'<div class="empty-state compact"><div class="empty-state-icon">📋</div><div class="empty-state-title">No log entries yet</div><div class="empty-state-sub">Events logged during this shift will appear here.</div></div>':
     entries.map(e=>`<div class="log-entry ${e.type||'note'}">
       <div class="log-time">${new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
       <div class="log-body"><div class="log-title">${esc(e.title||'')}</div>${e.detail?`<div class="log-detail">${esc(e.detail)}</div>`:''}</div>
@@ -3946,7 +4165,7 @@ function clRender() {
   if (sc) { sc.style.display = starred ? 'inline' : 'none'; sc.textContent = starred + ' ★ for passdown'; }
 
   if (!clEntries.length) {
-    feed.innerHTML = '<div class="empty">No entries yet — log the first event above</div>';
+    feed.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">📡</div><div class="empty-state-title">No entries yet</div><div class="empty-state-sub">Log the first event using the form above.</div></div>';
   } else {
     feed.innerHTML = clEntries.map(e => {
       const catCls = CL_CAT_CLS[e.cat] || 'cl-cat-normal';
@@ -3980,7 +4199,7 @@ function clRenderPreview() {
   const handoffEntries  = clEntries.filter(e => e.cat === 'Handoff' || e.starred);
 
   if (!handoffEntries.length && !upcomingEntries.length) {
-    preview.innerHTML = '<div class="cl-hd-empty">Nothing here yet — log entries as Handoff or Upcoming and they\'ll appear here ready to copy.</div>';
+    preview.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">📤</div><div class="empty-state-title">Nothing here yet</div><div class="empty-state-sub">Log entries tagged Handoff or Upcoming will appear here ready to copy.</div></div>';
     return;
   }
 
@@ -4123,7 +4342,7 @@ function wxRemovePin(name) {
 
 function wxRenderPins() {
   const el = document.getElementById('wx-pins-list'); if (!el) return;
-  if (!wxPins.length) { el.innerHTML = '<span style="font-size:12px;color:var(--text3);">No sites pinned yet — search above to add up to 12</span>'; return; }
+  if (!wxPins.length) { el.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">🌤️</div><div class="empty-state-title">No sites pinned</div><div class="empty-state-sub">Search above to add up to 12 sites.</div></div>'; return; }
   el.innerHTML = wxPins.map(p =>
     `<div class="wx-pin-chip">${esc(p.name)}<button class="wx-pin-chip-del" onclick="wxRemovePin('${esc(p.name)}')">✕</button></div>`
   ).join('');
@@ -4185,7 +4404,7 @@ function removeCrew(id){ S.crew=S.crew.filter(x=>x.id!==id); save(); renderCrew(
 function renderCrew(){
   const el=document.getElementById('crew-list'); if(!el) return;
   const colors={'In field':'var(--green)','On break':'var(--amber)','Off site':'var(--text3)','Stand-by':'var(--blue)'};
-  el.innerHTML=!S.crew.length?'<div class="empty">No crew added</div>':
+  el.innerHTML=!S.crew.length?'<div class="empty-state compact"><div class="empty-state-icon">👤</div><div class="empty-state-title">No crew added</div><div class="empty-state-sub">Add crew members for this shift above.</div></div>':
     S.crew.map(m=>`<div class="task-item"><span class="task-label">${esc(m.name)}</span>
       <span style="font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;background:var(--bg4);color:${colors[m.status]||'var(--text2)'};cursor:pointer;" onclick="cycleCrew(${m.id})">${m.status}</span>
       <button class="task-del" onclick="removeCrew(${m.id})">✕</button>
@@ -4198,7 +4417,7 @@ function removeEquip(id){ S.equipment=S.equipment.filter(x=>x.id!==id); save(); 
 function renderEquip(){
   const el=document.getElementById('equip-list'); if(!el) return;
   const icons={ok:'✅',caution:'⚠️',down:'🔴'};
-  el.innerHTML=!S.equipment.length?'<div class="empty">No equipment logged</div>':
+  el.innerHTML=!S.equipment.length?'<div class="empty-state compact"><div class="empty-state-icon">🔧</div><div class="empty-state-title">No equipment logged</div><div class="empty-state-sub">Log equipment status for this shift above.</div></div>':
     S.equipment.map(e=>`<div class="task-item"><span style="font-size:14px;">${icons[e.status]||'?'}</span><span class="task-label">${esc(e.name)}</span><span style="font-size:10px;color:var(--text3);font-family:var(--m);">${timeSince(e.ts)}</span><button class="task-del" onclick="removeEquip(${e.id})">✕</button></div>`).join('');
 }
 
@@ -5545,7 +5764,7 @@ function asRenderEditList(){
     <span class="task-label">${esc(s.id)} <span style="color:var(--text3);font-size:11px;">— ${esc(s.label||'')} ${esc(s.stats||'')}</span></span>
     <button class="tbtn" style="font-size:11px;padding:2px 8px;" onclick="asEditLoad(${i})">Edit</button>
     <button class="task-del" onclick="asEditDel(${i})">✕</button>
-  </div>`).join('')||'<div class="empty">No sites</div>';
+  </div>`).join('')||'<div class="empty-state compact"><div class="empty-state-icon">🏭</div><div class="empty-state-title">No sites configured</div><div class="empty-state-sub">Add sites via the site editor to begin scanning.</div></div>';
 }
 function asEditLoad(idx){
   const s=asSites()[idx]; if(!s) return;
@@ -5613,7 +5832,8 @@ function asExportCSV() {
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
   const types = asTypeFilter.includes('all') ? 'All' : asTypeFilter.join(' & ');
-  a.download=`${shift||'Shift'} Asset Scan ${types} ${op||'Name'}.csv`;
+  const dateSuffix = date ? (()=>{ const [y,m,d]=date.split('-'); return `${parseInt(m)}${parseInt(d)}${y.slice(-2)}`; })() : '';
+  a.download=`${shift||'Shift'} Asset Scan ${types} ${op||'Name'}${dateSuffix?' '+dateSuffix:''}.csv`;
   document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(a.href);
 }
 
@@ -5768,7 +5988,7 @@ function swClearHistory() {
 
 function swRenderHist() {
   const wrap = document.getElementById('sw-hist-wrap');
-  if (!swHist.length) { wrap.innerHTML = '<div class="sw-empty">No history yet</div>'; return; }
+  if (!swHist.length) { wrap.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">🕓</div><div class="empty-state-title">No history yet</div><div class="empty-state-sub">Generated logs will appear here.</div></div>'; return; }
   const rows = swHist.map(h => {
     const t = new Date(h.ts).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
     const col = h.cls==='re' ? 'var(--green)' : h.cls==='de' ? 'var(--red)' : 'var(--blue)';
@@ -6037,7 +6257,7 @@ function swSaveTpl() {
 
 function swDelTpl(id) {
   if (!confirm('Delete this template?')) return;
-  if (swActive === id) { swActive = null; document.getElementById('sw-out-body').innerHTML = '<div class="sw-empty">Select a template to begin</div>'; document.getElementById('sw-out-hdr-badge').innerHTML = ''; }
+  if (swActive === id) { swActive = null; document.getElementById('sw-out-body').innerHTML = '<div class="empty-state"><div class="empty-state-icon">📄</div><div class="empty-state-title">Select a template to begin</div><div class="empty-state-sub">Choose a log type from the left to fill out the form.</div></div>'; document.getElementById('sw-out-hdr-badge').innerHTML = ''; }
   swCustomTpls = swCustomTpls.filter(t => t.id !== id);
   swSaveCustom();
   swRenderTpls();
@@ -8703,5 +8923,10 @@ function rocDrillFinish() {
 
 load();
 </script>
+
+<footer class="app-footer">
+  <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
+  RNWBL Ops Hub <span class="app-footer-v">v1.0</span>
+</footer>
 </body>
 </html>
