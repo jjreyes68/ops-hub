@@ -1460,12 +1460,14 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
       <div id="recurring-list" style="max-height:200px;overflow-y:auto;margin-bottom:8px;"></div>
       <div class="adhoc-row">
         <input id="rec-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addRecurring()">
-        <input id="rec-interval" class="t-inp" type="number" min="1" placeholder="min" title="Interval in minutes">
         <span class="min-lbl">every</span>
-        <input id="rec-duration" class="t-inp" type="number" min="1" placeholder="hrs" title="Duration in hours">
+        <input id="rec-interval" class="t-inp" type="number" min="1" placeholder="min" title="Interval in minutes">
         <span class="min-lbl">for</span>
+        <input id="rec-duration" class="t-inp" type="number" min="1" placeholder="hrs" title="Duration in hours">
         <button class="add-btn" onclick="addRecurring()">+ Add</button>
+        <button class="add-btn" onclick="saveRecurringPreset()" style="background:var(--bbg);border-color:var(--blue);color:var(--blue);" title="Save as preset">💾</button>
       </div>
+      <div id="rec-presets" style="margin-top:8px;"></div>
     </div>
     <div class="card">
       <div class="card-title">Checklists</div>
@@ -2779,7 +2781,7 @@ async function loadSitesAsync() {
 }
 
 let S = {
-  recTasks:[], adhocTasks:[], recurringTasks:[], checklists:{}, activeList:null,
+  recTasks:[], adhocTasks:[], recurringTasks:[], recurringPresets:[], checklists:{}, activeList:null,
   notes:[], activeNote:null, logEntries:[],
   siteFilter:'all', scanGroupsOpen:{},
   timerRunning:false, timerElapsed:0, timerCycles:0,
@@ -2830,6 +2832,7 @@ async function load() {
   renderEquip();
   restoreAdhocTimers();
   restoreRecurringTimers();
+  renderRecurringPresets();
   asInit();
   swInit();
   clInit();
@@ -3172,6 +3175,55 @@ function restoreRecurringTimers(){
     }
   });
   save(); renderRecurring();
+}
+
+function saveRecurringPreset(){
+  const v=document.getElementById('rec-inp').value.trim();
+  const interval=parseInt(document.getElementById('rec-interval').value)||0;
+  const duration=parseInt(document.getElementById('rec-duration').value)||0;
+  if(!v || interval<=0 || duration<=0) return;
+  
+  const preset={
+    id:Date.now(),
+    name:v,
+    intervalMin:interval,
+    durationHours:duration
+  };
+  S.recurringPresets.push(preset);
+  save(); renderRecurringPresets();
+  addLog({type:'task',title:'Recurring timer preset saved: '+v,detail:'Every '+interval+'min for '+duration+'hrs'});
+}
+
+function loadRecurringPreset(id){
+  const preset=S.recurringPresets.find(p=>p.id===id);
+  if(!preset) return;
+  
+  document.getElementById('rec-inp').value=preset.name;
+  document.getElementById('rec-interval').value=preset.intervalMin;
+  document.getElementById('rec-duration').value=preset.durationHours;
+}
+
+function deleteRecurringPreset(id){
+  S.recurringPresets=S.recurringPresets.filter(p=>p.id!==id);
+  save(); renderRecurringPresets();
+}
+
+function renderRecurringPresets(){
+  const el=document.getElementById('rec-presets');
+  if(!el) return;
+  
+  if(!S.recurringPresets.length){
+    el.innerHTML='';
+    return;
+  }
+  
+  el.innerHTML='<div style="font-size:10px;color:var(--text3);margin-bottom:4px;">Saved presets:</div>'+
+    S.recurringPresets.map(p=>
+      `<div style="display:flex;gap:4px;align-items:center;margin-bottom:4px;padding:4px 6px;background:var(--bg3);border-radius:4px;font-size:12px;">
+        <span style="flex:1;cursor:pointer;" onclick="loadRecurringPreset(${p.id})">${esc(p.name)} (${p.intervalMin}min / ${p.durationHours}h)</span>
+        <button onclick="deleteRecurringPreset(${p.id})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:11px;padding:2px;">✕</button>
+      </div>`
+    ).join('');
 }
 
 function playQtAlarm(){
