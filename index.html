@@ -3251,8 +3251,8 @@ function playRecurringAlarm(){
       g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+start+dur);
       o.start(ctx.currentTime+start); o.stop(ctx.currentTime+start+dur+0.05);
     }
-    // Gentle single chime
-    beep(660,0,.3);
+    // Gentle double chime
+    beep(660,0,.25); beep(784,.35,.3);
   } catch(e){}
 }
 
