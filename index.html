@@ -1551,9 +1551,9 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
             <option value="BLKW1">BLKW1 — Blackwell</option>
             <option value="CNDR1">CNDR1 — Condor</option>
             <option value="COSO1">COSO1 — Coso</option>
-            <option value="CTLF1">CTLF1 — Centennial Flats</option>
+            <option value="CTFL">CTFL — Centennial Flats</option>
             <option value="DLBO1">DLBO1 — Diablo Wind</option>
-            <option value="FRDN1">FRDN1 — Ferdinand</option>
+            <option value="FRND1">FRND1 — Ferdinand</option>
             <option value="GDWL1">GDWL1 — Goodwell Wind</option>
             <option value="GLTA1">GLTA1 — Goleta</option>
             <option value="HARQ1">HARQ1 — Harquahala 1</option>
@@ -1561,6 +1561,7 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
             <option value="KUNA1">KUNA1 — Kuna</option>
             <option value="LNDL1">LNDL1 — Lindal Wind</option>
             <option value="LSTH2">LSTH2 — Lost Hills 2</option>
+            <option value="MRCP">MRCP</option>
             <option value="NSTR">NSTR — Northstar Solar</option>
             <option value="ORGN1">ORGN1 — Origin Wind</option>
             <option value="PDMT1">PDMT1 — Pediment</option>
@@ -1593,12 +1594,12 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
             <option value="BYPS1">BYPS1 — Bypass</option>
             <option value="CNDR1">CNDR1 — Condor</option>
             <option value="COSO1">COSO1 — Coso</option>
-            <option value="CTLF1">CTLF1 — Centennial Flats</option>
+            <option value="CTFL">CTFL — Centennial Flats</option>
             <option value="DBLO1">DBLO1 — Diablo</option>
             <option value="DFRN1">DFRN1 — Dufferin Wind</option>
             <option value="DLBO1">DLBO1 — Diablo Wind</option>
             <option value="FRMV1">FRMV1 — Farmersville</option>
-            <option value="FRDN1">FRDN1 — Ferdinand</option>
+            <option value="FRND1">FRND1 — Ferdinand</option>
             <option value="GDWL1">GDWL1 — Goodwell Wind</option>
             <option value="GLTA1">GLTA1 — Goleta</option>
             <option value="HARQ1">HARQ1 — Harquahala 1</option>
@@ -1609,6 +1610,7 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
             <option value="LSTH1">LSTH1 — Lost Hills 1</option>
             <option value="LSTH2">LSTH2 — Lost Hills 2</option>
             <option value="MCLM1">MCLM1 — McLeans Mountain</option>
+            <option value="MRCP">MRCP</option>
             <option value="NCLS1">NCLS1 — Nicolas</option>
             <option value="NSTR">NSTR — Northstar Solar</option>
             <option value="ORGN1">ORGN1 — Origin Wind</option>
@@ -2720,23 +2722,29 @@ function defaultSites() {
     {id:110,name:'FRDN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
      lat:35.2,lng:-118.3,
      notes:'NP: 800MWh / 200MW\nV SET: 142kV\nBAND: ±2kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
-    {id:111,name:'CTLF1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
-     lat:35.8,lng:-118.2,
+    {id:111,name:'CTLF1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
      notes:'NP: 1069MWh / 267MW\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
-    {id:112,name:'MRCP',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
-     lat:35.6,lng:-118.4,
+    {id:112,name:'MRCP1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
      notes:'NP: XX / XX\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
+    {id:113,name:'MRCP2',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'NP: XX / XX\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
+    {id:114,name:'CTLF2',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'NP: 1069MWh / 267MW\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
+    {id:115,name:'CTLF3',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'NP: 1069MWh / 267MW\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
     // Solar -------------------------------------------------------------------
     {id:201,name:'HARQ1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Tonopah, AZ',
      lat:33.46325,lng:-113.10562,
      notes:'PV 200MW\nInverters inverting?\nRates about the same?'},
-    {id:203,name:'AVLN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Taos, NM',
-     lat:36.408,lng:-105.573,
-     notes:'PV 19.7MW  BESS 12MW / 24MWh\nInverters inverting?\nRates about the same?'},
     {id:204,name:'NCLS1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Delano, CA',
      lat:35.834064,lng:-119.051559,
      notes:'PV 26MW\nInverters inverting?\nRates about the same?'},
-    {id:211,name:'AVLN2',nerc:true,interval:30,threshold:5,lastScan:null,location:'Avalon, CA',
+    {id:211,name:'AVLN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Avalon, CA',
      lat:33.343,lng:-118.328,
      notes:'PV 25MW\nInverters inverting?\nRates about the same?'},
     {id:213,name:'LSTH2',nerc:true,interval:30,threshold:5,lastScan:null,location:'Lost Hills, CA',
@@ -2751,6 +2759,21 @@ function defaultSites() {
     {id:216,name:'TRPC1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
      lat:35.3,lng:-119.2,
      notes:'PV 7MW\nInverters inverting?\nRates about the same?'},
+    {id:217,name:'CTLF1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'PV-BESS Hybrid\nInverters inverting?\nRates about the same?'},
+    {id:218,name:'CTLF2',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'PV-BESS Hybrid\nInverters inverting?\nRates about the same?'},
+    {id:219,name:'CTLF3',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'PV-BESS Hybrid\nInverters inverting?\nRates about the same?'},
+    {id:220,name:'MRCP1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'PV-BESS Hybrid\nInverters inverting?\nRates about the same?'},
+    {id:221,name:'MRCP2',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'PV-BESS Hybrid\nInverters inverting?\nRates about the same?'},
     // Wind --------------------------------------------------------------------
     {id:301,name:'DFRN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Dufferin, Ontario',
      lat:44.152,lng:-80.109,
@@ -2767,9 +2790,6 @@ function defaultSites() {
     {id:305,name:'ORGN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Hennepin, OK',
      lat:34.490682,lng:-97.334319,
      notes:'Wind 150MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    {id:306,name:'RKRD1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Kern County, CA',
-     lat:35.480,lng:-118.840,
-     notes:'Wind 149MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
     {id:308,name:'DBLO1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Little Lake, CA',
      lat:36.0059762,lng:-117.8083968,
      notes:'Wind 16.68MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
@@ -3609,7 +3629,6 @@ function siteRow(site){
           <span>${esc(site.name)}</span>
           ${histLen?`<span class="st-hist-count">${histLen}</span>`:''}
         </div>
-        <div class="st-sub">${esc(site.location||'')}</div>
       </div>
       <div class="st-cell col-status"><span style="font-size:11.5px;font-weight:600;color:${statusColor};">${STATUS_LABEL[st]}</span></div>
       <div class="st-cell col-last" style="font-family:var(--m);font-size:11.5px;color:var(--text2);">${last}</div>
@@ -3634,9 +3653,9 @@ function renderSites(){
   const f=S.siteFilter||'all';
   const order={overdue:0,due:1,never:2,ok:3};
   let sites=[...SITES];
-  if(['BESS','Solar','Wind','General'].includes(f)) sites=sites.filter(s=>clGetAssetType(s.name)===f);
+  if(['BESS','Solar','Wind','General'].includes(f)) sites=sites.filter(s=>clGetAssetType(s.name,s.id)===f);
   else if(f!=='all') sites=sites.filter(s=>siteStatus(s)===f);
-  sites.sort((a,b)=>(order[siteStatus(a)]||0)-(order[siteStatus(b)]||0));
+  sites.sort((a,b)=>a.name.localeCompare(b.name));
   const el=document.getElementById('sites-table-wrap');
   if(!sites.length){
     const msg = f!=='all'
@@ -3657,7 +3676,7 @@ function renderSites(){
   let body='';
   if(f==='all'){
     ASSET_GROUP_ORDER.forEach(type=>{
-      const group=sites.filter(s=>clGetAssetType(s.name)===type);
+      const group=sites.filter(s=>clGetAssetType(s.name,s.id)===type);
       if(!group.length) return;
       const open=!!(S.scanGroupsOpen&&S.scanGroupsOpen[type]);
       body+=groupSep(type,group)+(open?group.map(siteRow).join(''):'');
@@ -3696,7 +3715,7 @@ function groupSep(type,group){
 }
 
 function scanAllByType(type){
-  const group=SITES.filter(s=>clGetAssetType(s.name)===type);
+  const group=SITES.filter(s=>clGetAssetType(s.name,s.id)===type);
   if(!group.length){showToast('No '+type+' sites');return;}
   const now=Date.now();
   group.forEach(s=>{
@@ -4190,15 +4209,23 @@ async function clSaveAsImage(e) {
 const CL_SITE_TYPES = {
   // BESS
   CNDR1:'BESS',PRGN1:'BESS',PRGV1:'BESS',HARQ2:'BESS',KUNA1:'BESS',GLTA1:'BESS',COSO1:'BESS',DBLO1:'BESS',
-  BYPS1:'BESS',CTLF1:'BESS',CTLF2:'BESS',CTLF3:'BESS',PDMT1:'BESS',MRCP1:'BESS',MRCP2:'BESS',FRDN1:'BESS',ANGF1:'BESS',AVLN1:'Solar',TSMS1:'BESS',
+  BYPS1:'BESS',CTLF1:'BESS',CTLF:'BESS',PDMT1:'BESS',MRCP1:'BESS',MRCP:'BESS',FRDN1:'BESS',ANGF1:'BESS',AVLN1:'Solar',TSMS1:'BESS',
   // Solar
-  HARQ1:'Solar',NCLS1:'Solar',AVLN1:'Solar',BLKW1:'Solar',LSTH2:'Solar',NSTR1:'Solar',CTLF1:'Solar',CTLF2:'Solar',CTLF3:'Solar',MRCP1:'Solar',MRCP2:'Solar',
+  HARQ1:'Solar',NCLS1:'Solar',AVLN2:'Solar',BLKW1:'Solar',LSTH2:'Solar',NSTR1:'Solar',
   FRMV1:'Solar',HNFD1:'Solar',LSTH1:'Solar',PRTV1:'Solar',TLRE1:'Solar',TRPC1:'Solar',
   // Wind
-  DFRN1:'Wind',MCLM1:'Wind',GDWL1:'Wind',LNDL1:'Wind',ORGN1:'Wind',RKRD1:'Wind',RKRG1:'Wind',PRSE1:'Wind'
+  DFRN1:'Wind',MCLM1:'Wind',GDWL1:'Wind',LNDL1:'Wind',ORGN1:'Wind',RKRD1:'Wind',RKRG1:'Wind',PRRS1:'Wind',PRSE1:'Wind'
 };
 
-function clGetAssetType(siteName) {
+function clGetAssetType(siteName, siteId) {
+  if (siteId != null) {
+    const byId = SITES.find(x => x.id === siteId);
+    if (byId) {
+      if (byId.id >= 100 && byId.id < 200) return 'BESS';
+      if (byId.id >= 200 && byId.id < 300) return 'Solar';
+      if (byId.id >= 300 && byId.id < 400) return 'Wind';
+    }
+  }
   if (!siteName) return 'General';
   const upper = siteName.toUpperCase().trim();
   if (CL_SITE_TYPES[upper]) return CL_SITE_TYPES[upper];
@@ -4758,7 +4785,7 @@ const AS_SITES = [
       ]},
     ]
   },
-  { id:'CTLF1', label:'CTLF1-Centennial Flats[PV-BESS]', stats:'NP: 1069 MWh ±267 MW <br />V SET POINT: 525kV<br />BAND: 521kV-540kV',
+  { id:'CTFL', label:'CTFL-Centennial Flats[PV-BESS]', stats:'NP: 1069 MWh ±267 MW <br />V SET POINT: 525kV<br />BAND: 521kV-540kV',
     sections:[
       { title:'STATUS', fields:[
         {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
@@ -5426,7 +5453,7 @@ const AS_SITES = [
       ]},
     ]
   },
-  { id:'FRDN1', label:'FRDN1-Ferdinand[BESS]', stats:'NP: 800MWh / 200MW<br />V SET POINT:142kV<br />BAND: ±2kV',
+  { id:'FRND1', label:'FRND1-Ferdinand[BESS]', stats:'NP: 800MWh / 200MW<br />V SET POINT:142kV<br />BAND: ±2kV',
     sections:[
       { title:'STATUS', fields:[
         {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
@@ -5453,6 +5480,37 @@ const AS_SITES = [
       ]},
       { title:'FIELD EQUIPMENT', fields:[
         {n:'BESS Available[264]',  t:'text',   unit:'/264 Available'},
+      ]},
+      { title:'SCHEDULING', fields:[
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Notes', t:'textarea'},
+      ]},
+    ]
+  },
+  { id:'MRCP', label:'MRCP', stats:'NP: XX / XX<br />V SET POINT: 525kV<br />BAND:498.75kV-551.25kV',
+    sections:[
+      { title:'STATUS', fields:[
+        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Notes', t:'textarea'},
+      ]},
+      { title:'CONTROL', fields:[
+        {n:'PV AVR Status[Enabled]',   t:'select', opts:['','Enabled','Disabled'], alert:''},
+        {n:'BESS AVR Status[Enabled]', t:'select', opts:['','Enabled','Disabled'], alert:''},
+      ]},
+      { title:'OUTPUT', fields:[
+        {n:'HS MW',   t:'text', unit:'MW'},
+        {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'HS kV',   t:'text', unit:'kV', kvMin:498.75, kvMax:551.25},
+        {n:'HS MVAR', t:'text', unit:'MVAR'},
+        {n:'BESS Total MWh', t:'text', unit:'MWh'},
+      ]},
+      { title:'SUBSTATION EQUIPMENT', fields:[
+        {n:'Breakers [28]',  t:'text',   unit:'/28 Closed'},
+        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
+      ]},
+      { title:'FIELD EQUIPMENT', fields:[
+        {n:'PV Inverters[144]',  t:'text',   unit:'/144 Online'},
+        {n:'BESS[654]',      t:'text',   unit:'/654 Available'},
       ]},
       { title:'SCHEDULING', fields:[
         {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
@@ -6449,7 +6507,7 @@ const PD_DEFAULTS = {
     {name:'GLTA1',  loc:'Goleta — Goleta, CA'},
     {name:'COSO1',  loc:'COSO — Coso Junction, CA'},
     {name:'PDMT',   loc:'Pediment'},
-    {name:'CTLF1',   loc:'CFLATS BESS — Centennial Flats'},
+    {name:'CTFL',   loc:'CFLATS BESS — Centennial Flats'},
     {name:'MRCP',   loc:'Maricopa'},
     {name:'FRDN',   loc:'Ferdinand'},
   ],
@@ -6465,11 +6523,11 @@ const PD_DEFAULTS = {
     {name:'LSTH1',  loc:'Lost Hills 1 — Lost Hills, CA'},
     {name:'HNFD1',  loc:'Hanford — Hanford, CA'},
     {name:'FRMV1',  loc:'Farmersville — Farmersville, CA'},
-    {name:'AVLN1',  loc:'Avalon — Avalon, CA'},
+    {name:'AVLN2',  loc:'Avalon — Avalon, CA'},
     {name:'BLKW2',  loc:'Blackwell — Blackwell, OK'},
     {name:'LSTH2',  loc:'Lost Hills 2 — Lost Hills, CA'},
     {name:'NSTR1',  loc:'Northstar — Kern County, CA'},
-    {name:'CTLF1-PV',loc:'CFLATS PV — Centennial Flats'},
+    {name:'CTFL-PV',loc:'CFLATS PV — Centennial Flats'},
   ],
   // ── WIND (row 1: Dufferin, McLeans Mt, Goodwell, Lindahl | row 2: Origin, Rocky Ridge, Prairie Rose, Diablo)
   wind: [
@@ -6479,6 +6537,7 @@ const PD_DEFAULTS = {
     {name:'LNDL1',  loc:'Lindahl — Lincoln County, MN'},
     {name:'ORGN1',  loc:'Origin — Kern County, CA'},
     {name:'RKRD1',  loc:'Rocky Ridge — Kern County, CA'},
+    {name:'PRRS1',  loc:'Prairie Rose — Elk County, KS'},
     {name:'DIBL1',  loc:'Diablo — Diablo Range, CA'},
   ],
   general: []
@@ -8011,9 +8070,9 @@ const VCHK_BANDS = {
   BLKW1: {min:11.4,   max:12.6,   sp:'12kV'},
   CNDR1: {min:109.25, max:120.75, sp:'115kV'},
   COSO1: {min:230.3,  max:239.7,  sp:'235kV'},
-  CTLF1:  {min:521,    max:540,    sp:'525kV'},
+  CTFL:  {min:521,    max:540,    sp:'525kV'},
   DLBO1: {min:228,    max:232,    sp:'230kV'},
-  FRDN1: {min:140,    max:144,    sp:'142kV'},
+  FRND1: {min:140,    max:144,    sp:'142kV'},
   GDWL1: {min:109.25, max:120.75, sp:'115kV'},
   GLTA1: {min:63.17,  max:69.83,  sp:'66kV'},
   HARQ1: {min:499,    max:551,    sp:'525kV'},
@@ -8073,12 +8132,12 @@ const NPCHK_SITES = {
   BYPS1: {mw:200,    mwh:400,    label:'NP: 400 MWh / 200 MW'},
   CNDR1: {mw:200,    mwh:818,    label:'NP: 818 MWh / 200 MW'},
   COSO1: {mw:60,     mwh:240,    label:'NP: 240 MWh / 60 MW'},
-  CTLF1:  {mw:267,    mwh:1069,   label:'NP: 1069 MWh / 267 MW'},
+  CTFL:  {mw:267,    mwh:1069,   label:'NP: 1069 MWh / 267 MW'},
   DBLO1: {mw:16.68,  mwh:null,   label:'NP: 16.68 MW (wind)'},
   DFRN1: {mw:91,     mwh:null,   label:'NP: 91 MW (wind)'},
   DLBO1: {mw:null,   mwh:null,   label:'NP: unknown — no data'},
   FRMV1: {mw:5.4,    mwh:null,   label:'NP: 5.4 MW (solar)'},
-  FRDN1: {mw:200,    mwh:800,    label:'NP: 800 MWh / 200 MW'},
+  FRND1: {mw:200,    mwh:800,    label:'NP: 800 MWh / 200 MW'},
   GDWL1: {mw:200,    mwh:null,   label:'NP: 200 MW (wind)'},
   GLTA1: {mw:60,     mwh:160,    label:'NP: 160 MWh / 60 MW'},
   HARQ1: {mw:150,    mwh:null,   label:'NP: 150 MW (solar)'},
@@ -8089,6 +8148,7 @@ const NPCHK_SITES = {
   LSTH1: {mw:26,     mwh:null,   label:'NP: 26 MW (solar)'},
   LSTH2: {mw:20,     mwh:null,   label:'NP: 20 MW (solar)'},
   MCLM1: {mw:60,     mwh:null,   label:'NP: 60 MW (wind)'},
+  MRCP:  {mw:183.33, mwh:733.32, label:'NP: 733.32 MWh / 183.33 MW'},
   NCLS1: {mw:26,     mwh:null,   label:'NP: 26 MW (solar)'},
   NSTR:  {mw:60,     mwh:null,   label:'NP: 60 MW (solar)'},
   ORGN1: {mw:150,    mwh:null,   label:'NP: 150 MW (wind)'},
