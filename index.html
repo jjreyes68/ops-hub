@@ -162,6 +162,15 @@ body.dark .nav-tz-key{color:var(--text2);}
 .card-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px;}
 body.dark .card-title{color:var(--text2);}
 
+/* TOOL CARDS */
+.tool-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--shs);overflow:hidden;display:flex;flex-direction:column;}
+.tool-card-header{display:flex;align-items:center;gap:10px;padding:12px 14px 11px;border-bottom:1px solid var(--border);background:var(--bg3);}
+.tool-card-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.tool-card-meta{flex:1;min-width:0;}
+.tool-card-name{font-size:13px;font-weight:600;color:var(--text);letter-spacing:-.01em;line-height:1.2;}
+.tool-card-desc{font-size:11px;color:var(--text3);margin-top:2px;line-height:1.4;}
+.tool-card-body{padding:14px;flex:1;}
+
 /* BUTTONS */
 .tbtn{padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-size:12px;cursor:pointer;font-family:var(--f);font-weight:500;transition:all .15s;box-shadow:var(--shs);}
 .tbtn:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
@@ -1425,202 +1434,255 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
   <div class="page-header">
     <div>
       <div class="page-title">Toolbox</div>
-      <div class="page-subtitle">Phonetic alphabet, quick timers, and checklists</div>
+      <div class="page-subtitle">Quick-access utilities for shift operations</div>
     </div>
   </div>
   <div class="cols3">
-    <div class="card">
-      <div class="card-title">Phonetic Converter</div>
-      <div class="phonetic-wrap">
-        <input id="phonetic-inp" placeholder="Type text to convert..." oninput="convertPhonetic()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;margin-bottom:8px;">
-        <div id="phonetic-out" style="font-family:var(--m);font-size:14px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:40px;word-break:break-all;"></div>
+
+    <!-- PHONETIC CONVERTER -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-card-icon" style="background:#e8f4fd;">🔤</div>
+        <div class="tool-card-meta">
+          <div class="tool-card-name">Phonetic Converter</div>
+          <div class="tool-card-desc">Type text → NATO phonetic alphabet</div>
+        </div>
+      </div>
+      <div class="tool-card-body">
+        <div class="phonetic-wrap">
+          <input id="phonetic-inp" placeholder="Type text to convert..." oninput="convertPhonetic()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;margin-bottom:8px;">
+          <div id="phonetic-out" style="font-family:var(--m);font-size:14px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:40px;word-break:break-all;"></div>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <button class="tbtn" onclick="copyPhonetic()">Copy</button>
+            <button class="tbtn" id="phonetic-speak-btn" onclick="speakPhonetic()" title="Read aloud">🔊 Speak</button>
+            <button class="tbtn" onclick="clearPhonetic()">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK TIMER -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-card-icon" style="background:#fef3e2;">⏱️</div>
+        <div class="tool-card-meta">
+          <div class="tool-card-name">Quick Timer</div>
+          <div class="tool-card-desc">One-off and recurring shift timers</div>
+        </div>
+      </div>
+      <div class="tool-card-body">
+        <div id="adhoc-list" style="max-height:260px;overflow-y:auto;"></div>
+        <div class="adhoc-row">
+          <input id="adhoc-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addAdhoc()">
+          <input id="adhoc-t" class="t-inp" type="number" min="0" placeholder="min">
+          <span class="min-lbl">min</span>
+          <span class="min-lbl" style="color:var(--border2);">or</span>
+          <input id="adhoc-until" class="t-inp" type="time" style="width:88px!important;" title="Set a target clock time instead of duration">
+          <span class="min-lbl">until</span>
+          <button class="add-btn" onclick="addAdhoc()">+ Add</button>
+        </div>
+        <div class="section-divider">
+          <span class="section-divider-lbl">Recurring</span>
+          <div class="section-divider-line"></div>
+        </div>
+        <div id="recurring-list" style="max-height:200px;overflow-y:auto;margin-bottom:8px;"></div>
+        <div class="adhoc-row">
+          <input id="rec-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addRecurring()">
+          <span class="min-lbl">every</span>
+          <input id="rec-interval" class="t-inp" type="number" min="1" placeholder="min" title="Interval in minutes">
+          <span class="min-lbl">for</span>
+          <input id="rec-duration" class="t-inp" type="number" min="1" placeholder="hrs" title="Duration in hours">
+          <button class="add-btn" onclick="addRecurring()">+ Add</button>
+          <button class="add-btn" onclick="saveRecurringPreset()" style="background:var(--bbg);border-color:var(--blue);color:var(--blue);" title="Save as preset">💾</button>
+        </div>
+        <div id="rec-presets" style="margin-top:8px;"></div>
+      </div>
+    </div>
+
+    <!-- CHECKLISTS -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-card-icon" style="background:#e8f8f0;">✅</div>
+        <div class="tool-card-meta">
+          <div class="tool-card-name">Checklists</div>
+          <div class="tool-card-desc">Create and track shift checklists</div>
+        </div>
+      </div>
+      <div class="tool-card-body">
+        <div class="cl-add-row">
+          <input id="cl-list-inp" placeholder="New checklist name..." onkeydown="if(event.key==='Enter')addClList()">
+          <button onclick="addClList()">+ New list</button>
+        </div>
+        <div class="cl-hdr" id="cl-hdr" style="display:none;">
+          <select class="cl-sel" id="cl-sel" onchange="switchClFromSelect()"></select>
+          <button class="cl-del" onclick="delActiveClList()">🗑 Delete</button>
+        </div>
+        <div class="prog-row" id="cl-prog-row" style="display:none;">
+          <div class="prog-bar"><div class="prog-fill" id="cl-prog-fill" style="width:0%"></div></div>
+          <div class="prog-txt" id="cl-prog-txt">0/0</div>
+        </div>
+        <div id="cl-items" style="max-height:180px;overflow-y:auto;"></div>
+        <div class="cl-item-row" id="cl-item-row" style="display:none;">
+          <input id="cl-item-inp" placeholder="Add item..." onkeydown="if(event.key==='Enter')addClItem()">
+          <button onclick="addClItem()">+ Item</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SITE CHECK -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-card-icon" style="background:#fff3e0;">📡</div>
+        <div class="tool-card-meta">
+          <div class="tool-card-name">Site Check</div>
+          <div class="tool-card-desc">Verify voltage bands and nameplate ratings</div>
+        </div>
+      </div>
+      <div class="tool-card-body">
+        <div class="section-divider" style="margin-top:0;">
+          <span class="section-divider-lbl">Voltage band</span>
+          <div class="section-divider-line"></div>
+        </div>
+        <div style="margin-bottom:8px;">
+          <select id="vchk-sel" onchange="vchkSiteChange()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;cursor:pointer;">
+            <option value="">— Select site —</option>
+            <option value="ANGF1">ANGF1 — Angel Fire</option>
+            <option value="AVLN1">AVLN1 — Avalon</option>
+            <option value="BLKW1">BLKW1 — Blackwell</option>
+            <option value="CNDR1">CNDR1 — Condor</option>
+            <option value="COSO1">COSO1 — Coso</option>
+            <option value="CTFL">CTFL — Centennial Flats</option>
+            <option value="DLBO1">DLBO1 — Diablo Wind</option>
+            <option value="FRND1">FRND1 — Ferdinand</option>
+            <option value="GDWL1">GDWL1 — Goodwell Wind</option>
+            <option value="GLTA1">GLTA1 — Goleta</option>
+            <option value="HARQ1">HARQ1 — Harquahala 1</option>
+            <option value="HARQ2">HARQ2 — Harquahala 2</option>
+            <option value="KUNA1">KUNA1 — Kuna</option>
+            <option value="LNDL1">LNDL1 — Lindal Wind</option>
+            <option value="LSTH2">LSTH2 — Lost Hills 2</option>
+            <option value="MRCP">MRCP</option>
+            <option value="NSTR">NSTR — Northstar Solar</option>
+            <option value="ORGN1">ORGN1 — Origin Wind</option>
+            <option value="PDMT1">PDMT1 — Pediment</option>
+            <option value="PRGN1">PRGN1 — Peregrine</option>
+            <option value="RKRG1">RKRG1 — Rocky Ridge Wind</option>
+          </select>
+        </div>
+        <div id="vchk-band-row" style="display:none;margin-bottom:8px;">
+          <div id="vchk-band-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:6px;"></div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <input id="vchk-inp" type="number" step="0.01" placeholder="Enter kV…" oninput="vchkCheck()"
+              style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
+            <span style="font-size:12px;color:var(--text3);">kV</span>
+          </div>
+        </div>
+        <div id="vchk-result" style="display:none;border-radius:7px;padding:9px 12px;text-align:center;margin-bottom:4px;">
+          <div id="vchk-verdict" style="font-size:16px;font-weight:700;letter-spacing:-.01em;"></div>
+          <div id="vchk-detail" style="font-size:11px;margin-top:3px;opacity:.8;font-family:var(--m);"></div>
+        </div>
+        <div class="section-divider">
+          <span class="section-divider-lbl">Nameplate</span>
+          <div class="section-divider-line"></div>
+        </div>
+        <div style="margin-bottom:8px;">
+          <select id="npchk-sel" onchange="npchkSiteChange()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;cursor:pointer;">
+            <option value="">— Select site —</option>
+            <option value="ANGF1">ANGF1 — Angel Fire</option>
+            <option value="AVLN1">AVLN1 — Avalon</option>
+            <option value="BLKW1">BLKW1 — Blackwell</option>
+            <option value="BYPS1">BYPS1 — Bypass</option>
+            <option value="CNDR1">CNDR1 — Condor</option>
+            <option value="COSO1">COSO1 — Coso</option>
+            <option value="CTFL">CTFL — Centennial Flats</option>
+            <option value="DBLO1">DBLO1 — Diablo</option>
+            <option value="DFRN1">DFRN1 — Dufferin Wind</option>
+            <option value="DLBO1">DLBO1 — Diablo Wind</option>
+            <option value="FRMV1">FRMV1 — Farmersville</option>
+            <option value="FRND1">FRND1 — Ferdinand</option>
+            <option value="GDWL1">GDWL1 — Goodwell Wind</option>
+            <option value="GLTA1">GLTA1 — Goleta</option>
+            <option value="HARQ1">HARQ1 — Harquahala 1</option>
+            <option value="HARQ2">HARQ2 — Harquahala 2</option>
+            <option value="HNFD1">HNFD1 — Handford</option>
+            <option value="KUNA1">KUNA1 — Kuna</option>
+            <option value="LNDL1">LNDL1 — Lindal Wind</option>
+            <option value="LSTH1">LSTH1 — Lost Hills 1</option>
+            <option value="LSTH2">LSTH2 — Lost Hills 2</option>
+            <option value="MCLM1">MCLM1 — McLeans Mountain</option>
+            <option value="MRCP">MRCP</option>
+            <option value="NCLS1">NCLS1 — Nicolas</option>
+            <option value="NSTR">NSTR — Northstar Solar</option>
+            <option value="ORGN1">ORGN1 — Origin Wind</option>
+            <option value="PDMT1">PDMT1 — Pediment</option>
+            <option value="PRGN1">PRGN1 — Peregrine</option>
+            <option value="PRSE1">PRSE1 — Prairie SE Wind</option>
+            <option value="PRTV1">PRTV1 — Porterville</option>
+            <option value="RKRG1">RKRG1 — Rocky Ridge Wind</option>
+            <option value="TLRE1">TLRE1 — Tularé</option>
+            <option value="TRPC1">TRPC1 — Tropico</option>
+            <option value="TSMS1">TSMS1 — Taos Mesa</option>
+          </select>
+        </div>
+        <div id="npchk-body" style="display:none;">
+          <div id="npchk-np-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:8px;"></div>
+          <div id="npchk-mw-row" style="display:none;margin-bottom:6px;">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">MW</div>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <input id="npchk-mw-inp" type="number" step="0.1" placeholder="Enter MW…" oninput="npchkEval()"
+                style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
+              <span style="font-size:12px;color:var(--text3);">MW</span>
+            </div>
+            <div id="npchk-mw-result" style="display:none;border-radius:6px;padding:7px 10px;margin-top:4px;text-align:center;">
+              <div id="npchk-mw-verdict" style="font-size:15px;font-weight:700;"></div>
+              <div id="npchk-mw-detail" style="font-size:11px;margin-top:2px;opacity:.8;font-family:var(--m);"></div>
+            </div>
+          </div>
+          <div id="npchk-mwh-row" style="display:none;">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">MWh</div>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <input id="npchk-mwh-inp" type="number" step="1" placeholder="Enter MWh…" oninput="npchkEval()"
+                style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
+              <span style="font-size:12px;color:var(--text3);">MWh</span>
+            </div>
+            <div id="npchk-mwh-result" style="display:none;border-radius:6px;padding:7px 10px;margin-top:4px;text-align:center;">
+              <div id="npchk-mwh-verdict" style="font-size:15px;font-weight:700;"></div>
+              <div id="npchk-mwh-detail" style="font-size:11px;margin-top:2px;opacity:.8;font-family:var(--m);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TENASKA PORTAL CONVERTER -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-card-icon" style="background:#f0effe;">🔄</div>
+        <div class="tool-card-meta">
+          <div class="tool-card-name">Tenaska Portal Converter</div>
+          <div class="tool-card-desc">Reformat BOX data into Tenaska ready output</div>
+        </div>
+      </div>
+      <div class="tool-card-body">
+        <div style="margin-bottom:10px;">
+          <label style="font-size:11px;color:var(--text3);margin-bottom:4px;display:block;">Date</label>
+          <input type="date" id="pgsc-date" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;">
+        </div>
+        <div style="margin-bottom:10px;">
+          <label style="font-size:11px;color:var(--text3);margin-bottom:4px;display:block;">Paste 24 rows (Min MW, Max MW, Min MVAR, Max MVAR, Status)</label>
+          <textarea id="pgsc-paste" style="width:100%;height:100px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--m);font-size:12px;resize:vertical;" placeholder="0	0	0	0	Idle&#10;0	0	0	0	Idle&#10;..."></textarea>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="tbtn" onclick="processPGSC()" style="flex:1;">Process</button>
+          <button class="tbtn" onclick="clearPGSC()">Clear</button>
+        </div>
+        <div id="pgsc-output" style="margin-top:10px;font-family:var(--m);font-size:12px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:80px;max-height:200px;overflow-y:auto;white-space:pre-wrap;"></div>
         <div style="display:flex;gap:6px;margin-top:8px;">
-          <button class="tbtn" onclick="copyPhonetic()">Copy</button>
-          <button class="tbtn" id="phonetic-speak-btn" onclick="speakPhonetic()" title="Read aloud">🔊 Speak</button>
-          <button class="tbtn" onclick="clearPhonetic()">Clear</button>
+          <button class="tbtn" onclick="copyPGSC()">Copy to Clipboard</button>
         </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">Quick Timer</div>
-      <div id="adhoc-list" style="max-height:260px;overflow-y:auto;"></div>
-      <div class="adhoc-row">
-        <input id="adhoc-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addAdhoc()">
-        <input id="adhoc-t" class="t-inp" type="number" min="0" placeholder="min">
-        <span class="min-lbl">min</span>
-        <span class="min-lbl" style="color:var(--border2);">or</span>
-        <input id="adhoc-until" class="t-inp" type="time" style="width:88px!important;" title="Set a target clock time instead of duration">
-        <span class="min-lbl">until</span>
-        <button class="add-btn" onclick="addAdhoc()">+ Add</button>
-      </div>
 
-      <div style="border-top:1px solid var(--border);margin:12px 0;"></div>
-
-      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Recurring Timer</div>
-      <div id="recurring-list" style="max-height:200px;overflow-y:auto;margin-bottom:8px;"></div>
-      <div class="adhoc-row">
-        <input id="rec-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addRecurring()">
-        <span class="min-lbl">every</span>
-        <input id="rec-interval" class="t-inp" type="number" min="1" placeholder="min" title="Interval in minutes">
-        <span class="min-lbl">for</span>
-        <input id="rec-duration" class="t-inp" type="number" min="1" placeholder="hrs" title="Duration in hours">
-        <button class="add-btn" onclick="addRecurring()">+ Add</button>
-        <button class="add-btn" onclick="saveRecurringPreset()" style="background:var(--bbg);border-color:var(--blue);color:var(--blue);" title="Save as preset">💾</button>
-      </div>
-      <div id="rec-presets" style="margin-top:8px;"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Checklists</div>
-      <div class="cl-add-row">
-        <input id="cl-list-inp" placeholder="New checklist name..." onkeydown="if(event.key==='Enter')addClList()">
-        <button onclick="addClList()">+ New list</button>
-      </div>
-      <div class="cl-hdr" id="cl-hdr" style="display:none;">
-        <select class="cl-sel" id="cl-sel" onchange="switchClFromSelect()"></select>
-        <button class="cl-del" onclick="delActiveClList()">🗑 Delete</button>
-      </div>
-      <div class="prog-row" id="cl-prog-row" style="display:none;">
-        <div class="prog-bar"><div class="prog-fill" id="cl-prog-fill" style="width:0%"></div></div>
-        <div class="prog-txt" id="cl-prog-txt">0/0</div>
-      </div>
-      <div id="cl-items" style="max-height:180px;overflow-y:auto;"></div>
-      <div class="cl-item-row" id="cl-item-row" style="display:none;">
-        <input id="cl-item-inp" placeholder="Add item..." onkeydown="if(event.key==='Enter')addClItem()">
-        <button onclick="addClItem()">+ Item</button>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">Site Check</div>
-
-      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Voltage</div>
-      <div style="margin-bottom:8px;">
-        <select id="vchk-sel" onchange="vchkSiteChange()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;cursor:pointer;">
-          <option value="">— Select site —</option>
-          <option value="ANGF1">ANGF1 — Angel Fire</option>
-          <option value="AVLN1">AVLN1 — Avalon</option>
-          <option value="BLKW1">BLKW1 — Blackwell</option>
-          <option value="CNDR1">CNDR1 — Condor</option>
-          <option value="COSO1">COSO1 — Coso</option>
-          <option value="CTFL">CTFL — Centennial Flats</option>
-          <option value="DLBO1">DLBO1 — Diablo Wind</option>
-          <option value="FRND1">FRND1 — Ferdinand</option>
-          <option value="GDWL1">GDWL1 — Goodwell Wind</option>
-          <option value="GLTA1">GLTA1 — Goleta</option>
-          <option value="HARQ1">HARQ1 — Harquahala 1</option>
-          <option value="HARQ2">HARQ2 — Harquahala 2</option>
-          <option value="KUNA1">KUNA1 — Kuna</option>
-          <option value="LNDL1">LNDL1 — Lindal Wind</option>
-          <option value="LSTH2">LSTH2 — Lost Hills 2</option>
-          <option value="MRCP">MRCP</option>
-          <option value="NSTR">NSTR — Northstar Solar</option>
-          <option value="ORGN1">ORGN1 — Origin Wind</option>
-          <option value="PDMT1">PDMT1 — Pediment</option>
-          <option value="PRGN1">PRGN1 — Peregrine</option>
-          <option value="RKRG1">RKRG1 — Rocky Ridge Wind</option>
-        </select>
-      </div>
-      <div id="vchk-band-row" style="display:none;margin-bottom:8px;">
-        <div id="vchk-band-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:6px;"></div>
-        <div style="display:flex;gap:6px;align-items:center;">
-          <input id="vchk-inp" type="number" step="0.01" placeholder="Enter kV…" oninput="vchkCheck()"
-            style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
-          <span style="font-size:12px;color:var(--text3);">kV</span>
-        </div>
-      </div>
-      <div id="vchk-result" style="display:none;border-radius:7px;padding:9px 12px;text-align:center;margin-bottom:4px;">
-        <div id="vchk-verdict" style="font-size:16px;font-weight:700;letter-spacing:-.01em;"></div>
-        <div id="vchk-detail" style="font-size:11px;margin-top:3px;opacity:.8;font-family:var(--m);"></div>
-      </div>
-
-      <div style="border-top:1px solid var(--border);margin:12px 0;"></div>
-
-      <div style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Nameplate</div>
-      <div style="margin-bottom:8px;">
-        <select id="npchk-sel" onchange="npchkSiteChange()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;cursor:pointer;">
-          <option value="">— Select site —</option>
-          <option value="ANGF1">ANGF1 — Angel Fire</option>
-          <option value="AVLN1">AVLN1 — Avalon</option>
-          <option value="BLKW1">BLKW1 — Blackwell</option>
-          <option value="BYPS1">BYPS1 — Bypass</option>
-          <option value="CNDR1">CNDR1 — Condor</option>
-          <option value="COSO1">COSO1 — Coso</option>
-          <option value="CTFL">CTFL — Centennial Flats</option>
-          <option value="DBLO1">DBLO1 — Diablo</option>
-          <option value="DFRN1">DFRN1 — Dufferin Wind</option>
-          <option value="DLBO1">DLBO1 — Diablo Wind</option>
-          <option value="FRMV1">FRMV1 — Farmersville</option>
-          <option value="FRND1">FRND1 — Ferdinand</option>
-          <option value="GDWL1">GDWL1 — Goodwell Wind</option>
-          <option value="GLTA1">GLTA1 — Goleta</option>
-          <option value="HARQ1">HARQ1 — Harquahala 1</option>
-          <option value="HARQ2">HARQ2 — Harquahala 2</option>
-          <option value="HNFD1">HNFD1 — Handford</option>
-          <option value="KUNA1">KUNA1 — Kuna</option>
-          <option value="LNDL1">LNDL1 — Lindal Wind</option>
-          <option value="LSTH1">LSTH1 — Lost Hills 1</option>
-          <option value="LSTH2">LSTH2 — Lost Hills 2</option>
-          <option value="MCLM1">MCLM1 — McLeans Mountain</option>
-          <option value="MRCP">MRCP</option>
-          <option value="NCLS1">NCLS1 — Nicolas</option>
-          <option value="NSTR">NSTR — Northstar Solar</option>
-          <option value="ORGN1">ORGN1 — Origin Wind</option>
-          <option value="PDMT1">PDMT1 — Pediment</option>
-          <option value="PRGN1">PRGN1 — Peregrine</option>
-          <option value="PRSE1">PRSE1 — Prairie SE Wind</option>
-          <option value="PRTV1">PRTV1 — Porterville</option>
-          <option value="RKRG1">RKRG1 — Rocky Ridge Wind</option>
-          <option value="TLRE1">TLRE1 — Tularé</option>
-          <option value="TRPC1">TRPC1 — Tropico</option>
-          <option value="TSMS1">TSMS1 — Taos Mesa</option>
-        </select>
-      </div>
-      <div id="npchk-body" style="display:none;">
-        <div id="npchk-np-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:8px;"></div>
-        <div id="npchk-mw-row" style="display:none;margin-bottom:6px;">
-          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">MW</div>
-          <div style="display:flex;gap:6px;align-items:center;">
-            <input id="npchk-mw-inp" type="number" step="0.1" placeholder="Enter MW…" oninput="npchkEval()"
-              style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
-            <span style="font-size:12px;color:var(--text3);">MW</span>
-          </div>
-          <div id="npchk-mw-result" style="display:none;border-radius:6px;padding:7px 10px;margin-top:4px;text-align:center;">
-            <div id="npchk-mw-verdict" style="font-size:15px;font-weight:700;"></div>
-            <div id="npchk-mw-detail" style="font-size:11px;margin-top:2px;opacity:.8;font-family:var(--m);"></div>
-          </div>
-        </div>
-        <div id="npchk-mwh-row" style="display:none;">
-          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">MWh</div>
-          <div style="display:flex;gap:6px;align-items:center;">
-            <input id="npchk-mwh-inp" type="number" step="1" placeholder="Enter MWh…" oninput="npchkEval()"
-              style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
-            <span style="font-size:12px;color:var(--text3);">MWh</span>
-          </div>
-          <div id="npchk-mwh-result" style="display:none;border-radius:6px;padding:7px 10px;margin-top:4px;text-align:center;">
-            <div id="npchk-mwh-verdict" style="font-size:15px;font-weight:700;"></div>
-            <div id="npchk-mwh-detail" style="font-size:11px;margin-top:2px;opacity:.8;font-family:var(--m);"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">Tenaska Portal Converter</div>
-      <div style="margin-bottom:10px;">
-        <label style="font-size:11px;color:var(--text3);margin-bottom:4px;display:block;">Date</label>
-        <input type="date" id="pgsc-date" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;">
-      </div>
-      <div style="margin-bottom:10px;">
-        <label style="font-size:11px;color:var(--text3);margin-bottom:4px;display:block;">Paste 24 rows (Min MW, Max MW, Min MVAR, Max MVAR, Status)</label>
-        <textarea id="pgsc-paste" style="width:100%;height:100px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--m);font-size:12px;resize:vertical;" placeholder="0	0	0	0	Idle&#10;0	0	0	0	Idle&#10;..."></textarea>
-      </div>
-      <div style="display:flex;gap:6px;">
-        <button class="tbtn" onclick="processPGSC()" style="flex:1;">Process</button>
-        <button class="tbtn" onclick="clearPGSC()">Clear</button>
-      </div>
-      <div id="pgsc-output" style="margin-top:10px;font-family:var(--m);font-size:12px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:80px;max-height:200px;overflow-y:auto;white-space:pre-wrap;"></div>
-      <div style="display:flex;gap:6px;margin-top:8px;">
-        <button class="tbtn" onclick="copyPGSC()">Copy to Clipboard</button>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -2657,26 +2719,32 @@ function defaultSites() {
     {id:109,name:'PDMT1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
      lat:35.5,lng:-118.5,
      notes:'NP: 1000MWh / 250MW\nV SET: 236kV\nBAND: 226kV–241kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
-    {id:110,name:'FRND1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
+    {id:110,name:'FRDN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
      lat:35.2,lng:-118.3,
      notes:'NP: 800MWh / 200MW\nV SET: 142kV\nBAND: ±2kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
-    {id:111,name:'CTFL',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
-     lat:35.8,lng:-118.2,
+    {id:111,name:'CTLF1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
      notes:'NP: 1069MWh / 267MW\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
-    {id:112,name:'MRCP',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
-     lat:35.6,lng:-118.4,
+    {id:112,name:'MRCP1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
      notes:'NP: XX / XX\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
+    {id:113,name:'MRCP2',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'NP: XX / XX\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
+    {id:114,name:'CTLF2',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'NP: 1069MWh / 267MW\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
+    {id:115,name:'CTLF3',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'NP: 1069MWh / 267MW\nV SET: 525kV\nBAND: 498.75kV–551.25kV\nPV-BESS Hybrid · Receive/Follow Dispatch · Nameplate'},
     // Solar -------------------------------------------------------------------
     {id:201,name:'HARQ1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Tonopah, AZ',
      lat:33.46325,lng:-113.10562,
      notes:'PV 200MW\nInverters inverting?\nRates about the same?'},
-    {id:203,name:'AVLN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Taos, NM',
-     lat:36.408,lng:-105.573,
-     notes:'PV 19.7MW  BESS 12MW / 24MWh\nInverters inverting?\nRates about the same?'},
     {id:204,name:'NCLS1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Delano, CA',
      lat:35.834064,lng:-119.051559,
      notes:'PV 26MW\nInverters inverting?\nRates about the same?'},
-    {id:211,name:'AVLN2',nerc:true,interval:30,threshold:5,lastScan:null,location:'Avalon, CA',
+    {id:211,name:'AVLN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Avalon, CA',
      lat:33.343,lng:-118.328,
      notes:'PV 25MW\nInverters inverting?\nRates about the same?'},
     {id:213,name:'LSTH2',nerc:true,interval:30,threshold:5,lastScan:null,location:'Lost Hills, CA',
@@ -2691,6 +2759,21 @@ function defaultSites() {
     {id:216,name:'TRPC1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
      lat:35.3,lng:-119.2,
      notes:'PV 7MW\nInverters inverting?\nRates about the same?'},
+    {id:217,name:'CTLF1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'PV-BESS Hybrid\nInverters inverting?\nRates about the same?'},
+    {id:218,name:'CTLF2',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'PV-BESS Hybrid\nInverters inverting?\nRates about the same?'},
+    {id:219,name:'CTLF3',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'PV-BESS Hybrid\nInverters inverting?\nRates about the same?'},
+    {id:220,name:'MRCP1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'PV-BESS Hybrid\nInverters inverting?\nRates about the same?'},
+    {id:221,name:'MRCP2',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
+     lat:33.58983,lng:-113.5300,
+     notes:'PV-BESS Hybrid\nInverters inverting?\nRates about the same?'},
     // Wind --------------------------------------------------------------------
     {id:301,name:'DFRN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Dufferin, Ontario',
      lat:44.152,lng:-80.109,
@@ -2707,12 +2790,6 @@ function defaultSites() {
     {id:305,name:'ORGN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Hennepin, OK',
      lat:34.490682,lng:-97.334319,
      notes:'Wind 150MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    {id:306,name:'RKRD1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Kern County, CA',
-     lat:35.480,lng:-118.840,
-     notes:'Wind 149MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    {id:307,name:'PRRS1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Elk County, KS',
-     lat:37.363,lng:-96.252,
-     notes:'Wind 200MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
     {id:308,name:'DBLO1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Little Lake, CA',
      lat:36.0059762,lng:-117.8083968,
      notes:'Wind 16.68MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
@@ -3552,7 +3629,6 @@ function siteRow(site){
           <span>${esc(site.name)}</span>
           ${histLen?`<span class="st-hist-count">${histLen}</span>`:''}
         </div>
-        <div class="st-sub">${esc(site.location||'')}</div>
       </div>
       <div class="st-cell col-status"><span style="font-size:11.5px;font-weight:600;color:${statusColor};">${STATUS_LABEL[st]}</span></div>
       <div class="st-cell col-last" style="font-family:var(--m);font-size:11.5px;color:var(--text2);">${last}</div>
@@ -3577,9 +3653,9 @@ function renderSites(){
   const f=S.siteFilter||'all';
   const order={overdue:0,due:1,never:2,ok:3};
   let sites=[...SITES];
-  if(['BESS','Solar','Wind','General'].includes(f)) sites=sites.filter(s=>clGetAssetType(s.name)===f);
+  if(['BESS','Solar','Wind','General'].includes(f)) sites=sites.filter(s=>clGetAssetType(s.name,s.id)===f);
   else if(f!=='all') sites=sites.filter(s=>siteStatus(s)===f);
-  sites.sort((a,b)=>(order[siteStatus(a)]||0)-(order[siteStatus(b)]||0));
+  sites.sort((a,b)=>a.name.localeCompare(b.name));
   const el=document.getElementById('sites-table-wrap');
   if(!sites.length){
     const msg = f!=='all'
@@ -3600,7 +3676,7 @@ function renderSites(){
   let body='';
   if(f==='all'){
     ASSET_GROUP_ORDER.forEach(type=>{
-      const group=sites.filter(s=>clGetAssetType(s.name)===type);
+      const group=sites.filter(s=>clGetAssetType(s.name,s.id)===type);
       if(!group.length) return;
       const open=!!(S.scanGroupsOpen&&S.scanGroupsOpen[type]);
       body+=groupSep(type,group)+(open?group.map(siteRow).join(''):'');
@@ -3639,7 +3715,7 @@ function groupSep(type,group){
 }
 
 function scanAllByType(type){
-  const group=SITES.filter(s=>clGetAssetType(s.name)===type);
+  const group=SITES.filter(s=>clGetAssetType(s.name,s.id)===type);
   if(!group.length){showToast('No '+type+' sites');return;}
   const now=Date.now();
   group.forEach(s=>{
@@ -4141,7 +4217,15 @@ const CL_SITE_TYPES = {
   DFRN1:'Wind',MCLM1:'Wind',GDWL1:'Wind',LNDL1:'Wind',ORGN1:'Wind',RKRD1:'Wind',RKRG1:'Wind',PRRS1:'Wind',PRSE1:'Wind'
 };
 
-function clGetAssetType(siteName) {
+function clGetAssetType(siteName, siteId) {
+  if (siteId != null) {
+    const byId = SITES.find(x => x.id === siteId);
+    if (byId) {
+      if (byId.id >= 100 && byId.id < 200) return 'BESS';
+      if (byId.id >= 200 && byId.id < 300) return 'Solar';
+      if (byId.id >= 300 && byId.id < 400) return 'Wind';
+    }
+  }
   if (!siteName) return 'General';
   const upper = siteName.toUpperCase().trim();
   if (CL_SITE_TYPES[upper]) return CL_SITE_TYPES[upper];
