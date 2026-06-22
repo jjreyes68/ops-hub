@@ -671,7 +671,7 @@ body.dark .cl-time{color:var(--text2);}
 /* Two-pane layout */
 .cl-two-pane {
   display: grid;
-  grid-template-columns: 400px 1fr;
+  grid-template-columns: 500px 1fr;
   gap: 20px;
   align-items: start;
 }
@@ -806,6 +806,7 @@ body.dark .cl-time{color:var(--text2);}
   font-family: var(--f);
   font-size: 12px;
   width: 100%;
+  max-width: 110px;
 }
 
 .sp-promote-menu button {
@@ -860,6 +861,10 @@ body.dark .cl-time{color:var(--text2);}
 /* Inline site select on each entry */
 .cl-inline-site{font-family:var(--m);font-size:10px;font-weight:600;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1px 4px;color:var(--text2);flex-shrink:0;align-self:flex-start;margin-top:2px;max-width:110px;cursor:pointer;}
 .cl-inline-site:focus{outline:none;border-color:var(--blue);}
+/* Inline ticket input on each entry */
+.cl-inline-ticket{font-family:var(--m);font-size:10px;font-weight:600;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:1px 4px;color:var(--text2);flex-shrink:0;align-self:flex-start;margin-top:2px;width:60px;cursor:text;}
+.cl-inline-ticket:focus{outline:none;border-color:var(--blue);}
+.cl-inline-ticket::placeholder{color:var(--text3);}
 /* Click-to-edit body */
 .cl-body{flex:1;font-size:13px;line-height:1.5;color:var(--text);word-break:break-word;cursor:text;border-radius:3px;padding:1px 3px;margin:-1px -3px;}
 .cl-body:hover{background:var(--bg3);}
@@ -3591,7 +3596,7 @@ function addAdhoc(){
     if(target<=new Date()) target.setDate(target.getDate()+1); // roll to tomorrow if past
     min=Math.max(1,Math.round((target-new Date())/60000));
     // Format label as "3:00 AM"
-    targetLabel=target.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+    targetLabel=target.toLocaleTimeString([],{hour:'numeric',minute:'2-digit',hour12:false});
   } else {
     min=parseInt(document.getElementById('adhoc-t').value)||0;
   }
@@ -3787,7 +3792,7 @@ function toggleSiteRow(id){
         hist.innerHTML='<div class="st-hist-title">Recent Scans</div>'+entries.map(e=>{
           const d=new Date(e.ts);
           const dateStr=d.toLocaleDateString([],{month:'short',day:'numeric'});
-          const timeStr=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+          const timeStr=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
           const note=e.detail&&e.detail!=='All clear'?`<span class="st-hist-note">${esc(e.detail)}</span>`:`<span class="st-hist-note st-hist-ok">✓ All clear</span>`;
           return `<div class="st-hist-entry"><span class="st-hist-ts">${dateStr} ${timeStr}</span>${note}</div>`;
         }).join('');
@@ -3988,7 +3993,7 @@ function useTemplate(id){
   if(id==='response'){openModal('modal-response');return;}
   if(id==='handoff'){openHandoffAsNote();return;}
   const tpl=TEMPLATES.find(t=>t.id===id); if(!tpl)return;
-  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
   newNote(tpl.name+' — '+now, (tpl.body||'').replace('{t}',now), 'obs');
 }
 
@@ -4031,7 +4036,7 @@ function renderNotes(){
   const el=document.getElementById('notes-list');
   el.innerHTML=!S.notes.length?'<div class="empty-state compact"><div class="empty-state-icon">🗒️</div><div class="empty-state-title">No notes yet</div><div class="empty-state-sub">Notes you create will appear here.</div></div>':
     S.notes.map(n=>`<div class="note-entry${S.activeNote===n.id?' active':''}" onclick="selectNote(${n.id})">
-      <div class="note-entry-time">${new Date(n.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="note-entry-time">${new Date(n.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false})}</div>
       <div class="note-entry-title">${esc(n.title)}</div>
       <div style="margin-top:2px;"><span class="tag ${TAG_CLS[n.tag]||'tag-obs'}">${TAG_LABEL[n.tag]||n.tag}</span></div>
     </div>`).join('');
@@ -4042,7 +4047,7 @@ function saveIncident(){
   const loc=document.getElementById('inc-location').value, sev=document.getElementById('inc-severity').value,
         rep=document.getElementById('inc-reporter').value, desc=document.getElementById('inc-desc').value,
         act=document.getElementById('inc-action').value, fu=document.getElementById('inc-followup').value;
-  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
   const title='['+sev+'] Incident — '+(loc||'unknown');
   newNote(title,'Time: '+now+'\nLocation: '+loc+'\nSeverity: '+sev+'\nReported by: '+rep+'\nDescription: '+desc+'\nAction taken: '+act+'\nFollow-up: '+fu,'incident');
   addLog({type:'incident',title,detail:sev+' at '+(loc||'?')+'. '+desc.substring(0,80),followup:fu==='yes'});
@@ -4055,7 +4060,7 @@ function saveResponse(){
   const sit=document.getElementById('res-situation').value, notif=document.getElementById('res-notified').value,
         proc=document.getElementById('res-procedure').value, out=document.getElementById('res-outcome').value,
         esc2=document.getElementById('res-escalation').value;
-  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
   const title='Response — '+(sit||'situation')+' @ '+now;
   newNote(title,'Time: '+now+'\nSituation: '+sit+'\nNotified: '+notif+'\nProcedure: '+proc+'\nOutcome: '+out+'\nEscalation: '+esc2,'response');
   addLog({type:'response',title,detail:'Notified: '+notif+'. '+out.substring(0,80)});
@@ -4085,11 +4090,11 @@ function buildHandoff(){
   if(du.length){L.push('\n  Due soon:');du.forEach(s=>L.push('  • '+s.name+(s.nerc?' [NERC]':'')));}
   L.push('\n✓ ACTIVITY\n  Incidents: '+inc.length+'  Responses: '+res.length+'  Tasks done: '+done.length+'  Scans: '+scans.length);
   if(clStatus.length){L.push('\n  Checklists:');clStatus.forEach(s=>L.push('  • '+s));}
-  if(inc.length){L.push('\n  Incident log:');inc.forEach(e=>{const t=new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});L.push('  ['+t+'] '+e.title);if(e.detail)L.push('        '+e.detail.substring(0,80));});}
+  if(inc.length){L.push('\n  Incident log:');inc.forEach(e=>{const t=new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});L.push('  ['+t+'] '+e.title);if(e.detail)L.push('        '+e.detail.substring(0,80));});}
   L.push('\n──────────────────────\nGenerated '+now.toLocaleString());
   return L.join('\n');
 }
-function openHandoffAsNote(){ const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); newNote('Shift handoff — '+now,buildHandoff(),'obs'); switchView('notes',document.querySelectorAll('.nav-tab')[0]); }
+function openHandoffAsNote(){ const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false}); newNote('Shift handoff — '+now,buildHandoff(),'obs'); switchView('notes',document.querySelectorAll('.nav-tab')[0]); }
 function openHandoff(){ document.getElementById('handoff-content').textContent=buildHandoff(); openModal('modal-handoff'); }
 function copyHandoff(){ try{navigator.clipboard.writeText(document.getElementById('handoff-content').textContent);showToast('Copied!');}catch(e){showToast('Select and copy manually');} }
 
@@ -4100,7 +4105,7 @@ function renderLog(){
   const entries=f==='all'?S.logEntries:S.logEntries.filter(e=>e.type===f);
   document.getElementById('log-list').innerHTML=!entries.length?'<div class="empty-state compact"><div class="empty-state-icon">📋</div><div class="empty-state-title">No log entries yet</div><div class="empty-state-sub">Events logged during this shift will appear here.</div></div>':
     entries.map(e=>`<div class="log-entry ${e.type||'note'}">
-      <div class="log-time">${new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="log-time">${new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false})}</div>
       <div class="log-body"><div class="log-title">${esc(e.title||'')}</div>${e.detail?`<div class="log-detail">${esc(e.detail)}</div>`:''}</div>
     </div>`).join('');
   const inc=S.logEntries.filter(e=>e.type==='incident').length, res=S.logEntries.filter(e=>e.type==='response').length,
@@ -4235,7 +4240,7 @@ function clAdd(ticket = null) {
   const entry = {
     id: Date.now(),
     ts: now.getTime(),
-    time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
+    time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}),
     cat,
     site,
     text,
@@ -4263,6 +4268,14 @@ function clSetSite(id, val) {
   e.site = val;
   try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
   clRender();
+}
+
+function clSetTicket(id, val) {
+  const e = clEntries.find(x => x.id === id); if (!e) return;
+  e.ticket = val || null;
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
+  clRender();
+  clRenderPreview();
 }
 
 function clSetCat(id, cat) {
@@ -4324,7 +4337,8 @@ function clCopyHandoff() {
     handoffEntries.forEach(e => {
       const catTag = e.cat && e.cat !== 'Normal' && e.cat !== 'Handoff' ? ` (${e.cat})` : '';
       const siteTag = e.site ? `${e.site} ` : '';
-      lines.push(`• ${siteTag}${e.text}${catTag}`);
+      const ticketTag = e.ticket ? ` [${e.ticket}]` : '';
+      lines.push(`• ${siteTag}${e.text}${catTag}${ticketTag}`);
     });
   }
 
@@ -4333,7 +4347,8 @@ function clCopyHandoff() {
     lines.push('Upcoming');
     upcomingEntries.forEach(e => {
       const siteTag = e.site ? `${e.site} ` : '';
-      lines.push(`• ${siteTag}${e.text}`);
+      const ticketTag = e.ticket ? ` [${e.ticket}]` : '';
+      lines.push(`• ${siteTag}${e.text}${ticketTag}`);
     });
   }
 
@@ -4471,7 +4486,7 @@ function spAdd() {
   scratchpad.push({
     id: Date.now(),
     text: text,
-    time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
+    time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false})
   });
   try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
   document.getElementById('sp-text').value = '';
@@ -4514,7 +4529,7 @@ function spPromote(index) {
   const entry = {
     id: Date.now(),
     ts: now.getTime(),
-    time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
+    time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}),
     cat: cat,
     site: site,
     text: item.text,
@@ -4581,14 +4596,14 @@ function clRender() {
       const catCls = CL_CAT_CLS[e.cat] || 'cl-cat-normal';
       const catBadge = e.cat && e.cat !== 'Normal' ? `<span class="cl-cat ${catCls}">${esc(e.cat)}</span>` : '';
       const siteSelect = `<select class="cl-inline-site" title="Edit site" onchange="clSetSite(${e.id},this.value)">${clSiteOptions}</select>`;
-      const ticketBadge = e.ticket ? `<span class="cl-ticket">#${esc(e.ticket)}</span>` : '';
+      const ticketInput = `<input class="cl-inline-ticket" type="text" placeholder="#" value="${esc(e.ticket||'')}" onchange="clSetTicket(${e.id},this.value)" title="Edit ticket #">`;
       const hPill = `<span class="cl-cat-pill${e.cat==='Handoff'?' active-handoff':''}" onclick="clSetCat(${e.id},'Handoff')">Handoff</span>`;
       const uPill = `<span class="cl-cat-pill${e.cat==='Upcoming'?' active-upcoming':''}" onclick="clSetCat(${e.id},'Upcoming')">Upcoming</span>`;
       return `<div class="cl-entry${e.starred?' starred':''}">
         <span class="cl-time">${esc(e.time)}</span>
         ${catBadge}
         ${siteSelect}
-        ${ticketBadge}
+        ${ticketInput}
         <span class="cl-body" data-id="${e.id}" title="Click to edit" onclick="clStartEdit(${e.id})">${esc(e.text)}</span>
         <div class="cl-cat-toggle">${hPill}${uPill}</div>
         <button class="cl-star${e.starred?' on':''}" title="Star for passdown" onclick="clToggleStar(${e.id})">★</button>
@@ -4628,13 +4643,14 @@ function clRenderPreview() {
 
   const renderItems = (entries) => entries.map(e => {
     const siteLabel = e.site ? `<span class="cl-hd-site-name">${esc(e.site)}</span> ` : '';
+    const ticketLabel = e.ticket ? `<span class="cl-hd-badge">${esc(e.ticket)}</span> ` : '';
     return `<div class="cl-hd-item" data-id="${e.id}">
       <span class="cl-hd-bullet">–</span>
       <span class="cl-hd-text" contenteditable="true" spellcheck="false"
         data-id="${e.id}"
         onblur="clPreviewEdit(${e.id}, this)"
         onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}"
-      >${siteLabel}${esc(e.text)}</span>
+      >${siteLabel}${ticketLabel}${esc(e.text)}</span>
       <span class="cl-hd-time">${esc(e.time)}</span>
       <span class="cl-hd-del" title="Remove" onclick="clPreviewDelete(${e.id})">✕</span>
     </div>`;
