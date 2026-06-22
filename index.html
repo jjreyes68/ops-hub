@@ -671,7 +671,7 @@ body.dark .cl-time{color:var(--text2);}
 /* Two-pane layout */
 .cl-two-pane {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 400px 1fr;
   gap: 20px;
   align-items: start;
 }
@@ -725,6 +725,14 @@ body.dark .cl-time{color:var(--text2);}
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 6px 8px;
+}
+
+.sp-time {
+  font-family: var(--m);
+  font-size: 11px;
+  color: var(--text3);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .sp-text {
@@ -4459,9 +4467,11 @@ function spInit() {
 function spAdd() {
   const text = document.getElementById('sp-text').value.trim();
   if (!text) return;
+  const now = new Date();
   scratchpad.push({
     id: Date.now(),
-    text: text
+    text: text,
+    time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
   });
   try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
   document.getElementById('sp-text').value = '';
@@ -4535,6 +4545,7 @@ function renderScratchpad() {
   
   list.innerHTML = scratchpad.map((item, index) => `
     <div class="sp-row">
+      <span class="sp-time">${esc(item.time)}</span>
       <span class="sp-text">${esc(item.text)}</span>
       <button class="sp-promote" onclick="spTogglePromote(${index})" title="Promote to feed">→</button>
       <button class="sp-delete" onclick="spDelete(${index})" title="Delete">×</button>
