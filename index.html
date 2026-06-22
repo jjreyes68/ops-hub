@@ -667,6 +667,185 @@ body.dark .cl-time{color:var(--text2);}
 .cl-hd-del{opacity:0;cursor:pointer;font-size:11px;color:var(--text3);padding:0 3px;border-radius:3px;transition:opacity .15s,background .15s;flex-shrink:0;line-height:1.6;}
 .cl-hd-del:hover{color:var(--red);background:var(--rbg);}
 .cl-hd-text[contenteditable="true"]{outline:none;border-radius:3px;padding:1px 3px;margin:-1px -3px;cursor:text;}
+
+/* Two-pane layout */
+.cl-two-pane {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .cl-two-pane {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Scratchpad card */
+.scratchpad-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--rl);
+  padding: 12px;
+  position: sticky;
+  top: 10px;
+}
+
+.sp-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.sp-input-row input {
+  flex: 1;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 10px;
+  color: var(--text);
+  font-family: var(--f);
+  font-size: 13px;
+}
+
+.sp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.sp-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+.sp-time {
+  font-family: var(--m);
+  font-size: 11px;
+  color: var(--text3);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.sp-text {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text);
+  word-break: break-word;
+}
+
+.sp-promote {
+  background: none;
+  border: none;
+  color: var(--green);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.sp-promote:hover {
+  background: rgba(0, 229, 160, 0.1);
+}
+
+.sp-delete {
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.sp-delete:hover {
+  background: rgba(255, 59, 48, 0.1);
+  color: var(--red);
+}
+
+/* Promotion menu */
+.sp-promote-menu {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 6px;
+  box-shadow: var(--shs);
+}
+
+.sp-promote-menu.active {
+  display: flex;
+}
+
+.sp-promote-menu label {
+  font-size: 11px;
+  color: var(--text3);
+  font-weight: 600;
+}
+
+.sp-promote-menu select,
+.sp-promote-menu input {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 5px 8px;
+  color: var(--text);
+  font-family: var(--f);
+  font-size: 12px;
+  width: 100%;
+  max-width: 140px;
+}
+
+.sp-promote-menu button {
+  background: var(--green);
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.sp-promote-menu button:hover {
+  filter: brightness(1.08);
+}
+
+/* Right pane wrapper */
+.cl-right-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Ticket badge */
+.cl-ticket {
+  font-family: var(--mono);
+  font-size: 10px;
+  background: var(--bg4);
+  border: 1px solid var(--border2);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--text2);
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 2px;
+  white-space: nowrap;
+}
 .cl-hd-text[contenteditable="true"]:hover{background:var(--bg3);}
 .cl-hd-text[contenteditable="true"]:focus{background:var(--bg3);box-shadow:0 0 0 1.5px var(--blue);}
 .cl-hd-edit-hint{font-size:10px;color:var(--text3);padding:4px 14px 6px;font-style:italic;}
@@ -2591,44 +2770,62 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
     <div class="cl-pg-sub">Chronological shift feed · starred entries auto-populate handoff notes</div>
   </div>
 
-  <!-- Entry bar -->
-  <div class="cl-input-bar">
-    <select id="cl-cat" title="Category">
-      <option value="Handoff" selected>📋 Handoff</option>
-      <option value="Upcoming">🕐 Upcoming</option>
-    </select>
-    <select id="cl-site" style="max-width:160px;" title="Site (resets after each entry)"></select>
-    <input id="cl-text" placeholder="What happened? Press Enter to log." onkeydown="if(event.key==='Enter')clAdd()">
-    <button class="cl-log-btn" onclick="clAdd()">Log It</button>
-  </div>
-
-  <!-- Feed header -->
-  <div class="cl-header-row">
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span class="cl-section-lbl">Shift Feed</span>
-      <span class="cl-starred-count" id="cl-starred-count" style="display:none;"></span>
-    </div>
-    <div style="display:flex;gap:6px;align-items:center;">
-      <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">Copy passdown</button>
-      <button class="tbtn cl-clear-btn" style="font-size:11px;" onclick="clClear()">Clear shift</button>
-    </div>
-  </div>
-
-  <div class="cl-feed" id="cl-feed"><div class="empty-state compact"><div class="empty-state-icon">📡</div><div class="empty-state-title">No entries yet</div><div class="empty-state-sub">Log the first event using the form above.</div></div></div>
-
-  <!-- Shift Handoff Draft -->
-  <div class="cl-handoff-section">
-    <div class="cl-handoff-header">
-      <div>
-        <span class="cl-section-lbl">Handoff Draft</span>
-        <span class="cl-handoff-hint">★ starred · alarms · curtailments · two-section format</span>
+  <div class="cl-two-pane">
+    <!-- Scratchpad Section -->
+    <div class="scratchpad-card">
+      <div class="cl-header-row">
+        <span class="cl-section-lbl">Scratchpad</span>
+        <button class="tbtn" style="font-size:11px;" onclick="spClear()">Clear</button>
       </div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <button class="tbtn cl-img-btn" id="cl-img-btn" onclick="clSaveAsImage(event)" title="Copy or save handoff as image">📸 Image</button>
-        <button class="cl-copy-handoff-btn" onclick="clCopyHandoff()">Copy Handoff</button>
+      <div class="sp-input-row">
+        <input id="sp-text" placeholder="Quick note... Press Enter to add" onkeydown="if(event.key==='Enter')spAdd()">
+        <button class="cl-log-btn" onclick="spAdd()">+</button>
+      </div>
+      <div class="sp-list" id="sp-list"></div>
+    </div>
+
+    <!-- Right Pane: Entry Bar + Feed + Handoff -->
+    <div class="cl-right-pane">
+      <!-- Entry bar -->
+      <div class="cl-input-bar">
+        <select id="cl-cat" title="Category">
+          <option value="Handoff" selected>📋 Handoff</option>
+          <option value="Upcoming">🕐 Upcoming</option>
+        </select>
+        <select id="cl-site" style="max-width:160px;" title="Site (resets after each entry)"></select>
+        <input id="cl-text" placeholder="What happened? Press Enter to log." onkeydown="if(event.key==='Enter')clAdd()">
+        <button class="cl-log-btn" onclick="clAdd()">Log It</button>
+      </div>
+
+      <!-- Feed header -->
+      <div class="cl-header-row">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="cl-section-lbl">Shift Feed</span>
+          <span class="cl-starred-count" id="cl-starred-count" style="display:none;"></span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">Copy passdown</button>
+          <button class="tbtn cl-clear-btn" style="font-size:11px;" onclick="clClear()">Clear shift</button>
+        </div>
+      </div>
+
+      <div class="cl-feed" id="cl-feed"><div class="empty-state compact"><div class="empty-state-icon">📡</div><div class="empty-state-title">No entries yet</div><div class="empty-state-sub">Log the first event using the form above.</div></div></div>
+
+      <!-- Shift Handoff Draft -->
+      <div class="cl-handoff-section">
+        <div class="cl-handoff-header">
+          <div>
+            <span class="cl-section-lbl">Handoff Draft</span>
+            <span class="cl-handoff-hint">★ starred · alarms · curtailments · two-section format</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <button class="tbtn cl-img-btn" id="cl-img-btn" onclick="clSaveAsImage(event)" title="Copy or save handoff as image">📸 Image</button>
+            <button class="cl-copy-handoff-btn" onclick="clCopyHandoff()">Copy Handoff</button>
+          </div>
+        </div>
+        <div id="cl-preview" class="cl-handoff-preview"></div>
       </div>
     </div>
-    <div id="cl-preview" class="cl-handoff-preview"></div>
   </div>
 
 </div>
@@ -3395,7 +3592,7 @@ function addAdhoc(){
     if(target<=new Date()) target.setDate(target.getDate()+1); // roll to tomorrow if past
     min=Math.max(1,Math.round((target-new Date())/60000));
     // Format label as "3:00 AM"
-    targetLabel=target.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+    targetLabel=target.toLocaleTimeString([],{hour:'numeric',minute:'2-digit',hour12:false});
   } else {
     min=parseInt(document.getElementById('adhoc-t').value)||0;
   }
@@ -3591,7 +3788,7 @@ function toggleSiteRow(id){
         hist.innerHTML='<div class="st-hist-title">Recent Scans</div>'+entries.map(e=>{
           const d=new Date(e.ts);
           const dateStr=d.toLocaleDateString([],{month:'short',day:'numeric'});
-          const timeStr=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+          const timeStr=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
           const note=e.detail&&e.detail!=='All clear'?`<span class="st-hist-note">${esc(e.detail)}</span>`:`<span class="st-hist-note st-hist-ok">✓ All clear</span>`;
           return `<div class="st-hist-entry"><span class="st-hist-ts">${dateStr} ${timeStr}</span>${note}</div>`;
         }).join('');
@@ -3792,7 +3989,7 @@ function useTemplate(id){
   if(id==='response'){openModal('modal-response');return;}
   if(id==='handoff'){openHandoffAsNote();return;}
   const tpl=TEMPLATES.find(t=>t.id===id); if(!tpl)return;
-  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
   newNote(tpl.name+' — '+now, (tpl.body||'').replace('{t}',now), 'obs');
 }
 
@@ -3835,7 +4032,7 @@ function renderNotes(){
   const el=document.getElementById('notes-list');
   el.innerHTML=!S.notes.length?'<div class="empty-state compact"><div class="empty-state-icon">🗒️</div><div class="empty-state-title">No notes yet</div><div class="empty-state-sub">Notes you create will appear here.</div></div>':
     S.notes.map(n=>`<div class="note-entry${S.activeNote===n.id?' active':''}" onclick="selectNote(${n.id})">
-      <div class="note-entry-time">${new Date(n.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="note-entry-time">${new Date(n.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false})}</div>
       <div class="note-entry-title">${esc(n.title)}</div>
       <div style="margin-top:2px;"><span class="tag ${TAG_CLS[n.tag]||'tag-obs'}">${TAG_LABEL[n.tag]||n.tag}</span></div>
     </div>`).join('');
@@ -3846,7 +4043,7 @@ function saveIncident(){
   const loc=document.getElementById('inc-location').value, sev=document.getElementById('inc-severity').value,
         rep=document.getElementById('inc-reporter').value, desc=document.getElementById('inc-desc').value,
         act=document.getElementById('inc-action').value, fu=document.getElementById('inc-followup').value;
-  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
   const title='['+sev+'] Incident — '+(loc||'unknown');
   newNote(title,'Time: '+now+'\nLocation: '+loc+'\nSeverity: '+sev+'\nReported by: '+rep+'\nDescription: '+desc+'\nAction taken: '+act+'\nFollow-up: '+fu,'incident');
   addLog({type:'incident',title,detail:sev+' at '+(loc||'?')+'. '+desc.substring(0,80),followup:fu==='yes'});
@@ -3859,7 +4056,7 @@ function saveResponse(){
   const sit=document.getElementById('res-situation').value, notif=document.getElementById('res-notified').value,
         proc=document.getElementById('res-procedure').value, out=document.getElementById('res-outcome').value,
         esc2=document.getElementById('res-escalation').value;
-  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});
   const title='Response — '+(sit||'situation')+' @ '+now;
   newNote(title,'Time: '+now+'\nSituation: '+sit+'\nNotified: '+notif+'\nProcedure: '+proc+'\nOutcome: '+out+'\nEscalation: '+esc2,'response');
   addLog({type:'response',title,detail:'Notified: '+notif+'. '+out.substring(0,80)});
@@ -3889,11 +4086,11 @@ function buildHandoff(){
   if(du.length){L.push('\n  Due soon:');du.forEach(s=>L.push('  • '+s.name+(s.nerc?' [NERC]':'')));}
   L.push('\n✓ ACTIVITY\n  Incidents: '+inc.length+'  Responses: '+res.length+'  Tasks done: '+done.length+'  Scans: '+scans.length);
   if(clStatus.length){L.push('\n  Checklists:');clStatus.forEach(s=>L.push('  • '+s));}
-  if(inc.length){L.push('\n  Incident log:');inc.forEach(e=>{const t=new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});L.push('  ['+t+'] '+e.title);if(e.detail)L.push('        '+e.detail.substring(0,80));});}
+  if(inc.length){L.push('\n  Incident log:');inc.forEach(e=>{const t=new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false});L.push('  ['+t+'] '+e.title);if(e.detail)L.push('        '+e.detail.substring(0,80));});}
   L.push('\n──────────────────────\nGenerated '+now.toLocaleString());
   return L.join('\n');
 }
-function openHandoffAsNote(){ const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); newNote('Shift handoff — '+now,buildHandoff(),'obs'); switchView('notes',document.querySelectorAll('.nav-tab')[0]); }
+function openHandoffAsNote(){ const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false}); newNote('Shift handoff — '+now,buildHandoff(),'obs'); switchView('notes',document.querySelectorAll('.nav-tab')[0]); }
 function openHandoff(){ document.getElementById('handoff-content').textContent=buildHandoff(); openModal('modal-handoff'); }
 function copyHandoff(){ try{navigator.clipboard.writeText(document.getElementById('handoff-content').textContent);showToast('Copied!');}catch(e){showToast('Select and copy manually');} }
 
@@ -3904,7 +4101,7 @@ function renderLog(){
   const entries=f==='all'?S.logEntries:S.logEntries.filter(e=>e.type===f);
   document.getElementById('log-list').innerHTML=!entries.length?'<div class="empty-state compact"><div class="empty-state-icon">📋</div><div class="empty-state-title">No log entries yet</div><div class="empty-state-sub">Events logged during this shift will appear here.</div></div>':
     entries.map(e=>`<div class="log-entry ${e.type||'note'}">
-      <div class="log-time">${new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="log-time">${new Date(e.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',hour12:false})}</div>
       <div class="log-body"><div class="log-title">${esc(e.title||'')}</div>${e.detail?`<div class="log-detail">${esc(e.detail)}</div>`:''}</div>
     </div>`).join('');
   const inc=S.logEntries.filter(e=>e.type==='incident').length, res=S.logEntries.filter(e=>e.type==='response').length,
@@ -4015,6 +4212,7 @@ let clSiteOptions = ''; // cached options HTML for inline selects
 function clInit() {
   try { clEntries = JSON.parse(localStorage.getItem(CL_KEY) || '[]'); } catch(e) { clEntries = []; }
   clPopulateSiteSelect();
+  spInit();
 }
 
 function clPopulateSiteSelect() {
@@ -4029,7 +4227,7 @@ function clPopulateSiteSelect() {
   clSiteOptions = baseOpts;
 }
 
-function clAdd() {
+function clAdd(ticket = null) {
   const text = document.getElementById('cl-text').value.trim();
   if (!text) { showToast('Enter a log entry first'); return; }
   const cat  = document.getElementById('cl-cat')?.value || 'Normal';
@@ -4038,10 +4236,11 @@ function clAdd() {
   const entry = {
     id: Date.now(),
     ts: now.getTime(),
-    time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
+    time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}),
     cat,
     site,
     text,
+    ticket: ticket || null,
     starred: false
   };
   clEntries.unshift(entry);
@@ -4126,7 +4325,8 @@ function clCopyHandoff() {
     handoffEntries.forEach(e => {
       const catTag = e.cat && e.cat !== 'Normal' && e.cat !== 'Handoff' ? ` (${e.cat})` : '';
       const siteTag = e.site ? `${e.site} ` : '';
-      lines.push(`• ${siteTag}${e.text}${catTag}`);
+      const ticketTag = e.ticket ? ` [${e.ticket}]` : '';
+      lines.push(`• ${siteTag}${e.text}${catTag}${ticketTag}`);
     });
   }
 
@@ -4135,7 +4335,8 @@ function clCopyHandoff() {
     lines.push('Upcoming');
     upcomingEntries.forEach(e => {
       const siteTag = e.site ? `${e.site} ` : '';
-      lines.push(`• ${siteTag}${e.text}`);
+      const ticketTag = e.ticket ? ` [${e.ticket}]` : '';
+      lines.push(`• ${siteTag}${e.text}${ticketTag}`);
     });
   }
 
@@ -4257,6 +4458,119 @@ const CL_CAT_CLS = {
   'Upcoming':'cl-cat-upcoming'
 };
 
+// ─── SCRATCHPAD ────────────────────────────────────────────────────────────────
+const SP_KEY = 'rnwbl_scratchpad_v1';
+let scratchpad = [];
+
+function spInit() {
+  try { scratchpad = JSON.parse(localStorage.getItem(SP_KEY) || '[]'); } catch(e) { scratchpad = []; }
+  renderScratchpad();
+}
+
+function spAdd() {
+  const text = document.getElementById('sp-text').value.trim();
+  if (!text) return;
+  const now = new Date();
+  scratchpad.push({
+    id: Date.now(),
+    text: text,
+    time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false})
+  });
+  try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
+  document.getElementById('sp-text').value = '';
+  renderScratchpad();
+}
+
+function spDelete(index) {
+  scratchpad.splice(index, 1);
+  try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
+  renderScratchpad();
+}
+
+function spClear() {
+  if (!scratchpad.length) return;
+  if (!confirm('Clear scratchpad?')) return;
+  scratchpad = [];
+  try { localStorage.removeItem(SP_KEY); } catch(e) {}
+  renderScratchpad();
+}
+
+function spTogglePromote(index) {
+  // Close all other menus first
+  document.querySelectorAll('.sp-promote-menu').forEach(el => el.classList.remove('active'));
+  
+  const menu = document.getElementById(`sp-promote-menu-${index}`);
+  if (menu) {
+    menu.classList.toggle('active');
+  }
+}
+
+function spPromote(index) {
+  const item = scratchpad[index];
+  if (!item) return;
+  
+  const cat = document.getElementById(`sp-cat-${index}`).value;
+  const site = document.getElementById(`sp-site-${index}`).value;
+  const ticket = document.getElementById(`sp-ticket-${index}`).value.trim();
+  
+  const now = new Date();
+  const entry = {
+    id: Date.now(),
+    ts: now.getTime(),
+    time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}),
+    cat: cat,
+    site: site,
+    text: item.text,
+    ticket: ticket,
+    starred: false
+  };
+  
+  clEntries.unshift(entry);
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e) {}
+  
+  // Remove from scratchpad
+  scratchpad.splice(index, 1);
+  try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
+  
+  renderScratchpad();
+  clRender();
+  showToast('Promoted to feed');
+}
+
+function renderScratchpad() {
+  const list = document.getElementById('sp-list');
+  if (!list) return;
+  
+  if (!scratchpad.length) {
+    list.innerHTML = '<div style="font-size:12px;color:var(--text3);text-align:center;padding:12px;">No scratchpad entries</div>';
+    return;
+  }
+  
+  list.innerHTML = scratchpad.map((item, index) => `
+    <div class="sp-row">
+      <span class="sp-time">${esc(item.time)}</span>
+      <span class="sp-text">${esc(item.text)}</span>
+      <button class="sp-promote" onclick="spTogglePromote(${index})" title="Promote to feed">→</button>
+      <button class="sp-delete" onclick="spDelete(${index})" title="Delete">×</button>
+    </div>
+    <div class="sp-promote-menu" id="sp-promote-menu-${index}">
+      <label>Category</label>
+      <select id="sp-cat-${index}">
+        <option value="Handoff">📋 Handoff</option>
+        <option value="Upcoming">🕐 Upcoming</option>
+      </select>
+      <label>Site</label>
+      <select id="sp-site-${index}">
+        <option value="">(no site)</option>
+        ${clSiteOptions}
+      </select>
+      <label>Ticket # (optional)</label>
+      <input id="sp-ticket-${index}" placeholder="e.g. INC12345">
+      <button onclick="spPromote(${index})">Send to Feed</button>
+    </div>
+  `).join('');
+}
+
 function clRender() {
   const feed = document.getElementById('cl-feed'); if (!feed) return;
   const starred = clEntries.filter(x => x.starred).length;
@@ -4270,12 +4584,14 @@ function clRender() {
       const catCls = CL_CAT_CLS[e.cat] || 'cl-cat-normal';
       const catBadge = e.cat && e.cat !== 'Normal' ? `<span class="cl-cat ${catCls}">${esc(e.cat)}</span>` : '';
       const siteSelect = `<select class="cl-inline-site" title="Edit site" onchange="clSetSite(${e.id},this.value)">${clSiteOptions}</select>`;
+      const ticketBadge = e.ticket ? `<span class="cl-ticket">#${esc(e.ticket)}</span>` : '';
       const hPill = `<span class="cl-cat-pill${e.cat==='Handoff'?' active-handoff':''}" onclick="clSetCat(${e.id},'Handoff')">Handoff</span>`;
       const uPill = `<span class="cl-cat-pill${e.cat==='Upcoming'?' active-upcoming':''}" onclick="clSetCat(${e.id},'Upcoming')">Upcoming</span>`;
       return `<div class="cl-entry${e.starred?' starred':''}">
         <span class="cl-time">${esc(e.time)}</span>
         ${catBadge}
         ${siteSelect}
+        ${ticketBadge}
         <span class="cl-body" data-id="${e.id}" title="Click to edit" onclick="clStartEdit(${e.id})">${esc(e.text)}</span>
         <div class="cl-cat-toggle">${hPill}${uPill}</div>
         <button class="cl-star${e.starred?' on':''}" title="Star for passdown" onclick="clToggleStar(${e.id})">★</button>
@@ -4315,13 +4631,14 @@ function clRenderPreview() {
 
   const renderItems = (entries) => entries.map(e => {
     const siteLabel = e.site ? `<span class="cl-hd-site-name">${esc(e.site)}</span> ` : '';
+    const ticketLabel = e.ticket ? `<span class="cl-hd-badge">${esc(e.ticket)}</span> ` : '';
     return `<div class="cl-hd-item" data-id="${e.id}">
       <span class="cl-hd-bullet">–</span>
       <span class="cl-hd-text" contenteditable="true" spellcheck="false"
         data-id="${e.id}"
         onblur="clPreviewEdit(${e.id}, this)"
         onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}"
-      >${siteLabel}${esc(e.text)}</span>
+      >${siteLabel}${ticketLabel}${esc(e.text)}</span>
       <span class="cl-hd-time">${esc(e.time)}</span>
       <span class="cl-hd-del" title="Remove" onclick="clPreviewDelete(${e.id})">✕</span>
     </div>`;
@@ -5961,7 +6278,13 @@ const SW_HARDCODED = [
     body:'Call received from field tech {{TECH}} requesting de-energization of PCS {{NUMBER}}:\n– Associated Megapacks disabled remotely\n– Megapack Breakers opened remotely' },
   { id:'pdmt-re',  site:'Pediment · PCS', action:'Re-Energize', cls:'re',
     numLbl:'PCS #', numPh:'e.g. 1',
-    body:'Call received from field tech {{TECH}} requesting energization of PCS {{NUMBER}}:\n– Megapack Breakers closed remotely\n– Associated Megapacks enabled remotely' }
+    body:'Call received from field tech {{TECH}} requesting energization of PCS {{NUMBER}}:\n– Megapack Breakers closed remotely\n– Associated Megapacks enabled remotely' },
+  { id:'ctlf-de',  site:'CTLF · Feeder Breaker', action:'De-Energize', cls:'de',
+    numLbl:'Feeder Breaker #', numPh:'e.g. 32',
+    body:'Call received from field tech {{TECH}} requesting de-energization of Feeder Breaker 52F{{NUMBER}}:\n– Associated Megapacks disabled locally\n– MVT AC Level Breakers opened locally\n– Feeder Breaker 52F{{NUMBER}} opened remotely' },
+  { id:'ctlf-re',  site:'CTLF · Feeder Breaker', action:'Re-Energize', cls:'re',
+    numLbl:'Feeder Breaker #', numPh:'e.g. 32',
+    body:'Call received from field tech {{TECH}} requesting energization of Feeder Breaker 52F{{NUMBER}}:\n– Feeder Breaker 52F{{NUMBER}} closed remotely\n– MVT AC Level Breakers closed locally\n– Associated Megapacks enabled locally' }
 ];
 
 const SW_CUSTOM_KEY = 'rnwbl_sw_custom_v1';
