@@ -403,12 +403,39 @@ body.dark .card-title{color:var(--text2);}
 .wizard-step{display:none;animation:fadeIn .2s ease}
 .wizard-step.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.wizard-progress{display:flex;align-items:center;gap:6px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
-.wizard-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:all .2s}
-.wizard-dot.active{background:var(--blue);transform:scale(1.2)}
-.wizard-dot.completed{background:var(--green)}
-.wizard-step-title{font-size:14px;font-weight:600;margin-bottom:12px;color:var(--text)}
+.wizard-step-bar{display:flex;align-items:center;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.wizard-step-bar-item{display:flex;align-items:center;gap:7px;flex:1;opacity:.4;transition:all .2s;}
+.wizard-step-bar-item.active{opacity:1;}
+.wizard-step-bar-item.completed{opacity:.75;}
+.wizard-step-bar-num{width:22px;height:22px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text2);flex-shrink:0;transition:all .2s;}
+.wizard-step-bar-item.active .wizard-step-bar-num{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
+.wizard-step-bar-item.completed .wizard-step-bar-num{border-color:var(--green);color:var(--green);background:var(--gbg);}
+.wizard-step-bar-lbl{font-size:12px;font-weight:600;color:var(--text2);}
+.wizard-step-bar-item.active .wizard-step-bar-lbl{color:var(--blue);}
+.wizard-step-bar-item.completed .wizard-step-bar-lbl{color:var(--green);}
+.wizard-step-bar-sep{color:var(--text3);font-size:11px;margin:0 8px;flex-shrink:0;}
+.wizard-step-title{font-size:14px;font-weight:600;margin-bottom:6px;color:var(--text)}
 .wizard-step-sub{font-size:12px;color:var(--text3);margin-bottom:16px}
+.wzd-live-preview{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:7px;padding:10px 12px;margin-top:12px;}
+.wzd-live-preview-lbl{font-size:9.5px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;}
+.wzd-live-preview-body{font-family:var(--m);font-size:12px;color:var(--text2);line-height:1.6;}
+.step-header-preview{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:7px;padding:10px 12px;margin-bottom:10px;}
+.step-token-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.step-token-lbl{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;}
+.step-token-btn{font-size:11px;font-weight:600;padding:4px 10px;border-radius:5px;border:1px solid var(--blue);background:var(--bbg);color:var(--blue);cursor:pointer;font-family:var(--m);transition:all .15s;}
+.step-token-btn:hover{background:var(--blue);color:#fff;}
+.step-builder{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
+.step-row{display:flex;align-items:center;gap:6px;}
+.step-row-dash{color:var(--text3);font-weight:700;flex-shrink:0;font-size:14px;width:12px;text-align:center;}
+.step-row-input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:12px;}
+.step-row-input:focus{outline:none;border-color:var(--blue);}
+.step-row-actions{display:flex;gap:3px;flex-shrink:0;}
+.step-row-btn{padding:4px 7px;border-radius:5px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer;font-size:11px;transition:all .15s;font-family:var(--f);}
+.step-row-btn:hover{border-color:var(--border2);color:var(--text2);}
+.step-row-del:hover{border-color:var(--red);color:var(--red);}
+.step-row-btn-ph{width:27px;display:inline-block;}
+.step-add-btn{padding:7px 12px;border-radius:6px;border:1.5px dashed var(--border2);background:transparent;color:var(--text3);font-size:12px;font-weight:600;cursor:pointer;width:100%;transition:all .15s;font-family:var(--f);}
+.step-add-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
 .quick-fill-wrap{margin-bottom:16px}
 .quick-fill-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
 .chip-grid{display:flex;flex-wrap:wrap;gap:6px}
@@ -706,8 +733,36 @@ body.dark .cl-time{color:var(--text2);}
 .sp-promote-send:hover{background:var(--gmid);}
 .sp-promote-send:active{transform:translateY(1px);}
 
-/* Feed */
-.cl-feed{max-height:320px;overflow-y:auto;}
+/* Copy Handoff tile */
+.cl-copy-tile{display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--bg2);border:1.5px solid var(--green);border-radius:var(--rl);cursor:pointer;box-shadow:var(--shs);transition:all .16s;margin-bottom:12px;}
+.cl-copy-tile:hover{background:var(--gbg);box-shadow:var(--sh);transform:translateY(-1px);}
+.cl-copy-tile:active{transform:translateY(0);}
+.cl-copy-tile-icon{font-size:22px;flex-shrink:0;}
+.cl-copy-tile-title{font-size:14px;font-weight:600;color:var(--green);line-height:1.2;}
+.cl-copy-tile-sub{font-size:11.5px;color:var(--text3);margin-top:2px;}
+.cl-copy-tile-arrow{font-size:18px;color:var(--green);margin-left:auto;flex-shrink:0;opacity:.6;}
+
+/* Shift context strip */
+.cl-context-strip{display:flex;align-items:center;gap:16px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);margin-bottom:12px;box-shadow:var(--shs);flex-wrap:wrap;}
+.cl-context-field{display:flex;align-items:center;gap:7px;}
+.cl-context-lbl{font-size:11px;font-weight:600;color:var(--text3);white-space:nowrap;}
+.cl-context-inp{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 8px;color:var(--text);font-family:var(--f);font-size:12px;}
+.cl-context-inp:focus{outline:none;border-color:var(--blue);}
+.cl-context-hint{font-size:11px;color:var(--text3);font-style:italic;margin-left:auto;}
+
+/* Archive modal */
+.cl-archive-note{font-size:11.5px;color:var(--text3);background:var(--abg);border:1px solid var(--amber);border-radius:6px;padding:8px 12px;margin-bottom:14px;line-height:1.5;}
+.cl-archive-entry{border-bottom:1px solid var(--border);padding:10px 0;}
+.cl-archive-entry:last-child{border-bottom:none;}
+.cl-archive-hdr{display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:10px;padding:2px 0;}
+.cl-archive-hdr:hover .cl-archive-date{color:var(--blue);}
+.cl-archive-meta{display:flex;flex-direction:column;gap:2px;}
+.cl-archive-date{font-size:13px;font-weight:600;color:var(--text);}
+.cl-archive-saved{font-size:11px;color:var(--text3);font-family:var(--m);}
+.cl-archive-actions{display:flex;gap:5px;flex-shrink:0;}
+.cl-archive-body{display:none;margin-top:10px;}
+.cl-archive-body.open{display:block;}
+.cl-archive-text{font-family:var(--m);font-size:12px;color:var(--text2);line-height:1.7;white-space:pre-wrap;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin:0;}
 
 /* Ticket badge */
 .cl-ticket{font-family:var(--m);font-size:10px;background:var(--bg4);border:1px solid var(--border2);color:var(--text3);padding:1px 5px;border-radius:3px;flex-shrink:0;}
@@ -1219,17 +1274,16 @@ body.dark .nerc-study-container{
 
 /* ── ROC STUDY GUIDE ──────────────────────────────────────────────────────── */
 /* ── ROC TOPIC GRID ──────────────────────────────────────────────────────── */
-.roc-topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;}
-@media(max-width:700px){.roc-topic-grid{grid-template-columns:repeat(2,1fr);}}
-.roc-topic-card{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:12px 14px;background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-family:var(--f);text-align:left;transition:all .16s;box-shadow:var(--shs);}
-.roc-topic-card:hover{border-color:var(--border2);background:var(--bg3);transform:translateY(-1px);box-shadow:var(--sh);}
-.roc-topic-card:active{transform:translateY(0);}
-.roc-topic-card.active{border-color:var(--blue);background:var(--bbg);box-shadow:0 0 0 3px var(--bbg);}
-.roc-topic-icon{font-size:18px;line-height:1;}
-.roc-topic-name{font-size:12.5px;font-weight:600;color:var(--text);line-height:1.2;}
+.roc-topic-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.roc-topic-card{display:flex;flex-direction:row;align-items:center;gap:6px;padding:5px 11px;background:var(--bg2);border:1.5px solid var(--border);border-radius:20px;cursor:pointer;font-family:var(--f);text-align:left;transition:all .16s;box-shadow:var(--shs);}
+.roc-topic-card:hover{border-color:var(--border2);background:var(--bg3);}
+.roc-topic-card:active{transform:translateY(1px);}
+.roc-topic-card.active{border-color:var(--blue);background:var(--bbg);}
+.roc-topic-icon{font-size:13px;line-height:1;}
+.roc-topic-name{font-size:12px;font-weight:600;color:var(--text);line-height:1;}
 .roc-topic-card.active .roc-topic-name{color:var(--blue);}
-.roc-topic-count{font-family:var(--m);font-size:10px;color:var(--text3);margin-top:1px;}
-.roc-topic-card.active .roc-topic-count{color:var(--blue);opacity:.7;}
+.roc-topic-count{font-family:var(--m);font-size:10px;color:var(--text3);background:var(--bg4);padding:1px 5px;border-radius:8px;}
+.roc-topic-card.active .roc-topic-count{color:var(--blue);background:var(--bbg);border:1px solid var(--blue);opacity:.8;}
 .roc-wrap{padding:4px 0 60px;}
 .roc-topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--shs);}
 .roc-title{font-size:19px;font-weight:600;color:var(--text);letter-spacing:-.01em;flex:1;display:flex;flex-direction:column;gap:2px;}
@@ -1838,7 +1892,7 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 
 <!-- MODALS -->
 <div class="overlay hidden" id="modal-sw-tpl">
-  <div class="modal" style="width:520px;max-height:85vh;">
+  <div class="modal" style="width:560px;max-height:90vh;overflow-y:auto;">
     <h3 id="sw-tpl-modal-title">New Template</h3>
     <input type="hidden" id="sw-tpl-edit-id">
     <input type="hidden" id="sw-tpl-site">
@@ -1846,16 +1900,28 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
     <input type="hidden" id="sw-tpl-cls" value="de">
     <input type="hidden" id="sw-tpl-numlbl" value="Number">
     <input type="hidden" id="sw-tpl-body">
+    <input type="hidden" id="wzd-body" value="">
 
-    <!-- Wizard Progress -->
-    <div class="wizard-progress">
-      <span class="wizard-dot active" id="wzd-dot-1"></span>
-      <span class="wizard-dot" id="wzd-dot-2"></span>
-      <span class="wizard-dot" id="wzd-dot-3"></span>
+    <!-- Step Bar -->
+    <div class="wizard-step-bar">
+      <div class="wizard-step-bar-item active" id="wzd-bar-1">
+        <span class="wizard-step-bar-num">1</span>
+        <span class="wizard-step-bar-lbl">Type</span>
+      </div>
+      <span class="wizard-step-bar-sep">→</span>
+      <div class="wizard-step-bar-item" id="wzd-bar-2">
+        <span class="wizard-step-bar-num">2</span>
+        <span class="wizard-step-bar-lbl">Details</span>
+      </div>
+      <span class="wizard-step-bar-sep">→</span>
+      <div class="wizard-step-bar-item" id="wzd-bar-3">
+        <span class="wizard-step-bar-num">3</span>
+        <span class="wizard-step-bar-lbl">Build</span>
+      </div>
     </div>
 
-    <!-- Quick Fill Chips (always visible) -->
-    <div class="quick-fill-wrap">
+    <!-- Quick Fill Chips (hidden on step 3) -->
+    <div class="quick-fill-wrap" id="wzd-chips-wrap">
       <div class="quick-fill-title">Quick Start — Click to auto-fill</div>
       <div class="chip-grid" id="quick-fill-chips">
         <button class="chip-btn preset-de" onclick="swQuickFill('de-energize')">⚡ De-energize Remotely</button>
@@ -1910,7 +1976,7 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
     <!-- Step 2: Enter Details -->
     <div class="wizard-step" id="wzd-step-2">
       <div class="wizard-step-title">Enter the details</div>
-      <div class="wizard-step-sub">Who called and what unit or equipment is involved?</div>
+      <div class="wizard-step-sub">What site and action is this template for?</div>
       <div class="wizard-field">
         <label>Site / System name <span style="font-weight:400;color:var(--text3);">(e.g., CNDR1, COSO, Bypass)</span></label>
         <input id="wzd-site" placeholder="Enter site or system name" oninput="swWizardUpdate()">
@@ -1920,27 +1986,39 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
         <input id="wzd-action" placeholder="Enter the action name" oninput="swWizardUpdate()">
       </div>
       <div class="wizard-field">
-        <label>What should the number field be called? <span style="font-weight:400;color:var(--text3);">(e.g., Feeder #, MVT #, Unit ID)</span></label>
+        <label>Number field label <span style="font-weight:400;color:var(--text3);">(e.g., Feeder #, MVT #, Unit ID)</span></label>
         <input id="wzd-numlbl" placeholder="Number" value="Number" oninput="swWizardUpdate()">
+      </div>
+      <!-- Live preview -->
+      <div class="wzd-live-preview" id="wzd-live-preview" style="display:none;">
+        <div class="wzd-live-preview-lbl">Log header preview</div>
+        <div class="wzd-live-preview-body" id="wzd-live-preview-body"></div>
       </div>
     </div>
 
-    <!-- Step 3: Review & Customize -->
+    <!-- Step 3: Build Steps -->
     <div class="wizard-step" id="wzd-step-3">
-      <div class="wizard-step-title">Review and customize</div>
-      <div class="wizard-step-sub">Preview your template. Name it and edit if needed.</div>
+      <div class="wizard-step-title">Build the log steps</div>
+      <div class="wizard-step-sub">Name your template, then add the steps operators will follow.</div>
       <div class="wizard-field">
-        <label>Template Name <span style="font-weight:400;color:var(--text3);">(how it appears in the list)</span></label>
-        <input id="wzd-display-name" placeholder="e.g., De-energize Feeder 52F16" oninput="swWizardUpdateDisplayName()">
+        <label>Template name <span style="font-weight:400;color:var(--text3);">(how it appears in the list)</span></label>
+        <input id="wzd-display-name" placeholder="e.g., De-energize Feeder 52F" oninput="swWizardUpdateDisplayName()">
       </div>
-      <div class="wizard-preview">
-        <div class="wizard-preview-title">Template Preview</div>
-        <div class="wizard-preview-body" id="wzd-preview"></div>
+      <!-- Header preview -->
+      <div class="step-header-preview" id="wzd-header-preview">
+        <div class="wzd-live-preview-lbl">Log header (from your details)</div>
+        <div class="wzd-live-preview-body" id="wzd-header-preview-body"></div>
       </div>
-      <div class="wizard-field">
-        <label>Template Body <span style="font-weight:400;color:var(--text3);">Use <code style="background:var(--bg4);padding:1px 4px;border-radius:3px;">{{TECH}}</code> and <code style="background:var(--bg4);padding:1px 4px;border-radius:3px;">{{NUMBER}}</code> for auto-fill fields</span></label>
-        <textarea id="wzd-body" style="min-height:100px;width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--m);font-size:12px;line-height:1.7;resize:vertical;" oninput="swWizardManualEdit()"></textarea>
+      <!-- Token insert buttons -->
+      <div class="step-token-row">
+        <span class="step-token-lbl">Insert:</span>
+        <button type="button" class="step-token-btn" onclick="swInsertToken('{{TECH}}')">+ Tech Name</button>
+        <button type="button" class="step-token-btn" onclick="swInsertToken('{{NUMBER}}')">+ Number</button>
+        <button type="button" class="step-token-btn" onclick="swInsertToken('{{TIME}}')">+ Time</button>
       </div>
+      <!-- Step builder -->
+      <div class="step-builder" id="wzd-steps-builder"></div>
+      <button type="button" class="step-add-btn" onclick="swAddStep()">+ Add step</button>
     </div>
 
     <!-- Wizard Navigation -->
@@ -1950,6 +2028,18 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
         <button class="btn-c" onclick="closeModal('modal-sw-tpl')">Cancel</button>
         <button class="btn-p" id="wzd-next-btn" onclick="swWizardNext()">Next →</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="modal-cl-archive">
+  <div class="modal" style="width:580px;max-height:85vh;display:flex;flex-direction:column;">
+    <h3>🕓 Handoff History</h3>
+    <div class="cl-archive-note">Saved locally in this browser only — clearing cache removes this history. Download important handoffs to keep them safe.</div>
+    <div id="cl-archive-list" style="flex:1;overflow-y:auto;margin:0 -20px;padding:0 20px;"></div>
+    <div class="m-actions" style="margin-top:12px;">
+      <button class="tbtn" style="font-size:11px;color:var(--red);border-color:var(--red);" onclick="clClearArchive()">Clear all history</button>
+      <button class="btn-c" onclick="closeModal('modal-cl-archive')">Close</button>
     </div>
   </div>
 </div>
@@ -2657,16 +2747,38 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 <!-- HANDOFF ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-chron">
 
-  <div class="cl-pg-header" style="margin-bottom:14px;">
-    <div class="cl-pg-title">Handoff</div>
-    <div class="cl-pg-sub">Capture notes in the scratchpad, promote what matters to the structured feed</div>
+  <div class="page-header">
+    <div>
+      <div class="page-title">Handoff</div>
+      <div class="page-subtitle">Capture notes, promote what matters, copy the draft</div>
+    </div>
+    <div class="page-header-actions">
+      <button class="tbtn" style="font-size:11px;color:var(--text3);border-color:var(--border);" onclick="clOpenArchive()">🕓 History</button>
+      <button class="tbtn" style="color:var(--amber);border-color:var(--amber);" onclick="clStartFresh()">↺ Start fresh</button>
+    </div>
+  </div>
+
+  <!-- Shift context strip -->
+  <div class="cl-context-strip">
+    <div class="cl-context-field">
+      <label class="cl-context-lbl">Date</label>
+      <input type="date" id="cl-date" class="cl-context-inp" onchange="clSyncContext()">
+    </div>
+    <div class="cl-context-field">
+      <label class="cl-context-lbl">Shift</label>
+      <select id="cl-shift" class="cl-context-inp" onchange="clSyncContext()">
+        <option value="">Select</option>
+        <option>Day</option>
+        <option>Night</option>
+      </select>
+    </div>
+    <div class="cl-context-hint">Used in the handoff header when copying</div>
   </div>
 
   <!-- ── NOTEPAD ───────────────────────────────────────────────────────── -->
   <div class="cl-stack-section cl-notepad-section">
     <div class="cl-header-row">
       <span class="cl-section-lbl">Notepad</span>
-      <button class="tbtn" style="font-size:11px;" onclick="spClear()">Clear</button>
     </div>
     <div class="sp-input-row">
       <input id="sp-text" placeholder="What's happening? Type a note and press Enter..." onkeydown="if(event.key==='Enter')spAdd()">
@@ -2682,10 +2794,6 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
         <span class="cl-section-lbl">Shift Feed</span>
         <div class="cl-progress" id="cl-progress"></div>
       </div>
-      <div style="display:flex;gap:6px;">
-        <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">Copy passdown</button>
-        <button class="tbtn" style="font-size:11px;" onclick="clClear()">Clear shift</button>
-      </div>
     </div>
     <div class="cl-feed" id="cl-feed">
       <div class="empty-state compact">
@@ -2699,15 +2807,20 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
   <!-- ── HANDOFF DRAFT ─────────────────────────────────────────────────── -->
   <div class="cl-stack-section">
     <div class="cl-handoff-header">
-      <div>
-        <span class="cl-section-lbl">Handoff Draft</span>
-        <span class="cl-handoff-hint">Auto-built from your feed — ready to copy or screenshot</span>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <button class="cl-copy-handoff-btn" onclick="clCopyHandoff()">Copy Handoff</button>
-      </div>
+      <span class="cl-section-lbl">Handoff Draft</span>
+      <span class="cl-handoff-hint">Auto-built from your feed</span>
     </div>
     <div id="cl-preview" class="cl-handoff-preview"></div>
+  </div>
+
+  <!-- ── COPY HANDOFF ──────────────────────────────────────────────────── -->
+  <div class="cl-copy-tile" onclick="clCopyHandoff()">
+    <span class="cl-copy-tile-icon">📋</span>
+    <div>
+      <div class="cl-copy-tile-title">Copy Handoff</div>
+      <div class="cl-copy-tile-sub">Copies the structured draft to your clipboard</div>
+    </div>
+    <span class="cl-copy-tile-arrow">→</span>
   </div>
 
 </div>
@@ -3082,7 +3195,16 @@ function switchView(v, el) {
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
   if(v==='map') mapActivate();
   if(v==='timezones') initTimeZones();
-  if(v==='chron') clRender();
+  if(v==='chron') {
+    // Pre-populate date/shift from Asset Scan if not already set
+    const clDate = document.getElementById('cl-date');
+    const clShift = document.getElementById('cl-shift');
+    const asDate = document.getElementById('as-date');
+    const asShift = document.getElementById('as-shift');
+    if (clDate && asDate && !clDate.value && asDate.value) clDate.value = asDate.value;
+    if (clShift && asShift && !clShift.value && asShift.value) clShift.value = asShift.value;
+    clRender();
+  }
   if(v==='intel') wxFleetInit();
   if(v==='roc') { rocLoad(); rocRender(); }
   try { localStorage.setItem('rnwbl_active_tab', v); } catch(e) {}
@@ -4199,16 +4321,8 @@ function clCopyHandoff() {
   if (!clEntries.length) { showToast('No entries to copy'); return; }
 
   // Date/shift header
-  const dateRaw = (document.getElementById('as-date')?.value) || '';
-  const shift   = (document.getElementById('as-shift')?.value) || '';
-  let dateLabel = '';
-  if (dateRaw) {
-    const [y,m,d] = dateRaw.split('-');
-    dateLabel = `${parseInt(m)}/${parseInt(d)}`;
-  } else {
-    const n = new Date();
-    dateLabel = `${n.getMonth()+1}/${n.getDate()}`;
-  }
+  const dateLabel = clGetDateLabel();
+  const shift = clGetShiftLabel();
   const shiftLabel = shift ? ` ${shift} Shift` : '';
   const lines = [`${dateLabel}${shiftLabel}`, ''];
 
@@ -4365,6 +4479,155 @@ function spAdd() {
   try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
   document.getElementById('sp-text').value = '';
   renderScratchpad();
+}
+
+// ── Handoff archive ──────────────────────────────────────────────────────────
+const CL_ARCHIVE_KEY = 'rnwbl_handoff_archive_v1';
+const CL_ARCHIVE_MAX = 30;
+
+function clGetArchive() {
+  try { return JSON.parse(localStorage.getItem(CL_ARCHIVE_KEY) || '[]'); } catch(e) { return []; }
+}
+
+function clBuildHandoffText() {
+  const dateLabel = clGetDateLabel();
+  const shift = clGetShiftLabel();
+  const shiftLabel = shift ? ` ${shift} Shift` : '';
+  const header = `RNWBL Ops Hub — Handoff\n${dateLabel}${shiftLabel}\n${'─'.repeat(32)}`;
+  const lines = [header, ''];
+  const sectionLabel = { handoff: 'Handoff', upcoming: 'Upcoming' };
+  CL_CAT_ORDER.forEach(cat => {
+    const entries = clEntries.filter(e => e.cat === cat);
+    if (!entries.length) return;
+    lines.push(sectionLabel[cat] || cat);
+    entries.forEach(e => {
+      const siteTag = e.site ? `${e.site} ` : '';
+      const ticketTag = e.ticket ? ` (#${e.ticket})` : '';
+      lines.push(`• ${siteTag}${e.text}${ticketTag}`);
+    });
+    lines.push('');
+  });
+  return lines.join('\n').trimEnd();
+}
+
+function clDownloadHandoff() {
+  const text = clBuildHandoffText();
+  if (!text.trim()) return;
+  const dateLabel = clGetDateLabel().replace('/', '-');
+  const shift = (clGetShiftLabel() || 'Shift').replace(/\s/g, '');
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = Object.assign(document.createElement('a'), { href: url, download: `Handoff_${dateLabel}_${shift}.txt` });
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function clSaveToArchive() {
+  if (!clEntries.length) return;
+  const text = clBuildHandoffText();
+  const archive = clGetArchive();
+  const now = new Date();
+  archive.unshift({
+    id: Date.now(),
+    date: clGetDateLabel(),
+    shift: clGetShiftLabel(),
+    savedAt: now.toLocaleString('en-US', { month:'2-digit', day:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', hour12:true }),
+    text
+  });
+  if (archive.length > CL_ARCHIVE_MAX) archive.splice(CL_ARCHIVE_MAX);
+  try { localStorage.setItem(CL_ARCHIVE_KEY, JSON.stringify(archive)); } catch(e) {}
+}
+
+function clDownloadArchiveEntry(id) {
+  const entry = clGetArchive().find(e => e.id === id); if (!entry) return;
+  const blob = new Blob([entry.text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const dateLabel = entry.date?.replace('/', '-') || 'handoff';
+  const shift = (entry.shift || 'Shift').replace(/\s/g, '');
+  const a = Object.assign(document.createElement('a'), { href: url, download: `Handoff_${dateLabel}_${shift}.txt` });
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function clDeleteArchiveEntry(id) {
+  const archive = clGetArchive().filter(e => e.id !== id);
+  try { localStorage.setItem(CL_ARCHIVE_KEY, JSON.stringify(archive)); } catch(e) {}
+  clRenderArchive();
+}
+
+function clClearArchive() {
+  if (!confirm('Delete all saved handoffs? This cannot be undone.')) return;
+  try { localStorage.removeItem(CL_ARCHIVE_KEY); } catch(e) {}
+  clRenderArchive();
+  showToast('History cleared');
+}
+
+function clOpenArchive() {
+  clRenderArchive();
+  openModal('modal-cl-archive');
+}
+
+function clRenderArchive() {
+  const el = document.getElementById('cl-archive-list'); if (!el) return;
+  const archive = clGetArchive();
+  if (!archive.length) {
+    el.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">📂</div><div class="empty-state-title">No saved handoffs yet</div><div class="empty-state-sub">Handoffs are saved automatically when you click ↺ Start fresh.</div></div>';
+    return;
+  }
+  el.innerHTML = archive.map(entry => `
+    <div class="cl-archive-entry">
+      <div class="cl-archive-hdr" onclick="this.nextElementSibling.classList.toggle('open')">
+        <div class="cl-archive-meta">
+          <span class="cl-archive-date">${esc(entry.date)}${entry.shift ? ' · ' + esc(entry.shift) + ' Shift' : ''}</span>
+          <span class="cl-archive-saved">Saved ${esc(entry.savedAt)}</span>
+        </div>
+        <div class="cl-archive-actions">
+          <button class="tbtn" style="font-size:11px;padding:3px 9px;" onclick="event.stopPropagation();clDownloadArchiveEntry(${entry.id})" title="Download as .txt">↓ .txt</button>
+          <button class="tbtn" style="font-size:11px;padding:3px 7px;color:var(--red);border-color:var(--red);" onclick="event.stopPropagation();clDeleteArchiveEntry(${entry.id})" title="Delete">✕</button>
+        </div>
+      </div>
+      <div class="cl-archive-body">
+        <pre class="cl-archive-text">${esc(entry.text)}</pre>
+      </div>
+    </div>`).join('');
+}
+
+function clStartFresh() {
+  if (!clEntries.length && !scratchpad.length) { showToast('Nothing to clear'); return; }
+  const hasContent = clEntries.length > 0;
+  const msg = hasContent
+    ? 'Save and clear this shift?\n\nA .txt file will download automatically and a copy will be saved to History.'
+    : 'Clear the notepad?';
+  if (!confirm(msg)) return;
+  if (hasContent) {
+    clDownloadHandoff();
+    clSaveToArchive();
+  }
+  spClear();
+  clClear();
+  showToast(hasContent ? '✓ Handoff saved & downloaded — ready for next shift' : 'Notepad cleared');
+}
+
+function clSyncContext() {
+  // Mirror cl-date/cl-shift back to as-date/as-shift so Asset Scan stays in sync
+  const clDate = document.getElementById('cl-date');
+  const clShift = document.getElementById('cl-shift');
+  const asDate = document.getElementById('as-date');
+  const asShift = document.getElementById('as-shift');
+  if (clDate && asDate && clDate.value) asDate.value = clDate.value;
+  if (clShift && asShift && clShift.value) asShift.value = clShift.value;
+  clRenderPreview();
+}
+
+function clGetDateLabel() {
+  const raw = document.getElementById('cl-date')?.value || document.getElementById('as-date')?.value || '';
+  if (!raw) { const n = new Date(); return `${n.getMonth()+1}/${n.getDate()}`; }
+  const [,m,d] = raw.split('-');
+  return `${parseInt(m)}/${parseInt(d)}`;
+}
+
+function clGetShiftLabel() {
+  return document.getElementById('cl-shift')?.value || document.getElementById('as-shift')?.value || '';
 }
 
 function spDelete(index) {
@@ -4526,16 +4789,8 @@ function clRenderPreview() {
   }
 
   // Date/shift header
-  const dateRaw = document.getElementById('as-date')?.value || '';
-  const shift   = document.getElementById('as-shift')?.value || '';
-  let dateLabel = '';
-  if (dateRaw) {
-    const [y,m,d] = dateRaw.split('-');
-    dateLabel = `${parseInt(m)}/${parseInt(d)}`;
-  } else {
-    const n = new Date();
-    dateLabel = `${n.getMonth()+1}/${n.getDate()}`;
-  }
+  const dateLabel = clGetDateLabel();
+  const shift = clGetShiftLabel();
   const shiftLabel = shift ? ` ${shift} Shift` : ' Shift';
   let html = `<div class="cl-hd-date-header">${dateLabel}${shiftLabel}</div>`;
 
@@ -6328,6 +6583,8 @@ function swRenderHist() {
 let swWizardStep = 1;
 let swWizardType = '';
 let swManualEdit = false;
+let swSteps = [];         // bullet steps for the step builder
+let swFocusedStepIdx = 0; // tracks which step input was last focused for token insertion
 
 const SW_PRESETS = {
   'de-energize': { site: 'Feeder Breaker', action: 'De-Energize Remotely', cls: 'de', numLbl: 'Breaker #', body: 'Call received from field tech {{TECH}} requesting de-energization of Feeder Breaker {{NUMBER}}:\n– Associated Megapacks disabled remotely\n– MVT AC Level Breakers opened remotely\n– Feeder Breaker {{NUMBER}} opened remotely' },
@@ -6340,6 +6597,140 @@ const SW_PRESETS = {
   'bypass': { site: 'Bypass', action: 'Switch Operation', cls: 'other', numLbl: 'Switch #', body: 'Bypass switch {{NUMBER}} operation requested by {{TECH}}:\n– Reason: _____________\n– Verified safe conditions\n– Operation completed at {{TIME}}' }
 };
 
+// ── Step builder helpers ──────────────────────────────────────────────────────
+
+function swParseBodyToSteps(body) {
+  const lines = (body || '').split('\n');
+  const steps = [];
+  lines.forEach(l => {
+    const trimmed = l.trim();
+    if (trimmed.startsWith('–') || trimmed.startsWith('-')) {
+      steps.push(trimmed.replace(/^[–\-]\s*/, ''));
+    }
+  });
+  return steps.length ? steps : [''];
+}
+
+function swRenderStepBuilder() {
+  const container = document.getElementById('wzd-steps-builder');
+  if (!container) return;
+  if (!swSteps.length) swSteps = [''];
+  container.innerHTML = swSteps.map((step, i) => `
+    <div class="step-row" data-idx="${i}">
+      <span class="step-row-dash">–</span>
+      <input class="step-row-input" id="step-inp-${i}"
+        value="${esc(step)}"
+        placeholder="Describe this step..."
+        onfocus="swFocusedStepIdx=${i}"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();swAddStep();}"
+        oninput="swSteps[${i}]=this.value;">
+      <div class="step-row-actions">
+        ${i > 0 ? `<button type="button" class="step-row-btn" onclick="swMoveStep(${i},-1)" title="Move up">↑</button>` : '<span class="step-row-btn-ph"></span>'}
+        ${i < swSteps.length-1 ? `<button type="button" class="step-row-btn" onclick="swMoveStep(${i},1)" title="Move down">↓</button>` : '<span class="step-row-btn-ph"></span>'}
+        <button type="button" class="step-row-btn step-row-del" onclick="swDeleteStep(${i})" title="Remove step">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function swAddStep() {
+  swSyncSteps();
+  swSteps.push('');
+  swRenderStepBuilder();
+  const idx = swSteps.length - 1;
+  swFocusedStepIdx = idx;
+  setTimeout(() => document.getElementById(`step-inp-${idx}`)?.focus(), 40);
+}
+
+function swDeleteStep(i) {
+  swSyncSteps();
+  if (swSteps.length <= 1) { swSteps[0] = ''; swRenderStepBuilder(); return; }
+  swSteps.splice(i, 1);
+  swFocusedStepIdx = Math.min(i, swSteps.length - 1);
+  swRenderStepBuilder();
+}
+
+function swMoveStep(i, dir) {
+  swSyncSteps();
+  const j = i + dir;
+  if (j < 0 || j >= swSteps.length) return;
+  [swSteps[i], swSteps[j]] = [swSteps[j], swSteps[i]];
+  swFocusedStepIdx = j;
+  swRenderStepBuilder();
+  setTimeout(() => document.getElementById(`step-inp-${j}`)?.focus(), 40);
+}
+
+function swSyncSteps() {
+  swSteps.forEach((_, i) => {
+    const inp = document.getElementById(`step-inp-${i}`);
+    if (inp) swSteps[i] = inp.value;
+  });
+}
+
+function swInsertToken(token) {
+  swSyncSteps();
+  const idx = (swFocusedStepIdx >= 0 && swFocusedStepIdx < swSteps.length) ? swFocusedStepIdx : swSteps.length - 1;
+  const inp = document.getElementById(`step-inp-${idx}`);
+  if (inp) {
+    const start = inp.selectionStart || inp.value.length;
+    const end = inp.selectionEnd || inp.value.length;
+    inp.value = inp.value.slice(0, start) + token + inp.value.slice(end);
+    swSteps[idx] = inp.value;
+    inp.setSelectionRange(start + token.length, start + token.length);
+    inp.focus();
+    swFocusedStepIdx = idx;
+  }
+}
+
+function swGetHeaderLine() {
+  const site   = document.getElementById('wzd-site')?.value.trim()   || document.getElementById('sw-tpl-site')?.value.trim()   || 'Site';
+  const action = document.getElementById('wzd-action')?.value.trim() || document.getElementById('sw-tpl-action')?.value.trim() || 'Action';
+  const type = swWizardType;
+  if (type === 'de' || type === 're') {
+    return `Call received from field tech {{TECH}} requesting ${action.toLowerCase()} of ${site} {{NUMBER}}`;
+  } else if (type === 'permit') {
+    return `${action} for ${site} {{NUMBER}} requested by {{TECH}}`;
+  } else if (type === 'reset') {
+    return `${action} alarm received on ${site} {{NUMBER}}. Contacted field tech {{TECH}}`;
+  } else {
+    return `${action} for ${site} {{NUMBER}}`;
+  }
+}
+
+function swBuildBodyFromSteps() {
+  swSyncSteps();
+  const header = swGetHeaderLine();
+  const steps = swSteps.filter(s => s.trim()).map(s => `– ${s}`);
+  return header + (steps.length ? ':\n' + steps.join('\n') : '');
+}
+
+function swUpdateLivePreview() {
+  const preview = document.getElementById('wzd-live-preview');
+  const body = document.getElementById('wzd-live-preview-body');
+  if (!preview || !body) return;
+  const site = document.getElementById('wzd-site')?.value.trim();
+  const action = document.getElementById('wzd-action')?.value.trim();
+  if (!site && !action) { preview.style.display = 'none'; return; }
+  preview.style.display = '';
+  const header = swGetHeaderLine();
+  body.innerHTML = header
+    .replace(/\{\{TECH\}\}/g, '<span class="placeholder">Tech Name</span>')
+    .replace(/\{\{NUMBER\}\}/g, '<span class="placeholder">Number</span>')
+    + ':<br><span style="color:var(--text3);font-size:11px;font-style:italic;">– Steps defined on next screen</span>';
+}
+
+function swUpdateHeaderPreview() {
+  const body = document.getElementById('wzd-header-preview-body');
+  if (!body) return;
+  const header = swGetHeaderLine();
+  body.innerHTML = header
+    .replace(/\{\{TECH\}\}/g, '<span class="placeholder">Tech Name</span>')
+    .replace(/\{\{NUMBER\}\}/g, '<span class="placeholder">Number</span>')
+    + ':';
+}
+
+// ── Wizard lifecycle ──────────────────────────────────────────────────────────
+
 function swOpenNewTpl() {
   document.getElementById('sw-tpl-modal-title').textContent = 'New Template';
   document.getElementById('sw-tpl-edit-id').value = '';
@@ -6351,7 +6742,6 @@ function swOpenNewTpl() {
 function swRenderQuickFillChips() {
   const chipGrid = document.getElementById('quick-fill-chips');
   if (!chipGrid) return;
-  // Get recent custom templates (last 4)
   const recent = swCustomTpls.slice(-4).reverse();
   let html = `
     <button class="chip-btn preset-de" onclick="swQuickFill('de-energize')">⚡ De-energize Remotely</button>
@@ -6380,7 +6770,6 @@ function swQuickFillRecent(id) {
   document.getElementById('wzd-site').value = tpl.site;
   document.getElementById('wzd-action').value = tpl.action;
   document.getElementById('wzd-numlbl').value = tpl.numLbl || 'Number';
-  document.getElementById('wzd-body').value = tpl.body;
   document.getElementById('wzd-display-name').value = tpl.displayName || `${tpl.action} ${tpl.site}`;
   document.getElementById('sw-tpl-cls').value = tpl.cls;
   document.getElementById('sw-tpl-site').value = tpl.site;
@@ -6389,7 +6778,7 @@ function swQuickFillRecent(id) {
   document.getElementById('sw-tpl-body').value = tpl.body;
   swWizardType = tpl.cls;
   swManualEdit = true;
-  swUpdatePreview();
+  swSteps = swParseBodyToSteps(tpl.body);
   swGoToStep(3);
   showToast('Loaded recent template — review and save');
 }
@@ -6405,17 +6794,14 @@ function swOpenEditTpl(id) {
   document.getElementById('sw-tpl-body').value = tpl.body;
   swResetWizard();
   swRenderQuickFillChips();
-  // Pre-fill wizard fields for editing
   document.getElementById('wzd-site').value = tpl.site;
   document.getElementById('wzd-action').value = tpl.action;
   document.getElementById('wzd-numlbl').value = tpl.numLbl || 'Number';
-  document.getElementById('wzd-body').value = tpl.body;
   document.getElementById('wzd-display-name').value = tpl.displayName || `${tpl.action} ${tpl.site}`;
   swWizardType = tpl.cls;
   swManualEdit = true;
-  // Go to step 3 for editing
+  swSteps = swParseBodyToSteps(tpl.body);
   swGoToStep(3);
-  swUpdatePreview();
   openModal('modal-sw-tpl');
 }
 
@@ -6423,33 +6809,57 @@ function swResetWizard() {
   swWizardStep = 1;
   swWizardType = '';
   swManualEdit = false;
+  swSteps = [''];
+  swFocusedStepIdx = 0;
   document.getElementById('wzd-site').value = '';
   document.getElementById('wzd-action').value = '';
   document.getElementById('wzd-numlbl').value = 'Number';
   document.getElementById('wzd-body').value = '';
   document.getElementById('wzd-display-name').value = '';
-  document.getElementById('wzd-preview').innerHTML = '';
+  const lp = document.getElementById('wzd-live-preview'); if (lp) lp.style.display = 'none';
   document.querySelectorAll('.wizard-option').forEach(el => el.classList.remove('selected'));
   swUpdateWizardUI();
 }
 
 function swGoToStep(step) {
   swWizardStep = step;
-  document.querySelectorAll('.wizard-step').forEach((el, i) => {
-    el.classList.toggle('active', i + 1 === step);
-  });
+  document.querySelectorAll('.wizard-step').forEach((el, i) => el.classList.toggle('active', i + 1 === step));
+  if (step === 2) {
+    swUpdateLivePreview();
+  }
+  if (step === 3) {
+    // Populate steps from body if coming from quick-fill/edit; otherwise generate defaults
+    if (!swManualEdit || !swSteps.filter(s=>s.trim()).length) swGenerateSteps();
+    const displayName = document.getElementById('wzd-display-name');
+    if (displayName && !displayName.value.trim()) {
+      const site = document.getElementById('wzd-site').value.trim();
+      const action = document.getElementById('wzd-action').value.trim();
+      if (site || action) displayName.value = `${action} ${site}`.trim();
+    }
+    swUpdateHeaderPreview();
+    swRenderStepBuilder();
+    // Focus first empty step
+    setTimeout(() => {
+      const first = swSteps.findIndex(s => !s.trim());
+      document.getElementById(`step-inp-${first >= 0 ? first : 0}`)?.focus();
+    }, 60);
+  }
   swUpdateWizardUI();
 }
 
 function swUpdateWizardUI() {
-  // Update progress dots
+  // Update labeled step bar
   for (let i = 1; i <= 3; i++) {
-    const dot = document.getElementById('wzd-dot-' + i);
-    dot.classList.remove('active', 'completed');
-    if (i < swWizardStep) dot.classList.add('completed');
-    else if (i === swWizardStep) dot.classList.add('active');
+    const bar = document.getElementById('wzd-bar-' + i);
+    if (!bar) continue;
+    bar.classList.remove('active', 'completed');
+    if (i < swWizardStep) bar.classList.add('completed');
+    else if (i === swWizardStep) bar.classList.add('active');
   }
-  // Update button states
+  // Hide quick-fill chips on step 3
+  const chipsWrap = document.getElementById('wzd-chips-wrap');
+  if (chipsWrap) chipsWrap.style.display = swWizardStep === 3 ? 'none' : '';
+  // Button states
   document.getElementById('wzd-back-btn').style.visibility = swWizardStep === 1 ? 'hidden' : 'visible';
   document.getElementById('wzd-next-btn').textContent = swWizardStep === 3 ? 'Save template' : 'Next →';
 }
@@ -6462,13 +6872,6 @@ function swWizardNext() {
     const site = document.getElementById('wzd-site').value.trim();
     const action = document.getElementById('wzd-action').value.trim();
     if (!site || !action) { showToast('Site and action are required'); return; }
-    if (!swManualEdit) swGenerateBody();
-    // Auto-populate display name if empty
-    const displayNameInput = document.getElementById('wzd-display-name');
-    if (!displayNameInput.value.trim()) {
-      displayNameInput.value = `${action} ${site}`;
-    }
-    swUpdatePreview();
     swGoToStep(3);
   } else {
     swSaveTpl();
@@ -6483,6 +6886,12 @@ function swSelectType(type) {
   swWizardType = type;
   const typeMap = { 'de': 'de', 're': 're', 'permit': 'other', 'reset': 'de', 'test': 'other', 'other': 'other' };
   document.getElementById('sw-tpl-cls').value = typeMap[type] || 'other';
+  // Context-aware number label suggestion (only if user hasn't customized it)
+  const numLblMap = { 'de': 'Feeder #', 're': 'Feeder #', 'permit': 'MVT #', 'reset': 'Unit ID', 'test': 'Unit #', 'other': 'Number' };
+  const numLblEl = document.getElementById('wzd-numlbl');
+  if (numLblEl && (!numLblEl.value || numLblEl.value === 'Number')) {
+    numLblEl.value = numLblMap[type] || 'Number';
+  }
   document.querySelectorAll('.wizard-option').forEach(el => el.classList.remove('selected'));
   event.currentTarget.classList.add('selected');
 }
@@ -6493,16 +6902,14 @@ function swQuickFill(presetKey) {
   document.getElementById('wzd-site').value = preset.site;
   document.getElementById('wzd-action').value = preset.action;
   document.getElementById('wzd-numlbl').value = preset.numLbl;
-  document.getElementById('wzd-body').value = preset.body;
   document.getElementById('sw-tpl-cls').value = preset.cls;
-  swWizardType = preset.cls === 'de' ? 'de' : preset.cls === 're' ? 're' : 'permit';
-  swManualEdit = true;
-  // Pre-fill hidden fields
   document.getElementById('sw-tpl-site').value = preset.site;
   document.getElementById('sw-tpl-action').value = preset.action;
   document.getElementById('sw-tpl-numlbl').value = preset.numLbl;
   document.getElementById('sw-tpl-body').value = preset.body;
-  swUpdatePreview();
+  swWizardType = preset.cls === 'de' ? 'de' : preset.cls === 're' ? 're' : 'permit';
+  swManualEdit = true;
+  swSteps = swParseBodyToSteps(preset.body);
   swGoToStep(3);
   showToast('Quick-fill applied — review and save');
 }
@@ -6514,58 +6921,50 @@ function swWizardUpdate() {
   document.getElementById('sw-tpl-site').value = site;
   document.getElementById('sw-tpl-action').value = action;
   document.getElementById('sw-tpl-numlbl').value = numLbl;
+  swUpdateLivePreview();
 }
 
 function swWizardUpdateDisplayName() {
-  // Just stores in the field for swSaveTpl to read
+  // Stored directly in the input, read at save time
 }
 
-function swGenerateBody() {
-  const site = document.getElementById('wzd-site').value.trim();
-  const action = document.getElementById('wzd-action').value.trim();
-  const numLbl = document.getElementById('wzd-numlbl').value.trim() || 'Number';
+function swGenerateSteps() {
   const type = swWizardType;
-  let body = '';
+  const action = document.getElementById('wzd-action')?.value.trim() || 'Action';
   if (type === 'de') {
-    body = `Call received from field tech {{TECH}} requesting ${action.toLowerCase()} of ${site} {{NUMBER}}:\n– Verified with control room\n– Confirmed isolation points\n– ${action} completed at {{TIME}}`;
+    swSteps = ['Verified with control room', 'Confirmed isolation points', `${action} completed at {{TIME}}`];
   } else if (type === 're') {
-    body = `Call received from field tech {{TECH}} requesting ${action.toLowerCase()} of ${site} {{NUMBER}}:\n– Verified clearance requirements\n– Confirmed safe to proceed\n– ${action} completed at {{TIME}}`;
+    swSteps = ['Verified clearance requirements', 'Confirmed safe to proceed', `${action} completed at {{TIME}}`];
   } else if (type === 'permit') {
-    body = `${action} for ${site} {{NUMBER}} requested by {{TECH}}:\n– Purpose: _____________\n– Scope: _____________\n– Approved/Denied at {{TIME}}`;
+    swSteps = ['Purpose: _____________', 'Scope: _____________', 'Approved/Denied at {{TIME}}'];
   } else if (type === 'reset') {
-    body = `${action} alarm received on ${site} {{NUMBER}}:\n– Contacted field tech {{TECH}}\n– Investigated cause: _____________\n– ${action} completed at {{TIME}}`;
+    swSteps = ['Investigated cause: _____________', `${action} completed at {{TIME}}`];
   } else {
-    body = `${action} for ${site} {{NUMBER}}:\n– Requested by field tech {{TECH}}\n– Details: _____________\n– Completed at {{TIME}}`;
+    swSteps = ['Details: _____________', 'Completed at {{TIME}}'];
   }
-  document.getElementById('wzd-body').value = body;
-  document.getElementById('sw-tpl-body').value = body;
-  swManualEdit = false;
 }
+
+// Keep for backward compatibility (called by swQuickFill path above)
+function swGenerateBody() { swGenerateSteps(); }
 
 function swWizardManualEdit() {
   swManualEdit = true;
-  document.getElementById('sw-tpl-body').value = document.getElementById('wzd-body').value;
-  swUpdatePreview();
 }
 
 function swUpdatePreview() {
-  const body = document.getElementById('wzd-body').value;
-  const preview = body
-    .replace(/\{\{TECH\}\}/g, '<span class="placeholder">TECH NAME</span>')
-    .replace(/\{\{NUMBER\}\}/g, '<span class="placeholder">NUMBER</span>')
-    .replace(/\{\{TIME\}\}/g, '<span class="placeholder">TIME</span>');
-  document.getElementById('wzd-preview').innerHTML = preview || '<span style="color:var(--text3);">Template body will appear here...</span>';
+  // Legacy — no-op now, preview handled by step builder
 }
 
 function swSaveTpl() {
-  const site   = document.getElementById('sw-tpl-site').value.trim() || document.getElementById('wzd-site').value.trim();
-  const action = document.getElementById('sw-tpl-action').value.trim() || document.getElementById('wzd-action').value.trim();
-  const cls    = document.getElementById('sw-tpl-cls').value;
-  const numLbl = document.getElementById('sw-tpl-numlbl').value.trim() || document.getElementById('wzd-numlbl').value.trim() || 'Number';
-  const body   = document.getElementById('sw-tpl-body').value.trim() || document.getElementById('wzd-body').value.trim();
+  swSyncSteps();
+  const site      = document.getElementById('wzd-site').value.trim()   || document.getElementById('sw-tpl-site').value.trim();
+  const action    = document.getElementById('wzd-action').value.trim() || document.getElementById('sw-tpl-action').value.trim();
+  const cls       = document.getElementById('sw-tpl-cls').value;
+  const numLbl    = document.getElementById('wzd-numlbl').value.trim() || document.getElementById('sw-tpl-numlbl').value.trim() || 'Number';
+  const body      = swBuildBodyFromSteps();
   const displayName = document.getElementById('wzd-display-name').value.trim() || `${action} ${site}`;
   if (!site || !action) { showToast('Site name and action label required'); return; }
-  if (!body) { showToast('Template body required'); return; }
+  if (!swSteps.filter(s=>s.trim()).length) { showToast('Add at least one step'); return; }
   const editId = document.getElementById('sw-tpl-edit-id').value;
   if (editId) {
     const idx = swCustomTpls.findIndex(t => t.id === editId);
