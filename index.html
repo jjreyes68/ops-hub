@@ -611,7 +611,7 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .cl-input-bar select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;flex-shrink:0;}
 .cl-log-btn{padding:7px 16px;background:var(--green);border:1px solid var(--green);border-radius:6px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--f);white-space:nowrap;transition:all .15s;flex-shrink:0;}
 .cl-log-btn:hover{background:var(--gmid);}
-.cl-feed{display:flex;flex-direction:column;gap:4px;max-width:900px;}
+.cl-feed{display:flex;flex-direction:column;gap:4px;width:100%;}
 .cl-entry{display:flex;gap:8px;align-items:flex-start;background:var(--bg2);border:1px solid var(--border);border-left:3px solid transparent;border-radius:8px;padding:8px 10px;transition:border-color .15s;}
 .cl-entry:hover{border-color:var(--border2);border-left-color:transparent;}
 .cl-entry.starred{border-left-color:var(--amber)!important;}
@@ -653,6 +653,7 @@ body.dark .cl-time{color:var(--text2);}
 /* Handoff draft preview */
 .cl-handoff-preview{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:0;overflow:hidden;box-shadow:var(--shs);}
 .cl-hd-empty{padding:16px;color:var(--text3);font-size:12px;font-style:italic;}
+.cl-hd-date-header{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.01em;padding:10px 14px 8px;border-bottom:2px solid var(--border2);margin-bottom:4px;}
 .cl-hd-section{border-bottom:1px solid var(--border);}
 .cl-hd-section:last-child{border-bottom:none;}
 .cl-hd-section-hdr{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--bg3);border-bottom:1px solid var(--border);}
@@ -669,175 +670,65 @@ body.dark .cl-time{color:var(--text2);}
 .cl-hd-text[contenteditable="true"]{outline:none;border-radius:3px;padding:1px 3px;margin:-1px -3px;cursor:text;}
 
 /* Two-pane layout */
-.cl-two-pane {
-  display: grid;
-  grid-template-columns: 400px 1fr;
-  gap: 20px;
-  align-items: start;
-}
+/* ── HANDOFF STACKED LAYOUT ─────────────────────────────────────────── */
+.cl-stack-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;box-shadow:var(--shs);margin-bottom:12px;}
 
-@media (max-width: 900px) {
-  .cl-two-pane {
-    grid-template-columns: 1fr;
-  }
-}
+/* Notepad */
+.sp-input-row{display:flex;gap:6px;margin-bottom:10px;}
+.sp-input-row input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;}
+.sp-input-row input:focus{outline:none;border-color:var(--blue);}
+.sp-list{display:flex;flex-direction:column;max-height:240px;overflow-y:auto;}
+.sp-row{display:flex;align-items:flex-start;gap:6px;padding:7px 0;border-bottom:1px solid var(--border);}
+.sp-row:last-child{border-bottom:none;}
+.sp-time{font-family:var(--m);font-size:10px;color:var(--text3);flex-shrink:0;margin-top:3px;min-width:38px;}
+.sp-text{flex:1;font-size:13px;color:var(--text);line-height:1.4;word-break:break-word;}
+.sp-promote{padding:3px 10px;border-radius:5px;border:1px solid var(--blue);background:var(--bbg);color:var(--blue);font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0;transition:all .15s;}
+.sp-promote:hover{background:var(--blue);color:#fff;}
+.sp-delete{padding:3px 7px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--text3);font-size:12px;cursor:pointer;flex-shrink:0;transition:all .15s;}
+.sp-delete:hover{border-color:var(--red);color:var(--red);}
 
-/* Scratchpad card */
-.scratchpad-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--rl);
-  padding: 12px;
-  position: sticky;
-  top: 10px;
-}
+/* Promote inline menu */
+.sp-promote-menu{display:none;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 12px 10px;margin:6px 0 8px 44px;flex-direction:column;gap:8px;}
+.sp-promote-menu.active{display:flex;}
+.sp-promote-cat-row{display:flex;gap:5px;flex-wrap:wrap;}
+.sp-promote-cat-btn{font-size:11px;font-weight:600;padding:5px 10px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer;transition:all .15s;}
+.sp-promote-cat-btn:hover{border-color:var(--border2);color:var(--text2);}
+.sp-promote-cat-btn.sel[data-cat="handoff"]{background:var(--bbg);border-color:var(--blue);color:var(--blue);}
+.sp-promote-cat-btn.sel[data-cat="upcoming"]{background:var(--gbg);border-color:var(--green);color:var(--green);}
+.sp-promote-fields{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.sp-promote-fields select,.sp-promote-fields input{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:12px;}
+.sp-promote-fields input{width:110px;font-family:var(--m);}
+.sp-promote-send{padding:6px 14px;background:var(--green);border:1px solid var(--green);border-radius:6px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.sp-promote-send:hover{background:var(--gmid);}
 
-.sp-input-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.sp-input-row input {
-  flex: 1;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 7px 10px;
-  color: var(--text);
-  font-family: var(--f);
-  font-size: 13px;
-}
-
-.sp-list {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-.sp-row {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 6px 8px;
-}
-
-.sp-time {
-  font-family: var(--m);
-  font-size: 11px;
-  color: var(--text3);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.sp-text {
-  flex: 1;
-  font-size: 13px;
-  color: var(--text);
-  word-break: break-word;
-}
-
-.sp-promote {
-  background: none;
-  border: none;
-  color: var(--green);
-  cursor: pointer;
-  font-size: 14px;
-  padding: 2px 4px;
-  border-radius: 4px;
-  transition: background 0.15s;
-}
-
-.sp-promote:hover {
-  background: rgba(0, 229, 160, 0.1);
-}
-
-.sp-delete {
-  background: none;
-  border: none;
-  color: var(--text3);
-  cursor: pointer;
-  font-size: 14px;
-  padding: 2px 4px;
-  border-radius: 4px;
-  transition: background 0.15s;
-}
-
-.sp-delete:hover {
-  background: rgba(255, 59, 48, 0.1);
-  color: var(--red);
-}
-
-/* Promotion menu */
-.sp-promote-menu {
-  display: none;
-  flex-direction: column;
-  gap: 8px;
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 10px;
-  margin-top: 6px;
-  box-shadow: var(--shs);
-}
-
-.sp-promote-menu.active {
-  display: flex;
-}
-
-.sp-promote-menu label {
-  font-size: 11px;
-  color: var(--text3);
-  font-weight: 600;
-}
-
-.sp-promote-menu select,
-.sp-promote-menu input {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 5px 8px;
-  color: var(--text);
-  font-family: var(--f);
-  font-size: 12px;
-  width: 100%;
-  max-width: 140px;
-}
-
-.sp-promote-menu button {
-  background: var(--green);
-  border: none;
-  border-radius: 4px;
-  padding: 6px 12px;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 4px;
-}
-
-.sp-promote-menu button:hover {
-  filter: brightness(1.08);
-}
-
-/* Right pane wrapper */
-.cl-right-pane {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+/* Feed */
+.cl-feed{max-height:320px;overflow-y:auto;}
 
 /* Ticket badge */
-.cl-ticket {
-  font-family: var(--mono);
-  font-size: 10px;
-  background: var(--bg4);
-  border: 1px solid var(--border2);
+.cl-ticket{font-family:var(--m);font-size:10px;background:var(--bg4);border:1px solid var(--border2);color:var(--text3);padding:1px 5px;border-radius:3px;flex-shrink:0;}
+.cl-ticket-inline{font-family:var(--m);font-size:10px;color:var(--text3);background:var(--bg4);border:1px solid var(--border);border-radius:4px;padding:2px 6px;width:72px;min-width:0;flex-shrink:0;cursor:text;transition:border-color .15s;}
+.cl-ticket-inline:focus{outline:none;border-color:var(--blue);color:var(--text);background:var(--bg2);}
+.cl-ticket-inline::placeholder{color:var(--text3);opacity:.5;}
+
+/* Category badge colors */
+.cl-cat-handoff{background:var(--bbg);color:var(--blue);}
+.cl-cat-upcoming{background:var(--gbg);color:var(--green);}
+
+/* Category re-tag pills in feed */
+.cl-cat-pill{font-size:10px;font-family:var(--m);padding:2px 6px;border-radius:3px;border:1.5px solid var(--border);cursor:pointer;background:var(--bg4);color:var(--text3);transition:all .15s;}
+.cl-cat-pill.active-handoff{background:var(--bbg);color:var(--blue);border-color:var(--blue);}
+.cl-cat-pill.active-upcoming{background:var(--gbg);color:var(--green);border-color:var(--green);}
+
+/* Promote menu category buttons */
+.sp-promote-cat-btn.sel[data-cat="handoff"]{background:var(--bbg);border-color:var(--blue);color:var(--blue);}
+.sp-promote-cat-btn.sel[data-cat="upcoming"]{background:var(--gbg);border-color:var(--green);color:var(--green);}
+
+/* Progress indicator */
+.cl-progress{display:flex;gap:10px;align-items:center;}
+.cl-progress-item{display:flex;align-items:center;gap:4px;font-size:10.5px;color:var(--text3);font-weight:600;}
+.cl-progress-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);flex-shrink:0;transition:background .15s;}
+.cl-progress-item.filled .cl-progress-dot{background:var(--green);}
+.cl-progress-item.filled{color:var(--text2);}
   padding: 1px 5px;
   border-radius: 3px;
   color: var(--text2);
@@ -2765,67 +2656,58 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 <!-- HANDOFF ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-chron">
 
-  <div class="cl-pg-header">
+  <div class="cl-pg-header" style="margin-bottom:14px;">
     <div class="cl-pg-title">Handoff</div>
-    <div class="cl-pg-sub">Chronological shift feed · starred entries auto-populate handoff notes</div>
+    <div class="cl-pg-sub">Capture notes in the scratchpad, promote what matters to the structured feed</div>
   </div>
 
-  <div class="cl-two-pane">
-    <!-- Scratchpad Section -->
-    <div class="scratchpad-card">
-      <div class="cl-header-row">
-        <span class="cl-section-lbl">Scratchpad</span>
-        <button class="tbtn" style="font-size:11px;" onclick="spClear()">Clear</button>
-      </div>
-      <div class="sp-input-row">
-        <input id="sp-text" placeholder="Quick note... Press Enter to add" onkeydown="if(event.key==='Enter')spAdd()">
-        <button class="cl-log-btn" onclick="spAdd()">+</button>
-      </div>
-      <div class="sp-list" id="sp-list"></div>
+  <!-- ── NOTEPAD ───────────────────────────────────────────────────────── -->
+  <div class="cl-stack-section">
+    <div class="cl-header-row">
+      <span class="cl-section-lbl">Notepad</span>
+      <button class="tbtn" style="font-size:11px;" onclick="spClear()">Clear</button>
     </div>
+    <div class="sp-input-row">
+      <input id="sp-text" placeholder="Quick note — press Enter to add" onkeydown="if(event.key==='Enter')spAdd()">
+      <button class="cl-log-btn" onclick="spAdd()">Add</button>
+    </div>
+    <div class="sp-list" id="sp-list"></div>
+  </div>
 
-    <!-- Right Pane: Entry Bar + Feed + Handoff -->
-    <div class="cl-right-pane">
-      <!-- Entry bar -->
-      <div class="cl-input-bar">
-        <select id="cl-cat" title="Category">
-          <option value="Handoff" selected>📋 Handoff</option>
-          <option value="Upcoming">🕐 Upcoming</option>
-        </select>
-        <select id="cl-site" style="max-width:160px;" title="Site (resets after each entry)"></select>
-        <input id="cl-text" placeholder="What happened? Press Enter to log." onkeydown="if(event.key==='Enter')clAdd()">
-        <button class="cl-log-btn" onclick="clAdd()">Log It</button>
+  <!-- ── SHIFT FEED ────────────────────────────────────────────────────── -->
+  <div class="cl-stack-section">
+    <div class="cl-header-row">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span class="cl-section-lbl">Shift Feed</span>
+        <div class="cl-progress" id="cl-progress"></div>
       </div>
-
-      <!-- Feed header -->
-      <div class="cl-header-row">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span class="cl-section-lbl">Shift Feed</span>
-          <span class="cl-starred-count" id="cl-starred-count" style="display:none;"></span>
-        </div>
-        <div style="display:flex;gap:6px;align-items:center;">
-          <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">Copy passdown</button>
-          <button class="tbtn cl-clear-btn" style="font-size:11px;" onclick="clClear()">Clear shift</button>
-        </div>
-      </div>
-
-      <div class="cl-feed" id="cl-feed"><div class="empty-state compact"><div class="empty-state-icon">📡</div><div class="empty-state-title">No entries yet</div><div class="empty-state-sub">Log the first event using the form above.</div></div></div>
-
-      <!-- Shift Handoff Draft -->
-      <div class="cl-handoff-section">
-        <div class="cl-handoff-header">
-          <div>
-            <span class="cl-section-lbl">Handoff Draft</span>
-            <span class="cl-handoff-hint">★ starred · alarms · curtailments · two-section format</span>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <button class="tbtn cl-img-btn" id="cl-img-btn" onclick="clSaveAsImage(event)" title="Copy or save handoff as image">📸 Image</button>
-            <button class="cl-copy-handoff-btn" onclick="clCopyHandoff()">Copy Handoff</button>
-          </div>
-        </div>
-        <div id="cl-preview" class="cl-handoff-preview"></div>
+      <div style="display:flex;gap:6px;">
+        <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">Copy passdown</button>
+        <button class="tbtn" style="font-size:11px;" onclick="clClear()">Clear shift</button>
       </div>
     </div>
+    <div class="cl-feed" id="cl-feed">
+      <div class="empty-state compact">
+        <div class="empty-state-icon">📡</div>
+        <div class="empty-state-title">No entries yet</div>
+        <div class="empty-state-sub">Promote a notepad item or add directly from there.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HANDOFF DRAFT ─────────────────────────────────────────────────── -->
+  <div class="cl-stack-section">
+    <div class="cl-handoff-header">
+      <div>
+        <span class="cl-section-lbl">Handoff Draft</span>
+        <span class="cl-handoff-hint">Structured from your feed — ready to copy or screenshot</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="tbtn cl-img-btn" id="cl-img-btn" onclick="clSaveAsImage(event)">📸 Image</button>
+        <button class="cl-copy-handoff-btn" onclick="clCopyHandoff()">Copy Handoff</button>
+      </div>
+    </div>
+    <div id="cl-preview" class="cl-handoff-preview"></div>
   </div>
 
 </div>
@@ -4216,15 +4098,12 @@ function clInit() {
 }
 
 function clPopulateSiteSelect() {
-  const sel = document.getElementById('cl-site');
-  if (!sel) return;
   const allSites = [...SITES, ...WX_LOCS].sort((a,b) => (a.name||'').localeCompare(b.name||''));
   const opts = allSites.map(s => `<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('');
-  const baseOpts = `<option value="">(no site)</option>` + opts;
-  sel.innerHTML = baseOpts;
-  sel.value = '';
-  // Cache for inline per-entry selects
-  clSiteOptions = baseOpts;
+  clSiteOptions = `<option value="">(no site)</option>` + opts;
+  // Also populate the feed's own site select if it exists
+  const sel = document.getElementById('cl-site');
+  if (sel) { sel.innerHTML = clSiteOptions; sel.value = ''; }
 }
 
 function clAdd(ticket = null) {
@@ -4257,6 +4136,13 @@ function clToggleStar(id) {
   e.starred = !e.starred;
   try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
   clRender();
+}
+
+function clSetTicket(id, val) {
+  const e = clEntries.find(x => x.id === id); if (!e) return;
+  e.ticket = val.trim();
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
+  clRenderPreview();
 }
 
 function clSetSite(id, val) {
@@ -4310,37 +4196,36 @@ function clClear() {
 }
 
 function clCopyHandoff() {
-  const upcomingEntries = clEntries.filter(e => e.cat === 'Upcoming');
-  const handoffEntries  = clEntries.filter(e => e.cat === 'Handoff' || e.starred);
+  if (!clEntries.length) { showToast('No entries to copy'); return; }
 
-  if (!handoffEntries.length && !upcomingEntries.length) {
-    showToast('No notable entries to copy');
-    return;
+  // Date/shift header
+  const dateRaw = (document.getElementById('as-date')?.value) || '';
+  const shift   = (document.getElementById('as-shift')?.value) || '';
+  let dateLabel = '';
+  if (dateRaw) {
+    const [y,m,d] = dateRaw.split('-');
+    dateLabel = `${parseInt(m)}/${parseInt(d)}`;
+  } else {
+    const n = new Date();
+    dateLabel = `${n.getMonth()+1}/${n.getDate()}`;
   }
+  const shiftLabel = shift ? ` ${shift} Shift` : '';
+  const lines = [`${dateLabel}${shiftLabel}`, ''];
 
-  const lines = [];
-
-  if (handoffEntries.length) {
-    lines.push('Operator Handoff');
-    handoffEntries.forEach(e => {
-      const catTag = e.cat && e.cat !== 'Normal' && e.cat !== 'Handoff' ? ` (${e.cat})` : '';
-      const siteTag = e.site ? `${e.site} ` : '';
-      const ticketTag = e.ticket ? ` [${e.ticket}]` : '';
-      lines.push(`• ${siteTag}${e.text}${catTag}${ticketTag}`);
-    });
-  }
-
-  if (upcomingEntries.length) {
-    if (lines.length) lines.push('');
-    lines.push('Upcoming');
-    upcomingEntries.forEach(e => {
-      const siteTag = e.site ? `${e.site} ` : '';
-      const ticketTag = e.ticket ? ` [${e.ticket}]` : '';
+  const sectionLabel = { handoff:'Handoff', upcoming:'Upcoming' };
+  CL_CAT_ORDER.forEach(cat => {
+    const entries = clEntries.filter(e => e.cat === cat);
+    if (!entries.length) return;
+    lines.push(sectionLabel[cat] || cat);
+    entries.forEach(e => {
+      const siteTag   = e.site   ? `${e.site} `    : '';
+      const ticketTag = e.ticket ? ` (#${e.ticket})` : '';
       lines.push(`• ${siteTag}${e.text}${ticketTag}`);
     });
-  }
+    lines.push('');
+  });
 
-  const text = lines.join('\n').trim();
+  const text = lines.join('\n').trimEnd();
   navigator.clipboard.writeText(text)
     .then(() => showToast('Handoff copied'))
     .catch(() => showToast('Clipboard blocked — try Ctrl+C'));
@@ -4453,10 +4338,11 @@ function clGroupByAsset(entries) {
   return out;
 }
 
-const CL_CAT_CLS = {
-  'Handoff':'cl-cat-dispatch',
-  'Upcoming':'cl-cat-upcoming'
+const CL_CATS = {
+  handoff:  { label: 'Handoff',  icon: '📋', cls: 'cl-cat-handoff' },
+  upcoming: { label: 'Upcoming', icon: '🕐', cls: 'cl-cat-upcoming' }
 };
+const CL_CAT_ORDER = ['handoff','upcoming'];
 
 // ─── SCRATCHPAD ────────────────────────────────────────────────────────────────
 const SP_KEY = 'rnwbl_scratchpad_v1';
@@ -4508,93 +4394,112 @@ function spTogglePromote(index) {
 function spPromote(index) {
   const item = scratchpad[index];
   if (!item) return;
-  
-  const cat = document.getElementById(`sp-cat-${index}`).value;
-  const site = document.getElementById(`sp-site-${index}`).value;
-  const ticket = document.getElementById(`sp-ticket-${index}`).value.trim();
-  
+
+  const menu = document.getElementById(`sp-promote-menu-${index}`);
+  const cat    = (menu && menu.dataset.selectedCat) || 'handoff';
+  const site   = document.getElementById(`sp-site-${index}`)?.value || '';
+  const ticket = (document.getElementById(`sp-ticket-${index}`)?.value || '').trim();
+
   const now = new Date();
   const entry = {
     id: Date.now(),
     ts: now.getTime(),
     time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}),
-    cat: cat,
-    site: site,
+    cat,
+    site,
     text: item.text,
-    ticket: ticket,
+    ticket,
     starred: false
   };
-  
+
   clEntries.unshift(entry);
   try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e) {}
-  
-  // Remove from scratchpad
+
   scratchpad.splice(index, 1);
   try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
-  
+
   renderScratchpad();
   clRender();
-  showToast('Promoted to feed');
+  showToast(`Promoted to feed as ${CL_CATS[cat]?.label||cat}`);
 }
 
 function renderScratchpad() {
   const list = document.getElementById('sp-list');
   if (!list) return;
-  
+
   if (!scratchpad.length) {
-    list.innerHTML = '<div style="font-size:12px;color:var(--text3);text-align:center;padding:12px;">No scratchpad entries</div>';
+    list.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">🗒️</div><div class="empty-state-title">Notepad is empty</div><div class="empty-state-sub">Type above and press Enter to capture a quick note.</div></div>';
     return;
   }
-  
-  list.innerHTML = scratchpad.map((item, index) => `
+
+  list.innerHTML = scratchpad.map((item, index) => {
+    const catBtns = [
+      {cat:'handoff',  label:'📋 Handoff'},
+      {cat:'upcoming', label:'🕐 Upcoming'}
+    ].map(({cat,label}) =>
+      `<button type="button" class="sp-promote-cat-btn" data-cat="${cat}" data-idx="${index}"
+        onclick="spPickCat(${index},'${cat}',this)">${label}</button>`
+    ).join('');
+
+    return `
     <div class="sp-row">
       <span class="sp-time">${esc(item.time)}</span>
       <span class="sp-text">${esc(item.text)}</span>
-      <button class="sp-promote" onclick="spTogglePromote(${index})" title="Promote to feed">→</button>
-      <button class="sp-delete" onclick="spDelete(${index})" title="Delete">×</button>
+      <button class="sp-promote" onclick="spTogglePromote(${index})" title="Promote to feed">→ Promote</button>
+      <button class="sp-delete" onclick="spDelete(${index})" title="Delete">✕</button>
     </div>
     <div class="sp-promote-menu" id="sp-promote-menu-${index}">
-      <label>Category</label>
-      <select id="sp-cat-${index}">
-        <option value="Handoff">📋 Handoff</option>
-        <option value="Upcoming">🕐 Upcoming</option>
-      </select>
-      <label>Site</label>
-      <select id="sp-site-${index}">
-        <option value="">(no site)</option>
-        ${clSiteOptions}
-      </select>
-      <label>Ticket # (optional)</label>
-      <input id="sp-ticket-${index}" placeholder="e.g. INC12345">
-      <button onclick="spPromote(${index})">Send to Feed</button>
-    </div>
-  `).join('');
+      <div class="sp-promote-cat-row">${catBtns}</div>
+      <div class="sp-promote-fields">
+        <select id="sp-site-${index}">
+          <option value="">(no site)</option>
+          ${clSiteOptions}
+        </select>
+        <input id="sp-ticket-${index}" placeholder="Log/OMS #" title="Optional ticket or log number">
+        <button class="sp-promote-send" onclick="spPromote(${index})">Send to Feed →</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function spPickCat(index, cat, btn) {
+  document.querySelectorAll(`#sp-promote-menu-${index} .sp-promote-cat-btn`).forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  btn.closest('.sp-promote-menu').dataset.selectedCat = cat;
 }
 
 function clRender() {
   const feed = document.getElementById('cl-feed'); if (!feed) return;
-  const starred = clEntries.filter(x => x.starred).length;
-  const sc = document.getElementById('cl-starred-count');
-  if (sc) { sc.style.display = starred ? 'inline' : 'none'; sc.textContent = starred + ' ★ for passdown'; }
+
+  const prog = document.getElementById('cl-progress');
+  if (prog) {
+    prog.innerHTML = CL_CAT_ORDER.map(c => {
+      const n = clEntries.filter(e => e.cat === c).length;
+      const info = CL_CATS[c];
+      return `<span class="cl-progress-item${n?' filled':''}" title="${info.label}: ${n} item${n!==1?'s':''}">
+        <span class="cl-progress-dot"></span>${info.icon} ${n}
+      </span>`;
+    }).join('');
+  }
 
   if (!clEntries.length) {
-    feed.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">📡</div><div class="empty-state-title">No entries yet</div><div class="empty-state-sub">Log the first event using the form above.</div></div>';
+    feed.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">📡</div><div class="empty-state-title">No entries yet</div><div class="empty-state-sub">Promote a notepad item to start building your feed.</div></div>';
   } else {
+    const catPillCls = {handoff:'active-handoff',upcoming:'active-upcoming'};
     feed.innerHTML = clEntries.map(e => {
-      const catCls = CL_CAT_CLS[e.cat] || 'cl-cat-normal';
-      const catBadge = e.cat && e.cat !== 'Normal' ? `<span class="cl-cat ${catCls}">${esc(e.cat)}</span>` : '';
+      const info = CL_CATS[e.cat];
+      const catBadge = info ? `<span class="cl-cat ${info.cls}">${info.icon} ${info.label}</span>` : '';
+      const ticketBadge = `<input class="cl-ticket-inline" value="${esc(e.ticket||'')}" placeholder="Log #" title="Edit log/ticket number" onblur="clSetTicket(${e.id},this.value)" onkeydown="if(event.key==='Enter')this.blur();">`;
       const siteSelect = `<select class="cl-inline-site" title="Edit site" onchange="clSetSite(${e.id},this.value)">${clSiteOptions}</select>`;
-      const ticketBadge = e.ticket ? `<span class="cl-ticket">#${esc(e.ticket)}</span>` : '';
-      const hPill = `<span class="cl-cat-pill${e.cat==='Handoff'?' active-handoff':''}" onclick="clSetCat(${e.id},'Handoff')">Handoff</span>`;
-      const uPill = `<span class="cl-cat-pill${e.cat==='Upcoming'?' active-upcoming':''}" onclick="clSetCat(${e.id},'Upcoming')">Upcoming</span>`;
-      return `<div class="cl-entry${e.starred?' starred':''}">
+      const catPills = CL_CAT_ORDER.map(c => {
+        const inf = CL_CATS[c];
+        return `<span class="cl-cat-pill${e.cat===c?' '+catPillCls[c]:''}" onclick="clSetCat(${e.id},'${c}')" title="${inf.label}">${inf.icon}</span>`;
+      }).join('');
+      return `<div class="cl-entry">
         <span class="cl-time">${esc(e.time)}</span>
-        ${catBadge}
-        ${siteSelect}
-        ${ticketBadge}
+        ${catBadge}${ticketBadge}${siteSelect}
         <span class="cl-body" data-id="${e.id}" title="Click to edit" onclick="clStartEdit(${e.id})">${esc(e.text)}</span>
-        <div class="cl-cat-toggle">${hPill}${uPill}</div>
-        <button class="cl-star${e.starred?' on':''}" title="Star for passdown" onclick="clToggleStar(${e.id})">★</button>
+        <div class="cl-cat-toggle">${catPills}</div>
         <button class="cl-del" title="Delete entry" onclick="clDelete(${e.id})">✕</button>
       </div>`;
     }).join('');
@@ -4608,67 +4513,53 @@ function clRender() {
 
 function clRenderPreview() {
   const preview = document.getElementById('cl-preview'); if (!preview) return;
-
-  // Split entries: Upcoming vs Operator Handoff
-  const upcomingEntries = clEntries.filter(e => e.cat === 'Upcoming');
-  const handoffEntries  = clEntries.filter(e => e.cat === 'Handoff' || e.starred);
-
-  if (!handoffEntries.length && !upcomingEntries.length) {
-    preview.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">📤</div><div class="empty-state-title">Nothing here yet</div><div class="empty-state-sub">Log entries tagged Handoff or Upcoming will appear here ready to copy.</div></div>';
+  if (!clEntries.length) {
+    preview.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">📤</div><div class="empty-state-title">Nothing here yet</div><div class="empty-state-sub">Every promoted entry appears here, organized by section.</div></div>';
     return;
   }
 
-  const badgeFor = (e) => {
-    if (e.cat === 'Alarm')       return `<span class="cl-hd-badge cl-hd-badge-alarm">⚠ Alarm</span>`;
-    if (e.cat === 'Curtailment') return `<span class="cl-hd-badge cl-hd-badge-curtail">⚡ Curtail</span>`;
-    if (e.cat === 'Dispatch')    return `<span class="cl-hd-badge cl-hd-badge-dispatch">📋 Dispatch</span>`;
-    if (e.cat === 'Field Tech')  return `<span class="cl-hd-badge cl-hd-badge-ft">🔧 FT</span>`;
-    if (e.starred)               return `<span class="cl-hd-badge cl-hd-badge-star">★</span>`;
-    return '';
-  };
-
-  let html = '';
+  // Date/shift header
+  const dateRaw = document.getElementById('as-date')?.value || '';
+  const shift   = document.getElementById('as-shift')?.value || '';
+  let dateLabel = '';
+  if (dateRaw) {
+    const [y,m,d] = dateRaw.split('-');
+    dateLabel = `${parseInt(m)}/${parseInt(d)}`;
+  } else {
+    const n = new Date();
+    dateLabel = `${n.getMonth()+1}/${n.getDate()}`;
+  }
+  const shiftLabel = shift ? ` ${shift} Shift` : ' Shift';
+  let html = `<div class="cl-hd-date-header">${dateLabel}${shiftLabel}</div>`;
 
   const renderItems = (entries) => entries.map(e => {
-    const siteLabel = e.site ? `<span class="cl-hd-site-name">${esc(e.site)}</span> ` : '';
-    const ticketLabel = e.ticket ? `<span class="cl-hd-badge">${esc(e.ticket)}</span> ` : '';
+    const siteLabel   = e.site   ? `<span class="cl-hd-site-name">${esc(e.site)}</span> ` : '';
+    const ticketLabel = e.ticket ? ` <span class="cl-hd-time" style="opacity:.7;">#${esc(e.ticket)}</span>` : '';
     return `<div class="cl-hd-item" data-id="${e.id}">
       <span class="cl-hd-bullet">–</span>
-      <span class="cl-hd-text" contenteditable="true" spellcheck="false"
-        data-id="${e.id}"
-        onblur="clPreviewEdit(${e.id}, this)"
-        onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}"
-      >${siteLabel}${ticketLabel}${esc(e.text)}</span>
+      <span class="cl-hd-text" contenteditable="true" spellcheck="false" data-id="${e.id}"
+        onblur="clPreviewEdit(${e.id},this)"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
+        ${siteLabel}${esc(e.text)}
+      </span>${ticketLabel}
       <span class="cl-hd-time">${esc(e.time)}</span>
       <span class="cl-hd-del" title="Remove" onclick="clPreviewDelete(${e.id})">✕</span>
     </div>`;
   }).join('');
-
-  // ── Operator Handoff section ──────────────────────────────────────────────
-  if (handoffEntries.length) {
+  CL_CAT_ORDER.forEach(cat => {
+    const entries = clEntries.filter(e => e.cat === cat);
+    if (!entries.length) return;
+    const info = CL_CATS[cat];
     html += `<div class="cl-hd-section">
       <div class="cl-hd-section-hdr">
-        <span class="cl-hd-section-icon">📋</span>
-        <span class="cl-hd-section-label">Operator Handoff</span>
-        <span class="cl-hd-section-count">${handoffEntries.length} item${handoffEntries.length!==1?'s':''}</span>
+        <span class="cl-hd-section-icon">${info.icon}</span>
+        <span class="cl-hd-section-label">${info.label}</span>
+        <span class="cl-hd-section-count">${entries.length} item${entries.length!==1?'s':''}</span>
       </div>
-      <div class="cl-hd-sites">${renderItems(handoffEntries)}</div>
+      <div class="cl-hd-sites">${renderItems(entries)}</div>
     </div>`;
-  }
-
-  // ── Upcoming section ──────────────────────────────────────────────────────
-  if (upcomingEntries.length) {
-    html += `<div class="cl-hd-section">
-      <div class="cl-hd-section-hdr">
-        <span class="cl-hd-section-icon">🕐</span>
-        <span class="cl-hd-section-label">Upcoming</span>
-        <span class="cl-hd-section-count">${upcomingEntries.length} item${upcomingEntries.length!==1?'s':''}</span>
-      </div>
-      <div class="cl-hd-sites">${renderItems(upcomingEntries)}</div>
-    </div>`;
-  }
-
-  preview.innerHTML = html;
+  });
+  preview.innerHTML = html || '<div class="empty-state compact"><div class="empty-state-icon">📤</div><div class="empty-state-title">Nothing here yet</div><div class="empty-state-sub">Every promoted entry appears here, organized by section.</div></div>';
 }
 
 function clPreviewEdit(id, el) {
