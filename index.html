@@ -611,7 +611,7 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .cl-input-bar select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;flex-shrink:0;}
 .cl-log-btn{padding:7px 16px;background:var(--green);border:1px solid var(--green);border-radius:6px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--f);white-space:nowrap;transition:all .15s;flex-shrink:0;}
 .cl-log-btn:hover{background:var(--gmid);}
-.cl-feed{display:flex;flex-direction:column;gap:4px;max-width:900px;}
+.cl-feed{display:flex;flex-direction:column;gap:4px;width:100%;}
 .cl-entry{display:flex;gap:8px;align-items:flex-start;background:var(--bg2);border:1px solid var(--border);border-left:3px solid transparent;border-radius:8px;padding:8px 10px;transition:border-color .15s;}
 .cl-entry:hover{border-color:var(--border2);border-left-color:transparent;}
 .cl-entry.starred{border-left-color:var(--amber)!important;}
@@ -653,6 +653,7 @@ body.dark .cl-time{color:var(--text2);}
 /* Handoff draft preview */
 .cl-handoff-preview{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:0;overflow:hidden;box-shadow:var(--shs);}
 .cl-hd-empty{padding:16px;color:var(--text3);font-size:12px;font-style:italic;}
+.cl-hd-date-header{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.01em;padding:10px 14px 8px;border-bottom:2px solid var(--border2);margin-bottom:4px;}
 .cl-hd-section{border-bottom:1px solid var(--border);}
 .cl-hd-section:last-child{border-bottom:none;}
 .cl-hd-section-hdr{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--bg3);border-bottom:1px solid var(--border);}
@@ -671,11 +672,13 @@ body.dark .cl-time{color:var(--text2);}
 /* Two-pane layout */
 /* ── HANDOFF STACKED LAYOUT ─────────────────────────────────────────── */
 .cl-stack-section{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;box-shadow:var(--shs);margin-bottom:12px;}
+.cl-stack-section.cl-notepad-section{border-left:3px solid var(--border2);padding-left:13px;}
 
 /* Notepad */
 .sp-input-row{display:flex;gap:6px;margin-bottom:10px;}
 .sp-input-row input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;}
-.sp-input-row input:focus{outline:none;border-color:var(--blue);}
+.sp-input-row input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px rgba(224,85,64,.1);}
+.sp-promote-hint{font-size:10.5px;color:var(--text3);margin-bottom:6px;font-style:italic;padding:2px 0;}
 .sp-list{display:flex;flex-direction:column;max-height:240px;overflow-y:auto;}
 .sp-row{display:flex;align-items:flex-start;gap:6px;padding:7px 0;border-bottom:1px solid var(--border);}
 .sp-row:last-child{border-bottom:none;}
@@ -683,52 +686,43 @@ body.dark .cl-time{color:var(--text2);}
 .sp-text{flex:1;font-size:13px;color:var(--text);line-height:1.4;word-break:break-word;}
 .sp-promote{padding:3px 10px;border-radius:5px;border:1px solid var(--blue);background:var(--bbg);color:var(--blue);font-size:11px;font-weight:600;cursor:pointer;flex-shrink:0;transition:all .15s;}
 .sp-promote:hover{background:var(--blue);color:#fff;}
+.sp-promote-loud{background:var(--blue);color:#fff;}
+.sp-promote-loud:hover{background:var(--blue);opacity:.88;}
 .sp-delete{padding:3px 7px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--text3);font-size:12px;cursor:pointer;flex-shrink:0;transition:all .15s;}
 .sp-delete:hover{border-color:var(--red);color:var(--red);}
 
 /* Promote inline menu */
-.sp-promote-menu{display:none;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px 12px 10px;margin:6px 0 8px 44px;flex-direction:column;gap:8px;}
+.sp-promote-menu{display:none;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin:6px 0 8px 44px;flex-direction:column;gap:10px;}
 .sp-promote-menu.active{display:flex;}
-.sp-promote-cat-row{display:flex;gap:5px;flex-wrap:wrap;}
-.sp-promote-cat-btn{font-size:11px;font-weight:600;padding:5px 10px;border-radius:6px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer;transition:all .15s;}
+.sp-promote-grid{display:grid;grid-template-columns:140px 1fr;gap:12px;}
+.sp-promote-col-type{display:flex;flex-direction:column;gap:6px;}
+.sp-promote-col-meta{display:flex;flex-direction:column;}
+.sp-promote-col-lbl{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px;}
+.sp-promote-cat-btn{font-size:12px;font-weight:600;padding:8px 12px;border-radius:7px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer;transition:all .15s;text-align:left;width:100%;}
 .sp-promote-cat-btn:hover{border-color:var(--border2);color:var(--text2);}
-.sp-promote-cat-btn.sel[data-cat="issues"]{background:var(--rbg);border-color:var(--red);color:var(--red);}
-.sp-promote-cat-btn.sel[data-cat="curtailments"]{background:var(--abg);border-color:var(--amber);color:var(--amber);}
-.sp-promote-cat-btn.sel[data-cat="upcoming"]{background:var(--bbg);border-color:var(--blue);color:var(--blue);}
-.sp-promote-cat-btn.sel[data-cat="other"]{background:var(--bg4);border-color:var(--border2);color:var(--text2);}
-.sp-promote-fields{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
-.sp-promote-fields select,.sp-promote-fields input{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:12px;}
-.sp-promote-fields input{width:110px;font-family:var(--m);}
-.sp-promote-send{padding:6px 14px;background:var(--green);border:1px solid var(--green);border-radius:6px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.sp-promote-cat-btn.sel[data-cat="handoff"]{background:var(--bbg);border-color:var(--blue);color:var(--blue);}
+.sp-promote-cat-btn.sel[data-cat="upcoming"]{background:var(--gbg);border-color:var(--green);color:var(--green);}
+.sp-promote-send{padding:8px 16px;background:var(--green);border:1px solid var(--green);border-radius:7px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;width:100%;}
 .sp-promote-send:hover{background:var(--gmid);}
+.sp-promote-send:active{transform:translateY(1px);}
 
 /* Feed */
 .cl-feed{max-height:320px;overflow-y:auto;}
 
 /* Ticket badge */
-.cl-ticket {
-  font-family: var(--mono);
-  font-size: 10px;
-  background: var(--bg4);
-  border: 1px solid var(--border2);
-  color: var(--text3);
-  padding: 1px 5px;
-  border-radius: 3px;
-  flex-shrink: 0;
-}
+.cl-ticket{font-family:var(--m);font-size:10px;background:var(--bg4);border:1px solid var(--border2);color:var(--text3);padding:1px 5px;border-radius:3px;flex-shrink:0;}
+.cl-ticket-inline{font-family:var(--m);font-size:10px;color:var(--text3);background:var(--bg4);border:1px solid var(--border);border-radius:4px;padding:2px 6px;width:72px;min-width:0;flex-shrink:0;cursor:text;transition:border-color .15s;}
+.cl-ticket-inline:focus{outline:none;border-color:var(--blue);color:var(--text);background:var(--bg2);}
+.cl-ticket-inline::placeholder{color:var(--text3);opacity:.5;}
 
-/* 4-category badge colors */
-.cl-cat-issues{background:var(--rbg);color:var(--red);}
-.cl-cat-curtailments{background:var(--abg);color:var(--amber);}
-.cl-cat-upcoming{background:var(--bbg);color:var(--blue);}
-.cl-cat-other{background:var(--bg4);color:var(--text3);}
+/* Category badge colors */
+.cl-cat-handoff{background:var(--bbg);color:var(--blue);}
+.cl-cat-upcoming{background:var(--gbg);color:var(--green);}
 
 /* Category re-tag pills in feed */
 .cl-cat-pill{font-size:10px;font-family:var(--m);padding:2px 6px;border-radius:3px;border:1.5px solid var(--border);cursor:pointer;background:var(--bg4);color:var(--text3);transition:all .15s;}
-.cl-cat-pill.active-issues{background:var(--rbg);color:var(--red);border-color:var(--red);}
-.cl-cat-pill.active-curtail{background:var(--abg);color:var(--amber);border-color:var(--amber);}
-.cl-cat-pill.active-upcoming{background:var(--bbg);color:var(--blue);border-color:var(--blue);}
-.cl-cat-pill.active-other{background:var(--bg4);color:var(--text2);border-color:var(--border2);}
+.cl-cat-pill.active-handoff{background:var(--bbg);color:var(--blue);border-color:var(--blue);}
+.cl-cat-pill.active-upcoming{background:var(--gbg);color:var(--green);border-color:var(--green);}
 
 /* Progress indicator */
 .cl-progress{display:flex;gap:10px;align-items:center;}
@@ -2669,13 +2663,13 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
   </div>
 
   <!-- ── NOTEPAD ───────────────────────────────────────────────────────── -->
-  <div class="cl-stack-section">
+  <div class="cl-stack-section cl-notepad-section">
     <div class="cl-header-row">
       <span class="cl-section-lbl">Notepad</span>
       <button class="tbtn" style="font-size:11px;" onclick="spClear()">Clear</button>
     </div>
     <div class="sp-input-row">
-      <input id="sp-text" placeholder="Quick note — press Enter to add" onkeydown="if(event.key==='Enter')spAdd()">
+      <input id="sp-text" placeholder="What's happening? Type a note and press Enter..." onkeydown="if(event.key==='Enter')spAdd()">
       <button class="cl-log-btn" onclick="spAdd()">Add</button>
     </div>
     <div class="sp-list" id="sp-list"></div>
@@ -2695,9 +2689,9 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
     </div>
     <div class="cl-feed" id="cl-feed">
       <div class="empty-state compact">
-        <div class="empty-state-icon">📡</div>
-        <div class="empty-state-title">No entries yet</div>
-        <div class="empty-state-sub">Promote a notepad item or add directly from there.</div>
+        <div class="empty-state-icon">↑</div>
+        <div class="empty-state-title">Nothing here yet</div>
+        <div class="empty-state-sub">Add a note above, then click <strong>Add to Handoff</strong> to send it here.</div>
       </div>
     </div>
   </div>
@@ -2707,7 +2701,7 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
     <div class="cl-handoff-header">
       <div>
         <span class="cl-section-lbl">Handoff Draft</span>
-        <span class="cl-handoff-hint">Structured from your feed — ready to copy or screenshot</span>
+        <span class="cl-handoff-hint">Auto-built from your feed — ready to copy or screenshot</span>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
         <button class="tbtn cl-img-btn" id="cl-img-btn" onclick="clSaveAsImage(event)">📸 Image</button>
@@ -4105,15 +4099,12 @@ function clInit() {
 }
 
 function clPopulateSiteSelect() {
-  const sel = document.getElementById('cl-site');
-  if (!sel) return;
   const allSites = [...SITES, ...WX_LOCS].sort((a,b) => (a.name||'').localeCompare(b.name||''));
   const opts = allSites.map(s => `<option value="${esc(s.name)}">${esc(s.name)}</option>`).join('');
-  const baseOpts = `<option value="">(no site)</option>` + opts;
-  sel.innerHTML = baseOpts;
-  sel.value = '';
-  // Cache for inline per-entry selects
-  clSiteOptions = baseOpts;
+  clSiteOptions = `<option value="">(no site)</option>` + opts;
+  // Also populate the feed's own site select if it exists
+  const sel = document.getElementById('cl-site');
+  if (sel) { sel.innerHTML = clSiteOptions; sel.value = ''; }
 }
 
 function clAdd(ticket = null) {
@@ -4146,6 +4137,13 @@ function clToggleStar(id) {
   e.starred = !e.starred;
   try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
   clRender();
+}
+
+function clSetTicket(id, val) {
+  const e = clEntries.find(x => x.id === id); if (!e) return;
+  e.ticket = val.trim();
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
+  clRenderPreview();
 }
 
 function clSetSite(id, val) {
@@ -4200,20 +4198,35 @@ function clClear() {
 
 function clCopyHandoff() {
   if (!clEntries.length) { showToast('No entries to copy'); return; }
-  const sectionLabel = {issues:'Site Issues',curtailments:'Curtailments',upcoming:'Upcoming',other:'Other'};
-  const lines = [];
+
+  // Date/shift header
+  const dateRaw = (document.getElementById('as-date')?.value) || '';
+  const shift   = (document.getElementById('as-shift')?.value) || '';
+  let dateLabel = '';
+  if (dateRaw) {
+    const [y,m,d] = dateRaw.split('-');
+    dateLabel = `${parseInt(m)}/${parseInt(d)}`;
+  } else {
+    const n = new Date();
+    dateLabel = `${n.getMonth()+1}/${n.getDate()}`;
+  }
+  const shiftLabel = shift ? ` ${shift} Shift` : '';
+  const lines = [`${dateLabel}${shiftLabel}`, ''];
+
+  const sectionLabel = { handoff:'Handoff', upcoming:'Upcoming' };
   CL_CAT_ORDER.forEach(cat => {
     const entries = clEntries.filter(e => e.cat === cat);
     if (!entries.length) return;
-    if (lines.length) lines.push('');
-    lines.push(sectionLabel[cat]);
+    lines.push(sectionLabel[cat] || cat);
     entries.forEach(e => {
-      const siteTag = e.site ? `${e.site} ` : '';
+      const siteTag   = e.site   ? `${e.site} `    : '';
       const ticketTag = e.ticket ? ` (#${e.ticket})` : '';
       lines.push(`• ${siteTag}${e.text}${ticketTag}`);
     });
+    lines.push('');
   });
-  const text = lines.join('\n').trim();
+
+  const text = lines.join('\n').trimEnd();
   navigator.clipboard.writeText(text)
     .then(() => showToast('Handoff copied'))
     .catch(() => showToast('Clipboard blocked — try Ctrl+C'));
@@ -4327,12 +4340,10 @@ function clGroupByAsset(entries) {
 }
 
 const CL_CATS = {
-  issues:       { label: 'Site Issues',  icon: '🔴', cls: 'cl-cat-issues' },
-  curtailments: { label: 'Curtailments', icon: '⚡', cls: 'cl-cat-curtailments' },
-  upcoming:     { label: 'Upcoming',     icon: '🕐', cls: 'cl-cat-upcoming' },
-  other:        { label: 'Other',        icon: '📝', cls: 'cl-cat-other' }
+  handoff:  { label: 'Handoff',  icon: '📋', cls: 'cl-cat-handoff' },
+  upcoming: { label: 'Upcoming', icon: '🕐', cls: 'cl-cat-upcoming' }
 };
-const CL_CAT_ORDER = ['issues','curtailments','upcoming','other'];
+const CL_CAT_ORDER = ['handoff','upcoming'];
 
 // ─── SCRATCHPAD ────────────────────────────────────────────────────────────────
 const SP_KEY = 'rnwbl_scratchpad_v1';
@@ -4372,12 +4383,12 @@ function spClear() {
 }
 
 function spTogglePromote(index) {
-  // Close all other menus first
   document.querySelectorAll('.sp-promote-menu').forEach(el => el.classList.remove('active'));
-  
   const menu = document.getElementById(`sp-promote-menu-${index}`);
   if (menu) {
     menu.classList.toggle('active');
+    // Default to handoff if nothing selected yet
+    if (!menu.dataset.selectedCat) menu.dataset.selectedCat = 'handoff';
   }
 }
 
@@ -4386,7 +4397,7 @@ function spPromote(index) {
   if (!item) return;
 
   const menu = document.getElementById(`sp-promote-menu-${index}`);
-  const cat    = (menu && menu.dataset.selectedCat) || 'other';
+  const cat    = (menu && menu.dataset.selectedCat) || 'handoff';
   const site   = document.getElementById(`sp-site-${index}`)?.value || '';
   const ticket = (document.getElementById(`sp-ticket-${index}`)?.value || '').trim();
 
@@ -4424,12 +4435,10 @@ function renderScratchpad() {
 
   list.innerHTML = scratchpad.map((item, index) => {
     const catBtns = [
-      {cat:'issues',      label:'🔴 Site Issues'},
-      {cat:'curtailments',label:'⚡ Curtailments'},
-      {cat:'upcoming',    label:'🕐 Upcoming'},
-      {cat:'other',       label:'📝 Other'}
+      {cat:'handoff',  label:'📋 Handoff'},
+      {cat:'upcoming', label:'🕐 Upcoming'}
     ].map(({cat,label}) =>
-      `<button type="button" class="sp-promote-cat-btn" data-cat="${cat}" data-idx="${index}"
+      `<button type="button" class="sp-promote-cat-btn${cat==='handoff'?' sel':''}" data-cat="${cat}" data-idx="${index}"
         onclick="spPickCat(${index},'${cat}',this)">${label}</button>`
     ).join('');
 
@@ -4437,19 +4446,26 @@ function renderScratchpad() {
     <div class="sp-row">
       <span class="sp-time">${esc(item.time)}</span>
       <span class="sp-text">${esc(item.text)}</span>
-      <button class="sp-promote" onclick="spTogglePromote(${index})" title="Promote to feed">→ Promote</button>
+      <button class="sp-promote${!clEntries.length && index===0?' sp-promote-loud':''}" onclick="spTogglePromote(${index})" title="Add this note to your Handoff">Add to Handoff</button>
       <button class="sp-delete" onclick="spDelete(${index})" title="Delete">✕</button>
     </div>
     <div class="sp-promote-menu" id="sp-promote-menu-${index}">
-      <div class="sp-promote-cat-row">${catBtns}</div>
-      <div class="sp-promote-fields">
-        <select id="sp-site-${index}">
-          <option value="">(no site)</option>
-          ${clSiteOptions}
-        </select>
-        <input id="sp-ticket-${index}" placeholder="Log/OMS #" title="Optional ticket or log number">
-        <button class="sp-promote-send" onclick="spPromote(${index})">Send to Feed →</button>
+      <div class="sp-promote-grid">
+        <div class="sp-promote-col-type">
+          <div class="sp-promote-col-lbl">Type</div>
+          ${catBtns}
+        </div>
+        <div class="sp-promote-col-meta">
+          <div class="sp-promote-col-lbl">Site <span style="font-weight:400;color:var(--text3);">optional</span></div>
+          <select id="sp-site-${index}" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:12px;margin-bottom:8px;">
+            <option value="">(no site)</option>
+            ${clSiteOptions}
+          </select>
+          <div class="sp-promote-col-lbl">Log / OMS # <span style="font-weight:400;color:var(--text3);">optional</span></div>
+          <input id="sp-ticket-${index}" placeholder="e.g. 8307" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--m);font-size:12px;">
+        </div>
       </div>
+      <button class="sp-promote-send" onclick="spPromote(${index})">✓ Add to Shift Feed</button>
     </div>`;
   }).join('');
 }
@@ -4469,7 +4485,7 @@ function clRender() {
       const n = clEntries.filter(e => e.cat === c).length;
       const info = CL_CATS[c];
       return `<span class="cl-progress-item${n?' filled':''}" title="${info.label}: ${n} item${n!==1?'s':''}">
-        <span class="cl-progress-dot"></span>${info.icon} ${n}
+        <span class="cl-progress-dot"></span>${info.icon} ${info.label} <span style="font-family:var(--m);font-size:9.5px;">${n}</span>
       </span>`;
     }).join('');
   }
@@ -4477,11 +4493,11 @@ function clRender() {
   if (!clEntries.length) {
     feed.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">📡</div><div class="empty-state-title">No entries yet</div><div class="empty-state-sub">Promote a notepad item to start building your feed.</div></div>';
   } else {
-    const catPillCls = {issues:'active-issues',curtailments:'active-curtail',upcoming:'active-upcoming',other:'active-other'};
+    const catPillCls = {handoff:'active-handoff',upcoming:'active-upcoming'};
     feed.innerHTML = clEntries.map(e => {
       const info = CL_CATS[e.cat];
       const catBadge = info ? `<span class="cl-cat ${info.cls}">${info.icon} ${info.label}</span>` : '';
-      const ticketBadge = e.ticket ? `<span class="cl-ticket">#${esc(e.ticket)}</span>` : '';
+      const ticketBadge = `<input class="cl-ticket-inline" value="${esc(e.ticket||'')}" placeholder="Log #" title="Edit log/ticket number" onblur="clSetTicket(${e.id},this.value)" onkeydown="if(event.key==='Enter')this.blur();">`;
       const siteSelect = `<select class="cl-inline-site" title="Edit site" onchange="clSetSite(${e.id},this.value)">${clSiteOptions}</select>`;
       const catPills = CL_CAT_ORDER.map(c => {
         const inf = CL_CATS[c];
@@ -4509,8 +4525,23 @@ function clRenderPreview() {
     preview.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">📤</div><div class="empty-state-title">Nothing here yet</div><div class="empty-state-sub">Every promoted entry appears here, organized by section.</div></div>';
     return;
   }
+
+  // Date/shift header
+  const dateRaw = document.getElementById('as-date')?.value || '';
+  const shift   = document.getElementById('as-shift')?.value || '';
+  let dateLabel = '';
+  if (dateRaw) {
+    const [y,m,d] = dateRaw.split('-');
+    dateLabel = `${parseInt(m)}/${parseInt(d)}`;
+  } else {
+    const n = new Date();
+    dateLabel = `${n.getMonth()+1}/${n.getDate()}`;
+  }
+  const shiftLabel = shift ? ` ${shift} Shift` : ' Shift';
+  let html = `<div class="cl-hd-date-header">${dateLabel}${shiftLabel}</div>`;
+
   const renderItems = (entries) => entries.map(e => {
-    const siteLabel = e.site ? `<span class="cl-hd-site-name">${esc(e.site)}</span> ` : '';
+    const siteLabel   = e.site   ? `<span class="cl-hd-site-name">${esc(e.site)}</span> ` : '';
     const ticketLabel = e.ticket ? ` <span class="cl-hd-time" style="opacity:.7;">#${esc(e.ticket)}</span>` : '';
     return `<div class="cl-hd-item" data-id="${e.id}">
       <span class="cl-hd-bullet">–</span>
@@ -4523,8 +4554,6 @@ function clRenderPreview() {
       <span class="cl-hd-del" title="Remove" onclick="clPreviewDelete(${e.id})">✕</span>
     </div>`;
   }).join('');
-
-  let html = '';
   CL_CAT_ORDER.forEach(cat => {
     const entries = clEntries.filter(e => e.cat === cat);
     if (!entries.length) return;
@@ -4543,7 +4572,11 @@ function clRenderPreview() {
 
 function clPreviewEdit(id, el) {
   const e = clEntries.find(x => x.id === id); if (!e) return;
-  const raw = el.innerText.trim();
+  let raw = el.innerText.trim();
+  // Strip site name prefix if it was rendered inline and got captured as text
+  if (e.site && raw.startsWith(e.site)) {
+    raw = raw.slice(e.site.length).trim();
+  }
   if (!raw) { clPreviewDelete(id); return; }
   e.text = raw;
   try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(err) {}
@@ -6148,7 +6181,13 @@ const SW_HARDCODED = [
     body:'Call received from field tech {{TECH}} requesting de-energization of PCS {{NUMBER}}:\n– Associated Megapacks disabled remotely\n– Megapack Breakers opened remotely' },
   { id:'pdmt-re',  site:'Pediment · PCS', action:'Re-Energize', cls:'re',
     numLbl:'PCS #', numPh:'e.g. 1',
-    body:'Call received from field tech {{TECH}} requesting energization of PCS {{NUMBER}}:\n– Megapack Breakers closed remotely\n– Associated Megapacks enabled remotely' }
+    body:'Call received from field tech {{TECH}} requesting energization of PCS {{NUMBER}}:\n– Megapack Breakers closed remotely\n– Associated Megapacks enabled remotely' },
+  { id:'ctlf-de',  site:'CTLF · Feeder Breaker', action:'De-Energize', cls:'de',
+    numLbl:'Feeder Breaker #', numPh:'e.g. 32',
+    body:'Call received from field tech {{TECH}} requesting de-energization of Feeder Breaker 52F{{NUMBER}}:\n– Associated Megapacks disabled locally\n– MVT AC Level Breakers opened locally\n– Feeder Breaker 52F{{NUMBER}} opened remotely' },
+  { id:'ctlf-re',  site:'CTLF · Feeder Breaker', action:'Re-Energize', cls:'re',
+    numLbl:'Feeder Breaker #', numPh:'e.g. 32',
+    body:'Call received from field tech {{TECH}} requesting energization of Feeder Breaker 52F{{NUMBER}}:\n– Feeder Breaker 52F{{NUMBER}} closed remotely\n– MVT AC Level Breakers closed locally\n– Associated Megapacks enabled locally' }
 ];
 
 const SW_CUSTOM_KEY = 'rnwbl_sw_custom_v1';
