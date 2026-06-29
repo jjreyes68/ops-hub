@@ -9,6 +9,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G50BZLK3VS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-G50BZLK3VS');
+</script>
 <style>
 :root{
   --bg:#f5f4f2;--bg2:#fff;--bg3:#eeece9;--bg4:#e4e1dc;
@@ -733,8 +742,22 @@ body.dark .cl-time{color:var(--text2);}
 .sp-promote-send:hover{background:var(--gmid);}
 .sp-promote-send:active{transform:translateY(1px);}
 
-/* Feed */
-.cl-feed{max-height:320px;overflow-y:auto;}
+/* Copy Handoff tile */
+.cl-copy-tile{display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--bg2);border:1.5px solid var(--green);border-radius:var(--rl);cursor:pointer;box-shadow:var(--shs);transition:all .16s;margin-bottom:12px;}
+.cl-copy-tile:hover{background:var(--gbg);box-shadow:var(--sh);transform:translateY(-1px);}
+.cl-copy-tile:active{transform:translateY(0);}
+.cl-copy-tile-icon{font-size:22px;flex-shrink:0;}
+.cl-copy-tile-title{font-size:14px;font-weight:600;color:var(--green);line-height:1.2;}
+.cl-copy-tile-sub{font-size:11.5px;color:var(--text3);margin-top:2px;}
+.cl-copy-tile-arrow{font-size:18px;color:var(--green);margin-left:auto;flex-shrink:0;opacity:.6;}
+
+/* Shift context strip */
+.cl-context-strip{display:flex;align-items:center;gap:16px;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);margin-bottom:12px;box-shadow:var(--shs);flex-wrap:wrap;}
+.cl-context-field{display:flex;align-items:center;gap:7px;}
+.cl-context-lbl{font-size:11px;font-weight:600;color:var(--text3);white-space:nowrap;}
+.cl-context-inp{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 8px;color:var(--text);font-family:var(--f);font-size:12px;}
+.cl-context-inp:focus{outline:none;border-color:var(--blue);}
+.cl-context-hint{font-size:11px;color:var(--text3);font-style:italic;margin-left:auto;}
 
 /* Ticket badge */
 .cl-ticket{font-family:var(--m);font-size:10px;background:var(--bg4);border:1px solid var(--border2);color:var(--text3);padding:1px 5px;border-radius:3px;flex-shrink:0;}
@@ -2707,16 +2730,37 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 <!-- HANDOFF ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-chron">
 
-  <div class="cl-pg-header" style="margin-bottom:14px;">
-    <div class="cl-pg-title">Handoff</div>
-    <div class="cl-pg-sub">Capture notes in the scratchpad, promote what matters to the structured feed</div>
+  <div class="page-header">
+    <div>
+      <div class="page-title">Handoff</div>
+      <div class="page-subtitle">Capture notes, promote what matters, copy the draft</div>
+    </div>
+    <div class="page-header-actions">
+      <button class="tbtn" style="color:var(--amber);border-color:var(--amber);" onclick="clStartFresh()">↺ Start fresh</button>
+    </div>
+  </div>
+
+  <!-- Shift context strip -->
+  <div class="cl-context-strip">
+    <div class="cl-context-field">
+      <label class="cl-context-lbl">Date</label>
+      <input type="date" id="cl-date" class="cl-context-inp" onchange="clSyncContext()">
+    </div>
+    <div class="cl-context-field">
+      <label class="cl-context-lbl">Shift</label>
+      <select id="cl-shift" class="cl-context-inp" onchange="clSyncContext()">
+        <option value="">Select</option>
+        <option>Day</option>
+        <option>Night</option>
+      </select>
+    </div>
+    <div class="cl-context-hint">Used in the handoff header when copying</div>
   </div>
 
   <!-- ── NOTEPAD ───────────────────────────────────────────────────────── -->
   <div class="cl-stack-section cl-notepad-section">
     <div class="cl-header-row">
       <span class="cl-section-lbl">Notepad</span>
-      <button class="tbtn" style="font-size:11px;" onclick="spClear()">Clear</button>
     </div>
     <div class="sp-input-row">
       <input id="sp-text" placeholder="What's happening? Type a note and press Enter..." onkeydown="if(event.key==='Enter')spAdd()">
@@ -2732,10 +2776,6 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
         <span class="cl-section-lbl">Shift Feed</span>
         <div class="cl-progress" id="cl-progress"></div>
       </div>
-      <div style="display:flex;gap:6px;">
-        <button class="tbtn" style="font-size:11px;" onclick="clCopyHandoff()">Copy passdown</button>
-        <button class="tbtn" style="font-size:11px;" onclick="clClear()">Clear shift</button>
-      </div>
     </div>
     <div class="cl-feed" id="cl-feed">
       <div class="empty-state compact">
@@ -2749,15 +2789,20 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
   <!-- ── HANDOFF DRAFT ─────────────────────────────────────────────────── -->
   <div class="cl-stack-section">
     <div class="cl-handoff-header">
-      <div>
-        <span class="cl-section-lbl">Handoff Draft</span>
-        <span class="cl-handoff-hint">Auto-built from your feed — ready to copy or screenshot</span>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <button class="cl-copy-handoff-btn" onclick="clCopyHandoff()">Copy Handoff</button>
-      </div>
+      <span class="cl-section-lbl">Handoff Draft</span>
+      <span class="cl-handoff-hint">Auto-built from your feed</span>
     </div>
     <div id="cl-preview" class="cl-handoff-preview"></div>
+  </div>
+
+  <!-- ── COPY HANDOFF ──────────────────────────────────────────────────── -->
+  <div class="cl-copy-tile" onclick="clCopyHandoff()">
+    <span class="cl-copy-tile-icon">📋</span>
+    <div>
+      <div class="cl-copy-tile-title">Copy Handoff</div>
+      <div class="cl-copy-tile-sub">Copies the structured draft to your clipboard</div>
+    </div>
+    <span class="cl-copy-tile-arrow">→</span>
   </div>
 
 </div>
@@ -3132,7 +3177,16 @@ function switchView(v, el) {
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
   if(v==='map') mapActivate();
   if(v==='timezones') initTimeZones();
-  if(v==='chron') clRender();
+  if(v==='chron') {
+    // Pre-populate date/shift from Asset Scan if not already set
+    const clDate = document.getElementById('cl-date');
+    const clShift = document.getElementById('cl-shift');
+    const asDate = document.getElementById('as-date');
+    const asShift = document.getElementById('as-shift');
+    if (clDate && asDate && !clDate.value && asDate.value) clDate.value = asDate.value;
+    if (clShift && asShift && !clShift.value && asShift.value) clShift.value = asShift.value;
+    clRender();
+  }
   if(v==='intel') wxFleetInit();
   if(v==='roc') { rocLoad(); rocRender(); }
   try { localStorage.setItem('rnwbl_active_tab', v); } catch(e) {}
@@ -4249,16 +4303,8 @@ function clCopyHandoff() {
   if (!clEntries.length) { showToast('No entries to copy'); return; }
 
   // Date/shift header
-  const dateRaw = (document.getElementById('as-date')?.value) || '';
-  const shift   = (document.getElementById('as-shift')?.value) || '';
-  let dateLabel = '';
-  if (dateRaw) {
-    const [y,m,d] = dateRaw.split('-');
-    dateLabel = `${parseInt(m)}/${parseInt(d)}`;
-  } else {
-    const n = new Date();
-    dateLabel = `${n.getMonth()+1}/${n.getDate()}`;
-  }
+  const dateLabel = clGetDateLabel();
+  const shift = clGetShiftLabel();
   const shiftLabel = shift ? ` ${shift} Shift` : '';
   const lines = [`${dateLabel}${shiftLabel}`, ''];
 
@@ -4415,6 +4461,35 @@ function spAdd() {
   try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
   document.getElementById('sp-text').value = '';
   renderScratchpad();
+}
+
+function clStartFresh() {
+  if (!confirm('Clear notepad and shift feed? This cannot be undone.')) return;
+  spClear();
+  clClear();
+  showToast('Ready for a new shift');
+}
+
+function clSyncContext() {
+  // Mirror cl-date/cl-shift back to as-date/as-shift so Asset Scan stays in sync
+  const clDate = document.getElementById('cl-date');
+  const clShift = document.getElementById('cl-shift');
+  const asDate = document.getElementById('as-date');
+  const asShift = document.getElementById('as-shift');
+  if (clDate && asDate && clDate.value) asDate.value = clDate.value;
+  if (clShift && asShift && clShift.value) asShift.value = clShift.value;
+  clRenderPreview();
+}
+
+function clGetDateLabel() {
+  const raw = document.getElementById('cl-date')?.value || document.getElementById('as-date')?.value || '';
+  if (!raw) { const n = new Date(); return `${n.getMonth()+1}/${n.getDate()}`; }
+  const [,m,d] = raw.split('-');
+  return `${parseInt(m)}/${parseInt(d)}`;
+}
+
+function clGetShiftLabel() {
+  return document.getElementById('cl-shift')?.value || document.getElementById('as-shift')?.value || '';
 }
 
 function spDelete(index) {
@@ -4576,16 +4651,8 @@ function clRenderPreview() {
   }
 
   // Date/shift header
-  const dateRaw = document.getElementById('as-date')?.value || '';
-  const shift   = document.getElementById('as-shift')?.value || '';
-  let dateLabel = '';
-  if (dateRaw) {
-    const [y,m,d] = dateRaw.split('-');
-    dateLabel = `${parseInt(m)}/${parseInt(d)}`;
-  } else {
-    const n = new Date();
-    dateLabel = `${n.getMonth()+1}/${n.getDate()}`;
-  }
+  const dateLabel = clGetDateLabel();
+  const shift = clGetShiftLabel();
   const shiftLabel = shift ? ` ${shift} Shift` : ' Shift';
   let html = `<div class="cl-hd-date-header">${dateLabel}${shiftLabel}</div>`;
 
