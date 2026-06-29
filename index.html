@@ -9,6 +9,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<!-- Firebase Compat SDK — used by Team Schedule tab -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G50BZLK3VS"></script>
 <script>
@@ -145,6 +148,31 @@ body.dark .nav-tz-key{color:var(--text2);}
 .nav-tz-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);margin-right:1px;flex-shrink:0;}
 @media(max-width:1050px){.nav-tz-item.hide-md{display:none;}}
 @media(max-width:700px){.nav-tz-bar{display:none;}}
+
+/* ── MOBILE NAVIGATION ───────────────────────────────────────────────────────── */
+.mobile-menu-btn{display:none;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);cursor:pointer;flex-shrink:0;margin-right:8px;}
+.mobile-menu-btn span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;position:relative;transition:all .25s;}
+.mobile-menu-btn span::before,.mobile-menu-btn span::after{content:'';position:absolute;width:18px;height:2px;background:var(--text);border-radius:2px;transition:all .25s;}
+.mobile-menu-btn span::before{top:-6px;}
+.mobile-menu-btn span::after{top:6px;}
+.mobile-menu-btn.open span{background:transparent;}
+.mobile-menu-btn.open span::before{transform:rotate(45deg);top:0;}
+.mobile-menu-btn.open span::after{transform:rotate(-45deg);top:0;}
+
+.mobile-nav-drawer{position:fixed;top:48px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);box-shadow:var(--sh);z-index:49;display:none;flex-direction:column;padding:8px;gap:4px;}
+.mobile-nav-drawer.open{display:flex;}
+.mobile-nav-drawer .nav-tab{width:100%;text-align:left;padding:10px 14px;border-radius:6px;}
+.mobile-nav-drawer .nav-tab.active{background:var(--bg3);border-color:var(--border);}
+
+@media(max-width:768px){
+  .mobile-menu-btn{display:flex;}
+  .nav .nav-tab:not(.mobile-menu-btn){display:none;}
+  .nav-spacer{display:none;}
+  .nav{padding:0 12px;}
+  .nav-brand{margin-right:4px;padding-right:8px;}
+  .nav-brand-text{font-size:12px;}
+  .nav-brand-sub{font-size:8px;}
+}
 
 /* LAYOUT */
 .view{display:none;padding:16px;}
@@ -1443,6 +1471,262 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 .roc-drill-footer{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center;}
 .roc-drill-conf-row{display:flex;gap:6px;}
 .roc-section-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--bg4);color:var(--text3);}
+
+/* ── TEAM SCHEDULE (all scoped to avoid ops-hub conflicts) ───────────────── */
+#view-schedule {
+  --blue-light:#E6F1FB;--blue-mid:#B5D4F4;--blue-dark:#0C447C;--blue-text:#185FA5;
+  --green-light:#EAF3DE;--green-mid:#C0DD97;--green-dark:#27500A;--green-text:#3B6D11;
+  --d1-bg:#dbeafe;--d1-fg:#1e3a8a;--d2-bg:#dcfce7;--d2-fg:#14532d;
+  --d3-bg:#ede9fe;--d3-fg:#3b0764;--n1-bg:#fef3c7;--n1-fg:#78350f;
+  --n2-bg:#fee2e2;--n2-fg:#7f1d1d;--off-bg:#f1f5f9;--off-fg:#94a3b8;
+  --bg:#f8f9fa;--surface:#ffffff;--border:#e2e8f0;--border-dashed:#cbd5e1;
+  --text:#0f172a;--text-muted:#64748b;--radius:10px;--radius-sm:6px;
+}
+#view-schedule .sch-page{}
+/* Header */
+#view-schedule .page-header{margin-bottom:1.5rem;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+#view-schedule .start-date-control{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-bottom:4px;}
+#view-schedule .start-date-lbl{font-size:12px;font-weight:600;color:var(--text-muted);white-space:nowrap;}
+#view-schedule .start-date-control input[type="date"]{padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:#fff;color:var(--text);font-family:inherit;cursor:pointer;}
+#view-schedule .start-date-control input[type="date"]:focus{outline:none;border-color:var(--blue-text);}
+#view-schedule .this-week-btn{padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--text-muted);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .14s;white-space:nowrap;}
+#view-schedule .this-week-btn:hover{border-color:var(--blue-text);color:var(--blue-text);background:#e8f0fe;}
+#view-schedule .week-indicator{font-size:11.5px;color:var(--text-muted);white-space:nowrap;font-style:italic;}
+/* Halves */
+#view-schedule .halves{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:2rem;}
+#view-schedule .half-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;}
+#view-schedule .half-card-header{margin-bottom:10px;}
+#view-schedule .half-title{font-size:14px;font-weight:600;margin-bottom:2px;}
+#view-schedule .half-card.fh .half-title{color:var(--blue-text);}
+#view-schedule .half-card.bh .half-title{color:var(--green-text);}
+#view-schedule .half-days{font-size:12px;color:var(--text-muted);font-family:'DM Mono',monospace;}
+#view-schedule .drop-zone{min-height:90px;border:1.5px dashed var(--border-dashed);border-radius:var(--radius-sm);padding:6px;display:flex;flex-direction:column;gap:5px;transition:background .15s,border-color .15s;}
+#view-schedule .drop-zone.drag-over{background:#f0f7ff;border-color:var(--blue-text);}
+#view-schedule .half-card.bh .drop-zone.drag-over{background:#f2f9ea;border-color:var(--green-text);}
+#view-schedule .hint{font-size:11px;color:var(--text-muted);margin-top:6px;font-family:'DM Mono',monospace;}
+/* Chips */
+#view-schedule .chip{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:grab;user-select:none;border:1px solid;transition:box-shadow .15s,opacity .15s;position:relative;}
+#view-schedule .chip:hover{box-shadow:0 2px 8px rgba(0,0,0,.10);}
+#view-schedule .chip:active{cursor:grabbing;}
+#view-schedule .chip.dragging{opacity:.25;}
+#view-schedule .chip.fh-chip{background:var(--blue-light);color:var(--blue-dark);border-color:var(--blue-mid);}
+#view-schedule .chip.bh-chip{background:var(--green-light);color:var(--green-dark);border-color:var(--green-mid);}
+#view-schedule .chip-pos{font-family:'DM Mono',monospace;font-size:11px;opacity:.6;min-width:16px;}
+#view-schedule .chip-name{flex:1;}
+#view-schedule .chip-role{font-family:'DM Mono',monospace;font-size:11px;padding:2px 7px;border-radius:20px;font-weight:500;}
+#view-schedule .role-d1{background:var(--d1-bg);color:var(--d1-fg);}
+#view-schedule .role-d2{background:var(--d2-bg);color:var(--d2-fg);}
+#view-schedule .role-d3{background:var(--d3-bg);color:var(--d3-fg);}
+#view-schedule .role-n1{background:var(--n1-bg);color:var(--n1-fg);}
+#view-schedule .role-n2{background:var(--n2-bg);color:var(--n2-fg);}
+#view-schedule .chip-controls{display:flex;flex-direction:column;gap:2px;margin-left:2px;flex-shrink:0;}
+#view-schedule .chip-btn{width:20px;height:18px;border:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.6);color:inherit;cursor:pointer;border-radius:4px;opacity:.7;font-size:10px;line-height:1;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+#view-schedule .chip-btn:hover:not(:disabled){opacity:1;background:rgba(255,255,255,.95);border-color:rgba(0,0,0,.25);}
+#view-schedule .chip-btn:disabled{opacity:.2;cursor:not-allowed;}
+#view-schedule .chip-xfer{flex-shrink:0;width:24px;height:24px;border:1px solid rgba(0,0,0,.15);background:rgba(255,255,255,.55);color:inherit;cursor:pointer;border-radius:5px;font-size:12px;display:flex;align-items:center;justify-content:center;opacity:.6;transition:all .12s;margin-left:2px;}
+#view-schedule .chip-xfer:hover{opacity:1;background:rgba(255,255,255,.95);border-color:rgba(0,0,0,.3);}
+#view-schedule .chip-del{flex-shrink:0;width:20px;height:20px;border:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.4);color:inherit;cursor:pointer;border-radius:4px;font-size:11px;display:flex;align-items:center;justify-content:center;opacity:.4;transition:all .12s;margin-left:2px;}
+#view-schedule .chip-del:hover{opacity:1;background:#fdecea;border-color:#e53935;color:#e53935;}
+#view-schedule .chip.drop-above::before{content:'';position:absolute;top:-3px;left:4px;right:4px;height:3px;background:var(--blue-text);border-radius:2px;pointer-events:none;}
+#view-schedule .chip.drop-below::after{content:'';position:absolute;bottom:-3px;left:4px;right:4px;height:3px;background:var(--blue-text);border-radius:2px;pointer-events:none;}
+#view-schedule .chip.drag-over-target{outline:2px solid var(--blue-text);outline-offset:2px;}
+#view-schedule .divider{height:1px;background:var(--border);margin:2rem 0;}
+/* Tabs */
+#view-schedule .tabs{display:flex;gap:4px;margin-bottom:1.5rem;border-bottom:1px solid var(--border);}
+#view-schedule .tab-btn{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;padding:8px 18px;border:none;background:none;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;}
+#view-schedule .tab-btn:hover{color:var(--text);}
+#view-schedule .tab-btn.active{color:var(--blue-text);border-bottom-color:var(--blue-text);}
+#view-schedule .tab-panel{display:none;}
+#view-schedule .tab-panel.active{display:block;}
+/* Picker */
+#view-schedule .picker-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:1.25rem;}
+#view-schedule .picker-row label{font-size:14px;color:var(--text-muted);}
+#view-schedule .picker-row select,#view-schedule .cal-controls select{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;padding:7px 30px 7px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;}
+#view-schedule .picker-row select:focus,#view-schedule .cal-controls select:focus{outline:2px solid var(--blue-text);outline-offset:1px;}
+/* Legend */
+#view-schedule .legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem;}
+#view-schedule .lbadge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;font-family:'DM Mono',monospace;}
+#view-schedule .lbadge.d1{background:var(--d1-bg);color:var(--d1-fg);}
+#view-schedule .lbadge.d2{background:var(--d2-bg);color:var(--d2-fg);}
+#view-schedule .lbadge.d3{background:var(--d3-bg);color:var(--d3-fg);}
+#view-schedule .lbadge.n1{background:var(--n1-bg);color:var(--n1-fg);}
+#view-schedule .lbadge.n2{background:var(--n2-bg);color:var(--n2-fg);}
+#view-schedule .lbadge.off{background:var(--off-bg);color:var(--off-fg);}
+/* Individual table */
+#view-schedule .scroll-note{font-size:12px;color:var(--text-muted);margin-bottom:8px;font-family:'DM Mono',monospace;}
+#view-schedule .week-grid{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);}
+#view-schedule table{width:100%;border-collapse:collapse;font-size:13px;min-width:560px;}
+#view-schedule thead{position:sticky;top:0;z-index:1;}
+#view-schedule th{font-weight:500;font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:10px;border-bottom:1px solid var(--border);background:#f8f9fa;}
+#view-schedule td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:middle;}
+#view-schedule tr:last-child td{border-bottom:none;}
+#view-schedule tr.alt td{background:#fafbfc;}
+#view-schedule tr:hover td{background:#f0f7ff;}
+#view-schedule .wk-lbl{color:var(--text-muted);font-size:12px;font-family:'DM Mono',monospace;white-space:nowrap;}
+#view-schedule .date-lbl{font-size:12px;color:var(--text-muted);font-family:'DM Mono',monospace;white-space:nowrap;}
+#view-schedule .rbadge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;font-family:'DM Mono',monospace;}
+#view-schedule .rbadge.d1{background:var(--d1-bg);color:var(--d1-fg);}
+#view-schedule .rbadge.d2{background:var(--d2-bg);color:var(--d2-fg);}
+#view-schedule .rbadge.d3{background:var(--d3-bg);color:var(--d3-fg);}
+#view-schedule .rbadge.n1{background:var(--n1-bg);color:var(--n1-fg);}
+#view-schedule .rbadge.n2{background:var(--n2-bg);color:var(--n2-fg);}
+#view-schedule .rbadge.off{background:var(--off-bg);color:var(--off-fg);font-size:10px;}
+#view-schedule .empty-state{padding:2rem;text-align:center;color:var(--text-muted);font-size:14px;}
+/* Crew view */
+#view-schedule .crew-grid{display:flex;flex-direction:column;gap:0;border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;}
+#view-schedule .crew-week{border-bottom:1px solid var(--border);}
+#view-schedule .crew-week:last-child{border-bottom:none;}
+#view-schedule .crew-week-header{display:grid;grid-template-columns:44px 90px 1fr 1fr 20px;align-items:center;gap:10px;padding:8px 14px;background:#f8f9fa;cursor:pointer;user-select:none;border-bottom:1px solid var(--border);transition:background .1s;}
+#view-schedule .crew-week-header:hover{background:#f0f4f8;}
+#view-schedule .crew-week.open .crew-week-header{background:#eef4fb;}
+#view-schedule .crew-week-header .wk-num{font-family:'DM Mono',monospace;font-size:12px;color:var(--text-muted);}
+#view-schedule .crew-week-header .wk-dates{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);}
+#view-schedule .crew-week-header .wk-half{display:flex;align-items:center;gap:5px;flex-wrap:wrap;min-width:0;}
+#view-schedule .wk-half-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:1px 5px;border-radius:4px;white-space:nowrap;}
+#view-schedule .wk-half-label.fh-lbl{background:var(--blue-light);color:var(--blue-text);}
+#view-schedule .wk-half-label.bh-lbl{background:var(--green-light);color:var(--green-text);}
+#view-schedule .crew-week-header .chevron{font-size:11px;color:var(--text-muted);transition:transform .2s;text-align:right;}
+#view-schedule .crew-week.open .chevron{transform:rotate(180deg);}
+#view-schedule .crew-days{display:none;}
+#view-schedule .crew-week.open .crew-days{display:block;}
+#view-schedule .crew-day{display:grid;grid-template-columns:100px 1fr;border-top:1px solid var(--border);min-height:44px;}
+#view-schedule .crew-day-label{padding:8px 14px;font-size:12px;font-weight:600;color:var(--text-muted);border-right:1px solid var(--border);display:flex;flex-direction:column;justify-content:center;background:#fafbfc;}
+#view-schedule .crew-day-label .day-name{font-size:13px;color:var(--text);}
+#view-schedule .crew-day-label .day-date{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-muted);}
+#view-schedule .crew-day-slots{padding:7px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+#view-schedule .person-slot{display:inline-flex;align-items:center;gap:5px;padding:4px 10px 4px 8px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid transparent;}
+#view-schedule .person-slot .ps-name{font-weight:600;}
+#view-schedule .person-slot .ps-role{font-family:'DM Mono',monospace;font-size:11px;opacity:.85;}
+#view-schedule .ps-d1{background:var(--d1-bg);color:var(--d1-fg);border-color:#bfdbfe;}
+#view-schedule .ps-d2{background:var(--d2-bg);color:var(--d2-fg);border-color:#bbf7d0;}
+#view-schedule .ps-d3{background:var(--d3-bg);color:var(--d3-fg);border-color:#ddd6fe;}
+#view-schedule .ps-n1{background:var(--n1-bg);color:var(--n1-fg);border-color:#fde68a;}
+#view-schedule .ps-n2{background:var(--n2-bg);color:var(--n2-fg);border-color:#fecaca;}
+#view-schedule .no-crew{font-size:12px;color:var(--text-muted);font-style:italic;padding:4px 0;}
+#view-schedule .sum-badge{font-family:'DM Mono',monospace;font-size:10px;padding:1px 6px;border-radius:10px;font-weight:500;}
+#view-schedule .sum-d1{background:var(--d1-bg);color:var(--d1-fg);}
+#view-schedule .sum-d2{background:var(--d2-bg);color:var(--d2-fg);}
+#view-schedule .sum-d3{background:var(--d3-bg);color:var(--d3-fg);}
+#view-schedule .sum-n1{background:var(--n1-bg);color:var(--n1-fg);}
+#view-schedule .sum-n2{background:var(--n2-bg);color:var(--n2-fg);}
+#view-schedule .crew-controls{display:flex;align-items:center;gap:10px;margin-bottom:1rem;flex-wrap:wrap;}
+#view-schedule .crew-controls button{font-family:'DM Sans',sans-serif;font-size:13px;padding:6px 14px;border-radius:var(--radius-sm);border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:background .1s;}
+#view-schedule .crew-controls button:hover{background:var(--bg);}
+#view-schedule .crew-controls label{font-size:13px;color:var(--text-muted);margin-left:8px;}
+#view-schedule .crew-controls input[type=text]{font-family:'DM Mono',monospace;font-size:13px;padding:6px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);background:#fff;color:var(--text);width:120px;}
+#view-schedule .crew-controls input:focus{outline:2px solid var(--blue-text);outline-offset:1px;}
+/* Intro */
+#view-schedule .intro{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:2rem;}
+#view-schedule .intro-top{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.25rem;}
+#view-schedule .intro-section h2{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:10px;}
+#view-schedule .intro-section p{font-size:14px;line-height:1.65;color:var(--text);}
+#view-schedule .intro-section ul{margin:0;padding-left:16px;}
+#view-schedule .intro-section ul li{font-size:13.5px;line-height:1.7;color:var(--text-muted);margin-bottom:4px;}
+#view-schedule .intro-section ul li:last-child{margin-bottom:0;}
+#view-schedule .intro-section ul li strong{color:var(--text);font-weight:600;}
+#view-schedule .pitch-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;border-top:1px solid var(--border);padding-top:1.25rem;}
+#view-schedule .pitch-card{background:var(--bg);border-radius:var(--radius-sm);padding:12px;}
+#view-schedule .pitch-card .pitch-icon{font-size:20px;margin-bottom:6px;}
+#view-schedule .pitch-card .pitch-title{font-size:13px;font-weight:600;margin-bottom:4px;color:var(--text);}
+#view-schedule .pitch-card .pitch-body{font-size:12px;line-height:1.55;color:var(--text-muted);}
+#view-schedule .intro-toggle{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--blue-text);cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;padding:0;margin-top:.75rem;}
+#view-schedule .intro-toggle:hover{text-decoration:underline;}
+#view-schedule .intro-body.hidden{display:none;}
+/* Calendar */
+#view-schedule .cal-controls{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap;}
+#view-schedule .cal-nav{display:flex;align-items:center;gap:6px;margin-left:auto;}
+#view-schedule .cal-nav button{font-family:'DM Sans',sans-serif;font-size:14px;padding:6px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);background:#fff;color:var(--text);cursor:pointer;transition:background .1s;}
+#view-schedule .cal-nav button:hover{background:var(--bg);}
+#view-schedule .cal-nav .cal-month-label{font-size:16px;font-weight:600;min-width:160px;text-align:center;}
+#view-schedule .cal-grid-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+#view-schedule .cal-dow-headers{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--border);}
+#view-schedule .cal-dow{padding:8px 4px;text-align:center;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);}
+#view-schedule .cal-days{display:grid;grid-template-columns:repeat(7,1fr);}
+#view-schedule .cal-cell{border-right:1px solid var(--border);border-bottom:1px solid var(--border);min-height:110px;padding:6px;display:flex;flex-direction:column;gap:3px;position:relative;}
+#view-schedule .cal-cell:nth-child(7n){border-right:none;}
+#view-schedule .cal-cell.empty{background:var(--bg);}
+#view-schedule .cal-cell.today{background:#fffbeb;}
+#view-schedule .cal-cell.today .cal-day-num{color:var(--blue-text);font-weight:700;}
+#view-schedule .cal-cell.has-focus{background:#f0f7ff;}
+#view-schedule .cal-day-num{font-size:13px;font-weight:500;color:var(--text-muted);margin-bottom:2px;line-height:1;}
+#view-schedule .cal-person{display:flex;align-items:center;gap:4px;padding:2px 6px 2px 5px;border-radius:4px;font-size:11px;font-weight:500;line-height:1.3;cursor:default;}
+#view-schedule .cal-person.faded{opacity:.3;}
+#view-schedule .cal-person.highlighted{outline:2px solid currentColor;outline-offset:1px;}
+#view-schedule .cal-person .cp-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;background:currentColor;opacity:.6;}
+#view-schedule .cal-person .cp-name{font-weight:600;}
+#view-schedule .cal-person .cp-role{opacity:.75;font-family:'DM Mono',monospace;font-size:10px;}
+#view-schedule .cp-d1{background:var(--d1-bg);color:var(--d1-fg);}
+#view-schedule .cp-d2{background:var(--d2-bg);color:var(--d2-fg);}
+#view-schedule .cp-d3{background:var(--d3-bg);color:var(--d3-fg);}
+#view-schedule .cp-n1{background:var(--n1-bg);color:var(--n1-fg);}
+#view-schedule .cp-n2{background:var(--n2-bg);color:var(--n2-fg);}
+#view-schedule .cal-off-label{font-size:10px;color:var(--off-fg);font-style:italic;margin-top:2px;}
+/* Time Off tab */
+#view-schedule .to-fb-status{font-size:12px;color:#c0392b;padding:6px 0 2px;min-height:20px;}
+#view-schedule .to-section{margin-bottom:24px;}
+#view-schedule .to-section-title{font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+#view-schedule .to-count{font-size:11px;font-weight:600;background:#e8f0fe;color:var(--blue-text);padding:2px 8px;border-radius:10px;text-transform:none;letter-spacing:0;}
+#view-schedule .to-form{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px;}
+#view-schedule .to-form-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+#view-schedule .to-field{display:flex;flex-direction:column;gap:4px;flex:1;min-width:140px;}
+#view-schedule .to-field label{font-size:11px;font-weight:600;color:var(--text-muted);}
+#view-schedule .to-opt{font-weight:400;opacity:.6;}
+#view-schedule .to-field select,#view-schedule .to-field input{padding:7px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:#fff;color:#1a1a1a;font-family:inherit;}
+#view-schedule .to-submit-btn{padding:8px 18px;background:var(--blue-text);color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+#view-schedule .to-submit-btn:hover{background:#1565c0;}
+#view-schedule .to-empty{padding:24px;text-align:center;color:var(--text-muted);font-size:13px;}
+#view-schedule .to-entry{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px;border-left:4px solid #ccc;}
+#view-schedule .to-entry.to-uncovered{border-left-color:#e53935;}
+#view-schedule .to-entry.to-pending{border-left-color:#f59e0b;}
+#view-schedule .to-entry.to-covered{border-left-color:#16a34a;}
+#view-schedule .to-entry-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+#view-schedule .to-op-name{font-size:15px;font-weight:700;color:#1a1a1a;}
+#view-schedule .to-role-pill{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;}
+#view-schedule .to-half-pill{font-size:10px;background:#f0f4f8;color:#555;padding:2px 7px;border-radius:10px;font-weight:600;}
+#view-schedule .to-dates{font-size:12px;font-weight:600;color:var(--text-muted);font-family:monospace;margin-left:auto;}
+#view-schedule .to-del{background:none;border:none;color:#bbb;cursor:pointer;font-size:16px;padding:0 4px;line-height:1;}
+#view-schedule .to-del:hover{color:#e53935;}
+#view-schedule .to-status-badge{font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;display:inline-flex;align-items:center;gap:5px;margin-bottom:8px;}
+#view-schedule .to-status-badge.uncovered{background:#fdecea;color:#c62828;}
+#view-schedule .to-status-badge.pending{background:#fffbeb;color:#b45309;}
+#view-schedule .to-status-badge.covered{background:#dcfce7;color:#15803d;}
+#view-schedule .to-entry-reason{font-size:12px;color:var(--text-muted);font-style:italic;margin-bottom:6px;}
+#view-schedule .to-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:8px;}
+#view-schedule .to-btn{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid;font-family:inherit;transition:all .14s;}
+#view-schedule .to-btn.propose{background:#e8f0fe;color:var(--blue-text);border-color:var(--blue-text);}
+#view-schedule .to-btn.propose:hover{background:var(--blue-text);color:#fff;}
+#view-schedule .to-btn.confirm{background:#dcfce7;color:#15803d;border-color:#16a34a;}
+#view-schedule .to-btn.confirm:hover{background:#16a34a;color:#fff;}
+#view-schedule .to-btn.sec{background:#f8fafc;color:#666;border-color:#ccc;}
+#view-schedule .to-btn.sec:hover{border-color:#e53935;color:#e53935;}
+#view-schedule .to-segs{display:flex;flex-direction:column;gap:5px;margin:6px 0;}
+#view-schedule .to-seg{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:6px 10px;background:#f8fafc;border-radius:6px;border:1px solid var(--border);}
+#view-schedule .to-seg-dates{font-family:monospace;font-size:12px;font-weight:600;color:#444;white-space:nowrap;}
+#view-schedule .to-seg-note{font-size:11px;color:#666;font-style:italic;}
+#view-schedule .to-seg-actions{display:flex;gap:5px;margin-left:auto;}
+#view-schedule .to-seg-none{font-size:12px;color:var(--text-muted);font-style:italic;padding:4px 0;}
+#view-schedule .to-seg-invalid{border-color:#f59e0b;background:#fffbeb;}
+#view-schedule .to-cover-invalid{font-size:11.5px;color:#b45309;background:#fef3c7;border:1px solid #f59e0b;border-radius:5px;padding:5px 9px;margin-top:5px;width:100%;line-height:1.4;}
+#view-schedule .to-propose-form select,#view-schedule .to-propose-form input{padding:5px 9px;border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:inherit;}
+#view-schedule .to-propose-form button{padding:5px 12px;border-radius:5px;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;}
+#view-schedule .rbadge.to-off-unc{background:#fdecea;color:#c62828;font-size:11px;}
+#view-schedule .rbadge.to-off-pen{background:#fffbeb;color:#b45309;font-size:11px;}
+#view-schedule .rbadge.to-off-cov{background:#dcfce7;color:#15803d;font-size:11px;}
+#view-schedule .rbadge.cvr-badge{outline:2px solid #16a34a;outline-offset:1px;position:relative;}
+#view-schedule .rbadge.cvr-badge::before{content:'↔';margin-right:3px;font-size:9px;}
+#view-schedule .ps-off-lbl{font-size:9px;font-weight:700;padding:1px 4px;border-radius:3px;margin-left:3px;}
+#view-schedule .ps-off-lbl.unc{background:#fdecea;color:#c62828;}
+#view-schedule .ps-off-lbl.pen{background:#fffbeb;color:#b45309;}
+#view-schedule .ps-off-lbl.cov{background:#dcfce7;color:#15803d;}
+#view-schedule .person-slot.ps-is-off{opacity:.5;text-decoration:line-through;text-decoration-color:#e53935;}
+#view-schedule .cal-person.cp-is-off{opacity:.4;text-decoration:line-through;text-decoration-color:#e53935;}
+#view-schedule .ps-cover-note{font-size:9px;color:#555;font-style:italic;margin-left:3px;}
+@media(max-width:640px){
+  #view-schedule .intro-top{grid-template-columns:1fr;}
+  #view-schedule .pitch-cards{grid-template-columns:1fr 1fr;}
+  #view-schedule .halves{grid-template-columns:1fr;}
+  #view-schedule .crew-week-header{grid-template-columns:36px 80px 1fr 20px;}
+}
 </style>
 </head>
 <body>
@@ -1457,6 +1741,9 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
       <div class="nav-brand-sub">Ops Hub</div>
     </div>
   </div>
+  <button class="mobile-menu-btn" id="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+    <span></span>
+  </button>
   <button class="nav-tab active" id="nav-tab-scans" onclick="switchView('scans',this)">Scans</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
   <button class="nav-tab" onclick="switchView('nerc',this)">NERC Study</button>
@@ -1465,6 +1752,7 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
   <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
   <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Handoff</button>
+  <button class="nav-tab" onclick="switchView('schedule',this)">Schedule</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('map',this)">Map</button>
   <button class="nav-tab" onclick="switchView('timezones',this)">Map/Timezones</button>
 
@@ -1475,6 +1763,18 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
   <button class="dm-toggle" id="dm-toggle" onclick="dmToggle()" title="Toggle dark mode" aria-label="Toggle dark mode">
     <span class="dm-thumb" id="dm-thumb">☀️</span>
   </button>
+</div>
+<div class="mobile-nav-drawer" id="mobile-nav-drawer">
+  <button class="nav-tab" onclick="switchView('scans',this); toggleMobileMenu()">Scans</button>
+  <button class="nav-tab" onclick="switchView('asset',this); toggleMobileMenu()">Asset Scan</button>
+  <button class="nav-tab" onclick="switchView('nerc',this); toggleMobileMenu()">NERC Study</button>
+  <button class="nav-tab" onclick="switchView('roc',this); toggleMobileMenu()">ROC Study</button>
+  <button class="nav-tab" onclick="switchView('intel',this); toggleMobileMenu()">Weather</button>
+  <button class="nav-tab" onclick="switchView('ops',this); toggleMobileMenu()">Toolbox</button>
+  <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
+  <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Handoff</button>
+  <button class="nav-tab" onclick="switchView('schedule',this); toggleMobileMenu()">Schedule</button>
+  <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Map/Timezones</button>
 </div>
 <div id="dm-flash"></div>
 <canvas id="dm-lightning-canvas"></canvas>
@@ -2807,6 +3107,192 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 
 </div>
 
+<!-- TEAM SCHEDULE ──────────────────────────────────────────────────────────── -->
+<div class="view" id="view-schedule">
+<div class="sch-page">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Team Schedule</div>
+      <div class="page-subtitle">10-person · 12-hour shifts · split-week rotation</div>
+    </div>
+    <div class="start-date-control">
+      <label class="start-date-lbl">Schedule start</label>
+      <input type="date" id="start-date-input" onchange="onStartDateChange(this.value)">
+      <button class="this-week-btn" onclick="setStartToThisWeek()" title="Jump to this week">This week</button>
+      <span class="week-indicator" id="week-indicator"></span>
+    </div>
+  </div>
+
+  <!-- Intro blurb -->
+  <div class="intro">
+    <div class="intro-body" id="intro-body">
+      <div class="intro-top">
+        <div class="intro-section">
+          <h2>How the schedule works</h2>
+          <ul>
+            <li><strong>Two fixed halves</strong> — Front Half (Sun–Tue + alternating Wed) · Back Half (alternating Wed + Thu–Sat)</li>
+            <li><strong>12-hour shifts</strong> — Days 6am–6pm · Nights 6pm–6am</li>
+            <li><strong>Weekly rotation</strong> — D1 → D2 → D3 → N1 → N2, repeating every 5 weeks</li>
+            <li><strong>Wednesday alternates</strong> between halves each week</li>
+            <li><strong>Result</strong> — Fixed days on/off · only your role changes week to week</li>
+          </ul>
+        </div>
+        <div class="intro-section">
+          <h2>Team setup</h2>
+          <ul>
+            <li>Use the <strong>→ BH / ← FH</strong> button to move operators between halves</li>
+            <li><strong>Position = starting role</strong> — slot 1 = D1, slot 5 = N2</li>
+            <li>Use the <strong>▲ ▼ arrows</strong> to reorder within a half</li>
+            <li>Use <strong>✕</strong> to remove an operator — the rotation adjusts automatically</li>
+            <li>Switch to <strong>Individual</strong>, <strong>Crew</strong>, or <strong>Calendar</strong> view to explore the schedule</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pitch-cards">
+        <div class="pitch-card">
+          <div class="pitch-icon">📅</div>
+          <div class="pitch-title">Your days never change</div>
+          <div class="pitch-body">Front half always owns Sun–Tue. Back half always owns Thu–Sat. Plan your life a year out without guessing.</div>
+        </div>
+        <div class="pitch-card">
+          <div class="pitch-icon">⚖</div>
+          <div class="pitch-title">Fair rotation, no favorites</div>
+          <div class="pitch-body">Every operator cycles through every role — D1, D2, D3, nights — on the exact same schedule. Nobody is stuck on nights permanently.</div>
+        </div>
+        <div class="pitch-card">
+          <div class="pitch-icon">🤝</div>
+          <div class="pitch-title">Consistent teammates</div>
+          <div class="pitch-body">You work alongside the same half every shift. You know your crew, they know you — better communication, fewer handoff errors.</div>
+        </div>
+        <div class="pitch-card">
+          <div class="pitch-icon">💵</div>
+          <div class="pitch-title">Your paycheck stays the same</div>
+          <div class="pitch-body">Same total hours as the existing schedule means your base pay and overtime don't change. No surprises on payday.</div>
+        </div>
+      </div>
+    </div>
+    <button class="intro-toggle" id="intro-toggle" onclick="
+      const b=document.getElementById('intro-body');
+      const t=document.getElementById('intro-toggle');
+      b.classList.toggle('hidden');
+      t.textContent = b.classList.contains('hidden') ? '▼ Show schedule info' : '▲ Hide';
+    ">▲ Hide</button>
+  </div>
+
+  <!-- Halves roster -->
+  <div class="halves">
+    <div class="half-card fh">
+      <div class="half-card-header">
+        <div class="half-title">Front Half</div>
+        <div class="half-days">Sun · Mon · Tue · Wed (alternating)</div>
+      </div>
+      <div class="drop-zone" id="zone-fh" data-half="fh"></div>
+      <div class="hint">Position 1=D1 · 2=D2 · 3=D3 · 4=N1 · 5=N2</div>
+    </div>
+    <div class="half-card bh">
+      <div class="half-card-header">
+        <div class="half-title">Back Half</div>
+        <div class="half-days">Wed (alternating) · Thu · Fri · Sat</div>
+      </div>
+      <div class="drop-zone" id="zone-bh" data-half="bh"></div>
+      <div class="hint">Position 1=D1 · 2=D2 · 3=D3 · 4=N1 · 5=N2</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Inner tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="individual">Individual view</button>
+    <button class="tab-btn" data-tab="crew">Crew view</button>
+    <button class="tab-btn" data-tab="calendar">Calendar</button>
+    <button class="tab-btn" data-tab="timeoff">⏱ Time Off</button>
+  </div>
+
+  <!-- Individual tab -->
+  <div class="tab-panel active" id="tab-individual">
+    <div class="picker-row">
+      <label>View schedule for</label>
+      <select id="op-select"><option value="">— pick an operator —</option></select>
+    </div>
+    <div class="legend">
+      <span class="lbadge d1">D1 · 6am–6pm</span>
+      <span class="lbadge d2">D2 · 6am–6pm</span>
+      <span class="lbadge d3">D3 · 6am–6pm</span>
+      <span class="lbadge n1">N1 · 6pm–6am</span>
+      <span class="lbadge n2">N2 · 6pm–6am</span>
+      <span class="lbadge off">off</span>
+    </div>
+    <div class="scroll-note" id="sched-scroll-note">52 weeks</div>
+    <div class="week-grid">
+      <table>
+        <thead>
+          <tr><th>Wk</th><th>Dates</th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>
+        </thead>
+        <tbody id="sched-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Crew tab -->
+  <div class="tab-panel" id="tab-crew">
+    <div class="crew-controls">
+      <button id="expand-all">Expand all</button>
+      <button id="collapse-all">Collapse all</button>
+      <label>Jump to week</label>
+      <input type="text" id="jump-input" placeholder="e.g. 5 or 9/5" />
+    </div>
+    <div class="scroll-note">52 weeks · click a week to expand</div>
+    <div class="crew-grid" id="crew-grid"></div>
+  </div>
+
+  <!-- Calendar tab -->
+  <div class="tab-panel" id="tab-calendar">
+    <div class="cal-controls">
+      <label style="font-size:14px;color:var(--text-muted)">Highlight</label>
+      <select id="cal-op-select"><option value="">Everyone</option></select>
+      <div class="cal-nav">
+        <button id="cal-prev">←</button>
+        <span class="cal-month-label" id="cal-month-label"></span>
+        <button id="cal-next">→</button>
+      </div>
+    </div>
+    <div class="cal-grid-wrap">
+      <div class="cal-dow-headers">
+        <div class="cal-dow">Sun</div><div class="cal-dow">Mon</div>
+        <div class="cal-dow">Tue</div><div class="cal-dow">Wed</div>
+        <div class="cal-dow">Thu</div><div class="cal-dow">Fri</div>
+        <div class="cal-dow">Sat</div>
+      </div>
+      <div class="cal-days" id="cal-days"></div>
+    </div>
+  </div>
+
+  <!-- Time Off tab -->
+  <div class="tab-panel" id="tab-timeoff">
+    <div id="to-fb-status" class="to-fb-status"></div>
+    <div class="to-section">
+      <div class="to-section-title">Request Time Off</div>
+      <div class="to-form">
+        <div class="to-form-row">
+          <div class="to-field"><label>Operator</label><select id="to-operator"><option value="">— select —</option></select></div>
+          <div class="to-field"><label>Start date</label><input type="date" id="to-start"></div>
+          <div class="to-field"><label>End date <span class="to-opt">or same as start</span></label><input type="date" id="to-end"></div>
+          <div class="to-field"><label>Reason <span class="to-opt">optional</span></label><input type="text" id="to-reason" placeholder="e.g. Vacation"></div>
+        </div>
+        <button class="to-submit-btn" onclick="submitTimeOff()">+ Submit Request</button>
+      </div>
+    </div>
+    <div class="to-section">
+      <div class="to-section-title">Upcoming Time Off <span class="to-count" id="to-count"></span></div>
+      <div id="to-list"><div class="to-empty">Connecting to Firestore…</div></div>
+    </div>
+  </div>
+
+</div><!-- /.sch-page -->
+</div><!-- /#view-schedule -->
+
 <!-- MAP VIEW ────────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-map">
   <div class="map-toolbar">
@@ -3189,6 +3675,7 @@ function switchView(v, el) {
   }
   if(v==='intel') wxFleetInit();
   if(v==='roc') { rocLoad(); rocRender(); }
+  if(v==='schedule') { renderCrewGrid(); renderCalendar(); }
   try { localStorage.setItem('rnwbl_active_tab', v); } catch(e) {}
 }
 
@@ -7599,6 +8086,23 @@ function dmInit() {
   }
 }
 
+function toggleMobileMenu() {
+  const btn = document.getElementById('mobile-menu-btn');
+  const drawer = document.getElementById('mobile-nav-drawer');
+  btn.classList.toggle('open');
+  drawer.classList.toggle('open');
+}
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', function(e) {
+  const drawer = document.getElementById('mobile-nav-drawer');
+  const btn = document.getElementById('mobile-menu-btn');
+  if (drawer && btn && drawer.classList.contains('open') && !drawer.contains(e.target) && !btn.contains(e.target)) {
+    drawer.classList.remove('open');
+    btn.classList.remove('open');
+  }
+});
+
 function dmToggle() {
   const body = document.body;
   const isDark = body.classList.contains('dark');
@@ -9505,6 +10009,284 @@ function rocDrillFinish() {
   rocRender();
   alert(`Daily Drill Complete! ⚡\n\n✓ Got it: ${got} / ${rocDrillQueue.length}\n✗ Missed: ${missed}\n\nKeep going — review the missed ones.`);
 }
+
+// ── TEAM SCHEDULE ─────────────────────────────────────────────────────────────
+(function(){
+
+// Firebase setup
+const SCH_FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyD1nAFnyTdwjMPTuecAjgC-KZ1igThjnY4",
+  authDomain:        "aschedule-7f06a.firebaseapp.com",
+  projectId:         "aschedule-7f06a",
+  storageBucket:     "aschedule-7f06a.firebasestorage.app",
+  messagingSenderId: "740448991184",
+  appId:             "1:740448991184:web:2ec302043f07502a6c2bd5"
+};
+
+let db = null;
+try {
+  if (typeof firebase !== 'undefined') {
+    // Avoid re-initializing if already done
+    if (!firebase.apps.length) {
+      firebase.initializeApp(SCH_FIREBASE_CONFIG);
+    } else {
+      firebase.app(); // use existing app
+    }
+    db = firebase.firestore();
+  }
+} catch(e) { console.warn('[Schedule] Firebase init:', e.message); }
+
+// ── Constants ────────────────────────────────────────────────────────────────
+const SCHED_START_KEY = 'rnwbl_sched_start';
+function snapToSunday(date){const d=new Date(date);const dow=d.getDay();if(dow!==0)d.setDate(d.getDate()-dow);d.setHours(0,0,0,0);return d;}
+function initStartDate(){const saved=localStorage.getItem(SCHED_START_KEY);let start;if(saved){start=snapToSunday(new Date(saved+'T00:00:00'));}else{start=snapToSunday(new Date());}return start;}
+let START=initStartDate();
+const ROLES=['D1','D2','D3','N1','N2'];
+const ROLE_CLS={D1:'d1',D2:'d2',D3:'d3',N1:'n1',N2:'n2'};
+const DAY_NAMES=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+const state={fh:['Josh','Ricky','Christian','Sergio','Jesse'],bh:['Morgan','Alex','Adam','Rob','FNG'],selected:''};
+let timeOffData=[];
+
+// ── Date helpers ─────────────────────────────────────────────────────────────
+function isoDate(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function fmtDisp(iso){if(!iso)return'';const[,m,d]=iso.split('-');return parseInt(m)+'/'+parseInt(d);}
+function getRolesForHalf(half){const n=state[half].length;if(n>=5)return['D1','D2','D3','N1','N2'];if(n===4)return['D1','D2','D3','N1'];if(n===3)return['D1','D2','N1'];if(n===2)return['D1','N1'];if(n===1)return['D1'];return[];}
+function getRoleForOp(posIdx,weekIdx,half){const roles=(half&&state[half])?getRolesForHalf(half):ROLES;if(!roles.length)return'D1';return roles[(posIdx+weekIdx)%roles.length];}
+function hasWed(half,weekIdx){return half==='fh'?weekIdx%2===0:weekIdx%2===1;}
+function getWeekStart(weekIdx){const d=new Date(START);d.setDate(d.getDate()+weekIdx*7);return d;}
+function getWeekDates(weekIdx){const d=getWeekStart(weekIdx);const e=new Date(d);e.setDate(e.getDate()+6);const f=dt=>`${dt.getMonth()+1}/${dt.getDate()}`;return`${f(d)}–${f(e)}`;}
+function addDays(date,n){const d=new Date(date);d.setDate(d.getDate()+n);return d;}
+function fmtDate(d){return`${d.getMonth()+1}/${d.getDate()}`;}
+function getWeekIdxForDate(date){const ms=date-START;if(ms<0)return-1;const days=Math.floor(ms/86400000);const wk=Math.floor(days/7);return wk<52?wk:-1;}
+
+// ── Time-off helpers ─────────────────────────────────────────────────────────
+function getTimeOffForOperatorDate(name,dateStr){
+  const to=timeOffData.find(t=>t.operator===name&&dateStr>=t.startDate&&dateStr<=t.endDate);
+  if(!to)return null;
+  const date=new Date(dateStr+'T00:00:00');
+  const weekIdx=getWeekIdxForDate(date);if(weekIdx<0)return null;
+  const dow=date.getDay();
+  const half=state.fh.includes(name)?'fh':'bh';
+  const worksThisDay=half==='fh'?(dow===0||dow===1||dow===2||(dow===3&&hasWed('fh',weekIdx))):(dow===4||dow===5||dow===6||(dow===3&&hasWed('bh',weekIdx)));
+  if(!worksThisDay)return null;
+  const segs=to.coverage||[];
+  let seg=segs.find(s=>dateStr>=s.startDate&&dateStr<=s.endDate);
+  if(!seg&&(to.coveredBy||to.status)){seg={coveredBy:to.coveredBy||'',status:to.status||'uncovered',note:to.coverNote||'',startDate:to.startDate,endDate:to.endDate};}
+  return{id:to.id,operator:to.operator,startDate:to.startDate,endDate:to.endDate,coveredBy:seg?.coveredBy||'',coverNote:seg?.note||'',status:seg?.status||'uncovered',segId:seg?.id||null};
+}
+function isCoverageValid(operatorName,coveringName){if(!coveringName)return true;const opHalf=state.fh.includes(operatorName)?'fh':'bh';const coverHalf=state.fh.includes(coveringName)?'fh':'bh';return opHalf!==coverHalf;}
+
+// ── Crew computation ─────────────────────────────────────────────────────────
+function getCrewForDay(weekIdx,dayOfWeek){
+  const crew=[];const dayDate=addDays(getWeekStart(weekIdx),dayOfWeek);const dateStr=isoDate(dayDate);const roleOrder={D1:0,D2:1,D3:2,N1:3,N2:4};
+  const processOp=(name,posIdx,half)=>{
+    const role=getRoleForOp(posIdx,weekIdx,half);const to=getTimeOffForOperatorDate(name,dateStr);
+    if(to){crew.push({name,role,half,off:true,toStatus:to.status,coveredBy:to.coveredBy||'',toId:to.id});
+      if(to.status==='covered'&&to.coveredBy){const coverHalf=state.fh.includes(to.coveredBy)?'fh':'bh';if(coverHalf!==half){crew.push({name:to.coveredBy,role,half,covering:name});}}}
+    else{crew.push({name,role,half});}
+  };
+  state.fh.forEach((name,posIdx)=>{const w=dayOfWeek===0||dayOfWeek===1||dayOfWeek===2||(dayOfWeek===3&&hasWed('fh',weekIdx));if(w)processOp(name,posIdx,'fh');});
+  state.bh.forEach((name,posIdx)=>{const w=dayOfWeek===4||dayOfWeek===5||dayOfWeek===6||(dayOfWeek===3&&hasWed('bh',weekIdx));if(w)processOp(name,posIdx,'bh');});
+  crew.sort((a,b)=>roleOrder[a.role]-roleOrder[b.role]);return crew;
+}
+
+// ── Drag & drop ──────────────────────────────────────────────────────────────
+let dragging=null,dragSourceHalf=null;
+function clearDropIndicators(){document.querySelectorAll('#view-schedule .chip').forEach(c=>c.classList.remove('drop-above','drop-below','drag-over-target'));}
+
+function renderChips(){
+  ['fh','bh'].forEach(half=>{
+    const zone=document.getElementById('zone-'+half);if(!zone)return;
+    zone.innerHTML='';const otherHalf=half==='fh'?'bh':'fh';const otherLabel=half==='fh'?'→ BH':'← FH';
+    state[half].forEach((name,idx)=>{
+      const roles=getRolesForHalf(half);const role=roles[idx%roles.length]||'D1';const isFirst=idx===0,isLast=idx===state[half].length-1;
+      const chip=document.createElement('div');chip.className=`chip ${half}-chip`;chip.draggable=true;chip.dataset.name=name;chip.dataset.half=half;chip.dataset.idx=idx;
+      chip.innerHTML=`<span class="chip-role role-${ROLE_CLS[role]}">${role}</span><span class="chip-name">${name}</span>
+        <button class="chip-xfer" title="Move to ${otherHalf==='fh'?'Front Half':'Back Half'}" onclick="event.stopPropagation();schXferChip('${half}',${idx})">${otherLabel}</button>
+        <div class="chip-controls">
+          <button class="chip-btn"${isFirst?' disabled':''} title="Move up" onclick="event.stopPropagation();schMoveChip('${half}',${idx},-1)">▲</button>
+          <button class="chip-btn"${isLast?' disabled':''} title="Move down" onclick="event.stopPropagation();schMoveChip('${half}',${idx},1)">▼</button>
+        </div>
+        <button class="chip-del" title="Remove ${name}" onclick="event.stopPropagation();schDeleteChip('${half}',${idx})">✕</button>`;
+      chip.addEventListener('dragstart',e=>{dragging=chip;dragSourceHalf=half;chip.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
+      chip.addEventListener('dragend',()=>{chip.classList.remove('dragging');dragging=null;clearDropIndicators();});
+      chip.addEventListener('dragover',e=>{if(!dragging||dragging===chip)return;e.preventDefault();clearDropIndicators();const rect=chip.getBoundingClientRect();const mid=rect.top+rect.height/2;if(e.clientY<mid)chip.classList.add('drop-above');else chip.classList.add('drop-below');});
+      chip.addEventListener('dragleave',()=>chip.classList.remove('drop-above','drop-below'));
+      chip.addEventListener('drop',e=>{e.preventDefault();if(!dragging||dragging===chip)return;const targetName=chip.dataset.name,targetHalf=chip.dataset.half,targetIdx=parseInt(chip.dataset.idx);const sourceName=dragging.dataset.name,sourceHalf=dragging.dataset.half;const rect=chip.getBoundingClientRect();const insertBefore=e.clientY<rect.top+rect.height/2;schMoveToPosition(sourceHalf,sourceName,targetHalf,targetName,targetIdx,insertBefore);clearDropIndicators();schRenderAll();});
+      zone.appendChild(chip);
+    });
+    zone.addEventListener('dragover',e=>{if(dragging)e.preventDefault();});
+    zone.addEventListener('drop',e=>{e.preventDefault();if(!dragging)return;const sourceName=dragging.dataset.name,sourceHalf=dragging.dataset.half;const targetHalf=half;if(sourceHalf===targetHalf)return;state[sourceHalf]=state[sourceHalf].filter(n=>n!==sourceName);state[targetHalf].push(sourceName);clearDropIndicators();schRenderAll();});
+  });
+}
+
+function schMoveToPosition(sourceHalf,sourceName,targetHalf,targetName,targetIdx,insertBefore){
+  state[sourceHalf]=state[sourceHalf].filter(n=>n!==sourceName);const arr=state[targetHalf];let insertAt=arr.indexOf(targetName);if(insertAt<0)insertAt=arr.length;else if(!insertBefore)insertAt++;arr.splice(insertAt,0,sourceName);
+}
+function schRenderAll(){renderChips();schUpdateSelect();updateCalSelect();renderCrewGrid();renderCalendar();renderTimeOffList();}
+window.schDeleteChip=function(half,idx){const name=state[half][idx];if(!confirm(`Remove ${name} from the roster?`))return;state[half].splice(idx,1);schRenderAll();};
+window.schXferChip=function(half,idx){const otherHalf=half==='fh'?'bh':'fh';const name=state[half].splice(idx,1)[0];state[otherHalf].push(name);schRenderAll();};
+window.schMoveChip=function(half,idx,dir){const arr=state[half];const newIdx=idx+dir;if(newIdx<0||newIdx>=arr.length)return;[arr[idx],arr[newIdx]]=[arr[newIdx],arr[idx]];schRenderAll();};
+
+// ── Start date ───────────────────────────────────────────────────────────────
+function applyStartDate(date){
+  START=snapToSunday(date);localStorage.setItem(SCHED_START_KEY,isoDate(START));
+  const inp=document.getElementById('start-date-input');if(inp)inp.value=isoDate(START);
+  updateWeekIndicator();renderTable();renderCrewGrid();renderCalendar();renderTimeOffList();
+}
+window.onStartDateChange=function(val){if(!val)return;applyStartDate(new Date(val+'T00:00:00'));};
+window.setStartToThisWeek=function(){applyStartDate(new Date());};
+function updateWeekIndicator(){
+  const el=document.getElementById('week-indicator');if(!el)return;
+  const note=document.getElementById('sched-scroll-note');
+  const todayIdx=getWeekIdxForDate(new Date());
+  if(todayIdx>=0&&todayIdx<52){el.textContent=`Week ${todayIdx+1} of 52 is current`;el.style.color='#15803d';}
+  else if(todayIdx<0){el.textContent='Today is before schedule start';el.style.color='';}
+  else{el.textContent='Today is past the 52-week window';el.style.color='';}
+  if(note)note.textContent=`52 weeks · starting ${isoDate(START)}`;
+}
+
+// ── Individual view ──────────────────────────────────────────────────────────
+function schUpdateSelect(){
+  const sel=document.getElementById('op-select');if(!sel)return;const cur=state.selected;
+  sel.innerHTML='<option value="">— pick an operator —</option>';
+  [...state.fh,...state.bh].forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;if(n===cur)o.selected=true;sel.appendChild(o);});
+  const toSel=document.getElementById('to-operator');if(toSel){const toCur=toSel.value;toSel.innerHTML='<option value="">— select operator —</option>';[...state.fh,...state.bh].forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;if(n===toCur)o.selected=true;toSel.appendChild(o);});}
+  renderTable();
+}
+
+function renderTable(){
+  const sel=state.selected;const tbody=document.getElementById('sched-body');if(!tbody)return;tbody.innerHTML='';
+  if(!sel){tbody.innerHTML=`<tr><td colspan="9" class="empty-state">Pick an operator above to see their full 52-week schedule.</td></tr>`;return;}
+  const half=state.fh.includes(sel)?'fh':'bh';const posIdx=state[half].indexOf(sel);const offBadge=`<span class="rbadge off">off</span>`;
+  for(let w=0;w<52;w++){
+    const tr=document.createElement('tr');if(w%2===1)tr.classList.add('alt');
+    const role=getRoleForOp(posIdx,w,half);const rc=ROLE_CLS[role];const rb=`<span class="rbadge ${rc}">${role}</span>`;const wedOn=hasWed(half,w);const weekStart=getWeekStart(w);
+    let rawCells;if(half==='fh')rawCells=[rb,rb,rb,wedOn?rb:offBadge,offBadge,offBadge,offBadge];else rawCells=[offBadge,offBadge,offBadge,wedOn?rb:offBadge,rb,rb,rb];
+    const cells=rawCells.map((cell,dayIdx)=>{
+      const dayDate=addDays(weekStart,dayIdx);const dateStr=isoDate(dayDate);
+      const covering=timeOffData.find(t=>{const segs=t.coverage||[];if(segs.length)return segs.some(s=>s.coveredBy===sel&&s.status==='covered'&&dateStr>=s.startDate&&dateStr<=s.endDate);return t.coveredBy===sel&&t.status==='covered'&&dateStr>=t.startDate&&dateStr<=t.endDate;});
+      if(cell===offBadge){if(covering){const covHalf=state.fh.includes(covering.operator)?'fh':'bh';const covPos=state[covHalf].indexOf(covering.operator);const covRole=covPos>=0?getRoleForOp(covPos,w,covHalf):'';const rc2=ROLE_CLS[covRole]||'';return`<span class="rbadge ${rc2} cvr-badge" title="Covering ${covering.operator} — working as ${covRole}">↔ ${covRole||'Cvr'}</span>`;}return cell;}
+      const to=getTimeOffForOperatorDate(sel,dateStr);if(!to){if(covering){const role2=getRoleForOp(posIdx,w,half);return`<span class="rbadge ${ROLE_CLS[role2]}" title="Working own shift + covering ${covering.operator}">${role2} <span style="font-size:9px">+↔</span></span>`;}return cell;}
+      const clsMap={uncovered:'to-off-unc',pending:'to-off-pen',covered:'to-off-cov'};const lblMap={uncovered:'⚠ Off',pending:'⏳ Off',covered:'✓ Off'};const tip=to.status==='covered'?`Covered by ${to.coveredBy}`:to.status;
+      return`<span class="rbadge ${clsMap[to.status]||'to-off-unc'}" title="${tip}">${lblMap[to.status]||'Off'}</span>`;
+    });
+    tr.innerHTML=`<td class="wk-lbl">Wk ${w+1}</td><td class="date-lbl">${getWeekDates(w)}</td>${cells.map(c=>`<td>${c}</td>`).join('')}`;tbody.appendChild(tr);
+  }
+}
+
+const opSel=document.getElementById('op-select');
+if(opSel) opSel.addEventListener('change',e=>{state.selected=e.target.value;renderTable();});
+
+// ── Crew view ────────────────────────────────────────────────────────────────
+function renderCrewGrid(){
+  const grid=document.getElementById('crew-grid');if(!grid)return;
+  const openWeeks=new Set();grid.querySelectorAll('.crew-week.open').forEach(el=>openWeeks.add(parseInt(el.dataset.week)));grid.innerHTML='';
+  for(let w=0;w<52;w++){
+    const weekEl=document.createElement('div');weekEl.className='crew-week'+(openWeeks.has(w)?' open':'');weekEl.dataset.week=w;
+    const fhCrew=getCrewForDay(w,1);const bhCrew=getCrewForDay(w,5);
+    const badgeFor=p=>{let name=p.name;if(p.off){const sfx=p.toStatus==='covered'?`<span style="color:#16a34a;font-size:9px;"> ✓cvr</span>`:p.toStatus==='pending'?`<span style="color:#b45309;font-size:9px;"> ⏳</span>`:`<span style="color:#e53935;font-size:9px;"> ⚠</span>`;return`<span class="sum-badge sum-${ROLE_CLS[p.role]}" style="opacity:.5;text-decoration:line-through">${name} <span style="opacity:.7">${p.role}</span>${sfx}</span>`;}if(p.covering)return`<span class="sum-badge sum-${ROLE_CLS[p.role]}" style="outline:2px solid #16a34a;outline-offset:1px;">${name} <span style="opacity:.7">${p.role}</span><span style="font-size:9px;color:#555;"> cvr</span></span>`;return`<span class="sum-badge sum-${ROLE_CLS[p.role]}">${name} <span style="opacity:.7">${p.role}</span></span>`;};
+    const fhHTML=fhCrew.map(badgeFor).join('');const bhHTML=bhCrew.map(badgeFor).join('');
+    const header=document.createElement('div');header.className='crew-week-header';
+    header.innerHTML=`<span class="wk-num">Wk ${w+1}</span><span class="wk-dates">${getWeekDates(w)}</span><span class="wk-half"><span class="wk-half-label fh-lbl">FH</span>${fhHTML}</span><span class="wk-half"><span class="wk-half-label bh-lbl">BH</span>${bhHTML}</span><span class="chevron">▼</span>`;
+    header.addEventListener('click',()=>weekEl.classList.toggle('open'));
+    const daysEl=document.createElement('div');daysEl.className='crew-days';const weekStart=getWeekStart(w);
+    for(let d=0;d<7;d++){
+      const dayDate=addDays(weekStart,d);const crew=getCrewForDay(w,d);const dayEl=document.createElement('div');dayEl.className='crew-day';
+      const slotFor=p=>{if(p.off){const clsMap={uncovered:'unc',pending:'pen',covered:'cov'};const lblMap={uncovered:'⚠ Off',pending:'⏳ Off',covered:'✓ Off'};const cvr=p.coveredBy?` → ${p.coveredBy}`:'';return`<span class="person-slot ps-${ROLE_CLS[p.role]} ps-is-off"><span class="ps-name">${p.name}<span class="ps-off-lbl ${clsMap[p.toStatus]||'unc'}">${lblMap[p.toStatus]||'Off'}${cvr}</span></span><span class="ps-role">${p.role}</span></span>`;}const coverNote=p.covering?`<span class="ps-cover-note">(cvr ${p.covering})</span>`:'';return`<span class="person-slot ps-${ROLE_CLS[p.role]}"><span class="ps-name">${p.name}${coverNote}</span><span class="ps-role">${p.role}</span></span>`;};
+      const slotsHTML=crew.length>0?crew.map(slotFor).join(''):`<span class="no-crew">no coverage</span>`;
+      dayEl.innerHTML=`<div class="crew-day-label"><span class="day-name">${DAY_NAMES[d]}</span><span class="day-date">${fmtDate(dayDate)}</span></div><div class="crew-day-slots">${slotsHTML}</div>`;
+      daysEl.appendChild(dayEl);
+    }
+    weekEl.appendChild(header);weekEl.appendChild(daysEl);grid.appendChild(weekEl);
+  }
+  const expAll=document.getElementById('expand-all');if(expAll)expAll.onclick=()=>grid.querySelectorAll('.crew-week').forEach(el=>el.classList.add('open'));
+  const colAll=document.getElementById('collapse-all');if(colAll)colAll.onclick=()=>grid.querySelectorAll('.crew-week').forEach(el=>el.classList.remove('open'));
+  const jumpInput=document.getElementById('jump-input');
+  if(jumpInput&&!jumpInput._bound){jumpInput._bound=true;jumpInput.addEventListener('keydown',e=>{if(e.key!=='Enter')return;const v=e.target.value.trim();let wk=null;if(/^\d+$/.test(v)){wk=parseInt(v)-1;}else if(/^\d+\/\d+$/.test(v)){const[mo,dy]=v.split('/').map(Number);for(let i=0;i<52;i++){const ws=getWeekStart(i);const we=addDays(ws,6);const target=new Date(2026,mo-1,dy);if(target>=ws&&target<=we){wk=i;break;}}}if(wk!==null&&wk>=0&&wk<52){const el=document.querySelector(`.crew-week[data-week="${wk}"]`);if(el){el.classList.add('open');el.scrollIntoView({behavior:'smooth',block:'start'});}}});}
+}
+
+// ── Calendar view ────────────────────────────────────────────────────────────
+const calState={year:new Date().getFullYear(),month:new Date().getMonth()};
+function updateCalSelect(){const sel=document.getElementById('cal-op-select');if(!sel)return;const cur=sel.value;sel.innerHTML='<option value="">Everyone</option>';[...state.fh,...state.bh].forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;if(n===cur)o.selected=true;sel.appendChild(o);});}
+function renderCalendar(){
+  updateCalSelect();const{year,month}=calState;const focusPerson=document.getElementById('cal-op-select')?.value||'';
+  const MONTH_NAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const lbl=document.getElementById('cal-month-label');if(lbl)lbl.textContent=`${MONTH_NAMES[month]} ${year}`;
+  const today=new Date();today.setHours(0,0,0,0);const firstDay=new Date(year,month,1).getDay();const daysInMonth=new Date(year,month+1,0).getDate();
+  const container=document.getElementById('cal-days');if(!container)return;container.innerHTML='';
+  for(let i=0;i<firstDay;i++){const cell=document.createElement('div');cell.className='cal-cell empty';container.appendChild(cell);}
+  for(let d=1;d<=daysInMonth;d++){
+    const date=new Date(year,month,d);const dow=date.getDay();const weekIdx=getWeekIdxForDate(date);const cell=document.createElement('div');let cls='cal-cell';
+    if(date.getTime()===today.getTime())cls+=' today';
+    const numDiv=document.createElement('div');numDiv.className='cal-day-num';numDiv.textContent=d;cell.appendChild(numDiv);
+    if(weekIdx>=0){
+      const crew=getCrewForDay(weekIdx,dow);
+      if(crew.length===0){const lbl2=document.createElement('div');lbl2.className='cal-off-label';lbl2.textContent='no coverage';cell.appendChild(lbl2);}
+      else{crew.forEach(p=>{const slot=document.createElement('div');let slotCls=`cal-person cp-${ROLE_CLS[p.role]}`;if(p.off)slotCls+=' cp-is-off';if(focusPerson){if(p.name===focusPerson)slotCls+=' highlighted';else slotCls+=' faded';}const offMark=p.off?(p.toStatus==='covered'?'✓':'⚠'):'';const coverNote=p.covering?` <span style="font-size:9px;opacity:.65">(cvr ${p.covering})</span>`:'';slot.className=slotCls;slot.innerHTML=`<span class="cp-dot"></span><span class="cp-name">${p.name}${offMark?` <span style="font-size:9px">${offMark}</span>`:''}${coverNote}</span>&nbsp;<span class="cp-role">${p.role}</span>`;cell.appendChild(slot);});if(focusPerson&&crew.some(p=>p.name===focusPerson))cls+=' has-focus';}
+    }else{const lbl3=document.createElement('div');lbl3.className='cal-off-label';lbl3.textContent='out of range';cell.appendChild(lbl3);}
+    cell.className=cls;container.appendChild(cell);
+  }
+}
+
+const calPrev=document.getElementById('cal-prev');if(calPrev)calPrev.addEventListener('click',()=>{calState.month--;if(calState.month<0){calState.month=11;calState.year--;}renderCalendar();});
+const calNext=document.getElementById('cal-next');if(calNext)calNext.addEventListener('click',()=>{calState.month++;if(calState.month>11){calState.month=0;calState.year++;}renderCalendar();});
+const calOpSel=document.getElementById('cal-op-select');if(calOpSel)calOpSel.addEventListener('change',renderCalendar);
+
+// ── Time Off (Firestore) ─────────────────────────────────────────────────────
+function initTimeOffListener(){
+  if(!db){const status=document.getElementById('to-fb-status');if(status)status.textContent='⚠ Firebase not available. Time Off features require opening this file directly in a browser.';const list=document.getElementById('to-list');if(list)list.innerHTML='<div class="to-empty">Open in a browser to connect to Firestore.</div>';return;}
+  db.collection('timeoff').orderBy('startDate','asc').onSnapshot(snap=>{timeOffData=snap.docs.map(doc=>({id:doc.id,...doc.data()}));renderTable();renderCrewGrid();renderCalendar();renderTimeOffList();const status=document.getElementById('to-fb-status');if(status)status.textContent='';},err=>{const status=document.getElementById('to-fb-status');if(status)status.textContent='⚠ Could not connect to Firestore. Check Firebase Rules.';});
+}
+window.submitTimeOff=async function(){if(!db){alert('Firebase not connected.');return;}const operator=document.getElementById('to-operator').value;const startDate=document.getElementById('to-start').value;const endDate=document.getElementById('to-end').value||startDate;const reason=document.getElementById('to-reason').value.trim();if(!operator||!startDate){alert('Please select an operator and start date.');return;}if(endDate<startDate){alert('End date must be on or after start date.');return;}try{await db.collection('timeoff').add({operator,startDate,endDate,reason,coverage:[],submittedAt:firebase.firestore.FieldValue.serverTimestamp()});document.getElementById('to-operator').value='';document.getElementById('to-start').value='';document.getElementById('to-end').value='';document.getElementById('to-reason').value='';}catch(e){alert('Submit failed: '+e.message);}};
+function makeSegId(){return'seg-'+Date.now()+'-'+Math.random().toString(36).slice(2,6);}
+window.proposeSegment=async function(toId,coveredBy,segStart,segEnd,note){if(!db)return;if(!coveredBy){alert('Select a covering operator.');return;}if(!segStart||!segEnd){alert('Enter start and end dates.');return;}const to=timeOffData.find(t=>t.id===toId);if(!to)return;const coverage=[...(to.coverage||[])];coverage.push({id:makeSegId(),coveredBy,startDate:segStart,endDate:segEnd,status:'pending',note:note||''});await db.collection('timeoff').doc(toId).update({coverage});};
+window.confirmSegment=async function(toId,segId){if(!db)return;const to=timeOffData.find(t=>t.id===toId);if(!to)return;const coverage=(to.coverage||[]).map(s=>s.id===segId?{...s,status:'covered'}:s);await db.collection('timeoff').doc(toId).update({coverage});};
+window.removeSegment=async function(toId,segId){if(!db)return;const to=timeOffData.find(t=>t.id===toId);if(!to)return;const coverage=(to.coverage||[]).filter(s=>s.id!==segId);await db.collection('timeoff').doc(toId).update({coverage});};
+window.deleteTimeOff=async function(id){if(!confirm('Delete this time off request?'))return;await db.collection('timeoff').doc(id).delete();};
+
+function renderTimeOffList(){
+  const container=document.getElementById('to-list');if(!container)return;
+  const todayStr=isoDate(new Date());const upcoming=timeOffData.filter(t=>(t.endDate||t.startDate)>=todayStr);
+  const cntEl=document.getElementById('to-count');if(cntEl)cntEl.textContent=upcoming.length;
+  if(!upcoming.length){container.innerHTML='<div class="to-empty">No upcoming time off. Use the form above to submit a request.</div>';return;}
+  const allOps=[...state.fh,...state.bh];
+  container.innerHTML=upcoming.map(t=>{
+    const half=state.fh.includes(t.operator)?'fh':'bh';const posIdx=state[half].indexOf(t.operator);const startD=new Date(t.startDate+'T00:00:00');const wkIdx=getWeekIdxForDate(startD);const role=wkIdx>=0&&posIdx>=0?getRoleForOp(posIdx,wkIdx,half):'—';const rc=ROLE_CLS[role]||'';const dateStr=t.startDate===t.endDate?fmtDisp(t.startDate):`${fmtDisp(t.startDate)} → ${fmtDisp(t.endDate)}`;
+    const segs=t.coverage||[];const hasOldFlat=!segs.length&&(t.coveredBy||t.status);const effectiveSegs=hasOldFlat?[{id:'legacy',coveredBy:t.coveredBy||'',startDate:t.startDate,endDate:t.endDate,status:t.status||'uncovered',note:t.coverNote||''}]:segs;
+    const allCovered=effectiveSegs.length>0&&effectiveSegs.every(s=>s.status==='covered');const anyPending=effectiveSegs.some(s=>s.status==='pending');const overallStatus=allCovered?'covered':anyPending?'pending':'uncovered';
+    const segHTML=effectiveSegs.map(s=>{const segDateStr=s.startDate===s.endDate?fmtDisp(s.startDate):`${fmtDisp(s.startDate)}–${fmtDisp(s.endDate)}`;const bCls={uncovered:'uncovered',pending:'pending',covered:'covered'}[s.status]||'uncovered';const bTxt={uncovered:'⚠ Uncovered',pending:`⏳ ${s.coveredBy} — pending confirmation`,covered:`✓ ${s.coveredBy} confirmed`}[s.status]||'⚠ Uncovered';const coverInvalid=s.coveredBy&&!isCoverageValid(t.operator,s.coveredBy);const segActions=s.status==='pending'?`<button class="to-btn confirm" onclick="confirmSegment('${t.id}','${s.id}')">✓ Confirm</button><button class="to-btn sec" onclick="removeSegment('${t.id}','${s.id}')">✕ Remove</button>`:s.status==='covered'?`<button class="to-btn sec" onclick="removeSegment('${t.id}','${s.id}')">✕ Revoke</button>`:'';return`<div class="to-seg${coverInvalid?' to-seg-invalid':''}"><span class="to-seg-dates">${segDateStr}</span><span class="to-status-badge ${bCls}" style="font-size:11px;padding:3px 8px;">${bTxt}</span>${s.note?`<span class="to-seg-note">📝 ${s.note}</span>`:''}<span class="to-seg-actions">${segActions}</span>${coverInvalid?`<div class="to-cover-invalid">⚠ ${s.coveredBy} is now on the same half as ${t.operator} — can't cover this shift. Remove and reassign.</div>`:''}</div>`;}).join('');
+    const opts=allOps.filter(n=>n!==t.operator).map(n=>`<option value="${n}">${n}</option>`).join('');
+    const addSegForm=`<button class="to-btn propose" style="margin-top:6px;" onclick="document.getElementById('sf-${t.id}').style.display='flex'">+ Add coverage</button><div class="to-propose-form" id="sf-${t.id}" style="flex-direction:column;gap:8px;"><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;"><select id="sf-op-${t.id}"><option value="">— covering operator —</option>${opts}</select><input type="date" id="sf-start-${t.id}" value="${t.startDate}" min="${t.startDate}" max="${t.endDate}" style="font-family:inherit;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:5px;"><span style="font-size:11px;color:#666;">to</span><input type="date" id="sf-end-${t.id}" value="${t.endDate}" min="${t.startDate}" max="${t.endDate}" style="font-family:inherit;font-size:12px;padding:5px 8px;border:1px solid var(--border);border-radius:5px;"></div><div style="display:flex;gap:6px;align-items:center;"><input id="sf-note-${t.id}" placeholder="Optional note" style="flex:1;padding:5px 9px;border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:inherit;"><button style="background:#16a34a;color:#fff;padding:5px 12px;border:none;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;" onclick="proposeSegment('${t.id}',document.getElementById('sf-op-${t.id}').value,document.getElementById('sf-start-${t.id}').value,document.getElementById('sf-end-${t.id}').value,document.getElementById('sf-note-${t.id}').value)">Propose</button><button style="background:#f1f5f9;color:#666;padding:5px 10px;border:1px solid #ccc;border-radius:5px;font-size:12px;cursor:pointer;font-family:inherit;" onclick="document.getElementById('sf-${t.id}').style.display='none'">Cancel</button></div></div>`;
+    return`<div class="to-entry to-${overallStatus}"><div class="to-entry-header"><div class="to-entry-who"><span class="to-op-name">${t.operator}</span>${rc?`<span class="to-role-pill ${rc}" style="background:var(--${rc}-bg,#eee);color:var(--${rc}-fg,#333)">${role}</span>`:''}<span class="to-half-pill">${half==='fh'?'Front Half':'Back Half'}</span></div><span class="to-dates">${dateStr}</span><button class="to-del" onclick="deleteTimeOff('${t.id}')" title="Delete">✕</button></div>${t.reason?`<div class="to-entry-reason">📝 ${t.reason}</div>`:''}<div class="to-segs">${segHTML||'<div class="to-seg-none">No coverage assigned yet</div>'}</div>${addSegForm}</div>`;
+  }).join('');
+}
+
+// ── Inner tab switching ──────────────────────────────────────────────────────
+document.querySelectorAll('#view-schedule .tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#view-schedule .tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('#view-schedule .tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+    if(btn.dataset.tab==='calendar')renderCalendar();
+    if(btn.dataset.tab==='timeoff')renderTimeOffList();
+  });
+});
+
+// ── Init (run now — DOM is already parsed) ───────────────────────────────────
+renderChips();
+schUpdateSelect();
+updateCalSelect();
+const inp=document.getElementById('start-date-input');if(inp)inp.value=isoDate(START);
+updateWeekIndicator();
+initTimeOffListener();
+
+// Expose hook for switchView
+window._scheduleInitDone=true;
+
+})(); // end TEAM SCHEDULE IIFE
 
 load();
 </script>
