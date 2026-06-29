@@ -146,6 +146,31 @@ body.dark .nav-tz-key{color:var(--text2);}
 @media(max-width:1050px){.nav-tz-item.hide-md{display:none;}}
 @media(max-width:700px){.nav-tz-bar{display:none;}}
 
+/* ── MOBILE NAVIGATION ───────────────────────────────────────────────────────── */
+.mobile-menu-btn{display:none;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);cursor:pointer;flex-shrink:0;margin-right:8px;}
+.mobile-menu-btn span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;position:relative;transition:all .25s;}
+.mobile-menu-btn span::before,.mobile-menu-btn span::after{content:'';position:absolute;width:18px;height:2px;background:var(--text);border-radius:2px;transition:all .25s;}
+.mobile-menu-btn span::before{top:-6px;}
+.mobile-menu-btn span::after{top:6px;}
+.mobile-menu-btn.open span{background:transparent;}
+.mobile-menu-btn.open span::before{transform:rotate(45deg);top:0;}
+.mobile-menu-btn.open span::after{transform:rotate(-45deg);top:0;}
+
+.mobile-nav-drawer{position:fixed;top:48px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--border);box-shadow:var(--sh);z-index:49;display:none;flex-direction:column;padding:8px;gap:4px;}
+.mobile-nav-drawer.open{display:flex;}
+.mobile-nav-drawer .nav-tab{width:100%;text-align:left;padding:10px 14px;border-radius:6px;}
+.mobile-nav-drawer .nav-tab.active{background:var(--bg3);border-color:var(--border);}
+
+@media(max-width:768px){
+  .mobile-menu-btn{display:flex;}
+  .nav .nav-tab:not(.mobile-menu-btn){display:none;}
+  .nav-spacer{display:none;}
+  .nav{padding:0 12px;}
+  .nav-brand{margin-right:4px;padding-right:8px;}
+  .nav-brand-text{font-size:12px;}
+  .nav-brand-sub{font-size:8px;}
+}
+
 /* LAYOUT */
 .view{display:none;padding:16px;}
 @keyframes viewSlideIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
@@ -1457,6 +1482,9 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
       <div class="nav-brand-sub">Ops Hub</div>
     </div>
   </div>
+  <button class="mobile-menu-btn" id="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+    <span></span>
+  </button>
   <button class="nav-tab active" id="nav-tab-scans" onclick="switchView('scans',this)">Scans</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
   <button class="nav-tab" onclick="switchView('nerc',this)">NERC Study</button>
@@ -1475,6 +1503,17 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
   <button class="dm-toggle" id="dm-toggle" onclick="dmToggle()" title="Toggle dark mode" aria-label="Toggle dark mode">
     <span class="dm-thumb" id="dm-thumb">☀️</span>
   </button>
+</div>
+<div class="mobile-nav-drawer" id="mobile-nav-drawer">
+  <button class="nav-tab" onclick="switchView('scans',this); toggleMobileMenu()">Scans</button>
+  <button class="nav-tab" onclick="switchView('asset',this); toggleMobileMenu()">Asset Scan</button>
+  <button class="nav-tab" onclick="switchView('nerc',this); toggleMobileMenu()">NERC Study</button>
+  <button class="nav-tab" onclick="switchView('roc',this); toggleMobileMenu()">ROC Study</button>
+  <button class="nav-tab" onclick="switchView('intel',this); toggleMobileMenu()">Weather</button>
+  <button class="nav-tab" onclick="switchView('ops',this); toggleMobileMenu()">Toolbox</button>
+  <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
+  <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Handoff</button>
+  <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Map/Timezones</button>
 </div>
 <div id="dm-flash"></div>
 <canvas id="dm-lightning-canvas"></canvas>
@@ -7598,6 +7637,23 @@ function dmInit() {
     if (thumb) thumb.textContent = '🌙';
   }
 }
+
+function toggleMobileMenu() {
+  const btn = document.getElementById('mobile-menu-btn');
+  const drawer = document.getElementById('mobile-nav-drawer');
+  btn.classList.toggle('open');
+  drawer.classList.toggle('open');
+}
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', function(e) {
+  const drawer = document.getElementById('mobile-nav-drawer');
+  const btn = document.getElementById('mobile-menu-btn');
+  if (drawer && btn && drawer.classList.contains('open') && !drawer.contains(e.target) && !btn.contains(e.target)) {
+    drawer.classList.remove('open');
+    btn.classList.remove('open');
+  }
+});
 
 function dmToggle() {
   const body = document.body;
