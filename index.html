@@ -19,7 +19,7 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-G50BZLK3VS');
+  gtag('config', 'G-G50BZLK3VS', { send_page_view: false });
 </script>
 <style>
 :root{
@@ -2011,7 +2011,7 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
   <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
   <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Handoff</button>
-  <button class="nav-tab" onclick="switchView('schedule',this)">Schedule</button>
+  <button class="nav-tab" onclick="switchView('schedule',this)">Schedule Compare</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('map',this)">Map</button>
   <button class="nav-tab" onclick="switchView('timezones',this)">Map/Timezones</button>
 
@@ -2032,7 +2032,7 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
   <button class="nav-tab" onclick="switchView('ops',this); toggleMobileMenu()">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
   <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Handoff</button>
-  <button class="nav-tab" onclick="switchView('schedule',this); toggleMobileMenu()">Schedule</button>
+  <button class="nav-tab" onclick="switchView('schedule',this); toggleMobileMenu()">Schedule Compare</button>
   <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Map/Timezones</button>
 </div>
 <div id="dm-flash"></div>
@@ -3372,7 +3372,7 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
   <div class="page-header">
     <div>
       <div class="page-title">ROC Schedule</div>
-      <div class="page-subtitle">Proposed ROC Schedules</div>
+      <div class="page-subtitle">Comparison tool — exploring proposed shift structures, not yet finalized</div>
     </div>
     <div class="page-header-actions">
       <div class="sched-toggle">
@@ -3381,6 +3381,11 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
         <button class="sched-toggle-btn" id="toggle-pit" onclick="showSchedule('pitman')">Pitman</button>
       </div>
     </div>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:8px;background:var(--abg);border:1px solid var(--amber);border-radius:var(--r);padding:9px 13px;margin-bottom:14px;font-size:12.5px;color:var(--amber);font-weight:500;">
+    <span style="font-size:14px;">⚠</span>
+    <span><strong>Draft / under review</strong> — these are candidate schedules for evaluating a potential shift structure change. Nothing here is in effect. The current live rotation is unaffected.</span>
   </div>
 
   <!-- Date controls -->
@@ -4263,6 +4268,15 @@ function switchView(v, el) {
   if(v==='roc') { rocLoad(); rocRender(); }
   if(v==='schedule') { if(window.showSchedule) setTimeout(()=>window.showSchedule(document.querySelector('#view-schedule .sched-toggle-btn.active')?.dataset?.sched||'split'),50); }
   try { localStorage.setItem('rnwbl_active_tab', v); } catch(e) {}
+  // GA4 virtual pageview — fires per tab so each view shows up separately
+  // in Analytics > Reports > Engagement > Pages and screens.
+  if (typeof gtag === 'function') {
+    gtag('event', 'page_view', {
+      page_title: 'RNWBL Ops Hub – ' + v,
+      page_path: '/' + v,
+      page_location: location.origin + location.pathname + '#' + v
+    });
+  }
 }
 
 // ─── TIME ZONE DASHBOARD ──────────────────────────────────────────────────────
