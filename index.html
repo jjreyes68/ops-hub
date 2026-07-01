@@ -164,6 +164,17 @@ body.dark .nav-tz-key{color:var(--text2);}
 .mobile-nav-drawer .nav-tab{width:100%;text-align:left;padding:10px 14px;border-radius:6px;}
 .mobile-nav-drawer .nav-tab.active{background:var(--bg3);border-color:var(--border);}
 
+/* ── NAV DROPDOWN (Study, Site Conditions) ───────────────────────────────── */
+.nav-dropdown{position:relative;}
+.nav-dropdown-trigger{display:inline-flex;align-items:center;gap:5px;}
+.nav-dropdown-caret{font-size:9px;opacity:.55;transition:transform .15s;position:relative;top:1px;}
+.nav-dropdown.open .nav-dropdown-caret{transform:rotate(180deg);}
+.nav-dropdown-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:175px;background:var(--bg2);border:1px solid var(--border);border-radius:9px;box-shadow:var(--sh);padding:5px;display:none;flex-direction:column;gap:2px;z-index:55;}
+.nav-dropdown-menu.open{display:flex;}
+.nav-dropdown-item{padding:8px 11px;border-radius:6px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;border:none;background:transparent;font-family:var(--f);text-align:left;width:100%;transition:all .12s;}
+.nav-dropdown-item:hover{background:var(--bg3);color:var(--text);}
+.nav-dropdown-item.active{background:var(--bg3);color:var(--text);font-weight:600;}
+
 @media(max-width:768px){
   .mobile-menu-btn{display:flex;}
   .nav .nav-tab:not(.mobile-menu-btn){display:none;}
@@ -757,6 +768,10 @@ body.dark .cl-time{color:var(--text2);}
 
 /* Promote inline menu */
 .sp-promote-menu{display:none;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin:6px 0 8px 44px;flex-direction:column;gap:10px;}
+.sp-promote-preview-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.sp-promote-preview{font-size:12.5px;color:var(--text);line-height:1.5;flex:1;min-width:140px;}
+.sp-promote-preview-tags{display:flex;gap:5px;flex-wrap:wrap;align-items:center;flex-shrink:0;}
+.sp-smart-footer-wrap{display:flex;justify-content:flex-end;margin-top:8px;}
 .sp-promote-menu.active{display:flex;}
 .sp-promote-grid{display:grid;grid-template-columns:140px 1fr;gap:12px;}
 .sp-promote-col-type{display:flex;flex-direction:column;gap:6px;}
@@ -872,8 +887,8 @@ body.dark .cl-time{color:var(--text2);}
 .wx-fc-loading{text-align:center;padding:16px 0;color:var(--text3);font-size:12px;font-style:italic;}
 .wx-fc-err{font-size:11px;color:var(--red);padding:8px 0;font-style:italic;}
 /* ── MAP VIEW ───────────────────────────────────────────────────────────────── */
-#view-map{padding:0;display:none;flex-direction:column;height:calc(100vh - 48px);}
-#view-map.active{display:flex;animation:viewSlideIn .2s cubic-bezier(.22,1,.36,1) both;}
+#view-sitemap{padding:0;display:none;flex-direction:column;height:calc(100vh - 48px);}
+#view-sitemap.active{display:flex;animation:viewSlideIn .2s cubic-bezier(.22,1,.36,1) both;}
 .map-toolbar{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;height:44px;}
 .map-toolbar-title{font-size:13px;font-weight:600;margin-right:4px;}
 #batchgeo-embed{flex:1;width:100%;border:none;display:block;min-height:0;}
@@ -929,11 +944,6 @@ body.dark .cl-time{color:var(--text2);}
 .tz-sites .tz-loc{color:var(--text2);font-size:12px}
 .tz-footer{font-size:11px;color:var(--text2);margin-top:16px}
 /* ── TIMEZONE MAP SECTION ─────────────────────────────────────────────────── */
-.tz-map-section{margin-top:24px;border:1px solid var(--border);border-radius:14px;background:var(--bg2);overflow:hidden}
-.tz-map-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--bg3)}
-.tz-map-header h3{font-size:15px;margin:0;font-weight:600}
-.tz-map-container{position:relative;width:100%;height:400px;background:var(--bg)}
-.tz-map-container iframe{width:100%;height:100%;border:none}
 /* ── TIMEZONE KIOSK MODE ──────────────────────────────────────────────────── */
 .tz-kiosk-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--blue);background:var(--bbg);color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
 .tz-kiosk-btn:hover{background:var(--blue);color:#fff;}
@@ -1472,6 +1482,49 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 .roc-drill-conf-row{display:flex;gap:6px;}
 .roc-section-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--bg4);color:var(--text3);}
 
+/* ── SMART PUSH PREVIEW PANEL ─────────────────────────────────────────────── */
+.sp-smart-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:6px;border:1px solid var(--blue);background:var(--bbg);color:var(--blue);font-size:11.5px;font-weight:700;cursor:pointer;font-family:var(--f);transition:all .14s;white-space:nowrap;}
+.sp-smart-btn:hover{background:var(--blue);color:#fff;}
+.sp-smart-btn:disabled{opacity:.35;cursor:not-allowed;background:var(--bbg);}
+.sp-smart-panel{background:var(--bg2);border:1.5px solid var(--blue);border-radius:var(--rl);padding:14px 16px;margin:10px 0 6px;display:none;}
+.sp-smart-panel.open{display:block;}
+.sp-smart-panel-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:10px;}
+.sp-smart-panel-title{font-size:13px;font-weight:700;color:var(--text);}
+.sp-smart-panel-sub{font-size:11.5px;color:var(--text3);margin-top:3px;}
+.sp-smart-rows{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.sp-smart-row{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;transition:opacity .15s;}
+.sp-smart-row.skipped{opacity:.4;}
+.sp-smart-row-text{font-size:12.5px;color:var(--text);line-height:1.5;margin-bottom:7px;word-break:break-word;}
+.sp-smart-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
+.sp-smart-tag{font-family:var(--m);font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:.01em;}
+.sp-tag-site{background:var(--bbg);color:var(--blue);}
+.sp-tag-log{background:var(--bg4);color:var(--text2);}
+.sp-tag-active{background:var(--rbg);color:var(--red);}
+.sp-tag-upcoming{background:var(--gbg);color:var(--green);}
+.sp-tag-resolved{background:var(--bg4);color:var(--text3);}
+.sp-tag-warn{background:var(--abg);color:var(--amber);}
+.sp-tag-bess{background:#f0f0ff;color:#5555cc;}
+body.dark .sp-tag-bess{background:#1a1a3a;color:#8888ff;}
+.sp-smart-controls{display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
+.sp-smart-cat{font-size:11px;font-weight:600;padding:4px 10px;border-radius:5px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer;font-family:var(--f);transition:all .12s;line-height:1;}
+.sp-smart-cat:hover{border-color:var(--border2);color:var(--text2);}
+.sp-smart-cat.sel-handoff{background:var(--bbg);border-color:var(--blue);color:var(--blue);}
+.sp-smart-cat.sel-upcoming{background:var(--gbg);border-color:var(--green);color:var(--green);}
+.sp-smart-cat.sel-skip{background:var(--bg4);border-color:var(--border2);color:var(--text3);}
+.sp-smart-sel{font-family:var(--f);font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);}
+.sp-smart-inp{font-family:var(--m);font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);width:78px;}
+.sp-smart-footer{display:flex;align-items:center;gap:12px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.sp-smart-push{padding:8px 18px;background:var(--blue);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--f);transition:filter .14s;}
+.sp-smart-push:hover{filter:brightness(1.12);}
+.sp-smart-cancel{font-size:12px;color:var(--text3);cursor:pointer;background:none;border:none;font-family:var(--f);padding:0;}
+.sp-smart-cancel:hover{color:var(--text);}
+.sp-smart-skip-note{margin-left:auto;font-size:11px;color:var(--text3);}
+.sp-strip-site{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:1.5px;color:var(--text3);opacity:.65;}
+.sp-smart-strip-toggle{font-family:var(--m);font-size:9.5px;font-weight:600;padding:2px 8px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer;transition:all .13s;letter-spacing:.01em;}
+.sp-smart-strip-toggle:hover{border-color:var(--border2);color:var(--text2);}
+.sp-smart-strip-toggle.on{background:var(--rbg);border-color:var(--red);color:var(--red);opacity:.85;}
+.sp-tag-cleaned{background:var(--abg);color:var(--amber);}
+
 /* ── SCHEDULE COMPARE ──────────────────────────────────────────────────── */
 #view-schedule{
     --blue-light: #E6F1FB; --blue-mid: #B5D4F4; --blue-dark: #0C447C; --blue-text: #185FA5;
@@ -2005,15 +2058,31 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
   </button>
   <button class="nav-tab active" id="nav-tab-scans" onclick="switchView('scans',this)">Scans</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
-  <button class="nav-tab" onclick="switchView('nerc',this)">NERC Study</button>
-  <button class="nav-tab" onclick="switchView('roc',this)">ROC Study</button>
-  <button class="nav-tab" onclick="switchView('intel',this)">Weather</button>
+  <div class="nav-dropdown" id="navdd-study">
+    <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-study" onclick="navDropdownToggle('study', event)" aria-haspopup="true">Study <span class="nav-dropdown-caret">▾</span></button>
+    <div class="nav-dropdown-menu" id="navdd-menu-study">
+      <button class="nav-dropdown-item" data-view="nerc" onclick="navDropdownSelect('nerc','study')">NERC Study</button>
+      <button class="nav-dropdown-item" data-view="roc" onclick="navDropdownSelect('roc','study')">ROC Study</button>
+    </div>
+  </div>
   <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
   <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Handoff</button>
-  <button class="nav-tab" onclick="switchView('schedule',this)">Schedule Compare</button>
-  <button class="nav-tab" style="display:none;" onclick="switchView('map',this)">Map</button>
-  <button class="nav-tab" onclick="switchView('timezones',this)">Map/Timezones</button>
+  <div class="nav-dropdown" id="navdd-schedule">
+    <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-schedule" onclick="navDropdownToggle('schedule', event)" aria-haspopup="true">Schedule Compare <span class="nav-dropdown-caret">▾</span></button>
+    <div class="nav-dropdown-menu" id="navdd-menu-schedule">
+      <button class="nav-dropdown-item" data-sched="split" onclick="navDropdownSelectSchedule('split')">Split Week</button>
+      <button class="nav-dropdown-item" data-sched="pitman" onclick="navDropdownSelectSchedule('pitman')">Pitman</button>
+    </div>
+  </div>
+  <div class="nav-dropdown" id="navdd-site-conditions">
+    <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-site-conditions" onclick="navDropdownToggle('site-conditions', event)" aria-haspopup="true">Site Conditions <span class="nav-dropdown-caret">▾</span></button>
+    <div class="nav-dropdown-menu" id="navdd-menu-site-conditions">
+      <button class="nav-dropdown-item" data-view="intel" onclick="navDropdownSelect('intel','site-conditions')">Weather</button>
+      <button class="nav-dropdown-item" data-view="timezones" onclick="navDropdownSelect('timezones','site-conditions')">Timezones</button>
+      <button class="nav-dropdown-item" data-view="sitemap" onclick="navDropdownSelect('sitemap','site-conditions')">Map</button>
+    </div>
+  </div>
 
   <button class="nav-tab" style="display:none;" onclick="switchView('notes',this)">Notepad</button>
   <button class="nav-tab" style="display:none;" onclick="switchView('log',this)">Log</button>
@@ -2032,8 +2101,10 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
   <button class="nav-tab" onclick="switchView('ops',this); toggleMobileMenu()">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
   <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Handoff</button>
-  <button class="nav-tab" onclick="switchView('schedule',this); toggleMobileMenu()">Schedule Compare</button>
-  <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Map/Timezones</button>
+  <button class="nav-tab" onclick="navDropdownSelectSchedule('split'); toggleMobileMenu()">Schedule – Split Week</button>
+  <button class="nav-tab" onclick="navDropdownSelectSchedule('pitman'); toggleMobileMenu()">Schedule – Pitman</button>
+  <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Timezones</button>
+  <button class="nav-tab" onclick="switchView('sitemap',this); toggleMobileMenu()">Map</button>
 </div>
 <div id="dm-flash"></div>
 <canvas id="dm-lightning-canvas"></canvas>
@@ -3326,6 +3397,10 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
       <button class="cl-log-btn" onclick="spAdd()">Add</button>
     </div>
     <div class="sp-list" id="sp-list"></div>
+    <div class="sp-smart-footer-wrap" id="sp-smart-footer-wrap" style="display:none;">
+      <button class="sp-smart-btn" id="sp-smart-btn" onclick="spSmartOpen()" title="Auto-parse all notes above and push to feed in one step">⚡ Smart Push All</button>
+    </div>
+    <div id="sp-smart-panel" class="sp-smart-panel"></div>
   </div>
 
   <!-- ── SHIFT FEED ────────────────────────────────────────────────────── -->
@@ -3884,15 +3959,15 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
 
 </div><!-- /#view-schedule -->
 
-<!-- MAP VIEW ────────────────────────────────────────────────────────────────── -->
-<div class="view" id="view-map">
+<!-- SITE MAP (Google My Maps) ─────────────────────────────────────────────────── -->
+<div class="view" id="view-sitemap">
   <div class="map-toolbar">
     <span class="map-toolbar-title">Site Map</span>
-    <span style="font-size:11px;color:var(--text3);">Powered by BatchGeo</span>
+    <span style="font-size:11px;color:var(--text3);">RNWBL fleet locations — Google My Maps</span>
     <div class="nav-spacer"></div>
-    <a href="https://batchgeo.com/map/32d1a39cc9b52f667552861cfb472bef" target="_blank" class="tbtn" style="font-size:11px;padding:4px 10px;text-decoration:none;">Open Full Map</a>
+    <a href="https://www.google.com/maps/d/u/0/viewer?mid=14GNXruAbp2_YUo3YPIXjMnO7d_k7LcQ" target="_blank" class="tbtn" style="font-size:11px;padding:4px 10px;text-decoration:none;">Open Full Map</a>
   </div>
-  <iframe id="batchgeo-embed" src="https://batchgeo.com/map/32d1a39cc9b52f667552861cfb472bef?embed=1" allowfullscreen></iframe>
+  <iframe id="sitemap-embed" src="https://www.google.com/maps/d/embed?mid=14GNXruAbp2_YUo3YPIXjMnO7d_k7LcQ&ehbc=2E312F&noprof=1" style="flex:1;width:100%;border:none;display:block;min-height:0;" allowfullscreen loading="lazy"></iframe>
 </div>
 
 <!-- TIME ZONE DASHBOARD ────────────────────────────────────────────────────────── -->
@@ -3900,8 +3975,8 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
   <div class="tz-container">
     <div class="tz-header">
       <div>
-        <h1>Map/Timezones</h1>
-        <div class="tz-muted">Live clocks and site locations for all RNWBL sites. Arizona does not observe DST.</div>
+        <h1>Timezones</h1>
+        <div class="tz-muted">Live clocks for all RNWBL sites. Arizona does not observe DST.</div>
       </div>
       <div class="tz-controls">
         <button id="tz-btn24" class="tz-btn active">24h</button>
@@ -3915,18 +3990,7 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
       <input id="tz-search" placeholder="Search site, city, or zone…" />
     </div>
     <div class="tz-grid" id="tz-grid"></div>
-    
-    <!-- Site Map Section -->
-    <div class="tz-map-section">
-      <div class="tz-map-header">
-        <h3>Site Locations</h3>
-        <span style="font-size:11px;color:var(--text3);">Interactive map of all RNWBL sites</span>
-      </div>
-      <div class="tz-map-container">
-        <iframe src="https://www.google.com/maps/d/embed?mid=14GNXruAbp2_YUo3YPIXjMnO7d_k7LcQ&ehbc=2E312F&noprof=1" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-      </div>
-    </div>
-    
+
     <div class="tz-footer">Last update: <span id="tz-lastUpdate"></span> (auto-refreshing)</div>
   </div>
 </div>
@@ -4171,7 +4235,7 @@ async function load() {
   rows.forEach((row,i) => { const inp=row.querySelector('input'); if(inp) inp.value=S.escContacts[tkeys[i]]||''; });
 
   // Restore last active tab (default: scans)
-  const TAB_VIEWS = ['scans','asset','nerc','roc','intel','ops','swbuilder','chron','timezones','schedule'];
+  const TAB_VIEWS = ['scans','asset','nerc','roc','intel','ops','swbuilder','chron','timezones','schedule','sitemap'];
   let savedTab = 'scans';
   try { savedTab = localStorage.getItem('rnwbl_active_tab') || 'scans'; } catch(e) {}
   if (!TAB_VIEWS.includes(savedTab)) savedTab = 'scans';
@@ -4244,15 +4308,29 @@ async function load() {
 })();
 
 // ─── NAV ──────────────────────────────────────────────────────────────────────
+const NAV_DROPDOWN_GROUPS = {
+  'study': ['nerc','roc'],
+  'site-conditions': ['intel','timezones','sitemap'],
+  'schedule': ['schedule']
+};
 function switchView(v, el) {
   document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-dropdown-item').forEach(x=>x.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');
   if(el) el.classList.add('active');
+  // If this view belongs to a dropdown group, highlight the trigger + the matching item
+  for (const [groupId, views] of Object.entries(NAV_DROPDOWN_GROUPS)) {
+    if (views.includes(v)) {
+      const trigger = document.getElementById('navdd-trigger-'+groupId);
+      if (trigger) trigger.classList.add('active');
+      const item = document.querySelector(`.nav-dropdown-item[data-view="${v}"]`);
+      if (item) item.classList.add('active');
+    }
+  }
   if(v==='log') renderLog();
   if(v==='scans') { refreshScanStatuses(); renderSites(); }
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
-  if(v==='map') mapActivate();
   if(v==='timezones') initTimeZones();
   if(v==='chron') {
     // Pre-populate date/shift from Asset Scan if not already set
@@ -4266,7 +4344,20 @@ function switchView(v, el) {
   }
   if(v==='intel') wxFleetInit();
   if(v==='roc') { rocLoad(); rocRender(); }
-  if(v==='schedule') { if(window.showSchedule) setTimeout(()=>window.showSchedule(document.querySelector('#view-schedule .sched-toggle-btn.active')?.dataset?.sched||'split'),50); }
+  if(v==='schedule') {
+    // navDropdownSelectSchedule() sets this right before calling switchView so a specific
+    // sub-schedule (split/pitman) can be requested deterministically; otherwise fall back
+    // to whichever sub-schedule toggle was last active (e.g. restoring last session's tab).
+    let target = window._navScheduleTarget;
+    window._navScheduleTarget = null;
+    if (!target) {
+      const activeToggle = document.querySelector('#view-schedule .sched-toggle-btn.active');
+      target = activeToggle && activeToggle.id === 'toggle-pit' ? 'pitman'
+             : activeToggle && activeToggle.id === 'toggle-curr' ? 'curr'
+             : 'split';
+    }
+    if(window.showSchedule) setTimeout(()=>window.showSchedule(target),50);
+  }
   try { localStorage.setItem('rnwbl_active_tab', v); } catch(e) {}
   // GA4 virtual pageview — fires per tab so each view shows up separately
   // in Analytics > Reports > Engagement > Pages and screens.
@@ -4278,6 +4369,46 @@ function switchView(v, el) {
     });
   }
 }
+
+// ─── NAV DROPDOWNS (Study, Site Conditions) ────────────────────────────────────
+function navDropdownToggle(groupId, ev) {
+  if (ev) ev.stopPropagation();
+  const menu = document.getElementById('navdd-menu-'+groupId);
+  const wrap = document.getElementById('navdd-'+groupId);
+  if (!menu || !wrap) return;
+  const willOpen = !menu.classList.contains('open');
+  document.querySelectorAll('.nav-dropdown-menu.open').forEach(m => m.classList.remove('open'));
+  document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+  if (willOpen) { menu.classList.add('open'); wrap.classList.add('open'); }
+}
+function navDropdownSelect(v, groupId) {
+  switchView(v, null);
+  const menu = document.getElementById('navdd-menu-'+groupId);
+  const wrap = document.getElementById('navdd-'+groupId);
+  if (menu) menu.classList.remove('open');
+  if (wrap) wrap.classList.remove('open');
+}
+// Schedule Compare dropdown — jumps into #view-schedule AND selects a specific
+// sub-schedule (split/pitman), without touching showSchedule() or the in-page
+// toggle pills at all. window._navScheduleTarget is read once by switchView().
+function navDropdownSelectSchedule(which) {
+  window._navScheduleTarget = which;
+  switchView('schedule', null);
+  const menu = document.getElementById('navdd-menu-schedule');
+  const wrap = document.getElementById('navdd-schedule');
+  if (menu) menu.classList.remove('open');
+  if (wrap) wrap.classList.remove('open');
+}
+document.addEventListener('click', () => {
+  document.querySelectorAll('.nav-dropdown-menu.open').forEach(m => m.classList.remove('open'));
+  document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.nav-dropdown-menu.open').forEach(m => m.classList.remove('open'));
+    document.querySelectorAll('.nav-dropdown.open').forEach(d => d.classList.remove('open'));
+  }
+});
 
 // ─── TIME ZONE DASHBOARD ──────────────────────────────────────────────────────
 const TZ_ZONES=[
@@ -5285,6 +5416,7 @@ let clSiteOptions = ''; // cached options HTML for inline selects
 function clInit() {
   try { clEntries = JSON.parse(localStorage.getItem(CL_KEY) || '[]'); } catch(e) { clEntries = []; }
   clPopulateSiteSelect();
+  spBuildSiteTable();
   spInit();
 }
 
@@ -5531,13 +5663,447 @@ const CL_CAT_ORDER = ['handoff','upcoming'];
 const SP_KEY = 'rnwbl_scratchpad_v1';
 let scratchpad = [];
 
+// ─── SMART PUSH ────────────────────────────────────────────────────────────────
+let spSmartState = [];
+
+// ── Site alias engine ────────────────────────────────────────────────────────
+// Built dynamically from AS_SITES — the same site list that drives the Asset
+// Scan page — so detection always matches whatever sites actually exist there.
+// Add, rename, or remove a site on Asset Scan and this list updates itself;
+// there's no separate site table to keep in sync by hand.
+//
+// For each site this generates every reasonable way an operator might type it:
+//   code            e.g. "CNDR1"
+//   code w/o digit  e.g. "CNDR"           (if op drops the trailing number)
+//   friendly name   e.g. "Condor"         (pulled from the Asset Scan label)
+//   friendly+digit  e.g. "Condor1" / "Condor 1"
+//   no-space name   e.g. "AngelFire"      (for multi-word names)
+// Matching is case-insensitive with word boundaries, so "condor", "CONDOR",
+// and "Condor" all resolve to CNDR1 — but a bare "Harquahala" (ambiguous
+// between HARQ1/HARQ2) deliberately does NOT match either, since the Asset
+// Scan labels for those keep the "1"/"2" as part of the name.
+let SP_SITE_TABLE = [];
+
+function spBuildSiteTable() {
+  if (typeof AS_SITES === 'undefined' || !AS_SITES.length) { SP_SITE_TABLE = []; return; }
+  SP_SITE_TABLE = AS_SITES.map(site => {
+    const code = site.id;
+    let friendly = (site.label || '')
+      .replace(new RegExp('^' + code.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '-?'), '')
+      .replace(/\[[^\]]*\]/g, '')
+      .trim();
+    if (!friendly || friendly === code) friendly = '';
+
+    const aliases = new Set([code]);
+    const codeNoDigit = code.replace(/\d+$/, '');
+    if (codeNoDigit && codeNoDigit !== code) aliases.add(codeNoDigit);
+
+    if (friendly) {
+      aliases.add(friendly);
+      const digitSuffix = (code.match(/\d+$/) || [''])[0];
+      if (digitSuffix && !friendly.endsWith(digitSuffix)) {
+        aliases.add(friendly + digitSuffix);
+        aliases.add(friendly + ' ' + digitSuffix);
+      }
+      if (/\s/.test(friendly)) {
+        const noSpace = friendly.replace(/\s+/g, '');
+        aliases.add(noSpace);
+        if (digitSuffix && !noSpace.endsWith(digitSuffix)) aliases.add(noSpace + digitSuffix);
+      }
+    }
+    return { code, friendly, aliases: [...aliases] };
+  });
+}
+
+function spDetectSites(text) {
+  const found = [];
+  for (const site of SP_SITE_TABLE) {
+    for (const alias of site.aliases) {
+      const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const m = text.match(new RegExp(`\\b${escaped}\\b`, 'i'));
+      if (m) { found.push({ ...site, matchedText: m[0] }); break; }
+    }
+  }
+  return found; // array of {code, friendly, aliases, matchedText}
+}
+
+// Single source of truth for "what exactly gets removed" — used by both the
+// strike-through preview and the actual text cleanup, so what an operator
+// sees struck through in the panel is always exactly what disappears from
+// the pushed text. Also consumes a trailing possessive ('s / ’s) so
+// "Condor's derate" strips cleanly to "Derate" instead of leaving "'s".
+function spPhraseStripRegex(phrase) {
+  const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`\\b(${escaped}(?:'s|\u2019s)?)\\b`, 'i');
+}
+
+// Removes one or more matched phrases (site name, log/OMS number, etc.) from
+// a note's text — used when that information is already going to appear in
+// its own field on the feed entry, so leaving it in the free text would
+// read redundantly. Cleans up whitespace, orphaned punctuation/dashes, and
+// now-empty parens/brackets left behind, then re-capitalizes the result.
+// Falls back to the original text untouched if stripping would leave
+// nothing meaningful.
+function spCleanTextForPush(text, phrases) {
+  let out = text;
+  (phrases || []).filter(Boolean).forEach(phrase => {
+    out = out.replace(spPhraseStripRegex(phrase), '');
+  });
+  out = out
+    .replace(/\(\s*\)/g, '')
+    .replace(/\[\s*\]/g, '')
+    .replace(/\s*,\s*,\s*/g, ', ')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/^[\s,;:.\-–—]+/, '')
+    .replace(/[\s,;:.\-–—]+$/, '')
+    .trim();
+  if (!out) return text; // stripping emptied the note — keep original rather than push blank text
+  return out.charAt(0).toUpperCase() + out.slice(1);
+}
+
+// Builds the row's displayed text with matched phrases struck through in
+// place, so the operator can see exactly what will (and won't) carry over
+// to the feed before pushing. `phraseSpecs` is [{phrase, strip, title}, ...]
+// — entries with strip:false render as plain (unstruck) text so a toggled-
+// off phrase still shows normally. Handles HTML-escaping around each split
+// so user text with special characters still renders safely.
+function spHighlightPhrasesInText(text, phraseSpecs) {
+  const found = [];
+  (phraseSpecs || []).forEach(({phrase, strip, title}) => {
+    if (!phrase) return;
+    const m = text.match(spPhraseStripRegex(phrase));
+    if (m) found.push({ start: m.index, end: m.index + m[0].length, text: m[0], strip, title });
+  });
+  if (!found.length) return esc(text);
+
+  found.sort((a, b) => a.start - b.start);
+  const clean = [];
+  let lastEnd = -1;
+  found.forEach(f => { if (f.start >= lastEnd) { clean.push(f); lastEnd = f.end; } }); // drop overlaps
+
+  let out = '', cursor = 0;
+  clean.forEach(f => {
+    out += esc(text.slice(cursor, f.start));
+    out += f.strip
+      ? `<span class="sp-strip-site" title="${esc(f.title || 'Hidden from the pushed text')}">${esc(f.text)}</span>`
+      : esc(f.text);
+    cursor = f.end;
+  });
+  out += esc(text.slice(cursor));
+  return out;
+}
+
+// Signal rule sets — each entry is [regex, human label, tag class, category hint]
+const SP_SIGNALS = [
+  // Active/handoff issues
+  [/\bcurtail/i,            'Curtailment', 'sp-tag-active',    'handoff'],
+  [/\bderat/i,              'Derate',      'sp-tag-active',    'handoff'],
+  [/\bO\.?I\b|operating instruction/i, 'OI', 'sp-tag-active', 'handoff'],
+  [/\boutage\b/i,           'Outage',      'sp-tag-active',    'handoff'],
+  [/\boffline\b/i,          'Offline',     'sp-tag-active',    'handoff'],
+  [/\btripp/i,              'Trip',        'sp-tag-active',    'handoff'],
+  [/\bfault\b/i,            'Fault',       'sp-tag-active',    'handoff'],
+  [/\balarm\b/i,            'Alarm',       'sp-tag-active',    'handoff'],
+  [/\bSCADA\b/,             'SCADA',       'sp-tag-active',    'handoff'],
+  [/\bcomm(unication)? loss\b|lost comm\b|no comm\b/i, 'Comm Loss', 'sp-tag-active', 'handoff'],
+  [/\btelemetry\b/i,        'Telemetry',   'sp-tag-active',    'handoff'],
+  [/\bvoltage\b/i,          'Voltage',     'sp-tag-active',    'handoff'],
+  [/\bAVR\b/,               'AVR',         'sp-tag-active',    'handoff'],
+  [/\bAGC\b/,               'AGC',         'sp-tag-active',    'handoff'],
+  [/\bfrequency\b/i,        'Frequency',   'sp-tag-active',    'handoff'],
+  [/\bADS\b/,               'ADS',         'sp-tag-warn',      'handoff'],
+  [/\bconstraint\b/i,       'Constraint',  'sp-tag-warn',      'handoff'],
+  [/\brestrict/i,           'Restricted',  'sp-tag-warn',      'handoff'],
+  [/\bSOC\b/,               'SOC',         'sp-tag-bess',      'handoff'],
+  [/\bdischarge\b/i,        'Discharge',   'sp-tag-bess',      'handoff'],
+  [/\bBESS\b/i,             'BESS',        'sp-tag-bess',      'handoff'],
+  [/\bMegapack\b|\bFluence\b/i, 'Storage', 'sp-tag-bess',     'handoff'],
+  [/\bBluence\b|\bTrimark\b|\bVantage\b/i, 'SCADA Platform', 'sp-tag-log', 'handoff'],
+  [/\bGrid Ops\b/i,         'Grid Ops',    'sp-tag-site',      'handoff'],
+  [/\bAPS\b/,               'APS',         'sp-tag-site',      'handoff'],
+  [/\bPG&?E\b/i,            'PG&E',        'sp-tag-site',      'handoff'],
+  [/\bSCE\b/,               'SCE',         'sp-tag-site',      'handoff'],
+  [/\bIPCO\b/,              'IPCO',        'sp-tag-site',      'handoff'],
+  [/\bSPP\b/,               'SPP',         'sp-tag-site',      'handoff'],
+  [/\bGridmatic\b/i,        'Gridmatic',   'sp-tag-site',      'handoff'],
+  [/\bTenaska\b/i,          'Tenaska',     'sp-tag-site',      'handoff'],
+  [/\bCopia\b/i,            'Copia',       'sp-tag-site',      'handoff'],
+  [/\bcontact[ed]?\b|\bnotif|\bcall[ed]?\b/i, 'Contact Made', 'sp-tag-log', 'handoff'],
+  [/\bmanual\b/i,           'Manual Ctrl', 'sp-tag-warn',      'handoff'],
+  [/\bVestas\b|\bGE wind\b/i, 'Wind',      'sp-tag-log',      'handoff'],
+  // Upcoming
+  [/\bschedul/i,            'Scheduled',   'sp-tag-upcoming',  'upcoming'],
+  [/\bupcoming\b/i,         'Upcoming',    'sp-tag-upcoming',  'upcoming'],
+  [/\btomorrow\b/i,         'Tomorrow',    'sp-tag-upcoming',  'upcoming'],
+  [/\bnext shift\b/i,       'Next Shift',  'sp-tag-upcoming',  'upcoming'],
+  [/\bwill be\b|\bwill need\b/i, 'Will Be', 'sp-tag-upcoming', 'upcoming'],
+  [/\bplan(ning)? to\b/i,   'Planning',    'sp-tag-upcoming',  'upcoming'],
+  [/\bexpect\b/i,           'Expected',    'sp-tag-upcoming',  'upcoming'],
+  [/\bEOD\b|end of (day|shift)\b/i, 'EOD', 'sp-tag-upcoming', 'upcoming'],
+  [/\bwatch for\b|\bstandby\b/i, 'Watch',  'sp-tag-upcoming',  'upcoming'],
+  [/\bat \d{1,2}:\d{2}/,   'Timed Event', 'sp-tag-upcoming',  'upcoming'],
+];
+
+// Resolution signals — these items get auto-skipped (operator can override)
+const SP_RESOLVED_RE = [
+  /\bresolved\b/i, /\bcleared\b/i, /\bback online\b/i, /\brestored\b/i,
+  /\bRTS\b/, /\breturned to service\b/i, /\bclosed\b/i,
+  /\bno further action\b/i, /\bNFA\b/, /\bback (up|to normal)\b/i,
+  /\bback in service\b/i, /\bback in auto\b/i
+];
+
+function spParse(text) {
+  const t = text;
+
+  // Site detection — matches code, friendly name, and common variants,
+  // sourced live from the Asset Scan site list (see spBuildSiteTable above)
+  const siteMatches = spDetectSites(t);
+  const sites = siteMatches.map(s => s.code);
+
+  // Log / OMS extraction — try OMS first, then whichever of "log #XXXX" or
+  // bare "#XXXX" spans MORE of the text (so "log #8423" strips as one full
+  // phrase rather than leaving an orphaned "log" behind when only "#8423"
+  // was captured). `ticket` stays digits-only — same as before, since other
+  // parts of the app (the ticket field, feed display) expect just the
+  // number; `ticketMatchedText` is the extra full-phrase capture used only
+  // for stripping/highlighting.
+  const omsM = t.match(/OMS\s*#?\s*\d+/i);
+  const logM = t.match(/\blog\s*#?\s*\d+/i);
+  const hashM = t.match(/#\d{3,}/);
+  let ticketMatch = omsM;
+  if (!ticketMatch) {
+    if (logM && hashM) ticketMatch = logM[0].length >= hashM[0].length ? logM : hashM;
+    else ticketMatch = logM || hashM;
+  }
+  const ticketMatchedText = ticketMatch ? ticketMatch[0] : '';
+  const ticket = (ticketMatchedText.match(/\d+/) || [''])[0];
+
+  // Run every signal rule
+  const isResolved = SP_RESOLVED_RE.some(re => re.test(t));
+  const hits = SP_SIGNALS.filter(([re]) => re.test(t));
+  const handoffHits = hits.filter(([,,, hint]) => hint === 'handoff').length;
+  const upcomingHits = hits.filter(([,,, hint]) => hint === 'upcoming').length;
+
+  // Build display tags (deduplicate label)
+  const seen = new Set();
+  const tags = [];
+  hits.forEach(([, label, cls]) => {
+    if (!seen.has(label)) { seen.add(label); tags.push({label, cls}); }
+  });
+  siteMatches.forEach(s => {
+    if (seen.has(s.code)) return;
+    seen.add(s.code);
+    // Show "Condor → CNDR1" when detected via a friendly-name alias, so the
+    // operator can see the match wasn't just the bare code, but keep it
+    // short — just the code — when there's no distinct friendly name.
+    const label = s.friendly ? `${s.friendly} → ${s.code}` : s.code;
+    tags.push({label, cls: 'sp-tag-site'});
+  });
+  if (ticket) tags.push({label: `#${ticket}`, cls: 'sp-tag-log'});
+
+  // Category decision
+  let cat, confidence;
+  if (isResolved) {
+    cat = 'skip'; confidence = 'high';
+  } else if (handoffHits > 0 && upcomingHits === 0) {
+    cat = 'handoff'; confidence = 'high';
+  } else if (upcomingHits > 0 && handoffHits === 0) {
+    cat = 'upcoming'; confidence = 'high';
+  } else if (upcomingHits > 0 && handoffHits > 0) {
+    // Both signals — explicit scheduling language wins for upcoming
+    cat = /schedul|will be|plan(ning)? to/i.test(t) ? 'upcoming' : 'handoff';
+    confidence = 'medium';
+  } else {
+    cat = 'handoff'; confidence = 'low'; // no keywords, default to handoff
+  }
+
+  return { cat, site: sites[0] || '', ticket, ticketMatchedText, tags, confidence, isResolved, siteMatches };
+}
+
+function spSmartOpen() {
+  if (!scratchpad.length) { showToast('Notepad is empty', 'warn'); return; }
+
+  spSmartState = scratchpad.map((item, idx) => {
+    const p = spParse(item.text);
+    return { idx, id: item.id, text: item.text, time: item.time,
+             cat: p.cat, site: p.site, ticket: p.ticket,
+             ticketMatchedText: p.ticketMatchedText,
+             tags: p.tags, confidence: p.confidence,
+             skip: p.isResolved,
+             siteMatches: p.siteMatches,
+             stripSite: true,    // default on — operator can toggle per row
+             stripTicket: true };
+  });
+
+  spSmartRenderPanel();
+  const panel = document.getElementById('sp-smart-panel');
+  if (panel) { panel.classList.add('open'); panel.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+}
+
+// Single source of truth for "what would get stripped from this row's text
+// right now" — reused by both the render function (to build the strike-
+// through preview + decide whether to show the ✨ cleaned badge) and the
+// push function (to build the actual pushed text), so they can never drift
+// out of sync with each other.
+function spComputeStripPhrases(item) {
+  const sitePhrase = (item.siteMatches.find(m => m.code === item.site) || {}).matchedText || '';
+  // Ticket stripping only makes sense if there's currently a non-empty
+  // ticket value AND that value still traces back to something detected in
+  // the raw text — if the operator clears the ticket field, there's nothing
+  // left in a field to justify hiding the phrase from the sentence.
+  const ticketPhrase = (item.ticket && item.ticketMatchedText) ? item.ticketMatchedText : '';
+  const phrasesToStrip = [];
+  if (item.stripSite && sitePhrase) phrasesToStrip.push(sitePhrase);
+  if (item.stripTicket && ticketPhrase) phrasesToStrip.push(ticketPhrase);
+  return { sitePhrase, ticketPhrase, phrasesToStrip };
+}
+
+function spSmartRenderPanel() {
+  const panel = document.getElementById('sp-smart-panel');
+  if (!panel) return;
+
+  const pushCount = spSmartState.filter(s => !s.skip).length;
+  const skipCount = spSmartState.filter(s => s.skip).length;
+
+  const rows = spSmartState.map((item, i) => {
+    const confTag = item.confidence === 'low'
+      ? `<span class="sp-smart-tag sp-tag-warn" title="No RNWBL keywords detected — defaulting to Handoff. Review manually.">? No keywords</span>` : '';
+    const tagHTML = item.tags.map(t => `<span class="sp-smart-tag ${t.cls}">${esc(t.label)}</span>`).join('');
+
+    const catPills = ['handoff','upcoming','skip'].map(c => {
+      const labels = {handoff:'📋 Handoff', upcoming:'🕐 Upcoming', skip:'✕ Skip'};
+      const isSel = (item.skip && c === 'skip') || (!item.skip && item.cat === c);
+      return `<button class="sp-smart-cat${isSel ? ' sel-'+c : ''}" onclick="spSmartSetCat(${i},'${c}')">${labels[c]}</button>`;
+    }).join('');
+
+    const siteOpts = SP_SITE_TABLE.map(s =>
+      `<option value="${s.code}"${item.site===s.code?' selected':''}>${s.code}${s.friendly?' — '+esc(s.friendly):''}</option>`).join('');
+
+    // Recomputed on every render so it stays correct even if the operator
+    // manually changes the site dropdown or edits the ticket field after
+    // opening the panel.
+    const { sitePhrase, ticketPhrase, phrasesToStrip } = spComputeStripPhrases(item);
+    const rowTextHTML = spHighlightPhrasesInText(item.text, [
+      { phrase: sitePhrase,   strip: item.stripSite,   title: 'Hidden from the pushed text — the site already shows as its own tag' },
+      { phrase: ticketPhrase, strip: item.stripTicket, title: 'Hidden from the pushed text — the log/OMS # already shows as its own field' },
+    ]);
+
+    const siteToggle = sitePhrase
+      ? `<button class="sp-smart-strip-toggle${item.stripSite?' on':''}" onclick="spSmartToggleStrip(${i},'site')"
+           title="${item.stripSite ? 'Site name is hidden from the pushed text — click to keep it' : 'Site name will stay in the pushed text — click to hide it'}">
+           ${item.stripSite ? '🚫 site name hidden' : '👁 keep site name'}
+         </button>`
+      : '';
+    const ticketToggle = ticketPhrase
+      ? `<button class="sp-smart-strip-toggle${item.stripTicket?' on':''}" onclick="spSmartToggleStrip(${i},'ticket')"
+           title="${item.stripTicket ? 'Log/OMS # is hidden from the pushed text — click to keep it' : 'Log/OMS # will stay in the pushed text — click to hide it'}">
+           ${item.stripTicket ? '🚫 log # hidden' : '👁 keep log #'}
+         </button>`
+      : '';
+    const cleanedBadge = phrasesToStrip.length
+      ? `<span class="sp-smart-tag sp-tag-cleaned" title="This text will be trimmed of details that already show as their own tag/field">✨ cleaned</span>`
+      : '';
+
+    return `
+    <div class="sp-smart-row${item.skip?' skipped':''}" id="sp-smart-row-${i}">
+      <div>
+        <div class="sp-smart-row-text">${rowTextHTML}</div>
+        <div class="sp-smart-tags">${cleanedBadge}${confTag}${tagHTML}${siteToggle}${ticketToggle}</div>
+        <div class="sp-smart-controls">
+          ${catPills}
+          <select class="sp-smart-sel" title="Site" onchange="spSmartSetSite(${i},this.value)">
+            <option value="">no site</option>${siteOpts}
+          </select>
+          <input class="sp-smart-inp" value="${esc(item.ticket)}" placeholder="Log / OMS #"
+            title="Log or OMS number" oninput="spSmartSetTicket(${i},this.value)" onblur="spSmartRenderPanel()">
+        </div>
+      </div>
+      <span class="sp-time" style="flex-shrink:0;margin-top:2px;">${esc(item.time)}</span>
+    </div>`;
+  }).join('');
+
+  panel.innerHTML = `
+  <div class="sp-smart-panel-header">
+    <div>
+      <div class="sp-smart-panel-title">⚡ Smart Push — ${spSmartState.length} note${spSmartState.length!==1?'s':''} parsed</div>
+      <div class="sp-smart-panel-sub">Adjust category, site, or log # inline — then push to feed in one shot.</div>
+    </div>
+  </div>
+  <div class="sp-smart-rows">${rows}</div>
+  <div class="sp-smart-footer">
+    <button class="sp-smart-push" onclick="spSmartPush()">Push ${pushCount} to Feed →</button>
+    <button class="sp-smart-cancel" onclick="spSmartClose()">Cancel</button>
+    ${skipCount > 0 ? `<span class="sp-smart-skip-note">${skipCount} item${skipCount!==1?'s':''} marked Skip will stay in notepad</span>` : ''}
+  </div>`;
+}
+
+function spSmartSetCat(i, cat) {
+  spSmartState[i].cat = cat;
+  spSmartState[i].skip = (cat === 'skip');
+  spSmartRenderPanel();
+}
+function spSmartSetSite(i, val) {
+  spSmartState[i].site = val;
+  spSmartRenderPanel(); // site change can add/remove a strike-through match in the text preview
+}
+function spSmartSetTicket(i, val) { spSmartState[i].ticket = val.trim(); }
+function spSmartToggleStrip(i, kind) {
+  if (kind === 'ticket') spSmartState[i].stripTicket = !spSmartState[i].stripTicket;
+  else spSmartState[i].stripSite = !spSmartState[i].stripSite;
+  spSmartRenderPanel();
+}
+
+function spSmartPush() {
+  const toPush = spSmartState.filter(s => !s.skip);
+  if (!toPush.length) { showToast('No items to push — un-skip at least one', 'warn'); return; }
+
+  const now = new Date();
+  // Preserve note order: oldest first → unshift in reverse so newest ends up at top of feed
+  [...toPush].reverse().forEach(item => {
+    const { phrasesToStrip } = spComputeStripPhrases(item);
+    const finalText = phrasesToStrip.length
+      ? spCleanTextForPush(item.text, phrasesToStrip)
+      : item.text;
+    clEntries.unshift({
+      id: Date.now() + Math.random(),
+      ts: now.getTime(),
+      time: item.time || now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}),
+      cat: item.cat === 'skip' ? 'handoff' : item.cat,
+      site: item.site,
+      text: finalText,
+      ticket: item.ticket,
+      starred: false
+    });
+  });
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e) {}
+
+  // Remove only pushed items from scratchpad; skipped notes stay
+  const pushedIds = new Set(toPush.map(s => s.id));
+  scratchpad = scratchpad.filter(s => !pushedIds.has(s.id));
+  try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
+
+  const skipped = spSmartState.filter(s => s.skip).length;
+  spSmartClose();
+  renderScratchpad();
+  clRender();
+  clRenderPreview();
+  showToast(`Pushed ${toPush.length} note${toPush.length!==1?'s':''} to feed${skipped?' · '+skipped+' kept in notepad':''}`);
+}
+
+function spSmartClose() {
+  const panel = document.getElementById('sp-smart-panel');
+  if (panel) panel.classList.remove('open');
+  spSmartState = [];
+}
+
 function spInit() {
   try { scratchpad = JSON.parse(localStorage.getItem(SP_KEY) || '[]'); } catch(e) { scratchpad = []; }
   renderScratchpad();
 }
 
 function spAdd() {
-  const text = document.getElementById('sp-text').value.trim();
+  const input = document.getElementById('sp-text');
+  const text = input.value.trim();
   if (!text) return;
   const now = new Date();
   scratchpad.push({
@@ -5546,8 +6112,13 @@ function spAdd() {
     time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false})
   });
   try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
-  document.getElementById('sp-text').value = '';
+  input.value = '';
   renderScratchpad();
+  // Return focus to the notepad input every time — whether the note came in
+  // via Enter or a click on the Add button — so an operator jotting several
+  // things in a row during a busy stretch never has to click back into the
+  // field between notes.
+  input.focus();
 }
 
 function clStartFresh() {
@@ -5580,6 +6151,8 @@ function clGetShiftLabel() {
 }
 
 function spDelete(index) {
+  const item = scratchpad[index];
+  if (item) delete spPromoteState[item.id];
   scratchpad.splice(index, 1);
   try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
   renderScratchpad();
@@ -5589,70 +6162,164 @@ function spClear() {
   if (!scratchpad.length) return;
   if (!confirm('Clear scratchpad?')) return;
   scratchpad = [];
+  spPromoteState = {};
   try { localStorage.removeItem(SP_KEY); } catch(e) {}
   renderScratchpad();
 }
 
+// Per-note state for the individual "Add to Handoff" promote menu — keyed
+// by the scratchpad item's stable id (not array index, which shifts as
+// notes are added/removed). Lazily initialized the first time a note's
+// menu is opened, via the exact same spParse() used by Smart Push All, so
+// a single note gets identical auto-detection/stripping to a batch push —
+// just scoped to one row instead of the whole notepad.
+let spPromoteState = {};
+
 function spTogglePromote(index) {
+  const item = scratchpad[index];
   document.querySelectorAll('.sp-promote-menu').forEach(el => el.classList.remove('active'));
   const menu = document.getElementById(`sp-promote-menu-${index}`);
-  if (menu) {
-    menu.classList.toggle('active');
-    // Default to handoff if nothing selected yet
-    if (!menu.dataset.selectedCat) menu.dataset.selectedCat = 'handoff';
+  if (!menu || !item) return;
+
+  menu.classList.add('active');
+  if (!spPromoteState[item.id]) {
+    const p = spParse(item.text);
+    spPromoteState[item.id] = {
+      site: p.site, ticket: p.ticket, ticketMatchedText: p.ticketMatchedText,
+      siteMatches: p.siteMatches,
+      cat: p.cat === 'skip' ? 'handoff' : p.cat, // this flow has no Skip option — resolved items default to Handoff
+      stripSite: true, stripTicket: true
+    };
   }
+  spRenderPromoteMenu(index);
+}
+
+function spRenderPromoteMenu(index) {
+  const item = scratchpad[index];
+  const menu = document.getElementById(`sp-promote-menu-${index}`);
+  if (!item || !menu) return;
+  const st = spPromoteState[item.id];
+  if (!st) return;
+
+  const catBtns = [
+    {cat:'handoff',  label:'📋 Handoff'},
+    {cat:'upcoming', label:'🕐 Upcoming'}
+  ].map(({cat,label}) =>
+    `<button type="button" class="sp-promote-cat-btn${st.cat===cat?' sel':''}" onclick="spPromoteSetCat(${index},'${cat}')">${label}</button>`
+  ).join('');
+
+  const siteOpts = SP_SITE_TABLE.map(s =>
+    `<option value="${s.code}"${st.site===s.code?' selected':''}>${s.code}${s.friendly?' — '+esc(s.friendly):''}</option>`).join('');
+
+  const { sitePhrase, ticketPhrase, phrasesToStrip } = spComputeStripPhrases(st);
+  const previewHTML = spHighlightPhrasesInText(item.text, [
+    { phrase: sitePhrase,   strip: st.stripSite,   title: 'Hidden from the pushed text — the site already shows as its own tag' },
+    { phrase: ticketPhrase, strip: st.stripTicket, title: 'Hidden from the pushed text — the log/OMS # already shows as its own field' },
+  ]);
+  const cleanedBadge = phrasesToStrip.length
+    ? `<span class="sp-smart-tag sp-tag-cleaned" title="This text will be trimmed of details that already show as their own tag/field">✨ cleaned</span>` : '';
+  const siteToggle = sitePhrase
+    ? `<button type="button" class="sp-smart-strip-toggle${st.stripSite?' on':''}" onclick="spPromoteToggleStrip(${index},'site')"
+         title="${st.stripSite?'Site name is hidden from the pushed text — click to keep it':'Site name will stay in the pushed text — click to hide it'}">
+         ${st.stripSite?'🚫 site name hidden':'👁 keep site name'}</button>` : '';
+  const ticketToggle = ticketPhrase
+    ? `<button type="button" class="sp-smart-strip-toggle${st.stripTicket?' on':''}" onclick="spPromoteToggleStrip(${index},'ticket')"
+         title="${st.stripTicket?'Log/OMS # is hidden from the pushed text — click to keep it':'Log/OMS # will stay in the pushed text — click to hide it'}">
+         ${st.stripTicket?'🚫 log # hidden':'👁 keep log #'}</button>` : '';
+
+  menu.innerHTML = `
+    <div class="sp-promote-preview-row">
+      <div class="sp-promote-preview">${previewHTML}</div>
+      <div class="sp-promote-preview-tags">${cleanedBadge}${siteToggle}${ticketToggle}</div>
+    </div>
+    <div class="sp-promote-grid">
+      <div class="sp-promote-col-type">
+        <div class="sp-promote-col-lbl">Type</div>
+        ${catBtns}
+      </div>
+      <div class="sp-promote-col-meta">
+        <div class="sp-promote-col-lbl">Site <span style="font-weight:400;color:var(--text3);">optional</span></div>
+        <select id="sp-site-${index}" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:12px;margin-bottom:8px;"
+          onchange="spPromoteSetSite(${index},this.value)">
+          <option value="">(no site)</option>${siteOpts}
+        </select>
+        <div class="sp-promote-col-lbl">Log / OMS # <span style="font-weight:400;color:var(--text3);">optional</span></div>
+        <input id="sp-ticket-${index}" value="${esc(st.ticket)}" placeholder="e.g. 8307" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--m);font-size:12px;"
+          oninput="spPromoteSetTicket(${index},this.value)" onblur="spRenderPromoteMenu(${index})">
+      </div>
+    </div>
+    <button class="sp-promote-send" onclick="spPromote(${index})">✓ Add to Shift Feed</button>`;
+}
+
+function spPromoteSetCat(index, cat) {
+  const item = scratchpad[index]; if (!item) return;
+  spPromoteState[item.id].cat = cat;
+  spRenderPromoteMenu(index);
+}
+function spPromoteSetSite(index, val) {
+  const item = scratchpad[index]; if (!item) return;
+  spPromoteState[item.id].site = val;
+  spRenderPromoteMenu(index); // site change can add/remove a strike-through match
+}
+function spPromoteSetTicket(index, val) {
+  const item = scratchpad[index]; if (!item) return;
+  spPromoteState[item.id].ticket = val.trim(); // no re-render here — avoid losing focus mid-type; onblur re-renders
+}
+function spPromoteToggleStrip(index, kind) {
+  const item = scratchpad[index]; if (!item) return;
+  const st = spPromoteState[item.id];
+  if (kind === 'ticket') st.stripTicket = !st.stripTicket;
+  else st.stripSite = !st.stripSite;
+  spRenderPromoteMenu(index);
 }
 
 function spPromote(index) {
   const item = scratchpad[index];
   if (!item) return;
+  const st = spPromoteState[item.id] || { cat:'handoff', site:'', ticket:'', siteMatches:[], stripSite:true, stripTicket:true };
 
-  const menu = document.getElementById(`sp-promote-menu-${index}`);
-  const cat    = (menu && menu.dataset.selectedCat) || 'handoff';
-  const site   = document.getElementById(`sp-site-${index}`)?.value || '';
-  const ticket = (document.getElementById(`sp-ticket-${index}`)?.value || '').trim();
+  const { phrasesToStrip } = spComputeStripPhrases(st);
+  const finalText = phrasesToStrip.length ? spCleanTextForPush(item.text, phrasesToStrip) : item.text;
 
   const now = new Date();
   const entry = {
     id: Date.now(),
     ts: now.getTime(),
     time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}),
-    cat,
-    site,
-    text: item.text,
-    ticket,
+    cat: st.cat || 'handoff',
+    site: st.site || '',
+    text: finalText,
+    ticket: st.ticket || '',
     starred: false
   };
 
   clEntries.unshift(entry);
   try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e) {}
 
+  delete spPromoteState[item.id];
   scratchpad.splice(index, 1);
   try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
 
   renderScratchpad();
   clRender();
-  showToast(`Promoted to feed as ${CL_CATS[cat]?.label||cat}`);
+  showToast(`Promoted to feed as ${CL_CATS[entry.cat]?.label||entry.cat}`);
 }
 
 function renderScratchpad() {
   const list = document.getElementById('sp-list');
   if (!list) return;
 
+  const footerWrap = document.getElementById('sp-smart-footer-wrap');
+  if (footerWrap) footerWrap.style.display = scratchpad.length ? 'flex' : 'none';
+
   if (!scratchpad.length) {
+    // Close any open smart panel if pad is now empty
+    spSmartClose();
     list.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">🗒️</div><div class="empty-state-title">Notepad is empty</div><div class="empty-state-sub">Type above and press Enter to capture a quick note.</div></div>';
     return;
   }
 
   list.innerHTML = scratchpad.map((item, index) => {
-    const catBtns = [
-      {cat:'handoff',  label:'📋 Handoff'},
-      {cat:'upcoming', label:'🕐 Upcoming'}
-    ].map(({cat,label}) =>
-      `<button type="button" class="sp-promote-cat-btn${cat==='handoff'?' sel':''}" data-cat="${cat}" data-idx="${index}"
-        onclick="spPickCat(${index},'${cat}',this)">${label}</button>`
-    ).join('');
-
     return `
     <div class="sp-row">
       <span class="sp-time">${esc(item.time)}</span>
@@ -5660,31 +6327,8 @@ function renderScratchpad() {
       <button class="sp-promote${!clEntries.length && index===0?' sp-promote-loud':''}" onclick="spTogglePromote(${index})" title="Add this note to your Handoff">Add to Handoff</button>
       <button class="sp-delete" onclick="spDelete(${index})" title="Delete">✕</button>
     </div>
-    <div class="sp-promote-menu" id="sp-promote-menu-${index}">
-      <div class="sp-promote-grid">
-        <div class="sp-promote-col-type">
-          <div class="sp-promote-col-lbl">Type</div>
-          ${catBtns}
-        </div>
-        <div class="sp-promote-col-meta">
-          <div class="sp-promote-col-lbl">Site <span style="font-weight:400;color:var(--text3);">optional</span></div>
-          <select id="sp-site-${index}" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:12px;margin-bottom:8px;">
-            <option value="">(no site)</option>
-            ${clSiteOptions}
-          </select>
-          <div class="sp-promote-col-lbl">Log / OMS # <span style="font-weight:400;color:var(--text3);">optional</span></div>
-          <input id="sp-ticket-${index}" placeholder="e.g. 8307" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--m);font-size:12px;">
-        </div>
-      </div>
-      <button class="sp-promote-send" onclick="spPromote(${index})">✓ Add to Shift Feed</button>
-    </div>`;
+    <div class="sp-promote-menu" id="sp-promote-menu-${index}"></div>`;
   }).join('');
-}
-
-function spPickCat(index, cat, btn) {
-  document.querySelectorAll(`#sp-promote-menu-${index} .sp-promote-cat-btn`).forEach(b => b.classList.remove('sel'));
-  btn.classList.add('sel');
-  btn.closest('.sp-promote-menu').dataset.selectedCat = cat;
 }
 
 function clRender() {
@@ -8048,17 +8692,6 @@ function mapRefreshMarkers() {
     m.setIcon(mapMakeIcon(siteStatus(site)));
     m.setPopupContent(mapPopupHtml(site));
   });
-}
-
-// Called by switchView('map'). BatchGeo iframe handles everything.
-function mapActivate() {
-  // BatchGeo iframe is already embedded, nothing to initialize
-  const iframe = document.getElementById('batchgeo-embed');
-  if (iframe) {
-    // Force refresh on tab switch to ensure proper sizing
-    iframe.style.opacity = '0.99';
-    setTimeout(() => iframe.style.opacity = '1', 50);
-  }
 }
 
 // ─── PASSDOWN ────────────────────────────────────────────────────────────────
@@ -10665,6 +11298,13 @@ const state = {
   selected: ''
 };
 
+// Time-off entries, populated asynchronously by the Firestore onSnapshot
+// listener (see initTimeOffListener). Must be declared here as an empty
+// array — every render function below reads timeOffData.find()/.filter()
+// and earlier code only ever assigned it inside that async callback, so
+// any read before Firestore's first response threw ReferenceError.
+let timeOffData = [];
+
 // ── Date helpers ───────────────────────────────────────────────────────────
 function isoDate(d) {
   return d.getFullYear() + '-' +
@@ -10952,6 +11592,130 @@ function moveChip(half, idx, dir){
   if(newIdx<0||newIdx>=arr.length) return;
   [arr[idx],arr[newIdx]]=[arr[newIdx],arr[idx]];
   renderChips(); updateSelect(); updateCalSelect(); renderCrewGrid(); renderCalendar(); renderTimeOffList();
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// PITMAN — interactive Squad A / Squad B roster editing
+// Reuses the shared state.fh/state.bh arrays (same roster Split Week
+// edits), so changes made here are reflected there too, and vice versa —
+// that's already how Pitman's role math (pitGetDay) reads the roster.
+// ══════════════════════════════════════════════════════════════════════
+function refreshAllScheduleViews(){
+  // Split Week
+  renderChips(); updateSelect(); updateCalSelect(); renderCrewGrid(); renderCalendar(); renderTimeOffList();
+  // Pitman
+  renderPitChips(); pitIndRender(); pitCrewRender(); pitCalRender();
+}
+
+function renderPitChips(){
+  ['fh','bh'].forEach(half=>{
+    const zone=document.getElementById(`pit-zone-${half}`);
+    if(!zone) return;
+    zone.innerHTML='';
+    const otherHalf=half==='fh'?'bh':'fh';
+    const squadLabel = half==='fh' ? 'A' : 'B';
+    const otherSquadLabel = half==='fh' ? 'B' : 'A';
+    const otherLabel = `→ Sq ${otherSquadLabel}`;
+
+    state[half].forEach((name,idx)=>{
+      const roles = getRolesForHalf(half);
+      const role = roles[idx % roles.length] || 'D1';
+      const isFirst=idx===0, isLast=idx===state[half].length-1;
+
+      const chip=document.createElement('div');
+      chip.className=`chip ${half}-chip`;
+      chip.draggable=true;
+      chip.dataset.name=name; chip.dataset.half=half; chip.dataset.idx=idx;
+      chip.innerHTML=`
+        <span class="chip-role role-${ROLE_CLS[role]}">${role}</span>
+        <span class="chip-name">${name}</span>
+        <button class="chip-xfer" title="Move to Squad ${otherSquadLabel}"
+          onclick="event.stopPropagation();xferPitChip('${half}',${idx})">${otherLabel}</button>
+        <div class="chip-controls">
+          <button class="chip-btn" ${isFirst?'disabled':''} title="Move up"
+            onclick="event.stopPropagation();movePitChip('${half}',${idx},-1)">▲</button>
+          <button class="chip-btn" ${isLast?'disabled':''} title="Move down"
+            onclick="event.stopPropagation();movePitChip('${half}',${idx},1)">▼</button>
+        </div>
+        <button class="chip-del" title="Remove ${name} from Squad ${squadLabel}"
+          onclick="event.stopPropagation();deletePitChip('${half}',${idx})">✕</button>`;
+
+      // Drag source — reuses the same module-level dragging/dragSourceHalf
+      // variables as Split Week's chips; only one chip set is ever visible
+      // at a time so there's no collision.
+      chip.addEventListener('dragstart',e=>{
+        dragging=chip; dragSourceHalf=half;
+        chip.classList.add('dragging');
+        e.dataTransfer.effectAllowed='move';
+      });
+      chip.addEventListener('dragend',()=>{
+        chip.classList.remove('dragging');
+        dragging=null;
+        clearDropIndicators();
+      });
+
+      chip.addEventListener('dragover',e=>{
+        if(!dragging||dragging===chip) return;
+        e.preventDefault();
+        clearDropIndicators();
+        const rect=chip.getBoundingClientRect();
+        const mid=rect.top+rect.height/2;
+        if(e.clientY<mid) chip.classList.add('drop-above');
+        else chip.classList.add('drop-below');
+      });
+      chip.addEventListener('dragleave',()=>chip.classList.remove('drop-above','drop-below'));
+
+      chip.addEventListener('drop',e=>{
+        e.preventDefault();
+        if(!dragging||dragging===chip) return;
+        const targetName=chip.dataset.name, targetHalf=chip.dataset.half, targetIdx=parseInt(chip.dataset.idx);
+        const sourceName=dragging.dataset.name, sourceHalf=dragging.dataset.half;
+        const rect=chip.getBoundingClientRect();
+        const insertBefore=e.clientY<rect.top+rect.height/2;
+        moveToPosition(sourceHalf,sourceName,targetHalf,targetName,targetIdx,insertBefore);
+        clearDropIndicators();
+        refreshAllScheduleViews();
+      });
+
+      zone.appendChild(chip);
+    });
+
+    zone.addEventListener('dragover',e=>{ if(dragging) e.preventDefault(); });
+    zone.addEventListener('drop',e=>{
+      e.preventDefault();
+      if(!dragging) return;
+      const sourceName=dragging.dataset.name, sourceHalf=dragging.dataset.half;
+      const targetHalf=half;
+      if(sourceHalf===targetHalf) return;
+      state[sourceHalf]=state[sourceHalf].filter(n=>n!==sourceName);
+      state[targetHalf].push(sourceName);
+      clearDropIndicators();
+      refreshAllScheduleViews();
+    });
+  });
+}
+
+function deletePitChip(half, idx){
+  const name=state[half][idx];
+  const squadLabel = half==='fh' ? 'A' : 'B';
+  if(!confirm(`Remove ${name} from Squad ${squadLabel}?\n\nThe Pitman rotation will adjust automatically once removed.`)) return;
+  state[half].splice(idx,1);
+  refreshAllScheduleViews();
+}
+
+function xferPitChip(half, idx){
+  const otherHalf=half==='fh'?'bh':'fh';
+  const name=state[half].splice(idx,1)[0];
+  state[otherHalf].push(name);
+  refreshAllScheduleViews();
+}
+
+function movePitChip(half, idx, dir){
+  const arr=state[half];
+  const newIdx=idx+dir;
+  if(newIdx<0||newIdx>=arr.length) return;
+  [arr[idx],arr[newIdx]]=[arr[newIdx],arr[idx]];
+  refreshAllScheduleViews();
 }
 
 function swapPeople(sourceHalf,sourceName,targetHalf,targetName){
@@ -11486,11 +12250,10 @@ const CURR_NAME_MAP = {
 };
 function currFullName(n){ return CURR_NAME_MAP[n] || n; }
 
-// Render static chips in Pitman and Current GOP from live state.fh / state.bh
+// Render static chips in Current GOP from live state.fh / state.bh.
+// Pitman has its own interactive renderer — see renderPitChips() below.
 function renderStaticChips(){
   const zones = [
-    ['pit-zone-fh', state.fh, 'fh-chip'],
-    ['pit-zone-bh', state.bh, 'bh-chip'],
     ['curr-zone-fh', state.fh, 'fh-chip'],
     ['curr-zone-bh', state.bh, 'bh-chip'],
   ];
@@ -11704,7 +12467,7 @@ function showSchedule(which){
     });
     document.getElementById('split-date-ctrl').style.display='';
     document.getElementById('toggle-split').classList.add('active');
-    document.getElementById('sched-subtitle').textContent='Proposed Schedule \xB7 Split Week \xB7 4-on/3-off rotation';
+    { const el=document.getElementById('sched-subtitle'); if(el) el.textContent='Proposed Schedule \xB7 Split Week \xB7 4-on/3-off rotation'; }
   } else if(which==='pitman'){
     document.getElementById('pit-view').style.display='';
     document.getElementById('pit-tabs').style.display='';
@@ -11714,8 +12477,8 @@ function showSchedule(which){
     if(!activePitTab) document.querySelector('#pit-tabs .pit-tab').classList.add('active');
     document.getElementById('pit-date-ctrl').style.display='';
     document.getElementById('toggle-pit').classList.add('active');
-    document.getElementById('sched-subtitle').textContent='Proposed Schedule \xB7 Pitman 2-2-3';
-    renderStaticChips(); pitInitOnce(); pitCalRender();
+    { const el=document.getElementById('sched-subtitle'); if(el) el.textContent='Proposed Schedule \xB7 Pitman 2-2-3'; }
+    renderPitChips(); pitInitOnce(); pitCalRender();
     updatePitIndicator();
   } else {
     document.getElementById('curr-view').style.display='';
@@ -11726,7 +12489,7 @@ function showSchedule(which){
     if(!activeCurrTab) document.querySelector('#curr-tabs .curr-tab').classList.add('active');
     document.getElementById('curr-date-ctrl').style.display='';
     document.getElementById('toggle-curr').classList.add('active');
-    document.getElementById('sched-subtitle').textContent='Current Schedule \xB7 Modified DuPont';
+    { const el=document.getElementById('sched-subtitle'); if(el) el.textContent='Current Schedule \xB7 Modified DuPont'; }
     renderStaticChips(); currInitOnce(); currCalRender();
     updateCurrIndicator();
   }
@@ -11882,7 +12645,6 @@ function updateCurrIndicator(){
 
 function pitInitOnce(){
   if(pitInited)return; pitInited=true;
-  renderStaticChips();
   repopulateSelect('pit-op-select', true);
   repopulateSelect('pit-cal-focus', false);
   // Default individual view to Morgan
@@ -12077,7 +12839,26 @@ setTimeout(() => {
   window.deleteChip=deleteChip;
   window.xferChip=xferChip;
   window.moveChip=moveChip;
+  window.deletePitChip=deletePitChip;
+  window.xferPitChip=xferPitChip;
+  window.movePitChip=movePitChip;
 })(); // end SCHEDULE COMPARE
+
+// Sync the Schedule Compare nav-dropdown item highlighting whenever showSchedule()
+// runs — from the in-page toggle pills, the nav dropdown, or anywhere else.
+// Wraps the original function rather than editing it, so its own logic and
+// the in-page toggle pills are completely untouched.
+(function(){
+  const _origShowSchedule = window.showSchedule;
+  if (typeof _origShowSchedule === 'function') {
+    window.showSchedule = function(which){
+      _origShowSchedule(which);
+      document.querySelectorAll('#navdd-menu-schedule .nav-dropdown-item').forEach(it=>it.classList.remove('active'));
+      const match = document.querySelector(`#navdd-menu-schedule .nav-dropdown-item[data-sched="${which}"]`);
+      if (match) match.classList.add('active');
+    };
+  }
+})();
 
 load();
 </script>
