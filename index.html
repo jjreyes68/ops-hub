@@ -768,6 +768,10 @@ body.dark .cl-time{color:var(--text2);}
 
 /* Promote inline menu */
 .sp-promote-menu{display:none;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin:6px 0 8px 44px;flex-direction:column;gap:10px;}
+.sp-promote-preview-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.sp-promote-preview{font-size:12.5px;color:var(--text);line-height:1.5;flex:1;min-width:140px;}
+.sp-promote-preview-tags{display:flex;gap:5px;flex-wrap:wrap;align-items:center;flex-shrink:0;}
+.sp-smart-footer-wrap{display:flex;justify-content:flex-end;margin-top:8px;}
 .sp-promote-menu.active{display:flex;}
 .sp-promote-grid{display:grid;grid-template-columns:140px 1fr;gap:12px;}
 .sp-promote-col-type{display:flex;flex-direction:column;gap:6px;}
@@ -1477,6 +1481,51 @@ body.dark .roc-qt-rapid{background:#2b1e04;color:#f5a623;}
 .roc-drill-footer{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between;align-items:center;}
 .roc-drill-conf-row{display:flex;gap:6px;}
 .roc-section-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--bg4);color:var(--text3);}
+
+/* ── SMART PUSH PREVIEW PANEL ─────────────────────────────────────────────── */
+.sp-smart-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:6px;border:1px solid var(--blue);background:var(--bbg);color:var(--blue);font-size:11.5px;font-weight:700;cursor:pointer;font-family:var(--f);transition:all .14s;white-space:nowrap;}
+.sp-smart-btn:hover{background:var(--blue);color:#fff;}
+.sp-smart-btn:disabled{opacity:.35;cursor:not-allowed;background:var(--bbg);}
+.sp-smart-panel{background:var(--bg2);border:1.5px solid var(--blue);border-radius:var(--rl);padding:14px 16px;margin:10px 0 6px;display:none;}
+.sp-smart-panel.open{display:block;}
+.sp-smart-panel-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:10px;}
+.sp-smart-panel-title{font-size:13px;font-weight:700;color:var(--text);}
+.sp-smart-panel-sub{font-size:11.5px;color:var(--text3);margin-top:3px;}
+.sp-smart-rows{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.sp-smart-row{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;transition:opacity .15s;}
+.sp-smart-row.skipped{opacity:.4;}
+.sp-smart-row-text{font-size:12.5px;color:var(--text);line-height:1.5;margin-bottom:7px;word-break:break-word;}
+.sp-smart-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
+.sp-smart-tag{font-family:var(--m);font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:.01em;}
+.sp-tag-site{background:var(--bbg);color:var(--blue);}
+.sp-tag-log{background:var(--bg4);color:var(--text2);}
+.sp-tag-active{background:var(--rbg);color:var(--red);}
+.sp-tag-upcoming{background:var(--gbg);color:var(--green);}
+.sp-tag-resolved{background:var(--bg4);color:var(--text3);}
+.sp-tag-warn{background:var(--abg);color:var(--amber);}
+.sp-tag-bess{background:#f0f0ff;color:#5555cc;}
+body.dark .sp-tag-bess{background:#1a1a3a;color:#8888ff;}
+.sp-smart-controls{display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
+.sp-smart-cat{font-size:11px;font-weight:600;padding:4px 10px;border-radius:5px;border:1.5px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer;font-family:var(--f);transition:all .12s;line-height:1;}
+.sp-smart-cat:hover{border-color:var(--border2);color:var(--text2);}
+.sp-smart-cat.sel-handoff{background:var(--bbg);border-color:var(--blue);color:var(--blue);}
+.sp-smart-cat.sel-upcoming{background:var(--gbg);border-color:var(--green);color:var(--green);}
+.sp-smart-cat.sel-skip{background:var(--bg4);border-color:var(--border2);color:var(--text3);}
+.sp-smart-sel{font-family:var(--f);font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);}
+.sp-smart-inp{font-family:var(--m);font-size:11px;padding:3px 8px;border-radius:5px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);width:78px;}
+.sp-smart-footer{display:flex;align-items:center;gap:12px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.sp-smart-push{padding:8px 18px;background:var(--blue);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--f);transition:filter .14s;}
+.sp-smart-push:hover{filter:brightness(1.12);}
+.sp-smart-cancel{font-size:12px;color:var(--text3);cursor:pointer;background:none;border:none;font-family:var(--f);padding:0;}
+.sp-smart-cancel:hover{color:var(--text);}
+.sp-smart-skip-note{margin-left:auto;font-size:11px;color:var(--text3);}
+.sp-strip-site{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:1.5px;color:var(--text3);opacity:.65;}
+.sp-smart-strip-toggle{font-family:var(--m);font-size:9.5px;font-weight:600;padding:2px 8px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer;transition:all .13s;letter-spacing:.01em;}
+.sp-smart-strip-toggle:hover{border-color:var(--border2);color:var(--text2);}
+.sp-smart-strip-toggle.on{background:var(--rbg);border-color:var(--red);color:var(--red);opacity:.85;}
+.sp-tag-cleaned{background:var(--abg);color:var(--amber);}
+.sp-tag-similar{background:#f5f0ff;color:#7c3aed;}
+body.dark .sp-tag-similar{background:#2a1f3d;color:#c4b5fd;}
 
 /* ── SCHEDULE COMPARE ──────────────────────────────────────────────────── */
 #view-schedule{
@@ -3350,6 +3399,10 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
       <button class="cl-log-btn" onclick="spAdd()">Add</button>
     </div>
     <div class="sp-list" id="sp-list"></div>
+    <div class="sp-smart-footer-wrap" id="sp-smart-footer-wrap" style="display:none;">
+      <button class="sp-smart-btn" id="sp-smart-btn" onclick="spSmartOpen()" title="Auto-parse all notes above and push to feed in one step">⚡ Smart Push All</button>
+    </div>
+    <div id="sp-smart-panel" class="sp-smart-panel"></div>
   </div>
 
   <!-- ── SHIFT FEED ────────────────────────────────────────────────────── -->
@@ -5304,10 +5357,10 @@ function wxFilter(){
   const q=document.getElementById('wx-site-inp').value.toLowerCase().trim();
   const box=document.getElementById('wx-matches');
   if(!q){ box.style.display='none'; return; }
-  const siteHits=SITES.filter(s=>s.name.toLowerCase().includes(q)||(s.location||'').toLowerCase().includes(q));
+  const siteHits=SITES.filter(s=>spSiteMatchesQuery(s.name,q)||(s.location||'').toLowerCase().includes(q));
   // Keep the actual WX_LOCS index so wxPickWx resolves correctly
   const wxHitsWithIdx=WX_LOCS.map((s,i)=>({...s,_wxIdx:i}))
-    .filter(s=>s.name.toLowerCase().includes(q)||(s.location||'').toLowerCase().includes(q));
+    .filter(s=>spSiteMatchesQuery(s.name,q)||(s.location||'').toLowerCase().includes(q));
   const allHits=[
     ...siteHits.map(s=>({...s,_src:'site'})),
     ...wxHitsWithIdx.map(s=>({...s,_src:'wx'}))
@@ -5365,6 +5418,7 @@ let clSiteOptions = ''; // cached options HTML for inline selects
 function clInit() {
   try { clEntries = JSON.parse(localStorage.getItem(CL_KEY) || '[]'); } catch(e) { clEntries = []; }
   clPopulateSiteSelect();
+  spBuildSiteTable();
   spInit();
 }
 
@@ -5611,13 +5665,507 @@ const CL_CAT_ORDER = ['handoff','upcoming'];
 const SP_KEY = 'rnwbl_scratchpad_v1';
 let scratchpad = [];
 
+// ─── SMART PUSH ────────────────────────────────────────────────────────────────
+let spSmartState = [];
+
+// ── Site alias engine ────────────────────────────────────────────────────────
+// Built dynamically from AS_SITES — the same site list that drives the Asset
+// Scan page — so detection always matches whatever sites actually exist there.
+// Add, rename, or remove a site on Asset Scan and this list updates itself;
+// there's no separate site table to keep in sync by hand.
+//
+// For each site this generates every reasonable way an operator might type it:
+//   code            e.g. "CNDR1"
+//   code w/o digit  e.g. "CNDR"           (if op drops the trailing number)
+//   friendly name   e.g. "Condor"         (pulled from the Asset Scan label)
+//   friendly+digit  e.g. "Condor1" / "Condor 1"
+//   no-space name   e.g. "AngelFire"      (for multi-word names)
+// Matching is case-insensitive with word boundaries, so "condor", "CONDOR",
+// and "Condor" all resolve to CNDR1 — but a bare "Harquahala" (ambiguous
+// between HARQ1/HARQ2) deliberately does NOT match either, since the Asset
+// Scan labels for those keep the "1"/"2" as part of the name.
+let SP_SITE_TABLE = [];
+
+function spBuildSiteTable() {
+  if (typeof AS_SITES === 'undefined' || !AS_SITES.length) { SP_SITE_TABLE = []; return; }
+  SP_SITE_TABLE = AS_SITES.map(site => {
+    const code = site.id;
+    let friendly = (site.label || '')
+      .replace(new RegExp('^' + code.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '-?'), '')
+      .replace(/\[[^\]]*\]/g, '')
+      .trim();
+    if (!friendly || friendly === code) friendly = '';
+
+    const aliases = new Set([code]);
+    const codeNoDigit = code.replace(/\d+$/, '');
+    if (codeNoDigit && codeNoDigit !== code) aliases.add(codeNoDigit);
+
+    if (friendly) {
+      aliases.add(friendly);
+      const digitSuffix = (code.match(/\d+$/) || [''])[0];
+      if (digitSuffix && !friendly.endsWith(digitSuffix)) {
+        aliases.add(friendly + digitSuffix);
+        aliases.add(friendly + ' ' + digitSuffix);
+      }
+      if (/\s/.test(friendly)) {
+        const noSpace = friendly.replace(/\s+/g, '');
+        aliases.add(noSpace);
+        if (digitSuffix && !noSpace.endsWith(digitSuffix)) aliases.add(noSpace + digitSuffix);
+      }
+    }
+    return { code, friendly, aliases: [...aliases] };
+  });
+}
+
+function spDetectSites(text) {
+  const found = [];
+  for (const site of SP_SITE_TABLE) {
+    for (const alias of site.aliases) {
+      const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const m = text.match(new RegExp(`\\b${escaped}\\b`, 'i'));
+      if (m) { found.push({ ...site, matchedText: m[0] }); break; }
+    }
+  }
+  return found; // array of {code, friendly, aliases, matchedText}
+}
+
+// Reusable alias-aware match check for any site search box in the app —
+// not just Handoff. Given a raw site code (e.g. "CNDR1") and a search
+// query, returns true if the query matches the code itself OR any of its
+// known aliases (friendly name, spaced/unspaced variants, etc.), using the
+// exact same SP_SITE_TABLE the notepad's Smart Push relies on. This is a
+// substring check (not word-boundary) since it's driven by a live search
+// box, not a sentence — "cond" should start narrowing toward "Condor" as
+// the operator types, the way any autocomplete would.
+function spSiteMatchesQuery(siteCode, query) {
+  if (!query) return true;
+  if (!siteCode) return false;
+  const q = query.toLowerCase();
+  const entry = SP_SITE_TABLE.find(s => s.code === siteCode);
+  if (entry) return entry.aliases.some(a => a.toLowerCase().includes(q));
+  return siteCode.toLowerCase().includes(q); // defensive fallback if a code isn't in the table for some reason
+}
+
+// Single source of truth for "what exactly gets removed" — used by both the
+// strike-through preview and the actual text cleanup, so what an operator
+// sees struck through in the panel is always exactly what disappears from
+// the pushed text. Also consumes a trailing possessive ('s / ’s) so
+// "Condor's derate" strips cleanly to "Derate" instead of leaving "'s".
+function spPhraseStripRegex(phrase) {
+  const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`\\b(${escaped}(?:'s|\u2019s)?)\\b`, 'i');
+}
+
+// Removes one or more matched phrases (site name, log/OMS number, etc.) from
+// a note's text — used when that information is already going to appear in
+// its own field on the feed entry, so leaving it in the free text would
+// read redundantly. Cleans up whitespace, orphaned punctuation/dashes, and
+// now-empty parens/brackets left behind, then re-capitalizes the result.
+// Falls back to the original text untouched if stripping would leave
+// nothing meaningful.
+function spCleanTextForPush(text, phrases) {
+  let out = text;
+  (phrases || []).filter(Boolean).forEach(phrase => {
+    out = out.replace(spPhraseStripRegex(phrase), '');
+  });
+  out = out
+    .replace(/\(\s*\)/g, '')
+    .replace(/\[\s*\]/g, '')
+    .replace(/\s*,\s*,\s*/g, ', ')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/^[\s,;:.\-–—]+/, '')
+    .replace(/[\s,;:.\-–—]+$/, '')
+    .trim();
+  if (!out) return text; // stripping emptied the note — keep original rather than push blank text
+  return out.charAt(0).toUpperCase() + out.slice(1);
+}
+
+// Builds the row's displayed text with matched phrases struck through in
+// place, so the operator can see exactly what will (and won't) carry over
+// to the feed before pushing. `phraseSpecs` is [{phrase, strip, title}, ...]
+// — entries with strip:false render as plain (unstruck) text so a toggled-
+// off phrase still shows normally. Handles HTML-escaping around each split
+// so user text with special characters still renders safely.
+function spHighlightPhrasesInText(text, phraseSpecs) {
+  const found = [];
+  (phraseSpecs || []).forEach(({phrase, strip, title}) => {
+    if (!phrase) return;
+    const m = text.match(spPhraseStripRegex(phrase));
+    if (m) found.push({ start: m.index, end: m.index + m[0].length, text: m[0], strip, title });
+  });
+  if (!found.length) return esc(text);
+
+  found.sort((a, b) => a.start - b.start);
+  const clean = [];
+  let lastEnd = -1;
+  found.forEach(f => { if (f.start >= lastEnd) { clean.push(f); lastEnd = f.end; } }); // drop overlaps
+
+  let out = '', cursor = 0;
+  clean.forEach(f => {
+    out += esc(text.slice(cursor, f.start));
+    out += f.strip
+      ? `<span class="sp-strip-site" title="${esc(f.title || 'Hidden from the pushed text')}">${esc(f.text)}</span>`
+      : esc(f.text);
+    cursor = f.end;
+  });
+  out += esc(text.slice(cursor));
+  return out;
+}
+
+// Signal rule sets — each entry is [regex, human label, tag class, category hint]
+const SP_SIGNALS = [
+  // Active/handoff issues
+  [/\bcurtail/i,            'Curtailment', 'sp-tag-active',    'handoff'],
+  [/\bderat/i,              'Derate',      'sp-tag-active',    'handoff'],
+  [/\bO\.?I\b|operating instruction/i, 'OI', 'sp-tag-active', 'handoff'],
+  [/\boutage\b/i,           'Outage',      'sp-tag-active',    'handoff'],
+  [/\boffline\b/i,          'Offline',     'sp-tag-active',    'handoff'],
+  [/\btripp/i,              'Trip',        'sp-tag-active',    'handoff'],
+  [/\bfault\b/i,            'Fault',       'sp-tag-active',    'handoff'],
+  [/\balarm\b/i,            'Alarm',       'sp-tag-active',    'handoff'],
+  [/\bSCADA\b/,             'SCADA',       'sp-tag-active',    'handoff'],
+  [/\bcomm(unication)? loss\b|lost comm\b|no comm\b/i, 'Comm Loss', 'sp-tag-active', 'handoff'],
+  [/\btelemetry\b/i,        'Telemetry',   'sp-tag-active',    'handoff'],
+  [/\bvoltage\b/i,          'Voltage',     'sp-tag-active',    'handoff'],
+  [/\bAVR\b/,               'AVR',         'sp-tag-active',    'handoff'],
+  [/\bAGC\b/,               'AGC',         'sp-tag-active',    'handoff'],
+  [/\bfrequency\b/i,        'Frequency',   'sp-tag-active',    'handoff'],
+  [/\bADS\b/,               'ADS',         'sp-tag-warn',      'handoff'],
+  [/\bconstraint\b/i,       'Constraint',  'sp-tag-warn',      'handoff'],
+  [/\brestrict/i,           'Restricted',  'sp-tag-warn',      'handoff'],
+  [/\bSOC\b/,               'SOC',         'sp-tag-bess',      'handoff'],
+  [/\bdischarge\b/i,        'Discharge',   'sp-tag-bess',      'handoff'],
+  [/\bBESS\b/i,             'BESS',        'sp-tag-bess',      'handoff'],
+  [/\bMegapack\b|\bFluence\b/i, 'Storage', 'sp-tag-bess',     'handoff'],
+  [/\bBluence\b|\bTrimark\b|\bVantage\b/i, 'SCADA Platform', 'sp-tag-log', 'handoff'],
+  [/\bGrid Ops\b/i,         'Grid Ops',    'sp-tag-site',      'handoff'],
+  [/\bAPS\b/,               'APS',         'sp-tag-site',      'handoff'],
+  [/\bPG&?E\b/i,            'PG&E',        'sp-tag-site',      'handoff'],
+  [/\bSCE\b/,               'SCE',         'sp-tag-site',      'handoff'],
+  [/\bIPCO\b/,              'IPCO',        'sp-tag-site',      'handoff'],
+  [/\bSPP\b/,               'SPP',         'sp-tag-site',      'handoff'],
+  [/\bGridmatic\b/i,        'Gridmatic',   'sp-tag-site',      'handoff'],
+  [/\bTenaska\b/i,          'Tenaska',     'sp-tag-site',      'handoff'],
+  [/\bCopia\b/i,            'Copia',       'sp-tag-site',      'handoff'],
+  [/\bcontact[ed]?\b|\bnotif|\bcall[ed]?\b/i, 'Contact Made', 'sp-tag-log', 'handoff'],
+  [/\bmanual\b/i,           'Manual Ctrl', 'sp-tag-warn',      'handoff'],
+  [/\bVestas\b|\bGE wind\b/i, 'Wind',      'sp-tag-log',      'handoff'],
+  // Upcoming
+  [/\bschedul/i,            'Scheduled',   'sp-tag-upcoming',  'upcoming'],
+  [/\bupcoming\b/i,         'Upcoming',    'sp-tag-upcoming',  'upcoming'],
+  [/\btomorrow\b/i,         'Tomorrow',    'sp-tag-upcoming',  'upcoming'],
+  [/\bnext shift\b/i,       'Next Shift',  'sp-tag-upcoming',  'upcoming'],
+  [/\bwill be\b|\bwill need\b/i, 'Will Be', 'sp-tag-upcoming', 'upcoming'],
+  [/\bplan(ning)? to\b/i,   'Planning',    'sp-tag-upcoming',  'upcoming'],
+  [/\bexpect\b/i,           'Expected',    'sp-tag-upcoming',  'upcoming'],
+  [/\bEOD\b|end of (day|shift)\b/i, 'EOD', 'sp-tag-upcoming', 'upcoming'],
+  [/\bwatch for\b|\bstandby\b/i, 'Watch',  'sp-tag-upcoming',  'upcoming'],
+  [/\bat \d{1,2}:\d{2}/,   'Timed Event', 'sp-tag-upcoming',  'upcoming'],
+];
+
+// Resolution signals — these items get auto-skipped (operator can override)
+const SP_RESOLVED_RE = [
+  /\bresolved\b/i, /\bcleared\b/i, /\bback online\b/i, /\brestored\b/i,
+  /\bRTS\b/, /\breturned to service\b/i, /\bclosed\b/i,
+  /\bno further action\b/i, /\bNFA\b/, /\bback (up|to normal)\b/i,
+  /\bback in service\b/i, /\bback in auto\b/i
+];
+
+function spParse(text) {
+  const t = text;
+
+  // Site detection — matches code, friendly name, and common variants,
+  // sourced live from the Asset Scan site list (see spBuildSiteTable above)
+  const siteMatches = spDetectSites(t);
+  const sites = siteMatches.map(s => s.code);
+
+  // Log / OMS extraction — try OMS first, then whichever of "log #XXXX" or
+  // bare "#XXXX" spans MORE of the text (so "log #8423" strips as one full
+  // phrase rather than leaving an orphaned "log" behind when only "#8423"
+  // was captured). `ticket` stays digits-only — same as before, since other
+  // parts of the app (the ticket field, feed display) expect just the
+  // number; `ticketMatchedText` is the extra full-phrase capture used only
+  // for stripping/highlighting.
+  const omsM = t.match(/OMS\s*#?\s*\d+/i);
+  const logM = t.match(/\blog\s*#?\s*\d+/i);
+  const hashM = t.match(/#\d{3,}/);
+  let ticketMatch = omsM;
+  if (!ticketMatch) {
+    if (logM && hashM) ticketMatch = logM[0].length >= hashM[0].length ? logM : hashM;
+    else ticketMatch = logM || hashM;
+  }
+  const ticketMatchedText = ticketMatch ? ticketMatch[0] : '';
+  const ticket = (ticketMatchedText.match(/\d+/) || [''])[0];
+
+  // Run every signal rule
+  const isResolved = SP_RESOLVED_RE.some(re => re.test(t));
+  const hits = SP_SIGNALS.filter(([re]) => re.test(t));
+  const handoffHits = hits.filter(([,,, hint]) => hint === 'handoff').length;
+  const upcomingHits = hits.filter(([,,, hint]) => hint === 'upcoming').length;
+
+  // Build display tags (deduplicate label)
+  const seen = new Set();
+  const tags = [];
+  hits.forEach(([, label, cls]) => {
+    if (!seen.has(label)) { seen.add(label); tags.push({label, cls}); }
+  });
+  siteMatches.forEach(s => {
+    if (seen.has(s.code)) return;
+    seen.add(s.code);
+    // Show "Condor → CNDR1" when detected via a friendly-name alias, so the
+    // operator can see the match wasn't just the bare code, but keep it
+    // short — just the code — when there's no distinct friendly name.
+    const label = s.friendly ? `${s.friendly} → ${s.code}` : s.code;
+    tags.push({label, cls: 'sp-tag-site'});
+  });
+  if (ticket) tags.push({label: `#${ticket}`, cls: 'sp-tag-log'});
+
+  // Category decision
+  let cat, confidence;
+  if (isResolved) {
+    cat = 'skip'; confidence = 'high';
+  } else if (handoffHits > 0 && upcomingHits === 0) {
+    cat = 'handoff'; confidence = 'high';
+  } else if (upcomingHits > 0 && handoffHits === 0) {
+    cat = 'upcoming'; confidence = 'high';
+  } else if (upcomingHits > 0 && handoffHits > 0) {
+    // Both signals — explicit scheduling language wins for upcoming
+    cat = /schedul|will be|plan(ning)? to/i.test(t) ? 'upcoming' : 'handoff';
+    confidence = 'medium';
+  } else {
+    cat = 'handoff'; confidence = 'low'; // no keywords, default to handoff
+  }
+
+  return { cat, site: sites[0] || '', ticket, ticketMatchedText, tags, confidence, isResolved, siteMatches };
+}
+
+function spSmartOpen() {
+  if (!scratchpad.length) { showToast('Notepad is empty', 'warn'); return; }
+
+  spSmartState = scratchpad.map((item, idx) => {
+    const p = spParse(item.text);
+    return { idx, id: item.id, text: item.text, time: item.time,
+             cat: p.cat, site: p.site, ticket: p.ticket,
+             ticketMatchedText: p.ticketMatchedText,
+             tags: p.tags, confidence: p.confidence,
+             skip: p.isResolved,
+             siteMatches: p.siteMatches,
+             stripSite: true,    // default on — operator can toggle per row
+             stripTicket: true };
+  });
+
+  spSmartRenderPanel();
+  const panel = document.getElementById('sp-smart-panel');
+  if (panel) { panel.classList.add('open'); panel.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+}
+
+// Single source of truth for "what would get stripped from this row's text
+// right now" — reused by both the render function (to build the strike-
+// through preview + decide whether to show the ✨ cleaned badge) and the
+// push function (to build the actual pushed text), so they can never drift
+// out of sync with each other.
+function spComputeStripPhrases(item) {
+  const sitePhrase = (item.siteMatches.find(m => m.code === item.site) || {}).matchedText || '';
+  // Ticket stripping only makes sense if there's currently a non-empty
+  // ticket value AND that value still traces back to something detected in
+  // the raw text — if the operator clears the ticket field, there's nothing
+  // left in a field to justify hiding the phrase from the sentence.
+  const ticketPhrase = (item.ticket && item.ticketMatchedText) ? item.ticketMatchedText : '';
+  const phrasesToStrip = [];
+  if (item.stripSite && sitePhrase) phrasesToStrip.push(sitePhrase);
+  if (item.stripTicket && ticketPhrase) phrasesToStrip.push(ticketPhrase);
+  return { sitePhrase, ticketPhrase, phrasesToStrip };
+}
+
+// Pulls just the "signal" tag labels (Curtailment, SCADA, Voltage, etc.)
+// out of a parsed item's tag list, dropping the site/log tags which aren't
+// meaningful for similarity comparison.
+function spSignalLabels(tags) {
+  return (tags || []).filter(t => t.cls !== 'sp-tag-site' && t.cls !== 'sp-tag-log').map(t => t.label);
+}
+
+// Looks for an existing entry (already in the Shift Feed, or an earlier row
+// in the same Smart Push batch via extraCandidates) that shares both the
+// same site AND at least one overlapping signal — e.g. two separate notes
+// about CNDR1 that both mention curtailment. Deliberately conservative:
+// only runs when the candidate note has a detected site, since site-less
+// notes are too easy to false-positive on. This is framed as a soft
+// cross-reference, not an error — a repeat mention is often a legitimate
+// status update, not a mistake, so the UI treats it as "worth a glance,"
+// never a hard warning or a block.
+function spFindSimilarEntry(site, signalLabels, extraCandidates) {
+  if (!site || !signalLabels || !signalLabels.length) return null;
+  const signalSet = new Set(signalLabels);
+  const checkOne = (candSite, candText, candTime) => {
+    if (candSite !== site) return null;
+    const candTags = spSignalLabels(spParse(candText).tags);
+    return candTags.some(l => signalSet.has(l)) ? { text: candText, time: candTime } : null;
+  };
+  for (const entry of clEntries) { // newest-first, so the first hit is the most recent mention
+    const hit = checkOne(entry.site, entry.text, entry.time);
+    if (hit) return hit;
+  }
+  for (const cand of (extraCandidates || [])) {
+    const hit = checkOne(cand.site, cand.text, cand.time);
+    if (hit) return hit;
+  }
+  return null;
+}
+
+function spSmartRenderPanel() {
+  const panel = document.getElementById('sp-smart-panel');
+  if (!panel) return;
+
+  const pushCount = spSmartState.filter(s => !s.skip).length;
+  const skipCount = spSmartState.filter(s => s.skip).length;
+
+  const rows = spSmartState.map((item, i) => {
+    const confTag = item.confidence === 'low'
+      ? `<span class="sp-smart-tag sp-tag-warn" title="No RNWBL keywords detected — defaulting to Handoff. Review manually.">? No keywords</span>` : '';
+    const tagHTML = item.tags.map(t => `<span class="sp-smart-tag ${t.cls}">${esc(t.label)}</span>`).join('');
+
+    const catPills = ['handoff','upcoming','skip'].map(c => {
+      const labels = {handoff:'📋 Handoff', upcoming:'🕐 Upcoming', skip:'✕ Skip'};
+      const isSel = (item.skip && c === 'skip') || (!item.skip && item.cat === c);
+      return `<button class="sp-smart-cat${isSel ? ' sel-'+c : ''}" onclick="spSmartSetCat(${i},'${c}')">${labels[c]}</button>`;
+    }).join('');
+
+    const siteOpts = SP_SITE_TABLE.map(s =>
+      `<option value="${s.code}"${item.site===s.code?' selected':''}>${s.code}${s.friendly?' — '+esc(s.friendly):''}</option>`).join('');
+
+    // Recomputed on every render so it stays correct even if the operator
+    // manually changes the site dropdown or edits the ticket field after
+    // opening the panel.
+    const { sitePhrase, ticketPhrase, phrasesToStrip } = spComputeStripPhrases(item);
+    const rowTextHTML = spHighlightPhrasesInText(item.text, [
+      { phrase: sitePhrase,   strip: item.stripSite,   title: 'Hidden from the pushed text — the site already shows as its own tag' },
+      { phrase: ticketPhrase, strip: item.stripTicket, title: 'Hidden from the pushed text — the log/OMS # already shows as its own field' },
+    ]);
+
+    const siteToggle = sitePhrase
+      ? `<button class="sp-smart-strip-toggle${item.stripSite?' on':''}" onclick="spSmartToggleStrip(${i},'site')"
+           title="${item.stripSite ? 'Site name is hidden from the pushed text — click to keep it' : 'Site name will stay in the pushed text — click to hide it'}">
+           ${item.stripSite ? '🚫 site name hidden' : '👁 keep site name'}
+         </button>`
+      : '';
+    const ticketToggle = ticketPhrase
+      ? `<button class="sp-smart-strip-toggle${item.stripTicket?' on':''}" onclick="spSmartToggleStrip(${i},'ticket')"
+           title="${item.stripTicket ? 'Log/OMS # is hidden from the pushed text — click to keep it' : 'Log/OMS # will stay in the pushed text — click to hide it'}">
+           ${item.stripTicket ? '🚫 log # hidden' : '👁 keep log #'}
+         </button>`
+      : '';
+    const cleanedBadge = phrasesToStrip.length
+      ? `<span class="sp-smart-tag sp-tag-cleaned" title="This text will be trimmed of details that already show as their own tag/field">✨ cleaned</span>`
+      : '';
+
+    // Batch-local candidates are only the rows ABOVE this one — avoids two
+    // rows mutually flagging each other and keeps the message reading as
+    // "matches something already established" rather than ambiguous.
+    const similar = spFindSimilarEntry(item.site, spSignalLabels(item.tags), spSmartState.slice(0, i));
+    const similarBadge = similar
+      ? `<span class="sp-smart-tag sp-tag-similar" title="Also mentioned at ${esc(similar.time)}: “${esc(similar.text.slice(0,70))}${similar.text.length>70?'…':''}”">↻ mentioned earlier</span>`
+      : '';
+
+    return `
+    <div class="sp-smart-row${item.skip?' skipped':''}" id="sp-smart-row-${i}">
+      <div>
+        <div class="sp-smart-row-text">${rowTextHTML}</div>
+        <div class="sp-smart-tags">${cleanedBadge}${similarBadge}${confTag}${tagHTML}${siteToggle}${ticketToggle}</div>
+        <div class="sp-smart-controls">
+          ${catPills}
+          <select class="sp-smart-sel" title="Site" onchange="spSmartSetSite(${i},this.value)">
+            <option value="">no site</option>${siteOpts}
+          </select>
+          <input class="sp-smart-inp" value="${esc(item.ticket)}" placeholder="Log / OMS #"
+            title="Log or OMS number" oninput="spSmartSetTicket(${i},this.value)" onblur="spSmartRenderPanel()">
+        </div>
+      </div>
+      <span class="sp-time" style="flex-shrink:0;margin-top:2px;">${esc(item.time)}</span>
+    </div>`;
+  }).join('');
+
+  panel.innerHTML = `
+  <div class="sp-smart-panel-header">
+    <div>
+      <div class="sp-smart-panel-title">⚡ Smart Push — ${spSmartState.length} note${spSmartState.length!==1?'s':''} parsed</div>
+      <div class="sp-smart-panel-sub">Adjust category, site, or log # inline — then push to feed in one shot.</div>
+    </div>
+  </div>
+  <div class="sp-smart-rows">${rows}</div>
+  <div class="sp-smart-footer">
+    <button class="sp-smart-push" onclick="spSmartPush()">Push ${pushCount} to Feed →</button>
+    <button class="sp-smart-cancel" onclick="spSmartClose()">Cancel</button>
+    ${skipCount > 0 ? `<span class="sp-smart-skip-note">${skipCount} item${skipCount!==1?'s':''} marked Skip will stay in notepad</span>` : ''}
+  </div>`;
+}
+
+function spSmartSetCat(i, cat) {
+  spSmartState[i].cat = cat;
+  spSmartState[i].skip = (cat === 'skip');
+  spSmartRenderPanel();
+}
+function spSmartSetSite(i, val) {
+  spSmartState[i].site = val;
+  spSmartRenderPanel(); // site change can add/remove a strike-through match in the text preview
+}
+function spSmartSetTicket(i, val) { spSmartState[i].ticket = val.trim(); }
+function spSmartToggleStrip(i, kind) {
+  if (kind === 'ticket') spSmartState[i].stripTicket = !spSmartState[i].stripTicket;
+  else spSmartState[i].stripSite = !spSmartState[i].stripSite;
+  spSmartRenderPanel();
+}
+
+function spSmartPush() {
+  const toPush = spSmartState.filter(s => !s.skip);
+  if (!toPush.length) { showToast('No items to push — un-skip at least one', 'warn'); return; }
+
+  const now = new Date();
+  // Preserve note order: oldest first → unshift in reverse so newest ends up at top of feed
+  [...toPush].reverse().forEach(item => {
+    const { phrasesToStrip } = spComputeStripPhrases(item);
+    const finalText = phrasesToStrip.length
+      ? spCleanTextForPush(item.text, phrasesToStrip)
+      : item.text;
+    clEntries.unshift({
+      id: Date.now() + Math.random(),
+      ts: now.getTime(),
+      time: item.time || now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}),
+      cat: item.cat === 'skip' ? 'handoff' : item.cat,
+      site: item.site,
+      text: finalText,
+      ticket: item.ticket,
+      starred: false
+    });
+  });
+  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e) {}
+
+  // Remove only pushed items from scratchpad; skipped notes stay
+  const pushedIds = new Set(toPush.map(s => s.id));
+  scratchpad = scratchpad.filter(s => !pushedIds.has(s.id));
+  try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
+
+  const skipped = spSmartState.filter(s => s.skip).length;
+  spSmartClose();
+  renderScratchpad();
+  clRender();
+  clRenderPreview();
+  showToast(`Pushed ${toPush.length} note${toPush.length!==1?'s':''} to feed${skipped?' · '+skipped+' kept in notepad':''}`);
+}
+
+function spSmartClose() {
+  const panel = document.getElementById('sp-smart-panel');
+  if (panel) panel.classList.remove('open');
+  spSmartState = [];
+}
+
 function spInit() {
   try { scratchpad = JSON.parse(localStorage.getItem(SP_KEY) || '[]'); } catch(e) { scratchpad = []; }
   renderScratchpad();
 }
 
 function spAdd() {
-  const text = document.getElementById('sp-text').value.trim();
+  const input = document.getElementById('sp-text');
+  const text = input.value.trim();
   if (!text) return;
   const now = new Date();
   scratchpad.push({
@@ -5626,8 +6174,13 @@ function spAdd() {
     time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false})
   });
   try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
-  document.getElementById('sp-text').value = '';
+  input.value = '';
   renderScratchpad();
+  // Return focus to the notepad input every time — whether the note came in
+  // via Enter or a click on the Add button — so an operator jotting several
+  // things in a row during a busy stretch never has to click back into the
+  // field between notes.
+  input.focus();
 }
 
 function clStartFresh() {
@@ -5660,6 +6213,8 @@ function clGetShiftLabel() {
 }
 
 function spDelete(index) {
+  const item = scratchpad[index];
+  if (item) delete spPromoteState[item.id];
   scratchpad.splice(index, 1);
   try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
   renderScratchpad();
@@ -5669,70 +6224,168 @@ function spClear() {
   if (!scratchpad.length) return;
   if (!confirm('Clear scratchpad?')) return;
   scratchpad = [];
+  spPromoteState = {};
   try { localStorage.removeItem(SP_KEY); } catch(e) {}
   renderScratchpad();
 }
 
+// Per-note state for the individual "Add to Handoff" promote menu — keyed
+// by the scratchpad item's stable id (not array index, which shifts as
+// notes are added/removed). Lazily initialized the first time a note's
+// menu is opened, via the exact same spParse() used by Smart Push All, so
+// a single note gets identical auto-detection/stripping to a batch push —
+// just scoped to one row instead of the whole notepad.
+let spPromoteState = {};
+
 function spTogglePromote(index) {
+  const item = scratchpad[index];
   document.querySelectorAll('.sp-promote-menu').forEach(el => el.classList.remove('active'));
   const menu = document.getElementById(`sp-promote-menu-${index}`);
-  if (menu) {
-    menu.classList.toggle('active');
-    // Default to handoff if nothing selected yet
-    if (!menu.dataset.selectedCat) menu.dataset.selectedCat = 'handoff';
+  if (!menu || !item) return;
+
+  menu.classList.add('active');
+  if (!spPromoteState[item.id]) {
+    const p = spParse(item.text);
+    spPromoteState[item.id] = {
+      site: p.site, ticket: p.ticket, ticketMatchedText: p.ticketMatchedText,
+      siteMatches: p.siteMatches, tags: p.tags,
+      cat: p.cat === 'skip' ? 'handoff' : p.cat, // this flow has no Skip option — resolved items default to Handoff
+      stripSite: true, stripTicket: true
+    };
   }
+  spRenderPromoteMenu(index);
+}
+
+function spRenderPromoteMenu(index) {
+  const item = scratchpad[index];
+  const menu = document.getElementById(`sp-promote-menu-${index}`);
+  if (!item || !menu) return;
+  const st = spPromoteState[item.id];
+  if (!st) return;
+
+  const catBtns = [
+    {cat:'handoff',  label:'📋 Handoff'},
+    {cat:'upcoming', label:'🕐 Upcoming'}
+  ].map(({cat,label}) =>
+    `<button type="button" class="sp-promote-cat-btn${st.cat===cat?' sel':''}" onclick="spPromoteSetCat(${index},'${cat}')">${label}</button>`
+  ).join('');
+
+  const siteOpts = SP_SITE_TABLE.map(s =>
+    `<option value="${s.code}"${st.site===s.code?' selected':''}>${s.code}${s.friendly?' — '+esc(s.friendly):''}</option>`).join('');
+
+  const { sitePhrase, ticketPhrase, phrasesToStrip } = spComputeStripPhrases(st);
+  const previewHTML = spHighlightPhrasesInText(item.text, [
+    { phrase: sitePhrase,   strip: st.stripSite,   title: 'Hidden from the pushed text — the site already shows as its own tag' },
+    { phrase: ticketPhrase, strip: st.stripTicket, title: 'Hidden from the pushed text — the log/OMS # already shows as its own field' },
+  ]);
+  const cleanedBadge = phrasesToStrip.length
+    ? `<span class="sp-smart-tag sp-tag-cleaned" title="This text will be trimmed of details that already show as their own tag/field">✨ cleaned</span>` : '';
+  const similar = spFindSimilarEntry(st.site, spSignalLabels(st.tags));
+  const similarBadge = similar
+    ? `<span class="sp-smart-tag sp-tag-similar" title="Also mentioned at ${esc(similar.time)}: “${esc(similar.text.slice(0,70))}${similar.text.length>70?'…':''}”">↻ mentioned earlier</span>`
+    : '';
+  const siteToggle = sitePhrase
+    ? `<button type="button" class="sp-smart-strip-toggle${st.stripSite?' on':''}" onclick="spPromoteToggleStrip(${index},'site')"
+         title="${st.stripSite?'Site name is hidden from the pushed text — click to keep it':'Site name will stay in the pushed text — click to hide it'}">
+         ${st.stripSite?'🚫 site name hidden':'👁 keep site name'}</button>` : '';
+  const ticketToggle = ticketPhrase
+    ? `<button type="button" class="sp-smart-strip-toggle${st.stripTicket?' on':''}" onclick="spPromoteToggleStrip(${index},'ticket')"
+         title="${st.stripTicket?'Log/OMS # is hidden from the pushed text — click to keep it':'Log/OMS # will stay in the pushed text — click to hide it'}">
+         ${st.stripTicket?'🚫 log # hidden':'👁 keep log #'}</button>` : '';
+
+  menu.innerHTML = `
+    <div class="sp-promote-preview-row">
+      <div class="sp-promote-preview">${previewHTML}</div>
+      <div class="sp-promote-preview-tags">${cleanedBadge}${similarBadge}${siteToggle}${ticketToggle}</div>
+    </div>
+    <div class="sp-promote-grid">
+      <div class="sp-promote-col-type">
+        <div class="sp-promote-col-lbl">Type</div>
+        ${catBtns}
+      </div>
+      <div class="sp-promote-col-meta">
+        <div class="sp-promote-col-lbl">Site <span style="font-weight:400;color:var(--text3);">optional</span></div>
+        <select id="sp-site-${index}" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:12px;margin-bottom:8px;"
+          onchange="spPromoteSetSite(${index},this.value)">
+          <option value="">(no site)</option>${siteOpts}
+        </select>
+        <div class="sp-promote-col-lbl">Log / OMS # <span style="font-weight:400;color:var(--text3);">optional</span></div>
+        <input id="sp-ticket-${index}" value="${esc(st.ticket)}" placeholder="e.g. 8307" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--m);font-size:12px;"
+          oninput="spPromoteSetTicket(${index},this.value)" onblur="spRenderPromoteMenu(${index})">
+      </div>
+    </div>
+    <button class="sp-promote-send" onclick="spPromote(${index})">✓ Add to Shift Feed</button>`;
+}
+
+function spPromoteSetCat(index, cat) {
+  const item = scratchpad[index]; if (!item) return;
+  spPromoteState[item.id].cat = cat;
+  spRenderPromoteMenu(index);
+}
+function spPromoteSetSite(index, val) {
+  const item = scratchpad[index]; if (!item) return;
+  spPromoteState[item.id].site = val;
+  spRenderPromoteMenu(index); // site change can add/remove a strike-through match
+}
+function spPromoteSetTicket(index, val) {
+  const item = scratchpad[index]; if (!item) return;
+  spPromoteState[item.id].ticket = val.trim(); // no re-render here — avoid losing focus mid-type; onblur re-renders
+}
+function spPromoteToggleStrip(index, kind) {
+  const item = scratchpad[index]; if (!item) return;
+  const st = spPromoteState[item.id];
+  if (kind === 'ticket') st.stripTicket = !st.stripTicket;
+  else st.stripSite = !st.stripSite;
+  spRenderPromoteMenu(index);
 }
 
 function spPromote(index) {
   const item = scratchpad[index];
   if (!item) return;
+  const st = spPromoteState[item.id] || { cat:'handoff', site:'', ticket:'', siteMatches:[], stripSite:true, stripTicket:true };
 
-  const menu = document.getElementById(`sp-promote-menu-${index}`);
-  const cat    = (menu && menu.dataset.selectedCat) || 'handoff';
-  const site   = document.getElementById(`sp-site-${index}`)?.value || '';
-  const ticket = (document.getElementById(`sp-ticket-${index}`)?.value || '').trim();
+  const { phrasesToStrip } = spComputeStripPhrases(st);
+  const finalText = phrasesToStrip.length ? spCleanTextForPush(item.text, phrasesToStrip) : item.text;
 
   const now = new Date();
   const entry = {
     id: Date.now(),
     ts: now.getTime(),
     time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}),
-    cat,
-    site,
-    text: item.text,
-    ticket,
+    cat: st.cat || 'handoff',
+    site: st.site || '',
+    text: finalText,
+    ticket: st.ticket || '',
     starred: false
   };
 
   clEntries.unshift(entry);
   try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e) {}
 
+  delete spPromoteState[item.id];
   scratchpad.splice(index, 1);
   try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
 
   renderScratchpad();
   clRender();
-  showToast(`Promoted to feed as ${CL_CATS[cat]?.label||cat}`);
+  showToast(`Promoted to feed as ${CL_CATS[entry.cat]?.label||entry.cat}`);
 }
 
 function renderScratchpad() {
   const list = document.getElementById('sp-list');
   if (!list) return;
 
+  const footerWrap = document.getElementById('sp-smart-footer-wrap');
+  if (footerWrap) footerWrap.style.display = scratchpad.length ? 'flex' : 'none';
+
   if (!scratchpad.length) {
+    // Close any open smart panel if pad is now empty
+    spSmartClose();
     list.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">🗒️</div><div class="empty-state-title">Notepad is empty</div><div class="empty-state-sub">Type above and press Enter to capture a quick note.</div></div>';
     return;
   }
 
   list.innerHTML = scratchpad.map((item, index) => {
-    const catBtns = [
-      {cat:'handoff',  label:'📋 Handoff'},
-      {cat:'upcoming', label:'🕐 Upcoming'}
-    ].map(({cat,label}) =>
-      `<button type="button" class="sp-promote-cat-btn${cat==='handoff'?' sel':''}" data-cat="${cat}" data-idx="${index}"
-        onclick="spPickCat(${index},'${cat}',this)">${label}</button>`
-    ).join('');
-
     return `
     <div class="sp-row">
       <span class="sp-time">${esc(item.time)}</span>
@@ -5740,31 +6393,8 @@ function renderScratchpad() {
       <button class="sp-promote${!clEntries.length && index===0?' sp-promote-loud':''}" onclick="spTogglePromote(${index})" title="Add this note to your Handoff">Add to Handoff</button>
       <button class="sp-delete" onclick="spDelete(${index})" title="Delete">✕</button>
     </div>
-    <div class="sp-promote-menu" id="sp-promote-menu-${index}">
-      <div class="sp-promote-grid">
-        <div class="sp-promote-col-type">
-          <div class="sp-promote-col-lbl">Type</div>
-          ${catBtns}
-        </div>
-        <div class="sp-promote-col-meta">
-          <div class="sp-promote-col-lbl">Site <span style="font-weight:400;color:var(--text3);">optional</span></div>
-          <select id="sp-site-${index}" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:12px;margin-bottom:8px;">
-            <option value="">(no site)</option>
-            ${clSiteOptions}
-          </select>
-          <div class="sp-promote-col-lbl">Log / OMS # <span style="font-weight:400;color:var(--text3);">optional</span></div>
-          <input id="sp-ticket-${index}" placeholder="e.g. 8307" style="width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--m);font-size:12px;">
-        </div>
-      </div>
-      <button class="sp-promote-send" onclick="spPromote(${index})">✓ Add to Shift Feed</button>
-    </div>`;
+    <div class="sp-promote-menu" id="sp-promote-menu-${index}"></div>`;
   }).join('');
-}
-
-function spPickCat(index, cat, btn) {
-  document.querySelectorAll(`#sp-promote-menu-${index} .sp-promote-cat-btn`).forEach(b => b.classList.remove('sel'));
-  btn.classList.add('sel');
-  btn.closest('.sp-promote-menu').dataset.selectedCat = cat;
 }
 
 function clRender() {
@@ -5810,6 +6440,23 @@ function clRender() {
   clRenderPreview();
 }
 
+// Stable-sorts entries within a category so items sharing the same site end
+// up adjacent to each other — purely a re-ordering, no new heading or label.
+// The first entry mentioning a given site "anchors" where that whole
+// cluster sits in reading order; entries with no site keep their original
+// relative position. Everything else about the draft's visual structure —
+// category headers, bullets, layout — stays exactly as it already is.
+function clGroupBySite(entries) {
+  const firstSeenAt = new Map();
+  entries.forEach((e, i) => {
+    if (e.site && !firstSeenAt.has(e.site)) firstSeenAt.set(e.site, i);
+  });
+  return entries
+    .map((e, i) => ({ e, i, anchor: e.site ? firstSeenAt.get(e.site) : i }))
+    .sort((a, b) => (a.anchor - b.anchor) || (a.i - b.i))
+    .map(x => x.e);
+}
+
 function clRenderPreview() {
   const preview = document.getElementById('cl-preview'); if (!preview) return;
   if (!clEntries.length) {
@@ -5838,8 +6485,9 @@ function clRenderPreview() {
     </div>`;
   }).join('');
   CL_CAT_ORDER.forEach(cat => {
-    const entries = clEntries.filter(e => e.cat === cat);
+    let entries = clEntries.filter(e => e.cat === cat);
     if (!entries.length) return;
+    entries = clGroupBySite(entries);
     const info = CL_CATS[cat];
     html += `<div class="cl-hd-section">
       <div class="cl-hd-section-hdr">
@@ -5906,8 +6554,8 @@ function wxPinFilter() {
   const q = document.getElementById('wx-pin-inp').value.toLowerCase().trim();
   const box = document.getElementById('wx-pin-matches');
   if (!q) { box.style.display = 'none'; return; }
-  const siteHits = SITES.filter(s => s.name.toLowerCase().includes(q) || (s.location||'').toLowerCase().includes(q));
-  const wxHits   = WX_LOCS.filter(s => s.name.toLowerCase().includes(q) || (s.location||'').toLowerCase().includes(q));
+  const siteHits = SITES.filter(s => spSiteMatchesQuery(s.name,q) || (s.location||'').toLowerCase().includes(q));
+  const wxHits   = WX_LOCS.filter(s => spSiteMatchesQuery(s.name,q) || (s.location||'').toLowerCase().includes(q));
   const all = [
     ...siteHits.map(s => ({name:s.name, location:s.location||s.name})),
     ...wxHits.map(s   => ({name:s.name, location:s.location||s.name}))
@@ -10733,6 +11381,13 @@ const state = {
   bh: ['Morgan','Alex','Adam','Rob','FNG'],
   selected: ''
 };
+
+// Time-off entries, populated asynchronously by the Firestore onSnapshot
+// listener (see initTimeOffListener). Must be declared here as an empty
+// array — every render function below reads timeOffData.find()/.filter()
+// and earlier code only ever assigned it inside that async callback, so
+// any read before Firestore's first response threw ReferenceError.
+let timeOffData = [];
 
 // ── Date helpers ───────────────────────────────────────────────────────────
 function isoDate(d) {
