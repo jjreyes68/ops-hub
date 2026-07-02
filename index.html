@@ -1519,6 +1519,7 @@ body.dark .bc-preview{background:var(--bg2);}
 .bc-row td{padding:7px 16px;border-top:1px solid var(--border);color:var(--text);}
 .bc-td-val{text-align:right;font-family:var(--m);font-weight:600;}
 .bc-row-curtailed td{background:var(--abg);}
+.bc-row-nocurt td{color:var(--text3);font-style:italic;font-size:11.5px;padding:5px 16px;}
 .bc-curtailed-badge{display:inline-block;margin-left:8px;font-size:9.5px;font-weight:700;color:var(--amber);background:rgba(0,0,0,.06);padding:1px 7px;border-radius:8px;white-space:nowrap;vertical-align:middle;}
 .bc-empty{padding:20px;text-align:center;color:var(--text3);font-size:12px;font-style:italic;background:var(--bg3);border:1px solid var(--border);border-radius:6px;}
 .bc-warn{font-size:11px;color:var(--amber);background:var(--abg);border:1px solid var(--amber);border-radius:6px;padding:6px 10px;margin-bottom:8px;}
@@ -11287,18 +11288,30 @@ function bcParseInput(text) {
   return bcParseLinearized(lines);
 }
 
+// Groups by curtailed-state FIRST, dispatch value second. A run of
+// non-curtailed hours merges into a single block no matter how the
+// dispatch value ramps within it — operators don't track the exact solar
+// curve when nothing's being curtailed, only that nothing was. A curtailed
+// run still splits on distinct dispatch VALUES, since different
+// curtailment levels (e.g. curtailed to 5MW vs curtailed to 0MW) are
+// operationally different and worth keeping separate. This naturally
+// surfaces broken-up curtailment — curtailed, then clear, then curtailed
+// again — as its own sequence of rows instead of collapsing across the gap.
 function bcCollapseGroups(rows) {
   const sorted = [...rows].sort((a, b) => a.he - b.he);
   const groups = [];
-  let cur = { startHe: sorted[0].he, endHe: sorted[0].he, dispatch: sorted[0].dispatch, curtailed: sorted[0].curtailment > 0 };
+  const first = sorted[0];
+  let cur = { startHe: first.he, endHe: first.he, curtailed: first.curtailment > 0, dispatch: first.dispatch };
   for (let i = 1; i < sorted.length; i++) {
     const r = sorted[i];
-    if (r.dispatch === cur.dispatch) {
+    const isCurtailed = r.curtailment > 0;
+    const sameState = isCurtailed === cur.curtailed;
+    const sameValue = !isCurtailed || r.dispatch === cur.dispatch;
+    if (sameState && sameValue) {
       cur.endHe = r.he;
-      cur.curtailed = cur.curtailed || r.curtailment > 0;
     } else {
       groups.push(cur);
-      cur = { startHe: r.he, endHe: r.he, dispatch: r.dispatch, curtailed: r.curtailment > 0 };
+      cur = { startHe: r.he, endHe: r.he, curtailed: isCurtailed, dispatch: r.dispatch };
     }
   }
   groups.push(cur);
@@ -11354,9 +11367,11 @@ function bcRenderPreview(resource, dateLabel, groups, warnHTML) {
     const timeLabel = g.startHe === g.endHe
       ? qtFormatTimeLabel(start.h, start.m)
       : `${qtFormatTimeLabel(start.h, start.m)} \u2013 ${qtFormatTimeLabel(end.h, end.m)}`;
-    const badge = g.curtailed ? '<span class="bc-curtailed-badge">\u26a1 Curtailed</span>' : '';
-    return `<tr class="bc-row${g.curtailed ? ' bc-row-curtailed' : ''}">
-      <td>${timeLabel}${badge}</td>
+    if (!g.curtailed) {
+      return `<tr class="bc-row bc-row-nocurt"><td colspan="2">No curtailment \u00b7 ${timeLabel}</td></tr>`;
+    }
+    return `<tr class="bc-row bc-row-curtailed">
+      <td>${timeLabel}<span class="bc-curtailed-badge">\u26a1 Curtailed</span></td>
       <td class="bc-td-val">${g.dispatch.toFixed(2)} MW</td>
     </tr>`;
   }).join('');
@@ -11429,8 +11444,11 @@ function bcCopyAsText() {
     const timeLabel = g.startHe === g.endHe
       ? qtFormatTimeLabel(start.h, start.m)
       : `${qtFormatTimeLabel(start.h, start.m)} \u2013 ${qtFormatTimeLabel(end.h, end.m)}`;
-    const flag = g.curtailed ? '  (curtailed)' : '';
-    text += `${timeLabel.padEnd(28)}${g.dispatch.toFixed(2)} MW${flag}\n`;
+    if (!g.curtailed) {
+      text += `No curtailment \u00b7 ${timeLabel}\n`;
+    } else {
+      text += `${timeLabel.padEnd(28)}${g.dispatch.toFixed(2)} MW  (curtailed)\n`;
+    }
   });
   navigator.clipboard.writeText(text)
     .then(() => showToast('Copied as text \u2713'))
