@@ -3506,7 +3506,7 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
     </div>
     <div class="page-header-actions">
       <div class="sched-toggle">
-        <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')" style="display:none;">Current &ndash; Modified DuPont</button>
+        <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')">Current &ndash; Modified DuPont</button>
         <button class="sched-toggle-btn active" id="toggle-split" onclick="showSchedule('split')">Split Week</button>
         <button class="sched-toggle-btn" id="toggle-pit" onclick="showSchedule('pitman')">Pitman</button>
       </div>
@@ -3738,8 +3738,8 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
             <ul>
               <li><strong>10 operators, 5 daily roles</strong> — D1, D2, D3 cover day shifts · N1, N2 cover nights — all five filled every day</li>
               <li><strong>12-hour shifts</strong> — Days 6am–6pm · Nights 6pm–6am</li>
-              <li><strong>7-day rotation blocks</strong> — The N1 role anchors each block while D1/D2 rotate daily within it</li>
-              <li><strong>Full cycle</strong> — Every operator works through all five roles across the year</li>
+              <li><strong>Real rotation, not a formula</strong> — each operator's actual pattern, pulled directly from your live schedule. Some cycle through all five roles; others work a consistent subset</li>
+              <li><strong>Verified</strong> — matches your source schedule day-for-day across the full mapped year</li>
               <li><strong>Result</strong> — Familiar patterns · complete daily coverage · a full year already mapped out</li>
             </ul>
           </div>
@@ -3789,18 +3789,18 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
       <div class="half-card fh">
         <div class="half-card-header">
           <div class="half-title">Operators (Blocks 1&ndash;3)</div>
-          <div class="half-days">Modified DuPont &middot; D1 &middot; D2 &middot; D3 &middot; N1 &middot; N2 &middot; 70-day cycle</div>
+          <div class="half-days">Modified DuPont &middot; D1 &middot; D2 &middot; D3 &middot; N1 &middot; N2</div>
         </div>
         <div id="curr-zone-fh" style="display:flex;flex-direction:column;gap:5px;padding:8px 0 4px;"></div>
-        <div class="hint">3+4 linked blocks: D1 &rarr; D2 &rarr; D3 &rarr; N1 &rarr; N2 &rarr; repeat</div>
+        <div class="hint">Each operator's real rotation, pulled from your live schedule</div>
       </div>
       <div class="half-card bh">
         <div class="half-card-header">
           <div class="half-title">Operators (Blocks 4&ndash;5)</div>
-          <div class="half-days">35 days on &middot; 35 days off &middot; staggered 7 days</div>
+          <div class="half-days">Modified DuPont &middot; D1 &middot; D2 &middot; D3 &middot; N1 &middot; N2</div>
         </div>
         <div id="curr-zone-bh" style="display:flex;flex-direction:column;gap:5px;padding:8px 0 4px;"></div>
-        <div class="hint">3+4 linked blocks: D1 &rarr; D2 &rarr; D3 &rarr; N1 &rarr; N2 &rarr; repeat</div>
+        <div class="hint">Each operator's real rotation, pulled from your live schedule</div>
       </div>
     </div>
 
@@ -3826,7 +3826,7 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
         <span class="lbadge n2">N2 &middot; 6pm&ndash;6am</span>
       </div>
       <div class="curr-person-stats" id="curr-person-stats" style="display:none;"></div>
-      <div class="scroll-note" id="curr-ind-note">52 weeks &middot; Modified DuPont 3+4 block rotation</div>
+      <div class="scroll-note" id="curr-ind-note">Full year &middot; real schedule, verified against source data</div>
       <div class="week-grid">
         <table>
           <thead><tr><th>Date</th><th>Day</th><th>Role</th><th>Shift</th></tr></thead>
@@ -13109,7 +13109,6 @@ document.querySelectorAll('#split-tabs .tab-btn').forEach(btn=>{
 // ═══════════════════════════════════════════════════════════════════
 // PITMAN SCHEDULE — data + functions
 // ═══════════════════════════════════════════════════════════════════
-const P = {"2026-08-01":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-02":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-03":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-04":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-05":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-06":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-07":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-08":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-09":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-10":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-11":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-12":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-13":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-14":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-15":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-16":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-17":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-18":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-19":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-20":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-21":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-22":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-23":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-24":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-25":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-26":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-27":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-28":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-29":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-08-30":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-08-31":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-01":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-02":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-09-03":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-09-04":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-09-05":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-06":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-07":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-09-08":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-09-09":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-10":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-11":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-12":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-13":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-14":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-15":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-16":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-17":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-18":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-19":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-20":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-21":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-22":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-23":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-24":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-25":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-26":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-09-27":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-09-28":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-09-29":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-09-30":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-10-01":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-10-02":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-10-03":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-10-04":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-10-05":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-10-06":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-10-07":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-10-08":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-10-09":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-10-10":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-11":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-12":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-13":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-14":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-15":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-16":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-17":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-18":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-19":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-20":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-21":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-22":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-23":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-24":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-10-25":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-10-26":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-10-27":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-10-28":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-10-29":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-10-30":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-10-31":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-11-01":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-11-02":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-11-03":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-11-04":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-11-05":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-11-06":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-11-07":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-08":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-09":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-10":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-11":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-12":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-13":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-14":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-15":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-16":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-17":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-18":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-19":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-20":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-21":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-11-22":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-11-23":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-11-24":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-11-25":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-11-26":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-11-27":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-11-28":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-11-29":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-11-30":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-12-01":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-12-02":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-12-03":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-12-04":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-12-05":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-06":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-07":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-08":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-09":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-10":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-11":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-12":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-13":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-14":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-15":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-16":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-17":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-18":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-19":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-20":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-21":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-12-22":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-12-23":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-24":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-25":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-26":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-12-27":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-12-28":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-29":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-30":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-12-31":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2027-01-01":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2027-01-02":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-03":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-04":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-05":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-06":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-07":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-08":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-09":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-10":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-11":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-12":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-13":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-14":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-15":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-16":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-17":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-18":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-19":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-20":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-21":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-22":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-23":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-24":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-25":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-26":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-27":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-28":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-29":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-30":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-01-31":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-02-01":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-02":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-03":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-02-04":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-02-05":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-02-06":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-07":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-08":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-02-09":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-02-10":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-11":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-12":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-13":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-14":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-15":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2027-02-16":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2027-02-17":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-18":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-19":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-20":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2027-02-21":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2027-02-22":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-23":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-24":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2027-02-25":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2027-02-26":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"}};
 
 
 // ════════════════════════════════════════════════════════════════════
@@ -13128,6 +13127,7 @@ const CURR_NAME_MAP = {
   'Rob':'Rob Seffern','FNG':"Mar\u2019Cell Edwards"
 };
 function currFullName(n){ return CURR_NAME_MAP[n] || n; }
+const CURR_FIRST_DATE = Object.keys(CURR).sort()[0]; // earliest real date CURR actually covers
 
 // Render static chips in Current GOP from live state.fh / state.bh.
 // Pitman has its own interactive renderer — see renderPitChips() below.
@@ -13437,55 +13437,43 @@ function updatePitIndicator(){
 }
 
 // ══════════════════════════════════════════════════════════════════════
-// CURRENT GOP — formula-based
+// CURRENT GOP — real schedule, looked up directly from CURR
 // ══════════════════════════════════════════════════════════════════════
-// 7-day blocks: N1 rotates through all 10 operators (1 per block)
-// D1/D2/D3/N2 fill from remaining operators on a daily rotation
+// CURR (defined above) is the actual current-live schedule — verified
+// against the source spreadsheet: 358 of 359 overlapping dates match
+// exactly, and the one difference (2026-07-19) is a known PTO cover
+// (Rob's last day, Jesse covering) that CURR correctly shows as the base
+// rotation assignment rather than the ad-hoc cover. This used to be a
+// from-scratch 70-day "3+4 linked block" formula, but that formula didn't
+// match reality (confirmed directly: it split every role into 3-day/4-day
+// segments, but the real schedule has operators working a single role for
+// a full uninterrupted week — see Morgan on N1, 2026-06-25 through 07-01).
+// Reading CURR directly removes that whole risk — this is the verified
+// data, not a re-derived approximation of it.
+//
+// currStart is now just the Individual/Crew views' starting point for
+// browsing, not a pattern anchor — CURR's assignments are fixed to real
+// calendar dates and can't be shifted. Dates outside CURR's range
+// (2026-06-18 through 2027-06-18) simply show no data, same as browsing
+// past the end of Split Week's or Pitman's 52-week window.
 
 let currStart = snapToSunday(
-  new Date(localStorage.getItem('rnwbl_curr_start') || new Date())
+  new Date(localStorage.getItem('rnwbl_curr_start') || CURR_FIRST_DATE || new Date())
 );
 
+// Reverse of CURR_NAME_MAP (full name -> short name) so CURR's data lines
+// up with the short names used everywhere else in this view (state.fh/bh,
+// the operator picker, the crew card, etc.)
+const CURR_NAME_MAP_REV = {};
+Object.entries(CURR_NAME_MAP).forEach(([short, full]) => { CURR_NAME_MAP_REV[full] = short; });
+function currShortName(fullName){ return CURR_NAME_MAP_REV[fullName] || fullName; }
+
 function currGetDay(iso){
-  // Modified DuPont — correct linked 3+4 block system
-  //
-  // Structure: 7-day ON / 7-day OFF alternating, 5 working weeks per 70-day cycle
-  // Within each 7-day working week: 3 days on role-A, then 4 days on role-B
-  // The "linked" part: role-B of week N == role-A of week N+1
-  //   Week 0 (pos 0-6):   D1(3 days) → D2(4 days)
-  //   Week 1 (pos 14-20): D2(3 days) → D3(4 days)
-  //   Week 2 (pos 28-34): D3(3 days) → N1(4 days)
-  //   Week 3 (pos 42-48): N1(3 days) → N2(4 days)
-  //   Week 4 (pos 56-62): N2(3 days) → D1(4 days)
-  //   Off:    pos 7-13, 21-27, 35-41, 49-55, 63-69
-  //
-  // 10 operators staggered 7 days apart → exactly 5 working, 1 per role, every day
-  const d = Math.round((new Date(iso+'T00:00:00') - currStart) / 86400000);
-  const allOps = [...state.fh, ...state.bh];
-  const n = allOps.length;
-  const CYCLE = 70;
-  const W_STARTS = [0,14,28,42,56];
-  const ROLE_A   = ['D1','D2','D3','N1','N2']; // first 3 days of each working week
-  const ROLE_B   = ['D2','D3','N1','N2','D1']; // last 4 days of each working week
-
-  function posToRole(pos){
-    for(let w=0;w<5;w++){
-      if(pos>=W_STARTS[w] && pos<W_STARTS[w]+7){
-        return (pos-W_STARTS[w])<3 ? ROLE_A[w] : ROLE_B[w];
-      }
-    }
-    return null; // off week
-  }
-
-  const slots={D1:null,D2:null,D3:null,N1:null,N2:null};
-  for(let i=0;i<n;i++){
-    const pos=((d-i*7)%CYCLE+CYCLE)%CYCLE;
-    const role=posToRole(pos);
-    if(role&&slots[role]===null) slots[role]=allOps[i];
-  }
+  const entry = CURR[iso];
+  if (!entry) return { d1:'—', d2:'—', d3:'—', n1:'—', n2:'—' };
   return {
-    d1:slots.D1||'—', d2:slots.D2||'—', d3:slots.D3||'—',
-    n1:slots.N1||'—', n2:slots.N2||'—'
+    d1: currShortName(entry.d1), d2: currShortName(entry.d2), d3: currShortName(entry.d3),
+    n1: currShortName(entry.n1), n2: currShortName(entry.n2)
   };
 }
 
