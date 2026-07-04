@@ -190,8 +190,15 @@ body.dark .nav-tz-key{color:var(--text2);}
 @keyframes viewSlideIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
 .view.active{display:block;animation:viewSlideIn .25s cubic-bezier(.22,1,.36,1) both;}
 .cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
-@media(max-width:800px){.cols3{grid-template-columns:1fr 1fr;}}
-@media(max-width:500px){.cols3{grid-template-columns:1fr;}}
+/* Centers whichever tile is marked as the lone one in its own row. Uses an
+   explicit class rather than :last-child/:nth-child math, because a hidden
+   sibling (Checklists, display:none) still counts toward nth-child even
+   though it's invisible and doesn't occupy a grid cell — that mismatch
+   silently breaks position-based centering. If the tile lineup changes,
+   move the "tool-card-lone" class to whichever tile actually ends up alone. */
+.tool-card-lone{grid-column:2;}
+@media(max-width:800px){.cols3{grid-template-columns:1fr 1fr;}.tool-card-lone{grid-column:auto;}}
+@media(max-width:500px){.cols3{grid-template-columns:1fr;}.tool-card-lone{grid-column:auto;}}
 
 /* TYPOGRAPHY SCALE */
 .page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
@@ -1523,6 +1530,46 @@ body.dark .bc-preview{background:var(--bg2);}
 .bc-curtailed-badge{display:inline-block;margin-left:8px;font-size:9.5px;font-weight:700;color:var(--amber);background:rgba(0,0,0,.06);padding:1px 7px;border-radius:8px;white-space:nowrap;vertical-align:middle;}
 .bc-empty{padding:20px;text-align:center;color:var(--text3);font-size:12px;font-style:italic;background:var(--bg3);border:1px solid var(--border);border-radius:6px;}
 .bc-warn{font-size:11px;color:var(--amber);background:var(--abg);border:1px solid var(--amber);border-radius:6px;padding:6px 10px;margin-bottom:8px;}
+.bc-reminder-section{margin-top:10px;padding:10px 12px;background:var(--bg3);border:1px dashed var(--border2);border-radius:8px;}
+.bc-reminder-hdr{font-size:10.5px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px;}
+.bc-reminder-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:3px 0;font-size:11.5px;}
+.bc-reminder-row+.bc-reminder-row{border-top:1px solid var(--border);padding-top:4px;margin-top:1px;}
+.bc-reminder-desc{color:var(--text2);}
+.bc-reminder-time-preview{flex-shrink:0;font-family:var(--m);color:var(--text3);}
+.bc-reminder-btn{padding:6px 14px;border-radius:6px;border:none;background:var(--blue);color:#fff;font-size:11.5px;font-weight:700;cursor:pointer;font-family:var(--f);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.15);}
+.bc-reminder-btn:hover{filter:brightness(1.12);transform:translateY(-1px);}
+.bc-reminder-btn:active{transform:translateY(0);}
+.bc-reminder-btn-all{display:block;width:100%;margin-top:9px;padding:8px 14px;font-size:12px;}
+.bc-reminder-note{font-size:10.5px;color:var(--text3);text-align:center;margin-top:6px;}
+
+/* ── SHARED REMINDERS (Quick Timer) ──────────────────────────────────────── */
+.shared-reminders-hdr{font-size:10.5px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+.shared-reminders-count{background:var(--blue);color:#fff;border-radius:9px;padding:0 6px;font-size:10px;font-weight:700;}
+.shared-reminder-row{display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:6px;background:var(--bbg);border:1px solid var(--blue);margin-bottom:5px;font-size:12px;}
+.shared-reminder-row.overdue{background:var(--rbg);border-color:var(--red);}
+.shared-reminder-icon{flex-shrink:0;font-size:13px;}
+.shared-reminder-task{flex:1;color:var(--text);}
+.shared-reminder-time{flex-shrink:0;font-family:var(--m);font-size:11px;color:var(--text3);}
+.shared-reminder-row.overdue .shared-reminder-time{color:var(--red);font-weight:700;}
+.shared-reminder-edit{flex-shrink:0;background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px;padding:0 3px;}
+.shared-reminder-edit:hover{color:var(--blue);}
+.shared-reminder-dismiss{flex-shrink:0;background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;padding:0 3px;}
+.shared-reminder-dismiss:hover{color:var(--red);}
+.shared-reminder-unavailable{font-size:11px;color:var(--text3);font-style:italic;padding:6px 0;}
+.shared-reminder-row-editing{background:var(--bg2);border-color:var(--border2);gap:6px;}
+.sr-edit-task{flex:1;min-width:0;background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:5px 8px;color:var(--text);font-family:var(--f);font-size:11.5px;}
+.sr-edit-when{flex-shrink:0;width:148px;background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:4px 6px;color:var(--text);font-family:var(--f);font-size:10.5px;}
+.sr-edit-save,.sr-edit-cancel{flex-shrink:0;background:none;border:none;cursor:pointer;font-size:14px;padding:0 4px;}
+.sr-edit-save{color:var(--green);}
+.sr-edit-save:hover{filter:brightness(1.3);}
+.sr-edit-cancel{color:var(--text3);}
+.sr-edit-cancel:hover{color:var(--red);}
+.shared-reminder-add-row{display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border2);}
+#sr-add-task{flex:1;min-width:0;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:12px;}
+#sr-add-task:focus{outline:none;border-color:var(--blue);}
+#sr-add-when{flex-shrink:0;width:168px;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:5px 7px;color:var(--text);font-family:var(--f);font-size:11px;}
+.shared-reminder-add-row button{flex-shrink:0;padding:6px 12px;background:var(--gbg);border:1px solid var(--green);border-radius:6px;color:var(--green);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--f);}
+.shared-reminder-add-row button:hover{background:var(--green);color:#fff;}
 .bc-help-icon{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--bg4);color:var(--text3);font-size:10px;font-weight:700;border:none;cursor:pointer;margin-left:4px;vertical-align:middle;padding:0;line-height:1;font-family:var(--f);}
 .bc-help-icon:hover{background:var(--blue);color:#fff;}
 .bc-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
@@ -2165,6 +2212,16 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
   <span style="flex:1;" id="qt-alarm-text"></span>
   <button onclick="qtDismissBanner()" style="padding:4px 12px;border-radius:5px;border:1.5px solid rgba(255,255,255,.6);background:transparent;color:#fff;font-size:12px;font-weight:600;cursor:pointer;">Dismiss</button>
 </div>
+
+<!-- SHARED REMINDER ALARM BANNER — separate element so it can stack below
+     the Quick Timer banner instead of overlapping it if both fire at once,
+     and so "Dismiss" here only hides the banner locally rather than
+     deleting a team-wide reminder other operators may not have seen yet. -->
+<div id="sr-alarm-banner" style="display:none;position:fixed;top:88px;left:0;right:0;z-index:199;background:var(--red);color:#fff;padding:9px 16px;font-size:13px;font-weight:500;display:none;align-items:center;gap:10px;box-shadow:0 2px 12px rgba(0,0,0,.25);">
+  <span style="font-size:16px;">🔔</span>
+  <span style="flex:1;" id="sr-alarm-text"></span>
+  <button onclick="srDismissBanner()" style="padding:4px 12px;border-radius:5px;border:1.5px solid rgba(255,255,255,.6);background:transparent;color:#fff;font-size:12px;font-weight:600;cursor:pointer;">Dismiss</button>
+</div>
 <div class="view" id="view-notes" style="display:none!important">
   <div class="tpl-grid" id="tpl-grid"></div>
   <div class="notes-layout">
@@ -2239,28 +2296,6 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
   </div>
   <div class="cols3">
 
-    <!-- PHONETIC CONVERTER -->
-    <div class="tool-card">
-      <div class="tool-card-header">
-        <div class="tool-card-icon" style="background:#e8f4fd;">🔤</div>
-        <div class="tool-card-meta">
-          <div class="tool-card-name">Phonetic Converter</div>
-          <div class="tool-card-desc">Type text → NATO phonetic alphabet</div>
-        </div>
-      </div>
-      <div class="tool-card-body">
-        <div class="phonetic-wrap">
-          <input id="phonetic-inp" placeholder="Type text to convert..." oninput="convertPhonetic()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;margin-bottom:8px;">
-          <div id="phonetic-out" style="font-family:var(--m);font-size:14px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:40px;word-break:break-all;"></div>
-          <div style="display:flex;gap:6px;margin-top:8px;">
-            <button class="tbtn" onclick="copyPhonetic()">Copy</button>
-            <button class="tbtn" id="phonetic-speak-btn" onclick="speakPhonetic()" title="Read aloud">🔊 Speak</button>
-            <button class="tbtn" onclick="clearPhonetic()">Clear</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- QUICK TIMER -->
     <div class="tool-card">
       <div class="tool-card-header">
@@ -2282,21 +2317,45 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
           <button class="add-btn" onclick="addAdhoc()">+ Add</button>
         </div>
         <div id="qt-duration-suggest" style="display:none;"></div>
-        <div class="section-divider">
-          <span class="section-divider-lbl">Recurring</span>
+        <div class="section-divider" id="qt-recurring-toggle" onclick="toggleRecurringSection()" style="cursor:pointer;">
+          <span class="section-divider-lbl" id="qt-recurring-toggle-lbl">▸ Recurring</span>
           <div class="section-divider-line"></div>
         </div>
-        <div id="recurring-list" style="max-height:200px;overflow-y:auto;margin-bottom:8px;"></div>
-        <div class="adhoc-row">
-          <input id="rec-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addRecurring()">
-          <span class="min-lbl">every</span>
-          <input id="rec-interval" class="t-inp" type="number" min="1" placeholder="min" title="Interval in minutes">
-          <span class="min-lbl">for</span>
-          <input id="rec-duration" class="t-inp" type="number" min="1" placeholder="hrs" title="Duration in hours">
-          <button class="add-btn" onclick="addRecurring()">+ Add</button>
-          <button class="add-btn" onclick="saveRecurringPreset()" style="background:var(--bbg);border-color:var(--blue);color:var(--blue);" title="Save as preset">💾</button>
+        <div id="recurring-section-body" style="display:none;">
+          <div id="recurring-list" style="max-height:200px;overflow-y:auto;margin-bottom:8px;margin-top:8px;"></div>
+          <div class="adhoc-row">
+            <input id="rec-inp" placeholder="Task description..." onkeydown="if(event.key==='Enter')addRecurring()">
+            <span class="min-lbl">every</span>
+            <input id="rec-interval" class="t-inp" type="number" min="1" placeholder="min" title="Interval in minutes">
+            <span class="min-lbl">for</span>
+            <input id="rec-duration" class="t-inp" type="number" min="1" placeholder="hrs" title="Duration in hours">
+            <button class="add-btn" onclick="addRecurring()">+ Add</button>
+            <button class="add-btn" onclick="saveRecurringPreset()" style="background:var(--bbg);border-color:var(--blue);color:var(--blue);" title="Save as preset">💾</button>
+          </div>
+          <div id="rec-presets" style="margin-top:8px;"></div>
         </div>
-        <div id="rec-presets" style="margin-top:8px;"></div>
+      </div>
+    </div>
+
+    <!-- SHARED REMINDERS -->
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-card-icon" style="background:#e8eefd;">🔔</div>
+        <div class="tool-card-meta">
+          <div class="tool-card-name">Shared Reminders</div>
+          <div class="tool-card-desc">Team-wide — visible to everyone, synced live</div>
+        </div>
+      </div>
+      <div class="tool-card-body">
+        <div id="shared-reminders-wrap">
+          <div class="shared-reminders-hdr">🔔 Shared reminders <span class="shared-reminders-count" id="shared-reminders-count" style="display:none;"></span></div>
+          <div id="shared-reminders-list"></div>
+          <div class="shared-reminder-add-row">
+            <input id="sr-add-task" placeholder="Reminder text..." onkeydown="if(event.key==='Enter')addSharedReminder()">
+            <input id="sr-add-when" type="datetime-local">
+            <button onclick="addSharedReminder()">+ Add</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -2487,6 +2546,29 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
         <div class="bc-modal-caption">Select and copy everything starting at <strong>RESOURCE</strong> through the last <strong>HE24</strong> row, then paste it above. If your copy starts partway down (e.g. at HOUR), the Resource and Trade Date won't be picked up.</div>
       </div>
     </div>
+
+    <!-- PHONETIC CONVERTER -->
+    <div class="tool-card tool-card-lone">
+      <div class="tool-card-header">
+        <div class="tool-card-icon" style="background:#e8f4fd;">🔤</div>
+        <div class="tool-card-meta">
+          <div class="tool-card-name">Phonetic Converter</div>
+          <div class="tool-card-desc">Type text → NATO phonetic alphabet</div>
+        </div>
+      </div>
+      <div class="tool-card-body">
+        <div class="phonetic-wrap">
+          <input id="phonetic-inp" placeholder="Type text to convert..." oninput="convertPhonetic()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;margin-bottom:8px;">
+          <div id="phonetic-out" style="font-family:var(--m);font-size:14px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:40px;word-break:break-all;"></div>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <button class="tbtn" onclick="copyPhonetic()">Copy</button>
+            <button class="tbtn" id="phonetic-speak-btn" onclick="speakPhonetic()" title="Read aloud">🔊 Speak</button>
+            <button class="tbtn" onclick="clearPhonetic()">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
   </div>
 </div>
@@ -3506,7 +3588,7 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
     </div>
     <div class="page-header-actions">
       <div class="sched-toggle">
-        <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')" style="display:none;">Current &ndash; Modified DuPont</button>
+        <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')">Current &ndash; Modified DuPont</button>
         <button class="sched-toggle-btn active" id="toggle-split" onclick="showSchedule('split')">Split Week</button>
         <button class="sched-toggle-btn" id="toggle-pit" onclick="showSchedule('pitman')">Pitman</button>
       </div>
@@ -3738,8 +3820,8 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
             <ul>
               <li><strong>10 operators, 5 daily roles</strong> — D1, D2, D3 cover day shifts · N1, N2 cover nights — all five filled every day</li>
               <li><strong>12-hour shifts</strong> — Days 6am–6pm · Nights 6pm–6am</li>
-              <li><strong>7-day rotation blocks</strong> — The N1 role anchors each block while D1/D2 rotate daily within it</li>
-              <li><strong>Full cycle</strong> — Every operator works through all five roles across the year</li>
+              <li><strong>Real rotation, not a formula</strong> — each operator's actual pattern, pulled directly from your live schedule. Some cycle through all five roles; others work a consistent subset</li>
+              <li><strong>Verified</strong> — matches your source schedule day-for-day across the full mapped year</li>
               <li><strong>Result</strong> — Familiar patterns · complete daily coverage · a full year already mapped out</li>
             </ul>
           </div>
@@ -3789,18 +3871,18 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
       <div class="half-card fh">
         <div class="half-card-header">
           <div class="half-title">Operators (Blocks 1&ndash;3)</div>
-          <div class="half-days">Modified DuPont &middot; D1 &middot; D2 &middot; D3 &middot; N1 &middot; N2 &middot; 70-day cycle</div>
+          <div class="half-days">Modified DuPont &middot; D1 &middot; D2 &middot; D3 &middot; N1 &middot; N2</div>
         </div>
         <div id="curr-zone-fh" style="display:flex;flex-direction:column;gap:5px;padding:8px 0 4px;"></div>
-        <div class="hint">3+4 linked blocks: D1 &rarr; D2 &rarr; D3 &rarr; N1 &rarr; N2 &rarr; repeat</div>
+        <div class="hint">Each operator's real rotation, pulled from your live schedule</div>
       </div>
       <div class="half-card bh">
         <div class="half-card-header">
           <div class="half-title">Operators (Blocks 4&ndash;5)</div>
-          <div class="half-days">35 days on &middot; 35 days off &middot; staggered 7 days</div>
+          <div class="half-days">Modified DuPont &middot; D1 &middot; D2 &middot; D3 &middot; N1 &middot; N2</div>
         </div>
         <div id="curr-zone-bh" style="display:flex;flex-direction:column;gap:5px;padding:8px 0 4px;"></div>
-        <div class="hint">3+4 linked blocks: D1 &rarr; D2 &rarr; D3 &rarr; N1 &rarr; N2 &rarr; repeat</div>
+        <div class="hint">Each operator's real rotation, pulled from your live schedule</div>
       </div>
     </div>
 
@@ -3826,7 +3908,7 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
         <span class="lbadge n2">N2 &middot; 6pm&ndash;6am</span>
       </div>
       <div class="curr-person-stats" id="curr-person-stats" style="display:none;"></div>
-      <div class="scroll-note" id="curr-ind-note">52 weeks &middot; Modified DuPont 3+4 block rotation</div>
+      <div class="scroll-note" id="curr-ind-note">Full year &middot; real schedule, verified against source data</div>
       <div class="week-grid">
         <table>
           <thead><tr><th>Date</th><th>Day</th><th>Role</th><th>Shift</th></tr></thead>
@@ -4716,6 +4798,25 @@ function restoreRecurringTimers(){
     }
   });
   save(); renderRecurring();
+
+  // Auto-expand on load if timers already exist, so real data is never
+  // hidden behind a collapsed toggle just because the section defaults
+  // closed for the (much more common) empty case.
+  if (S.recurringTasks.length) {
+    const body = document.getElementById('recurring-section-body');
+    const lbl = document.getElementById('qt-recurring-toggle-lbl');
+    if (body) body.style.display = 'block';
+    if (lbl) lbl.textContent = '▾ Recurring';
+  }
+}
+
+function toggleRecurringSection(){
+  const body = document.getElementById('recurring-section-body');
+  const lbl = document.getElementById('qt-recurring-toggle-lbl');
+  if (!body) return;
+  const willOpen = body.style.display === 'none';
+  body.style.display = willOpen ? 'block' : 'none';
+  if (lbl) lbl.textContent = (willOpen ? '▾' : '▸') + ' Recurring';
 }
 
 function saveRecurringPreset(){
@@ -5081,6 +5182,198 @@ function qtDismissDurationSuggestion() {
   document.getElementById('qt-duration-suggest').style.display = 'none';
   qtDurationCurrentPhrase = ''; qtPendingTime = null; qtPendingRange = null;
 }
+
+// ── SHARED REMINDERS ─────────────────────────────────────────────────────────
+// Team-wide reminders — writable from right here (native add + edit), and
+// also written in bulk by Buyers Curtailment's "Set All Reminders". Stored
+// in the same Firestore project already used for Time Off (see the
+// Schedule Compare section for the db connection), in their own collection
+// so they never mix with time-off records.
+let sharedReminders = [];
+let editingReminderId = null; // id of the reminder currently in inline-edit mode, or null
+let sharedReminderAlarmed = new Set(); // ids that have already fired their alarm
+let sharedRemindersFirstLoad = true;
+
+function initSharedRemindersListener() {
+  if (!window.db) {
+    const wrap = document.getElementById('shared-reminders-wrap');
+    if (wrap) {
+      wrap.style.display = 'block';
+      wrap.innerHTML = `<div class="shared-reminders-hdr">\ud83d\udd14 Shared reminders</div>
+        <div class="shared-reminder-unavailable">Open this file directly in a browser to use shared reminders.</div>`;
+    }
+    return;
+  }
+  window.db.collection('sharedReminders').orderBy('targetISO', 'asc').onSnapshot(snap => {
+    sharedReminders = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    if (sharedRemindersFirstLoad) {
+      sharedRemindersFirstLoad = false;
+      // Anything already overdue when the page loads gets marked alarmed
+      // without sound — same as Quick Timer's restore behavior, so nobody
+      // gets blasted with a chime just for opening the page.
+      const now = Date.now();
+      const alreadyOverdue = sharedReminders.filter(r => new Date(r.targetISO).getTime() <= now);
+      alreadyOverdue.forEach(r => sharedReminderAlarmed.add(r.id));
+      if (alreadyOverdue.length) srShowBannerSilent(alreadyOverdue[alreadyOverdue.length - 1].task);
+    } else {
+      checkSharedReminderAlarms();
+    }
+    renderSharedReminders();
+  }, err => {
+    console.error('Firestore (sharedReminders):', err);
+  });
+}
+
+// Fires for any reminder whose time has arrived and hasn't already
+// alarmed. If a reminder's time is in the future — including one just
+// edited forward to a later time — its alarmed flag is cleared so it can
+// still go off when that new time actually arrives, rather than staying
+// silently suppressed because it alarmed once under an earlier time.
+function checkSharedReminderAlarms() {
+  const now = Date.now();
+  sharedReminders.forEach(r => {
+    const target = new Date(r.targetISO).getTime();
+    if (target > now) { sharedReminderAlarmed.delete(r.id); return; }
+    if (!sharedReminderAlarmed.has(r.id)) {
+      sharedReminderAlarmed.add(r.id);
+      playQtAlarm();
+      srShowBanner(r.task);
+      setTimeout(() => qtSpeakAlarm(r.task), 950);
+    }
+  });
+}
+
+function srShowBanner(task) {
+  const b = document.getElementById('sr-alarm-banner');
+  document.getElementById('sr-alarm-text').textContent = 'SHARED REMINDER: ' + task;
+  b.style.display = 'flex';
+  b.style.animation = 'none'; void b.offsetWidth;
+  b.style.animation = 'qtPulse .5s ease 3';
+}
+function srShowBannerSilent(task) {
+  const b = document.getElementById('sr-alarm-banner');
+  document.getElementById('sr-alarm-text').textContent = 'SHARED REMINDER: ' + task;
+  b.style.display = 'flex';
+}
+function srDismissBanner() {
+  // Only hides the banner locally — never deletes the underlying shared
+  // reminder. That's a deliberate, separate action via the ✕ on the
+  // reminder row itself, since other operators may not have seen it yet.
+  document.getElementById('sr-alarm-banner').style.display = 'none';
+}
+
+function qtFmtReminderTime(iso) {
+  const d = new Date(iso);
+  const dateLabel = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  const timeLabel = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  return `${dateLabel} \u00b7 ${timeLabel}`;
+}
+
+// datetime-local inputs use "YYYY-MM-DDTHH:MM" in LOCAL time, with no
+// timezone suffix — this builds that exact format from a Date object so an
+// edit form can be pre-filled with a reminder's current target time.
+function dateToLocalInputValue(date) {
+  const pad = n => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+function renderSharedReminderRow(r, isPast) {
+  return `<div class="shared-reminder-row${isPast ? ' overdue' : ''}">
+    <span class="shared-reminder-icon">${isPast ? '\u26a0\ufe0f' : '\ud83d\udd14'}</span>
+    <span class="shared-reminder-task">${esc(r.task || '')}</span>
+    <span class="shared-reminder-time">${qtFmtReminderTime(r.targetISO)}</span>
+    <button class="shared-reminder-edit" onclick="startEditSharedReminder('${r.id}')" title="Edit">\u270e</button>
+    <button class="shared-reminder-dismiss" onclick="dismissSharedReminder('${r.id}')" title="Dismiss for everyone">\u2715</button>
+  </div>`;
+}
+
+function renderSharedReminderEditRow(r) {
+  const localValue = dateToLocalInputValue(new Date(r.targetISO));
+  return `<div class="shared-reminder-row shared-reminder-row-editing" data-id="${r.id}">
+    <input class="sr-edit-task" value="${esc(r.task || '')}" placeholder="Reminder text...">
+    <input class="sr-edit-when" type="datetime-local" value="${localValue}">
+    <button class="sr-edit-save" onclick="saveEditSharedReminder('${r.id}')" title="Save">\u2713</button>
+    <button class="sr-edit-cancel" onclick="cancelEditSharedReminder()" title="Cancel">\u2715</button>
+  </div>`;
+}
+
+function renderSharedReminders() {
+  const listEl = document.getElementById('shared-reminders-list');
+  const countEl = document.getElementById('shared-reminders-count');
+  if (!listEl) return;
+
+  const now = Date.now();
+  listEl.innerHTML = sharedReminders.map(r => {
+    if (r.id === editingReminderId) return renderSharedReminderEditRow(r);
+    const isPast = new Date(r.targetISO).getTime() < now;
+    return renderSharedReminderRow(r, isPast);
+  }).join('');
+
+  if (countEl) {
+    if (sharedReminders.length) { countEl.textContent = sharedReminders.length; countEl.style.display = 'inline-block'; }
+    else { countEl.style.display = 'none'; }
+  }
+}
+
+async function addSharedReminder() {
+  if (!window.db) { showToast('Firebase not connected \u2014 open this file directly in a browser'); return; }
+  const taskInput = document.getElementById('sr-add-task');
+  const whenInput = document.getElementById('sr-add-when');
+  const task = taskInput.value.trim();
+  const when = whenInput.value;
+  if (!task) { showToast('Type a reminder first'); return; }
+  if (!when) { showToast('Pick a date and time'); return; }
+  try {
+    await window.db.collection('sharedReminders').add({
+      task,
+      targetISO: new Date(when).toISOString(),
+      source: 'manual',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    taskInput.value = ''; whenInput.value = '';
+    showToast('Reminder set \u2014 visible to everyone \u2713');
+  } catch (e) {
+    showToast('Could not set reminder: ' + e.message);
+  }
+}
+
+function startEditSharedReminder(id) {
+  editingReminderId = id;
+  renderSharedReminders();
+}
+
+function cancelEditSharedReminder() {
+  editingReminderId = null;
+  renderSharedReminders();
+}
+
+async function saveEditSharedReminder(id) {
+  if (!window.db) { showToast('Firebase not connected'); return; }
+  const row = document.querySelector(`.shared-reminder-row-editing[data-id="${id}"]`);
+  if (!row) return;
+  const task = row.querySelector('.sr-edit-task').value.trim();
+  const when = row.querySelector('.sr-edit-when').value;
+  if (!task) { showToast('Reminder text can\u2019t be empty'); return; }
+  if (!when) { showToast('Pick a date and time'); return; }
+  try {
+    await window.db.collection('sharedReminders').doc(id).update({
+      task,
+      targetISO: new Date(when).toISOString()
+    });
+    editingReminderId = null;
+    showToast('Reminder updated \u2713');
+  } catch (e) {
+    showToast('Could not update: ' + e.message);
+  }
+}
+
+async function dismissSharedReminder(id) {
+  if (!window.db) return;
+  try { await window.db.collection('sharedReminders').doc(id).delete(); }
+  catch (e) { showToast('Could not dismiss: ' + e.message); }
+}
+
+setInterval(() => { checkSharedReminderAlarms(); renderSharedReminders(); }, 5000); // catches reminders becoming due with no new Firestore write to trigger off of
 
 // ── HOUR ENDING CONVERTER ───────────────────────────────────────────────────
 // Standalone bidirectional converter, built on the exact same parsing this
@@ -11218,7 +11511,7 @@ function copyPGSC() {
 // "curtailed" if curtailment was active during ANY hour it covers, so a
 // genuinely idle overnight block (schedule=0, curtailment=0) never gets
 // mistaken for an actively-curtailed one just because both show 0.00.
-let bcLastGroups = null, bcLastResource = '', bcLastDateLabel = '';
+let bcLastGroups = null, bcLastResource = '', bcLastDateLabel = '', bcLastTradeDateISO = '';
 
 function bcNormalizeHeader(s) { return (s || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); }
 
@@ -11349,6 +11642,15 @@ function bcFormatDateLabel(raw) {
   return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 }
 
+// Same M/D/YYYY input as bcFormatDateLabel, but returns YYYY-MM-DD for
+// building an actual reminder timestamp rather than a display string.
+function bcToISODate(raw) {
+  if (!raw) return '';
+  const m = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (!m) return '';
+  return `${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
+}
+
 function bcProcess() {
   const text = document.getElementById('bc-paste').value.trim();
   const wrap = document.getElementById('bc-output-wrap');
@@ -11373,6 +11675,7 @@ function bcProcess() {
   bcLastGroups = groups;
   bcLastResource = parsed.resource || '';
   bcLastDateLabel = dateLabel;
+  bcLastTradeDateISO = bcToISODate(parsed.tradeDate);
 
   const warnParts = [];
   if (parsed.rows.length < 24) warnParts.push(`Only ${parsed.rows.length} of 24 hours found \u2014 check the paste includes the full day.`);
@@ -11402,6 +11705,21 @@ function bcRenderPreview(resource, dateLabel, groups, warnHTML) {
     </tr>`;
   }).join('');
 
+  // Reminder controls live OUTSIDE #bc-preview entirely — both so they can
+  // never be mistaken for part of the schedule data itself, and so they're
+  // automatically excluded from the "Copy as Image" snapshot for free.
+  const plan = bcComputeReminderPlan(groups);
+  const reminderHTML = plan.length ? `
+    <div class="bc-reminder-section">
+      <div class="bc-reminder-hdr">\ud83d\udd14 Notify the team \u2014 ${plan.length} reminder${plan.length !== 1 ? 's' : ''}</div>
+      ${plan.map(r => `<div class="bc-reminder-row">
+        <span class="bc-reminder-desc">${esc(bcReminderLabel(r, resource))}</span>
+        <span class="bc-reminder-time-preview">${qtFormatTimeLabel(r.time.h, r.time.m)}</span>
+      </div>`).join('')}
+      <button class="bc-reminder-btn bc-reminder-btn-all" onclick="bcSetAllReminders()">\ud83d\udd14 Set All Reminders</button>
+      <div class="bc-reminder-note">One click sets all ${plan.length} \u2014 delete any you don\u2019t need from Quick Timer\u2019s Shared Reminders.</div>
+    </div>` : '';
+
   wrap.innerHTML = `${warnHTML || ''}
     <div class="bc-preview" id="bc-preview">
       <div class="bc-preview-hdr">
@@ -11412,7 +11730,8 @@ function bcRenderPreview(resource, dateLabel, groups, warnHTML) {
         <thead><tr><th>Time</th><th style="text-align:right;">Dispatch</th></tr></thead>
         <tbody>${rowsHTML}</tbody>
       </table>
-    </div>`;
+    </div>
+    ${reminderHTML}`;
 }
 
 async function bcCopyAsImage() {
@@ -11429,6 +11748,7 @@ async function bcCopyAsImage() {
 
   const snap = el.cloneNode(true);
   snap.removeAttribute('id');
+  snap.querySelectorAll('.bc-no-capture').forEach(node => node.remove());
   snap.style.cssText = `position:fixed;left:-9999px;top:0;background:${bg};width:420px;`;
   document.body.appendChild(snap);
 
@@ -11485,7 +11805,94 @@ function bcClear() {
   document.getElementById('bc-paste').value = '';
   document.getElementById('bc-output-wrap').innerHTML = '';
   document.getElementById('bc-copy-row').style.display = 'none';
-  bcLastGroups = null; bcLastResource = ''; bcLastDateLabel = '';
+  bcLastGroups = null; bcLastResource = ''; bcLastDateLabel = ''; bcLastTradeDateISO = '';
+}
+
+// Combines a YYYY-MM-DD date with an {h,m} time into a full timestamp.
+// rollToNextDay handles the one case where a block's END lands exactly on
+// midnight (HE24's range-end) — that moment belongs to the calendar day
+// AFTER the trade date, not the trade date itself.
+function bcCombineDateTime(dateISO, timeObj, rollToNextDay) {
+  const [y, mo, d] = dateISO.split('-').map(Number);
+  const dt = new Date(y, mo - 1, d, timeObj.h, timeObj.m, 0, 0);
+  if (rollToNextDay) dt.setDate(dt.getDate() + 1);
+  return dt.toISOString();
+}
+
+// Groups curtailed blocks into "periods" — maximal consecutive runs with no
+// "no curtailment" gap between them — and builds the reminder plan for each:
+// one "starts" at the period's first block, one "update setpoint" at every
+// later block's start (each represents a real, actionable change in what
+// the site should be dispatching), and one "ends" at the period's last
+// block's end. This avoids the redundant start/end-at-the-same-moment pairs
+// that show up when curtailment stays active but the setpoint changes hour
+// to hour — e.g. 8 back-to-back curtailed hours at different MW levels
+// becomes 1 start + 6 updates + 1 end (8 reminders), not 8 start/end pairs
+// (16 reminders, half of them describing the same instant twice).
+function bcComputeReminderPlan(groups) {
+  const periods = [];
+  let current = null;
+  groups.forEach(g => {
+    if (g.curtailed) { if (!current) current = []; current.push(g); }
+    else { if (current) { periods.push(current); current = null; } }
+  });
+  if (current) periods.push(current);
+
+  const plan = [];
+  periods.forEach(period => {
+    period.forEach((g, idx) => {
+      const start = qtHEToPoint(g.startHe);
+      plan.push({ type: idx === 0 ? 'start' : 'update', dispatch: g.dispatch, time: start, rollover: false });
+    });
+    const lastG = period[period.length - 1];
+    const end = qtHEToRangeEnd(lastG.endHe);
+    plan.push({ type: 'end', dispatch: null, time: end, rollover: (end.h === 0 && end.m === 0) });
+  });
+  return plan;
+}
+
+function bcReminderLabel(item, resource) {
+  const suffix = resource ? ` \u2014 ${resource}` : '';
+  if (item.type === 'start') return `Buyers curtailment starts${suffix} (${item.dispatch.toFixed(2)} MW)`;
+  if (item.type === 'update') return `Update curtailment setpoint${suffix} (${item.dispatch.toFixed(2)} MW)`;
+  return `Buyers curtailment ends${suffix}`;
+}
+
+// Writes the FULL reminder plan for the whole schedule to Firestore in one
+// click — visible to every operator, not just whoever ran the converter,
+// since a curtailment window often spans a shift change. Reuses the exact
+// same db connection and write pattern as Time Off. Anything the operator
+// doesn't want can be individually removed afterward from Quick Timer's
+// Shared Reminders list, rather than requiring per-block confirmation
+// upfront.
+async function bcSetAllReminders() {
+  if (!window.db) { showToast('Firebase not connected \u2014 open this file directly in a browser'); return; }
+  if (!bcLastGroups || !bcLastGroups.length) { showToast('Process a schedule first'); return; }
+  if (!bcLastTradeDateISO) { showToast('No trade date found \u2014 can\u2019t set reminders without knowing which day this is for'); return; }
+
+  const plan = bcComputeReminderPlan(bcLastGroups);
+  if (!plan.length) { showToast('No curtailment found to set reminders for'); return; }
+
+  const btn = document.querySelector('.bc-reminder-btn-all');
+  const origText = btn ? btn.textContent : '';
+  if (btn) { btn.textContent = '\u23f3 Setting\u2026'; btn.disabled = true; }
+
+  try {
+    for (const item of plan) {
+      const iso = bcCombineDateTime(bcLastTradeDateISO, item.time, item.rollover);
+      await window.db.collection('sharedReminders').add({
+        task: bcReminderLabel(item, bcLastResource),
+        targetISO: iso,
+        source: 'buyers-curtailment',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+    showToast(`${plan.length} reminder${plan.length !== 1 ? 's' : ''} set \u2014 visible to everyone \u2713`);
+  } catch (e) {
+    showToast('Could not set reminders: ' + e.message);
+  } finally {
+    if (btn) { btn.textContent = origText; btn.disabled = false; }
+  }
 }
 
 function bcShowExample() { document.getElementById('bc-example-modal').style.display = 'flex'; }
@@ -12140,6 +12547,7 @@ try {
     if (!firebase.apps.length) firebase.initializeApp(SCH_CMP_FB);
     else firebase.app();
     db = firebase.firestore();
+    window.db = db; // exposed so code outside this IIFE (Buyers Curtailment's Set Reminder) reuses the same connection
   }
 } catch(e) { console.warn('[Schedule]', e.message); }
 
@@ -13109,7 +13517,6 @@ document.querySelectorAll('#split-tabs .tab-btn').forEach(btn=>{
 // ═══════════════════════════════════════════════════════════════════
 // PITMAN SCHEDULE — data + functions
 // ═══════════════════════════════════════════════════════════════════
-const P = {"2026-08-01":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-02":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-03":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-04":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-05":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-06":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-07":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-08":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-09":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-10":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-11":{"sq":"A","cy":1,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-08-12":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-13":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-14":{"sq":"B","cy":1,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-08-15":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-16":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-17":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-18":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-19":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-20":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-21":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-22":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-23":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-24":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-25":{"sq":"A","cy":2,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-08-26":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-27":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-28":{"sq":"B","cy":2,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-08-29":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-08-30":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-08-31":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-01":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-02":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-09-03":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-09-04":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-09-05":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-06":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-07":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-09-08":{"sq":"A","cy":3,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-09-09":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-10":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-11":{"sq":"B","cy":3,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-09-12":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-13":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-14":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-15":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-16":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-17":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-18":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-19":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-20":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-21":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-22":{"sq":"A","cy":4,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-09-23":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-24":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-25":{"sq":"B","cy":4,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-09-26":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-09-27":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-09-28":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-09-29":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-09-30":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-10-01":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-10-02":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-10-03":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-10-04":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-10-05":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-10-06":{"sq":"A","cy":5,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-10-07":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-10-08":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-10-09":{"sq":"B","cy":5,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-10-10":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-11":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-12":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-13":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-14":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-15":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-16":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-17":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-18":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-19":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-20":{"sq":"A","cy":6,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-10-21":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-22":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-23":{"sq":"B","cy":6,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-10-24":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-10-25":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-10-26":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-10-27":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-10-28":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-10-29":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-10-30":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-10-31":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-11-01":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-11-02":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-11-03":{"sq":"A","cy":7,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2026-11-04":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-11-05":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-11-06":{"sq":"B","cy":7,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2026-11-07":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-08":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-09":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-10":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-11":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-12":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-13":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-14":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-15":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-16":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-17":{"sq":"A","cy":8,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2026-11-18":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-19":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-20":{"sq":"B","cy":8,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2026-11-21":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-11-22":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-11-23":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-11-24":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-11-25":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-11-26":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-11-27":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-11-28":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-11-29":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-11-30":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-12-01":{"sq":"A","cy":9,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2026-12-02":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-12-03":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-12-04":{"sq":"B","cy":9,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2026-12-05":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-06":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-07":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-08":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-09":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-10":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-11":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-12":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-13":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-14":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-15":{"sq":"A","cy":10,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2026-12-16":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-17":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-18":{"sq":"B","cy":10,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2026-12-19":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-20":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-21":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-12-22":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-12-23":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-24":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-25":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-26":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-12-27":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-12-28":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-29":{"sq":"A","cy":11,"d1":"Josh","d2":"Adam","d3":"Alex","n1":"Jesse","n2":"Sergio"},"2026-12-30":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2026-12-31":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2027-01-01":{"sq":"B","cy":11,"d1":"Daniel","d2":"Morgan","d3":"Rob","n1":"Ricky","n2":"Christian"},"2027-01-02":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-03":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-04":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-05":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-06":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-07":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-08":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-09":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-10":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-11":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-12":{"sq":"A","cy":12,"d1":"Jesse","d2":"Adam","d3":"Alex","n1":"Sergio","n2":"Josh"},"2027-01-13":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-14":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-15":{"sq":"B","cy":12,"d1":"Ricky","d2":"Morgan","d3":"Rob","n1":"Christian","n2":"Daniel"},"2027-01-16":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-17":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-18":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-19":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-20":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-21":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-22":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-23":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-24":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-25":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-26":{"sq":"A","cy":13,"d1":"Jesse","d2":"Sergio","d3":"Alex","n1":"Josh","n2":"Adam"},"2027-01-27":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-28":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-29":{"sq":"B","cy":13,"d1":"Ricky","d2":"Christian","d3":"Rob","n1":"Daniel","n2":"Morgan"},"2027-01-30":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-01-31":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-02-01":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-02":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-03":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-02-04":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-02-05":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-02-06":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-07":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-08":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-02-09":{"sq":"A","cy":14,"d1":"Jesse","d2":"Sergio","d3":"Josh","n1":"Adam","n2":"Alex"},"2027-02-10":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-11":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-12":{"sq":"B","cy":14,"d1":"Ricky","d2":"Christian","d3":"Daniel","n1":"Morgan","n2":"Rob"},"2027-02-13":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-14":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-15":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2027-02-16":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2027-02-17":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-18":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-19":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-20":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2027-02-21":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2027-02-22":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-23":{"sq":"A","cy":15,"d1":"Sergio","d2":"Josh","d3":"Adam","n1":"Alex","n2":"Jesse"},"2027-02-24":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2027-02-25":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"},"2027-02-26":{"sq":"B","cy":15,"d1":"Christian","d2":"Daniel","d3":"Morgan","n1":"Rob","n2":"Ricky"}};
 
 
 // ════════════════════════════════════════════════════════════════════
@@ -13128,6 +13535,7 @@ const CURR_NAME_MAP = {
   'Rob':'Rob Seffern','FNG':"Mar\u2019Cell Edwards"
 };
 function currFullName(n){ return CURR_NAME_MAP[n] || n; }
+const CURR_FIRST_DATE = Object.keys(CURR).sort()[0]; // earliest real date CURR actually covers
 
 // Render static chips in Current GOP from live state.fh / state.bh.
 // Pitman has its own interactive renderer — see renderPitChips() below.
@@ -13437,55 +13845,43 @@ function updatePitIndicator(){
 }
 
 // ══════════════════════════════════════════════════════════════════════
-// CURRENT GOP — formula-based
+// CURRENT GOP — real schedule, looked up directly from CURR
 // ══════════════════════════════════════════════════════════════════════
-// 7-day blocks: N1 rotates through all 10 operators (1 per block)
-// D1/D2/D3/N2 fill from remaining operators on a daily rotation
+// CURR (defined above) is the actual current-live schedule — verified
+// against the source spreadsheet: 358 of 359 overlapping dates match
+// exactly, and the one difference (2026-07-19) is a known PTO cover
+// (Rob's last day, Jesse covering) that CURR correctly shows as the base
+// rotation assignment rather than the ad-hoc cover. This used to be a
+// from-scratch 70-day "3+4 linked block" formula, but that formula didn't
+// match reality (confirmed directly: it split every role into 3-day/4-day
+// segments, but the real schedule has operators working a single role for
+// a full uninterrupted week — see Morgan on N1, 2026-06-25 through 07-01).
+// Reading CURR directly removes that whole risk — this is the verified
+// data, not a re-derived approximation of it.
+//
+// currStart is now just the Individual/Crew views' starting point for
+// browsing, not a pattern anchor — CURR's assignments are fixed to real
+// calendar dates and can't be shifted. Dates outside CURR's range
+// (2026-06-18 through 2027-06-18) simply show no data, same as browsing
+// past the end of Split Week's or Pitman's 52-week window.
 
 let currStart = snapToSunday(
-  new Date(localStorage.getItem('rnwbl_curr_start') || new Date())
+  new Date(localStorage.getItem('rnwbl_curr_start') || CURR_FIRST_DATE || new Date())
 );
 
+// Reverse of CURR_NAME_MAP (full name -> short name) so CURR's data lines
+// up with the short names used everywhere else in this view (state.fh/bh,
+// the operator picker, the crew card, etc.)
+const CURR_NAME_MAP_REV = {};
+Object.entries(CURR_NAME_MAP).forEach(([short, full]) => { CURR_NAME_MAP_REV[full] = short; });
+function currShortName(fullName){ return CURR_NAME_MAP_REV[fullName] || fullName; }
+
 function currGetDay(iso){
-  // Modified DuPont — correct linked 3+4 block system
-  //
-  // Structure: 7-day ON / 7-day OFF alternating, 5 working weeks per 70-day cycle
-  // Within each 7-day working week: 3 days on role-A, then 4 days on role-B
-  // The "linked" part: role-B of week N == role-A of week N+1
-  //   Week 0 (pos 0-6):   D1(3 days) → D2(4 days)
-  //   Week 1 (pos 14-20): D2(3 days) → D3(4 days)
-  //   Week 2 (pos 28-34): D3(3 days) → N1(4 days)
-  //   Week 3 (pos 42-48): N1(3 days) → N2(4 days)
-  //   Week 4 (pos 56-62): N2(3 days) → D1(4 days)
-  //   Off:    pos 7-13, 21-27, 35-41, 49-55, 63-69
-  //
-  // 10 operators staggered 7 days apart → exactly 5 working, 1 per role, every day
-  const d = Math.round((new Date(iso+'T00:00:00') - currStart) / 86400000);
-  const allOps = [...state.fh, ...state.bh];
-  const n = allOps.length;
-  const CYCLE = 70;
-  const W_STARTS = [0,14,28,42,56];
-  const ROLE_A   = ['D1','D2','D3','N1','N2']; // first 3 days of each working week
-  const ROLE_B   = ['D2','D3','N1','N2','D1']; // last 4 days of each working week
-
-  function posToRole(pos){
-    for(let w=0;w<5;w++){
-      if(pos>=W_STARTS[w] && pos<W_STARTS[w]+7){
-        return (pos-W_STARTS[w])<3 ? ROLE_A[w] : ROLE_B[w];
-      }
-    }
-    return null; // off week
-  }
-
-  const slots={D1:null,D2:null,D3:null,N1:null,N2:null};
-  for(let i=0;i<n;i++){
-    const pos=((d-i*7)%CYCLE+CYCLE)%CYCLE;
-    const role=posToRole(pos);
-    if(role&&slots[role]===null) slots[role]=allOps[i];
-  }
+  const entry = CURR[iso];
+  if (!entry) return { d1:'—', d2:'—', d3:'—', n1:'—', n2:'—' };
   return {
-    d1:slots.D1||'—', d2:slots.D2||'—', d3:slots.D3||'—',
-    n1:slots.N1||'—', n2:slots.N2||'—'
+    d1: currShortName(entry.d1), d2: currShortName(entry.d2), d3: currShortName(entry.d3),
+    n1: currShortName(entry.n1), n2: currShortName(entry.n2)
   };
 }
 
@@ -13669,6 +14065,7 @@ function pitCalRender(){
 renderChips();
 updateSelect();
 initTimeOffListener();
+initSharedRemindersListener();
 // #to-operator lives after this script tag, so re-run after full DOM parse
 setTimeout(() => {
   updateSelect();
