@@ -5256,10 +5256,21 @@ function srShowBannerSilent(task) {
   b.style.display = 'flex';
 }
 function srDismissBanner() {
-  // Only hides the banner locally — never deletes the underlying shared
-  // reminder. That's a deliberate, separate action via the ✕ on the
-  // reminder row itself, since other operators may not have seen it yet.
+  // Clears every currently-overdue shared reminder for EVERYONE, not just
+  // this browser — appropriate here specifically because the alarm is
+  // audible to the whole room. Once someone's heard it and dismissed it,
+  // there's no reason for it to keep showing as overdue for others who
+  // heard the same chime, and it prevents a pile-up of missed reminders
+  // for anyone who was away when they fired. Mirrors Quick Timer's own
+  // "clear all expired in one click" dismiss behavior, just via Firestore.
   document.getElementById('sr-alarm-banner').style.display = 'none';
+  if (!window.db) return;
+  const now = Date.now();
+  const overdueIds = sharedReminders.filter(r => new Date(r.targetISO).getTime() <= now).map(r => r.id);
+  overdueIds.forEach(id => {
+    window.db.collection('sharedReminders').doc(id).delete()
+      .catch(e => showToast('Could not clear a reminder: ' + e.message));
+  });
 }
 
 function qtFmtReminderTime(iso) {
