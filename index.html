@@ -56,8 +56,8 @@ body.dark ::-webkit-scrollbar-thumb{background:var(--border2);}
 body.dark .as-tab.active{background:var(--bg4);border-color:var(--accent);color:var(--accent);}
 body.dark .as-banner{background:var(--bg4);color:var(--text);}
 body.dark .cl-cat-monitor{background:#2b1f04;color:#f0a836;}
-body.dark .wx-fleet-card.wind-warn{background:#251c04;border-color:var(--amber);}
-body.dark .wx-fleet-card.wind-alert{background:var(--rbg);border-color:var(--red);}
+body.dark .wx-fleet-card.wind-low{background:var(--bbg);border-color:var(--blue);}
+body.dark .wx-fleet-card.wind-high{background:#251c04;border-color:var(--amber);}
 body.dark .as-row{border-bottom-color:var(--bg4);}
 body.dark .as-section-hdr::after{background:var(--border2);}
 body.dark .as-section-hdr{color:var(--text3);}
@@ -880,8 +880,11 @@ body.dark .cl-time{color:var(--text2);}
 .wx-pin-chip-del:hover{color:var(--red);background:var(--rbg);}
 .wx-fleet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;}
 .wx-fleet-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;box-shadow:var(--shs);transition:border-color .2s,background .2s;}
-.wx-fleet-card.wind-warn{border-color:var(--amber);background:#fffbf0;}
-.wx-fleet-card.wind-alert{border-color:var(--red);background:var(--rbg);}
+.wx-fleet-card.wind-low{border-color:var(--blue);background:var(--bbg);}
+.wx-fleet-card.wind-high{border-color:var(--amber);background:#fffbf0;}
+.wx-fc-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:9px;margin-left:6px;vertical-align:middle;}
+.wx-fc-tag.tag-low{background:var(--bbg);color:var(--blue);}
+.wx-fc-tag.tag-high{background:var(--abg);color:var(--amber);}
 .wx-fc-site{font-family:var(--m);font-size:13px;font-weight:700;color:var(--text);}
 .wx-fc-loc{font-size:10px;color:var(--text3);margin-top:1px;margin-bottom:8px;line-height:1.3;}
 .wx-fc-main{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
@@ -1635,7 +1638,7 @@ body.dark .sp-tag-similar{background:#2a1f3d;color:#c4b5fd;}
     --n1-bg: #fef3c7; --n1-fg: #78350f;
     --n2-bg: #fee2e2; --n2-fg: #7f1d1d;
     --off-bg: #f1f5f9; --off-fg: #94a3b8;
-    --bg: #f8f9fa; --surface: #ffffff;
+    --bg: #f8f9fa; --surface: #ffffff; --card-bg: #ffffff;
     --border: #e2e8f0; --border-dashed: #cbd5e1;
     --text: #0f172a; --text-muted: #64748b;
     --radius: 10px; --radius-sm: 6px;
@@ -2137,6 +2140,93 @@ body.dark .sp-tag-similar{background:#2a1f3d;color:#c4b5fd;}
 #view-schedule .sched-toggle-btn.active{background:var(--bg2);color:var(--text);box-shadow:var(--shs);}
 body.dark #view-schedule .sched-toggle{background:var(--bg3);border-color:var(--border2);}
 body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
+
+/* ── Dark mode: full Schedule Compare fix ──────────────────────────────────
+   #view-schedule locally redefines --text/--bg/--surface/--border/etc for
+   its own light-mode design, which shadows the app's real theme-aware
+   versions of those same variable names — so in dark mode this whole page
+   was still rendering near-black text on a near-white "card" background
+   baked into the local light values, regardless of the global theme.
+   This block re-points every one of those locally-shadowed variables to
+   the app's actual dark palette, then follows up with the handful of
+   rules below that used a literal hex color instead of a variable at all
+   (so the variable fix alone wouldn't have reached them). The (currently
+   hidden) "curr" Modified DuPont view is intentionally left as-is since
+   operators can no longer reach it. */
+body.dark #view-schedule{
+  --blue-light: var(--bbg); --blue-mid: var(--blue); --blue-dark: var(--blue); --blue-text: var(--blue);
+  --green-light: var(--gbg); --green-mid: var(--green); --green-dark: var(--green); --green-text: var(--green);
+  --d1-bg: var(--bbg); --d1-fg: var(--blue);
+  --d2-bg: var(--gbg); --d2-fg: var(--green);
+  --d3-bg: var(--pbg); --d3-fg: var(--purple);
+  --n1-bg: var(--abg); --n1-fg: var(--amber);
+  --n2-bg: var(--rbg); --n2-fg: var(--red);
+  --off-bg: var(--bg4); --off-fg: var(--text3);
+  --bg: var(--bg3); --surface: var(--bg2); --card-bg: var(--bg2);
+  --border: #32384a; --border-dashed: var(--border2);
+  --text: #e8eaf0; --text-muted: var(--text3);
+}
+/* Hover/alt-row/today states that used a literal light hex instead of a variable */
+body.dark #view-schedule .this-week-btn:hover{ background: var(--bbg); }
+body.dark #view-schedule .drop-zone.drag-over{ background: var(--bbg); }
+body.dark #view-schedule .half-card.bh .drop-zone.drag-over{ background: var(--gbg); }
+body.dark #view-schedule .chip-del:hover{ background:var(--rbg); border-color:var(--red); color:var(--red); }
+body.dark #view-schedule th{ background: var(--bg3); }
+body.dark #view-schedule tr.alt td{ background: var(--bg3); }
+body.dark #view-schedule tr:hover td{ background: var(--bg4); }
+body.dark #view-schedule .cal-cell.today{ background: var(--abg); }
+body.dark #view-schedule .cal-cell.has-focus{ background: var(--bg4); }
+/* Time Off tab */
+body.dark #view-schedule .to-fb-status{ color: var(--red); }
+body.dark #view-schedule .to-count{ background: var(--bbg); }
+body.dark #view-schedule .to-field select,
+body.dark #view-schedule .to-field input{ background: var(--bg3); color: var(--text); }
+body.dark #view-schedule .to-op-name{ color: var(--text); }
+body.dark #view-schedule .to-half-pill{ background: var(--bg3); color: var(--text2); }
+body.dark #view-schedule .to-del{ color: var(--text3); }
+body.dark #view-schedule .to-status-badge.uncovered{ background:var(--rbg); color:var(--red); }
+body.dark #view-schedule .to-status-badge.pending{ background:var(--abg); color:var(--amber); }
+body.dark #view-schedule .to-status-badge.covered{ background:var(--gbg); color:var(--green); }
+body.dark #view-schedule .to-entry-note{ background: var(--bg3); }
+body.dark #view-schedule .to-btn.propose{ background:var(--bbg); }
+body.dark #view-schedule .to-btn.confirm{ background:var(--gbg); color:var(--green); border-color:var(--green); }
+body.dark #view-schedule .to-btn.sec{ background:var(--bg3); color:var(--text2); border-color:var(--border2); }
+body.dark #view-schedule .to-seg{ background: var(--bg3); }
+body.dark #view-schedule .to-seg-dates{ color: var(--text); }
+body.dark #view-schedule .to-seg-note{ color: var(--text2); }
+body.dark #view-schedule .to-seg-invalid{ border-color:var(--amber); background:var(--abg); }
+body.dark #view-schedule .to-cover-invalid{ color:var(--amber); background:var(--abg); border-color:var(--amber); }
+body.dark #view-schedule .rbadge.to-off-unc{ background:var(--rbg); color:var(--red); }
+body.dark #view-schedule .rbadge.to-off-pen{ background:var(--abg); color:var(--amber); }
+body.dark #view-schedule .rbadge.to-off-cov{ background:var(--gbg); color:var(--green); }
+body.dark #view-schedule .ps-off-lbl.unc{ background:var(--rbg); color:var(--red); }
+body.dark #view-schedule .ps-off-lbl.pen{ background:var(--abg); color:var(--amber); }
+body.dark #view-schedule .ps-off-lbl.cov{ background:var(--gbg); color:var(--green); }
+body.dark #view-schedule .ps-cover-note{ color: var(--text2); }
+/* Pitman squad badges */
+body.dark #view-schedule .pit-sq-badge.A{ background:var(--bbg); color:var(--blue); border-color:var(--blue); }
+body.dark #view-schedule .pit-sq-badge.B{ background:var(--gbg); color:var(--green); border-color:var(--green); }
+body.dark #view-schedule .pit-cal-sq.A{ background:var(--bbg); color:var(--blue); }
+body.dark #view-schedule .pit-cal-sq.B{ background:var(--gbg); color:var(--green); }
+body.dark #view-schedule .pit-sq-a .pit-squad-label{ color:var(--blue); }
+body.dark #view-schedule .pit-sq-b .pit-squad-label{ color:var(--green); }
+body.dark #view-schedule .pit-sq-a .pit-op-pill{ background:var(--bbg); color:var(--blue); border-color:var(--blue); }
+body.dark #view-schedule .pit-sq-b .pit-op-pill{ background:var(--gbg); color:var(--green); border-color:var(--green); }
+body.dark #view-schedule .pit-day-nav button:hover{ border-color:var(--blue); color:var(--blue); }
+/* Chip up/down reorder arrows + FH/BH transfer button — these used a
+   white-overlay + black-border combo built for the light pastel chip
+   background. Now that chips are dark, a near-black border basically
+   disappears, so the buttons read as a faint smudge with no visible
+   edge. Inverted here: light overlay + light border, brightened further
+   on hover, same pattern the rest of the dark theme already uses for
+   "raised" controls sitting on a dark surface. */
+body.dark #view-schedule .chip-btn{ background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.22); opacity: 0.85; }
+body.dark #view-schedule .chip-btn:hover:not(:disabled){ background: rgba(255,255,255,0.28); border-color: rgba(255,255,255,0.4); }
+body.dark #view-schedule .chip-btn:disabled{ opacity: 0.3; }
+body.dark #view-schedule .chip-xfer{ background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.24); opacity: 0.85; }
+body.dark #view-schedule .chip-xfer:hover{ background: rgba(255,255,255,0.28); border-color: rgba(255,255,255,0.42); }
+body.dark #view-schedule .chip-del{ background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
+
 /* Fix: undo the compare tool's centred page-header — match the ops-hub default */
 #view-schedule .page-header{text-align:left !important;margin-bottom:14px !important;align-items:flex-start !important;}
 </style>
@@ -2642,7 +2732,7 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
     <div class="wx-fleet-hdr">
       <div>
         <div class="wx-fleet-title">🌐 Fleet Snapshot</div>
-        <div style="font-size:12px;color:var(--text3);margin-top:2px;">Pin up to 12 sites · amber &gt;25mph · red &gt;40mph</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:2px;">Pin up to 12 sites · blue tag ≤ 4 m/s (low wind) · amber tag ≥ 13 m/s (high wind)</div>
       </div>
       <button class="ibtn ibtn-p" onclick="wxFetchAll()">↻ Refresh All</button>
     </div>
@@ -3591,7 +3681,8 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
     </div>
     <div class="page-header-actions">
       <div class="sched-toggle">
-        <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')">Current &ndash; Modified DuPont</button>
+        <!-- Modified DuPont hidden per Josh — model isn't accurate yet, don't want to confuse operators. Code/data left intact in case it's revisited later. -->
+        <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')" style="display:none;">Current &ndash; Modified DuPont</button>
         <button class="sched-toggle-btn active" id="toggle-split" onclick="showSchedule('split')">Split Week</button>
         <button class="sched-toggle-btn" id="toggle-pit" onclick="showSchedule('pitman')">Pitman</button>
       </div>
@@ -7285,33 +7376,75 @@ function clPreviewDelete(id) {
 }
 
 // ─── FLEET WEATHER ────────────────────────────────────────────────────────────
-const WX_PINS_KEY = 'rnwbl_wx_pins_v1';
+const WX_PINS_KEY = 'rnwbl_wx_pins_v3';
 let wxPins = [];       // array of {name, location}
 let wxFleetData = {};  // name → fetched data or error
 let wxFleetInited = false;
 
+// Looks up lat/lng for a pin name from the site registries. Used to
+// self-heal pins saved by an older version of this file (before pins
+// carried coordinates) — without this, a pin loaded from localStorage on
+// a desktop that hasn't refreshed since then would silently fetch
+// latitude=undefined&longitude=undefined and show "Could not fetch".
+function wxResolveCoords(name) {
+  const s = SITES.find(x => x.name === name) || WX_LOCS.find(x => x.name === name);
+  return s && s.lat != null && s.lng != null ? { lat: s.lat, lng: s.lng } : null;
+}
+
 function wxFleetInit() {
   if (!wxFleetInited) {
     try { wxPins = JSON.parse(localStorage.getItem(WX_PINS_KEY) || '[]'); } catch(e) { wxPins = []; }
-    // Pre-populate top 5 sites if no pins exist
+    // Wind fleet is the standard default set, in this order, whenever
+    // storage is empty for this browser/device.
     if (!wxPins.length) {
       wxPins = [
-        {name:'ROCC1', location:'Tempe, AZ'},
-        {name:'BYPS1', location:'Richmond, TX'},
-        {name:'RKRG1', location:'Hobart, OK'},
-        {name:'PRSE1', location:'Hardwick, MN'},
-        {name:'ANGF1', location:'Angel Fire, NM'}
+        {name:'PRSE1', location:'Hardwick, MN',      lat:37.363,   lng:-96.252},
+        {name:'RKRG1', location:'Hobart, OK',        lat:35.095959,lng:-98.990771},
+        {name:'ORGN1', location:'Hennepin, OK',      lat:34.490682,lng:-97.334319},
+        {name:'LNDL1', location:'Tioga, ND',         lat:48.397,   lng:-102.938},
+        {name:'DFRN1', location:'Dufferin, Ontario', lat:44.152,   lng:-80.109},
+        {name:'MCLM1', location:'Little Current, ON',lat:45.9331,  lng:-81.9855},
+        {name:'GDWL1', location:'Goodwell, OK',      lat:36.600,   lng:-101.630},
+        {name:'DBLO1', location:'Little Lake, CA',   lat:36.0059762,lng:-117.8083968}
       ];
       try { localStorage.setItem(WX_PINS_KEY, JSON.stringify(wxPins)); } catch(e) {}
+    } else {
+      // Patch any pins that are missing coordinates (e.g. carried over
+      // from an older save) rather than letting them fetch undefined.
+      let patched = false;
+      wxPins = wxPins.map(p => {
+        if (p.lat != null && p.lng != null) return p;
+        const coords = wxResolveCoords(p.name);
+        if (coords) { patched = true; return { ...p, ...coords }; }
+        return p;
+      });
+      if (patched) { try { localStorage.setItem(WX_PINS_KEY, JSON.stringify(wxPins)); } catch(e) {} }
     }
     wxFleetInited = true;
   }
   wxRenderPins();
   wxRenderFleetGrid();
-  // Auto-fetch weather for pinned sites
+  // Auto-fetch weather for pinned sites — runs on page load (this function
+  // is called once during global init regardless of active tab) and again
+  // every time the operator switches into the Weather tab.
   if (wxPins.length) {
     wxFetchAll();
   }
+  wxStartAutoRefresh();
+}
+
+// Keeps Fleet Snapshot current while the page just sits open, rather than
+// only updating on page load or a manual "Refresh All" click. 10 minutes
+// comfortably beats the update cadence of the underlying forecast models
+// without hammering the API. Guarded by wxAutoRefreshTimer so switching
+// tabs back and forth never stacks up duplicate intervals.
+const WX_AUTOREFRESH_MS = 10 * 60 * 1000;
+let wxAutoRefreshTimer = null;
+function wxStartAutoRefresh() {
+  if (wxAutoRefreshTimer) return;
+  wxAutoRefreshTimer = setInterval(() => {
+    if (wxPins.length) wxFetchAll();
+  }, WX_AUTOREFRESH_MS);
 }
 
 function wxPinFilter() {
@@ -7321,24 +7454,24 @@ function wxPinFilter() {
   const siteHits = SITES.filter(s => spSiteMatchesQuery(s.name,q) || (s.location||'').toLowerCase().includes(q));
   const wxHits   = WX_LOCS.filter(s => spSiteMatchesQuery(s.name,q) || (s.location||'').toLowerCase().includes(q));
   const all = [
-    ...siteHits.map(s => ({name:s.name, location:s.location||s.name})),
-    ...wxHits.map(s   => ({name:s.name, location:s.location||s.name}))
+    ...siteHits.map(s => ({name:s.name, location:s.location||s.name, lat:s.lat, lng:s.lng})),
+    ...wxHits.map(s   => ({name:s.name, location:s.location||s.name, lat:s.lat, lng:s.lng}))
   ].slice(0, 8);
   // Remove already-pinned
   const filtered = all.filter(s => !wxPins.some(p => p.name === s.name));
   if (!filtered.length) { box.style.display = 'none'; return; }
   box.style.display = 'block';
   box.innerHTML = filtered.map(s =>
-    `<div class="wx-pin-match-item" onclick="wxAddPin('${esc(s.name)}','${esc(s.location)}')">
+    `<div class="wx-pin-match-item" onclick="wxAddPin('${esc(s.name)}','${esc(s.location)}',${s.lat},${s.lng})">
       <strong>${esc(s.name)}</strong> — <span style="color:var(--text3);font-size:11px;">${esc(s.location)}</span>
     </div>`
   ).join('');
 }
 
-function wxAddPin(name, location) {
+function wxAddPin(name, location, lat, lng) {
   if (wxPins.length >= 12) { showToast('Max 12 pinned sites'); return; }
   if (wxPins.some(p => p.name === name)) return;
-  wxPins.push({name, location});
+  wxPins.push({name, location, lat, lng});
   try { localStorage.setItem(WX_PINS_KEY, JSON.stringify(wxPins)); } catch(e) {}
   document.getElementById('wx-pin-inp').value = '';
   document.getElementById('wx-pin-matches').style.display = 'none';
@@ -7367,11 +7500,81 @@ function wxWeatherIcon(desc) {
   return d.includes('thunder')?'⛈':d.includes('rain')||d.includes('drizzle')?'🌧':d.includes('snow')?'❄️':d.includes('overcast')?'🌥':d.includes('cloud')?'☁️':d.includes('fog')||d.includes('mist')?'🌫':d.includes('sunny')||d.includes('clear')?'☀️':'🌤';
 }
 
+// WMO weather codes → short description, so the existing icon-matching
+// keywords (thunder/rain/snow/cloud/fog/clear) keep working without
+// needing to touch wxWeatherIcon() itself.
+function wxCodeToDesc(code) {
+  const map = {
+    0:'Clear sky', 1:'Mainly clear', 2:'Partly cloudy', 3:'Overcast',
+    45:'Fog', 48:'Fog',
+    51:'Light drizzle', 53:'Drizzle', 55:'Dense drizzle',
+    56:'Freezing drizzle', 57:'Freezing drizzle',
+    61:'Light rain', 63:'Rain', 65:'Heavy rain',
+    66:'Freezing rain', 67:'Freezing rain',
+    71:'Light snow', 73:'Snow', 75:'Heavy snow', 77:'Snow grains',
+    80:'Rain showers', 81:'Rain showers', 82:'Violent rain showers',
+    85:'Snow showers', 86:'Snow showers',
+    95:'Thunderstorm', 96:'Thunderstorm with hail', 99:'Thunderstorm with hail'
+  };
+  return map[code] || 'Clear';
+}
+
+// Open-Meteo returns wind direction in degrees, not a compass point —
+// convert to the same 16-point label the cards already display.
+function wxDegToCompass(deg) {
+  const points = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+  return points[Math.round(deg / 22.5) % 16];
+}
+
+// Open-Meteo, queried by each site's exact lat/lng — no key required, CORS
+// works directly from the browser, and pulling by precise coordinate is
+// meaningfully closer to what a metmast reads than a city-name lookup
+// service resolves to.
+//
+// Wind is pulled at 80m (hourly wind_speed_80m/wind_direction_80m) rather
+// than the standard 10m surface reading, since that 10m/hub-height gap is
+// the single biggest reason API wind reads low against an actual turbine
+// met mast — wind speed increases with height, and hub height for
+// utility-scale wind is commonly 80m+, not 10m. 80m isn't exposed on the
+// simple "current" endpoint, so it's pulled from the hourly series and
+// matched to the current local hour instead. Falls back to the 10m
+// current reading if a model doesn't have 80m data for that location, so
+// a tile never goes blank over a missing variable.
+// wind_speed_unit=ms gets m/s directly from the API, no manual conversion.
 async function wxFetchOne(pin) {
+  if (pin.lat == null || pin.lng == null) { wxFleetData[pin.name] = { ok:false }; return; }
   try {
-    const d = (await (await fetch(`https://wttr.in/${encodeURIComponent(pin.location)}?format=j1`)).json()).current_condition[0];
-    const mph = parseInt(d.windspeedMiles) || 0;
-    wxFleetData[pin.name] = { ok:true, temp:d.temp_F, desc:d.weatherDesc[0].value, wind:mph, windDir:d.winddir16Point, hum:d.humidity, ts:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) };
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${pin.lat}&longitude=${pin.lng}` +
+      `&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m,weather_code` +
+      `&hourly=wind_speed_80m,wind_direction_80m` +
+      `&wind_speed_unit=ms&temperature_unit=fahrenheit&timezone=auto`;
+    const j = await (await fetch(url)).json();
+    const d = j.current;
+
+    // Find the hourly slot matching the current hour so the 80m reading
+    // lines up with "now" rather than midnight or some other offset.
+    let wind80 = null, dir80 = null;
+    if (j.hourly && Array.isArray(j.hourly.time)) {
+      const curHour = d.time.slice(0, 13); // "YYYY-MM-DDTHH"
+      const idx = j.hourly.time.findIndex(t => t.slice(0, 13) === curHour);
+      if (idx >= 0) {
+        const w = j.hourly.wind_speed_80m ? j.hourly.wind_speed_80m[idx] : null;
+        const wd = j.hourly.wind_direction_80m ? j.hourly.wind_direction_80m[idx] : null;
+        if (w != null) wind80 = w;
+        if (wd != null) dir80 = wd;
+      }
+    }
+
+    wxFleetData[pin.name] = {
+      ok:true,
+      temp: Math.round(d.temperature_2m),
+      desc: wxCodeToDesc(d.weather_code),
+      wind: wind80 != null ? wind80 : d.wind_speed_10m,
+      windDir: wxDegToCompass(dir80 != null ? dir80 : d.wind_direction_10m),
+      windHeight: wind80 != null ? '80m' : '10m',
+      hum: Math.round(d.relative_humidity_2m),
+      ts: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})
+    };
   } catch(e) {
     wxFleetData[pin.name] = { ok:false };
   }
@@ -7398,15 +7601,18 @@ function wxRenderFleetGrid(loading) {
     const d = wxFleetData[p.name];
     if (!d) return `<div class="wx-fleet-card"><div class="wx-fc-site">${esc(p.name)}</div><div class="wx-fc-loc">${esc(p.location)}</div><div style="font-size:11px;color:var(--text3);padding-top:6px;">Not yet fetched</div></div>`;
     if (!d.ok) return `<div class="wx-fleet-card"><div class="wx-fc-site">${esc(p.name)}</div><div class="wx-fc-loc">${esc(p.location)}</div><div class="wx-fc-err">Could not fetch</div></div>`;
-    const alertCls = d.wind >= 40 ? 'wind-alert' : d.wind >= 25 ? 'wind-warn' : '';
+    const isLow = d.wind <= 4;
+    const isHigh = d.wind >= 13;
+    const alertCls = isHigh ? 'wind-high' : isLow ? 'wind-low' : '';
+    const tag = isHigh ? '<span class="wx-fc-tag tag-high">High Wind</span>' : isLow ? '<span class="wx-fc-tag tag-low">Low Wind</span>' : '';
     return `<div class="wx-fleet-card ${alertCls}">
-      <div class="wx-fc-site">${esc(p.name)}</div>
+      <div class="wx-fc-site">${esc(p.name)}${tag}</div>
       <div class="wx-fc-loc">${esc(p.location)}</div>
       <div class="wx-fc-main">
         <span class="wx-fc-icon">${wxWeatherIcon(d.desc)}</span>
         <span class="wx-fc-temp">${esc(d.temp)}°F</span>
       </div>
-      <div class="wx-fc-wind">💨 ${esc(String(d.wind))}mph ${esc(d.windDir)}</div>
+      <div class="wx-fc-wind">💨 ${esc(d.wind.toFixed(1))} m/s ${esc(d.windDir)} <span style="color:var(--text3);">@${esc(d.windHeight)}</span></div>
       <div class="wx-fc-hum">💧 Humidity ${esc(d.hum)}%</div>
       <div class="wx-fc-ts">Updated ${esc(d.ts)}</div>
     </div>`;
