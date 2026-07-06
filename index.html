@@ -3594,7 +3594,8 @@ body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
     </div>
     <div class="page-header-actions">
       <div class="sched-toggle">
-        <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')">Current &ndash; Modified DuPont</button>
+        <!-- Modified DuPont hidden per Josh — model isn't accurate yet, don't want to confuse operators. Code/data left intact in case it's revisited later. -->
+        <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')" style="display:none;">Current &ndash; Modified DuPont</button>
         <button class="sched-toggle-btn active" id="toggle-split" onclick="showSchedule('split')">Split Week</button>
         <button class="sched-toggle-btn" id="toggle-pit" onclick="showSchedule('pitman')">Pitman</button>
       </div>
