@@ -4147,9 +4147,6 @@ const SITES_KEY = 'rnwbl_sites_v1'; // sites stored separately so they survive S
 function defaultSites() {
   return [
     // NERC BESS ---------------------------------------------------------------
-    {id:101,name:'CNDR1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Tehachapi, CA',
-     lat:35.13,lng:-118.45,
-     notes:'NP: 818MWh / 200MW\nV SET: 115kV\nBAND: 109.25kV–120.75kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
     {id:102,name:'PRGN1',nerc:true,interval:30,threshold:5,lastScan:null,location:'San Diego, CA',
      lat:32.692518,lng:-117.135218,
      notes:'NP: 430MWh / 200MW\nV SET: 231.3kV\nBAND: 228kV–234kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
@@ -4565,7 +4562,7 @@ const TZ_ZONES=[
     {name:'ROC',location:'Tempe, AZ'},{name:'CFLATS',location:'Salome, AZ'},{name:'MRCP1',location:'Maricopa County, AZ'},
     {name:'Pediment',location:'Mesa, AZ'},{name:'HARQ 1&2',location:'Tonopah, AZ'},{name:'Avalon',location:'Sahuarita, AZ'}]},
   {key:'PT',label:'Pacific Time',tz:'America/Los_Angeles',accent:['#6366f1','#4f46e5'],sites:[
-    {name:'Diablo',location:'Tracy, CA'},{name:'Blackwell',location:'Lost Hills, CA'},{name:'Condor',location:'Grand Terrace, CA'},
+    {name:'Diablo',location:'Tracy, CA'},{name:'Blackwell',location:'Lost Hills, CA'},
     {name:'COSO',location:'Little Lake, CA'},{name:'Goleta',location:'Goleta, CA'},{name:'Farmersville',location:'Farmersville, CA'},
     {name:'Hanford',location:'Hanford, CA'},{name:'Lost Hills 1',location:'Lost Hills, CA'},{name:'Lost Hills 2',location:'Lost Hills, CA'},
     {name:'Nicholis',location:'Delano, CA'},{name:'Northstar',location:'Mendota, CA'},{name:'Peregrine',location:'San Diego, CA'},
@@ -6378,7 +6375,7 @@ async function clSaveAsImage(e) {
 }
 const CL_SITE_TYPES = {
   // BESS
-  CNDR1:'BESS',PRGN1:'BESS',PRGV1:'BESS',HARQ2:'BESS',KUNA1:'BESS',GLTA1:'BESS',COSO1:'BESS',DBLO1:'BESS',
+  PRGN1:'BESS',PRGV1:'BESS',HARQ2:'BESS',KUNA1:'BESS',GLTA1:'BESS',COSO1:'BESS',DBLO1:'BESS',
   BYPS1:'BESS',CTLF1:'BESS',CTLF:'BESS',PDMT1:'BESS',MRCP1:'BESS',MRCP:'BESS',FRDN1:'BESS',ANGF1:'BESS',AVLN1:'Solar',TSMS1:'BESS',
   // Solar
   HARQ1:'Solar',NCLS1:'Solar',AVLN2:'Solar',BLKW1:'Solar',LSTH2:'Solar',NSTR1:'Solar',
@@ -7627,41 +7624,6 @@ const AS_SITES = [
       ]},
       { title:'SCHEDULING', fields:[
         {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-    ]
-  },
-  { id:'CNDR1', label:'CNDR1-Condor', stats:'NP: 818MWh / 200MW<br />V SET POINT: 115kV<br />BAND:109.25kV-120.75kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'Real Power Control',  t:'select', opts:['','ADS','AGC'], alert:''},
-        {n:'Voltage Regulation',  t:'select', opts:['','Enabled','Disabled'], alert:'Disabled'},
-        {n:'PFR Control',         t:'select', opts:['','Enabled','Disabled'], alert:'Disabled'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',                 t:'text',   unit:'MW'},
-        {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'MWh',                t:'text',   unit:'MWh'},
-        {n:'kV',                 t:'text',   unit:'kV', kvMin:109.25, kvMax:120.75},
-        {n:'MVAR',               t:'text',   unit:'MVAR'},
-      ]},
-      { title:'CAPACITY', fields:[
-        {n:'MW[200]',  t:'select', opts:['','Yes','No'], alert:''},
-        {n:'MWh Max[818]', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers [3]',   t:'text',   unit:'/3 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'BESS[220]',         t:'text',   unit:'/220 Available'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage in place', t:'select', opts:['','Yes','No'], alert:'Yes'},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -11142,7 +11104,6 @@ const VCHK_BANDS = {
   ANGF1: {min:12.16,  max:13.44,  sp:'12.8kV'},
   AVLN1: {min:43.7,   max:48.3,   sp:'46kV'},
   BLKW1: {min:11.4,   max:12.6,   sp:'12kV'},
-  CNDR1: {min:109.25, max:120.75, sp:'115kV'},
   COSO1: {min:230.3,  max:239.7,  sp:'235kV'},
   CTFL:  {min:521,    max:540,    sp:'525kV'},
   DLBO1: {min:228,    max:232,    sp:'230kV'},
@@ -11227,7 +11188,6 @@ const NPCHK_SITES = {
   AVLN1: {mw:35,     mwh:null,   label:'NP: 35 MW (solar)'},
   BLKW1: {mw:12,     mwh:null,   label:'NP: 12 MW (solar)'},
   BYPS1: {mw:200,    mwh:400,    label:'NP: 400 MWh / 200 MW'},
-  CNDR1: {mw:200,    mwh:818,    label:'NP: 818 MWh / 200 MW'},
   COSO1: {mw:60,     mwh:240,    label:'NP: 240 MWh / 60 MW'},
   CTFL:  {mw:267,    mwh:1069,   label:'NP: 1069 MWh / 267 MW'},
   DBLO1: {mw:16.68,  mwh:null,   label:'NP: 16.68 MW (wind)'},
@@ -11528,6 +11488,22 @@ function copyPGSC() {
 // genuinely idle overnight block (schedule=0, curtailment=0) never gets
 // mistaken for an actively-curtailed one just because both show 0.00.
 let bcLastGroups = null, bcLastResource = '', bcLastDateLabel = '', bcLastTradeDateISO = '';
+
+// Buyers Curtailment resource IDs are the raw buyer-side naming convention
+// (e.g. MNDOTA_1_SOLAR1), not what the ROC team actually calls the site.
+// Shared Reminders should read the way operators talk about sites on shift,
+// so reminders substitute the colloquial name. Only affects reminder text —
+// the schedule preview/export still shows the raw RESOURCE name for
+// traceability back to the buyer's paste.
+const BC_SITE_NICKNAMES = {
+  'MNDOTA_1_SOLAR1': 'Northstar',
+  'BLCKWL_6_SOLAR1': 'Blackwell',
+  'LHILLS_6_SOLAR1': 'Lost Hills'
+};
+function bcDisplayResource(resource) {
+  if (!resource) return '';
+  return BC_SITE_NICKNAMES[resource.trim().toUpperCase()] || resource;
+}
 
 function bcNormalizeHeader(s) { return (s || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); }
 
@@ -11876,7 +11852,7 @@ function bcComputeReminderPlan(groups) {
 }
 
 function bcReminderLabel(item, resource) {
-  const suffix = resource ? ` \u2014 ${resource}` : '';
+  const suffix = resource ? ` \u2014 ${bcDisplayResource(resource)}` : '';
   if (item.type === 'start') return `Buyers curtailment starts${suffix} (${item.dispatch.toFixed(2)} MW)`;
   if (item.type === 'update') return `Update curtailment setpoint${suffix} (${item.dispatch.toFixed(2)} MW)`;
   return `Buyers curtailment ends${suffix}`;
@@ -11898,7 +11874,18 @@ async function bcSetAllReminders() {
   if (!plan.length) { showToast('No curtailment found to set reminders for'); return; }
 
   const now = Date.now();
-  const resolved = plan.map(item => ({ item, iso: bcCombineDateTime(bcLastTradeDateISO, item.time, item.rollover) }));
+  // Reminders fire 5 minutes ahead of the actual curtailment action so the
+  // operator has time to implement the change rather than reacting the
+  // instant it's due. Computed via Date arithmetic (not by hand-adjusting
+  // the {h,m} object) so a lead time that crosses midnight backward — e.g.
+  // an action at 00:00 becoming 23:55 the prior day — rolls over correctly.
+  const BC_REMINDER_LEAD_MIN = 5;
+  const resolved = plan.map(item => {
+    const rawIso = bcCombineDateTime(bcLastTradeDateISO, item.time, item.rollover);
+    const leadDate = new Date(rawIso);
+    leadDate.setMinutes(leadDate.getMinutes() - BC_REMINDER_LEAD_MIN);
+    return { item, iso: leadDate.toISOString() };
+  });
   const future = resolved.filter(r => new Date(r.iso).getTime() > now);
   const skipped = resolved.length - future.length;
 
