@@ -12,6 +12,7 @@
 <!-- Firebase Compat SDK — Schedule Compare -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-check-compat.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G50BZLK3VS"></script>
 <script>
@@ -12539,6 +12540,15 @@ try {
   if (typeof firebase !== 'undefined') {
     if (!firebase.apps.length) firebase.initializeApp(SCH_CMP_FB);
     else firebase.app();
+    // App Check — attaches a verified-app token to every Firestore request.
+    // Site key is public by design (safe to ship in client code); the paired
+    // secret key lives only in the Firebase console, never here.
+    if (firebase.appCheck) {
+      firebase.appCheck().activate(
+        '6LckxUctAAAAAJKG1v26C272GDuAC-2itk39oIP',
+        true // auto-refresh tokens
+      );
+    }
     db = firebase.firestore();
     window.db = db; // exposed so code outside this IIFE (Buyers Curtailment's Set Reminder) reuses the same connection
   }
