@@ -11701,6 +11701,15 @@ let bcLastGroups = null, bcLastResource = '', bcLastDateLabel = '', bcLastTradeD
 // so reminders substitute the colloquial name. Only affects reminder text —
 // the schedule preview/export still shows the raw RESOURCE name for
 // traceability back to the buyer's paste.
+// Reminders fire this many minutes ahead of the actual curtailment action,
+// so the operator has time to implement the change rather than reacting
+// the instant it's due. Declared once here so the preview panel (what the
+// operator sees before clicking "Set Reminders") and the actual Firestore
+// write always agree — previously the preview showed the raw action time
+// while the write applied the lead time, so the preview looked "wrong"
+// even though the real reminder was correct.
+const BC_REMINDER_LEAD_MIN = 5;
+
 const BC_SITE_NICKNAMES = {
   'MNDOTA_1_SOLAR1': 'Northstar',
   'BLCKWL_6_SOLAR1': 'Blackwell',
@@ -11907,10 +11916,15 @@ function bcRenderPreview(resource, dateLabel, groups, warnHTML) {
   // never be mistaken for part of the schedule data itself, and so they're
   // automatically excluded from the "Copy as Image" snapshot for free.
   const now = Date.now();
-  const plan = bcComputeReminderPlan(groups).map(r => ({
-    ...r,
-    isPast: bcLastTradeDateISO ? (new Date(bcCombineDateTime(bcLastTradeDateISO, r.time, r.rollover)).getTime() <= now) : false
-  }));
+  const plan = bcComputeReminderPlan(groups).map(r => {
+    const rawDate = bcLastTradeDateISO ? new Date(bcCombineDateTime(bcLastTradeDateISO, r.time, r.rollover)) : null;
+    const leadDate = rawDate ? new Date(rawDate.getTime() - BC_REMINDER_LEAD_MIN * 60000) : null;
+    return {
+      ...r,
+      leadTime: leadDate ? { h: leadDate.getHours(), m: leadDate.getMinutes() } : r.time,
+      isPast: leadDate ? leadDate.getTime() <= now : false
+    };
+  });
   const futureCount = plan.filter(r => !r.isPast).length;
   const pastCount = plan.length - futureCount;
   const reminderHTML = plan.length ? `
@@ -11918,7 +11932,7 @@ function bcRenderPreview(resource, dateLabel, groups, warnHTML) {
       <div class="bc-reminder-hdr">\ud83d\udd14 Notify the team \u2014 ${futureCount} reminder${futureCount !== 1 ? 's' : ''}${pastCount ? `, ${pastCount} already passed` : ''}</div>
       ${plan.map(r => `<div class="bc-reminder-row${r.isPast ? ' bc-reminder-past' : ''}">
         <span class="bc-reminder-desc">${esc(bcReminderLabel(r, resource))}${r.isPast ? ' <span class="bc-reminder-past-tag">already passed \u2014 won\u2019t be set</span>' : ''}</span>
-        <span class="bc-reminder-time-preview">${qtFormatTimeLabel(r.time.h, r.time.m)}</span>
+        <span class="bc-reminder-time-preview">${qtFormatTimeLabel(r.leadTime.h, r.leadTime.m)}<span style="opacity:.6;"> (${BC_REMINDER_LEAD_MIN}m early)</span></span>
       </div>`).join('')}
       ${futureCount
         ? `<button class="bc-reminder-btn bc-reminder-btn-all" onclick="bcSetAllReminders()">\ud83d\udd14 Set ${futureCount} Reminder${futureCount !== 1 ? 's' : ''}</button>
@@ -12080,12 +12094,9 @@ async function bcSetAllReminders() {
   if (!plan.length) { showToast('No curtailment found to set reminders for'); return; }
 
   const now = Date.now();
-  // Reminders fire 5 minutes ahead of the actual curtailment action so the
-  // operator has time to implement the change rather than reacting the
-  // instant it's due. Computed via Date arithmetic (not by hand-adjusting
-  // the {h,m} object) so a lead time that crosses midnight backward — e.g.
-  // an action at 00:00 becoming 23:55 the prior day — rolls over correctly.
-  const BC_REMINDER_LEAD_MIN = 5;
+  // Computed via Date arithmetic (not by hand-adjusting the {h,m} object)
+  // so a lead time that crosses midnight backward — e.g. an action at
+  // 00:00 becoming 23:55 the prior day — rolls over correctly.
   const resolved = plan.map(item => {
     const rawIso = bcCombineDateTime(bcLastTradeDateISO, item.time, item.rollover);
     const leadDate = new Date(rawIso);
@@ -12807,7 +12818,7 @@ const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 const state = {
   fh: ['Josh','Ricky','Christian','Sergio','Jesse'],
-  bh: ['Morgan','Alex','Adam','Rob','FNG'],
+  bh: ['Morgan','Alex','Adam','Daniel','FNG'],
   selected: ''
 };
 
@@ -13941,7 +13952,7 @@ function currCalRender(){
 }
 
 const PIT_A = ['Jesse','Sergio','Josh','Adam','Alex'];
-const PIT_B = ['Ricky','Christian','Daniel','Morgan','Rob'];
+const PIT_B = ['Ricky','Christian','Daniel','Morgan'];
 const PIT_OPS = [...PIT_A,...PIT_B];
 const PIT_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const PIT_DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
