@@ -7541,11 +7541,15 @@ function wxFleetInit() {
 }
 
 // Keeps Fleet Snapshot current while the page just sits open, rather than
-// only updating on page load or a manual "Refresh All" click. 10 minutes
-// comfortably beats the update cadence of the underlying forecast models
-// without hammering the API. Guarded by wxAutoRefreshTimer so switching
+// only updating on page load or a manual "Refresh All" click. 30 minutes
+// comfortably beats the update cadence of the underlying forecast models.
+// Was 10 minutes, but ~10 ROC desktops all auto-refreshing that often adds
+// up fast, and since they likely share one office IP to Open-Meteo, the
+// team's combined usage was hitting Open-Meteo's per-IP rate limit (429s)
+// well before any single machine would on its own. 30 min cuts total
+// request volume roughly 3x. Guarded by wxAutoRefreshTimer so switching
 // tabs back and forth never stacks up duplicate intervals.
-const WX_AUTOREFRESH_MS = 10 * 60 * 1000;
+const WX_AUTOREFRESH_MS = 30 * 60 * 1000;
 let wxAutoRefreshTimer = null;
 function wxStartAutoRefresh() {
   if (wxAutoRefreshTimer) return;
