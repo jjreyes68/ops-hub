@@ -6,9 +6,7 @@
 <title>RNWBL — Ops Hub</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Crect width='24' height='24' rx='5' fill='%231a1917'/%3E%3Cpath d='M13 3L5 13h7l-1 8 9-12h-7l1-8z' fill='%23e05540' stroke='%23e05540' stroke-width='1' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <!-- Firebase Compat SDK — Schedule Compare -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -902,16 +900,6 @@ body.dark .cl-time{color:var(--text2);}
 .map-toolbar{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;height:44px;}
 .map-toolbar-title{font-size:13px;font-weight:600;margin-right:4px;}
 #batchgeo-embed{flex:1;width:100%;border:none;display:block;min-height:0;}
-/* Leaflet popup styled to match ops dashboard */
-.lf-popup .leaflet-popup-content-wrapper{background:var(--bg2);border:1px solid var(--border);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.12);padding:0;font-family:'DM Sans',sans-serif;}
-.lf-popup .leaflet-popup-tip{background:var(--bg2);}
-.lf-popup .leaflet-popup-content{margin:0;padding:0;}
-.map-popup{padding:13px 15px;min-width:200px;}
-.map-popup-name{font-size:14px;font-weight:700;color:#1a1917;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
-.map-popup-meta{font-size:11px;color:#6b6760;font-family:'DM Mono',monospace;margin-bottom:3px;}
-.map-popup-badges{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap;}
-.map-popup-scan{width:100%;padding:6px 0;border-radius:6px;border:none;background:#1a6e4a;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s;}
-.map-popup-scan:hover{background:#2d9e6b;}
 /* Custom SVG marker — sized for ops readability */
 .map-marker-svg{filter:drop-shadow(0 2px 4px rgba(0,0,0,.22));}
 
@@ -971,62 +959,6 @@ body.dark .cl-time{color:var(--text2);}
 #view-timezones.tz-kiosk .tz-card{border-radius:12px;}
 #view-timezones.tz-kiosk .tz-card-header{padding:12px 14px;}
 #view-timezones.tz-kiosk .tz-card-content{padding:12px 14px;}
-
-/* ── SCHEDULE (SharePoint iframe) ────────────────────────────────────────────── */
-/* ── SCHEDULE (SharePoint iframe) ────────────────────────────────────────────── */
-.schedule-iframe-container{
-  width:100%;max-width:1400px;margin:0 auto;
-  background:#0f1117;  /* matches --bg dark; sheets load dark, container matches */
-  border-radius:var(--rl);overflow:hidden;position:relative;
-}
-.schedule-iframe-container iframe{
-  width:100%;height:647px;border:none;display:block;
-  background:transparent;
-}
-/* Upcoming Outages sheet is slightly shorter */
-#schedule-embed2 iframe,
-#schedule-srd .schedule-iframe-container:last-child iframe{height:634px;}
-/* Dark-loading overlay — covers the white flash while iframe initialises, then fades */
-.schedule-iframe-container .iframe-veil{
-  position:absolute;inset:0;
-  background:#0f1117;
-  pointer-events:none;
-  opacity:1;
-  transition:opacity .6s ease .4s;
-  z-index:2;border-radius:var(--rl);
-}
-.schedule-iframe-container .iframe-veil.loaded{opacity:0;}
-/* Bottom chrome bar crop — hides the Excel toolbar strip */
-.schedule-iframe-container .iframe-crop{
-  position:absolute;bottom:0;left:0;right:0;
-  height:42px;background:#0f1117;z-index:3;
-}
-body:not(.dark) .schedule-iframe-container{background:#1a1a2e;}
-body:not(.dark) .schedule-iframe-container .iframe-veil{background:#1a1a2e;}
-body:not(.dark) .schedule-iframe-container .iframe-crop{background:#1a1a2e;}
-@media(max-width:900px){.schedule-iframe-container iframe{height:480px !important;}}
-@media(max-width:600px){.schedule-iframe-container iframe{height:400px !important;}}
-@media(max-width:450px){.schedule-iframe-container iframe{height:340px !important;}}
-.schedule-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;}
-.schedule-view-btn{padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
-.schedule-view-btn:hover{border-color:var(--text2);color:var(--text);}
-.schedule-view-btn.active{border-color:var(--green);color:var(--green);background:var(--gbg);}
-.schedule-kiosk-btn{padding:6px 14px;border-radius:6px;border:1px solid var(--blue);background:var(--bbg);color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;}
-.schedule-kiosk-btn:hover{background:var(--blue);color:#fff;}
-/* Kiosk mode - fullscreen */
-.schedule-view.kiosk-mode{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;padding:0;background:var(--bg);display:flex;flex-direction:column;}
-.schedule-view.kiosk-mode .schedule-header{padding:12px 16px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
-.schedule-view.kiosk-mode > div:last-child{flex:1;overflow:hidden;padding:0;}
-.schedule-view.kiosk-mode .schedule-iframe-container{max-width:none;height:100%;margin:0;padding:0;border-radius:0;}
-.schedule-view.kiosk-mode .schedule-iframe-container iframe{height:100%;border:none;}
-.schedule-view.kiosk-mode .schedule-iframe-container .iframe-crop{background:inherit;}
-.schedule-view.kiosk-mode .schedule-srd-combo{height:100%;}
-/* Combined View - side by side */
-.schedule-srd-combo{display:grid;grid-template-columns:1fr 1fr;gap:12px;height:647px;}
-@media(max-width:900px){.schedule-srd-combo{grid-template-columns:1fr;height:600px;}}
-@media(max-width:600px){.schedule-srd-combo{grid-template-columns:1fr;height:500px;}}
-.schedule-srd-combo .schedule-iframe-container{max-width:none;margin:0;height:100%;}
-.schedule-srd-combo .schedule-iframe-container iframe{width:100%;height:100%;border:none;display:block;}
 
 select,option{background:var(--bg3);}
 
@@ -2229,6 +2161,77 @@ body.dark #view-schedule .chip-del{ background: rgba(255,255,255,0.08); border-c
 
 /* Fix: undo the compare tool's centred page-header — match the ops-hub default */
 #view-schedule .page-header{text-align:left !important;margin-bottom:14px !important;align-items:flex-start !important;}
+
+/* ── PLAYBOOKS ──────────────────────────────────────────────────────────── */
+.pb-search-row{margin-bottom:16px;}
+.pb-search-inp{width:100%;padding:10px 14px;border:1px solid var(--border2);border-radius:var(--r);background:var(--bg2);color:var(--text);font-family:var(--f);font-size:13.5px;}
+.pb-search-inp:focus{outline:none;border-color:var(--blue);}
+.pb-search-inp::placeholder{color:var(--text3);}
+.pb-cat-group{margin-bottom:20px;}
+.pb-cat-label{font-size:10.5px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:9px;}
+.pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.pb-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;cursor:pointer;transition:all .12s;box-shadow:var(--shs);}
+.pb-card:hover{border-color:var(--blue);transform:translateY(-1px);box-shadow:var(--sh);}
+.pb-card-top{display:flex;align-items:flex-start;gap:9px;margin-bottom:7px;}
+.pb-icon{font-size:19px;line-height:1;}
+.pb-card-title{font-size:13.5px;font-weight:700;line-height:1.3;}
+.pb-card-trigger{font-size:11.5px;color:var(--text2);line-height:1.4;margin-bottom:10px;min-height:31px;}
+.pb-card-foot{display:flex;align-items:center;justify-content:space-between;font-size:10.5px;color:var(--text3);font-family:var(--m);}
+.pb-progress-mini{height:4px;border-radius:2px;background:var(--bg4);overflow:hidden;flex:1;margin-right:8px;}
+.pb-progress-mini-fill{height:100%;background:var(--green);border-radius:2px;transition:width .15s;}
+.pb-no-results{text-align:center;padding:40px 0;color:var(--text3);font-size:13px;}
+.pb-back-btn{background:none;border:none;color:var(--blue);font-family:var(--f);font-size:12.5px;font-weight:600;cursor:pointer;padding:0;margin-bottom:16px;display:flex;align-items:center;gap:5px;}
+.pb-back-btn:hover{text-decoration:underline;}
+.pb-detail-title-row{display:flex;align-items:center;gap:10px;}
+.pb-detail-icon{font-size:24px;}
+.pb-detail-title{font-size:18px;font-weight:700;letter-spacing:-.01em;}
+.pb-cat-pill{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:9px;background:var(--bbg);color:var(--blue);margin-top:4px;}
+.pb-detail-trigger{font-size:12.5px;color:var(--text2);margin:8px 0 16px;line-height:1.5;}
+.pb-progress-row{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.pb-progress-bar{flex:1;height:7px;border-radius:4px;background:var(--bg4);overflow:hidden;}
+.pb-progress-bar-fill{height:100%;background:var(--green);border-radius:4px;transition:width .2s;}
+.pb-progress-label{font-size:11.5px;font-family:var(--m);color:var(--text3);white-space:nowrap;}
+.pb-reset-btn{background:none;border:1px solid var(--border2);color:var(--text3);font-family:var(--f);font-size:11px;font-weight:600;padding:5px 10px;border-radius:6px;cursor:pointer;white-space:nowrap;}
+.pb-reset-btn:hover{border-color:var(--red);color:var(--red);}
+.pb-phase-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+.pb-phase-nav-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-family:var(--f);font-size:11px;font-weight:600;padding:6px 11px;border-radius:14px;cursor:pointer;}
+.pb-phase-nav-btn:hover{border-color:var(--blue);color:var(--blue);}
+.pb-phase-section{margin-bottom:22px;}
+.pb-phase-name{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);scroll-margin-top:16px;}
+.pb-step-row{display:flex;align-items:flex-start;gap:11px;padding:10px 4px;border-radius:8px;cursor:pointer;}
+.pb-step-row:hover{background:var(--bg3);}
+.pb-step-check{flex-shrink:0;width:19px;height:19px;border-radius:5px;border:2px solid var(--border2);margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;transition:all .1s;}
+.pb-step-row.done .pb-step-check{background:var(--green);border-color:var(--green);}
+.pb-step-body{flex:1;}
+.pb-step-text{font-size:13.5px;font-weight:500;line-height:1.4;color:var(--text);}
+.pb-step-row.done .pb-step-text{color:var(--text3);text-decoration:line-through;}
+.pb-step-notes{font-size:11.5px;color:var(--text3);margin-top:2px;line-height:1.4;}
+.pb-step-notes div+div{margin-top:1px;}
+.pb-notes-callout{background:var(--abg);border:1px solid var(--amber);border-radius:var(--r);padding:12px 14px;margin-top:8px;}
+.pb-notes-callout-hdr{font-size:10.5px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px;}
+.pb-notes-callout li{font-size:12.5px;color:var(--text2);line-height:1.5;margin-bottom:3px;}
+.pb-feedback-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
+.pb-suggest-link{background:none;border:none;color:var(--blue);font-family:var(--f);font-size:12px;font-weight:600;cursor:pointer;padding:0;}
+.pb-suggest-link:hover{text-decoration:underline;}
+.pb-suggestions-toggle{background:var(--bbg);border:1px solid var(--blue);color:var(--blue);font-family:var(--f);font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:12px;cursor:pointer;}
+.pb-suggestions-toggle:hover{filter:brightness(1.1);}
+.pb-suggest-form{background:var(--bg3);border:1px dashed var(--border2);border-radius:var(--r);padding:11px;margin-bottom:14px;}
+.pb-suggest-form textarea{width:100%;min-height:56px;padding:8px 10px;border:1px solid var(--border2);border-radius:6px;background:var(--bg2);color:var(--text);font-family:var(--f);font-size:12.5px;resize:vertical;margin-bottom:8px;}
+.pb-suggest-name-inp{width:100%;padding:8px 10px;border:1px solid var(--border2);border-radius:6px;background:var(--bg2);color:var(--text);font-family:var(--f);font-size:12.5px;margin-bottom:8px;}
+.pb-suggest-name-inp:focus{outline:none;border-color:var(--blue);}
+.pb-suggest-form textarea:focus{outline:none;border-color:var(--blue);}
+.pb-suggest-form-actions{display:flex;gap:8px;justify-content:flex-end;}
+.pb-suggest-cancel{background:none;border:1px solid var(--border2);color:var(--text3);font-family:var(--f);font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:6px;cursor:pointer;}
+.pb-suggest-submit{background:var(--blue);border:none;color:#fff;font-family:var(--f);font-size:11.5px;font-weight:700;padding:6px 14px;border-radius:6px;cursor:pointer;}
+.pb-suggest-submit:hover{filter:brightness(1.12);}
+.pb-suggestions-panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:4px;margin-bottom:16px;}
+.pb-sugg-row{display:flex;align-items:flex-start;gap:10px;padding:9px 10px;border-radius:8px;}
+.pb-sugg-row+.pb-sugg-row{border-top:1px solid var(--border);}
+.pb-sugg-body{flex:1;}
+.pb-sugg-source{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;}
+.pb-sugg-text{font-size:12.5px;color:var(--text);line-height:1.4;}
+.pb-sugg-dismiss{flex-shrink:0;background:none;border:1px solid var(--border2);color:var(--text3);width:22px;height:22px;border-radius:6px;cursor:pointer;font-size:11px;line-height:1;}
+.pb-sugg-dismiss:hover{border-color:var(--red);color:var(--red);}
 </style>
 </head>
 <body>
@@ -2247,6 +2250,7 @@ body.dark #view-schedule .chip-del{ background: rgba(255,255,255,0.08); border-c
     <span></span>
   </button>
   <button class="nav-tab active" id="nav-tab-scans" onclick="switchView('scans',this)">Scans</button>
+  <button class="nav-tab" onclick="switchView('playbooks',this)">Playbooks</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
   <div class="nav-dropdown" id="navdd-study">
     <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-study" onclick="navDropdownToggle('study', event)" aria-haspopup="true">Study <span class="nav-dropdown-caret">▾</span></button>
@@ -2284,6 +2288,7 @@ body.dark #view-schedule .chip-del{ background: rgba(255,255,255,0.08); border-c
 </div>
 <div class="mobile-nav-drawer" id="mobile-nav-drawer">
   <button class="nav-tab" onclick="switchView('scans',this); toggleMobileMenu()">Scans</button>
+  <button class="nav-tab" onclick="switchView('playbooks',this); toggleMobileMenu()">Playbooks</button>
   <button class="nav-tab" onclick="switchView('asset',this); toggleMobileMenu()">Asset Scan</button>
   <button class="nav-tab" onclick="switchView('nerc',this); toggleMobileMenu()">NERC Study</button>
   <button class="nav-tab" onclick="switchView('roc',this); toggleMobileMenu()">ROC Study</button>
@@ -3526,6 +3531,39 @@ body.dark #view-schedule .chip-del{ background: rgba(255,255,255,0.08); border-c
   </div>
 </div>
 
+<!-- PLAYBOOKS ───────────────────────────────────────────────────────────────── -->
+<div class="view" id="view-playbooks">
+  <div id="pb-list-view">
+    <div class="page-header">
+      <div>
+        <div class="page-title">ROC Playbooks</div>
+        <div class="page-subtitle">Quick reference &amp; checklist for major events</div>
+      </div>
+    </div>
+    <div class="pb-search-row">
+      <input class="pb-search-inp" id="pb-search-inp" placeholder="Search playbooks or steps&hellip; e.g. &quot;SOC&quot;, &quot;comms&quot;, &quot;hail&quot;" oninput="pbRenderList()">
+    </div>
+    <div class="pb-feedback-row">
+      <button class="pb-suggest-link" onclick="pbToggleSuggestForm('pb-suggest-form-general', null, null)">&#128161; Suggest an update</button>
+      <button class="pb-suggestions-toggle" id="pb-suggestions-toggle" onclick="pbToggleSuggestionsPanel()" style="display:none;">&#128203; <span id="pb-suggestions-count">0</span> suggestion(s)</button>
+    </div>
+    <div class="pb-suggest-form" id="pb-suggest-form-general" style="display:none;">
+      <input type="text" class="pb-suggest-name-inp" id="pb-suggest-name-pb-suggest-form-general" placeholder="Your name">
+      <textarea id="pb-suggest-text-pb-suggest-form-general" placeholder="New playbook idea, something that should change, anything missing&hellip;"></textarea>
+      <div class="pb-suggest-form-actions">
+        <button class="pb-suggest-cancel" onclick="pbToggleSuggestForm('pb-suggest-form-general', null, null)">Cancel</button>
+        <button class="pb-suggest-submit" onclick="pbSubmitSuggestion('pb-suggest-form-general', null, null)">Send</button>
+      </div>
+    </div>
+    <div class="pb-suggestions-panel" id="pb-suggestions-panel" style="display:none;"></div>
+    <div id="pb-list-body"></div>
+  </div>
+  <div id="pb-detail-view" style="display:none;">
+    <button class="pb-back-btn" onclick="pbShowList()">&larr; All playbooks</button>
+    <div id="pb-detail-body"></div>
+  </div>
+</div>
+
 <!-- Log BUILDER ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-swbuilder">
   <div class="sw-pg-header">
@@ -4350,23 +4388,6 @@ function defaultSites() {
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
 // Sites live in their own key so user edits persist independently of app state
-function loadSites() {
-  const defaults = defaultSites();
-  try {
-    const raw = localStorage.getItem(SITES_KEY);
-    if (raw) {
-      const stored = JSON.parse(raw);
-      if (Array.isArray(stored) && stored.length) {
-        // Merge stored sites with default coordinates (hardcoded lat/lng always win)
-        return stored.map(s => {
-          const def = defaults.find(d => d.id === s.id);
-          return def ? { ...s, lat: def.lat, lng: def.lng } : s;
-        });
-      }
-    }
-  } catch(e) {}
-  return defaults;
-}
 function saveSites(sites) {
   try { localStorage.setItem(SITES_KEY, JSON.stringify(sites)); } catch(e) {}
   try { window.storage && window.storage.set(SITES_KEY, JSON.stringify(sites)); } catch(e) {}
@@ -4427,8 +4448,6 @@ async function load() {
       if(!S.checklists) S.checklists={};
       if(!S.notes) S.notes=[];
       if(!S.logEntries) S.logEntries=[];
-      if(!S.crew) S.crew=[];
-      if(!S.equipment) S.equipment=[];
       if(!S.escContacts) S.escContacts={t1:'',t2:'',t3:''};
       if(!S.timerCycles) S.timerCycles=0;
       if(!S.shiftStart) S.shiftStart=Date.now();
@@ -4451,12 +4470,10 @@ async function load() {
   refreshScanStatuses();
   initSafety();
   initNERC();
-  renderCrew();
-  
+
   // Initialize PGSC date to today
   const pgscDate = document.getElementById('pgsc-date');
   if(pgscDate) pgscDate.valueAsDate = new Date();
-  renderEquip();
   restoreAdhocTimers();
   restoreRecurringTimers();
   asInit();
@@ -4565,6 +4582,7 @@ function switchView(v, el) {
   }
   if(v==='log') renderLog();
   if(v==='scans') { refreshScanStatuses(); renderSites(); }
+  if(v==='playbooks') pbShowList();
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
   if(v==='timezones') initTimeZones();
   if(v==='chron') {
@@ -4743,7 +4761,6 @@ function updateTimerUI(){
 }
 
 // ─── RECURRING TASKS ──────────────────────────────────────────────────────────
-function addRec(){ const v=document.getElementById('rec-inp').value.trim(); if(!v)return; S.recTasks.push({id:Date.now(),name:v,done:false}); document.getElementById('rec-inp').value=''; save(); renderRec(); }
 function toggleRec(id){ const t=S.recTasks.find(x=>x.id===id); if(t)t.done=!t.done; save(); renderRec(); }
 function delRec(id){ S.recTasks=S.recTasks.filter(x=>x.id!==id); save(); renderRec(); }
 function renderRec(){
@@ -5791,7 +5808,6 @@ function siteStatus(s){
   return 'ok';
 }
 const STATUS_LABEL={ok:'OK',due:'Due soon',overdue:'OVERDUE',never:'Never'};
-const STATUS_BADGE={ok:'b-ok',due:'b-due',overdue:'b-overdue',never:'b-never'};
 const STATUS_COLOR={ok:'var(--green)',due:'var(--amber)',overdue:'var(--red)',never:'var(--text3)'};
 
 function setSiteFilter(f,el){ S.siteFilter=f; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderSites(); }
@@ -6286,38 +6302,6 @@ function clPopulateSiteSelect() {
   if (sel) { sel.innerHTML = clSiteOptions; sel.value = ''; }
 }
 
-function clAdd(ticket = null) {
-  const text = document.getElementById('cl-text').value.trim();
-  if (!text) { showToast('Enter a log entry first'); return; }
-  const cat  = document.getElementById('cl-cat')?.value || 'Normal';
-  const site = document.getElementById('cl-site').value;
-  const now  = new Date();
-  const entry = {
-    id: Date.now(),
-    ts: now.getTime(),
-    time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false}),
-    cat,
-    site,
-    text,
-    ticket: ticket || null,
-    starred: false
-  };
-  clEntries.unshift(entry);
-  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e) {}
-  document.getElementById('cl-text').value = '';
-  // Reset site to no-site; preserve category (useful to keep when logging multiple of same type)
-  document.getElementById('cl-site').value = '';
-  clRender();
-  showToast('Logged');
-}
-
-function clToggleStar(id) {
-  const e = clEntries.find(x => x.id === id); if (!e) return;
-  e.starred = !e.starred;
-  try { localStorage.setItem(CL_KEY, JSON.stringify(clEntries)); } catch(e2) {}
-  clRender();
-}
-
 function clSetTicket(id, val) {
   const e = clEntries.find(x => x.id === id); if (!e) return;
   e.ticket = val.trim();
@@ -6495,19 +6479,6 @@ function clGetAssetType(siteName, siteId) {
     if (s.id >= 300 && s.id < 400) return 'Wind';
   }
   return 'General';
-}
-
-function clGroupByAsset(entries) {
-  // Returns { 'BESS': { 'CNDR1': [...], ... }, 'Solar': {...}, 'Wind': {...}, 'General': {...} }
-  const out = {};
-  entries.forEach(e => {
-    const type = clGetAssetType(e.site);
-    const site = e.site || 'General';
-    if (!out[type]) out[type] = {};
-    if (!out[type][site]) out[type][site] = [];
-    out[type][site].push(e);
-  });
-  return out;
 }
 
 const CL_CATS = {
@@ -7434,11 +7405,15 @@ function wxFleetInit() {
 }
 
 // Keeps Fleet Snapshot current while the page just sits open, rather than
-// only updating on page load or a manual "Refresh All" click. 10 minutes
-// comfortably beats the update cadence of the underlying forecast models
-// without hammering the API. Guarded by wxAutoRefreshTimer so switching
+// only updating on page load or a manual "Refresh All" click. 30 minutes
+// comfortably beats the update cadence of the underlying forecast models.
+// Was 10 minutes, but ~10 ROC desktops all auto-refreshing that often adds
+// up fast, and since they likely share one office IP to Open-Meteo, the
+// team's combined usage was hitting Open-Meteo's per-IP rate limit (429s)
+// well before any single machine would on its own. 30 min cuts total
+// request volume roughly 3x. Guarded by wxAutoRefreshTimer so switching
 // tabs back and forth never stacks up duplicate intervals.
-const WX_AUTOREFRESH_MS = 10 * 60 * 1000;
+const WX_AUTOREFRESH_MS = 30 * 60 * 1000;
 let wxAutoRefreshTimer = null;
 function wxStartAutoRefresh() {
   if (wxAutoRefreshTimer) return;
@@ -7618,42 +7593,12 @@ function wxRenderFleetGrid(loading) {
     </div>`;
   }).join('');
 }
-function addCrew(){ const n=document.getElementById('crew-inp').value.trim(); if(!n)return; S.crew.push({id:Date.now(),name:n,status:'In field'}); document.getElementById('crew-inp').value=''; save(); renderCrew(); }
-function cycleCrew(id){ const STATS=['In field','On break','Off site','Stand-by']; const m=S.crew.find(x=>x.id===id); if(!m)return; m.status=STATS[(STATS.indexOf(m.status)+1)%STATS.length]; save(); renderCrew(); }
-function removeCrew(id){ S.crew=S.crew.filter(x=>x.id!==id); save(); renderCrew(); }
-function renderCrew(){
-  const el=document.getElementById('crew-list'); if(!el) return;
-  const colors={'In field':'var(--green)','On break':'var(--amber)','Off site':'var(--text3)','Stand-by':'var(--blue)'};
-  el.innerHTML=!S.crew.length?'<div class="empty-state compact"><div class="empty-state-icon">👤</div><div class="empty-state-title">No crew added</div><div class="empty-state-sub">Add crew members for this shift above.</div></div>':
-    S.crew.map(m=>`<div class="task-item"><span class="task-label">${esc(m.name)}</span>
-      <span style="font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;background:var(--bg4);color:${colors[m.status]||'var(--text2)'};cursor:pointer;" onclick="cycleCrew(${m.id})">${m.status}</span>
-      <button class="task-del" onclick="removeCrew(${m.id})">✕</button>
-    </div>`).join('');
-}
-
-// ─── EQUIPMENT ────────────────────────────────────────────────────────────────
-function addEquip(){ const n=document.getElementById('equip-inp').value.trim(); if(!n)return; const st=document.getElementById('equip-status').value; S.equipment.push({id:Date.now(),name:n,status:st,ts:Date.now()}); document.getElementById('equip-inp').value=''; addLog({type:'task',title:'Equipment: '+n+' — '+st,detail:''}); save(); renderEquip(); }
-function removeEquip(id){ S.equipment=S.equipment.filter(x=>x.id!==id); save(); renderEquip(); }
-function renderEquip(){
-  const el=document.getElementById('equip-list'); if(!el) return;
-  const icons={ok:'✅',caution:'⚠️',down:'🔴'};
-  el.innerHTML=!S.equipment.length?'<div class="empty-state compact"><div class="empty-state-icon">🔧</div><div class="empty-state-title">No equipment logged</div><div class="empty-state-sub">Log equipment status for this shift above.</div></div>':
-    S.equipment.map(e=>`<div class="task-item"><span style="font-size:14px;">${icons[e.status]||'?'}</span><span class="task-label">${esc(e.name)}</span><span style="font-size:10px;color:var(--text3);font-family:var(--m);">${timeSince(e.ts)}</span><button class="task-del" onclick="removeEquip(${e.id})">✕</button></div>`).join('');
-}
-
 // ─── SAFETY CHECK ─────────────────────────────────────────────────────────────
 const SAFETY=['Hard hat worn','High-vis vest on','Safety glasses','Steel-toe boots','Gloves available','First aid kit accessible','Buddy check complete','Radio/comms operational','Weather conditions acceptable','Site hazards reviewed'];
 let safetyS={};
 function initSafety(){ SAFETY.forEach(i=>{if(safetyS[i]===undefined)safetyS[i]=false;}); renderSafety(); }
 function toggleSafety(i){ safetyS[i]=!safetyS[i]; renderSafety(); }
 function renderSafety(){ const el=document.getElementById('safety-list'); if(!el) return; el.innerHTML=SAFETY.map(i=>`<div class="task-item${safetyS[i]?' done':''}"><input type="checkbox" class="task-cb" ${safetyS[i]?'checked':''} onchange="toggleSafety('${i.replace(/'/g,"\\'")}')" ><span class="task-label">${i}</span></div>`).join(''); }
-function completeSafety(){
-  const done=SAFETY.filter(i=>safetyS[i]).length, now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addLog({type:'task',title:'Safety check — '+done+'/'+SAFETY.length,detail:done===SAFETY.length?'All clear':'Incomplete'});
-  newNote('Safety check @ '+now,'Items: '+done+'/'+SAFETY.length+'\n'+SAFETY.map(i=>(safetyS[i]?'✓':'✗')+' '+i).join('\n'),'obs');
-  switchView('notes',document.querySelectorAll('.nav-tab')[0]); showToast('Safety check logged');
-}
-function resetSafety(){ SAFETY.forEach(i=>safetyS[i]=false); renderSafety(); }
 
 // ─── NERC CHECK ───────────────────────────────────────────────────────────────
 const NERC_ITEMS=['Physical access log reviewed','Electronic access controls verified','Security perimeter inspected','Unauthorized access attempts checked','Backup communications tested','SCADA/EMS communication verified','Protection relay status confirmed','Transmission constraint monitoring active','Outage coordination reviewed','Handoff log current and complete'];
@@ -7661,20 +7606,6 @@ let nercS={};
 function initNERC(){ NERC_ITEMS.forEach(i=>{if(nercS[i]===undefined)nercS[i]=false;}); renderNERC(); }
 function toggleNERC(i){ nercS[i]=!nercS[i]; renderNERC(); }
 function renderNERC(){ const el=document.getElementById('nerc-list'); if(!el) return; el.innerHTML=NERC_ITEMS.map(i=>`<div class="task-item${nercS[i]?' done':''}"><input type="checkbox" class="task-cb" ${nercS[i]?'checked':''} onchange="toggleNERC('${i.replace(/'/g,"\\'")}')" ><span class="task-label" style="font-size:12px;">${i}</span></div>`).join(''); }
-function completeNERC(){
-  const done=NERC_ITEMS.filter(i=>nercS[i]).length, now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  addLog({type:'scan',title:'NERC compliance — '+done+'/'+NERC_ITEMS.length,detail:done===NERC_ITEMS.length?'All verified':'Incomplete'});
-  newNote('NERC compliance @ '+now,'Items: '+done+'/'+NERC_ITEMS.length+'\n'+NERC_ITEMS.map(i=>(nercS[i]?'✓':'✗')+' '+i).join('\n'),'obs');
-  switchView('notes',document.querySelectorAll('.nav-tab')[0]); showToast('NERC check submitted');
-}
-function resetNERC(){ NERC_ITEMS.forEach(i=>nercS[i]=false); renderNERC(); }
-
-// ─── ESCALATION CONTACTS ──────────────────────────────────────────────────────
-function saveEscContacts(){
-  const rows=document.querySelectorAll('#esc-tbody tr'), keys=['t1','t2','t3'];
-  rows.forEach((row,i)=>{ const inp=row.querySelector('input'); if(inp)S.escContacts[keys[i]]=inp.value; });
-  save(); addLog({type:'task',title:'Escalation contacts updated',detail:'Tier 1: '+S.escContacts.t1}); showToast('Contacts saved');
-}
 
 // ─── UTILS ────────────────────────────────────────────────────────────────────
 function fireAlert(msg){ showToast(msg); try{const ctx=new AudioContext();[880,660].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;g.gain.setValueAtTime(.25,ctx.currentTime+i*.15);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+i*.15+.4);o.start(ctx.currentTime+i*.15);o.stop(ctx.currentTime+i*.15+.4);});}catch(e){} }
@@ -9556,17 +9487,6 @@ function swGenerateSteps() {
   }
 }
 
-// Keep for backward compatibility (called by swQuickFill path above)
-function swGenerateBody() { swGenerateSteps(); }
-
-function swWizardManualEdit() {
-  swManualEdit = true;
-}
-
-function swUpdatePreview() {
-  // Legacy — no-op now, preview handled by step builder
-}
-
 function swSaveTpl() {
   swSyncSteps();
   const site      = document.getElementById('wzd-site').value.trim()   || document.getElementById('sw-tpl-site').value.trim();
@@ -9606,724 +9526,6 @@ function swDupeTpl(id) {
   swSaveCustom();
   swRenderTpls();
   showToast('Template duplicated');
-}
-
-// ─── MAP ─────────────────────────────────────────────────────────────────────
-// Leaflet with free CartoDB tiles (no API key required)
-
-// Marker fill colors keyed by siteStatus() return values
-const MAP_COLORS = {
-  ok:      { fill:'#2d9e6b', stroke:'#1a6e4a' },
-  due:     { fill:'#f5a623', stroke:'#b36b00' },
-  overdue: { fill:'#e05540', stroke:'#b33000' },
-  never:   { fill:'#9e9a94', stroke:'#6b6760' }
-};
-
-let _map        = null;  // Leaflet map instance
-let _mapMarkers = {};    // siteId → L.marker
-
-// Build an SVG circle DivIcon
-function mapMakeIcon(status) {
-  const c = MAP_COLORS[status] || MAP_COLORS.never;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" class="map-marker-svg">
-    <circle cx="11" cy="11" r="8" fill="${c.fill}" stroke="${c.stroke}" stroke-width="2"/>
-    <circle cx="11" cy="11" r="3" fill="rgba(255,255,255,0.55)"/>
-  </svg>`;
-  return L.divIcon({
-    html: svg, className: '', iconSize: [22, 22], iconAnchor: [11, 11], popupAnchor: [0, -14]
-  });
-}
-
-// Build popup HTML
-function mapPopupHtml(site) {
-  const st    = siteStatus(site);
-  const last  = site.lastScan ? timeSince(site.lastScan) : '—';
-  const c     = MAP_COLORS[st] || MAP_COLORS.never;
-  const label = STATUS_LABEL[st] || st;
-  const nerc  = site.nerc
-    ? `<span style="font-size:10px;background:#e8f0fb;color:#1a4d8a;border-radius:10px;padding:1px 7px;font-weight:600;">NERC</span>`
-    : '';
-  return `<div class="map-popup">
-    <div class="map-popup-name">
-      ${esc(site.name)}
-      ${nerc}
-      <span style="font-size:10px;background:${c.fill}22;color:${c.stroke};border-radius:10px;padding:1px 7px;font-weight:700;">${label}</span>
-    </div>
-    <div class="map-popup-meta">📍 ${esc(site.location||'—')}</div>
-    <div class="map-popup-meta" style="margin-bottom:8px;">🕐 Last scan: ${last}</div>
-    <button class="map-popup-scan" onclick="mapLogScan(${site.id})">Log scan</button>
-  </div>`;
-}
-
-// Called by popup button
-function mapLogScan(id) {
-  if (_map) _map.closePopup();
-  openScanNote(id);
-}
-
-// Create map with free CartoDB tiles
-function mapCreate() {
-  if (_map) return;
-  if (typeof L === 'undefined') {
-    document.getElementById('map-container').innerHTML = '<div style="padding:20px;color:var(--red);">Map library failed to load. Check internet connection.</div>';
-    return;
-  }
-
-  _map = L.map('map-container', {
-    zoomControl: true,
-    attributionControl: true
-  });
-
-  // FREE CartoDB Positron tiles — clean, light, no API key
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> | &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains: 'abcd',
-    maxZoom: 19
-  }).addTo(_map);
-
-  mapBuildMarkers();
-}
-
-// Build all markers
-function mapBuildMarkers() {
-  if (!_map) return;
-  Object.values(_mapMarkers).forEach(m => m.remove());
-  _mapMarkers = {};
-
-  const mappable = SITES.filter(s => s.lat && s.lng);
-  mappable.forEach(site => {
-    const marker = L.marker([site.lat, site.lng], { icon: mapMakeIcon(siteStatus(site)) })
-      .bindPopup(mapPopupHtml(site), { className: 'lf-popup', maxWidth: 260 })
-      .addTo(_map);
-    _mapMarkers[site.id] = marker;
-  });
-
-  const el = document.getElementById('map-site-count');
-  if (el) el.textContent = `${mappable.length} of ${SITES.length} sites plotted`;
-}
-
-// Refresh markers when status changes
-function mapRefreshMarkers() {
-  if (!_map) return;
-  SITES.forEach(site => {
-    const m = _mapMarkers[site.id];
-    if (!m) return;
-    m.setIcon(mapMakeIcon(siteStatus(site)));
-    m.setPopupContent(mapPopupHtml(site));
-  });
-}
-
-// ─── PASSDOWN ────────────────────────────────────────────────────────────────
-// Data model: pd.sections = { bess:[], solar:[], wind:[], general:[] }
-// Each entry: { id, name, status:'none'|'monitor'|'active'|'resolved', notes, log }
-
-const PD_KEY = 'rnwbl_pd_v2';      // v2 — new site distribution
-const PD_HIST_KEY = 'rnwbl_pd_hist_v1';
-
-// Default site lists per section (drawn from real passdowns + SITES array)
-const PD_DEFAULTS = {
-  // ── BESS (row 1: Condor, Peregrine, Harq2, Kuna | row 2: Bypass, Goleta, COSO, Pediment | row 3: CFLATS, Maricopa, Ferdinand)
-  bess: [
-    {name:'CNDR1',  loc:'Condor — Tehachapi, CA'},
-    {name:'PRGN1',  loc:'Peregrine — Mojave, CA'},
-    {name:'HARQ2',  loc:'Harq 2 — Harper Lake, CA'},
-    {name:'KUNA1',  loc:'Kuna — Kuna, ID'},
-    {name:'BYPS',   loc:'Bypass'},
-    {name:'GLTA1',  loc:'Goleta — Goleta, CA'},
-    {name:'COSO1',  loc:'COSO — Coso Junction, CA'},
-    {name:'PDMT',   loc:'Pediment'},
-    {name:'CTFL',   loc:'CFLATS BESS — Centennial Flats'},
-    {name:'MRCP',   loc:'Maricopa'},
-    {name:'FRDN',   loc:'Ferdinand'},
-  ],
-  // ── SOLAR (row 1: Harq1, Angel Fire, Taos Mesa, Nicolis | row 2: Tropico, Tulare, Porterville, Lost Hills 1 | row 3: Hanford, Farmersville, Avalon, Blackwell | row 4: Lost Hills 2, Northstar, CFLATS PV)
-  solar: [
-    {name:'HARQ1',  loc:'Harq 1 — Harper Lake, CA'},
-    {name:'ANGF1',  loc:'Angel Fire — Angel Fire, NM'},
-    {name:'AVLN1',  loc:'Taos Mesa — Taos, NM'},
-    {name:'NCLS1',  loc:'Nicolis — Nicolis, CA'},
-    {name:'TRPC1',  loc:'Tropico — Kern County, CA'},
-    {name:'TLRE1',  loc:'Tulare — Tulare, CA'},
-    {name:'PRTV1',  loc:'Porterville — Porterville, CA'},
-    {name:'LSTH1',  loc:'Lost Hills 1 — Lost Hills, CA'},
-    {name:'HNFD1',  loc:'Hanford — Hanford, CA'},
-    {name:'FRMV1',  loc:'Farmersville — Farmersville, CA'},
-    {name:'AVLN2',  loc:'Avalon — Avalon, CA'},
-    {name:'BLKW2',  loc:'Blackwell — Blackwell, OK'},
-    {name:'LSTH2',  loc:'Lost Hills 2 — Lost Hills, CA'},
-    {name:'NSTR1',  loc:'Northstar — Kern County, CA'},
-    {name:'CTFL-PV',loc:'CFLATS PV — Centennial Flats'},
-  ],
-  // ── WIND (row 1: Dufferin, McLeans Mt, Goodwell, Lindahl | row 2: Origin, Rocky Ridge, Prairie Rose, Diablo)
-  wind: [
-    {name:'DFRN1',  loc:'Dufferin — Dufferin, ON'},
-    {name:'MCLM1',  loc:'McLeans Mt — Manitoulin Island, ON'},
-    {name:'GDWL1',  loc:'Goodwell — Goodwell, OK'},
-    {name:'LNDL1',  loc:'Lindahl — Lincoln County, MN'},
-    {name:'ORGN1',  loc:'Origin — Kern County, CA'},
-    {name:'RKRD1',  loc:'Rocky Ridge — Kern County, CA'},
-    {name:'PRRS1',  loc:'Prairie Rose — Elk County, KS'},
-    {name:'DIBL1',  loc:'Diablo — Diablo Range, CA'},
-  ],
-  general: []
-};
-
-// Runtime state — rebuilt on each pdActivate() or loaded from localStorage
-let pdState = null;
-let pdHistory = [];
-
-function pdBlankEntry(name, loc) {
-  return { id: Date.now() + Math.random(), name: name||'', loc: loc||'', status:'none', notes:'', log:'' };
-}
-
-function pdBlankState() {
-  const today = new Date().toISOString().slice(0,10);
-  return {
-    date: today,
-    shift: 'Day',
-    author: '',
-    relieved: '',
-    general: [], // Array of free text entries for general items
-    sections: {
-      bess:    PD_DEFAULTS.bess.map(s=>pdBlankEntry(s.name, s.loc)),
-      solar:   PD_DEFAULTS.solar.map(s=>pdBlankEntry(s.name, s.loc)),
-      wind:    PD_DEFAULTS.wind.map(s=>pdBlankEntry(s.name, s.loc))
-    },
-    collapsed: {}
-  };
-}
-
-function pdSaveDraft() {
-  try { localStorage.setItem(PD_KEY, JSON.stringify(pdState)); } catch(e) {}
-}
-
-function pdLoadDraft() {
-  try {
-    const raw = localStorage.getItem(PD_KEY);
-    if (raw) { const p = JSON.parse(raw); if (p && p.sections) {
-      // Migrate old generalNotes to new general array format
-      if (p.generalNotes && !p.general) {
-        p.general = [{ id: Date.now() + Math.random(), text: p.generalNotes }];
-        delete p.generalNotes;
-      }
-      // Ensure general array exists
-      if (!p.general) p.general = [];
-      return p;
-    }}
-  } catch(e) {}
-  return pdBlankState();
-}
-
-function pdLoadHistory() {
-  try { pdHistory = JSON.parse(localStorage.getItem(PD_HIST_KEY)||'[]'); } catch(e) { pdHistory=[]; }
-}
-
-function pdInit() {
-  pdLoadHistory();
-  pdState = pdLoadDraft();
-  // Set today's date as default if blank
-  if (!document.getElementById('pd-date').value) {
-    document.getElementById('pd-date').value = pdState.date || new Date().toISOString().slice(0,10);
-  }
-  document.getElementById('pd-date').value = pdState.date || new Date().toISOString().slice(0,10);
-  document.getElementById('pd-shift').value = pdState.shift || 'Day';
-  document.getElementById('pd-author').value = pdState.author || '';
-  document.getElementById('pd-relieved').value = pdState.relieved || '';
-
-  // Wire header inputs
-  ['pd-date','pd-shift','pd-author','pd-relieved'].forEach(id => {
-    document.getElementById(id).addEventListener('input', () => { pdReadHeader(); pdSaveDraft(); pdUpdatePreview(); });
-  });
-
-  ['bess','solar','wind'].forEach(sec => {
-    pdRenderSection(sec);
-    // Explicitly open each section body so display:flex is set via inline style,
-    // fixing the pdToggleSection state-check which reads style.display (not CSS).
-    const body  = document.getElementById('pdb-'  + sec);
-    const arrow = document.getElementById('pda-'  + sec);
-    const isCollapsed = pdState.collapsed && pdState.collapsed[sec];
-    body.style.display  = isCollapsed ? 'none' : 'flex';
-    if (arrow) arrow.classList.toggle('open', !isCollapsed);
-  });
-  // General section - render entries and open body
-  pdRenderGeneralSection();
-  const generalBody = document.getElementById('pdb-general');
-  const generalArrow = document.getElementById('pda-general');
-  const generalCollapsed = pdState.collapsed && pdState.collapsed.general;
-  generalBody.style.display = generalCollapsed ? 'none' : 'flex';
-  if (generalArrow) generalArrow.classList.toggle('open', !generalCollapsed);
-  pdUpdatePreview();
-  pdRenderHistory();
-}
-
-function pdActivate() { /* already inited in load() — just re-render preview */ pdUpdatePreview(); }
-
-function pdReadHeader() {
-  pdState.date     = document.getElementById('pd-date').value;
-  pdState.shift    = document.getElementById('pd-shift').value;
-  pdState.author   = document.getElementById('pd-author').value;
-  pdState.relieved = document.getElementById('pd-relieved').value;
-}
-
-function pdAddGeneralEntry() {
-  pdState.general.push({ id: Date.now() + Math.random(), text: '' });
-  pdSaveDraft();
-  pdRenderGeneralSection();
-  pdUpdatePreview();
-}
-
-function pdDelGeneralEntry(id) {
-  pdState.general = pdState.general.filter(e => e.id !== id);
-  pdSaveDraft();
-  pdRenderGeneralSection();
-  pdUpdatePreview();
-}
-
-function pdSetGeneralText(id, value) {
-  const entry = pdState.general.find(e => e.id === id);
-  if (entry) {
-    entry.text = value;
-    pdSaveDraft();
-    pdUpdatePreview();
-  }
-}
-
-function pdRenderGeneralSection() {
-  const body = document.getElementById('pdb-general');
-  const entries = pdState.general || [];
-  const countEl = document.getElementById('pdc-general');
-  if (countEl) countEl.textContent = entries.length + ' items';
-  if (entries.length === 0) {
-    body.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:6px 4px;">No general items — add one below.</div>';
-    return;
-  }
-  let html = '';
-  entries.forEach((e, i) => {
-    const idStr = String(e.id);
-    html += '<div class="pd-gen-entry">';
-    html += '<textarea class="pd-notes-inp" rows="2" placeholder="Enter general issue or action item..."';
-    html += ' oninput="pdSetGeneralText(' + idStr + ', this.value)">' + esc(e.text) + '</textarea>';
-    html += '<button class="pd-site-del" onclick="pdDelGeneralEntry(' + idStr + ')" title="Remove">✕</button>';
-    html += '</div>';
-  });
-  body.innerHTML = html;
-}
-
-// ── Section rendering ───────────────────────────────────────────────────────
-function pdRenderSection(sec) {
-  if (sec === 'general') {
-    pdRenderGeneralSection();
-    return;
-  }
-  const body = document.getElementById('pdb-' + sec);
-  const entries = pdState.sections[sec] || [];
-  body.innerHTML = entries.length === 0
-    ? '<div style="font-size:12px;color:var(--text3);padding:6px 4px;">No items — add one below.</div>'
-    : entries.map((e,i) => pdRowHtml(sec, i, e)).join('');
-  // Preserve open/closed state — don't let innerHTML reset clobber style.display
-  // (body.style.display is already set by pdInit/pdToggleSection; leave it alone)
-  pdUpdateSectionCount(sec);
-}
-
-function pdRowHtml(sec, i, e) {
-  const statuses = ['none','monitor','active','resolved'];
-  const labels   = ['No Change','Monitor','Active Issue','Resolved'];
-  const hasnote  = e.notes || e.log ? ' has-note' : '';
-  const btns = statuses.map((s,si) =>
-    `<button class="pd-status-btn s-${s}${e.status===s?' active':''}" onclick="pdSetStatus('${sec}',${i},'${s}')">${labels[si]}</button>`
-  ).join('');
-  return `<div class="pd-site-row${hasnote}" id="pdrow-${sec}-${i}">
-    <div class="pd-site-name-col">
-      <span class="pd-site-name">${esc(e.name)}</span>
-      ${e.loc?`<span class="pd-site-loc">${esc(e.loc.split('—')[0].trim())}</span>`:''}
-    </div>
-    <div class="pd-site-inputs">
-      <div class="pd-site-top">
-        <div class="pd-status-btns">${btns}</div>
-        <input class="pd-log-inp" value="${esc(e.log)}" placeholder="Log #" title="Log number"
-          oninput="pdSetField('${sec}',${i},'log',this.value)">
-      </div>
-      <textarea class="pd-notes-inp" rows="1" placeholder="Notes — leave blank if no change"
-        oninput="pdSetField('${sec}',${i},'notes',this.value);autoGrow(this)">${esc(e.notes)}</textarea>
-    </div>
-    <button class="pd-site-del" onclick="pdDelEntry('${sec}',${i})" title="Remove site">✕</button>
-  </div>`;
-}
-
-function autoGrow(el) {
-  el.style.height = 'auto';
-  el.style.height = el.scrollHeight + 'px';
-}
-
-function pdSetStatus(sec, i, status) {
-  pdState.sections[sec][i].status = status;
-  pdSaveDraft(); pdRenderSection(sec); pdUpdatePreview();
-}
-
-function pdSetField(sec, i, field, val) {
-  pdState.sections[sec][i][field] = val;
-  pdSaveDraft(); pdUpdateSectionCount(sec); pdUpdatePreview();
-}
-
-function pdAddSite(sec) {
-  const inp = document.getElementById('pdadd-'+sec);
-  const name = inp.value.trim(); if (!name) return;
-  pdState.sections[sec].push(pdBlankEntry(name, ''));
-  inp.value = '';
-  pdSaveDraft(); pdRenderSection(sec);
-  // Keep body open after add
-  const body = document.getElementById('pdb-' + sec);
-  if (body.style.display === 'none') body.style.display = 'flex';
-  pdUpdatePreview();
-}
-
-function pdDelEntry(sec, i) {
-  pdState.sections[sec].splice(i, 1);
-  pdSaveDraft(); pdRenderSection(sec); pdUpdatePreview();
-}
-
-function pdToggleSection(sec) {
-  const body  = document.getElementById('pdb-'  + sec);
-  const arrow = document.getElementById('pda-'  + sec);
-  const open  = body.style.display !== 'none';
-  body.style.display = open ? 'none' : 'flex';
-  arrow.classList.toggle('open', !open);
-  pdState.collapsed = pdState.collapsed || {};
-  pdState.collapsed[sec] = open;
-  pdSaveDraft();
-}
-
-function pdUpdateSectionCount(sec) {
-  if (sec === 'general') return; // General section count handled in pdRenderGeneralSection
-  const active = (pdState.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log).length;
-  const el = document.getElementById('pdc-'+sec);
-  if (el) el.textContent = active > 0 ? active + ' active' : 'all clear';
-}
-
-// ── Preview builder ─────────────────────────────────────────────────────────
-function pdBuildText() {
-  const d = pdState;
-  const dateStr = d.date ? new Date(d.date+'T12:00:00').toLocaleDateString([],{month:'numeric',day:'numeric',year:'numeric'}) : '—';
-  let out = `OFF-SHIFT LOG – ${dateStr}\n`;
-  out += `Shift: ${d.shift || '—'}`;
-  if (d.author)   out += `  |  Operator: ${d.author}`;
-  if (d.relieved) out += `  |  Relieved by: ${d.relieved}`;
-  out += '\n\n';
-
-  // ── OPERATOR HANDOFF section ─────────────────────────────────────────────
-  // Collect all active/notable site entries across all asset types (flat list)
-  const handoffItems = [];
-  ['bess','solar','wind'].forEach(sec => {
-    (d.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log).forEach(e => {
-      let line = `• ${e.name}`;
-      if (e.status === 'active')   line += ' ⚠ ACTIVE ISSUE';
-      if (e.status === 'monitor')  line += ' — Monitor';
-      if (e.status === 'resolved') line += ' — Resolved';
-      if (e.notes) line += ` — ${e.notes.trim().replace(/\n/g, ' / ')}`;
-      if (e.log)   line += ` — Log ${e.log.trim()}`;
-      handoffItems.push(line);
-    });
-  });
-
-  if (handoffItems.length > 0) {
-    out += 'Operator Handoff\n';
-    out += handoffItems.join('\n') + '\n\n';
-  } else {
-    out += 'Operator Handoff\n• All sites — normal operations\n\n';
-  }
-
-  // ── UPCOMING section ──────────────────────────────────────────────────────
-  const upcoming = (d.general || []).filter(e => e.text && e.text.trim());
-  if (upcoming.length > 0) {
-    out += 'Upcoming\n';
-    upcoming.forEach(e => {
-      const lines = e.text.trim().split('\n');
-      lines.forEach(l => { if (l.trim()) out += `• ${l.trim()}\n`; });
-    });
-  }
-
-  return out.trim();
-}
-
-function pdBuildHtml() {
-  const d = pdState;
-  const dateStr = d.date ? new Date(d.date+'T12:00:00').toLocaleDateString([],{month:'numeric',day:'numeric',year:'numeric'}) : '—';
-  let html = '';
-
-  // Header block
-  html += `<div class="pd-prev-header">`;
-  html += `<strong>OFF-SHIFT LOG</strong> — ${dateStr}<br>`;
-  html += `Shift: <strong>${d.shift||'—'}</strong>`;
-  if (d.author)   html += `&nbsp;&nbsp;·&nbsp;&nbsp;Operator: <strong>${esc(d.author)}</strong>`;
-  if (d.relieved) html += `&nbsp;&nbsp;·&nbsp;&nbsp;Relieved by: <strong>${esc(d.relieved)}</strong>`;
-  html += `</div>`;
-
-  // ── OPERATOR HANDOFF section ──────────────────────────────────────────────
-  const handoffItems = [];
-  ['bess','solar','wind'].forEach(sec => {
-    (d.sections[sec]||[]).filter(e => e.status !== 'none' || e.notes || e.log).forEach(e => {
-      handoffItems.push(e);
-    });
-  });
-
-  html += `<div class="pd-prev-section">`;
-  html += `<div class="pd-prev-sec-hdr handoff">Operator Handoff</div>`;
-
-  if (handoffItems.length === 0) {
-    html += `<div class="pd-prev-gen-item" style="color:var(--green);">✅ All sites — normal operations</div>`;
-  } else {
-    handoffItems.forEach(e => {
-      const cls = e.status !== 'none' ? ` s-${e.status}` : '';
-      html += `<div class="pd-prev-site${cls}">`;
-      html += `<div class="pd-prev-site-hdr">`;
-      html += `<span class="pd-prev-site-name">${esc(e.name)}</span>`;
-      if (e.status === 'active')   html += `<span class="pd-prev-status-badge active">ACTIVE</span>`;
-      if (e.status === 'monitor')  html += `<span class="pd-prev-status-badge monitor">MONITOR</span>`;
-      if (e.status === 'resolved') html += `<span class="pd-prev-status-badge resolved">RESOLVED</span>`;
-      if (e.log) html += `<span class="pd-prev-log-badge">Log ${esc(e.log)}</span>`;
-      html += `</div>`;
-      if (e.notes) html += `<div class="pd-prev-site-notes">${esc(e.notes).replace(/\n/g,'<br>')}</div>`;
-      html += `</div>`;
-    });
-  }
-  html += `</div>`;
-
-  // ── UPCOMING section ──────────────────────────────────────────────────────
-  const upcoming = (d.general||[]).filter(e => e.text && e.text.trim());
-  if (upcoming.length > 0) {
-    html += `<div class="pd-prev-section">`;
-    html += `<div class="pd-prev-sec-hdr upcoming">Upcoming</div>`;
-    upcoming.forEach(e => {
-      html += `<div class="pd-prev-gen-item">${esc(e.text.trim()).replace(/\n/g,'<br>')}</div>`;
-    });
-    html += `</div>`;
-  }
-
-  if (!html.includes('pd-prev-section')) {
-    html += `<div class="pd-prev-empty">Fill in site notes or upcoming items to see the preview here.</div>`;
-  }
-  return html;
-}
-
-function pdUpdatePreview() {
-  const el = document.getElementById('pd-preview-out');
-  if (el) el.innerHTML = pdBuildHtml();
-}
-
-// ── Copy ────────────────────────────────────────────────────────────────────
-function pdCopy() {
-  const text = pdBuildText();
-  try {
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = document.getElementById('pd-copy-btn');
-      btn.textContent = 'Copied ✓'; btn.classList.add('pd-copy-flash');
-      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('pd-copy-flash'); }, 1800);
-    });
-  } catch(e) { showToast('Select and copy manually'); }
-}
-
-// ── Save to history ─────────────────────────────────────────────────────────
-function pdSave() {
-  pdReadHeader();
-  const snap = JSON.parse(JSON.stringify(pdState));
-  snap.savedAt = Date.now();
-  snap.id = Date.now();
-  pdHistory.unshift(snap);
-  if (pdHistory.length > 20) pdHistory.length = 20;
-  try { localStorage.setItem(PD_HIST_KEY, JSON.stringify(pdHistory)); } catch(e) {}
-  pdRenderHistory();
-  showToast('Passdown saved');
-}
-
-function pdLoadSnap(id) {
-  const snap = pdHistory.find(h => h.id === id); if (!snap) return;
-  pdState = JSON.parse(JSON.stringify(snap));
-  pdInit();
-  showToast('Passdown loaded');
-}
-
-function pdClearHistory() {
-  if (!pdHistory.length) return;
-  if (!confirm('Clear all saved passdowns?')) return;
-  pdHistory = [];
-  localStorage.removeItem(PD_HIST_KEY);
-  pdRenderHistory();
-}
-
-function pdRenderHistory() {
-  const el = document.getElementById('pd-history');
-  if (!pdHistory.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text3);">No saved passdowns yet.</div>'; return; }
-  el.innerHTML = pdHistory.map(h => {
-    const d = h.date ? new Date(h.date+'T12:00:00').toLocaleDateString([],{month:'short',day:'numeric'}) : '?';
-    const t = new Date(h.savedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    const active = Object.values(h.sections||{}).flat().filter(e=>e.status!=='none'||e.notes||e.log).length;
-    return `<div class="pd-hist-item" onclick="pdLoadSnap(${h.id})">
-      <div class="pd-hist-meta">${d} ${h.shift||''} · saved ${t} · ${active} items</div>
-      <div class="pd-hist-snip">${h.author||'Unknown'} → ${h.relieved||'?'}</div>
-    </div>`;
-  }).join('');
-}
-
-// ── AI Summary via Claude API ────────────────────────────────────────────────
-function pdFormatAiResponse(text) {
-  if (!text) return '';
-  const lines = text.split('\n');
-  let html = '';
-  let inSection = false;
-
-  lines.forEach(line => {
-    const trimmed = line.trim();
-    if (!trimmed) {
-      if (inSection) { html += '</div>'; inSection = false; }
-      return;
-    }
-    // Detect urgent/active lines (⚠ or ACTIVE or contains capital keyword)
-    if (/^[⚠🚨]/.test(trimmed) || /ACTIVE ISSUE|CRITICAL|OUTAGE|CURTAIL/.test(trimmed)) {
-      html += `<div class="pd-ai-urgent">${esc(trimmed)}</div>`;
-      return;
-    }
-    // Numbered section header (e.g. "1. ACTIVE ISSUES" or "## BESS")
-    if (/^(#{1,3}\s|[1-4]\.\s)/i.test(trimmed) || /^(ACTIVE ISSUES|BESS|SOLAR|WIND|GENERAL|MONITOR|ALL CLEAR|WATCH LIST)/i.test(trimmed)) {
-      if (inSection) { html += '</div>'; inSection = false; }
-      const label = trimmed.replace(/^#{1,3}\s|^[1-4]\.\s/, '').replace(/[*_]/g,'');
-      html += `<div class="pd-ai-section"><div class="pd-ai-section-hdr">${esc(label)}</div>`;
-      inSection = true;
-      return;
-    }
-    // Bullet/dash items
-    if (/^[-•*]\s/.test(trimmed) || /^\d+\)\s/.test(trimmed)) {
-      const content = trimmed.replace(/^[-•*]\s|^\d+\)\s/, '').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-      html += `<div class="pd-ai-item"><span class="pd-ai-bullet">▸</span><span>${content}</span></div>`;
-      return;
-    }
-    // Regular paragraph line
-    const fmtLine = esc(trimmed).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-    html += `<p>${fmtLine}</p>`;
-  });
-
-  if (inSection) html += '</div>';
-  return html;
-}
-
-async function pdSummarize() {
-  const text = pdBuildText();
-  if (text.length < 40) { showToast('Fill in some site notes first'); return; }
-
-  const loading = document.getElementById('pd-ai-loading');
-  const out     = document.getElementById('pd-ai-out');
-  loading.classList.add('visible');
-  out.classList.remove('visible');
-  out.innerHTML = '';
-
-  const prompt =
-    `You are an ops center summarizer for a renewable energy remote operations center (ROC).\n` +
-    `Given the following shift passdown log, write a concise, well-structured summary that:\n` +
-    `1. Leads with any ACTIVE ISSUES or urgent items (safety, curtailments, voltage O-O-B, site outages)\n` +
-    `2. Groups by BESS / Solar / Wind / General\n` +
-    `3. Lists monitoring items the incoming shift must watch\n` +
-    `4. Ends with a brief "All Clear" list of sites with no changes\n` +
-    `Keep it tight — this is read during a shift handoff. No padding or filler.\n\n` +
-    `PASSDOWN:\n${text}`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    const data = await res.json();
-    const reply = (data.content||[]).map(b=>b.type==='text'?b.text:'').join('').trim();
-    if (reply) {
-      out.innerHTML = `
-        <div class="pd-ai-out-header">
-          <span class="pd-ai-out-header-icon">✦</span>
-          <span class="pd-ai-out-header-title">AI Shift Summary</span>
-          <span class="pd-ai-out-header-badge">Claude</span>
-        </div>
-        <div class="pd-ai-body">${pdFormatAiResponse(reply)}</div>`;
-    } else {
-      out.innerHTML = `<div class="pd-ai-body"><p>No response received.</p></div>`;
-    }
-    out.classList.add('visible');
-  } catch(e) {
-    out.innerHTML = `<div class="pd-ai-body"><p style="color:var(--red);">API error — check network connection.</p></div>`;
-    out.classList.add('visible');
-  } finally {
-    loading.classList.remove('visible');
-  }
-}
-
-// ── New passdown ─────────────────────────────────────────────────────────────
-function pdNew() {
-  if (!confirm('Start a new passdown? Unsaved changes will be lost.')) return;
-  pdState = pdBlankState();
-  pdSaveDraft();
-  pdInit();
-}
-
-// ── Schedule View Controls ─────────────────────────────────────────────────────
-let scheduleCurrentView = 'srd';
-let scheduleKioskMode = false;
-
-function setScheduleView(view) {
-  scheduleCurrentView = view;
-  // Hide all views
-  document.getElementById('schedule-embed1').style.display = 'none';
-  document.getElementById('schedule-embed2').style.display = 'none';
-  document.getElementById('schedule-srd').style.display = 'none';
-  // Remove active class from all buttons
-  document.getElementById('btn-view-embed1').classList.remove('active');
-  document.getElementById('btn-view-embed2').classList.remove('active');
-  document.getElementById('btn-view-srd').classList.remove('active');
-  // Show selected view and activate button
-  if (view === 'embed1') {
-    document.getElementById('schedule-embed1').style.display = 'block';
-    document.getElementById('btn-view-embed1').classList.add('active');
-  } else if (view === 'embed2') {
-    document.getElementById('schedule-embed2').style.display = 'block';
-    document.getElementById('btn-view-embed2').classList.add('active');
-  } else if (view === 'srd') {
-    document.getElementById('schedule-srd').style.display = 'grid';
-    document.getElementById('btn-view-srd').classList.add('active');
-  }
-}
-
-function toggleKioskMode() {
-  scheduleKioskMode = !scheduleKioskMode;
-  const view = document.getElementById('schedule-view');
-  const btn = document.getElementById('btn-kiosk');
-  if (scheduleKioskMode) {
-    view.classList.add('kiosk-mode');
-    btn.textContent = '✕ Exit Kiosk';
-    btn.style.background = 'var(--red)';
-    btn.style.borderColor = 'var(--red)';
-    btn.style.color = '#fff';
-  } else {
-    view.classList.remove('kiosk-mode');
-    btn.textContent = '⛶ Kiosk Mode';
-    btn.style.background = 'var(--bbg)';
-    btn.style.borderColor = 'var(--blue)';
-    btn.style.color = 'var(--blue)';
-  }
-}
-
-function refreshSchedule() {
-  // Reset all veils so the dark cover shows again while iframes reload
-  ['veil-embed1','veil-embed2','veil-srd1','veil-srd2'].forEach(id => {
-    const v = document.getElementById(id);
-    if (v) v.classList.remove('loaded');
-  });
-  const iframes = document.querySelectorAll('#schedule-view iframe');
-  iframes.forEach(iframe => {
-    const src = iframe.src;
-    iframe.src = '';
-    iframe.src = src;
-  });
-  showToast('Schedule refreshed');
 }
 
 // ─── DARK MODE ────────────────────────────────────────────────────────────────
@@ -11701,6 +10903,15 @@ let bcLastGroups = null, bcLastResource = '', bcLastDateLabel = '', bcLastTradeD
 // so reminders substitute the colloquial name. Only affects reminder text —
 // the schedule preview/export still shows the raw RESOURCE name for
 // traceability back to the buyer's paste.
+// Reminders fire this many minutes ahead of the actual curtailment action,
+// so the operator has time to implement the change rather than reacting
+// the instant it's due. Declared once here so the preview panel (what the
+// operator sees before clicking "Set Reminders") and the actual Firestore
+// write always agree — previously the preview showed the raw action time
+// while the write applied the lead time, so the preview looked "wrong"
+// even though the real reminder was correct.
+const BC_REMINDER_LEAD_MIN = 5;
+
 const BC_SITE_NICKNAMES = {
   'MNDOTA_1_SOLAR1': 'Northstar',
   'BLCKWL_6_SOLAR1': 'Blackwell',
@@ -11907,10 +11118,15 @@ function bcRenderPreview(resource, dateLabel, groups, warnHTML) {
   // never be mistaken for part of the schedule data itself, and so they're
   // automatically excluded from the "Copy as Image" snapshot for free.
   const now = Date.now();
-  const plan = bcComputeReminderPlan(groups).map(r => ({
-    ...r,
-    isPast: bcLastTradeDateISO ? (new Date(bcCombineDateTime(bcLastTradeDateISO, r.time, r.rollover)).getTime() <= now) : false
-  }));
+  const plan = bcComputeReminderPlan(groups).map(r => {
+    const rawDate = bcLastTradeDateISO ? new Date(bcCombineDateTime(bcLastTradeDateISO, r.time, r.rollover)) : null;
+    const leadDate = rawDate ? new Date(rawDate.getTime() - BC_REMINDER_LEAD_MIN * 60000) : null;
+    return {
+      ...r,
+      leadTime: leadDate ? { h: leadDate.getHours(), m: leadDate.getMinutes() } : r.time,
+      isPast: leadDate ? leadDate.getTime() <= now : false
+    };
+  });
   const futureCount = plan.filter(r => !r.isPast).length;
   const pastCount = plan.length - futureCount;
   const reminderHTML = plan.length ? `
@@ -11918,7 +11134,7 @@ function bcRenderPreview(resource, dateLabel, groups, warnHTML) {
       <div class="bc-reminder-hdr">\ud83d\udd14 Notify the team \u2014 ${futureCount} reminder${futureCount !== 1 ? 's' : ''}${pastCount ? `, ${pastCount} already passed` : ''}</div>
       ${plan.map(r => `<div class="bc-reminder-row${r.isPast ? ' bc-reminder-past' : ''}">
         <span class="bc-reminder-desc">${esc(bcReminderLabel(r, resource))}${r.isPast ? ' <span class="bc-reminder-past-tag">already passed \u2014 won\u2019t be set</span>' : ''}</span>
-        <span class="bc-reminder-time-preview">${qtFormatTimeLabel(r.time.h, r.time.m)}</span>
+        <span class="bc-reminder-time-preview">${qtFormatTimeLabel(r.leadTime.h, r.leadTime.m)}<span style="opacity:.6;"> (${BC_REMINDER_LEAD_MIN}m early)</span></span>
       </div>`).join('')}
       ${futureCount
         ? `<button class="bc-reminder-btn bc-reminder-btn-all" onclick="bcSetAllReminders()">\ud83d\udd14 Set ${futureCount} Reminder${futureCount !== 1 ? 's' : ''}</button>
@@ -12080,12 +11296,9 @@ async function bcSetAllReminders() {
   if (!plan.length) { showToast('No curtailment found to set reminders for'); return; }
 
   const now = Date.now();
-  // Reminders fire 5 minutes ahead of the actual curtailment action so the
-  // operator has time to implement the change rather than reacting the
-  // instant it's due. Computed via Date arithmetic (not by hand-adjusting
-  // the {h,m} object) so a lead time that crosses midnight backward — e.g.
-  // an action at 00:00 becoming 23:55 the prior day — rolls over correctly.
-  const BC_REMINDER_LEAD_MIN = 5;
+  // Computed via Date arithmetic (not by hand-adjusting the {h,m} object)
+  // so a lead time that crosses midnight backward — e.g. an action at
+  // 00:00 becoming 23:55 the prior day — rolls over correctly.
   const resolved = plan.map(item => {
     const rawIso = bcCombineDateTime(bcLastTradeDateISO, item.time, item.rollover);
     const leadDate = new Date(rawIso);
@@ -12521,10 +11734,6 @@ function rocResetProgress() {
   rocRender();
 }
 
-function rocToggleFilterDropdown() {
-  // No-op — dropdown replaced by topic grid
-}
-
 function rocSetFilter(f, btn) {
   rocFilter = f;
   document.querySelectorAll('.roc-topic-card,.roc-ftag-dropdown').forEach(b => b.classList.remove('active'));
@@ -12754,6 +11963,255 @@ function rocDrillFinish() {
   rocRender();
   alert(`Daily Drill Complete! ⚡\n\n✓ Got it: ${got} / ${rocDrillQueue.length}\n✗ Missed: ${missed}\n\nKeep going — review the missed ones.`);
 }
+
+// ── PLAYBOOKS ────────────────────────────────────────────────────────────────
+// Built from RNWBL_ROC_Playbooks.xlsm. Stay Safe and Switching Procedures are
+// intentionally excluded from this public build — Stay Safe spells out the
+// exact well-being-check escalation timing, and Switching is a breaker
+// sequencing SOP; both stay SharePoint-only until the site has real
+// authentication rather than just App Check's bot-filtering. The other 12
+// sheets are standard CAISO/NERC-adjacent procedure, not sensitive.
+//
+// Check state is per-operator (localStorage, not Firestore) — this is
+// intentionally Phase 1: fast search + checklist. Shared/shift-persistent
+// progress and an audit trail are a deliberate follow-up once this version's
+// actually been used for a while, not built speculatively up front.
+const PB_CHECK_KEY = 'rnwbl_pb_checks_v1';
+const PB_CATEGORY_ORDER = ['Site Events','Dispatch & Compliance','Safety','Shift Routine'];
+const PB_PLAYBOOKS = [{"id": "Operating Instruction", "sheetTitle": "Operating Instruction", "phases": [{"name": "ISSUED BY CAISO BOARD", "steps": [{"text": "Receive Operating Instruction", "notes": ["Take Picture of the Board and attach to Log."]}, {"text": "Execute the Operating Instruction", "notes": ["Follow direction on CAISO Board."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "ISSUED BY PHONE", "steps": [{"text": "Receive Operating Instruction", "notes": ["Confirm if unsure it\u2019s an operating instruction."]}, {"text": "Repeat Instruction Back Correctly", "notes": ["Use 3-Way Comms. Ask if correct."]}, {"text": "Execute the Operating Instruction", "notes": ["Complete with authority on phone or call back after completion."]}, {"text": "Respond to authority Success/Failure", "notes": ["If Instruction completed off phone, call back."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}, {"text": "Inform Supervisor", "notes": ["So that call logs can be pulled."]}]}], "notes": ["Some operating instructions may de-rate or place the site in outage, follow those procedures as neccesary.", "If at any point a call is made to or received from authority switch to Phone Instructions"], "icon": "\ud83d\udccb", "category": "Dispatch & Compliance", "trigger": "CAISO board or a caller issues a direct operating instruction", "stepCount": 11, "slug": "operating-instruction"}, {"id": "Not Following ADS", "sheetTitle": "Not Following ADS", "phases": [{"name": "If SOC is near 100%", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed &/Or as directed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints DO NOT Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete Outage Card", "notes": ["Full Site Outage"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints as a result of site unable to follow dispatch, place a full site outage"], "icon": "\ud83c\udfaf", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking CAISO ADS dispatch setpoints", "stepCount": 18, "slug": "not-following-ads"}, {"id": "Not Following AGC", "sheetTitle": "Not Following AGC", "phases": [{"name": "If SOC is Limited", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS Works", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant in ADS mode", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS DOES NOT WORK", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints, place a full site outage"], "icon": "\ud83d\udcc9", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking AGC dispatch", "stepCount": 19, "slug": "not-following-agc"}, {"id": "Site Trip", "sheetTitle": "SITE TRIP", "phases": [{"name": "Start", "steps": [{"text": "Notify TOP", "notes": ["Inquire Possible Reason"]}, {"text": "Notify SC", "notes": ["End time 24 hours out"]}, {"text": "Complete Outage Card", "notes": ["As required & as perscribed by the SC"]}, {"text": "Dispatch Field", "notes": ["Coordinate retrieval of Event Files"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify 3AC", "notes": ["Call 1-800 number to get On Call. Tech to coordinate event files to 3AC POC."]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify SC", "notes": ["Request Permission to re-enter Market"]}, {"text": "Close In Site", "notes": ["Follow Swithcing Procedure"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Assume site trip if no parties can confirm comms to site"], "icon": "\u26a0\ufe0f", "category": "Site Events", "trigger": "Site has tripped offline", "stepCount": 14, "slug": "site-trip"}, {"id": "Comms Loss", "sheetTitle": "COMMS LOSS", "phases": [{"name": "Comms Loss Start", "steps": [{"text": "Identify Issue", "notes": ["Re-Fresh SCADA, Try another IP address, Try another Login"]}, {"text": "Notify TOP", "notes": ["Confirm their Comms. If No take direction from TOP"]}, {"text": "Notify SC", "notes": ["Confirm their Comms. If No take direction from SC"]}, {"text": "Notify Field", "notes": ["Via call or email"]}, {"text": "Notify Network Vendor", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["when comms are restored - if taken offline request permission to re-enter the grid"]}, {"text": "Notify SC", "notes": ["when comms are restored - if taken offline request permission to re-enter the market"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Assume site trip if no parties can confirm comms to site"], "icon": "\ud83d\udce1", "category": "Site Events", "trigger": "Lost SCADA / communications to a site", "stepCount": 13, "slug": "comms-loss"}, {"id": "Site De-Rated", "sheetTitle": "Site De-Rated", "phases": [{"name": "De-Rate Start", "steps": [{"text": "Identify Name Plate", "notes": ["Via Plant Info"]}, {"text": "Determine if Fully Availble/Derated", "notes": []}, {"text": "Submit De-rate/Outage to QSE", "notes": ["Via portal/form. Call to confirm"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "De-Rate End", "steps": [{"text": "Update/End Outage", "notes": ["Via Portal/Email"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\ud83d\udcc9", "category": "Site Events", "trigger": "Site is operating below full nameplate capacity", "stepCount": 10, "slug": "site-de-rated"}, {"id": "AVR", "sheetTitle": "Site Not in AVR", "phases": [{"name": "Not in AVR", "steps": [{"text": "Notify TOP", "notes": ["Per VAR-002 this is mandatory"]}, {"text": "Return site to AVR immediately", "notes": ["VIA Scada, Onsite team or other means"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\ud83d\udd0c", "category": "Dispatch & Compliance", "trigger": "Site has dropped out of Automatic Voltage Regulation (VAR-002)", "stepCount": 9, "slug": "avr"}, {"id": "Voltage", "sheetTitle": "Voltage Out of Band", "phases": [{"name": null, "steps": [{"text": "Notify TOP", "notes": ["Confirm their Comms"]}, {"text": "Notify SCADA Vendor", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Coordinate Assign POC", "notes": ["Via Email Chain"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}, {"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\u26a1", "category": "Dispatch & Compliance", "trigger": "Site voltage is outside the required band", "stepCount": 10, "slug": "voltage"}, {"id": "Daily Checklist", "sheetTitle": "Daily Checklist", "phases": [{"name": null, "steps": [{"text": "Please notify the ROC in the Teams chat that you are on the way.", "notes": []}, {"text": "Clock into work when at the office door (DSPTCH)", "notes": []}, {"text": "Check Dryerase/Outage board", "notes": []}, {"text": "Receive instructions from offgoing operator/teams", "notes": ["Verbally and via Teams chat"]}, {"text": "Log into D1/D2 duty sites SCADA's", "notes": []}, {"text": "Fill out (ROCC1) Operator Log (Onsite)", "notes": ["Via Softwrench"]}, {"text": "Complete Asset Scanning Tool/Upload", "notes": []}, {"text": "Leave instructions for oncoming operator in teams/turnover", "notes": ["Verbally and via Teams chat"]}, {"text": "Fillout (ROCC1) Operator Log (Offsite)", "notes": ["Via Softwrench"]}, {"text": "Ensure you log out of all sites directly", "notes": []}, {"text": "Leave the ROCC only after relief is logged into their sites.", "notes": []}, {"text": "Clock out (DSPTCH)", "notes": []}]}], "notes": [], "icon": "\u2705", "category": "Shift Routine", "trigger": "Start / end of shift routine", "stepCount": 12, "slug": "daily-checklist"}, {"id": "Fire Alarm", "sheetTitle": "Fire Alarm", "phases": [{"name": null, "steps": [{"text": "Recieve Fire alarm from Hiller or other service provider", "notes": []}, {"text": "Notify Field Team to check", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Coordinate Assign POC", "notes": ["Via Email Chain"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}, {"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\ud83d\udd25", "category": "Site Events", "trigger": "Fire alarm received from a site", "stepCount": 10, "slug": "fire-alarm"}, {"id": "Units Off", "sheetTitle": "Units Offline", "phases": [{"name": "Solar", "steps": [{"text": "Identify each inverters status Online/Offine/Comms Loss", "notes": []}, {"text": "Locate current Irradiance", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Bess", "steps": [{"text": "Identify each inverters status Online/Offine/Comms Loss/Faulted", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Wind", "steps": [{"text": "Identify a tripped turbine", "notes": ["Via Scada"]}, {"text": "Reset the turbine", "notes": ["According to SOP"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench & the Turbine Trip Logs"]}]}], "notes": [], "icon": "\ud83d\udd27", "category": "Site Events", "trigger": "One or more inverters / turbines offline (Solar, BESS, or Wind)", "stepCount": 16, "slug": "units-off"}, {"id": "Hail Stow", "sheetTitle": "Hail Stow", "phases": [{"name": null, "steps": [{"text": "Identify Alert: damaging hail", "notes": ["(\u2265 1 inch in diameter)"]}, {"text": "Log into NXNavigator", "notes": []}, {"text": "Stow Site", "notes": ["Emergency Stow"]}, {"text": "Notify Site Owner/Field/Scheduling Coordinator", "notes": []}, {"text": "Unstow 15 mintes after storm has passed", "notes": ["Using Indiji Watch"]}, {"text": "Log it", "notes": []}]}], "notes": [], "icon": "\ud83c\udf28\ufe0f", "category": "Site Events", "trigger": "Damaging hail alert \u2014 emergency stow needed", "stepCount": 6, "slug": "hail-stow"}]
+;
+
+let pbCheckState = {};
+try { pbCheckState = JSON.parse(localStorage.getItem(PB_CHECK_KEY) || '{}'); } catch(e) { pbCheckState = {}; }
+let pbCurrentSlug = null;
+
+function pbStepKey(slug, pi, si) { return slug + '::' + pi + '::' + si; }
+
+function pbSaveChecks() {
+  try { localStorage.setItem(PB_CHECK_KEY, JSON.stringify(pbCheckState)); } catch(e) {}
+}
+
+function pbPlaybookProgress(p) {
+  let total = 0, done = 0;
+  p.phases.forEach((ph, pi) => ph.steps.forEach((s, si) => {
+    total++;
+    if (pbCheckState[pbStepKey(p.slug, pi, si)]) done++;
+  }));
+  return { done, total };
+}
+
+function pbRenderList() {
+  const q = (document.getElementById('pb-search-inp').value || '').toLowerCase().trim();
+  const body = document.getElementById('pb-list-body');
+
+  const matches = p => {
+    if (!q) return true;
+    if (p.sheetTitle.toLowerCase().includes(q) || p.trigger.toLowerCase().includes(q)) return true;
+    return p.phases.some(ph => ph.steps.some(s => s.text.toLowerCase().includes(q) || s.notes.some(n => n.toLowerCase().includes(q))));
+  };
+
+  const filtered = PB_PLAYBOOKS.filter(matches);
+  if (!filtered.length) { body.innerHTML = `<div class="pb-no-results">No playbooks match "${esc(q)}"</div>`; return; }
+
+  let html = '';
+  PB_CATEGORY_ORDER.forEach(cat => {
+    const items = filtered.filter(p => p.category === cat);
+    if (!items.length) return;
+    html += `<div class="pb-cat-group"><div class="pb-cat-label">${esc(cat)}</div><div class="pb-grid">`;
+    items.forEach(p => {
+      const { done, total } = pbPlaybookProgress(p);
+      const pct = total ? Math.round(done / total * 100) : 0;
+      html += `<div class="pb-card" onclick="pbOpenPlaybook('${p.slug}')">
+        <div class="pb-card-top">
+          <span class="pb-icon">${p.icon}</span>
+          <span class="pb-card-title">${esc(p.sheetTitle)}</span>
+        </div>
+        <div class="pb-card-trigger">${esc(p.trigger)}</div>
+        <div class="pb-card-foot">
+          <div class="pb-progress-mini"><div class="pb-progress-mini-fill" style="width:${pct}%;"></div></div>
+          <span>${done}/${total}</span>
+        </div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  body.innerHTML = html;
+}
+
+function pbShowList() {
+  document.getElementById('pb-list-view').style.display = 'block';
+  document.getElementById('pb-detail-view').style.display = 'none';
+  pbCurrentSlug = null;
+  pbRenderList();
+}
+
+function pbOpenPlaybook(slug) {
+  pbCurrentSlug = slug;
+  document.getElementById('pb-list-view').style.display = 'none';
+  document.getElementById('pb-detail-view').style.display = 'block';
+  pbRenderDetail();
+}
+
+function pbRenderDetail() {
+  const p = PB_PLAYBOOKS.find(x => x.slug === pbCurrentSlug);
+  if (!p) { pbShowList(); return; }
+  const { done, total } = pbPlaybookProgress(p);
+  const pct = total ? Math.round(done / total * 100) : 0;
+  const multiPhase = p.phases.length > 1 && p.phases[0].name;
+  const titleEsc = p.sheetTitle.replace(/'/g, "\\'");
+
+  let html = `
+    <div class="pb-detail-title-row"><span class="pb-detail-icon">${p.icon}</span><span class="pb-detail-title">${esc(p.sheetTitle)}</span></div>
+    <span class="pb-cat-pill">${esc(p.category)}</span>
+    <div class="pb-detail-trigger">${esc(p.trigger)}</div>
+    <div class="pb-progress-row">
+      <div class="pb-progress-bar"><div class="pb-progress-bar-fill" style="width:${pct}%;"></div></div>
+      <span class="pb-progress-label">${done}/${total} steps</span>
+      <button class="pb-reset-btn" onclick="pbResetPlaybook()">Reset</button>
+    </div>
+    <div class="pb-feedback-row">
+      <button class="pb-suggest-link" onclick="pbToggleSuggestForm('pb-suggest-form-detail', '${p.slug}', '${titleEsc}')">&#128161; Suggest an update</button>
+    </div>
+    <div class="pb-suggest-form" id="pb-suggest-form-detail" style="display:none;">
+      <input type="text" class="pb-suggest-name-inp" id="pb-suggest-name-pb-suggest-form-detail" placeholder="Your name">
+      <textarea id="pb-suggest-text-pb-suggest-form-detail" placeholder="What should change on ${esc(p.sheetTitle)}&hellip;"></textarea>
+      <div class="pb-suggest-form-actions">
+        <button class="pb-suggest-cancel" onclick="pbToggleSuggestForm('pb-suggest-form-detail', '${p.slug}', '${titleEsc}')">Cancel</button>
+        <button class="pb-suggest-submit" onclick="pbSubmitSuggestion('pb-suggest-form-detail', '${p.slug}', '${titleEsc}')">Send</button>
+      </div>
+    </div>`;
+
+  if (multiPhase) {
+    html += `<div class="pb-phase-nav">`;
+    p.phases.forEach((ph, pi) => {
+      html += `<button class="pb-phase-nav-btn" onclick="document.getElementById('pb-phase-${pi}').scrollIntoView({behavior:'smooth',block:'start'})">${esc(ph.name)}</button>`;
+    });
+    html += `</div>`;
+  }
+
+  p.phases.forEach((ph, pi) => {
+    html += ph.name ? `<div class="pb-phase-section"><div class="pb-phase-name" id="pb-phase-${pi}">${esc(ph.name)}</div>` : `<div class="pb-phase-section">`;
+    ph.steps.forEach((s, si) => {
+      const key = pbStepKey(p.slug, pi, si);
+      const isDone = !!pbCheckState[key];
+      html += `<div class="pb-step-row${isDone ? ' done' : ''}" onclick="pbToggleStep('${key}')">
+        <span class="pb-step-check">${isDone ? '\u2713' : ''}</span>
+        <div class="pb-step-body">
+          <div class="pb-step-text">${esc(s.text)}</div>
+          ${s.notes.length ? `<div class="pb-step-notes">${s.notes.map(n => `<div>${esc(n)}</div>`).join('')}</div>` : ''}
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+
+  if (p.notes && p.notes.length) {
+    html += `<div class="pb-notes-callout"><div class="pb-notes-callout-hdr">Other Notes</div><ul style="margin:0;padding-left:16px;">${p.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul></div>`;
+  }
+
+  document.getElementById('pb-detail-body').innerHTML = html;
+}
+
+function pbToggleStep(key) {
+  pbCheckState[key] = !pbCheckState[key];
+  pbSaveChecks();
+  pbRenderDetail();
+}
+
+function pbResetPlaybook() {
+  const p = PB_PLAYBOOKS.find(x => x.slug === pbCurrentSlug);
+  if (!p) return;
+  p.phases.forEach((ph, pi) => ph.steps.forEach((s, si) => { delete pbCheckState[pbStepKey(p.slug, pi, si)]; }));
+  pbSaveChecks();
+  pbRenderDetail();
+}
+
+// ── Playbook suggestions ──────────────────────────────────────────────────
+// Deliberately minimal by design: one textarea, one collection, no separate
+// approval workflow UI. Operators drop a thought, Josh reviews the list on
+// the Playbooks landing page and dismisses (deletes) each once it's been
+// actioned or considered — same "write it, review it, clear it" pattern as
+// Shared Reminders and Time Off, not a new pattern to learn.
+let pbSuggestions = [];
+
+function initPbSuggestionsListener() {
+  if (!window.db) return;
+  window.db.collection('playbookSuggestions').orderBy('createdAt', 'desc').onSnapshot(snap => {
+    pbSuggestions = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    pbRenderSuggestionsBadge();
+    if (document.getElementById('pb-suggestions-panel').style.display !== 'none') pbRenderSuggestionsPanel();
+  }, err => console.error('Firestore (playbookSuggestions):', err));
+}
+
+function pbRenderSuggestionsBadge() {
+  const btn = document.getElementById('pb-suggestions-toggle');
+  const countEl = document.getElementById('pb-suggestions-count');
+  if (!btn || !countEl) return;
+  if (pbSuggestions.length) { countEl.textContent = pbSuggestions.length; btn.style.display = 'inline-block'; }
+  else { btn.style.display = 'none'; document.getElementById('pb-suggestions-panel').style.display = 'none'; }
+}
+
+function pbToggleSuggestionsPanel() {
+  const panel = document.getElementById('pb-suggestions-panel');
+  const show = panel.style.display === 'none';
+  panel.style.display = show ? 'block' : 'none';
+  if (show) pbRenderSuggestionsPanel();
+}
+
+function pbRenderSuggestionsPanel() {
+  const panel = document.getElementById('pb-suggestions-panel');
+  if (!pbSuggestions.length) { panel.innerHTML = `<div class="pb-sugg-row"><div class="pb-sugg-body pb-sugg-text">Nothing pending.</div></div>`; return; }
+  panel.innerHTML = pbSuggestions.map(s => `
+    <div class="pb-sugg-row">
+      <div class="pb-sugg-body">
+        <div class="pb-sugg-source">${s.playbookTitle ? esc(s.playbookTitle) : 'General / new playbook idea'} &mdash; ${esc(s.submittedBy || 'Unknown')}</div>
+        <div class="pb-sugg-text">${esc(s.text || '')}</div>
+      </div>
+      <button class="pb-sugg-dismiss" onclick="pbDismissSuggestion('${s.id}')" title="Dismiss">&#10005;</button>
+    </div>`).join('');
+}
+
+async function pbDismissSuggestion(id) {
+  if (!window.db) return;
+  try { await window.db.collection('playbookSuggestions').doc(id).delete(); }
+  catch (e) { showToast('Could not dismiss: ' + e.message); }
+}
+
+function pbToggleSuggestForm(containerId, slug, title) {
+  const form = document.getElementById(containerId);
+  const show = form.style.display === 'none';
+  form.style.display = show ? 'block' : 'none';
+  if (!show) {
+    document.getElementById('pb-suggest-text-' + containerId).value = '';
+    document.getElementById('pb-suggest-name-' + containerId).value = '';
+  }
+}
+
+async function pbSubmitSuggestion(containerId, slug, title) {
+  if (!window.db) { showToast('Firebase not connected \u2014 open this file directly in a browser'); return; }
+  const nameInp = document.getElementById('pb-suggest-name-' + containerId);
+  const ta = document.getElementById('pb-suggest-text-' + containerId);
+  const name = nameInp.value.trim();
+  const text = ta.value.trim();
+  if (!name) { showToast('Add your name so Josh knows who to follow up with'); return; }
+  if (!text) { showToast('Type something first'); return; }
+  try {
+    await window.db.collection('playbookSuggestions').add({
+      playbookSlug: slug || null,
+      playbookTitle: title || null,
+      text,
+      submittedBy: name,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    ta.value = '';
+    nameInp.value = '';
+    document.getElementById(containerId).style.display = 'none';
+    showToast('Thanks \u2014 logged for review \u2713');
+  } catch (e) {
+    showToast('Could not send: ' + e.message);
+  }
+}
+
 
 // ── SCHEDULE COMPARE ─────────────────────────────────────────────────────────
 (function(){
@@ -13229,21 +12687,6 @@ function movePitChip(half, idx, dir){
   if(newIdx<0||newIdx>=arr.length) return;
   [arr[idx],arr[newIdx]]=[arr[newIdx],arr[idx]];
   refreshAllScheduleViews();
-}
-
-function swapPeople(sourceHalf,sourceName,targetHalf,targetName){
-  state.fh=state.fh.filter(n=>n!==sourceName&&n!==targetName);
-  state.bh=state.bh.filter(n=>n!==sourceName&&n!==targetName);
-  const targetArr=state[targetHalf];
-  const targetIdx=targetArr.indexOf(targetName);
-  if(targetIdx>=0) targetArr.splice(targetIdx,0,sourceName);
-  else targetArr.push(sourceName);
-  if(sourceHalf===targetHalf){
-    const sourceIdx=targetArr.indexOf(sourceName);
-    if(sourceIdx>=0) targetArr.splice(sourceIdx+1,0,targetName);
-  } else {
-    state[sourceHalf].push(targetName);
-  }
 }
 
 // ── Individual view ────────────────────────────────────────────────────────
@@ -13940,9 +13383,6 @@ function currCalRender(){
   }
 }
 
-const PIT_A = ['Jesse','Sergio','Josh','Adam','Alex'];
-const PIT_B = ['Ricky','Christian','Daniel','Morgan'];
-const PIT_OPS = [...PIT_A,...PIT_B];
 const PIT_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const PIT_DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const PIT_RCLS={D1:'d1',D2:'d2',D3:'d3',N1:'n1',N2:'n2'};
@@ -14292,6 +13732,7 @@ renderChips();
 updateSelect();
 initTimeOffListener();
 initSharedRemindersListener();
+initPbSuggestionsListener();
 // #to-operator lives after this script tag, so re-run after full DOM parse
 setTimeout(() => {
   updateSelect();
@@ -14367,7 +13808,7 @@ load();
 
 <footer class="app-footer">
   <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-  RNWBL Ops Hub <span class="app-footer-v">v1.0</span>
+  RNWBL Ops Hub <span class="app-footer-v">v1.3</span>
 </footer>
 </body>
 </html>
