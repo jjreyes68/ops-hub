@@ -4628,11 +4628,29 @@ async function load() {
   const tkeys = ['t1','t2','t3'];
   rows.forEach((row,i) => { const inp=row.querySelector('input'); if(inp) inp.value=S.escContacts[tkeys[i]]||''; });
 
-  // Restore last active tab (default: scans)
-  const TAB_VIEWS = ['scans','asset','nerc','roc','intel','ops','swbuilder','chron','timezones','schedule','sitemap'];
-  let savedTab = 'scans';
-  try { savedTab = localStorage.getItem('rnwbl_active_tab') || 'scans'; } catch(e) {}
-  if (!TAB_VIEWS.includes(savedTab)) savedTab = 'scans';
+  // Restore last active tab (default: home). Home replaced Scans as the
+  // default landing view — but every existing browser already has 'scans'
+  // explicitly saved from before Home existed, so just changing the
+  // fallback string here wouldn't actually change anything for anyone real.
+  // Instead: the first time this runs on a given browser, anyone whose
+  // saved tab is still the old default ('scans') gets bumped to Home once;
+  // anyone who'd deliberately parked on something else (Schedule Compare,
+  // Toolbox, etc.) keeps that choice. After this one-time migration, normal
+  // restoration behavior resumes — including going back to Scans if that's
+  // where someone deliberately navigates.
+  const TAB_VIEWS = ['home','scans','asset','nerc','roc','intel','ops','swbuilder','chron','timezones','schedule','sitemap'];
+  let savedTab = 'home';
+  try {
+    const migrated = localStorage.getItem('rnwbl_home_migration_v1');
+    const stored = localStorage.getItem('rnwbl_active_tab');
+    if (!migrated) {
+      savedTab = (stored && stored !== 'scans') ? stored : 'home';
+      localStorage.setItem('rnwbl_home_migration_v1', '1');
+    } else {
+      savedTab = stored || 'home';
+    }
+  } catch(e) {}
+  if (!TAB_VIEWS.includes(savedTab)) savedTab = 'home';
   const tabEl = [...document.querySelectorAll('.nav-tab')].find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes("'"+savedTab+"'"));
   switchView(savedTab, tabEl || null);
 }
@@ -14116,7 +14134,7 @@ load();
 
 <footer class="app-footer">
   <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-  RNWBL Ops Hub <span class="app-footer-v">v1.7</span>
+  RNWBL Ops Hub <span class="app-footer-v">v1.8</span>
 </footer>
 </body>
 </html>
