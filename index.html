@@ -5137,9 +5137,30 @@ function renderRecurringPresets(){
     ).join('');
 }
 
+// Browsers block audio from actually producing sound until the page has
+// had some user interaction — a fresh page load with no clicks yet can
+// silently swallow an alarm (playQtAlarm's try/catch hides this), or in
+// some cases queue it up and fire it unexpectedly on whatever the user's
+// next click happens to be, which looks exactly like "a sound went off
+// when I opened the page" with no obvious trigger. Creating one shared
+// context up front and unlocking it on the very first interaction
+// anywhere on the page means it's already resumed by the time a real
+// alarm needs to fire, instead of creating a fresh (possibly suspended)
+// context per alarm.
+let qtSharedAudioCtx = null;
+function qtUnlockAudio() {
+  try {
+    if (!qtSharedAudioCtx) qtSharedAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (qtSharedAudioCtx.state === 'suspended') qtSharedAudioCtx.resume();
+  } catch (e) {}
+}
+['click', 'keydown', 'touchstart'].forEach(evt => document.addEventListener(evt, qtUnlockAudio, { once: true }));
+
 function playQtAlarm(){
   try {
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    if (!qtSharedAudioCtx) qtSharedAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = qtSharedAudioCtx;
+    if (ctx.state === 'suspended') ctx.resume();
     function beep(freq,start,dur){
       const o=ctx.createOscillator(), g=ctx.createGain();
       o.connect(g); g.connect(ctx.destination);
@@ -5154,7 +5175,9 @@ function playQtAlarm(){
 
 function playRecurringAlarm(){
   try {
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    if (!qtSharedAudioCtx) qtSharedAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = qtSharedAudioCtx;
+    if (ctx.state === 'suspended') ctx.resume();
     function beep(freq,start,dur){
       const o=ctx.createOscillator(), g=ctx.createGain();
       o.connect(g); g.connect(ctx.destination);
@@ -5516,6 +5539,7 @@ function checkSharedReminderAlarms() {
   const now = Date.now();
   sharedReminders.forEach(r => {
     const target = new Date(r.targetISO).getTime();
+    if (isNaN(target)) return; // malformed/missing targetISO — not a real due date, skip entirely
     if (target > now) { sharedReminderAlarmed.delete(r.id); return; }
     if (!sharedReminderAlarmed.has(r.id)) {
       sharedReminderAlarmed.add(r.id);
@@ -5550,6 +5574,13 @@ function srDismissBanner() {
   // heard the same chime, and it prevents a pile-up of missed reminders
   // for anyone who was away when they fired. Mirrors Quick Timer's own
   // "clear all expired in one click" dismiss behavior, just via Firestore.
+  //
+  // Also stops in-progress audio immediately — clearing the database
+  // record alone doesn't touch anything already playing, so without this
+  // the voice announcement (which can run several seconds for a longer
+  // task name) would keep talking right through a dismiss click. That's
+  // its own trust problem: it looks like the dismiss button is broken.
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
   document.getElementById('sr-alarm-banner').style.display = 'none';
   if (!window.db) return;
   const now = Date.now();
@@ -14152,7 +14183,7 @@ load();
 
 <footer class="app-footer">
   <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-  RNWBL Ops Hub <span class="app-footer-v">v1.9</span>
+  RNWBL Ops Hub <span class="app-footer-v">v1.11</span>
 </footer>
 </body>
 </html>
