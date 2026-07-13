@@ -369,6 +369,35 @@ body.dark .card-title{color:var(--text2);}
 .filter-btn{padding:5px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;}
 .filter-btn:hover{border-color:var(--border2);color:var(--text);}
 .filter-btn.active{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
+
+/* SITE BOARD */
+.board-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.board-progress{font-family:var(--m);font-size:12px;color:var(--text2);}
+.site-board{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;}
+.board-col{flex:1 1 220px;min-width:200px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--shs);overflow:hidden;}
+.board-col-hdr{display:flex;align-items:center;gap:6px;padding:9px 12px;background:var(--bg3);border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.05em;text-transform:uppercase;}
+.board-col-count{font-family:var(--m);font-size:10px;font-weight:600;color:var(--text3);background:var(--bg4);padding:1px 6px;border-radius:8px;}
+.board-col-body{padding:2px 0;}
+.board-col-empty{padding:12px;font-size:12px;color:var(--text3);text-align:center;}
+.board-site-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
+.board-site-row:last-child{border-bottom:none;}
+.board-site-row:hover{background:var(--bg3);}
+.board-chk{width:16px;height:16px;flex-shrink:0;border-radius:4px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--gbg);cursor:pointer;}
+.board-site-row.checked .board-chk,.board-chk.checked{background:var(--green);border-color:var(--green);color:#fff;}
+.board-site-name{flex:1;font-size:13px;color:var(--text);}
+.board-site-row.checked .board-site-name{color:var(--text3);text-decoration:line-through;}
+.board-assign-group{display:flex;gap:3px;flex-shrink:0;}
+.board-assign-btn{padding:2px 6px;border-radius:5px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);font-size:10px;font-weight:600;cursor:pointer;transition:all .15s;}
+.board-assign-btn:hover{border-color:var(--border2);color:var(--text2);}
+.board-assign-btn.active{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
+.board-site-row.indent{padding-left:26px;}
+.board-group-hdr{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--border);cursor:pointer;background:var(--bg3);transition:background .1s;}
+.board-group-hdr:hover{background:var(--bg4);}
+.board-group-expand{color:var(--text3);font-size:9px;flex-shrink:0;transition:transform .18s;}
+.board-group-hdr.open .board-group-expand{transform:rotate(90deg);}
+.board-group-children{border-bottom:1px solid var(--border);}
+.board-group-children .board-site-row:last-child{border-bottom:none;}
+@media(max-width:700px){.site-board{flex-direction:column;}.board-col{flex:1 1 auto;width:100%;}}
 .stat-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
 .stat-chip{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;box-shadow:var(--shs);min-width:64px;transition:box-shadow .15s,transform .15s;}
 .stat-chip:hover{box-shadow:var(--sh);transform:translateY(-1px);}
@@ -453,69 +482,27 @@ body.dark .card-title{color:var(--text2);}
 .handoff-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;font-family:var(--m);font-size:12px;line-height:1.9;color:var(--text2);white-space:pre-wrap;max-height:420px;overflow-y:auto;}
 
 /* ── WIZARD MODAL ───────────────────────────────────────────────────────────── */
-.wizard-step{display:none;animation:fadeIn .2s ease}
-.wizard-step.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.wizard-step-bar{display:flex;align-items:center;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border);}
-.wizard-step-bar-item{display:flex;align-items:center;gap:7px;flex:1;opacity:.4;transition:all .2s;}
-.wizard-step-bar-item.active{opacity:1;}
-.wizard-step-bar-item.completed{opacity:.75;}
-.wizard-step-bar-num{width:22px;height:22px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text2);flex-shrink:0;transition:all .2s;}
-.wizard-step-bar-item.active .wizard-step-bar-num{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
-.wizard-step-bar-item.completed .wizard-step-bar-num{border-color:var(--green);color:var(--green);background:var(--gbg);}
-.wizard-step-bar-lbl{font-size:12px;font-weight:600;color:var(--text2);}
-.wizard-step-bar-item.active .wizard-step-bar-lbl{color:var(--blue);}
-.wizard-step-bar-item.completed .wizard-step-bar-lbl{color:var(--green);}
-.wizard-step-bar-sep{color:var(--text3);font-size:11px;margin:0 8px;flex-shrink:0;}
-.wizard-step-title{font-size:14px;font-weight:600;margin-bottom:6px;color:var(--text)}
-.wizard-step-sub{font-size:12px;color:var(--text3);margin-bottom:16px}
-.wzd-live-preview{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:7px;padding:10px 12px;margin-top:12px;}
-.wzd-live-preview-lbl{font-size:9.5px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;}
-.wzd-live-preview-body{font-family:var(--m);font-size:12px;color:var(--text2);line-height:1.6;}
-.step-header-preview{background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:7px;padding:10px 12px;margin-bottom:10px;}
 .step-token-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
 .step-token-lbl{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;}
 .step-token-btn{font-size:11px;font-weight:600;padding:4px 10px;border-radius:5px;border:1px solid var(--blue);background:var(--bbg);color:var(--blue);cursor:pointer;font-family:var(--m);transition:all .15s;}
 .step-token-btn:hover{background:var(--blue);color:#fff;}
-.step-builder{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
-.step-row{display:flex;align-items:center;gap:6px;}
-.step-row-dash{color:var(--text3);font-weight:700;flex-shrink:0;font-size:14px;width:12px;text-align:center;}
-.step-row-input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:12px;}
-.step-row-input:focus{outline:none;border-color:var(--blue);}
-.step-row-actions{display:flex;gap:3px;flex-shrink:0;}
-.step-row-btn{padding:4px 7px;border-radius:5px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);cursor:pointer;font-size:11px;transition:all .15s;font-family:var(--f);}
-.step-row-btn:hover{border-color:var(--border2);color:var(--text2);}
-.step-row-del:hover{border-color:var(--red);color:var(--red);}
-.step-row-btn-ph{width:27px;display:inline-block;}
-.step-add-btn{padding:7px 12px;border-radius:6px;border:1.5px dashed var(--border2);background:transparent;color:var(--text3);font-size:12px;font-weight:600;cursor:pointer;width:100%;transition:all .15s;font-family:var(--f);}
-.step-add-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
-.quick-fill-wrap{margin-bottom:16px}
-.quick-fill-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
-.chip-grid{display:flex;flex-wrap:wrap;gap:6px}
+.token-pill{display:inline-flex;align-items:center;gap:4px;background:var(--bbg);color:var(--blue);border-radius:9px;padding:1px 4px 1px 8px;font-size:10.5px;font-weight:700;white-space:nowrap;user-select:none;margin:0 1px;vertical-align:middle;}
+.token-pill-x{background:none;border:none;color:var(--blue);opacity:.55;cursor:pointer;font-size:9px;padding:2px;line-height:1;}
+.token-pill-x:hover{opacity:1;}
 .chip-btn{padding:6px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s}
 .chip-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bbg)}
-.chip-btn.preset-de{border-left:3px solid var(--red)}
-.chip-btn.preset-re{border-left:3px solid var(--green)}
-.chip-btn.preset-other{border-left:3px solid var(--blue)}
-.wizard-options{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
-.wizard-option{padding:12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg3);cursor:pointer;transition:all .15s;text-align:left;font-family:var(--f)}
-.wizard-option:hover{border-color:var(--blue);background:var(--bbg)}
-.wizard-option.selected{border-color:var(--blue);background:var(--bbg);box-shadow:0 0 0 2px var(--bbg)}
-.wizard-option-icon{font-size:18px;display:block;margin-bottom:4px}
-.wizard-option-title{font-size:13px;font-weight:600;color:var(--text);display:block}
-.wizard-option-desc{font-size:11px;color:var(--text3);margin-top:2px;display:block}
 .wizard-field{margin-bottom:12px}
+.sw-type-picker{display:flex;gap:8px;}
+.sw-type-btn{flex:1;padding:10px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;font-family:var(--f);font-size:12.5px;font-weight:600;transition:all .15s;}
+.sw-type-btn.selected{border-color:var(--blue);background:var(--bbg);color:var(--blue);box-shadow:0 0 0 2px var(--bbg);}
+.tpl-body-editable{min-height:110px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);font-family:var(--f);font-size:13px;line-height:1.6;outline:none;white-space:pre-wrap;}
+.tpl-body-editable:focus{border-color:var(--blue);}
+.tpl-body-editable:empty:before{content:attr(data-placeholder);color:var(--text3);}
 .wizard-field label{font-size:11px;font-weight:600;color:var(--text2);display:block;margin-bottom:4px}
 .wizard-field input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px}
 .wizard-field input:focus{outline:none;border-color:var(--blue);background:var(--bg2)}
-.wizard-preview{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin:12px 0}
-.wizard-preview-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
-.wizard-preview-body{font-family:var(--m);font-size:12px;line-height:1.7;color:var(--text2);white-space:pre-wrap}
-.wizard-preview-body .placeholder{color:var(--blue);font-weight:600;background:var(--bbg);padding:1px 4px;border-radius:3px}
 .wizard-actions{display:flex;gap:8px;margin-top:16px;justify-content:space-between;align-items:center}
 .wizard-actions-right{display:flex;gap:8px}
-.wizard-back-btn{padding:7px 14px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:13px;cursor:pointer;font-family:var(--f);transition:all .15s}
-.wizard-back-btn:hover{border-color:var(--border2);color:var(--text)}
 
 /* Weather */
 .intel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
@@ -634,6 +621,9 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .sw-pg-title{font-size:19px;font-weight:600;letter-spacing:-.01em;color:var(--text);}
 .sw-pg-sub{font-size:12.5px;color:var(--text3);margin-top:3px;}
 .sw-lbl{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;}
+.sw-tpl-search{width:100%;padding:8px 11px;border:1px solid var(--border2);border-radius:var(--r);background:var(--bg3);color:var(--text);font-family:var(--f);font-size:12.5px;margin-bottom:10px;}
+.sw-tpl-search:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
+.sw-tpl-search::placeholder{color:var(--text3);}
 .sw-rule{border:none;border-top:1px solid var(--border);margin:14px 0;}
 .sw-history-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:14px;box-shadow:var(--shs);margin-top:12px;}
 .sw-history-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
@@ -681,6 +671,7 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .sw-tpl-act-btn{background:none;border:none;cursor:pointer;font-size:12px;color:var(--text3);padding:3px 5px;border-radius:4px;transition:all .15s;line-height:1;}
 .sw-tpl-act-btn:hover{color:var(--text);background:var(--bg4);}
 .sw-tpl-lock{font-size:9px;color:var(--text3);padding:0 8px 0 4px;flex-shrink:0;opacity:.45;align-self:center;}
+.sw-tpl-shared-badge{font-size:11px;color:var(--blue);padding:0 4px 0 4px;flex-shrink:0;align-self:center;}
 .sw-new-tpl-btn{width:100%;padding:7px;border:1.5px dashed var(--border2);border-radius:7px;background:transparent;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s;margin-bottom:4px;margin-top:4px;}
 .sw-new-tpl-btn:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
 .sw-result-hdr.other{background:var(--bbg);color:var(--blue);}
@@ -2250,7 +2241,7 @@ body.dark #view-schedule .chip-del{ background: rgba(255,255,255,0.08); border-c
 .qotd-card-link{display:inline-block;margin-top:9px;font-size:11.5px;color:var(--blue);font-weight:600;text-decoration:none;cursor:pointer;}
 
 .glance-label{font-size:10.5px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
-.glance-grid{display:grid;grid-template-columns:1fr 1fr 2fr;gap:10px;margin-bottom:8px;}
+.glance-grid{display:grid;grid-template-columns:1fr 1fr 1fr 2fr;gap:10px;margin-bottom:8px;}
 .glance-tile{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:13px 14px;box-shadow:var(--shs);cursor:pointer;transition:all .12s;}
 .glance-tile:hover{border-color:var(--blue);transform:translateY(-1px);box-shadow:var(--sh);}
 .glance-tile-top{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
@@ -2261,6 +2252,25 @@ body.dark #view-schedule .chip-del{ background: rgba(255,255,255,0.08); border-c
 .glance-tile.attn .glance-tile-main{color:var(--amber);}
 .glance-tile.ok .glance-tile-main{color:var(--green);}
 .wind-mini-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px 12px;}
+
+.asp-row{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;padding:3px 0;}
+.asp-row+.asp-row{border-top:1px solid var(--border);}
+.asp-type{display:flex;align-items:center;gap:5px;color:var(--text2);font-weight:600;}
+.asp-status{font-size:10.5px;font-weight:700;}
+.asp-status.claimed{color:var(--blue);}
+.asp-status.unclaimed{color:var(--text3);}
+
+.claim-strip{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.claim-seg{flex:1;min-width:180px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.claim-seg-type{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--text);}
+.claim-seg-who{font-size:11px;color:var(--text3);}
+.claim-seg-who.claimed{color:var(--blue);font-weight:600;}
+.claim-btn{font-size:11px;font-weight:700;padding:5px 11px;border-radius:6px;cursor:pointer;border:none;white-space:nowrap;font-family:var(--f);}
+.claim-btn.claim{background:var(--bbg);color:var(--blue);}
+.claim-btn.release{background:var(--bg4);color:var(--text2);}
+.claim-inline-form{display:flex;gap:6px;align-items:center;flex:1;}
+.claim-inline-form input{flex:1;min-width:0;padding:5px 8px;border:1px solid var(--border2);border-radius:5px;background:var(--bg2);color:var(--text);font-family:var(--f);font-size:11.5px;}
+.claim-inline-form input:focus{outline:none;border-color:var(--blue);}
 .wind-mini-cell{display:flex;align-items:baseline;gap:6px;font-size:10.5px;}
 .wind-mini-cell .wm-site{color:var(--text2);font-family:var(--m);}
 .wind-mini-cell .wm-val{font-weight:700;color:var(--text);}
@@ -2463,6 +2473,10 @@ body.dark .corkboard{
       <div class="glance-tile-main" id="glance-rem-main">—</div>
       <div class="glance-tile-sub" id="glance-rem-sub"></div>
     </div>
+    <div class="glance-tile" id="glance-ascan" onclick="switchView('asset', null)">
+      <div class="glance-tile-top"><span class="glance-icon">📋</span><span class="glance-tile-label">Asset Scan</span></div>
+      <div id="glance-ascan-rows"></div>
+    </div>
     <div class="glance-tile" id="glance-wind" onclick="switchView('intel', null)">
       <div class="glance-tile-top"><span class="glance-icon">💨</span><span class="glance-tile-label">Wind Fleet</span></div>
       <div id="glance-wind-rows"><div class="glance-tile-sub">—</div></div>
@@ -2515,10 +2529,12 @@ body.dark .corkboard{
     <button class="tbtn" onclick="scanAll()">✓ Scan all sites</button>
     <button class="tbtn" style="color:var(--amber);border-color:var(--amber);" onclick="resetSitesToDefaults()">↺ Reset sites to defaults</button>
     <div style="flex:1;"></div>
+    <button class="tbtn" id="scan-view-table-btn" onclick="setScanViewMode('table')">Table view</button>
+    <button class="tbtn" id="scan-view-board-btn" onclick="setScanViewMode('board')">Board view</button>
     <button class="ref-toggle-btn" id="ref-toggle-btn" onclick="toggleRefData(this)">Show ref data</button>
   </div>
   <div class="stat-row" id="scan-stats"></div>
-  <div class="filter-row">
+  <div class="filter-row" id="scan-filter-row">
     <button class="filter-btn active" onclick="setSiteFilter('all',this)">All</button>
     <button class="filter-btn" onclick="setSiteFilter('overdue',this)">Overdue</button>
     <button class="filter-btn" onclick="setSiteFilter('due',this)">Due soon</button>
@@ -2529,6 +2545,7 @@ body.dark .corkboard{
     <button class="filter-btn" onclick="setSiteFilter('Wind',this)">Wind</button>
   </div>
   <div id="sites-table-wrap"></div>
+  <div id="site-board-wrap" style="display:none;"></div>
 </div>
 
 <!-- TOOLBOX -->
@@ -2902,138 +2919,45 @@ body.dark .corkboard{
   <div class="modal" style="width:560px;max-height:90vh;overflow-y:auto;">
     <h3 id="sw-tpl-modal-title">New Template</h3>
     <input type="hidden" id="sw-tpl-edit-id">
-    <input type="hidden" id="sw-tpl-site">
-    <input type="hidden" id="sw-tpl-action">
-    <input type="hidden" id="sw-tpl-cls" value="de">
-    <input type="hidden" id="sw-tpl-numlbl" value="Number">
-    <input type="hidden" id="sw-tpl-body">
-    <input type="hidden" id="wzd-body" value="">
+    <input type="hidden" id="sw-tpl-edit-scope" value="">
+    <input type="hidden" id="sw-tpl-cls" value="other">
+    <input type="hidden" id="sw-tpl-numlbl-existing" value="">
 
-    <!-- Step Bar -->
-    <div class="wizard-step-bar">
-      <div class="wizard-step-bar-item active" id="wzd-bar-1">
-        <span class="wizard-step-bar-num">1</span>
-        <span class="wizard-step-bar-lbl">Type</span>
-      </div>
-      <span class="wizard-step-bar-sep">→</span>
-      <div class="wizard-step-bar-item" id="wzd-bar-2">
-        <span class="wizard-step-bar-num">2</span>
-        <span class="wizard-step-bar-lbl">Details</span>
-      </div>
-      <span class="wizard-step-bar-sep">→</span>
-      <div class="wizard-step-bar-item" id="wzd-bar-3">
-        <span class="wizard-step-bar-num">3</span>
-        <span class="wizard-step-bar-lbl">Build</span>
+    <div class="wizard-field">
+      <label>Template name <span style="font-weight:400;color:var(--text3);">(how it appears in the list)</span></label>
+      <input id="wzd-display-name" placeholder="e.g., HARQ De-Energize">
+    </div>
+
+    <div class="wizard-field">
+      <label>Type</label>
+      <div class="sw-type-picker">
+        <button type="button" class="sw-type-btn de" data-cls="de" onclick="swSelectClsType('de',this)">⚡ De-energize</button>
+        <button type="button" class="sw-type-btn re" data-cls="re" onclick="swSelectClsType('re',this)">🔌 Re-energize</button>
+        <button type="button" class="sw-type-btn other" data-cls="other" onclick="swSelectClsType('other',this)">📋 Other</button>
       </div>
     </div>
 
-    <!-- Quick Fill Chips (hidden on step 3) -->
-    <div class="quick-fill-wrap" id="wzd-chips-wrap">
-      <div class="quick-fill-title">Quick Start — Click to auto-fill</div>
-      <div class="chip-grid" id="quick-fill-chips">
-        <button class="chip-btn preset-de" onclick="swQuickFill('de-energize')">⚡ De-energize Remotely</button>
-        <button class="chip-btn preset-de" onclick="swQuickFill('de-energize-local')">🔻 De-energize Locally</button>
-        <button class="chip-btn preset-re" onclick="swQuickFill('re-energize')">🔌 Re-energize Remotely</button>
-        <button class="chip-btn preset-re" onclick="swQuickFill('re-energize-local')">🔺 Re-energize Locally</button>
-        <button class="chip-btn preset-other" onclick="swQuickFill('mvt')">📝 MVT Permit</button>
-        <button class="chip-btn preset-de" onclick="swQuickFill('trip')">⚠️ Trip Reset</button>
-        <button class="chip-btn preset-other" onclick="swQuickFill('comm')">📞 Comm Check</button>
-        <button class="chip-btn preset-other" onclick="swQuickFill('bypass')">🔀 Bypass Switch</button>
-      </div>
-    </div>
-
-    <!-- Step 1: Choose Action Type -->
-    <div class="wizard-step active" id="wzd-step-1">
-      <div class="wizard-step-title">What type of action?</div>
-      <div class="wizard-step-sub">Select the category that best describes this template</div>
-      <div class="wizard-options">
-        <button class="wizard-option" onclick="swSelectType('de')">
-          <span class="wizard-option-icon">⚡</span>
-          <span class="wizard-option-title">De-energize / Off</span>
-          <span class="wizard-option-desc">Removing power, shutdowns, isolations</span>
-        </button>
-        <button class="wizard-option" onclick="swSelectType('re')">
-          <span class="wizard-option-icon">🔌</span>
-          <span class="wizard-option-title">Re-energize / On</span>
-          <span class="wizard-option-desc">Restoring power, restarts, enabling</span>
-        </button>
-        <button class="wizard-option" onclick="swSelectType('permit')">
-          <span class="wizard-option-icon">📝</span>
-          <span class="wizard-option-title">Permit / Clearance</span>
-          <span class="wizard-option-desc">Work permits, safety clearances</span>
-        </button>
-        <button class="wizard-option" onclick="swSelectType('reset')">
-          <span class="wizard-option-icon">↺</span>
-          <span class="wizard-option-title">Reset / Acknowledge</span>
-          <span class="wizard-option-desc">Trip resets, alarms, notifications</span>
-        </button>
-        <button class="wizard-option" onclick="swSelectType('test')">
-          <span class="wizard-option-icon">🔧</span>
-          <span class="wizard-option-title">Test / Verify</span>
-          <span class="wizard-option-desc">Testing, verification, checks</span>
-        </button>
-        <button class="wizard-option" onclick="swSelectType('other')">
-          <span class="wizard-option-icon">📋</span>
-          <span class="wizard-option-title">Other</span>
-          <span class="wizard-option-desc">General purpose template</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Step 2: Enter Details -->
-    <div class="wizard-step" id="wzd-step-2">
-      <div class="wizard-step-title">Enter the details</div>
-      <div class="wizard-step-sub">What site and action is this template for?</div>
-      <div class="wizard-field">
-        <label>Site / System name <span style="font-weight:400;color:var(--text3);">(e.g., CNDR1, COSO, Bypass)</span></label>
-        <input id="wzd-site" placeholder="Enter site or system name" oninput="swWizardUpdate()">
-      </div>
-      <div class="wizard-field">
-        <label>Action label <span style="font-weight:400;color:var(--text3);">(e.g., De-Energize, MVT Permit)</span></label>
-        <input id="wzd-action" placeholder="Enter the action name" oninput="swWizardUpdate()">
-      </div>
-      <div class="wizard-field">
-        <label>Number field label <span style="font-weight:400;color:var(--text3);">(e.g., Feeder #, MVT #, Unit ID)</span></label>
-        <input id="wzd-numlbl" placeholder="Number" value="Number" oninput="swWizardUpdate()">
-      </div>
-      <!-- Live preview -->
-      <div class="wzd-live-preview" id="wzd-live-preview" style="display:none;">
-        <div class="wzd-live-preview-lbl">Log header preview</div>
-        <div class="wzd-live-preview-body" id="wzd-live-preview-body"></div>
-      </div>
-    </div>
-
-    <!-- Step 3: Build Steps -->
-    <div class="wizard-step" id="wzd-step-3">
-      <div class="wizard-step-title">Build the log steps</div>
-      <div class="wizard-step-sub">Name your template, then add the steps operators will follow.</div>
-      <div class="wizard-field">
-        <label>Template name <span style="font-weight:400;color:var(--text3);">(how it appears in the list)</span></label>
-        <input id="wzd-display-name" placeholder="e.g., De-energize Feeder 52F" oninput="swWizardUpdateDisplayName()">
-      </div>
-      <!-- Header preview -->
-      <div class="step-header-preview" id="wzd-header-preview">
-        <div class="wzd-live-preview-lbl">Log header (from your details)</div>
-        <div class="wzd-live-preview-body" id="wzd-header-preview-body"></div>
-      </div>
-      <!-- Token insert buttons -->
+    <div class="wizard-field">
+      <label>Message <span style="font-weight:400;color:var(--text3);">(write it exactly like you'd log it — Enter for a new line, Tab to indent, click a pill for the part that changes)</span></label>
       <div class="step-token-row">
         <span class="step-token-lbl">Insert:</span>
         <button type="button" class="step-token-btn" onclick="swInsertToken('{{TECH}}')">+ Tech Name</button>
         <button type="button" class="step-token-btn" onclick="swInsertToken('{{NUMBER}}')">+ Number</button>
         <button type="button" class="step-token-btn" onclick="swInsertToken('{{TIME}}')">+ Time</button>
+        <button type="button" class="step-token-btn" onclick="swInsertBulletLine()">+ Bullet line</button>
       </div>
-      <!-- Step builder -->
-      <div class="step-builder" id="wzd-steps-builder"></div>
-      <button type="button" class="step-add-btn" onclick="swAddStep()">+ Add step</button>
+      <div class="tpl-body-editable" id="wzd-body-editable" contenteditable="true"
+        data-placeholder="Call received from field tech (click + Tech Name) requesting de-energization of Feeder Breaker 52F(click + Number):
+– Associated Megapacks disabled remotely
+– Feeder Breaker 52F(click + Number) opened remotely"
+        onkeydown="swBodyKeydown(event)"
+        onpaste="swStepPaste(event)"></div>
     </div>
 
-    <!-- Wizard Navigation -->
     <div class="wizard-actions">
-      <button class="wizard-back-btn" id="wzd-back-btn" onclick="swWizardPrev()" style="visibility:hidden">← Back</button>
-      <div class="wizard-actions-right">
+      <div class="wizard-actions-right" style="margin-left:auto;">
         <button class="btn-c" onclick="closeModal('modal-sw-tpl')">Cancel</button>
-        <button class="btn-p" id="wzd-next-btn" onclick="swWizardNext()">Next →</button>
+        <button class="btn-p" onclick="swSaveTpl()">Save template</button>
       </div>
     </div>
   </div>
@@ -3148,7 +3072,7 @@ body.dark .corkboard{
     <div><label>Date:</label><input type="date" id="as-date"></div>
     <div>
       <label>Operator:</label>
-      <input id="as-operator" list="as-ops-list" placeholder="Name">
+      <input id="as-operator" list="as-ops-list" placeholder="Name" oninput="asSaveOperator()">
       <datalist id="as-ops-list">
         <option>Adam McCauley</option><option>Alexander Conway</option><option>Christopher Hill</option>
         <option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option><option>Josh Reyes</option><option>Mar'Cell Edwards</option>
@@ -3164,6 +3088,8 @@ body.dark .corkboard{
       <button class="btn-p" onclick="asExportCSV()">Export CSV</button>
     </div>
   </div>
+  <!-- Claim strip — who's doing which fleet this round, nothing below this changes -->
+  <div class="claim-strip" id="claim-strip"></div>
   <!-- overall progress meter -->
   <div class="as-prog-wrap" id="as-prog-wrap">
     <span class="as-prog-bolt" id="as-prog-bolt">⚡</span>
@@ -3723,6 +3649,7 @@ body.dark .corkboard{
     <div>
       <div class="sw-box">
         <div class="sw-lbl">Templates</div>
+        <input class="sw-tpl-search" id="sw-tpl-search" placeholder="Search templates&hellip;" oninput="swRenderTpls()">
         <div id="sw-tpls-list"></div>
         <button class="sw-new-tpl-btn" onclick="swOpenNewTpl()">＋ New template</button>
       </div>
@@ -4521,15 +4448,33 @@ function defaultSites() {
     {id:308,name:'DBLO1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Little Lake, CA',
      lat:36.0059762,lng:-117.8083968,
      notes:'Wind 16.68MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    {id:309,name:'DLBO1',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
-     lat:36.0,lng:-117.8,
-     notes:'Wind\nInverters inverting?\nRates about the same?\nCheck for Trips'},
     {id:310,name:'PRSE1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Elk County, KS',
      lat:37.363,lng:-96.252,
      notes:'Wind 200MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
     {id:311,name:'RKRG1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Kern County, CA',
      lat:35.480,lng:-118.840,
      notes:'Wind 149MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
+    // New sites — placeholder entries, not yet in the portfolio config -----
+    // Coordinates are town-center approximations. Confirm exact site specs
+    // (nameplate, voltage set point/band, and precise lat/lng) via Edit site.
+    {id:401,name:'ANGF1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Angel Fire, NM',
+     lat:36.3903,lng:-105.2678,
+     notes:'Placeholder entry — confirm nameplate, voltage set point, and exact coordinates.\nInverters inverting?\nRates about the same?'},
+    {id:402,name:'TSMS1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Taos, NM',
+     lat:36.4072,lng:-105.5734,
+     notes:'Placeholder entry — confirm nameplate, voltage set point, and exact coordinates.\nInverters inverting?\nRates about the same?'},
+    {id:403,name:'PRTV1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Porterville, CA',
+     lat:36.0652,lng:-119.0168,
+     notes:'Placeholder entry — confirm nameplate, voltage set point, and exact coordinates.\nInverters inverting?\nRates about the same?'},
+    {id:404,name:'FRMS1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Farmersville, CA',
+     lat:36.3016,lng:-119.2065,
+     notes:'Placeholder entry — confirm nameplate, voltage set point, and exact coordinates.\nInverters inverting?\nRates about the same?'},
+    {id:405,name:'HNFD1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Hanford, CA',
+     lat:36.3274,lng:-119.6457,
+     notes:'Placeholder entry — confirm nameplate, voltage set point, and exact coordinates.\nInverters inverting?\nRates about the same?'},
+    {id:406,name:'TLRE1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Tulare, CA',
+     lat:36.2077,lng:-119.3473,
+     notes:'Placeholder entry — confirm nameplate, voltage set point, and exact coordinates.\nInverters inverting?\nRates about the same?'},
   ];
 }
 
@@ -4545,6 +4490,10 @@ function resetSitesToDefaults() {
   try { window.storage && window.storage.remove(SITES_KEY); } catch(e) {}
   location.reload();
 }
+// Site names retired from the portfolio config — filtered out of any
+// already-saved browser data so they disappear without a manual reset.
+const RETIRED_SITE_NAMES=['DLBO1']; // duplicate of DBLO1 (Diablo)
+
 async function loadSitesAsync() {
   const defaults = defaultSites();
   let stored = null;
@@ -4560,10 +4509,18 @@ async function loadSitesAsync() {
   } catch(e) {}
   // Merge stored sites with default coordinates (hardcoded lat/lng always win)
   if (Array.isArray(stored) && stored.length) {
-    return stored.map(s => {
-      const def = defaults.find(d => d.id === s.id);
-      return def ? { ...s, lat: def.lat, lng: def.lng } : s;
+    const merged = stored
+      .filter(s => !RETIRED_SITE_NAMES.includes(s.name))
+      .map(s => {
+        const def = defaults.find(d => d.id === s.id);
+        return def ? { ...s, lat: def.lat, lng: def.lng } : s;
+      });
+    // Pick up any sites added to defaultSites() since this browser last saved,
+    // without touching existing customizations or scan history.
+    defaults.forEach(def => {
+      if (!merged.some(s => s.id === def.id)) merged.push(def);
     });
+    return merged;
   }
   return defaults;
 }
@@ -4574,7 +4531,8 @@ let S = {
   siteFilter:'all', scanGroupsOpen:{},
   timerRunning:false, timerElapsed:0, timerCycles:0,
   shiftStart:Date.now(),
-  crew:[], equipment:[], escContacts:{t1:'',t2:'',t3:''}
+  crew:[], equipment:[], escContacts:{t1:'',t2:'',t3:''},
+  scanViewMode:'board', siteBoardGroups:{}, siteBoardChecked:{}, siteBoardExpanded:{}
 };
 let SITES = []; // loaded separately
 
@@ -4598,11 +4556,16 @@ async function load() {
       if(!S.escContacts) S.escContacts={t1:'',t2:'',t3:''};
       if(!S.timerCycles) S.timerCycles=0;
       if(!S.shiftStart) S.shiftStart=Date.now();
+      if(!S.scanViewMode) S.scanViewMode='board';
+      if(!S.siteBoardGroups) S.siteBoardGroups={};
+      if(!S.siteBoardChecked) S.siteBoardChecked={};
+      if(!S.siteBoardExpanded) S.siteBoardExpanded={};
     } catch(e) {}
   }
 
   // Load sites (separate key — always has defaults if blank)
   SITES = await loadSitesAsync();
+  pruneOrphanBoardState();
 
   // Built here (ahead of clInit's own call to the same function) so the
   // site alias table is ready before the very first renderAll() paint —
@@ -4615,6 +4578,7 @@ async function load() {
   if (S.timerRunning) startTimerInterval();
   setInterval(refreshScanStatuses, 30000);
   refreshScanStatuses();
+  setScanViewMode(S.scanViewMode||'board', true);
   initSafety();
   initNERC();
 
@@ -6026,7 +5990,7 @@ const STATUS_LABEL={ok:'OK',due:'Due soon',overdue:'OVERDUE',never:'Never'};
 const STATUS_COLOR={ok:'var(--green)',due:'var(--amber)',overdue:'var(--red)',never:'var(--text3)'};
 
 function setSiteFilter(f,el){ S.siteFilter=f; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); renderSites(); }
-function refreshScanStatuses(){ renderSites(); renderScanStats(); updateScansTabAlert(); }
+function refreshScanStatuses(){ renderSites(); renderScanStats(); updateScansTabAlert(); renderSiteBoard(); }
 function updateScansTabAlert() {
   const tab = document.getElementById('nav-tab-scans');
   if (!tab) return;
@@ -6231,6 +6195,207 @@ function scanAll(){
   });
   saveSites(SITES); renderSites(); showToast('✓ All '+all.length+' sites scanned');
 }
+
+// ─── SITE BOARD (D1 / D2 / Everyone) ───────────────────────────────────────
+const BOARD_GROUPS=[
+  {key:'D1',label:'D1'},
+  {key:'D2',label:'D2'},
+  {key:'everyone',label:'Everyone'}
+];
+
+// Sites that are the same physical location split across multiple scan
+// entries — combined into one board row instead of showing each separately.
+const BOARD_MERGED_ITEMS=[
+  {key:'CFLATS', label:'CFLATS', names:['CTLF1','CTLF2','CTLF3']},
+  {key:'MRCP', label:'MRCP', names:['MRCP1','MRCP2']}
+];
+
+// Distinct sites grouped under one owner/portfolio umbrella. Unlike
+// BOARD_MERGED_ITEMS these stay individually checkable — the group is just
+// a collapsible folder that moves as one unit between D1/D2/Everyone.
+const BOARD_EXPAND_GROUPS=[
+  {key:'AREVON', label:'Arevon', names:['PRTV1','FRMS1','HNFD1','LSTH1','TLRE1']}
+];
+
+// Confirmed team layout, set as the default starting point for all users.
+// Anything not listed here (new sites, etc.) falls back to Everyone so it's
+// never hidden — operators can move it with one click.
+const DEFAULT_BOARD_GROUP={
+  DBLO1:'D1',DFRN1:'D1',GDWL1:'D1',HARQ1:'D1',HARQ2:'D1',LNDL1:'D1',MCLM1:'D1',ORGN1:'D1',PRSE1:'D1',RKRG1:'D1',
+  ANGF1:'D2',AVLN1:'D2',BLKW1:'D2',BYPS1:'D2',COSO1:'D2',FRDN1:'D2',GLTA1:'D2',KUNA1:'D2',LSTH2:'D2',NCLS1:'D2',NSTR1:'D2',PDMT1:'D2',PRGN1:'D2',TRPC1:'D2',TSMS1:'D2',
+  CFLATS:'everyone', MRCP:'everyone', AREVON:'D2'
+};
+
+function setScanViewMode(mode, skipSave){
+  S.scanViewMode=mode;
+  if(!skipSave) save();
+  const tableWrap=document.getElementById('sites-table-wrap');
+  const boardWrap=document.getElementById('site-board-wrap');
+  const filterRow=document.getElementById('scan-filter-row');
+  const statRow=document.getElementById('scan-stats');
+  const tBtn=document.getElementById('scan-view-table-btn');
+  const bBtn=document.getElementById('scan-view-board-btn');
+  if(tableWrap) tableWrap.style.display= mode==='table' ? '' : 'none';
+  if(boardWrap) boardWrap.style.display= mode==='board' ? '' : 'none';
+  if(filterRow) filterRow.style.display= mode==='table' ? '' : 'none';
+  if(statRow) statRow.style.display= mode==='table' ? '' : 'none';
+  if(tBtn) tBtn.classList.toggle('active-btn', mode==='table');
+  if(bBtn) bBtn.classList.toggle('active-btn', mode==='board');
+  if(mode==='board') renderSiteBoard();
+}
+
+// Build the list of board rows. Sites named in BOARD_MERGED_ITEMS are
+// combined into a single row (e.g. all Centennial Flats units -> "CFLATS")
+// since they're the same physical site split across multiple scan entries.
+// Sites named in BOARD_EXPAND_GROUPS stay separate but get tagged with
+// their group so the renderer can nest them under a collapsible header.
+function getBoardItems(){
+  const mergedNames=new Set(BOARD_MERGED_ITEMS.flatMap(m=>m.names));
+  const expandNameToGroup={};
+  BOARD_EXPAND_GROUPS.forEach(g=>g.names.forEach(n=>expandNameToGroup[n]=g.key));
+
+  const items=BOARD_MERGED_ITEMS.map(m=>({
+    boardKey:'m_'+m.key, label:m.label, defaultGroupKey:m.key,
+    siteIds:SITES.filter(s=>m.names.includes(s.name)).map(s=>s.id), expandGroup:null
+  })).filter(i=>i.siteIds.length);
+  SITES.filter(s=>!mergedNames.has(s.name)).forEach(s=>{
+    items.push({
+      boardKey:'s_'+s.id, label:s.name, defaultGroupKey:s.name,
+      siteIds:[s.id], expandGroup:expandNameToGroup[s.name]||null
+    });
+  });
+  return items;
+}
+
+function boardItemGroup(item){
+  const key=item.expandGroup ? 'g_'+item.expandGroup : item.boardKey;
+  const defaultKey=item.expandGroup || item.defaultGroupKey;
+  if(S.siteBoardGroups && S.siteBoardGroups[key]) return S.siteBoardGroups[key];
+  return DEFAULT_BOARD_GROUP[defaultKey] || 'everyone';
+}
+
+function setBoardItemGroup(boardKey, group){
+  if(!S.siteBoardGroups) S.siteBoardGroups={};
+  S.siteBoardGroups[boardKey]=group;
+  save();
+  renderSiteBoard();
+}
+
+function toggleBoardGroupExpand(key){
+  if(!S.siteBoardExpanded) S.siteBoardExpanded={};
+  S.siteBoardExpanded[key]=!S.siteBoardExpanded[key];
+  save();
+  renderSiteBoard();
+}
+
+function boardItemChecked(item){
+  return !!(S.siteBoardChecked && S.siteBoardChecked[item.boardKey]);
+}
+
+// Board checks are their own independent tracker — they do NOT touch
+// site.lastScan or any Table view compliance data. That keeps the two views
+// fully separate: checking/unchecking on the board can never throw off the
+// Table's overdue/due/OK counts, since nothing here feeds into them. A log
+// entry is still added on check for a shift-record audit trail.
+function setBoardItemChecked(item, checked){
+  if(!S.siteBoardChecked) S.siteBoardChecked={};
+  S.siteBoardChecked[item.boardKey]=checked;
+  if(checked){
+    addLog({type:'scan',title:'Scan: '+item.label,detail:'All clear — site board'});
+  }
+}
+
+function toggleBoardItem(boardKey){
+  const item=getBoardItems().find(i=>i.boardKey===boardKey); if(!item) return;
+  const nowChecked=!boardItemChecked(item);
+  setBoardItemChecked(item, nowChecked);
+  save();
+  renderSiteBoard();
+  showToast(nowChecked ? ('✓ '+item.label+' scanned OK') : (item.label+' unchecked'));
+}
+
+// Checks/unchecks every site inside an expandable group (e.g. Arevon) in one
+// click, without needing to open the group first.
+function toggleBoardGroupAll(key){
+  const def=BOARD_EXPAND_GROUPS.find(x=>x.key===key); if(!def) return;
+  const children=getBoardItems().filter(i=>i.expandGroup===key);
+  if(!children.length) return;
+  const allChecked=children.every(boardItemChecked);
+  children.forEach(item=>setBoardItemChecked(item, !allChecked));
+  save();
+  renderSiteBoard();
+  showToast(allChecked ? (def.label+' unchecked') : ('✓ '+def.label+' scanned OK'));
+}
+
+// Just clears checkmarks for the new shift — no confirmation needed since
+// it's board-only state and never touches real scan history.
+function resetSiteBoard(){
+  S.siteBoardChecked={};
+  save();
+  renderSiteBoard();
+  showToast('Board cleared for new scan');
+}
+
+function boardItemRow(item, indent){
+  const checked=boardItemChecked(item);
+  const grp=boardItemGroup(item);
+  const assignBtns=indent ? '' : BOARD_GROUPS.map(g=>
+    `<button class="board-assign-btn${grp===g.key?' active':''}" onclick="event.stopPropagation();setBoardItemGroup('${item.boardKey}','${g.key}')">${g.label}</button>`
+  ).join('');
+  return `<div class="board-site-row${checked?' checked':''}${indent?' indent':''}" onclick="toggleBoardItem('${item.boardKey}')">
+    <span class="board-chk">${checked?'✓':''}</span>
+    <span class="board-site-name">${esc(item.label)}</span>
+    <span class="board-assign-group" onclick="event.stopPropagation()">${assignBtns}</span>
+  </div>`;
+}
+
+function boardGroupHeader(def, children){
+  const open=!!(S.siteBoardExpanded && S.siteBoardExpanded[def.key]);
+  const done=children.filter(boardItemChecked).length;
+  const allChecked=children.length>0 && done===children.length;
+  const activeGrp=(S.siteBoardGroups && S.siteBoardGroups['g_'+def.key]) || DEFAULT_BOARD_GROUP[def.key] || 'everyone';
+  const assignBtns=BOARD_GROUPS.map(g=>
+    `<button class="board-assign-btn${activeGrp===g.key?' active':''}" onclick="event.stopPropagation();setBoardItemGroup('g_${def.key}','${g.key}')">${g.label}</button>`
+  ).join('');
+  return `<div class="board-group-hdr${open?' open':''}">
+    <span class="board-group-expand" onclick="toggleBoardGroupExpand('${def.key}')">▶</span>
+    <span class="board-chk${allChecked?' checked':''}" onclick="event.stopPropagation();toggleBoardGroupAll('${def.key}')">${allChecked?'✓':''}</span>
+    <span class="board-site-name" onclick="toggleBoardGroupExpand('${def.key}')">${esc(def.label)} <span class="board-col-count">${done}/${children.length}</span></span>
+    <span class="board-assign-group" onclick="event.stopPropagation()">${assignBtns}</span>
+  </div>
+  <div class="board-group-children" style="display:${open?'block':'none'};">${children.map(c=>boardItemRow(c,true)).join('')}</div>`;
+}
+
+function renderSiteBoard(){
+  const wrap=document.getElementById('site-board-wrap');
+  if(!wrap) return;
+  const items=getBoardItems();
+  const total=items.length;
+  const done=items.filter(boardItemChecked).length;
+  let cols='';
+  BOARD_GROUPS.forEach(g=>{
+    const groupItems=items.filter(i=>boardItemGroup(i)===g.key);
+    const plain=groupItems.filter(i=>!i.expandGroup).sort((a,b)=>a.label.localeCompare(b.label));
+    const expandKeys=[...new Set(groupItems.filter(i=>i.expandGroup).map(i=>i.expandGroup))];
+    let body='';
+    expandKeys.forEach(ek=>{
+      const def=BOARD_EXPAND_GROUPS.find(x=>x.key===ek); if(!def) return;
+      const children=groupItems.filter(i=>i.expandGroup===ek).sort((a,b)=>a.label.localeCompare(b.label));
+      body+=boardGroupHeader(def, children);
+    });
+    body+=plain.map(i=>boardItemRow(i,false)).join('');
+    cols+=`<div class="board-col">
+      <div class="board-col-hdr">${g.label} <span class="board-col-count">${groupItems.length}</span></div>
+      <div class="board-col-body">${body||'<div class="board-col-empty">No sites</div>'}</div>
+    </div>`;
+  });
+  wrap.innerHTML=`<div class="board-toolbar">
+    <span class="board-progress">${done} / ${total} scanned this shift</span>
+    <button class="tbtn" onclick="resetSiteBoard()">↺ New scan</button>
+  </div>
+  <div class="site-board">${cols}</div>`;
+}
+
 function saveSite(){
   const name=document.getElementById('site-name').value.trim(); if(!name)return;
   const editId=document.getElementById('site-edit-id').value;
@@ -6263,7 +6428,28 @@ function editSite(id){
   document.getElementById('site-notes').value=s.notes||'';
   openModal('modal-add-site');
 }
-function deleteSite(id){ if(!confirm('Delete this site?'))return; SITES=SITES.filter(x=>x.id!==id); saveSites(SITES); renderSites(); }
+// Drops board group/checked state for any site key that no longer has a
+// matching entry in SITES (e.g. a retired site like the old DLBO1 duplicate).
+function pruneOrphanBoardState(){
+  const validIds=new Set(SITES.map(s=>s.id));
+  let changed=false;
+  [S.siteBoardGroups, S.siteBoardChecked].forEach(map=>{
+    if(!map) return;
+    Object.keys(map).forEach(k=>{
+      if(!k.startsWith('s_')) return;
+      const id=parseInt(k.slice(2),10);
+      if(!validIds.has(id)){ delete map[k]; changed=true; }
+    });
+  });
+  if(changed) save();
+}
+
+function deleteSite(id){
+  if(!confirm('Delete this site?'))return;
+  SITES=SITES.filter(x=>x.id!==id);
+  pruneOrphanBoardState();
+  save(); saveSites(SITES); renderSites(); renderSiteBoard();
+}
 
 // ─── TEMPLATES ────────────────────────────────────────────────────────────────
 const TEMPLATES=[
@@ -8800,9 +8986,33 @@ function asSectionHasAlert(siteId, si) {
   );
 }
 
+// Auto-detects Day/Night from the same 6am/6pm boundary used elsewhere in
+// the app (Who's on Shift, Asset Scan claims) — not asking the operator
+// to pick something the clock already knows.
+function asAutoShift() {
+  const hour = new Date().getHours();
+  return (hour >= 6 && hour < 18) ? 'Day' : 'Night';
+}
+
+function asSaveOperator() {
+  try { localStorage.setItem('rnwbl_as_operator', document.getElementById('as-operator').value); } catch(e) {}
+}
+
 // ── init & render ──────────────────────────────────────────────────────────────
 function asInit() {
   document.getElementById('as-date').valueAsDate = new Date();
+  // Operator persists locally — the same desktop is almost always run by
+  // the same person, so re-typing a name every round was friction for no
+  // real reason. Shift auto-fills from time of day so it's never just
+  // left blank. Both were quietly producing unhelpful CSV filenames like
+  // "Shift Asset Scan All Name.csv" when left empty.
+  const opInp = document.getElementById('as-operator');
+  const shiftSel = document.getElementById('as-shift');
+  try {
+    const savedOp = localStorage.getItem('rnwbl_as_operator');
+    if (savedOp && opInp && !opInp.value) opInp.value = savedOp;
+  } catch(e) {}
+  if (shiftSel && !shiftSel.value) shiftSel.value = asAutoShift();
   asLoadAll();
   // Restore last visited tab; if none saved, skip ROCC1 and land on first real site
   const saved = (()=>{try{return localStorage.getItem('rnwbl_asactive')||'';}catch(e){return '';}})();
@@ -9182,10 +9392,10 @@ const SW_HARDCODED = [
   { id:'prgrn-re', site:'PRGRN · MVT', action:'Re-Energize', cls:'re',
     numLbl:'MVT #', numPh:'e.g. 40',
     body:'Call received from field tech {{TECH}} requesting energization of MVT {{NUMBER}}:\n– Oil switch closed locally\n– MVT AC Level Breakers closed remotely\n– Associated Megapacks enabled remotely' },
-  { id:'cndr-de',  site:'Condor · MVT Local', action:'De-Energize', cls:'de',
+  { id:'cndr-de',  site:'MVT Local', action:'De-Energize', cls:'de',
     numLbl:'MVT #', numPh:'e.g. 8',
     body:'Call received from field tech {{TECH}} requesting permission to de-energize MVT {{NUMBER}} Locally. Permission was granted, and local switching was completed.' },
-  { id:'cndr-re',  site:'Condor · MVT Local', action:'Re-Energize', cls:'re',
+  { id:'cndr-re',  site:'MVT Local', action:'Re-Energize', cls:'re',
     numLbl:'MVT #', numPh:'e.g. 8',
     body:'Call received from field tech {{TECH}} requesting permission to Energize MVT {{NUMBER}} Locally. Permission was granted, and local switching was completed.' },
   { id:'pdmt-de',  site:'Pediment · PCS', action:'De-Energize', cls:'de',
@@ -9207,7 +9417,60 @@ let swCustomTpls = [];  // user-created templates
 let swActive = null;
 let swHist   = [];
 
-function swGetAllTpls() { return [...SW_HARDCODED, ...swCustomTpls]; }
+// ── Shared team templates (Firestore) ───────────────────────────────────────
+// The 10 built-in templates stay in SW_HARDCODED, in the file — locked,
+// zero network dependency, requires an actual deploy to change. That's
+// deliberate: this app has no login, so anything in Firestore is open to
+// anyone with the URL to edit or delete. Fine for a team corkboard note;
+// not fine for the trusted baseline everyone relies on for real switching
+// logs. Personal custom templates (swCustomTpls) also stay exactly as
+// they were — local, private, draft freely with zero risk of affecting
+// anyone else. This section is the middle ground: an operator can
+// explicitly "Share" a local draft once they're happy with it, at which
+// point it becomes visible and usable by the whole team immediately,
+// same open-edit trust model as Team Notes and Shared Reminders.
+let swSharedTpls = [];
+
+function initSwSharedTplsListener() {
+  if (!window.db) return;
+  window.db.collection('sharedTemplates').orderBy('sharedAt', 'desc').onSnapshot(snap => {
+    swSharedTpls = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    swRenderTpls();
+  }, err => console.error('Firestore (sharedTemplates):', err));
+}
+
+function swShareTpl(id) {
+  const tpl = swCustomTpls.find(t => t.id === id); if (!tpl) return;
+  if (!window.db) { showToast('Firebase not connected'); return; }
+  const author = (prompt('Your name, so the team knows who shared this:') || '').trim();
+  if (!author) return;
+  if (!confirm(`Share "${tpl.displayName || tpl.action + ' ' + tpl.site}" with the whole team? Anyone will be able to see, use, and edit it.`)) return;
+  const { site, action, cls, numLbl, numPh, body, displayName } = tpl;
+  window.db.collection('sharedTemplates').add({
+    site, action, cls, numLbl, numPh: numPh || '', body, displayName,
+    sharedBy: author,
+    sharedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    // Promote, don't duplicate — once it's a team template, the personal
+    // draft copy would just be a confusing near-identical twin sitting
+    // right next to it in the same list.
+    swCustomTpls = swCustomTpls.filter(t => t.id !== id);
+    swSaveCustom();
+    showToast('Shared with the team \u2713');
+  }).catch(e => showToast('Could not share: ' + e.message));
+}
+
+function swDeleteSharedTpl(id) {
+  const tpl = swSharedTpls.find(t => t.id === id); if (!tpl) return;
+  if (!confirm(`Delete "${tpl.displayName || tpl.action + ' ' + tpl.site}"? This removes it for the WHOLE TEAM, not just you.`)) return;
+  if (!window.db) return;
+  if (swActive === id) { swActive = null; }
+  window.db.collection('sharedTemplates').doc(id).delete()
+    .then(() => showToast('Shared template deleted'))
+    .catch(e => showToast('Could not delete: ' + e.message));
+}
+
+function swGetAllTpls() { return [...SW_HARDCODED, ...swSharedTpls, ...swCustomTpls]; }
 
 function swLoadCustom() {
   try { swCustomTpls = JSON.parse(localStorage.getItem(SW_CUSTOM_KEY) || '[]'); } catch(e) { swCustomTpls = []; }
@@ -9216,8 +9479,26 @@ function swSaveCustom() {
   try { localStorage.setItem(SW_CUSTOM_KEY, JSON.stringify(swCustomTpls)); } catch(e) {}
 }
 
+// Some templates bake an equipment prefix directly into the body right
+// before {{NUMBER}} (e.g. "Feeder Breaker 52F{{NUMBER}}"). If an operator
+// types the prefix out of habit (e.g. "52F24" instead of just "24"), the
+// output would double up into "52F52F24" — a real, easy way to end up
+// with a wrong number in an actual Softwrench log. Detected straight from
+// the template's own body text rather than hand-annotated per template,
+// so this works automatically for any future custom template too.
+function swExpectedPrefix(tpl) {
+  if (!tpl || !tpl.body) return '';
+  const m = tpl.body.match(/([A-Za-z0-9]*)\{\{NUMBER\}\}/);
+  return m ? m[1] : '';
+}
+
 function swBuildText(tpl, tech, num) {
-  return tpl.body.replace(/\{\{TECH\}\}/g, tech || '[Tech Name]').replace(/\{\{NUMBER\}\}/g, num || '[Number]');
+  const prefix = swExpectedPrefix(tpl);
+  let cleanNum = (num || '').trim();
+  if (prefix && cleanNum.toUpperCase().startsWith(prefix.toUpperCase())) {
+    cleanNum = cleanNum.slice(prefix.length).trim();
+  }
+  return tpl.body.replace(/\{\{TECH\}\}/g, tech || '[Tech Name]').replace(/\{\{NUMBER\}\}/g, cleanNum || '[Number]');
 }
 
 function swInit() {
@@ -9228,24 +9509,48 @@ function swInit() {
 }
 
 function swRenderTpls() {
-  const all = swGetAllTpls();
+  const searchInp = document.getElementById('sw-tpl-search');
+  const q = searchInp ? searchInp.value.trim().toLowerCase() : '';
+  let all = swGetAllTpls();
+  if (q) {
+    all = all.filter(tpl => {
+      const label = (tpl.displayName || `${tpl.action} ${tpl.site}`).toLowerCase();
+      return tpl.site.toLowerCase().includes(q) || tpl.action.toLowerCase().includes(q) || label.includes(q);
+    });
+  }
   const wrap = document.getElementById('sw-tpls-list');
   if (!wrap) return;
+  if (q && !all.length) {
+    wrap.innerHTML = `<div class="empty-state compact"><div class="empty-state-icon">🔍</div><div class="empty-state-title">No templates match "${esc(q)}"</div></div>`;
+    return;
+  }
   wrap.innerHTML = all.map(tpl => {
     const isHard = SW_HARDCODED.some(h => h.id === tpl.id);
+    const isShared = !isHard && swSharedTpls.some(s => s.id === tpl.id);
     const selCls = swActive === tpl.id ? 'sel-'+tpl.cls : '';
-    const actions = isHard
-      ? `<span class="sw-tpl-lock" title="Built-in">🔒</span>`
-      : `<span class="sw-tpl-actions">
+    let actions;
+    if (isHard) {
+      actions = `<span class="sw-tpl-lock" title="Built-in">🔒</span>`;
+    } else if (isShared) {
+      actions = `<span class="sw-tpl-shared-badge" title="${tpl.sharedBy ? 'Shared by ' + esc(tpl.sharedBy) : 'Shared with the team'}">🌐</span>
+         <span class="sw-tpl-actions">
+           <button class="sw-tpl-act-btn" title="Duplicate as your own draft" onclick="event.stopPropagation();swDupeTpl('${tpl.id}')">⧉</button>
+           <button class="sw-tpl-act-btn" title="Edit (changes for everyone)" onclick="event.stopPropagation();swOpenEditTpl('${tpl.id}','shared')">✎</button>
+           <button class="sw-tpl-act-btn" title="Delete (removes for everyone)" onclick="event.stopPropagation();swDeleteSharedTpl('${tpl.id}')">✕</button>
+         </span>`;
+    } else {
+      actions = `<span class="sw-tpl-actions">
+           <button class="sw-tpl-act-btn" title="Share with the team" onclick="event.stopPropagation();swShareTpl('${tpl.id}')">📤</button>
            <button class="sw-tpl-act-btn" title="Duplicate" onclick="event.stopPropagation();swDupeTpl('${tpl.id}')">⧉</button>
            <button class="sw-tpl-act-btn" title="Edit" onclick="event.stopPropagation();swOpenEditTpl('${tpl.id}')">✎</button>
            <button class="sw-tpl-act-btn" title="Delete" onclick="event.stopPropagation();swDelTpl('${tpl.id}')">✕</button>
          </span>`;
+    }
     const displayLabel = tpl.displayName || `${tpl.action} ${tpl.site}`;
     const shortLabel = displayLabel.length > 35 ? displayLabel.slice(0, 35) + '…' : displayLabel;
     return `<button class="sw-tpl ${selCls}" id="swtpl-${tpl.id}" onclick="swSelect('${tpl.id}',this)">
       <span class="sw-tpl-stripe ${tpl.cls}"></span>
-      <span class="sw-tpl-body"><span class="sw-tpl-site">${esc(tpl.site)}</span>${esc(shortLabel)}</span>
+      <span class="sw-tpl-body">${tpl.site ? `<span class="sw-tpl-site">${esc(tpl.site)}</span>` : ''}${esc(shortLabel)}</span>
       ${actions}
     </button>`;
   }).join('');
@@ -9268,8 +9573,9 @@ function swBuild() {
   const tech = document.getElementById('sw-tech').value.trim();
   const num  = document.getElementById('sw-num').value.trim();
   const text = swBuildText(tpl, tech, num);
+  const hdrLabel = tpl.displayName || (tpl.action ? `${tpl.site} · ${tpl.action}` : tpl.site);
   document.getElementById('sw-out-hdr-badge').innerHTML =
-    `<div class="sw-result-hdr ${tpl.cls}">${esc(tpl.site)} · ${esc(tpl.action)}</div>`;
+    `<div class="sw-result-hdr ${tpl.cls}">${esc(hdrLabel)}</div>`;
   document.getElementById('sw-out-body').textContent = text;
 }
 
@@ -9338,386 +9644,213 @@ function swRenderHist() {
 }
 
 // ── Custom template CRUD ───────────────────────────────────────────────────────
-let swWizardStep = 1;
-let swWizardType = '';
-let swManualEdit = false;
-let swSteps = [];         // bullet steps for the step builder
-let swFocusedStepIdx = 0; // tracks which step input was last focused for token insertion
+// {{TECH}}/{{NUMBER}}/{{TIME}} are stored exactly as before — this only
+// changes what's DISPLAYED while editing a template. Previously clicking
+// "+ Tech Name" inserted the literal text "{{TECH}}" into a plain input,
+// so operators ended up staring at raw bracket syntax sitting in their
+// own sentence and had to be careful not to fat-finger a brace. Now it
+// renders as a small removable pill instead — same stored data, same
+// swBuildText() substitution logic downstream, nothing else changes.
+const SW_TOKEN_LABELS = { '{{TECH}}': 'Tech Name', '{{NUMBER}}': 'Number', '{{TIME}}': 'Time' };
 
-const SW_PRESETS = {
-  'de-energize': { site: 'Feeder Breaker', action: 'De-Energize Remotely', cls: 'de', numLbl: 'Breaker #', body: 'Call received from field tech {{TECH}} requesting de-energization of Feeder Breaker {{NUMBER}}:\n– Associated Megapacks disabled remotely\n– MVT AC Level Breakers opened remotely\n– Feeder Breaker {{NUMBER}} opened remotely' },
-  'de-energize-local': { site: 'MVT', action: 'De-Energize Locally', cls: 'de', numLbl: 'MVT #', body: 'Call received from field tech {{TECH}} requesting permission to de-energize MVT {{NUMBER}} locally:\n– Permission was granted\n– Local switching was completed' },
-  're-energize': { site: 'Feeder Breaker', action: 'Re-Energize Remotely', cls: 're', numLbl: 'Breaker #', body: 'Call received from field tech {{TECH}} requesting energization of Feeder Breaker {{NUMBER}}:\n– Feeder Breaker {{NUMBER}} closed remotely\n– MVT AC Level Breakers closed remotely\n– Associated Megapacks enabled remotely' },
-  're-energize-local': { site: 'MVT', action: 'Re-Energize Locally', cls: 're', numLbl: 'MVT #', body: 'Call received from field tech {{TECH}} requesting permission to energize MVT {{NUMBER}} locally:\n– Permission was granted\n– Local switching was completed' },
-  'mvt': { site: 'MVT', action: 'Permit Request', cls: 'other', numLbl: 'MVT #', body: 'MVT Permit {{NUMBER}} requested by {{TECH}}:\n– Purpose: _____________\n– Scope: _____________\n– Approved/Denied at {{TIME}}' },
-  'trip': { site: 'Protection', action: 'Trip Reset', cls: 'de', numLbl: 'Breaker #', body: 'Trip alarm received on Breaker {{NUMBER}}:\n– Contacted field tech {{TECH}}\n– Investigated cause: _____________\n– Reset completed at {{TIME}}' },
-  'comm': { site: 'Radio', action: 'Comm Check', cls: 'other', numLbl: 'Channel', body: 'Communication check with {{TECH}} on {{NUMBER}}:\n– Signal strength: ___\n– Clarity: ___\n– Check completed at {{TIME}}' },
-  'bypass': { site: 'Bypass', action: 'Switch Operation', cls: 'other', numLbl: 'Switch #', body: 'Bypass switch {{NUMBER}} operation requested by {{TECH}}:\n– Reason: _____________\n– Verified safe conditions\n– Operation completed at {{TIME}}' }
-};
+function swPillHtml(token) {
+  const label = SW_TOKEN_LABELS[token] || token.replace(/[{}]/g, '');
+  return `<span class="token-pill" contenteditable="false" data-token="${esc(token)}">${esc(label)}<button type="button" class="token-pill-x" onmousedown="event.preventDefault();swRemovePill(this)" title="Remove">\u2715</button></span>`;
+}
 
-// ── Step builder helpers ──────────────────────────────────────────────────────
+// Converts a stored body string into the HTML shown in the editable div.
+function swStepToEditableHtml(text) {
+  if (!text) return '';
+  return text.split(/(\{\{[A-Z]+\}\})/g).map(p => SW_TOKEN_LABELS[p] ? swPillHtml(p) : esc(p)).join('').replace(/\n/g, '<br>');
+}
 
-function swParseBodyToSteps(body) {
-  const lines = (body || '').split('\n');
-  const steps = [];
-  lines.forEach(l => {
-    const trimmed = l.trim();
-    if (trimmed.startsWith('–') || trimmed.startsWith('-')) {
-      steps.push(trimmed.replace(/^[–\-]\s*/, ''));
+// Converts an editable div's current DOM content back into the plain
+// {{TOKEN}}-based string used everywhere else. Recurses defensively in
+// case a browser editing quirk ever wraps content in a nested element —
+// nothing should silently get lost even if that happens.
+function swStepFromEl(el) {
+  if (!el) return '';
+  let out = '';
+  el.childNodes.forEach(node => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      out += node.textContent;
+    } else if (node.nodeType === Node.ELEMENT_NODE && node.dataset && node.dataset.token) {
+      out += node.dataset.token;
+    } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'BR') {
+      out += '\n';
+    } else if (node.nodeType === Node.ELEMENT_NODE && (node.tagName === 'DIV' || node.tagName === 'P')) {
+      // Browsers commonly wrap each new line from pressing Enter in its
+      // own block element as a sibling of what came before, rather than
+      // one continuous text node with embedded newlines — so a DIV/P
+      // showing up here means "start a new line", not "nested content".
+      if (out.length) out += '\n';
+      out += swStepFromEl(node);
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      out += swStepFromEl(node);
     }
   });
-  return steps.length ? steps : [''];
+  return out;
 }
 
-function swRenderStepBuilder() {
-  const container = document.getElementById('wzd-steps-builder');
-  if (!container) return;
-  if (!swSteps.length) swSteps = [''];
-  container.innerHTML = swSteps.map((step, i) => `
-    <div class="step-row" data-idx="${i}">
-      <span class="step-row-dash">–</span>
-      <input class="step-row-input" id="step-inp-${i}"
-        value="${esc(step)}"
-        placeholder="Describe this step..."
-        onfocus="swFocusedStepIdx=${i}"
-        onkeydown="if(event.key==='Enter'){event.preventDefault();swAddStep();}"
-        oninput="swSteps[${i}]=this.value;">
-      <div class="step-row-actions">
-        ${i > 0 ? `<button type="button" class="step-row-btn" onclick="swMoveStep(${i},-1)" title="Move up">↑</button>` : '<span class="step-row-btn-ph"></span>'}
-        ${i < swSteps.length-1 ? `<button type="button" class="step-row-btn" onclick="swMoveStep(${i},1)" title="Move down">↓</button>` : '<span class="step-row-btn-ph"></span>'}
-        <button type="button" class="step-row-btn step-row-del" onclick="swDeleteStep(${i})" title="Remove step">✕</button>
-      </div>
-    </div>
-  `).join('');
+function swRemovePill(btn) {
+  const pill = btn.closest('.token-pill');
+  if (pill) pill.remove();
 }
 
-function swAddStep() {
-  swSyncSteps();
-  swSteps.push('');
-  swRenderStepBuilder();
-  const idx = swSteps.length - 1;
-  swFocusedStepIdx = idx;
-  setTimeout(() => document.getElementById(`step-inp-${idx}`)?.focus(), 40);
+// Forces plain-text paste into the message body — otherwise pasting from
+// somewhere with rich formatting (Word, an email, another site) can drag
+// in stray HTML that contenteditable would otherwise happily keep around.
+function swStepPaste(event) {
+  event.preventDefault();
+  const text = (event.clipboardData || window.clipboardData).getData('text/plain');
+  const sel = window.getSelection();
+  if (!sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+  range.deleteContents();
+  const textNode = document.createTextNode(text);
+  range.insertNode(textNode);
+  range.setStartAfter(textNode);
+  range.collapse(true);
+  sel.removeAllRanges();
+  sel.addRange(range);
 }
 
-function swDeleteStep(i) {
-  swSyncSteps();
-  if (swSteps.length <= 1) { swSteps[0] = ''; swRenderStepBuilder(); return; }
-  swSteps.splice(i, 1);
-  swFocusedStepIdx = Math.min(i, swSteps.length - 1);
-  swRenderStepBuilder();
+// One freeform message field, written in the operator's own words, with
+// pill tokens dropped in wherever they click — replaces the old forced
+// three-step wizard (pick a type screen, fill site/action fields, then
+// build a separate list of bullet steps). Inserts at the current cursor
+// position; falls back to the end of the message if focus moved away
+// before the button was clicked, so the click never silently does nothing.
+// Forces Enter to consistently insert a line break (rather than leaving
+// it to whatever the browser's default contenteditable behavior happens
+// to be, which varies enough between browsers to make serialization
+// unreliable) and makes Tab insert an indent instead of its native
+// behavior of jumping focus to the next element on the page.
+function swBodyKeydown(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    document.execCommand('insertLineBreak');
+  } else if (event.key === 'Tab') {
+    event.preventDefault();
+    document.execCommand('insertText', false, '    ');
+  }
 }
 
-function swMoveStep(i, dir) {
-  swSyncSteps();
-  const j = i + dir;
-  if (j < 0 || j >= swSteps.length) return;
-  [swSteps[i], swSteps[j]] = [swSteps[j], swSteps[i]];
-  swFocusedStepIdx = j;
-  swRenderStepBuilder();
-  setTimeout(() => document.getElementById(`step-inp-${j}`)?.focus(), 40);
-}
-
-function swSyncSteps() {
-  swSteps.forEach((_, i) => {
-    const inp = document.getElementById(`step-inp-${i}`);
-    if (inp) swSteps[i] = inp.value;
-  });
+// Drops in a new line already started with a dash, matching the bullet
+// style the built-in templates use (e.g. HARQ De-Energize) — without
+// this, getting that exact "–" character means hunting for it on a
+// keyboard that doesn't have one, or copy-pasting it from somewhere.
+function swInsertBulletLine() {
+  const el = document.getElementById('wzd-body-editable');
+  if (!el) return;
+  el.focus();
+  document.execCommand('insertLineBreak');
+  document.execCommand('insertText', false, '\u2013 ');
 }
 
 function swInsertToken(token) {
-  swSyncSteps();
-  const idx = (swFocusedStepIdx >= 0 && swFocusedStepIdx < swSteps.length) ? swFocusedStepIdx : swSteps.length - 1;
-  const inp = document.getElementById(`step-inp-${idx}`);
-  if (inp) {
-    const start = inp.selectionStart || inp.value.length;
-    const end = inp.selectionEnd || inp.value.length;
-    inp.value = inp.value.slice(0, start) + token + inp.value.slice(end);
-    swSteps[idx] = inp.value;
-    inp.setSelectionRange(start + token.length, start + token.length);
-    inp.focus();
-    swFocusedStepIdx = idx;
-  }
-}
-
-function swGetHeaderLine() {
-  const site   = document.getElementById('wzd-site')?.value.trim()   || document.getElementById('sw-tpl-site')?.value.trim()   || 'Site';
-  const action = document.getElementById('wzd-action')?.value.trim() || document.getElementById('sw-tpl-action')?.value.trim() || 'Action';
-  const type = swWizardType;
-  if (type === 'de' || type === 're') {
-    return `Call received from field tech {{TECH}} requesting ${action.toLowerCase()} of ${site} {{NUMBER}}`;
-  } else if (type === 'permit') {
-    return `${action} for ${site} {{NUMBER}} requested by {{TECH}}`;
-  } else if (type === 'reset') {
-    return `${action} alarm received on ${site} {{NUMBER}}. Contacted field tech {{TECH}}`;
+  const el = document.getElementById('wzd-body-editable');
+  if (!el) return;
+  el.focus();
+  const sel = window.getSelection();
+  let range;
+  if (sel.rangeCount && el.contains(sel.anchorNode)) {
+    range = sel.getRangeAt(0);
   } else {
-    return `${action} for ${site} {{NUMBER}}`;
+    range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
   }
+  range.deleteContents();
+  const pill = document.createElement('span');
+  pill.className = 'token-pill';
+  pill.contentEditable = 'false';
+  pill.dataset.token = token;
+  const label = SW_TOKEN_LABELS[token] || token.replace(/[{}]/g, '');
+  pill.innerHTML = `${esc(label)}<button type="button" class="token-pill-x" onmousedown="event.preventDefault();swRemovePill(this)" title="Remove">\u2715</button>`;
+  range.insertNode(pill);
+  range.setStartAfter(pill);
+  range.collapse(true);
+  sel.removeAllRanges();
+  sel.addRange(range);
 }
 
-function swBuildBodyFromSteps() {
-  swSyncSteps();
-  const header = swGetHeaderLine();
-  const steps = swSteps.filter(s => s.trim()).map(s => `– ${s}`);
-  return header + (steps.length ? ':\n' + steps.join('\n') : '');
+function swSelectClsType(cls, btnEl) {
+  document.getElementById('sw-tpl-cls').value = cls;
+  document.querySelectorAll('.sw-type-btn').forEach(b => b.classList.remove('selected'));
+  if (btnEl) btnEl.classList.add('selected');
 }
 
-function swUpdateLivePreview() {
-  const preview = document.getElementById('wzd-live-preview');
-  const body = document.getElementById('wzd-live-preview-body');
-  if (!preview || !body) return;
-  const site = document.getElementById('wzd-site')?.value.trim();
-  const action = document.getElementById('wzd-action')?.value.trim();
-  if (!site && !action) { preview.style.display = 'none'; return; }
-  preview.style.display = '';
-  const header = swGetHeaderLine();
-  body.innerHTML = header
-    .replace(/\{\{TECH\}\}/g, '<span class="placeholder">Tech Name</span>')
-    .replace(/\{\{NUMBER\}\}/g, '<span class="placeholder">Number</span>')
-    + ':<br><span style="color:var(--text3);font-size:11px;font-style:italic;">– Steps defined on next screen</span>';
+function swResetTplForm() {
+  document.getElementById('wzd-display-name').value = '';
+  document.getElementById('sw-tpl-numlbl-existing').value = '';
+  document.getElementById('sw-tpl-cls').value = 'other';
+  document.querySelectorAll('.sw-type-btn').forEach(b => b.classList.remove('selected'));
+  const body = document.getElementById('wzd-body-editable');
+  if (body) body.innerHTML = '';
 }
-
-function swUpdateHeaderPreview() {
-  const body = document.getElementById('wzd-header-preview-body');
-  if (!body) return;
-  const header = swGetHeaderLine();
-  body.innerHTML = header
-    .replace(/\{\{TECH\}\}/g, '<span class="placeholder">Tech Name</span>')
-    .replace(/\{\{NUMBER\}\}/g, '<span class="placeholder">Number</span>')
-    + ':';
-}
-
-// ── Wizard lifecycle ──────────────────────────────────────────────────────────
 
 function swOpenNewTpl() {
   document.getElementById('sw-tpl-modal-title').textContent = 'New Template';
   document.getElementById('sw-tpl-edit-id').value = '';
-  swResetWizard();
-  swRenderQuickFillChips();
+  document.getElementById('sw-tpl-edit-scope').value = '';
+  swResetTplForm();
   openModal('modal-sw-tpl');
+  setTimeout(() => document.getElementById('wzd-display-name')?.focus(), 60);
 }
 
-function swRenderQuickFillChips() {
-  const chipGrid = document.getElementById('quick-fill-chips');
-  if (!chipGrid) return;
-  const recent = swCustomTpls.slice(-4).reverse();
-  let html = `
-    <button class="chip-btn preset-de" onclick="swQuickFill('de-energize')">⚡ De-energize Remotely</button>
-    <button class="chip-btn preset-de" onclick="swQuickFill('de-energize-local')">🔻 De-energize Locally</button>
-    <button class="chip-btn preset-re" onclick="swQuickFill('re-energize')">🔌 Re-energize Remotely</button>
-    <button class="chip-btn preset-re" onclick="swQuickFill('re-energize-local')">🔺 Re-energize Locally</button>
-    <button class="chip-btn preset-other" onclick="swQuickFill('mvt')">📝 MVT Permit</button>
-    <button class="chip-btn preset-de" onclick="swQuickFill('trip')">⚠️ Trip Reset</button>
-    <button class="chip-btn preset-other" onclick="swQuickFill('comm')">📞 Comm Check</button>
-    <button class="chip-btn preset-other" onclick="swQuickFill('bypass')">🔀 Bypass Switch</button>
-  `;
-  if (recent.length > 0) {
-    html += '<div style="width:100%;height:1px;background:var(--border);margin:8px 0;"></div>';
-    recent.forEach(tpl => {
-      const cls = tpl.cls === 'de' ? 'preset-de' : tpl.cls === 're' ? 'preset-re' : 'preset-other';
-      const displayLabel = tpl.displayName || `${tpl.action} ${tpl.site}`;
-      const shortLabel = displayLabel.length > 25 ? displayLabel.slice(0, 25) + '…' : displayLabel;
-      html += `<button class="chip-btn ${cls}" onclick="swQuickFillRecent('${tpl.id}')">🕐 ${esc(shortLabel)}</button>`;
-    });
-  }
-  chipGrid.innerHTML = html;
+// Populates the form from an existing template — used by Edit only now.
+// numLbl isn't collected here (the field label context lives in the
+// message text itself); still read from an existing template's stored
+// numLbl if it has one, so old/hardcoded/shared templates that do carry
+// a specific label (e.g. "Feeder Breaker #") keep it after an edit.
+function swApplyTplToForm(tpl) {
+  document.getElementById('wzd-display-name').value = tpl.displayName || `${tpl.action || ''} ${tpl.site || ''}`.trim();
+  const cls = tpl.cls || 'other';
+  document.getElementById('sw-tpl-cls').value = cls;
+  document.querySelectorAll('.sw-type-btn').forEach(b => b.classList.toggle('selected', b.dataset.cls === cls));
+  const body = document.getElementById('wzd-body-editable');
+  if (body) body.innerHTML = swStepToEditableHtml(tpl.body || '');
 }
 
-function swQuickFillRecent(id) {
-  const tpl = swCustomTpls.find(t => t.id === id); if (!tpl) return;
-  document.getElementById('wzd-site').value = tpl.site;
-  document.getElementById('wzd-action').value = tpl.action;
-  document.getElementById('wzd-numlbl').value = tpl.numLbl || 'Number';
-  document.getElementById('wzd-display-name').value = tpl.displayName || `${tpl.action} ${tpl.site}`;
-  document.getElementById('sw-tpl-cls').value = tpl.cls;
-  document.getElementById('sw-tpl-site').value = tpl.site;
-  document.getElementById('sw-tpl-action').value = tpl.action;
-  document.getElementById('sw-tpl-numlbl').value = tpl.numLbl || 'Number';
-  document.getElementById('sw-tpl-body').value = tpl.body;
-  swWizardType = tpl.cls;
-  swManualEdit = true;
-  swSteps = swParseBodyToSteps(tpl.body);
-  swGoToStep(3);
-  showToast('Loaded recent template — review and save');
-}
-
-function swOpenEditTpl(id) {
-  const tpl = swCustomTpls.find(t => t.id === id); if (!tpl) return;
-  document.getElementById('sw-tpl-modal-title').textContent = 'Edit Template';
+function swOpenEditTpl(id, scope) {
+  scope = scope || 'local';
+  const tpl = (scope === 'shared' ? swSharedTpls : swCustomTpls).find(t => t.id === id); if (!tpl) return;
+  document.getElementById('sw-tpl-modal-title').textContent = scope === 'shared' ? 'Edit Shared Template' : 'Edit Template';
   document.getElementById('sw-tpl-edit-id').value = id;
-  document.getElementById('sw-tpl-site').value = tpl.site;
-  document.getElementById('sw-tpl-action').value = tpl.action;
-  document.getElementById('sw-tpl-cls').value = tpl.cls;
-  document.getElementById('sw-tpl-numlbl').value = tpl.numLbl || 'Number';
-  document.getElementById('sw-tpl-body').value = tpl.body;
-  swResetWizard();
-  swRenderQuickFillChips();
-  document.getElementById('wzd-site').value = tpl.site;
-  document.getElementById('wzd-action').value = tpl.action;
-  document.getElementById('wzd-numlbl').value = tpl.numLbl || 'Number';
-  document.getElementById('wzd-display-name').value = tpl.displayName || `${tpl.action} ${tpl.site}`;
-  swWizardType = tpl.cls;
-  swManualEdit = true;
-  swSteps = swParseBodyToSteps(tpl.body);
-  swGoToStep(3);
+  document.getElementById('sw-tpl-edit-scope').value = scope;
+  document.getElementById('sw-tpl-numlbl-existing').value = tpl.numLbl || 'Number';
+  swApplyTplToForm(tpl);
   openModal('modal-sw-tpl');
-}
-
-function swResetWizard() {
-  swWizardStep = 1;
-  swWizardType = '';
-  swManualEdit = false;
-  swSteps = [''];
-  swFocusedStepIdx = 0;
-  document.getElementById('wzd-site').value = '';
-  document.getElementById('wzd-action').value = '';
-  document.getElementById('wzd-numlbl').value = 'Number';
-  document.getElementById('wzd-body').value = '';
-  document.getElementById('wzd-display-name').value = '';
-  const lp = document.getElementById('wzd-live-preview'); if (lp) lp.style.display = 'none';
-  document.querySelectorAll('.wizard-option').forEach(el => el.classList.remove('selected'));
-  swUpdateWizardUI();
-}
-
-function swGoToStep(step) {
-  swWizardStep = step;
-  document.querySelectorAll('.wizard-step').forEach((el, i) => el.classList.toggle('active', i + 1 === step));
-  if (step === 2) {
-    swUpdateLivePreview();
-  }
-  if (step === 3) {
-    // Populate steps from body if coming from quick-fill/edit; otherwise generate defaults
-    if (!swManualEdit || !swSteps.filter(s=>s.trim()).length) swGenerateSteps();
-    const displayName = document.getElementById('wzd-display-name');
-    if (displayName && !displayName.value.trim()) {
-      const site = document.getElementById('wzd-site').value.trim();
-      const action = document.getElementById('wzd-action').value.trim();
-      if (site || action) displayName.value = `${action} ${site}`.trim();
-    }
-    swUpdateHeaderPreview();
-    swRenderStepBuilder();
-    // Focus first empty step
-    setTimeout(() => {
-      const first = swSteps.findIndex(s => !s.trim());
-      document.getElementById(`step-inp-${first >= 0 ? first : 0}`)?.focus();
-    }, 60);
-  }
-  swUpdateWizardUI();
-}
-
-function swUpdateWizardUI() {
-  // Update labeled step bar
-  for (let i = 1; i <= 3; i++) {
-    const bar = document.getElementById('wzd-bar-' + i);
-    if (!bar) continue;
-    bar.classList.remove('active', 'completed');
-    if (i < swWizardStep) bar.classList.add('completed');
-    else if (i === swWizardStep) bar.classList.add('active');
-  }
-  // Hide quick-fill chips on step 3
-  const chipsWrap = document.getElementById('wzd-chips-wrap');
-  if (chipsWrap) chipsWrap.style.display = swWizardStep === 3 ? 'none' : '';
-  // Button states
-  document.getElementById('wzd-back-btn').style.visibility = swWizardStep === 1 ? 'hidden' : 'visible';
-  document.getElementById('wzd-next-btn').textContent = swWizardStep === 3 ? 'Save template' : 'Next →';
-}
-
-function swWizardNext() {
-  if (swWizardStep === 1) {
-    if (!swWizardType) { showToast('Please select a template type'); return; }
-    swGoToStep(2);
-  } else if (swWizardStep === 2) {
-    const site = document.getElementById('wzd-site').value.trim();
-    const action = document.getElementById('wzd-action').value.trim();
-    if (!site || !action) { showToast('Site and action are required'); return; }
-    swGoToStep(3);
-  } else {
-    swSaveTpl();
-  }
-}
-
-function swWizardPrev() {
-  if (swWizardStep > 1) swGoToStep(swWizardStep - 1);
-}
-
-function swSelectType(type) {
-  swWizardType = type;
-  const typeMap = { 'de': 'de', 're': 're', 'permit': 'other', 'reset': 'de', 'test': 'other', 'other': 'other' };
-  document.getElementById('sw-tpl-cls').value = typeMap[type] || 'other';
-  // Context-aware number label suggestion (only if user hasn't customized it)
-  const numLblMap = { 'de': 'Feeder #', 're': 'Feeder #', 'permit': 'MVT #', 'reset': 'Unit ID', 'test': 'Unit #', 'other': 'Number' };
-  const numLblEl = document.getElementById('wzd-numlbl');
-  if (numLblEl && (!numLblEl.value || numLblEl.value === 'Number')) {
-    numLblEl.value = numLblMap[type] || 'Number';
-  }
-  document.querySelectorAll('.wizard-option').forEach(el => el.classList.remove('selected'));
-  event.currentTarget.classList.add('selected');
-}
-
-function swQuickFill(presetKey) {
-  const preset = SW_PRESETS[presetKey];
-  if (!preset) return;
-  document.getElementById('wzd-site').value = preset.site;
-  document.getElementById('wzd-action').value = preset.action;
-  document.getElementById('wzd-numlbl').value = preset.numLbl;
-  document.getElementById('sw-tpl-cls').value = preset.cls;
-  document.getElementById('sw-tpl-site').value = preset.site;
-  document.getElementById('sw-tpl-action').value = preset.action;
-  document.getElementById('sw-tpl-numlbl').value = preset.numLbl;
-  document.getElementById('sw-tpl-body').value = preset.body;
-  swWizardType = preset.cls === 'de' ? 'de' : preset.cls === 're' ? 're' : 'permit';
-  swManualEdit = true;
-  swSteps = swParseBodyToSteps(preset.body);
-  swGoToStep(3);
-  showToast('Quick-fill applied — review and save');
-}
-
-function swWizardUpdate() {
-  const site = document.getElementById('wzd-site').value.trim();
-  const action = document.getElementById('wzd-action').value.trim();
-  const numLbl = document.getElementById('wzd-numlbl').value.trim() || 'Number';
-  document.getElementById('sw-tpl-site').value = site;
-  document.getElementById('sw-tpl-action').value = action;
-  document.getElementById('sw-tpl-numlbl').value = numLbl;
-  swUpdateLivePreview();
-}
-
-function swWizardUpdateDisplayName() {
-  // Stored directly in the input, read at save time
-}
-
-function swGenerateSteps() {
-  const type = swWizardType;
-  const action = document.getElementById('wzd-action')?.value.trim() || 'Action';
-  if (type === 'de') {
-    swSteps = ['Verified with control room', 'Confirmed isolation points', `${action} completed at {{TIME}}`];
-  } else if (type === 're') {
-    swSteps = ['Verified clearance requirements', 'Confirmed safe to proceed', `${action} completed at {{TIME}}`];
-  } else if (type === 'permit') {
-    swSteps = ['Purpose: _____________', 'Scope: _____________', 'Approved/Denied at {{TIME}}'];
-  } else if (type === 'reset') {
-    swSteps = ['Investigated cause: _____________', `${action} completed at {{TIME}}`];
-  } else {
-    swSteps = ['Details: _____________', 'Completed at {{TIME}}'];
-  }
 }
 
 function swSaveTpl() {
-  swSyncSteps();
-  const site      = document.getElementById('wzd-site').value.trim()   || document.getElementById('sw-tpl-site').value.trim();
-  const action    = document.getElementById('wzd-action').value.trim() || document.getElementById('sw-tpl-action').value.trim();
-  const cls       = document.getElementById('sw-tpl-cls').value;
-  const numLbl    = document.getElementById('wzd-numlbl').value.trim() || document.getElementById('sw-tpl-numlbl').value.trim() || 'Number';
-  const body      = swBuildBodyFromSteps();
-  const displayName = document.getElementById('wzd-display-name').value.trim() || `${action} ${site}`;
-  if (!site || !action) { showToast('Site name and action label required'); return; }
-  if (!swSteps.filter(s=>s.trim()).length) { showToast('Add at least one step'); return; }
+  const displayName = document.getElementById('wzd-display-name').value.trim();
+  const numLbl = document.getElementById('sw-tpl-numlbl-existing').value.trim() || 'Number';
+  const cls = document.getElementById('sw-tpl-cls').value || 'other';
+  const bodyEl = document.getElementById('wzd-body-editable');
+  const body = swStepFromEl(bodyEl).trim();
+  if (!displayName) { showToast('Give the template a name'); return; }
+  if (!body) { showToast('Write the message first'); return; }
   const editId = document.getElementById('sw-tpl-edit-id').value;
+  const scope  = document.getElementById('sw-tpl-edit-scope').value;
+  if (editId && scope === 'shared') {
+    // Editing a shared team template updates it live for everyone via
+    // Firestore, same open-edit model as Team Notes/Reminders — there's
+    // no login in this app, so no way to restrict this to just the
+    // original author even if we wanted to.
+    if (!window.db) { showToast('Firebase not connected'); return; }
+    window.db.collection('sharedTemplates').doc(editId).update({ site:'', action:'', cls, numLbl, numPh:'', body, displayName })
+      .then(() => showToast('Shared template updated for everyone'))
+      .catch(e => showToast('Could not update: ' + e.message));
+    closeModal('modal-sw-tpl');
+    return;
+  }
   if (editId) {
     const idx = swCustomTpls.findIndex(t => t.id === editId);
-    if (idx > -1) swCustomTpls[idx] = { id:editId, site, action, cls, numLbl, numPh:'', body, displayName };
+    if (idx > -1) swCustomTpls[idx] = { id:editId, site:'', action:'', cls, numLbl, numPh:'', body, displayName };
   } else {
-    swCustomTpls.push({ id:'custom-'+Date.now(), site, action, cls, numLbl, numPh:'', body, displayName });
+    swCustomTpls.push({ id:'custom-'+Date.now(), site:'', action:'', cls, numLbl, numPh:'', body, displayName });
   }
   swSaveCustom();
   swRenderTpls();
@@ -9736,7 +9869,8 @@ function swDelTpl(id) {
 
 function swDupeTpl(id) {
   const tpl = swGetAllTpls().find(t => t.id === id); if (!tpl) return;
-  const dupe = { ...tpl, id:'custom-'+Date.now(), site: tpl.site+' (copy)', action: tpl.action };
+  const baseLabel = tpl.displayName || `${tpl.action} ${tpl.site}`.trim();
+  const dupe = { ...tpl, id:'custom-'+Date.now(), displayName: baseLabel + ' (copy)' };
   swCustomTpls.push(dupe);
   swSaveCustom();
   swRenderTpls();
@@ -11346,7 +11480,7 @@ function bcRenderPreview(resource, dateLabel, groups, warnHTML) {
   const pastCount = plan.length - futureCount;
   const reminderHTML = plan.length ? `
     <div class="bc-reminder-section">
-      <div class="bc-reminder-hdr">\ud83d\udd14 Notify the team \u2014 ${futureCount} reminder${futureCount !== 1 ? 's' : ''}${pastCount ? `, ${pastCount} already passed` : ''}</div>
+      <div class="bc-reminder-hdr">\ud83d\udd14 Set on this timer \u2014 ${futureCount} reminder${futureCount !== 1 ? 's' : ''}${pastCount ? `, ${pastCount} already passed` : ''}</div>
       ${plan.map(r => `<div class="bc-reminder-row${r.isPast ? ' bc-reminder-past' : ''}">
         <span class="bc-reminder-desc">${esc(bcReminderLabel(r, resource))}${r.isPast ? ' <span class="bc-reminder-past-tag">already passed \u2014 won\u2019t be set</span>' : ''}</span>
         <span class="bc-reminder-time-preview">${qtFormatTimeLabel(r.leadTime.h, r.leadTime.m)}<span style="opacity:.6;"> (${BC_REMINDER_LEAD_MIN}m early)</span></span>
@@ -11502,8 +11636,14 @@ function bcReminderLabel(item, resource) {
 // doesn't want can be individually removed afterward from Quick Timer's
 // Shared Reminders list, rather than requiring per-block confirmation
 // upfront.
-async function bcSetAllReminders() {
-  if (!window.db) { showToast('Firebase not connected \u2014 open this file directly in a browser'); return; }
+// Local, not shared — these fire on whichever desktop actually processed
+// this curtailment schedule, since that's the one operator who needs to
+// act on them. Shared Reminders stays the team-wide mechanism for things
+// everyone should hear; this uses the same local ad-hoc timer system as
+// Quick Timer, so it works even if Firestore/network is having a bad day,
+// and doesn't put a curtailment-specific alarm in everyone's ear when
+// only one person is actually the one implementing it.
+function bcSetAllReminders() {
   if (!bcLastGroups || !bcLastGroups.length) { showToast('Process a schedule first'); return; }
   if (!bcLastTradeDateISO) { showToast('No trade date found \u2014 can\u2019t set reminders without knowing which day this is for'); return; }
 
@@ -11525,28 +11665,28 @@ async function bcSetAllReminders() {
 
   if (!future.length) { showToast('Every reminder for this schedule has already passed \u2014 nothing to set'); return; }
 
-  const btn = document.querySelector('.bc-reminder-btn-all');
-  const origText = btn ? btn.textContent : '';
-  if (btn) { btn.textContent = '\u23f3 Setting\u2026'; btn.disabled = true; }
+  future.forEach(({ item, iso }, i) => {
+    const targetMs = new Date(iso).getTime();
+    const timerMin = Math.max(1, Math.round((targetMs - now) / 60000));
+    const targetLabel = new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: false });
+    const task = {
+      id: Date.now() + i, // offset avoids id collisions when several are added in the same tick
+      name: bcReminderLabel(item, bcLastResource),
+      done: false,
+      timerMin,
+      timerStart: now,
+      targetLabel
+    };
+    S.adhocTasks.push(task);
+    startAdhocTimer(task.id);
+  });
 
-  try {
-    for (const { item, iso } of future) {
-      await window.db.collection('sharedReminders').add({
-        task: bcReminderLabel(item, bcLastResource),
-        targetISO: iso,
-        source: 'buyers-curtailment',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    }
-    const msg = skipped
-      ? `${future.length} reminder${future.length !== 1 ? 's' : ''} set (${skipped} already passed, skipped) \u2014 visible to everyone \u2713`
-      : `${future.length} reminder${future.length !== 1 ? 's' : ''} set \u2014 visible to everyone \u2713`;
-    showToast(msg);
-  } catch (e) {
-    showToast('Could not set reminders: ' + e.message);
-  } finally {
-    if (btn) { btn.textContent = origText; btn.disabled = false; }
-  }
+  save();
+  renderAdhoc();
+  const msg = skipped
+    ? `${future.length} reminder${future.length !== 1 ? 's' : ''} set on this timer (${skipped} already passed, skipped)`
+    : `${future.length} reminder${future.length !== 1 ? 's' : ''} set on this timer`;
+  showToast(msg);
 }
 
 function bcShowExample() { document.getElementById('bc-example-modal').style.display = 'flex'; }
@@ -12548,6 +12688,114 @@ function wosCurrentAndNext() {
     next = { label: 'Days', names: [todayRow[0], todayRow[1]] };
   }
   return { current, next };
+}
+
+// ── Asset Scan Claims ────────────────────────────────────────────────────────
+// Answers "who's got this" rather than trying to infer "is this done" from
+// completion state that turns out not to reflect real usage (values carry
+// over round to round, so 100%-filled and "recently reviewed" aren't the
+// same thing). One manual claim per fleet type, that's it — no monitoring,
+// no field-count math. Claims reset automatically at the same 6am/6pm
+// shift boundary Who's on Shift already uses, so nothing lingers from a
+// prior shift; a claim's own shiftKey is compared against the current one
+// at render time rather than anything being actively deleted on a timer.
+function wosCurrentShiftKey() {
+  const now = new Date();
+  const hour = now.getHours();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  if (hour >= 6 && hour < 18) return wosDateKey(today) + '-day';
+  if (hour >= 18) return wosDateKey(today) + '-night';
+  const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
+  return wosDateKey(yesterday) + '-night';
+}
+
+const ASC_TYPES = ['BESS', 'Solar', 'Wind'];
+const ASC_TYPE_ICON = { BESS: '\ud83d\udd0b', Solar: '\u2600\ufe0f', Wind: '\ud83d\udca8' };
+let ascClaims = {};
+
+function initAscClaimsListener() {
+  if (!window.db) return;
+  window.db.collection('assetScanClaims').onSnapshot(snap => {
+    ascClaims = {};
+    snap.docs.forEach(doc => { ascClaims[doc.id] = doc.data(); });
+    ascRenderHomeTile();
+    ascRenderClaimStrip();
+  }, err => console.error('Firestore (assetScanClaims):', err));
+}
+
+// A claim only counts if it's from the current shift — anything else is
+// stale and treated as unclaimed regardless of what's still sitting in
+// Firestore, so nothing has to actively expire it.
+function ascActiveClaim(type) {
+  const c = ascClaims[type];
+  if (!c || c.shiftKey !== wosCurrentShiftKey()) return null;
+  return c;
+}
+
+function ascRenderHomeTile() {
+  const wrap = document.getElementById('glance-ascan-rows');
+  if (!wrap) return;
+  wrap.innerHTML = ASC_TYPES.map(type => {
+    const c = ascActiveClaim(type);
+    return `<div class="asp-row">
+      <span class="asp-type">${ASC_TYPE_ICON[type]} ${type}</span>
+      <span class="asp-status ${c ? 'claimed' : 'unclaimed'}">${c ? esc(c.claimedBy) : 'Unclaimed'}</span>
+    </div>`;
+  }).join('');
+}
+
+function ascRenderClaimStrip() {
+  const wrap = document.getElementById('claim-strip');
+  if (!wrap) return;
+  wrap.innerHTML = ASC_TYPES.map(type => {
+    const c = ascActiveClaim(type);
+    return `<div class="claim-seg" id="claim-seg-${type}">
+      <div>
+        <div class="claim-seg-type">${ASC_TYPE_ICON[type]} ${type}</div>
+        <div class="claim-seg-who ${c ? 'claimed' : ''}">${c ? esc(c.claimedBy) : 'Unclaimed'}</div>
+      </div>
+      ${c
+        ? `<button class="claim-btn release" onclick="ascRelease('${type}')">Release</button>`
+        : `<button class="claim-btn claim" onclick="ascShowClaimForm('${type}')">Claim</button>`}
+    </div>`;
+  }).join('');
+}
+
+function ascShowClaimForm(type) {
+  const seg = document.getElementById('claim-seg-' + type);
+  if (!seg) return;
+  seg.innerHTML = `<div class="claim-inline-form">
+    <input type="text" id="claim-name-${type}" placeholder="Your name" onkeydown="if(event.key==='Enter')ascClaim('${type}')">
+    <button class="claim-btn claim" onclick="ascClaim('${type}')">Go</button>
+  </div>`;
+  document.getElementById('claim-name-' + type).focus();
+}
+
+async function ascClaim(type) {
+  const inp = document.getElementById('claim-name-' + type);
+  const name = inp ? inp.value.trim() : '';
+  if (!name) { showToast('Add a name first'); return; }
+  if (!window.db) { showToast('Firebase not connected'); return; }
+  try {
+    await window.db.collection('assetScanClaims').doc(type).set({
+      claimedBy: name,
+      shiftKey: wosCurrentShiftKey(),
+      claimedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    showToast(`${type} claimed by ${name}`);
+  } catch (e) {
+    showToast('Could not claim: ' + e.message);
+  }
+}
+
+async function ascRelease(type) {
+  if (!window.db) return;
+  try {
+    await window.db.collection('assetScanClaims').doc(type).delete();
+    showToast(`${type} released`);
+  } catch (e) {
+    showToast('Could not release: ' + e.message);
+  }
 }
 
 function homeRenderWhosOnShift() {
@@ -14194,6 +14442,8 @@ initTimeOffListener();
 initSharedRemindersListener();
 homeInit();
 initPbSuggestionsListener();
+initSwSharedTplsListener();
+initAscClaimsListener();
 // #to-operator lives after this script tag, so re-run after full DOM parse
 setTimeout(() => {
   updateSelect();
@@ -14269,7 +14519,7 @@ load();
 
 <footer class="app-footer">
   <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-  RNWBL Ops Hub <span class="app-footer-v">v1.15</span>
+  RNWBL Ops Hub <span class="app-footer-v">v1.24</span>
 </footer>
 </body>
 </html>
