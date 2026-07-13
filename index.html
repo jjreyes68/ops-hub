@@ -12812,9 +12812,27 @@ function homeRenderWhosOnShift() {
 function homeRenderGlance() {
   homeRenderWhosOnShift();
   const now = Date.now();
-  const soon = sharedReminders
-    .filter(r => { const t = new Date(r.targetISO).getTime(); return t > now && t <= now + 2 * 60 * 60 * 1000; })
-    .sort((a, b) => new Date(a.targetISO) - new Date(b.targetISO));
+  const windowEnd = now + 2 * 60 * 60 * 1000;
+
+  const sharedSoon = sharedReminders
+    .filter(r => { const t = new Date(r.targetISO).getTime(); return t > now && t <= windowEnd; })
+    .map(r => ({ label: r.task, time: new Date(r.targetISO).getTime() }));
+
+  // Local (this browser only) Quick Timer reminders — one-off timers and
+  // recurring timers both alarm locally already; this just surfaces them
+  // in the same at-a-glance count as shared reminders.
+  const adhocSoon = S.adhocTasks
+    .filter(t => !t.done && t.timerMin && t.timerStart)
+    .map(t => ({ label: t.name, time: t.timerStart + t.timerMin * 60000 }))
+    .filter(t => t.time > now && t.time <= windowEnd);
+
+  const recurringSoon = S.recurringTasks
+    .filter(t => !t.done && t.nextTrigger)
+    .map(t => ({ label: t.name, time: t.nextTrigger }))
+    .filter(t => t.time > now && t.time <= windowEnd);
+
+  const soon = [...sharedSoon, ...adhocSoon, ...recurringSoon].sort((a, b) => a.time - b.time);
+
   const tile = document.getElementById('glance-reminders');
   const mainEl = document.getElementById('glance-rem-main');
   const subEl = document.getElementById('glance-rem-sub');
@@ -12822,7 +12840,7 @@ function homeRenderGlance() {
     if (soon.length) {
       tile.classList.add('attn');
       mainEl.textContent = soon.length + ' due soon';
-      subEl.textContent = 'Next: ' + soon[0].task + ' — ' + qtFmtReminderTime(soon[0].targetISO);
+      subEl.textContent = 'Next: ' + soon[0].label + ' — ' + qtFmtReminderTime(soon[0].time);
     } else {
       tile.classList.remove('attn');
       mainEl.textContent = 'All caught up';
