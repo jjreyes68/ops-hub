@@ -3040,7 +3040,7 @@ body.dark .corkboard{
     <div><label>Date:</label><input type="date" id="as-date"></div>
     <div>
       <label>Operator:</label>
-      <input id="as-operator" list="as-ops-list" placeholder="Name">
+      <input id="as-operator" list="as-ops-list" placeholder="Name" oninput="asSaveOperator()">
       <datalist id="as-ops-list">
         <option>Adam McCauley</option><option>Alexander Conway</option><option>Christopher Hill</option>
         <option>Jesse Snygg-Carrasco</option><option>Jonathan Osborne</option><option>Josh Reyes</option><option>Mar'Cell Edwards</option>
@@ -8695,9 +8695,33 @@ function asSectionHasAlert(siteId, si) {
   );
 }
 
+// Auto-detects Day/Night from the same 6am/6pm boundary used elsewhere in
+// the app (Who's on Shift, Asset Scan claims) — not asking the operator
+// to pick something the clock already knows.
+function asAutoShift() {
+  const hour = new Date().getHours();
+  return (hour >= 6 && hour < 18) ? 'Day' : 'Night';
+}
+
+function asSaveOperator() {
+  try { localStorage.setItem('rnwbl_as_operator', document.getElementById('as-operator').value); } catch(e) {}
+}
+
 // ── init & render ──────────────────────────────────────────────────────────────
 function asInit() {
   document.getElementById('as-date').valueAsDate = new Date();
+  // Operator persists locally — the same desktop is almost always run by
+  // the same person, so re-typing a name every round was friction for no
+  // real reason. Shift auto-fills from time of day so it's never just
+  // left blank. Both were quietly producing unhelpful CSV filenames like
+  // "Shift Asset Scan All Name.csv" when left empty.
+  const opInp = document.getElementById('as-operator');
+  const shiftSel = document.getElementById('as-shift');
+  try {
+    const savedOp = localStorage.getItem('rnwbl_as_operator');
+    if (savedOp && opInp && !opInp.value) opInp.value = savedOp;
+  } catch(e) {}
+  if (shiftSel && !shiftSel.value) shiftSel.value = asAutoShift();
   asLoadAll();
   // Restore last visited tab; if none saved, skip ROCC1 and land on first real site
   const saved = (()=>{try{return localStorage.getItem('rnwbl_asactive')||'';}catch(e){return '';}})();
@@ -14204,7 +14228,7 @@ load();
 
 <footer class="app-footer">
   <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-  RNWBL Ops Hub <span class="app-footer-v">v1.23</span>
+  RNWBL Ops Hub <span class="app-footer-v">v1.24</span>
 </footer>
 </body>
 </html>
