@@ -381,24 +381,24 @@ body.dark .card-title{color:var(--text2);}
 .board-site-name{flex:1;font-size:13px;color:var(--text);}
 
 /* Scans/Board — plain checklist, back to its original job */
-.board-scan-list{border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;background:var(--bg2);}
-.board-scan-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
-.board-scan-row:last-child{border-bottom:none;}
+.board-scan-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}
+.board-scan-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg2);cursor:pointer;transition:background .1s;}
 .board-scan-row:hover{background:var(--bg3);}
 .board-scan-row.checked .board-site-name{color:var(--text3);text-decoration:line-through;}
 
 /* Flagged — full detail cards */
-.board-flagged-stack{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;align-items:flex-start;}
-.board-flagged-card{flex:1 1 340px;max-width:420px;background:var(--abg);border:1px solid var(--amber);border-radius:var(--rl);overflow:hidden;}
+.board-flagged-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px;align-items:start;margin-bottom:20px;}
+.board-flagged-col-hdr{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.board-flagged-card{width:100%;margin-bottom:10px;background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:var(--rl);overflow:hidden;}
 .board-flagged-hdr{display:flex;align-items:center;gap:10px;padding:9px 12px;}
 .board-status-addbtn{margin-left:auto;width:22px;height:22px;flex-shrink:0;font-size:14px;line-height:1;border-radius:6px;border:1px dashed var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--f);display:flex;align-items:center;justify-content:center;}
 .board-status-addbtn:hover{border-color:var(--amber);color:var(--amber);}
 .board-flagged-body{padding:0 12px 10px 12px;}
 
 /* Add to handoff — searchable picker replacing the old quiet-chip grid */
-.fleet-add-box.closed{border:1px dashed var(--border2);border-radius:var(--rl);padding:12px 16px;text-align:center;color:var(--text3);font-size:13px;cursor:pointer;transition:all .15s;max-width:420px;}
+.fleet-add-box.closed{border:1px dashed var(--border2);border-radius:var(--rl);padding:12px 16px;text-align:center;color:var(--text3);font-size:13px;cursor:pointer;transition:all .15s;max-width:420px;margin-bottom:20px;}
 .fleet-add-box.closed:hover{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
-.fleet-add-box.open{border:1px solid var(--border2);border-radius:var(--rl);padding:12px;background:var(--bg2);max-width:420px;}
+.fleet-add-box.open{border:1px solid var(--border2);border-radius:var(--rl);padding:12px;background:var(--bg2);max-width:420px;margin-bottom:20px;}
 .fleet-add-box.open input[type=text]{width:100%;padding:7px 9px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);color:var(--text);font-family:var(--f);font-size:13px;}
 .fleet-add-results{margin-top:6px;max-height:220px;overflow-y:auto;}
 .fleet-add-result{padding:7px 9px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--text);}
@@ -411,12 +411,14 @@ body.dark .card-title{color:var(--text2);}
 .status-entry-row:last-of-type{border-bottom:none;}
 .status-entry-row.editing{flex-direction:column;align-items:stretch;}
 .status-entry-row.editing textarea{width:100%;min-height:48px;font-family:var(--f);font-size:12px;padding:6px 8px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);color:var(--text);resize:vertical;margin-bottom:6px;}
-.status-entry-text{flex:1;font-size:12.5px;color:var(--text);line-height:1.5;cursor:pointer;border-radius:4px;padding:2px 4px;margin:-2px -4px;transition:background .12s;}
+.status-entry-main{flex:1;min-width:0;}
+.status-entry-text{display:block;font-size:12.5px;color:var(--text);line-height:1.5;white-space:pre-line;cursor:pointer;border-radius:4px;padding:2px 4px;margin:-2px -4px;transition:background .12s;}
 .status-entry-text:hover{background:var(--bg3);}
+.status-entry-ts{display:block;font-size:10px;color:var(--text3);font-family:var(--m);padding:0 4px;margin-top:1px;}
 .status-entry-resolve{flex-shrink:0;font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:5px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;white-space:nowrap;font-family:var(--f);opacity:0;transition:opacity .12s;}
 .status-entry-row:hover .status-entry-resolve{opacity:1;}
 .status-entry-resolve:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
-.board-status-editor textarea{width:100%;min-height:52px;margin-top:8px;font-family:var(--f);font-size:12px;padding:7px 9px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);color:var(--text);resize:vertical;}
+.board-status-editor-zone textarea{width:100%;min-height:52px;margin-top:8px;font-family:var(--f);font-size:12px;padding:7px 9px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);color:var(--text);resize:vertical;}
 .board-status-editor-actions{display:flex;gap:6px;margin-top:6px;}
 .board-status-editor-actions button{padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:11.5px;font-weight:600;cursor:pointer;font-family:var(--f);}
 .board-status-editor-actions button.save{border-color:var(--green);color:var(--green);}
@@ -2399,7 +2401,7 @@ body.dark .corkboard{
   </div>
   <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
-  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Handoff</button>
+  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Passdown</button>
   <div class="nav-dropdown" id="navdd-schedule">
     <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-schedule" onclick="navDropdownToggle('schedule', event)" aria-haspopup="true">Schedule Compare <span class="nav-dropdown-caret">▾</span></button>
     <div class="nav-dropdown-menu" id="navdd-menu-schedule">
@@ -2434,7 +2436,7 @@ body.dark .corkboard{
   <button class="nav-tab" onclick="switchView('intel',this); toggleMobileMenu()">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this); toggleMobileMenu()">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
-  <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Handoff</button>
+  <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Passdown</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('split'); toggleMobileMenu()">Schedule – Split Week</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('pitman'); toggleMobileMenu()">Schedule – Pitman</button>
   <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Timezones</button>
@@ -6297,6 +6299,11 @@ function renderSiteBoard(){
 // independently of each other.
 let siteStatusEntryEditingId = null; // `${boardKey}|${entryId}` or null
 
+function fmtLightTs(ts){
+  const d = new Date(ts);
+  return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+}
+
 function statusEntryRow(boardKey, e, labelEsc){
   const editKey = boardKey+'|'+e.id;
   if (siteStatusEntryEditingId === editKey) {
@@ -6308,7 +6315,10 @@ function statusEntryRow(boardKey, e, labelEsc){
     </div>`;
   }
   return `<div class="status-entry-row">
-    <span class="status-entry-text" title="Click to edit" onclick="event.stopPropagation();editSiteStatusEntry('${boardKey}','${e.id}')">${esc(e.text)}</span>
+    <div class="status-entry-main">
+      <span class="status-entry-text" title="Click to edit" onclick="event.stopPropagation();editSiteStatusEntry('${boardKey}','${e.id}')">${esc(e.text)}</span>
+      <span class="status-entry-ts">${fmtLightTs(e.ts)}</span>
+    </div>
     <button class="status-entry-resolve" title="Resolve this note only" onclick="removeSiteStatusEntry('${boardKey}','${e.id}','${labelEsc}')">Resolve</button>
   </div>`;
 }
@@ -6410,6 +6420,17 @@ function renderFleetAddBox(){
   </div>`;
 }
 
+// Same categorization already used on the Log Builder tab, reused here so
+// 20+ flagged cards land in stable, evenly-sized columns instead of one
+// wrapping stack of differently-sized bubbles.
+function fleetItemCategory(item){
+  if (item.boardKey==='x_ROC' || item.boardKey==='x_OTHER') return 'Other';
+  const id = (item.siteIds && item.siteIds.length) ? item.siteIds[0] : null;
+  const type = clGetAssetType(item.label, id);
+  return (type==='BESS'||type==='Solar'||type==='Wind') ? type : 'Other';
+}
+const FLEET_CAT_ORDER=['BESS','Solar','Wind','Other'];
+
 function renderFleetOverview(){
   const wrap=document.getElementById('fleet-overview-wrap');
   if(!wrap) return;
@@ -6417,12 +6438,23 @@ function renderFleetOverview(){
     .filter(i=>siteStatusEntries(i.boardKey).length>0)
     .sort((a,b)=>a.label.localeCompare(b.label));
 
+  const byCat={};
+  flagged.forEach(item=>{
+    const cat=fleetItemCategory(item);
+    (byCat[cat]=byCat[cat]||[]).push(item);
+  });
+  const colsHtml=FLEET_CAT_ORDER.filter(cat=>byCat[cat]&&byCat[cat].length).map(cat=>`
+    <div class="board-flagged-col">
+      <div class="board-flagged-col-hdr">${cat} <span class="board-col-count">${byCat[cat].length}</span></div>
+      ${byCat[cat].map(fleetFlaggedCard).join('')}
+    </div>`).join('');
+
   const flaggedHtml = flagged.length
-    ? `<div class="board-flagged-stack">${flagged.map(fleetFlaggedCard).join('')}</div>`
+    ? `<div class="board-flagged-columns">${colsHtml}</div>`
     : '';
 
-  wrap.innerHTML=`${flaggedHtml}
-  ${renderFleetAddBox()}`;
+  wrap.innerHTML=`${renderFleetAddBox()}
+  ${flaggedHtml}`;
 }
 
 // Click anywhere outside an open note editor closes it — no Cancel/Close
@@ -6571,6 +6603,31 @@ async function removeSiteStatusEntry(boardKey, entryId, label) {
     renderFleetOverview();
     showToast('Note resolved');
   } catch (e) { showToast('Could not resolve note: ' + e.message); }
+}
+
+// One-time prefill of the 7/14 off-shift handoff, not wired to any button on
+// purpose — run it once from the browser console (F12 → Console →
+// seedFleetOverviewSample()) rather than leaving a permanent UI button that
+// could get clicked twice and duplicate entries.
+async function seedFleetOverviewSample(){
+  if (!window.db) { console.warn('No Firestore connection — open this file directly in a browser.'); return; }
+  const seed = [
+    { boardKey:'s_308', label:'DBLO1', text:'Site TRIPPED, substation breaker open with multiple active faults. TO and PG&E notified. Samuel Torres expected on site ~08:30 for troubleshooting. Full Site Outage in place through 12:00.' },
+    { boardKey:'s_214', label:'NSTR1', text:'Lost SCADA visibility, server ping attempts unsuccessful. TO confirmed no grid events/disturbances, line remains energized. PG&E SC/ISO also reporting bad telemetry and no visibility. Metering/Telemetry outage submitted under OMS #20566252, effective through 11:00 on 7/14. EDAS ticket submitted by PG&E received.' },
+    { boardKey:'s_201', label:'HARQ1', text:'Metering/Telemetry tickets in place due to a potential ISP issue. ROC currently has no visibility to either HARQ1 or HARQ2. APS Transmission/ECC continue to have visibility. GridSec & Trimark unable to see the site servers on their end.' },
+    { boardKey:'s_103', label:'HARQ2', text:'Metering/Telemetry tickets in place due to a potential ISP issue. ROC currently has no visibility to either HARQ1 or HARQ2. APS Transmission/ECC continue to have visibility. GridSec & Trimark unable to see the site servers on their end.' },
+    { boardKey:'m_MRCP', label:'MRCP', text:'Hail Stow testing completed. Email sent with testing findings and results.' },
+    { boardKey:'m_CFLATS', label:'CFLATS', text:'Phase III BESS: 52F32 breaker remains open.' },
+    { boardKey:'s_302', label:'MCLM1', text:'T17, T18, and T38 remain tripped. Units require a technician visit for further troubleshooting.' },
+    { boardKey:'s_109', label:'PDMT1', text:'PCS 303 (16A-6-C) reporting Coolant Low. Tesla Concern AC5553073E44F0 created for investigation.' }
+  ];
+  for (const s of seed) {
+    const entry = { id:'e'+Date.now()+Math.random().toString(36).slice(2,6), text:s.text, ts:Date.now() };
+    const entries = siteStatusEntries(s.boardKey).concat([entry]);
+    await window.db.collection('siteStatus').doc(s.boardKey).set({ siteLabel:s.label, entries, updatedAt:Date.now() });
+    await window.db.collection('siteStatusHistory').add({ boardKey:s.boardKey, siteLabel:s.label, action:'set', text:s.text, ts:Date.now() });
+  }
+  console.log('Seeded '+seed.length+' sample handoff notes from 7/14.');
 }
 
 // ── SITE HISTORY (manager report) ───────────────────────────────────────────
