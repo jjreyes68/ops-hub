@@ -395,6 +395,9 @@ body.dark .card-title{color:var(--text2);}
 .board-status-addbtn:hover{border-color:var(--amber);color:var(--amber);}
 .board-flagged-body{padding:0 12px 10px 12px;}
 
+/* Since-you-were-last-here digest — one line, self-clears on next visit */
+.fleet-digest{font-size:12.5px;color:var(--text2);background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:9px 14px;margin-bottom:16px;}
+
 /* Add to handoff — searchable picker replacing the old quiet-chip grid */
 .fleet-add-box.closed{border:1px dashed var(--border2);border-radius:var(--rl);padding:12px 16px;text-align:center;color:var(--text3);font-size:13px;cursor:pointer;transition:all .15s;max-width:420px;margin-bottom:20px;}
 .fleet-add-box.closed:hover{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
@@ -4539,7 +4542,7 @@ let S = {
   timerRunning:false, timerElapsed:0, timerCycles:0,
   shiftStart:Date.now(),
   crew:[], equipment:[], escContacts:{t1:'',t2:'',t3:''},
-  scanViewMode:'board', siteBoardGroups:{}, siteBoardChecked:{}, siteBoardExpanded:{}
+  scanViewMode:'board', siteBoardGroups:{}, siteBoardChecked:{}, siteBoardExpanded:{}, fleetLastViewed:0
 };
 let SITES = []; // loaded separately
 
@@ -4567,6 +4570,7 @@ async function load() {
       if(!S.siteBoardGroups) S.siteBoardGroups={};
       if(!S.siteBoardChecked) S.siteBoardChecked={};
       if(!S.siteBoardExpanded) S.siteBoardExpanded={};
+      if(!S.fleetLastViewed) S.fleetLastViewed=0;
     } catch(e) {}
   }
 
@@ -4723,7 +4727,7 @@ function switchView(v, el) {
   if(v==='sitehistory') shInit();
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
   if(v==='timezones') initTimeZones();
-  if(v==='chron') renderFleetOverview();
+  if(v==='chron') { renderFleetOverview(); fleetLoadDigest(); }
   if(v==='intel') wxFleetInit();
   if(v==='roc') { rocLoad(); rocRender(); }
   if(v==='schedule') {
@@ -6469,8 +6473,36 @@ function renderFleetOverview(){
     ? `<div class="board-flagged-columns">${colsHtml}</div>`
     : '';
 
-  wrap.innerHTML=`${renderFleetAddBox()}
+  wrap.innerHTML=`${fleetDigestHtml}${renderFleetAddBox()}
   ${flaggedHtml}`;
+}
+
+// "Since you were last here" — one line, not a badge on every card. Compares
+// against when this browser last opened the page (local only, not shared)
+// and pulls only the entries touched since then from siteStatusHistory.
+// Marking fleetLastViewed happens immediately on open, not after the query
+// resolves, so a slow network doesn't distort what counts as "since."
+let fleetDigestHtml = '';
+
+async function fleetLoadDigest(){
+  const prevViewed = S.fleetLastViewed || 0;
+  S.fleetLastViewed = Date.now();
+  save();
+  if (!prevViewed || !window.db) { fleetDigestHtml=''; return; } // first-ever visit — nothing to compare against
+  try {
+    const snap = await window.db.collection('siteStatusHistory').where('ts','>',prevViewed).get();
+    const rows = snap.docs.map(d=>d.data());
+    const newSites = [...new Set(rows.filter(r=>r.action==='set').map(r=>r.siteLabel))];
+    const resolvedSites = [...new Set(rows.filter(r=>r.action==='clear').map(r=>r.siteLabel))];
+    if (!newSites.length && !resolvedSites.length) { fleetDigestHtml=''; return; }
+    const parts=[];
+    if (newSites.length) parts.push(`<span style="color:var(--amber);font-weight:600;">${newSites.length} new</span> (${esc(newSites.join(', '))})`);
+    if (resolvedSites.length) parts.push(`<span style="color:var(--green);font-weight:600;">${resolvedSites.length} resolved</span> (${esc(resolvedSites.join(', '))})`);
+    fleetDigestHtml = `<div class="fleet-digest">Since you were last here: ${parts.join(' · ')}</div>`;
+  } catch(e) {
+    fleetDigestHtml='';
+  }
+  renderFleetOverview();
 }
 
 // Click anywhere outside an open note editor closes it — no Cancel/Close
