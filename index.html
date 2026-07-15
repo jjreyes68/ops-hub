@@ -4471,7 +4471,7 @@ function defaultSites() {
     {id:403,name:'PRTV1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Porterville, CA',
      lat:36.0652,lng:-119.0168,
      notes:'Placeholder entry — confirm nameplate, voltage set point, and exact coordinates.\nInverters inverting?\nRates about the same?'},
-    {id:404,name:'FRMS1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Farmersville, CA',
+    {id:404,name:'FRMV1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Farmersville, CA',
      lat:36.3016,lng:-119.2065,
      notes:'Placeholder entry — confirm nameplate, voltage set point, and exact coordinates.\nInverters inverting?\nRates about the same?'},
     {id:405,name:'HNFD1',nerc:true,interval:30,threshold:5,lastScan:null,location:'Hanford, CA',
@@ -4498,6 +4498,7 @@ function resetSitesToDefaults() {
 // Site names retired from the portfolio config — filtered out of any
 // already-saved browser data so they disappear without a manual reset.
 const RETIRED_SITE_NAMES=['DLBO1']; // duplicate of DBLO1 (Diablo)
+const RENAMED_SITES={ FRMS1:'FRMV1' }; // corrected to the real site code (Farmersville)
 
 async function loadSitesAsync() {
   const defaults = defaultSites();
@@ -4517,8 +4518,9 @@ async function loadSitesAsync() {
     const merged = stored
       .filter(s => !RETIRED_SITE_NAMES.includes(s.name))
       .map(s => {
+        const name = RENAMED_SITES[s.name] || s.name;
         const def = defaults.find(d => d.id === s.id);
-        return def ? { ...s, lat: def.lat, lng: def.lng } : s;
+        return def ? { ...s, name, lat: def.lat, lng: def.lng } : { ...s, name };
       });
     // Pick up any sites added to defaultSites() since this browser last saved,
     // without touching existing customizations or scan history.
@@ -6428,8 +6430,17 @@ function renderFleetAddBox(){
 // Same categorization already used on the Log Builder tab, reused here so
 // 20+ flagged cards land in stable, evenly-sized columns instead of one
 // wrapping stack of differently-sized bubbles.
+//
+// Confirmed corrections where the ID-range heuristic in clGetAssetType
+// disagrees with reality (e.g. BLKW1's ID falls in the 100-199 BESS range
+// even though it's actually Solar). Kept separate from CL_SITE_TYPES so
+// future ID-range mismatches surface here for a spot-check rather than
+// silently trusting either table over the other.
+const FLEET_CATEGORY_FIX={ BLKW1:'Solar' };
+
 function fleetItemCategory(item){
   if (item.boardKey==='x_ROC' || item.boardKey==='x_OTHER') return 'Other';
+  if (FLEET_CATEGORY_FIX[item.label]) return FLEET_CATEGORY_FIX[item.label];
   const id = (item.siteIds && item.siteIds.length) ? item.siteIds[0] : null;
   const type = clGetAssetType(item.label, id);
   return (type==='BESS'||type==='Solar'||type==='Wind') ? type : 'Other';
@@ -7225,13 +7236,13 @@ async function clSaveAsImage(e) {
 }
 const CL_SITE_TYPES = {
   // BESS
-  PRGN1:'BESS',PRGV1:'BESS',HARQ2:'BESS',KUNA1:'BESS',GLTA1:'BESS',COSO1:'BESS',DBLO1:'BESS',
+  PRGN1:'BESS',PRGV1:'BESS',HARQ2:'BESS',KUNA1:'BESS',GLTA1:'BESS',COSO1:'BESS',
   BYPS1:'BESS',CTLF1:'BESS',CTLF:'BESS',PDMT1:'BESS',MRCP1:'BESS',MRCP:'BESS',FRDN1:'BESS',ANGF1:'BESS',AVLN1:'Solar',TSMS1:'BESS',
   // Solar
   HARQ1:'Solar',NCLS1:'Solar',AVLN2:'Solar',BLKW1:'Solar',LSTH2:'Solar',NSTR1:'Solar',
   FRMV1:'Solar',HNFD1:'Solar',LSTH1:'Solar',PRTV1:'Solar',TLRE1:'Solar',TRPC1:'Solar',
   // Wind
-  DFRN1:'Wind',MCLM1:'Wind',GDWL1:'Wind',LNDL1:'Wind',ORGN1:'Wind',RKRD1:'Wind',RKRG1:'Wind',PRRS1:'Wind',PRSE1:'Wind'
+  DFRN1:'Wind',MCLM1:'Wind',GDWL1:'Wind',LNDL1:'Wind',ORGN1:'Wind',RKRD1:'Wind',RKRG1:'Wind',PRRS1:'Wind',PRSE1:'Wind',DBLO1:'Wind'
 };
 
 function clGetAssetType(siteName, siteId) {
