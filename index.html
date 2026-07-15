@@ -7,6 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Crect width='24' height='24' rx='5' fill='%231a1917'/%3E%3Cpath d='M13 3L5 13h7l-1 8 9-12h-7l1-8z' fill='%23e05540' stroke='%23e05540' stroke-width='1' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <!-- Firebase Compat SDK — Schedule Compare -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -371,32 +372,73 @@ body.dark .card-title{color:var(--text2);}
 .filter-btn.active{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
 
 /* SITE BOARD */
-.board-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.board-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
 .board-progress{font-family:var(--m);font-size:12px;color:var(--text2);}
-.site-board{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;}
-.board-col{flex:1 1 220px;min-width:200px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--shs);overflow:hidden;}
-.board-col-hdr{display:flex;align-items:center;gap:6px;padding:9px 12px;background:var(--bg3);border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.05em;text-transform:uppercase;}
+.board-section-label{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
 .board-col-count{font-family:var(--m);font-size:10px;font-weight:600;color:var(--text3);background:var(--bg4);padding:1px 6px;border-radius:8px;}
-.board-col-body{padding:2px 0;}
-.board-col-empty{padding:12px;font-size:12px;color:var(--text3);text-align:center;}
-.board-site-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
-.board-site-row:last-child{border-bottom:none;}
-.board-site-row:hover{background:var(--bg3);}
 .board-chk{width:16px;height:16px;flex-shrink:0;border-radius:4px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--gbg);cursor:pointer;}
-.board-site-row.checked .board-chk,.board-chk.checked{background:var(--green);border-color:var(--green);color:#fff;}
+.board-chk.checked{background:var(--green);border-color:var(--green);color:#fff;}
 .board-site-name{flex:1;font-size:13px;color:var(--text);}
-.board-site-row.checked .board-site-name{color:var(--text3);text-decoration:line-through;}
-.board-assign-group{display:flex;gap:3px;flex-shrink:0;}
-.board-assign-btn{padding:2px 6px;border-radius:5px;border:1px solid var(--border);background:var(--bg2);color:var(--text3);font-size:10px;font-weight:600;cursor:pointer;transition:all .15s;}
-.board-assign-btn:hover{border-color:var(--border2);color:var(--text2);}
-.board-assign-btn.active{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
-.board-site-row.indent{padding-left:26px;}
-.board-group-hdr{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--border);cursor:pointer;background:var(--bg3);transition:background .1s;}
-.board-group-hdr:hover{background:var(--bg4);}
-.board-group-expand{color:var(--text3);font-size:9px;flex-shrink:0;transition:transform .18s;}
-.board-group-hdr.open .board-group-expand{transform:rotate(90deg);}
-.board-group-children{border-bottom:1px solid var(--border);}
-.board-group-children .board-site-row:last-child{border-bottom:none;}
+
+/* Scans/Board — plain checklist, back to its original job */
+.board-scan-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}
+.board-scan-row{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--bg2);cursor:pointer;transition:background .1s;}
+.board-scan-row:hover{background:var(--bg3);}
+.board-scan-row.checked .board-site-name{color:var(--text3);text-decoration:line-through;}
+
+/* Flagged — full detail cards */
+.board-flagged-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px;align-items:start;margin-bottom:20px;}
+.board-flagged-col-hdr{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.board-flagged-card{width:100%;margin-bottom:10px;background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:var(--rl);overflow:hidden;}
+.board-flagged-hdr{display:flex;align-items:center;gap:10px;padding:9px 12px;}
+.board-status-addbtn{margin-left:auto;width:22px;height:22px;flex-shrink:0;font-size:14px;line-height:1;border-radius:6px;border:1px dashed var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--f);display:flex;align-items:center;justify-content:center;}
+.board-status-addbtn:hover{border-color:var(--amber);color:var(--amber);}
+.board-flagged-body{padding:0 12px 10px 12px;}
+
+/* Add to handoff — searchable picker replacing the old quiet-chip grid */
+.fleet-add-box.closed{border:1px dashed var(--border2);border-radius:var(--rl);padding:12px 16px;text-align:center;color:var(--text3);font-size:13px;cursor:pointer;transition:all .15s;max-width:420px;margin-bottom:20px;}
+.fleet-add-box.closed:hover{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
+.fleet-add-box.open{border:1px solid var(--border2);border-radius:var(--rl);padding:12px;background:var(--bg2);max-width:420px;margin-bottom:20px;}
+.fleet-add-box.open input[type=text]{width:100%;padding:7px 9px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);color:var(--text);font-family:var(--f);font-size:13px;}
+.fleet-add-box.open textarea{width:100%;min-height:52px;font-family:var(--f);font-size:12px;padding:7px 9px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);color:var(--text);resize:vertical;}
+.fleet-add-results{margin-top:6px;max-height:220px;overflow-y:auto;}
+.fleet-add-result{padding:7px 9px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--text);}
+.fleet-add-result:hover{background:var(--bg3);}
+.fleet-add-empty{padding:7px 9px;font-size:12px;color:var(--text3);}
+.fleet-add-selected-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+
+/* SITE STATUS entries — shared by flagged cards and editing chips */
+.status-entry-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);}
+.status-entry-row:last-of-type{border-bottom:none;}
+.status-entry-row.editing{flex-direction:column;align-items:stretch;}
+.status-entry-row.editing textarea{width:100%;min-height:48px;font-family:var(--f);font-size:12px;padding:6px 8px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);color:var(--text);resize:vertical;margin-bottom:6px;}
+.status-entry-main{flex:1;min-width:0;}
+.status-entry-text{display:block;font-size:12.5px;color:var(--text);line-height:1.5;white-space:pre-line;cursor:pointer;border-radius:4px;padding:2px 4px;margin:-2px -4px;transition:background .12s;}
+.status-entry-text:hover{background:var(--bg3);}
+.status-entry-ts{display:block;font-size:10px;color:var(--text3);font-family:var(--m);padding:0 4px;margin-top:1px;}
+.status-entry-resolve{flex-shrink:0;font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:5px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);cursor:pointer;white-space:nowrap;font-family:var(--f);opacity:0;transition:opacity .12s;}
+.status-entry-row:hover .status-entry-resolve{opacity:1;}
+.status-entry-resolve:hover{border-color:var(--green);color:var(--green);background:var(--gbg);}
+.board-status-editor-zone textarea{width:100%;min-height:52px;margin-top:8px;font-family:var(--f);font-size:12px;padding:7px 9px;border-radius:6px;border:1px solid var(--border2);background:var(--bg);color:var(--text);resize:vertical;}
+.board-status-editor-actions{display:flex;gap:6px;margin-top:6px;}
+.board-status-editor-actions button{padding:5px 12px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text2);font-size:11.5px;font-weight:600;cursor:pointer;font-family:var(--f);}
+.board-status-editor-actions button.save{border-color:var(--green);color:var(--green);}
+
+/* SITE HISTORY (manager report view) */
+.sh-filters{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;}
+.sh-field{display:flex;flex-direction:column;gap:4px;}
+.sh-field label{font-size:11px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.03em;}
+.sh-field input,.sh-field select{padding:7px 10px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-family:var(--f);font-size:13px;}
+.sh-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.sh-table th{text-align:left;padding:8px 10px;background:var(--bg3);border-bottom:1px solid var(--border);color:var(--text3);font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
+.sh-table th.sh-sortable{cursor:pointer;user-select:none;}
+.sh-table th.sh-sortable:hover{color:var(--text2);}
+.sh-summary{font-size:12px;color:var(--text3);margin-bottom:10px;}
+.sh-quickfilter{width:100%;max-width:340px;padding:7px 10px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);font-family:var(--f);font-size:13px;margin-bottom:12px;display:block;}
+.sh-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;}
+.sh-action-set{color:var(--amber);font-weight:600;}
+.sh-action-clear{color:var(--green);font-weight:600;}
+.sh-action-edit{color:var(--blue);font-weight:600;}
 @media(max-width:700px){.site-board{flex-direction:column;}.board-col{flex:1 1 auto;width:100%;}}
 .stat-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
 .stat-chip{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;box-shadow:var(--shs);min-width:64px;transition:box-shadow .15s,transform .15s;}
@@ -2364,7 +2406,7 @@ body.dark .corkboard{
   </div>
   <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
-  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Handoff</button>
+  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Passdown</button>
   <div class="nav-dropdown" id="navdd-schedule">
     <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-schedule" onclick="navDropdownToggle('schedule', event)" aria-haspopup="true">Schedule Compare <span class="nav-dropdown-caret">▾</span></button>
     <div class="nav-dropdown-menu" id="navdd-menu-schedule">
@@ -2399,7 +2441,7 @@ body.dark .corkboard{
   <button class="nav-tab" onclick="switchView('intel',this); toggleMobileMenu()">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this); toggleMobileMenu()">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
-  <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Handoff</button>
+  <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Passdown</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('split'); toggleMobileMenu()">Schedule – Split Week</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('pitman'); toggleMobileMenu()">Schedule – Pitman</button>
   <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Timezones</button>
@@ -2516,7 +2558,7 @@ body.dark .corkboard{
       <div class="page-subtitle">Track scan timing and accountability across the portfolio</div>
     </div>
   </div>
-  <div class="timer-strip">
+  <div class="timer-strip" id="scan-timer-strip">
     <div class="timer-big" id="timer-disp">30:00</div>
     <div class="timer-bar-wrap"><div class="timer-bar-fill" id="timer-fill" style="width:100%"></div></div>
     <span class="cycles-badge" id="cycles-badge">0 cycles</span>
@@ -3637,6 +3679,36 @@ body.dark .corkboard{
   </div>
 </div>
 
+<!-- SITE HISTORY (manager report) ────────────────────────────────────────── -->
+<div class="view" id="view-sitehistory">
+  <button class="tbtn" onclick="switchView('chron', null)" style="margin-bottom:14px;">&larr; Back to Fleet overview</button>
+  <div class="page-header">
+    <div>
+      <div class="page-title">Site history</div>
+      <div class="page-subtitle">Every status change, timestamped — pulled straight from the board, not a separate log</div>
+    </div>
+  </div>
+
+  <div class="sh-filters">
+    <div class="sh-field">
+      <label>From</label>
+      <input type="date" id="sh-from">
+    </div>
+    <div class="sh-field">
+      <label>To</label>
+      <input type="date" id="sh-to">
+    </div>
+    <div class="sh-field">
+      <label>Site</label>
+      <select id="sh-site"><option value="">All sites</option></select>
+    </div>
+    <button class="tbtn" onclick="shRunQuery()">Run report</button>
+    <button class="tbtn" onclick="shDownloadExcel()">↓ Download as Excel</button>
+  </div>
+
+  <div id="sh-results"></div>
+</div>
+
 <!-- Log BUILDER ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-swbuilder">
   <div class="sw-pg-header">
@@ -3704,82 +3776,15 @@ body.dark .corkboard{
 
   <div class="page-header">
     <div>
-      <div class="page-title">Handoff</div>
-      <div class="page-subtitle">Capture notes, promote what matters, copy the draft</div>
+      <div class="page-title">Fleet overview</div>
+      <div class="page-subtitle">Everything the next operator needs to know, site by site</div>
     </div>
     <div class="page-header-actions">
-      <button class="tbtn" style="color:var(--amber);border-color:var(--amber);" onclick="clStartFresh()">↺ Start fresh</button>
+      <button class="tbtn" onclick="switchView('sitehistory',null)" style="font-size:11px;color:var(--text3);">History</button>
     </div>
   </div>
 
-  <!-- Shift context strip -->
-  <div class="cl-context-strip">
-    <div class="cl-context-field">
-      <label class="cl-context-lbl">Date</label>
-      <input type="date" id="cl-date" class="cl-context-inp" onchange="clSyncContext()">
-    </div>
-    <div class="cl-context-field">
-      <label class="cl-context-lbl">Shift</label>
-      <select id="cl-shift" class="cl-context-inp" onchange="clSyncContext()">
-        <option value="">Select</option>
-        <option>Day</option>
-        <option>Night</option>
-      </select>
-    </div>
-    <div class="cl-context-hint">Used in the handoff header when copying</div>
-  </div>
-
-  <!-- ── NOTEPAD ───────────────────────────────────────────────────────── -->
-  <div class="cl-stack-section cl-notepad-section">
-    <div class="cl-header-row">
-      <span class="cl-section-lbl">Notepad</span>
-    </div>
-    <div class="sp-input-row">
-      <input id="sp-text" placeholder="What's happening? Type a note and press Enter..." onkeydown="if(event.key==='Enter')spAdd()">
-      <button class="cl-log-btn" onclick="spAdd()">Add</button>
-    </div>
-    <div class="sp-list" id="sp-list"></div>
-    <div class="sp-smart-footer-wrap" id="sp-smart-footer-wrap" style="display:none;">
-      <button class="sp-smart-btn" id="sp-smart-btn" onclick="spSmartOpen()" title="Auto-parse all notes above and push to feed in one step">⚡ Smart Push All</button>
-    </div>
-    <div id="sp-smart-panel" class="sp-smart-panel"></div>
-  </div>
-
-  <!-- ── SHIFT FEED ────────────────────────────────────────────────────── -->
-  <div class="cl-stack-section">
-    <div class="cl-header-row">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-        <span class="cl-section-lbl">Shift Feed</span>
-        <div class="cl-progress" id="cl-progress"></div>
-      </div>
-    </div>
-    <div class="cl-feed" id="cl-feed">
-      <div class="empty-state compact">
-        <div class="empty-state-icon">↑</div>
-        <div class="empty-state-title">Nothing here yet</div>
-        <div class="empty-state-sub">Add a note above, then click <strong>Add to Handoff</strong> to send it here.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── HANDOFF DRAFT ─────────────────────────────────────────────────── -->
-  <div class="cl-stack-section">
-    <div class="cl-handoff-header">
-      <span class="cl-section-lbl">Handoff Draft</span>
-      <span class="cl-handoff-hint">Auto-built from your feed</span>
-    </div>
-    <div id="cl-preview" class="cl-handoff-preview"></div>
-  </div>
-
-  <!-- ── COPY HANDOFF ──────────────────────────────────────────────────── -->
-  <div class="cl-copy-tile" onclick="clCopyHandoff()">
-    <span class="cl-copy-tile-icon">📋</span>
-    <div>
-      <div class="cl-copy-tile-title">Copy Handoff</div>
-      <div class="cl-copy-tile-sub">Copies the structured draft to your clipboard</div>
-    </div>
-    <span class="cl-copy-tile-arrow">→</span>
-  </div>
+  <div id="fleet-overview-wrap"></div>
 
 </div>
 
@@ -4713,18 +4718,10 @@ function switchView(v, el) {
   if(v==='home') homeRenderGlance();
   if(v==='scans') { refreshScanStatuses(); renderSites(); }
   if(v==='playbooks') pbShowList();
+  if(v==='sitehistory') shInit();
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
   if(v==='timezones') initTimeZones();
-  if(v==='chron') {
-    // Pre-populate date/shift from Asset Scan if not already set
-    const clDate = document.getElementById('cl-date');
-    const clShift = document.getElementById('cl-shift');
-    const asDate = document.getElementById('as-date');
-    const asShift = document.getElementById('as-shift');
-    if (clDate && asDate && !clDate.value && asDate.value) clDate.value = asDate.value;
-    if (clShift && asShift && !clShift.value && asShift.value) clShift.value = asShift.value;
-    clRender();
-  }
+  if(v==='chron') renderFleetOverview();
   if(v==='intel') wxFleetInit();
   if(v==='roc') { rocLoad(); rocRender(); }
   if(v==='schedule') {
@@ -6197,34 +6194,12 @@ function scanAll(){
 }
 
 // ─── SITE BOARD (D1 / D2 / Everyone) ───────────────────────────────────────
-const BOARD_GROUPS=[
-  {key:'D1',label:'D1'},
-  {key:'D2',label:'D2'},
-  {key:'everyone',label:'Everyone'}
-];
-
 // Sites that are the same physical location split across multiple scan
 // entries — combined into one board row instead of showing each separately.
 const BOARD_MERGED_ITEMS=[
   {key:'CFLATS', label:'CFLATS', names:['CTLF1','CTLF2','CTLF3']},
   {key:'MRCP', label:'MRCP', names:['MRCP1','MRCP2']}
 ];
-
-// Distinct sites grouped under one owner/portfolio umbrella. Unlike
-// BOARD_MERGED_ITEMS these stay individually checkable — the group is just
-// a collapsible folder that moves as one unit between D1/D2/Everyone.
-const BOARD_EXPAND_GROUPS=[
-  {key:'AREVON', label:'Arevon', names:['PRTV1','FRMS1','HNFD1','LSTH1','TLRE1']}
-];
-
-// Confirmed team layout, set as the default starting point for all users.
-// Anything not listed here (new sites, etc.) falls back to Everyone so it's
-// never hidden — operators can move it with one click.
-const DEFAULT_BOARD_GROUP={
-  DBLO1:'D1',DFRN1:'D1',GDWL1:'D1',HARQ1:'D1',HARQ2:'D1',LNDL1:'D1',MCLM1:'D1',ORGN1:'D1',PRSE1:'D1',RKRG1:'D1',
-  ANGF1:'D2',AVLN1:'D2',BLKW1:'D2',BYPS1:'D2',COSO1:'D2',FRDN1:'D2',GLTA1:'D2',KUNA1:'D2',LSTH2:'D2',NCLS1:'D2',NSTR1:'D2',PDMT1:'D2',PRGN1:'D2',TRPC1:'D2',TSMS1:'D2',
-  CFLATS:'everyone', MRCP:'everyone', AREVON:'D2'
-};
 
 function setScanViewMode(mode, skipSave){
   S.scanViewMode=mode;
@@ -6233,59 +6208,34 @@ function setScanViewMode(mode, skipSave){
   const boardWrap=document.getElementById('site-board-wrap');
   const filterRow=document.getElementById('scan-filter-row');
   const statRow=document.getElementById('scan-stats');
+  const timerStrip=document.getElementById('scan-timer-strip');
   const tBtn=document.getElementById('scan-view-table-btn');
   const bBtn=document.getElementById('scan-view-board-btn');
   if(tableWrap) tableWrap.style.display= mode==='table' ? '' : 'none';
   if(boardWrap) boardWrap.style.display= mode==='board' ? '' : 'none';
   if(filterRow) filterRow.style.display= mode==='table' ? '' : 'none';
   if(statRow) statRow.style.display= mode==='table' ? '' : 'none';
+  if(timerStrip) timerStrip.style.display= mode==='table' ? '' : 'none';
   if(tBtn) tBtn.classList.toggle('active-btn', mode==='table');
   if(bBtn) bBtn.classList.toggle('active-btn', mode==='board');
   if(mode==='board') renderSiteBoard();
 }
 
-// Build the list of board rows. Sites named in BOARD_MERGED_ITEMS are
+// Build the flat list of board rows. Sites named in BOARD_MERGED_ITEMS are
 // combined into a single row (e.g. all Centennial Flats units -> "CFLATS")
 // since they're the same physical site split across multiple scan entries.
-// Sites named in BOARD_EXPAND_GROUPS stay separate but get tagged with
-// their group so the renderer can nest them under a collapsible header.
+// No other grouping — D1/D2/Everyone and the Arevon folder were both retired
+// in favor of one flat list split by flagged/quiet at render time instead.
 function getBoardItems(){
   const mergedNames=new Set(BOARD_MERGED_ITEMS.flatMap(m=>m.names));
-  const expandNameToGroup={};
-  BOARD_EXPAND_GROUPS.forEach(g=>g.names.forEach(n=>expandNameToGroup[n]=g.key));
-
   const items=BOARD_MERGED_ITEMS.map(m=>({
-    boardKey:'m_'+m.key, label:m.label, defaultGroupKey:m.key,
-    siteIds:SITES.filter(s=>m.names.includes(s.name)).map(s=>s.id), expandGroup:null
+    boardKey:'m_'+m.key, label:m.label,
+    siteIds:SITES.filter(s=>mergedNames.has(s.name)&&m.names.includes(s.name)).map(s=>s.id)
   })).filter(i=>i.siteIds.length);
   SITES.filter(s=>!mergedNames.has(s.name)).forEach(s=>{
-    items.push({
-      boardKey:'s_'+s.id, label:s.name, defaultGroupKey:s.name,
-      siteIds:[s.id], expandGroup:expandNameToGroup[s.name]||null
-    });
+    items.push({boardKey:'s_'+s.id, label:s.name, siteIds:[s.id]});
   });
   return items;
-}
-
-function boardItemGroup(item){
-  const key=item.expandGroup ? 'g_'+item.expandGroup : item.boardKey;
-  const defaultKey=item.expandGroup || item.defaultGroupKey;
-  if(S.siteBoardGroups && S.siteBoardGroups[key]) return S.siteBoardGroups[key];
-  return DEFAULT_BOARD_GROUP[defaultKey] || 'everyone';
-}
-
-function setBoardItemGroup(boardKey, group){
-  if(!S.siteBoardGroups) S.siteBoardGroups={};
-  S.siteBoardGroups[boardKey]=group;
-  save();
-  renderSiteBoard();
-}
-
-function toggleBoardGroupExpand(key){
-  if(!S.siteBoardExpanded) S.siteBoardExpanded={};
-  S.siteBoardExpanded[key]=!S.siteBoardExpanded[key];
-  save();
-  renderSiteBoard();
 }
 
 function boardItemChecked(item){
@@ -6314,19 +6264,6 @@ function toggleBoardItem(boardKey){
   showToast(nowChecked ? ('✓ '+item.label+' scanned OK') : (item.label+' unchecked'));
 }
 
-// Checks/unchecks every site inside an expandable group (e.g. Arevon) in one
-// click, without needing to open the group first.
-function toggleBoardGroupAll(key){
-  const def=BOARD_EXPAND_GROUPS.find(x=>x.key===key); if(!def) return;
-  const children=getBoardItems().filter(i=>i.expandGroup===key);
-  if(!children.length) return;
-  const allChecked=children.every(boardItemChecked);
-  children.forEach(item=>setBoardItemChecked(item, !allChecked));
-  save();
-  renderSiteBoard();
-  showToast(allChecked ? (def.label+' unchecked') : ('✓ '+def.label+' scanned OK'));
-}
-
 // Just clears checkmarks for the new shift — no confirmation needed since
 // it's board-only state and never touches real scan history.
 function resetSiteBoard(){
@@ -6336,64 +6273,501 @@ function resetSiteBoard(){
   showToast('Board cleared for new scan');
 }
 
-function boardItemRow(item, indent){
-  const checked=boardItemChecked(item);
-  const grp=boardItemGroup(item);
-  const assignBtns=indent ? '' : BOARD_GROUPS.map(g=>
-    `<button class="board-assign-btn${grp===g.key?' active':''}" onclick="event.stopPropagation();setBoardItemGroup('${item.boardKey}','${g.key}')">${g.label}</button>`
-  ).join('');
-  return `<div class="board-site-row${checked?' checked':''}${indent?' indent':''}" onclick="toggleBoardItem('${item.boardKey}')">
-    <span class="board-chk">${checked?'✓':''}</span>
-    <span class="board-site-name">${esc(item.label)}</span>
-    <span class="board-assign-group" onclick="event.stopPropagation()">${assignBtns}</span>
-  </div>`;
-}
-
-function boardGroupHeader(def, children){
-  const open=!!(S.siteBoardExpanded && S.siteBoardExpanded[def.key]);
-  const done=children.filter(boardItemChecked).length;
-  const allChecked=children.length>0 && done===children.length;
-  const activeGrp=(S.siteBoardGroups && S.siteBoardGroups['g_'+def.key]) || DEFAULT_BOARD_GROUP[def.key] || 'everyone';
-  const assignBtns=BOARD_GROUPS.map(g=>
-    `<button class="board-assign-btn${activeGrp===g.key?' active':''}" onclick="event.stopPropagation();setBoardItemGroup('g_${def.key}','${g.key}')">${g.label}</button>`
-  ).join('');
-  return `<div class="board-group-hdr${open?' open':''}">
-    <span class="board-group-expand" onclick="toggleBoardGroupExpand('${def.key}')">▶</span>
-    <span class="board-chk${allChecked?' checked':''}" onclick="event.stopPropagation();toggleBoardGroupAll('${def.key}')">${allChecked?'✓':''}</span>
-    <span class="board-site-name" onclick="toggleBoardGroupExpand('${def.key}')">${esc(def.label)} <span class="board-col-count">${done}/${children.length}</span></span>
-    <span class="board-assign-group" onclick="event.stopPropagation()">${assignBtns}</span>
-  </div>
-  <div class="board-group-children" style="display:${open?'block':'none'};">${children.map(c=>boardItemRow(c,true)).join('')}</div>`;
-}
-
+// Full-detail card — every note shown in full, nothing truncated, nothing
+// to click into just to read what's going on.
+// Plain scan checklist — Scans/Board went back to exactly this job. No
+// status, no notes, no editing. That all lives on the Fleet overview
+// (Handoff) page now, a separate render against the same site list.
 function renderSiteBoard(){
   const wrap=document.getElementById('site-board-wrap');
   if(!wrap) return;
-  const items=getBoardItems();
-  const total=items.length;
+  const items=getBoardItems().sort((a,b)=>a.label.localeCompare(b.label));
   const done=items.filter(boardItemChecked).length;
-  let cols='';
-  BOARD_GROUPS.forEach(g=>{
-    const groupItems=items.filter(i=>boardItemGroup(i)===g.key);
-    const plain=groupItems.filter(i=>!i.expandGroup).sort((a,b)=>a.label.localeCompare(b.label));
-    const expandKeys=[...new Set(groupItems.filter(i=>i.expandGroup).map(i=>i.expandGroup))];
-    let body='';
-    expandKeys.forEach(ek=>{
-      const def=BOARD_EXPAND_GROUPS.find(x=>x.key===ek); if(!def) return;
-      const children=groupItems.filter(i=>i.expandGroup===ek).sort((a,b)=>a.label.localeCompare(b.label));
-      body+=boardGroupHeader(def, children);
-    });
-    body+=plain.map(i=>boardItemRow(i,false)).join('');
-    cols+=`<div class="board-col">
-      <div class="board-col-hdr">${g.label} <span class="board-col-count">${groupItems.length}</span></div>
-      <div class="board-col-body">${body||'<div class="board-col-empty">No sites</div>'}</div>
+  const rows=items.map(item=>{
+    const checked=boardItemChecked(item);
+    return `<div class="board-scan-row${checked?' checked':''}" onclick="toggleBoardItem('${item.boardKey}')">
+      <span class="board-chk${checked?' checked':''}">${checked?'✓':''}</span>
+      <span class="board-site-name">${esc(item.label)}</span>
     </div>`;
-  });
+  }).join('');
   wrap.innerHTML=`<div class="board-toolbar">
-    <span class="board-progress">${done} / ${total} scanned this shift</span>
+    <span class="board-progress">${done} / ${items.length} scanned this shift</span>
     <button class="tbtn" onclick="resetSiteBoard()">↺ New scan</button>
   </div>
-  <div class="site-board">${cols}</div>`;
+  <div class="board-scan-list">${rows}</div>`;
+}
+
+// ── FLEET OVERVIEW (the Handoff page) ───────────────────────────────────────
+// Same underlying site list and status data as before, no scan checkbox —
+// this page isn't about "did I check it," it's about "what does the next
+// operator need to know." Notes are addable, editable, and resolvable
+// independently of each other.
+let siteStatusEntryEditingId = null; // `${boardKey}|${entryId}` or null
+
+function fmtLightTs(ts){
+  const d = new Date(ts);
+  return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+}
+
+function statusEntryRow(boardKey, e, labelEsc){
+  const editKey = boardKey+'|'+e.id;
+  if (siteStatusEntryEditingId === editKey) {
+    return `<div class="status-entry-row editing" data-entry-zone="${editKey}">
+      <textarea id="status-edit-${boardKey}-${e.id}">${esc(e.text)}</textarea>
+      <div class="board-status-editor-actions">
+        <button class="save" onclick="saveEditedStatusEntry('${boardKey}','${e.id}','${labelEsc}')">Save</button>
+      </div>
+    </div>`;
+  }
+  return `<div class="status-entry-row">
+    <div class="status-entry-main">
+      <span class="status-entry-text" title="Click to edit" onclick="event.stopPropagation();editSiteStatusEntry('${boardKey}','${e.id}')">${esc(e.text)}</span>
+      <span class="status-entry-ts">${fmtLightTs(e.ts)}</span>
+    </div>
+    <button class="status-entry-resolve" title="Resolve this note only" onclick="removeSiteStatusEntry('${boardKey}','${e.id}','${labelEsc}')">Resolve</button>
+  </div>`;
+}
+
+function fleetFlaggedCard(item){
+  const entries=siteStatusEntries(item.boardKey);
+  const adding=siteStatusEditingKey===item.boardKey;
+  const labelEsc=esc(item.label).replace(/'/g,"\\'");
+  const entryRows=entries.map(e=>statusEntryRow(item.boardKey,e,labelEsc)).join('');
+  return `<div class="board-flagged-card">
+    <div class="board-flagged-hdr">
+      <span class="board-site-name">${esc(item.label)}</span>
+      <button class="board-status-addbtn" title="Add a note" onclick="event.stopPropagation();toggleStatusEditor('${item.boardKey}')">+</button>
+    </div>
+    <div class="board-flagged-body">
+      ${entryRows}
+      ${adding ? `<div class="board-status-editor-zone" data-status-zone="${item.boardKey}">
+        <textarea id="status-new-${item.boardKey}" placeholder="Add a new note about ${esc(item.label)}..."></textarea>
+        <div class="board-status-editor-actions"><button class="save" onclick="addSiteStatusEntry('${item.boardKey}','${labelEsc}')">Add note</button></div>
+      </div>` : ''}
+    </div>
+  </div>`;
+}
+
+// Not real scan sites — always available in the search below, never part
+// of the Scans checklist (getBoardItems), only shown here on Fleet overview.
+const FLEET_EXTRA_ITEMS=[
+  {boardKey:'x_ROC', label:'ROC'},
+  {boardKey:'x_OTHER', label:'Other'}
+];
+
+function fleetAllItems(){
+  return [...getBoardItems(), ...FLEET_EXTRA_ITEMS];
+}
+
+let fleetAddOpen = false;
+let fleetAddQuery = '';
+let fleetAddSelected = null; // boardKey once a site is chosen from search
+
+function toggleFleetAddBox(){
+  fleetAddOpen = !fleetAddOpen;
+  fleetAddQuery = '';
+  fleetAddSelected = null;
+  renderFleetOverview();
+  if (fleetAddOpen) {
+    const inp = document.getElementById('fleet-add-search');
+    if (inp) inp.focus();
+  }
+}
+
+function selectFleetAddSite(boardKey){
+  fleetAddSelected = boardKey;
+  renderFleetOverview();
+  const ta = document.getElementById('status-new-' + boardKey);
+  if (ta) ta.focus();
+}
+
+function fleetAddResultsHtml(matches){
+  if (!matches.length) return `<div class="fleet-add-empty">No matches</div>`;
+  return matches.map(i => `<div class="fleet-add-result" onclick="event.stopPropagation();selectFleetAddSite('${i.boardKey}')">${esc(i.label)}</div>`).join('');
+}
+
+// Only updates the results list, not the search input itself, so typing
+// doesn't lose focus the way a full re-render would.
+function renderFleetAddResultsOnly(){
+  const inp = document.getElementById('fleet-add-search');
+  fleetAddQuery = inp ? inp.value : '';
+  const q = fleetAddQuery.trim().toLowerCase();
+  const matches = fleetAllItems()
+    .filter(i => i.label.toLowerCase().includes(q))
+    .sort((a,b) => a.label.localeCompare(b.label))
+    .slice(0, 8);
+  const resultsEl = document.getElementById('fleet-add-results');
+  if (resultsEl) resultsEl.innerHTML = fleetAddResultsHtml(matches);
+}
+
+function renderFleetAddBox(){
+  if (!fleetAddOpen) {
+    return `<div class="fleet-add-box closed" onclick="event.stopPropagation();toggleFleetAddBox()">+ Add to handoff</div>`;
+  }
+  if (fleetAddSelected) {
+    const item = fleetAllItems().find(i => i.boardKey === fleetAddSelected);
+    if (item) {
+      const labelEsc = esc(item.label).replace(/'/g,"\\'");
+      return `<div class="fleet-add-box open" data-status-zone="fleet-add">
+        <div class="fleet-add-selected-hdr">
+          <span class="board-site-name">${esc(item.label)}</span>
+          <button class="board-status-addbtn" title="Choose a different site" onclick="event.stopPropagation();fleetAddSelected=null;renderFleetOverview();">↺</button>
+        </div>
+        <textarea id="status-new-${item.boardKey}" placeholder="What's going on at ${esc(item.label)}..."></textarea>
+        <div class="board-status-editor-actions"><button class="save" onclick="addSiteStatusEntry('${item.boardKey}','${labelEsc}')">Add note</button></div>
+      </div>`;
+    }
+  }
+  const matches = fleetAllItems().sort((a,b) => a.label.localeCompare(b.label)).slice(0, 8);
+  return `<div class="fleet-add-box open" data-status-zone="fleet-add">
+    <input id="fleet-add-search" type="text" placeholder="Search a site..." oninput="renderFleetAddResultsOnly()">
+    <div class="fleet-add-results" id="fleet-add-results">${fleetAddResultsHtml(matches)}</div>
+  </div>`;
+}
+
+// Same categorization already used on the Log Builder tab, reused here so
+// 20+ flagged cards land in stable, evenly-sized columns instead of one
+// wrapping stack of differently-sized bubbles.
+function fleetItemCategory(item){
+  if (item.boardKey==='x_ROC' || item.boardKey==='x_OTHER') return 'Other';
+  const id = (item.siteIds && item.siteIds.length) ? item.siteIds[0] : null;
+  const type = clGetAssetType(item.label, id);
+  return (type==='BESS'||type==='Solar'||type==='Wind') ? type : 'Other';
+}
+const FLEET_CAT_ORDER=['BESS','Solar','Wind','Other'];
+
+function renderFleetOverview(){
+  const wrap=document.getElementById('fleet-overview-wrap');
+  if(!wrap) return;
+  const flagged=fleetAllItems()
+    .filter(i=>siteStatusEntries(i.boardKey).length>0)
+    .sort((a,b)=>a.label.localeCompare(b.label));
+
+  const byCat={};
+  flagged.forEach(item=>{
+    const cat=fleetItemCategory(item);
+    (byCat[cat]=byCat[cat]||[]).push(item);
+  });
+  const colsHtml=FLEET_CAT_ORDER.filter(cat=>byCat[cat]&&byCat[cat].length).map(cat=>`
+    <div class="board-flagged-col">
+      <div class="board-flagged-col-hdr">${cat} <span class="board-col-count">${byCat[cat].length}</span></div>
+      ${byCat[cat].map(fleetFlaggedCard).join('')}
+    </div>`).join('');
+
+  const flaggedHtml = flagged.length
+    ? `<div class="board-flagged-columns">${colsHtml}</div>`
+    : '';
+
+  wrap.innerHTML=`${renderFleetAddBox()}
+  ${flaggedHtml}`;
+}
+
+// Click anywhere outside an open note editor closes it — no Cancel/Close
+// button needed, one fewer thing on screen. Open-triggers (+ buttons, click
+// to edit) stop propagation so the same click that opens one can't also be
+// read as "clicked outside" and immediately close it again.
+document.addEventListener('click', function(ev){
+  let changed=false;
+  if (siteStatusEditingKey) {
+    const zone = document.querySelector('[data-status-zone="'+siteStatusEditingKey+'"]');
+    if (!zone || !zone.contains(ev.target)) { siteStatusEditingKey=null; changed=true; }
+  }
+  if (siteStatusEntryEditingId) {
+    const zone = document.querySelector('[data-entry-zone="'+siteStatusEntryEditingId+'"]');
+    if (!zone || !zone.contains(ev.target)) { siteStatusEntryEditingId=null; changed=true; }
+  }
+  if (fleetAddOpen) {
+    const zone = document.querySelector('[data-status-zone="fleet-add"]');
+    if (!zone || !zone.contains(ev.target)) { fleetAddOpen=false; fleetAddSelected=null; fleetAddQuery=''; changed=true; }
+  }
+  if (changed) renderFleetOverview();
+});
+
+// ── SITE STATUS ───────────────────────────────────────────────────────────
+// Current, shared, real-time "what's actually going on" per site — separate
+// from the scan checkbox on purpose (see the board row split below) and
+// separate from S/localStorage on purpose: every operator needs to see the
+// SAME status, so this lives in Firestore like Shared Reminders / Team Notes,
+// not in the per-browser board state.
+//
+// Reminder for whoever's deploying this: siteStatus and siteStatusHistory
+// are NEW Firestore collections — they need their own security rules added
+// (same shape as sharedReminders/teamNotes/playbookSuggestions) or every
+// write will fail with "Missing or insufficient permissions".
+//
+// siteStatus/{boardKey}    — { siteLabel, entries: [{id,text,ts}], updatedAt }
+//                             A site can have several open items at once
+//                             (comms issue AND a derated inverter, say) —
+//                             each is its own entry, added and resolved
+//                             independently, never concatenated into one
+//                             shared blob a second note has to be typed
+//                             into around the first one.
+// siteStatusHistory (auto) — append-only. One doc per entry added, one per
+//                             entry resolved — this is what answers "when
+//                             was this first reported" later, and what the
+//                             manager History report reads from.
+let siteStatuses = {}; // boardKey -> {siteLabel, entries:[{id,text,ts}], updatedAt}
+let siteStatusEditingKey = null;
+
+function initSiteStatusListener() {
+  if (!window.db) return;
+  window.db.collection('siteStatus').onSnapshot(snap => {
+    const next = {};
+    snap.forEach(doc => { next[doc.id] = doc.data(); });
+    siteStatuses = next;
+    renderFleetOverview();
+  }, err => console.error('Firestore (siteStatus):', err));
+}
+
+// Defensive against older saved docs from before entries existed — treated
+// as having no open notes rather than crashing the render.
+function siteStatusEntries(boardKey) {
+  const s = siteStatuses[boardKey];
+  return (s && Array.isArray(s.entries)) ? s.entries : [];
+}
+
+function toggleStatusEditor(boardKey) {
+  siteStatusEditingKey = siteStatusEditingKey === boardKey ? null : boardKey;
+  renderFleetOverview();
+  if (siteStatusEditingKey) {
+    const ta = document.getElementById('status-new-' + boardKey);
+    if (ta) ta.focus();
+  }
+}
+
+async function addSiteStatusEntry(boardKey, label) {
+  if (!window.db) { showToast('Offline — open this file directly in a browser to update status'); return; }
+  const ta = document.getElementById('status-new-' + boardKey);
+  const text = ta ? ta.value.trim() : '';
+  if (!text) { showToast('Nothing to add'); return; }
+  const entry = { id: 'e' + Date.now(), text, ts: Date.now() };
+  try {
+    const entries = siteStatusEntries(boardKey).concat([entry]);
+    await window.db.collection('siteStatus').doc(boardKey).set({
+      siteLabel: label, entries, updatedAt: Date.now()
+    });
+    await window.db.collection('siteStatusHistory').add({
+      boardKey, siteLabel: label, action: 'set', text, ts: Date.now()
+    });
+    siteStatuses[boardKey] = { siteLabel: label, entries, updatedAt: Date.now() };
+    siteStatusEditingKey = null;
+    fleetAddOpen = false; fleetAddSelected = null; fleetAddQuery = '';
+    renderFleetOverview();
+    showToast('Note added');
+  } catch (e) { showToast('Could not add note: ' + e.message); }
+}
+
+function editSiteStatusEntry(boardKey, entryId) {
+  const key = boardKey + '|' + entryId;
+  siteStatusEntryEditingId = siteStatusEntryEditingId === key ? null : key;
+  renderFleetOverview();
+  if (siteStatusEntryEditingId) {
+    const ta = document.getElementById('status-edit-' + boardKey + '-' + entryId);
+    if (ta) ta.focus();
+  }
+}
+
+async function saveEditedStatusEntry(boardKey, entryId, label) {
+  if (!window.db) { showToast('Offline — open this file directly in a browser to update status'); return; }
+  const ta = document.getElementById('status-edit-' + boardKey + '-' + entryId);
+  const newText = ta ? ta.value.trim() : '';
+  if (!newText) { showToast('Nothing to save'); return; }
+  const entries = siteStatusEntries(boardKey);
+  const updated = entries.map(e => e.id === entryId ? { ...e, text: newText } : e);
+  try {
+    await window.db.collection('siteStatus').doc(boardKey).set({
+      siteLabel: label, entries: updated, updatedAt: Date.now()
+    });
+    await window.db.collection('siteStatusHistory').add({
+      boardKey, siteLabel: label, action: 'edit', text: newText, ts: Date.now()
+    });
+    siteStatuses[boardKey] = { siteLabel: label, entries: updated, updatedAt: Date.now() };
+    siteStatusEntryEditingId = null;
+    renderFleetOverview();
+    showToast('Note updated');
+  } catch (e) { showToast('Could not update note: ' + e.message); }
+}
+
+async function removeSiteStatusEntry(boardKey, entryId, label) {
+  if (!window.db) { showToast('Offline — open this file directly in a browser to update status'); return; }
+  const entries = siteStatusEntries(boardKey);
+  const entry = entries.find(e => e.id === entryId);
+  if (!entry) return;
+  const resolutionNote = prompt('Optional — what fixed it? (Leave blank to skip)') || '';
+  try {
+    const remaining = entries.filter(e => e.id !== entryId);
+    await window.db.collection('siteStatus').doc(boardKey).set({
+      siteLabel: label, entries: remaining, updatedAt: Date.now()
+    });
+    await window.db.collection('siteStatusHistory').add({
+      boardKey, siteLabel: label, action: 'clear',
+      text: resolutionNote ? (entry.text + ' — fixed by: ' + resolutionNote) : entry.text,
+      ts: Date.now()
+    });
+    siteStatuses[boardKey] = { siteLabel: label, entries: remaining, updatedAt: Date.now() };
+    renderFleetOverview();
+    showToast('Note resolved');
+  } catch (e) { showToast('Could not resolve note: ' + e.message); }
+}
+
+// ── SITE HISTORY (manager report) ───────────────────────────────────────────
+// Reads siteStatusHistory — never writes. A generated view of the same data
+// operators already produce just by keeping status current, not a second
+// place anyone has to maintain. Site filter is applied client-side after a
+// date-range fetch, on purpose, so this doesn't need a Firestore composite
+// index to be configured before it works.
+//
+// Sort, quick-filter, and the summary line below all operate purely on
+// shLastRows, the rows already sitting in memory from the last query — no
+// extra Firestore reads, no new collections, nothing persisted.
+let shLastRows = [];
+let shSortKey = 'ts';
+let shSortDir = 'desc';
+let shFilterText = '';
+
+function shInit(){
+  const fromEl=document.getElementById('sh-from');
+  const toEl=document.getElementById('sh-to');
+  if(!fromEl.value){
+    const from=new Date(); from.setDate(from.getDate()-30);
+    fromEl.value=isoDate(from);
+  }
+  if(!toEl.value) toEl.value=isoDate(new Date());
+  const siteSel=document.getElementById('sh-site');
+  if(siteSel && siteSel.options.length<=1){
+    const labels=[...new Set(getBoardItems().map(i=>i.label))].sort();
+    labels.forEach(l=>{
+      const opt=document.createElement('option'); opt.value=l; opt.textContent=l;
+      siteSel.appendChild(opt);
+    });
+  }
+  shRunQuery();
+}
+
+async function shRunQuery(){
+  const resultsEl=document.getElementById('sh-results');
+  if(!resultsEl) return;
+  if(!window.db){
+    resultsEl.innerHTML='<div class="empty-state compact"><div class="empty-state-title">Offline</div><div class="empty-state-sub">Open this file directly in a browser to pull history.</div></div>';
+    return;
+  }
+  const fromVal=document.getElementById('sh-from').value;
+  const toVal=document.getElementById('sh-to').value;
+  const siteVal=document.getElementById('sh-site').value;
+  const fromTs = fromVal ? new Date(fromVal+'T00:00:00').getTime() : 0;
+  const toTs = toVal ? new Date(toVal+'T23:59:59').getTime() : Date.now();
+  resultsEl.innerHTML='<div class="empty-state compact"><div class="empty-state-title">Loading…</div></div>';
+  try{
+    const snap=await window.db.collection('siteStatusHistory')
+      .where('ts','>=',fromTs).where('ts','<=',toTs).orderBy('ts','desc').get();
+    let rows=snap.docs.map(d=>d.data());
+    if(siteVal) rows=rows.filter(r=>r.siteLabel===siteVal);
+    shLastRows=rows;
+    shFilterText='';
+    const qEl=document.getElementById('sh-quickfilter'); if(qEl) qEl.value='';
+    shRenderTable();
+  }catch(e){
+    resultsEl.innerHTML=`<div class="empty-state compact"><div class="empty-state-title">Could not load history</div><div class="empty-state-sub">${esc(e.message)}</div></div>`;
+  }
+}
+
+function shSetSort(key){
+  if (shSortKey===key) { shSortDir = shSortDir==='asc' ? 'desc' : 'asc'; }
+  else { shSortKey=key; shSortDir = key==='ts' ? 'desc' : 'asc'; }
+  shRenderTableContainer();
+}
+
+function shApplyFilter(){
+  shFilterText = document.getElementById('sh-quickfilter').value;
+  shRenderTableContainer();
+}
+
+// Filter + sort happen fresh each render, straight off shLastRows — nothing
+// cached, nothing that can drift out of sync with what was actually fetched.
+function shGetDisplayRows(){
+  let rows = shLastRows;
+  const q = shFilterText.trim().toLowerCase();
+  if (q) {
+    rows = rows.filter(r => (r.siteLabel||'').toLowerCase().includes(q) || (r.text||'').toLowerCase().includes(q));
+  }
+  return [...rows].sort((a,b) => {
+    let av, bv;
+    if (shSortKey==='site') { av=(a.siteLabel||'').toLowerCase(); bv=(b.siteLabel||'').toLowerCase(); }
+    else if (shSortKey==='action') { av=a.action||''; bv=b.action||''; }
+    else { av=a.ts||0; bv=b.ts||0; }
+    if (av<bv) return shSortDir==='asc' ? -1 : 1;
+    if (av>bv) return shSortDir==='asc' ? 1 : -1;
+    return 0;
+  });
+}
+
+function shSortArrow(key){
+  if (shSortKey!==key) return '';
+  return shSortDir==='asc' ? ' ▲' : ' ▼';
+}
+
+// Builds the outer shell once per query — the filter input lives here and
+// is never rebuilt by typing, only by a fresh "Run report".
+function shRenderTable(){
+  const resultsEl=document.getElementById('sh-results');
+  if(!shLastRows.length){
+    resultsEl.innerHTML='<div class="empty-state compact"><div class="empty-state-icon">📋</div><div class="empty-state-title">No history in this range</div><div class="empty-state-sub">Try widening the date range.</div></div>';
+    return;
+  }
+  resultsEl.innerHTML=`<input type="text" id="sh-quickfilter" class="sh-quickfilter" placeholder="Filter these results — site or text..." value="${esc(shFilterText)}" oninput="shApplyFilter()">
+  <div id="sh-table-container"></div>`;
+  shRenderTableContainer();
+}
+
+// Everything that actually changes when you filter or sort — rebuilt on
+// every keystroke, but the input above it is untouched, so focus and
+// cursor position never get disturbed.
+function shRenderTableContainer(){
+  const containerEl=document.getElementById('sh-table-container');
+  if(!containerEl) return;
+  const rows=shGetDisplayRows();
+
+  const reported=shLastRows.filter(r=>r.action==='set').length;
+  const updated=shLastRows.filter(r=>r.action==='edit').length;
+  const resolved=shLastRows.filter(r=>r.action==='clear').length;
+  const summary = `<div class="sh-summary">${shLastRows.length} entries — ${reported} reported, ${updated} updated, ${resolved} resolved${shFilterText.trim() ? ` · showing ${rows.length} matching "${esc(shFilterText.trim())}"` : ''}</div>`;
+
+  if(!rows.length){
+    containerEl.innerHTML=`${summary}<div class="empty-state compact"><div class="empty-state-title">No matches</div><div class="empty-state-sub">Try a different filter term.</div></div>`;
+    return;
+  }
+  containerEl.innerHTML=`${summary}<table class="sh-table"><thead><tr>
+    <th class="sh-sortable" onclick="shSetSort('site')">Site${shSortArrow('site')}</th>
+    <th class="sh-sortable" onclick="shSetSort('ts')">When${shSortArrow('ts')}</th>
+    <th class="sh-sortable" onclick="shSetSort('action')">Action${shSortArrow('action')}</th>
+    <th>Text</th>
+  </tr></thead><tbody>
+  ${rows.map(r=>`<tr>
+    <td>${esc(r.siteLabel||'')}</td>
+    <td>${new Date(r.ts).toLocaleString([],{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}</td>
+    <td class="${r.action==='clear'?'sh-action-clear':r.action==='edit'?'sh-action-edit':'sh-action-set'}">${r.action==='clear'?'Resolved':r.action==='edit'?'Updated':'Reported'}</td>
+    <td>${esc(r.text||'')}</td>
+  </tr>`).join('')}
+  </tbody></table>`;
+}
+
+function shDownloadExcel(){
+  const rows=shGetDisplayRows();
+  if(!rows.length){ showToast('Run a report first'); return; }
+  if(typeof XLSX==='undefined'){ showToast('Excel library not loaded'); return; }
+  const data=rows.map(r=>({
+    Site: r.siteLabel||'',
+    When: new Date(r.ts).toLocaleString(),
+    Action: r.action==='clear'?'Resolved':r.action==='edit'?'Updated':'Reported',
+    Text: r.text||''
+  }));
+  const ws=XLSX.utils.json_to_sheet(data);
+  ws['!cols']=[{wch:12},{wch:20},{wch:10},{wch:60}];
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Site history');
+  const from=document.getElementById('sh-from').value||'start';
+  const to=document.getElementById('sh-to').value||'end';
+  XLSX.writeFile(wb,`site-history_${from}_to_${to}.xlsx`);
 }
 
 function saveSite(){
@@ -14458,6 +14832,7 @@ renderChips();
 updateSelect();
 initTimeOffListener();
 initSharedRemindersListener();
+initSiteStatusListener();
 homeInit();
 initPbSuggestionsListener();
 initSwSharedTplsListener();
