@@ -3686,7 +3686,7 @@ body.dark .corkboard{
 
 <!-- SITE HISTORY (manager report) ────────────────────────────────────────── -->
 <div class="view" id="view-sitehistory">
-  <button class="tbtn" onclick="switchView('chron', null)" style="margin-bottom:14px;">&larr; Back to Fleet overview</button>
+  <button class="tbtn" onclick="switchView('chron', null)" style="margin-bottom:14px;">&larr; Back to ROC Passdown</button>
   <div class="page-header">
     <div>
       <div class="page-title">Site history</div>
@@ -3781,7 +3781,7 @@ body.dark .corkboard{
 
   <div class="page-header">
     <div>
-      <div class="page-title">Fleet overview</div>
+      <div class="page-title">ROC Passdown</div>
       <div class="page-subtitle">Everything the next operator needs to know, site by site</div>
     </div>
     <div class="page-header-actions">
@@ -6284,7 +6284,7 @@ function resetSiteBoard(){
 // Full-detail card — every note shown in full, nothing truncated, nothing
 // to click into just to read what's going on.
 // Plain scan checklist — Scans/Board went back to exactly this job. No
-// status, no notes, no editing. That all lives on the Fleet overview
+// status, no notes, no editing. That all lives on ROC Passdown
 // (Handoff) page now, a separate render against the same site list.
 function renderSiteBoard(){
   const wrap=document.getElementById('site-board-wrap');
@@ -6357,7 +6357,7 @@ function fleetFlaggedCard(item){
 }
 
 // Not real scan sites — always available in the search below, never part
-// of the Scans checklist (getBoardItems), only shown here on Fleet overview.
+// of the Scans checklist (getBoardItems), only shown here on ROC Passdown.
 const FLEET_EXTRA_ITEMS=[
   {boardKey:'x_ROC', label:'ROC'},
   {boardKey:'x_OTHER', label:'Other'},
