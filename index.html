@@ -8708,11 +8708,8 @@ const AS_SITES = [
   { id:'DFRN1', label:'DFRN1-Dufferin[WIND]', stats:'',
     sections:[
       { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
+        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes', hint:'Turbine-only site — no MW/kV/MVAR output tracked here'},
         {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW', hint:'Turbine-only site — kV/MVAR not tracked here'},
       ]},
       { title:'FIELD EQUIPMENT', fields:[
         {n:'Turbines Online',    t:'text', unit:' Online'},
@@ -9002,11 +8999,8 @@ const AS_SITES = [
   { id:'MCLM1', label:'MCLM1-McLeans Mountain[WIND]', stats:'',
     sections:[
       { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'', hint:'Turbine-only site — no MW/kV/MVAR output tracked here'},
         {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW', hint:'Turbine-only site — kV/MVAR not tracked here'},
       ]},
       { title:'FIELD EQUIPMENT', fields:[
         {n:'Turbines Online',    t:'text', unit:' Online'},
