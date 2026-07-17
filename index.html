@@ -3785,6 +3785,7 @@ body.dark .corkboard{
       <div class="page-subtitle">Everything the next operator needs to know, site by site</div>
     </div>
     <div class="page-header-actions">
+      <button class="tbtn" title="Copy current passdown as text — paste into Teams" onclick="copyRocPassdownText()" style="font-size:11px;color:var(--text3);"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
       <button class="tbtn" onclick="switchView('sitehistory',null)" style="font-size:11px;color:var(--text3);">History</button>
     </div>
   </div>
@@ -6487,6 +6488,27 @@ function renderFleetOverview(){
   ${flaggedHtml}`;
 }
 
+// Interim bridge while the team transitions to actually using this page —
+// reads whatever's currently flagged and formats it site-by-site, ready to
+// paste straight into Teams. Doesn't change anything about the page itself,
+// just reads what's already there.
+function copyRocPassdownText(){
+  const items = fleetAllItems()
+    .filter(i => siteStatusEntries(i.boardKey).length > 0)
+    .sort((a,b) => a.label.localeCompare(b.label));
+  if (!items.length) { showToast('Nothing flagged to copy'); return; }
+  const now = new Date();
+  const header = `ROC Passdown — ${now.getMonth()+1}/${now.getDate()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const body = items.map(item => {
+    const lines = siteStatusEntries(item.boardKey).map(e => '- ' + e.text).join('\n');
+    return `${item.label}:\n${lines}`;
+  }).join('\n\n');
+  const text = `${header}\n\n${body}`;
+  navigator.clipboard.writeText(text)
+    .then(() => showToast('Copied — ready to paste into Teams'))
+    .catch(() => showToast('Could not copy — try again'));
+}
+
 // "Since you were last here" — one line, not a badge on every card. Compares
 // against when this browser last opened the page (local only, not shared)
 // and pulls only the entries touched since then from siteStatusHistory.
@@ -6678,14 +6700,21 @@ let shSortKey = 'ts';
 let shSortDir = 'desc';
 let shFilterText = '';
 
+// Schedule Compare has its own isoDate, but it's private to that module —
+// invisible from here even though it looks global. This is a standalone
+// copy so History never silently depends on another feature's internals.
+function shIsoDate(d){
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
 function shInit(){
   const fromEl=document.getElementById('sh-from');
   const toEl=document.getElementById('sh-to');
   if(!fromEl.value){
-    const from=new Date(); from.setDate(from.getDate()-30);
-    fromEl.value=isoDate(from);
+    const from=new Date(); from.setDate(from.getDate()-SH_DEFAULT_DAYS);
+    fromEl.value=shIsoDate(from);
   }
-  if(!toEl.value) toEl.value=isoDate(new Date());
+  if(!toEl.value) toEl.value=shIsoDate(new Date());
   const siteSel=document.getElementById('sh-site');
   if(siteSel && siteSel.options.length<=1){
     const labels=[...new Set(getBoardItems().map(i=>i.label))].sort();
@@ -6697,6 +6726,11 @@ function shInit(){
   shRunQuery();
 }
 
+// Default window kept small on purpose — most of what's in this collection
+// right now is test data from building this feature. Widen with the date
+// pickers any time a real wider pull is actually needed.
+const SH_DEFAULT_DAYS = 7;
+
 async function shRunQuery(){
   const resultsEl=document.getElementById('sh-results');
   if(!resultsEl) return;
@@ -6704,11 +6738,18 @@ async function shRunQuery(){
     resultsEl.innerHTML='<div class="empty-state compact"><div class="empty-state-title">Offline</div><div class="empty-state-sub">Open this file directly in a browser to pull history.</div></div>';
     return;
   }
-  const fromVal=document.getElementById('sh-from').value;
-  const toVal=document.getElementById('sh-to').value;
+  const fromEl=document.getElementById('sh-from');
+  const toEl=document.getElementById('sh-to');
   const siteVal=document.getElementById('sh-site').value;
-  const fromTs = fromVal ? new Date(fromVal+'T00:00:00').getTime() : 0;
-  const toTs = toVal ? new Date(toVal+'T23:59:59').getTime() : Date.now();
+  // An empty field never means "no lower bound" — that would silently pull
+  // the entire collection. Falls back to the same default window instead.
+  const fromTs = fromEl.value ? new Date(fromEl.value+'T00:00:00').getTime() : (Date.now() - SH_DEFAULT_DAYS*24*60*60*1000);
+  const toTs = toEl.value ? new Date(toEl.value+'T23:59:59').getTime() : Date.now();
+  // Whatever actually gets queried gets written back into the visible
+  // fields — the boxes on screen can never silently disagree with the data
+  // below them, regardless of how this got triggered.
+  fromEl.value = shIsoDate(new Date(fromTs));
+  toEl.value = shIsoDate(new Date(toTs));
   resultsEl.innerHTML='<div class="empty-state compact"><div class="empty-state-title">Loading…</div></div>';
   try{
     const snap=await window.db.collection('siteStatusHistory')
