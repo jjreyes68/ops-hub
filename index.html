@@ -391,6 +391,7 @@ body.dark .card-title{color:var(--text2);}
 .board-flagged-columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px;align-items:start;margin-bottom:20px;}
 .board-flagged-col-hdr{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
 .board-flagged-card{width:100%;margin-bottom:10px;background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:var(--rl);overflow:hidden;}
+.board-flagged-card.advisory{border-left-color:var(--blue);}
 .board-flagged-hdr{display:flex;align-items:center;gap:10px;padding:9px 12px;}
 .board-status-addbtn{margin-left:auto;width:22px;height:22px;flex-shrink:0;font-size:14px;line-height:1;border-radius:6px;border:1px dashed var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--f);display:flex;align-items:center;justify-content:center;}
 .board-status-addbtn:hover{border-color:var(--amber);color:var(--amber);}
@@ -623,6 +624,9 @@ body.dark .as-banner-stats{color:var(--text2);}
 .as-row:last-child{border-bottom:none;}
 .as-lbl{font-size:13px;font-weight:500;color:var(--text);}
 .as-hint{font-size:11px;color:var(--text3);margin-top:1px;}
+.as-tip-icon{color:var(--text3);cursor:pointer;font-size:12px;}
+.as-tip-icon:hover{color:var(--blue);}
+.as-tip-note{font-size:11px;color:var(--text3);margin-top:3px;padding:5px 8px;background:var(--bg3);border-radius:6px;max-width:280px;}
 .as-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:6px 9px;color:var(--text);font-family:var(--m);font-size:13px;width:100%;}
 .as-inp:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
 .as-sel{background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;width:100%;}
@@ -634,7 +638,6 @@ body.dark .as-banner-stats{color:var(--text2);}
 .kv-bad{background:var(--rbg);color:var(--red);}
 .alert-pill{font-size:11px;font-weight:600;color:var(--red);background:var(--rbg);padding:2px 8px;border-radius:5px;white-space:nowrap;display:none;}
 .alert-pill.on{display:inline-block;}
-.as-export-bar{margin-top:16px;padding-top:14px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
 @media(max-width:600px){.as-row{grid-template-columns:1fr;}.as-lbl{font-size:12px;}}
 
 /* Toast */
@@ -3111,7 +3114,7 @@ body.dark .corkboard{
   <div class="page-header">
     <div>
       <div class="page-title">Asset Scan</div>
-      <div class="page-subtitle">Per-site readings, voltage checks, and shift handoff data</div>
+      <div class="page-subtitle">Per-site voltage, output, and equipment checks for a scan round</div>
     </div>
   </div>
   <div class="as-meta">
@@ -3129,7 +3132,6 @@ body.dark .corkboard{
       <select id="as-shift"><option value="">Select</option><option>Day</option><option>Night</option></select>
     </div>
     <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;">
-      <button class="tbtn" onclick="asOpenEdit()">✏ Edit sites</button>
       <button class="tbtn" style="color:var(--amber);border-color:var(--amber);" onclick="asStartFresh()">↺ Start fresh</button>
       <button class="btn-p" onclick="asExportCSV()">Export CSV</button>
     </div>
@@ -3685,7 +3687,7 @@ body.dark .corkboard{
 
 <!-- SITE HISTORY (manager report) ────────────────────────────────────────── -->
 <div class="view" id="view-sitehistory">
-  <button class="tbtn" onclick="switchView('chron', null)" style="margin-bottom:14px;">&larr; Back to Fleet overview</button>
+  <button class="tbtn" onclick="switchView('chron', null)" style="margin-bottom:14px;">&larr; Back to ROC Passdown</button>
   <div class="page-header">
     <div>
       <div class="page-title">Site history</div>
@@ -3780,10 +3782,11 @@ body.dark .corkboard{
 
   <div class="page-header">
     <div>
-      <div class="page-title">Fleet overview</div>
+      <div class="page-title">ROC Passdown</div>
       <div class="page-subtitle">Everything the next operator needs to know, site by site</div>
     </div>
     <div class="page-header-actions">
+      <button class="tbtn" title="Copy current passdown as text — paste into Teams" onclick="copyRocPassdownText()" style="font-size:11px;color:var(--text3);"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
       <button class="tbtn" onclick="switchView('sitehistory',null)" style="font-size:11px;color:var(--text3);">History</button>
     </div>
   </div>
@@ -6283,7 +6286,7 @@ function resetSiteBoard(){
 // Full-detail card — every note shown in full, nothing truncated, nothing
 // to click into just to read what's going on.
 // Plain scan checklist — Scans/Board went back to exactly this job. No
-// status, no notes, no editing. That all lives on the Fleet overview
+// status, no notes, no editing. That all lives on ROC Passdown
 // (Handoff) page now, a separate render against the same site list.
 function renderSiteBoard(){
   const wrap=document.getElementById('site-board-wrap');
@@ -6340,7 +6343,7 @@ function fleetFlaggedCard(item){
   const adding=siteStatusEditingKey===item.boardKey;
   const labelEsc=esc(item.label).replace(/'/g,"\\'");
   const entryRows=entries.map(e=>statusEntryRow(item.boardKey,e,labelEsc)).join('');
-  return `<div class="board-flagged-card">
+  return `<div class="board-flagged-card${item.pinned?' advisory':''}">
     <div class="board-flagged-hdr">
       <span class="board-site-name">${esc(item.label)}</span>
       <button class="board-status-addbtn" title="Add a note" onclick="event.stopPropagation();toggleStatusEditor('${item.boardKey}')">+</button>
@@ -6356,10 +6359,13 @@ function fleetFlaggedCard(item){
 }
 
 // Not real scan sites — always available in the search below, never part
-// of the Scans checklist (getBoardItems), only shown here on Fleet overview.
+// of the Scans checklist (getBoardItems), only shown here on ROC Passdown.
 const FLEET_EXTRA_ITEMS=[
   {boardKey:'x_ROC', label:'ROC'},
-  {boardKey:'x_OTHER', label:'Other'}
+  {boardKey:'x_OTHER', label:'Other'},
+  {boardKey:'x_ALLWIND', label:'All Wind', fleetCategory:'Wind', pinned:true},
+  {boardKey:'x_ALLSOLAR', label:'All Solar', fleetCategory:'Solar', pinned:true},
+  {boardKey:'x_ALLBESS', label:'All BESS', fleetCategory:'BESS', pinned:true}
 ];
 
 function fleetAllItems(){
@@ -6444,6 +6450,7 @@ function renderFleetAddBox(){
 const FLEET_CATEGORY_FIX={ BLKW1:'Solar' };
 
 function fleetItemCategory(item){
+  if (item.fleetCategory) return item.fleetCategory;
   if (item.boardKey==='x_ROC' || item.boardKey==='x_OTHER') return 'Other';
   if (FLEET_CATEGORY_FIX[item.label]) return FLEET_CATEGORY_FIX[item.label];
   const id = (item.siteIds && item.siteIds.length) ? item.siteIds[0] : null;
@@ -6457,7 +6464,11 @@ function renderFleetOverview(){
   if(!wrap) return;
   const flagged=fleetAllItems()
     .filter(i=>siteStatusEntries(i.boardKey).length>0)
-    .sort((a,b)=>a.label.localeCompare(b.label));
+    .sort((a,b)=>{
+      if(a.pinned && !b.pinned) return -1;
+      if(b.pinned && !a.pinned) return 1;
+      return a.label.localeCompare(b.label);
+    });
 
   const byCat={};
   flagged.forEach(item=>{
@@ -6476,6 +6487,27 @@ function renderFleetOverview(){
 
   wrap.innerHTML=`${fleetDigestHtml}${renderFleetAddBox()}
   ${flaggedHtml}`;
+}
+
+// Interim bridge while the team transitions to actually using this page —
+// reads whatever's currently flagged and formats it site-by-site, ready to
+// paste straight into Teams. Doesn't change anything about the page itself,
+// just reads what's already there.
+function copyRocPassdownText(){
+  const items = fleetAllItems()
+    .filter(i => siteStatusEntries(i.boardKey).length > 0)
+    .sort((a,b) => a.label.localeCompare(b.label));
+  if (!items.length) { showToast('Nothing flagged to copy'); return; }
+  const now = new Date();
+  const header = `ROC Passdown — ${now.getMonth()+1}/${now.getDate()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const body = items.map(item => {
+    const lines = siteStatusEntries(item.boardKey).map(e => '- ' + e.text).join('\n');
+    return `${item.label}:\n${lines}`;
+  }).join('\n\n');
+  const text = `${header}\n\n${body}`;
+  navigator.clipboard.writeText(text)
+    .then(() => showToast('Copied — ready to paste into Teams'))
+    .catch(() => showToast('Could not copy — try again'));
 }
 
 // "Since you were last here" — one line, not a badge on every card. Compares
@@ -6669,14 +6701,21 @@ let shSortKey = 'ts';
 let shSortDir = 'desc';
 let shFilterText = '';
 
+// Schedule Compare has its own isoDate, but it's private to that module —
+// invisible from here even though it looks global. This is a standalone
+// copy so History never silently depends on another feature's internals.
+function shIsoDate(d){
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
 function shInit(){
   const fromEl=document.getElementById('sh-from');
   const toEl=document.getElementById('sh-to');
   if(!fromEl.value){
-    const from=new Date(); from.setDate(from.getDate()-30);
-    fromEl.value=isoDate(from);
+    const from=new Date(); from.setDate(from.getDate()-SH_DEFAULT_DAYS);
+    fromEl.value=shIsoDate(from);
   }
-  if(!toEl.value) toEl.value=isoDate(new Date());
+  if(!toEl.value) toEl.value=shIsoDate(new Date());
   const siteSel=document.getElementById('sh-site');
   if(siteSel && siteSel.options.length<=1){
     const labels=[...new Set(getBoardItems().map(i=>i.label))].sort();
@@ -6688,6 +6727,11 @@ function shInit(){
   shRunQuery();
 }
 
+// Default window kept small on purpose — most of what's in this collection
+// right now is test data from building this feature. Widen with the date
+// pickers any time a real wider pull is actually needed.
+const SH_DEFAULT_DAYS = 7;
+
 async function shRunQuery(){
   const resultsEl=document.getElementById('sh-results');
   if(!resultsEl) return;
@@ -6695,11 +6739,18 @@ async function shRunQuery(){
     resultsEl.innerHTML='<div class="empty-state compact"><div class="empty-state-title">Offline</div><div class="empty-state-sub">Open this file directly in a browser to pull history.</div></div>';
     return;
   }
-  const fromVal=document.getElementById('sh-from').value;
-  const toVal=document.getElementById('sh-to').value;
+  const fromEl=document.getElementById('sh-from');
+  const toEl=document.getElementById('sh-to');
   const siteVal=document.getElementById('sh-site').value;
-  const fromTs = fromVal ? new Date(fromVal+'T00:00:00').getTime() : 0;
-  const toTs = toVal ? new Date(toVal+'T23:59:59').getTime() : Date.now();
+  // An empty field never means "no lower bound" — that would silently pull
+  // the entire collection. Falls back to the same default window instead.
+  const fromTs = fromEl.value ? new Date(fromEl.value+'T00:00:00').getTime() : (Date.now() - SH_DEFAULT_DAYS*24*60*60*1000);
+  const toTs = toEl.value ? new Date(toEl.value+'T23:59:59').getTime() : Date.now();
+  // Whatever actually gets queried gets written back into the visible
+  // fields — the boxes on screen can never silently disagree with the data
+  // below them, regardless of how this got triggered.
+  fromEl.value = shIsoDate(new Date(fromTs));
+  toEl.value = shIsoDate(new Date(toTs));
   resultsEl.innerHTML='<div class="empty-state compact"><div class="empty-state-title">Loading…</div></div>';
   try{
     const snap=await window.db.collection('siteStatusHistory')
@@ -8502,7 +8553,7 @@ const AS_SITES = [
       ]},
       { title:'OUTPUT', fields:[
         {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV', kvMin:43.7, kvMax:48.3},
+        {n:'kV',   t:'text', unit:'kV', kvMin:43.7, kvMax:48.3, tip:'Band moves with system demand — still flag if out of band. See plant info for detail.'},
         {n:'MVAR', t:'text', unit:'MVAR'},
       ]},
       { title:'SUBSTATION EQUIPMENT', fields:[
@@ -8562,7 +8613,7 @@ const AS_SITES = [
         {n:'MW',                 t:'text',   unit:'MW'},
         {n:'MWh',                t:'text',   unit:'MWh'},
         {n:'kV Setpoint',        t:'text',   unit:'kV'},
-        {n:'kV',                 t:'text',   unit:'kV'},
+        {n:'kV',                 t:'text',   unit:'kV', kvRefField:'kV Setpoint', kvTolerance:4},
         {n:'MVAR',               t:'text',   unit:'MVAR'},
         {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
       ]},
@@ -9031,7 +9082,7 @@ const AS_SITES = [
       ]},
     ]
   },
-  { id:'NSTR', label:'NSTR-Northstar Solar', stats:'NP: 60MW<br />Voltage SP: 119kV<br />Voltage Band: 117.81kV-120.19kV',
+  { id:'NSTR1', label:'NSTR1-Northstar Solar', stats:'NP: 60MW<br />Voltage SP: 119kV<br />Voltage Band: 117.81kV-120.19kV',
     sections:[
       { title:'STATUS', fields:[
         {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
@@ -9041,7 +9092,6 @@ const AS_SITES = [
         {n:'Plant Status[Remote & Auto]', t:'select', opts:['','Remote/Auto','Remote/Manual','Local/Auto','Local/Manual'], alert:''},
         {n:'Control Mode[Voltage]',       t:'select', opts:['','Voltage','Reactive Power','Power Factor'], alert:''},
         {n:'Voltage Limit [ON]',   t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Voltage SP[119V]',   t:'select', opts:['','Yes','No'], alert:''},
       ]},
       { title:'OUTPUT', fields:[
         {n:'MW',                 t:'text',   unit:'MW'},
@@ -9136,7 +9186,7 @@ const AS_SITES = [
       ]},
       { title:'CAPACITY', fields:[
         {n:'Charge/Discharge ≥ 200 MW',  t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Max Energy ≥ 230 MWh', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Max Energy ≥ 430 MWh', t:'select', opts:['','Yes','No'], alert:''},
       ]},
       { title:'SUBSTATION EQUIPMENT', fields:[
         {n:'Breakers[6]',   t:'text',   unit:'/6 Closed'},
@@ -9155,6 +9205,8 @@ const AS_SITES = [
     sections:[
       { title:'STATUS', fields:[
         {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
+        {n:'Bluence Open & RDP Open', t:'select', opts:['','Yes','No'], alert:'No'},
+        {n:'Bluence Receiving Setpoint', t:'select', opts:['','Yes','No'], alert:'No'},
         {n:'Notes', t:'textarea'},
       ]},
       { title:'OUTPUT', fields:[
@@ -9279,7 +9331,7 @@ const AS_SITES = [
       ]},
     ]
   },
-  { id:'FRND1', label:'FRND1-Ferdinand[BESS]', stats:'NP: 800MWh / 200MW<br />V SET POINT:142kV<br />BAND: ±2kV',
+  { id:'FRDN1', label:'FRDN1-Ferdinand[BESS]', stats:'NP: 800MWh / 200MW<br />V SET POINT:142kV<br />BAND: ±2kV',
     sections:[
       { title:'STATUS', fields:[
         {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
@@ -9292,7 +9344,6 @@ const AS_SITES = [
         {n:'MW',                 t:'text',   unit:'MW'},
         {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
         {n:'MWh',                t:'text',   unit:'MWh'},
-        {n:'kV Setpoint',        t:'text',   unit:'kV'},
         {n:'kV',                 t:'text',   unit:'kV', kvMin:140, kvMax:144},
         {n:'MVAR',               t:'text',   unit:'MVAR'},
       ]},
@@ -9360,7 +9411,11 @@ let asActiveSite = '';
 let asTypeFilter = ['all']; // Array of selected types: ['all'] or ['BESS','Solar','Wind']
 
 // Effective site list: custom overrides defaults when set AND non-empty
-function asSites() { return (asCustom !== null && asCustom.length > 0) ? asCustom : AS_SITES; }
+// Site list is fixed and shared — no more per-browser custom overrides.
+// asCustom is kept as a variable (rather than deleted outright) only so any
+// legacy localStorage data from before this change doesn't throw errors if
+// referenced elsewhere; it's no longer read from here.
+function asSites() { return AS_SITES; }
 
 function asLoadAll() {
   try { const r=localStorage.getItem(AS_VAL_KEY); if(r) asVals=JSON.parse(r)||{}; } catch(e){}
@@ -9374,6 +9429,53 @@ function asSaveTimes() { try{localStorage.setItem(AS_TIME_KEY,JSON.stringify(asT
 function asSaveCustom() { try{localStorage.setItem(AS_CUSTOM_KEY,JSON.stringify(asSites()));}catch(e){} }
 
 function asKey(siteId, si, fi) { return siteId+'|'+si+'|'+fi; }
+
+// Two site IDs were typo'd from day one (FRND1 instead of FRDN1, NSTR
+// instead of NSTR1) — correcting them here so they match the codes used
+// everywhere else in the app. Renames any already-entered values,
+// timestamps, and completion flags too, so real scan data isn't orphaned
+// under the old id the moment the default config changes.
+const AS_RENAMED_SITES = { FRND1:'FRDN1', NSTR:'NSTR1' };
+function asMigrateRenamedSites() {
+  let changed = false;
+  Object.keys(AS_RENAMED_SITES).forEach(oldId => {
+    const newId = AS_RENAMED_SITES[oldId];
+    Object.keys(asVals).forEach(k => {
+      if (k.startsWith(oldId+'|')) { asVals[newId+k.slice(oldId.length)]=asVals[k]; delete asVals[k]; changed=true; }
+    });
+    Object.keys(asTimes).forEach(k => {
+      if (k.startsWith(oldId+'|')) { asTimes[newId+k.slice(oldId.length)]=asTimes[k]; delete asTimes[k]; changed=true; }
+    });
+    if (asDone[oldId]!==undefined) { asDone[newId]=asDone[oldId]; delete asDone[oldId]; changed=true; }
+    if (asCustom) {
+      const site=asCustom.find(s=>s.id===oldId);
+      if (site) { site.label=site.label.replace(oldId,newId); site.id=newId; changed=true; }
+    }
+  });
+  if (changed) { asSaveVals(); asSaveTimes(); asSaveDone(); if(asCustom) asSaveCustom(); }
+}
+
+// Removing FRDN1's redundant kV Setpoint field (it sat between MWh and kV)
+// shifts every field after it down one slot in the array — without this,
+// any kV/MVAR value already entered for Ferdinand would silently reappear
+// under the wrong field. Guarded by a marker so this can only ever run
+// once, since re-running a shift like this a second time would corrupt it.
+function asMigrateFrdn1FieldShift() {
+  const marker = 'rnwbl_as_frdn1_shift_v1';
+  try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
+  const kvVal=asVals['FRDN1|2|4'], kvTime=asTimes['FRDN1|2|4'];
+  const mvVal=asVals['FRDN1|2|5'], mvTime=asTimes['FRDN1|2|5'];
+  if (kvVal!==undefined) { asVals['FRDN1|2|3']=kvVal; }
+  delete asVals['FRDN1|2|4'];
+  if (kvTime!==undefined) { asTimes['FRDN1|2|3']=kvTime; }
+  delete asTimes['FRDN1|2|4'];
+  if (mvVal!==undefined) { asVals['FRDN1|2|4']=mvVal; }
+  delete asVals['FRDN1|2|5'];
+  if (mvTime!==undefined) { asTimes['FRDN1|2|4']=mvTime; }
+  delete asTimes['FRDN1|2|5'];
+  asSaveVals(); asSaveTimes();
+  try { localStorage.setItem(marker,'1'); } catch(e) {}
+}
 
 // ── completion ────────────────────────────────────────────────────────────────
 function asSiteFilledPct(siteId) {
@@ -9422,6 +9524,8 @@ function asInit() {
   } catch(e) {}
   if (shiftSel && !shiftSel.value) shiftSel.value = asAutoShift();
   asLoadAll();
+  asMigrateRenamedSites();
+  asMigrateFrdn1FieldShift();
   // Restore last visited tab; if none saved, skip ROCC1 and land on first real site
   const saved = (()=>{try{return localStorage.getItem('rnwbl_asactive')||'';}catch(e){return '';}})();
   const sites = asSites();
@@ -9609,7 +9713,7 @@ function asRenderForm() {
     sec.fields.forEach((f,fi)=>{
       const k=asKey(site.id,si,fi), val=asVals[k]||'';
       const fid='asf_'+k.replace(/\|/g,'_'), aid='asa_'+k.replace(/\|/g,'_'), kid='askv_'+k.replace(/\|/g,'_');
-      html+=`<div class="as-row"><div><div class="as-lbl">${esc(f.n)}</div>${f.hint?`<div class="as-hint">${esc(f.hint)}</div>`:''}</div><div>`;
+      html+=`<div class="as-row"><div><div class="as-lbl">${esc(f.n)}${f.tip?` <span class="as-tip-icon" onclick="asToggleTip(this)" data-tip="${esc(f.tip)}">ⓘ</span>`:''}</div>${f.hint?`<div class="as-hint">${esc(f.hint)}</div>`:''}</div><div>`;
       if(f.t==='select'){
         html+=`<select class="as-sel" id="${fid}" onchange="asChange('${k}','${aid}','${esc(site.id)}',${si},this)">${(f.opts||[]).map(o=>`<option value="${esc(o)}"${val===o?' selected':''}>${esc(o)}</option>`).join('')}</select>`;
       } else if(f.t==='textarea'){
@@ -9620,20 +9724,25 @@ function asRenderForm() {
       }
       html+=`</div><div>`;
       if(f.t==='select'&&f.alert){ const on=val&&val.toLowerCase()===f.alert.toLowerCase(); html+=`<span class="alert-pill${on?' on':''}" id="${aid}">⚠ TAKE ACTION</span>`; }
-      if(f.kvMin!=null) html+=`<span class="as-status" id="${kid}"></span>`;
+      if(f.kvMin!=null||f.kvRefField) html+=`<span class="as-status" id="${kid}"></span>`;
       html+=`</div></div>`;
     });
   });
 
-  html+=`<div class="as-export-bar"><button class="btn-p" onclick="asExportCSV()">Export CSV</button><span style="font-size:12px;color:var(--text3);">Fill in Date, Operator &amp; Shift above before exporting.</span></div></div>`;
+  html+=`</div>`;
   document.getElementById('as-form-wrap').innerHTML=html;
 
-  // Restore kV indicators
+  // Restore kV indicators — fixed band (kvMin/kvMax) or relative to another
+  // field's value (kvRefField, e.g. BYPS1's kV vs its own Setpoint field).
   site.sections.forEach((sec,si)=>sec.fields.forEach((f,fi)=>{
-    if(f.kvMin==null) return;
-    const k=asKey(site.id,si,fi), val=asVals[k]||'', unit=f.unit||'';
-    const num=parseFloat((unit&&val.endsWith(unit))?val.slice(0,-unit.length):val);
-    if(!isNaN(num)) asUpdateKv('askv_'+k.replace(/\|/g,'_'),num,f.kvMin,f.kvMax);
+    const kid='askv_'+asKey(site.id,si,fi).replace(/\|/g,'_');
+    if(f.kvMin!=null){
+      const k=asKey(site.id,si,fi), val=asVals[k]||'', unit=f.unit||'';
+      const num=parseFloat((unit&&val.endsWith(unit))?val.slice(0,-unit.length):val);
+      if(!isNaN(num)) asUpdateKv(kid,num,f.kvMin,f.kvMax);
+    } else if(f.kvRefField){
+      asUpdateKvRef(kid,site.id,si,sec.fields,f);
+    }
   }));
 }
 
@@ -9674,7 +9783,9 @@ function asTextBlur(k, kvId, siteId, si, el) {
   let v=el.value.trim();
   if(!v){
     if(asVals[k]!==''){asTimes[k]=new Date().toISOString();asSaveTimes();}
-    asVals[k]='';asSaveVals();return;
+    asVals[k]='';asSaveVals();
+    asRecomputeSectionKvRefs(siteId,si); // could be the field another field's band is measured against
+    return;
   }
   if(unit&&v.endsWith(unit)) v=v.slice(0,-unit.length).trim();
   if(!isNaN(parseFloat(v))&&isFinite(v)){
@@ -9687,12 +9798,52 @@ function asTextBlur(k, kvId, siteId, si, el) {
     asVals[k]=el.value;
   }
   asSaveVals(); asRenderTabs();
+  asRecomputeSectionKvRefs(siteId,si);
 }
 
 function asUpdateKv(kvId, val, min, max) {
   const sp=document.getElementById(kvId); if(!sp) return;
   if(val>=min&&val<=max){sp.textContent='In band';sp.className='as-status kv-ok';}
   else{sp.textContent='Out of band';sp.className='as-status kv-bad';}
+}
+
+// Compact alternative to a permanent hint line — a small icon that expands
+// a note only when tapped/clicked, works the same on mobile and desktop
+// (a hover-only tooltip wouldn't work reliably on a phone).
+function asToggleTip(el) {
+  const existing = el.parentElement.querySelector('.as-tip-note');
+  if (existing) { existing.remove(); return; }
+  const note = document.createElement('div');
+  note.className = 'as-tip-note';
+  note.textContent = el.getAttribute('data-tip');
+  el.parentElement.appendChild(note);
+}
+
+// BYPS1-style band: not a fixed range, a tolerance around another field's
+// current value (e.g. kV vs kV Setpoint, alert if more than kvTolerance
+// apart). Reuses the exact same in-band/out-of-band pill as the fixed-range
+// case, so it's the same alert operators already know, not a new one.
+function asUpdateKvRef(kvId, siteId, si, fields, f) {
+  const sp=document.getElementById(kvId); if(!sp) return;
+  const fIdx=fields.indexOf(f), refIdx=fields.findIndex(rf=>rf.n===f.kvRefField);
+  if(fIdx<0||refIdx<0){ sp.textContent=''; sp.className='as-status'; return; }
+  const val=parseFloat(asVals[asKey(siteId,si,fIdx)]);
+  const refVal=parseFloat(asVals[asKey(siteId,si,refIdx)]);
+  if(isNaN(val)||isNaN(refVal)){ sp.textContent=''; sp.className='as-status'; return; }
+  if(Math.abs(val-refVal)<=f.kvTolerance){ sp.textContent='In band'; sp.className='as-status kv-ok'; }
+  else { sp.textContent='Out of band'; sp.className='as-status kv-bad'; }
+}
+
+// Either side of a reference-band pair could have just changed — the
+// measurement itself, or the setpoint it's measured against — so recompute
+// every reference-band field in the section. Cheap; sections are small.
+function asRecomputeSectionKvRefs(siteId, si) {
+  const site=asSites().find(s=>s.id===siteId); if(!site) return;
+  const fields=site.sections[si]?.fields; if(!fields) return;
+  fields.forEach((rf,rfi)=>{
+    if(!rf.kvRefField) return;
+    asUpdateKvRef('askv_'+asKey(siteId,si,rfi).replace(/\|/g,'_'), siteId, si, fields, rf);
+  });
 }
 
 function asMarkDone(siteId){asDone[siteId]=true;asSaveDone();asRenderTabs();asRenderForm();showToast(siteId+' marked complete ✓');}
@@ -9764,6 +9915,8 @@ function asFmtAZ(iso) {
 
 function asExportCSV() {
   const date=document.getElementById('as-date').value, op=document.getElementById('as-operator').value, shift=document.getElementById('as-shift').value;
+  const missing=[]; if(!date) missing.push('Date'); if(!op) missing.push('Operator'); if(!shift) missing.push('Shift');
+  if(missing.length && !confirm(`${missing.join(', ')} not filled in — the file name will be generic. Export anyway?`)) return;
   let csv='Date,Operator,Shift,Site,Section,Field,Value,Field Last Edited\n';
   // Only export sites matching the currently selected type filter (mirrors what's shown in the tabs)
   let sites=[...asSites()];
@@ -11272,7 +11425,7 @@ const VCHK_BANDS = {
   COSO1: {min:230.3,  max:239.7,  sp:'235kV'},
   CTFL:  {min:521,    max:540,    sp:'525kV'},
   DLBO1: {min:228,    max:232,    sp:'230kV'},
-  FRND1: {min:140,    max:144,    sp:'142kV'},
+  FRDN1: {min:140,    max:144,    sp:'142kV'},
   GDWL1: {min:109.25, max:120.75, sp:'115kV'},
   GLTA1: {min:63.17,  max:69.83,  sp:'66kV'},
   HARQ1: {min:499,    max:551,    sp:'525kV'},
@@ -11281,7 +11434,7 @@ const VCHK_BANDS = {
   LNDL1: {min:109,    max:121,    sp:'115kV'},
   LSTH2: {min:70.29,  max:71.71,  sp:'71kV'},
   MRCP:  {min:498.75, max:551.25, sp:'525kV'},
-  NSTR:  {min:117.81, max:120.19, sp:'119kV'},
+  NSTR1: {min:117.81, max:120.19, sp:'119kV'},
   ORGN1: {min:138.8,  max:142.8,  sp:'140.8kV'},
   PDMT1: {min:226,    max:241,    sp:'236kV'},
   PRGN1: {min:228,    max:234,    sp:'231.3kV'},
@@ -11359,7 +11512,7 @@ const NPCHK_SITES = {
   DFRN1: {mw:91,     mwh:null,   label:'NP: 91 MW (wind)'},
   DLBO1: {mw:null,   mwh:null,   label:'NP: unknown — no data'},
   FRMV1: {mw:5.4,    mwh:null,   label:'NP: 5.4 MW (solar)'},
-  FRND1: {mw:200,    mwh:800,    label:'NP: 800 MWh / 200 MW'},
+  FRDN1: {mw:200,    mwh:800,    label:'NP: 800 MWh / 200 MW'},
   GDWL1: {mw:200,    mwh:null,   label:'NP: 200 MW (wind)'},
   GLTA1: {mw:60,     mwh:160,    label:'NP: 160 MWh / 60 MW'},
   HARQ1: {mw:150,    mwh:null,   label:'NP: 150 MW (solar)'},
@@ -11372,7 +11525,7 @@ const NPCHK_SITES = {
   MCLM1: {mw:60,     mwh:null,   label:'NP: 60 MW (wind)'},
   MRCP:  {mw:183.33, mwh:733.32, label:'NP: 733.32 MWh / 183.33 MW'},
   NCLS1: {mw:26,     mwh:null,   label:'NP: 26 MW (solar)'},
-  NSTR:  {mw:60,     mwh:null,   label:'NP: 60 MW (solar)'},
+  NSTR1: {mw:60,     mwh:null,   label:'NP: 60 MW (solar)'},
   ORGN1: {mw:150,    mwh:null,   label:'NP: 150 MW (wind)'},
   PDMT1: {mw:250,    mwh:1000,   label:'NP: 1000 MWh / 250 MW'},
   PRGN1: {mw:200,    mwh:430,    label:'NP: 430 MWh / 200 MW'},
@@ -12245,7 +12398,7 @@ const ROC_QUESTIONS = [
 
   {id:'op4', cat:'operations', type:'application',
    q:'Hail stow procedure for HARQ 1/2 or C-Flats: what are the 7 steps and what is the trigger?',
-   a:'<strong>Trigger:</strong> Damaging hail alert — hail ≥ 1 inch in diameter forecasted or active.<ol style="margin-left:14px;"><li>Identify the alert</li><li>Log into NXNavigator</li><li>Stow the site (panels rotate to protective angle)</li><li>Notify Site Owner, Field team, and SC</li><li>Unstow <strong>15 minutes after the storm has passed</strong></li><li>Notify Site Owner, Field team, and SC again</li><li>Log all steps with timestamps</li></ol><strong>Common gap:</strong> stow is never reversed after the storm. Panels will show low output with good irradiance and no alarm will fire — it\'s a "normal" stow state. Always verify stow is cleared post-event.'},
+   a:'<strong>Trigger:</strong> Damaging hail alert — hail ≥ 1 inch in diameter forecasted or active.<ol style="margin-left:14px;"><li>Identify the alert</li><li>Log into NXNavigator</li><li>Stow the site (panels rotate to protective angle)</li><li>Notify Site Owner, Field team, and SC</li><li>Initiate Auto Tracking <strong>15 minutes after the storm passes</strong></li><li>Notify Site Owner, Field team, and SC again</li><li>Log all steps with timestamps</li></ol><strong>Common gap:</strong> Auto Tracking is never re-initiated after the storm. Panels will show low output with good irradiance and no alarm will fire — it\'s a "normal" stow state. Always verify Auto Tracking is running post-event.'},
 
   {id:'op5', cat:'operations', type:'procedure',
    q:'Walk through the BESS identify/derate procedure. What are the 6 steps?',
@@ -12741,7 +12894,7 @@ function rocDrillFinish() {
 // actually been used for a while, not built speculatively up front.
 const PB_CHECK_KEY = 'rnwbl_pb_checks_v1';
 const PB_CATEGORY_ORDER = ['Site Events','Dispatch & Compliance','Safety','Shift Routine'];
-const PB_PLAYBOOKS = [{"id": "Operating Instruction", "sheetTitle": "Operating Instruction", "phases": [{"name": "ISSUED BY CAISO BOARD", "steps": [{"text": "Receive Operating Instruction", "notes": ["Take Picture of the Board and attach to Log."]}, {"text": "Execute the Operating Instruction", "notes": ["Follow direction on CAISO Board."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "ISSUED BY PHONE", "steps": [{"text": "Receive Operating Instruction", "notes": ["Confirm if unsure it\u2019s an operating instruction."]}, {"text": "Repeat Instruction Back Correctly", "notes": ["Use 3-Way Comms. Ask if correct."]}, {"text": "Execute the Operating Instruction", "notes": ["Complete with authority on phone or call back after completion."]}, {"text": "Respond to authority Success/Failure", "notes": ["If Instruction completed off phone, call back."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}, {"text": "Inform Supervisor", "notes": ["So that call logs can be pulled."]}]}], "notes": ["Some operating instructions may de-rate or place the site in outage, follow those procedures as neccesary.", "If at any point a call is made to or received from authority switch to Phone Instructions"], "icon": "\ud83d\udccb", "category": "Dispatch & Compliance", "trigger": "CAISO board or a caller issues a direct operating instruction", "stepCount": 11, "slug": "operating-instruction"}, {"id": "Not Following ADS", "sheetTitle": "Not Following ADS", "phases": [{"name": "If SOC is near 100%", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed &/Or as directed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints DO NOT Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete Outage Card", "notes": ["Full Site Outage"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints as a result of site unable to follow dispatch, place a full site outage"], "icon": "\ud83c\udfaf", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking CAISO ADS dispatch setpoints", "stepCount": 18, "slug": "not-following-ads"}, {"id": "Not Following AGC", "sheetTitle": "Not Following AGC", "phases": [{"name": "If SOC is Limited", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS Works", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant in ADS mode", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS DOES NOT WORK", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints, place a full site outage"], "icon": "\ud83d\udcc9", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking AGC dispatch", "stepCount": 19, "slug": "not-following-agc"}, {"id": "Site Trip", "sheetTitle": "SITE TRIP", "phases": [{"name": "Start", "steps": [{"text": "Notify TOP", "notes": ["Inquire Possible Reason"]}, {"text": "Notify SC", "notes": ["End time 24 hours out"]}, {"text": "Complete Outage Card", "notes": ["As required & as perscribed by the SC"]}, {"text": "Dispatch Field", "notes": ["Coordinate retrieval of Event Files"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify 3AC", "notes": ["Call 1-800 number to get On Call. Tech to coordinate event files to 3AC POC."]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify SC", "notes": ["Request Permission to re-enter Market"]}, {"text": "Close In Site", "notes": ["Follow Swithcing Procedure"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Assume site trip if no parties can confirm comms to site"], "icon": "\u26a0\ufe0f", "category": "Site Events", "trigger": "Site has tripped offline", "stepCount": 14, "slug": "site-trip"}, {"id": "Comms Loss", "sheetTitle": "COMMS LOSS", "phases": [{"name": "Comms Loss Start", "steps": [{"text": "Identify Issue", "notes": ["Re-Fresh SCADA, Try another IP address, Try another Login"]}, {"text": "Notify TOP", "notes": ["Confirm their Comms. If No take direction from TOP"]}, {"text": "Notify SC", "notes": ["Confirm their Comms. If No take direction from SC"]}, {"text": "Notify Field", "notes": ["Via call or email"]}, {"text": "Notify Network Vendor", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["when comms are restored - if taken offline request permission to re-enter the grid"]}, {"text": "Notify SC", "notes": ["when comms are restored - if taken offline request permission to re-enter the market"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Assume site trip if no parties can confirm comms to site"], "icon": "\ud83d\udce1", "category": "Site Events", "trigger": "Lost SCADA / communications to a site", "stepCount": 13, "slug": "comms-loss"}, {"id": "Site De-Rated", "sheetTitle": "Site De-Rated", "phases": [{"name": "De-Rate Start", "steps": [{"text": "Identify Name Plate", "notes": ["Via Plant Info"]}, {"text": "Determine if Fully Availble/Derated", "notes": []}, {"text": "Submit De-rate/Outage to QSE", "notes": ["Via portal/form. Call to confirm"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "De-Rate End", "steps": [{"text": "Update/End Outage", "notes": ["Via Portal/Email"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\ud83d\udcc9", "category": "Site Events", "trigger": "Site is operating below full nameplate capacity", "stepCount": 10, "slug": "site-de-rated"}, {"id": "AVR", "sheetTitle": "Site Not in AVR", "phases": [{"name": "Not in AVR", "steps": [{"text": "Notify TOP", "notes": ["Per VAR-002 this is mandatory"]}, {"text": "Return site to AVR immediately", "notes": ["VIA Scada, Onsite team or other means"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\ud83d\udd0c", "category": "Dispatch & Compliance", "trigger": "Site has dropped out of Automatic Voltage Regulation (VAR-002)", "stepCount": 9, "slug": "avr"}, {"id": "Voltage", "sheetTitle": "Voltage Out of Band", "phases": [{"name": "Start", "steps": [{"text": "Notify TOP", "notes": ["Site voltage is outside the required band"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["If voltage returns in-band within 24 hours"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\u26a1", "category": "Dispatch & Compliance", "trigger": "Site voltage is outside the required band", "stepCount": 4, "slug": "voltage"}, {"id": "Daily Checklist", "sheetTitle": "Daily Checklist", "phases": [{"name": null, "steps": [{"text": "Please notify the ROC in the Teams chat that you are on the way.", "notes": []}, {"text": "Clock into work when at the office door (DSPTCH)", "notes": []}, {"text": "Check Dryerase/Outage board", "notes": []}, {"text": "Receive instructions from offgoing operator/teams", "notes": ["Verbally and via Teams chat"]}, {"text": "Log into D1/D2 duty sites SCADA's", "notes": []}, {"text": "Fill out (ROCC1) Operator Log (Onsite)", "notes": ["Via Softwrench"]}, {"text": "Complete Asset Scanning Tool/Upload", "notes": []}, {"text": "Leave instructions for oncoming operator in teams/turnover", "notes": ["Verbally and via Teams chat"]}, {"text": "Fillout (ROCC1) Operator Log (Offsite)", "notes": ["Via Softwrench"]}, {"text": "Ensure you log out of all sites directly", "notes": []}, {"text": "Leave the ROCC only after relief is logged into their sites.", "notes": []}, {"text": "Clock out (DSPTCH)", "notes": []}]}], "notes": [], "icon": "\u2705", "category": "Shift Routine", "trigger": "Start / end of shift routine", "stepCount": 12, "slug": "daily-checklist"}, {"id": "Fire Alarm", "sheetTitle": "Fire Alarm", "phases": [{"name": null, "steps": [{"text": "Recieve Fire alarm from Hiller or other service provider", "notes": []}, {"text": "Notify Field Team/Review Cameras if Available", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Coordinate Assign POC", "notes": ["Via Email Chain"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}, {"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\ud83d\udd25", "category": "Site Events", "trigger": "Fire alarm received from a site", "stepCount": 10, "slug": "fire-alarm"}, {"id": "Units Off", "sheetTitle": "Units Offline", "phases": [{"name": "Solar", "steps": [{"text": "Identify each inverters status Online/Offine/Comms Loss", "notes": []}, {"text": "Locate current Irradiance", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Bess", "steps": [{"text": "Identify each inverters status Online/Offine/Comms Loss/Faulted", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Wind", "steps": [{"text": "Identify a tripped turbine", "notes": ["Via Scada"]}, {"text": "Reset the turbine", "notes": ["According to SOP"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench & the Turbine Trip Logs"]}]}], "notes": [], "icon": "\ud83d\udd27", "category": "Site Events", "trigger": "One or more inverters / turbines offline (Solar, BESS, or Wind)", "stepCount": 16, "slug": "units-off"}, {"id": "Hail Stow", "sheetTitle": "Hail Stow", "phases": [{"name": null, "steps": [{"text": "Identify Alert: damaging hail", "notes": ["(\u2265 1 inch in diameter)"]}, {"text": "Log into NXNavigator", "notes": []}, {"text": "Stow Site", "notes": ["Emergency Stow"]}, {"text": "Notify Site Owner/Field/Scheduling Coordinator", "notes": []}, {"text": "Unstow 15 mintes after storm has passed", "notes": ["Using Indiji Watch"]}, {"text": "Log it", "notes": []}]}], "notes": [], "icon": "\ud83c\udf28\ufe0f", "category": "Site Events", "trigger": "Damaging hail alert \u2014 emergency stow needed", "stepCount": 6, "slug": "hail-stow"}]
+const PB_PLAYBOOKS = [{"id": "Operating Instruction", "sheetTitle": "Operating Instruction", "phases": [{"name": "ISSUED BY CAISO BOARD", "steps": [{"text": "Receive Operating Instruction", "notes": ["Take Picture of the Board and attach to Log."]}, {"text": "Execute the Operating Instruction", "notes": ["Follow direction on CAISO Board."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "ISSUED BY PHONE", "steps": [{"text": "Receive Operating Instruction", "notes": ["Confirm if unsure it\u2019s an operating instruction."]}, {"text": "Repeat Instruction Back Correctly", "notes": ["Use 3-Way Comms. Ask if correct."]}, {"text": "Execute the Operating Instruction", "notes": ["Complete with authority on phone or call back after completion."]}, {"text": "Respond to authority Success/Failure", "notes": ["If Instruction completed off phone, call back."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}, {"text": "Inform Supervisor", "notes": ["So that call logs can be pulled."]}]}], "notes": ["Some operating instructions may de-rate or place the site in outage, follow those procedures as neccesary.", "If at any point a call is made to or received from authority switch to Phone Instructions"], "icon": "\ud83d\udccb", "category": "Dispatch & Compliance", "trigger": "CAISO board or a caller issues a direct operating instruction", "stepCount": 11, "slug": "operating-instruction"}, {"id": "Not Following ADS", "sheetTitle": "Not Following ADS", "phases": [{"name": "If SOC is near 100%", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed &/Or as directed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints DO NOT Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete Outage Card", "notes": ["Full Site Outage"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints as a result of site unable to follow dispatch, place a full site outage"], "icon": "\ud83c\udfaf", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking CAISO ADS dispatch setpoints", "stepCount": 18, "slug": "not-following-ads"}, {"id": "Not Following AGC", "sheetTitle": "Not Following AGC", "phases": [{"name": "If SOC is Limited", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS Works", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant in ADS mode", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS DOES NOT WORK", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints, place a full site outage"], "icon": "\ud83d\udcc9", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking AGC dispatch", "stepCount": 19, "slug": "not-following-agc"}, {"id": "Site Trip", "sheetTitle": "SITE TRIP", "phases": [{"name": "Start", "steps": [{"text": "Notify TOP", "notes": ["Inquire Possible Reason"]}, {"text": "Notify SC", "notes": ["End time 24 hours out"]}, {"text": "Complete Outage Card", "notes": ["As required & as perscribed by the SC"]}, {"text": "Dispatch Field", "notes": ["Coordinate retrieval of Event Files"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify 3AC", "notes": ["Call 1-800 number to get On Call. Tech to coordinate event files to 3AC POC."]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify SC", "notes": ["Request Permission to re-enter Market"]}, {"text": "Close In Site", "notes": ["Follow Swithcing Procedure"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Assume site trip if no parties can confirm comms to site"], "icon": "\u26a0\ufe0f", "category": "Site Events", "trigger": "Site has tripped offline", "stepCount": 14, "slug": "site-trip"}, {"id": "Comms Loss", "sheetTitle": "COMMS LOSS", "phases": [{"name": "Comms Loss Start", "steps": [{"text": "Identify Issue", "notes": ["Re-Fresh SCADA, Try another IP address, Try another Login"]}, {"text": "Notify TOP", "notes": ["Confirm their Comms. If No take direction from TOP"]}, {"text": "Notify SC", "notes": ["Confirm their Comms. If No take direction from SC"]}, {"text": "Notify Field", "notes": ["Via call or email"]}, {"text": "Notify Network Vendor", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["when comms are restored - if taken offline request permission to re-enter the grid"]}, {"text": "Notify SC", "notes": ["when comms are restored - if taken offline request permission to re-enter the market"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Assume site trip if no parties can confirm comms to site"], "icon": "\ud83d\udce1", "category": "Site Events", "trigger": "Lost SCADA / communications to a site", "stepCount": 13, "slug": "comms-loss"}, {"id": "Site De-Rated", "sheetTitle": "Site De-Rated", "phases": [{"name": "De-Rate Start", "steps": [{"text": "Identify Name Plate", "notes": ["Via Plant Info"]}, {"text": "Determine if Fully Availble/Derated", "notes": []}, {"text": "Submit De-rate/Outage to QSE", "notes": ["Via portal/form. Call to confirm"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "De-Rate End", "steps": [{"text": "Update/End Outage", "notes": ["Via Portal/Email"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\ud83d\udcc9", "category": "Site Events", "trigger": "Site is operating below full nameplate capacity", "stepCount": 10, "slug": "site-de-rated"}, {"id": "AVR", "sheetTitle": "Site Not in AVR", "phases": [{"name": "Not in AVR", "steps": [{"text": "Notify TOP", "notes": ["Per VAR-002 this is mandatory"]}, {"text": "Return site to AVR immediately", "notes": ["VIA Scada, Onsite team or other means"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\ud83d\udd0c", "category": "Dispatch & Compliance", "trigger": "Site has dropped out of Automatic Voltage Regulation (VAR-002)", "stepCount": 9, "slug": "avr"}, {"id": "Voltage", "sheetTitle": "Voltage Out of Band", "phases": [{"name": "Start", "steps": [{"text": "Notify TOP", "notes": ["Site voltage is outside the required band"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["If voltage returns in-band within 24 hours"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\u26a1", "category": "Dispatch & Compliance", "trigger": "Site voltage is outside the required band", "stepCount": 4, "slug": "voltage"}, {"id": "Daily Checklist", "sheetTitle": "Daily Checklist", "phases": [{"name": null, "steps": [{"text": "Please notify the ROC in the Teams chat that you are on the way.", "notes": []}, {"text": "Clock into work when at the office door (DSPTCH)", "notes": []}, {"text": "Check Dryerase/Outage board", "notes": []}, {"text": "Receive instructions from offgoing operator/teams", "notes": ["Verbally and via Teams chat"]}, {"text": "Log into D1/D2 duty sites SCADA's", "notes": []}, {"text": "Fill out (ROCC1) Operator Log (Onsite)", "notes": ["Via Softwrench"]}, {"text": "Complete Asset Scanning Tool/Upload", "notes": []}, {"text": "Leave instructions for oncoming operator in teams/turnover", "notes": ["Verbally and via Teams chat"]}, {"text": "Fillout (ROCC1) Operator Log (Offsite)", "notes": ["Via Softwrench"]}, {"text": "Ensure you log out of all sites directly", "notes": []}, {"text": "Leave the ROCC only after relief is logged into their sites.", "notes": []}, {"text": "Clock out (DSPTCH)", "notes": []}]}], "notes": [], "icon": "\u2705", "category": "Shift Routine", "trigger": "Start / end of shift routine", "stepCount": 12, "slug": "daily-checklist"}, {"id": "Fire Alarm", "sheetTitle": "Fire Alarm", "phases": [{"name": null, "steps": [{"text": "Recieve Fire alarm from Hiller or other service provider", "notes": []}, {"text": "Notify Field Team/Review Cameras if Available", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Coordinate Assign POC", "notes": ["Via Email Chain"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}, {"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\ud83d\udd25", "category": "Site Events", "trigger": "Fire alarm received from a site", "stepCount": 10, "slug": "fire-alarm"}, {"id": "Units Off", "sheetTitle": "Units Offline", "phases": [{"name": "Solar", "steps": [{"text": "Identify each inverters status Online/Offine/Comms Loss", "notes": []}, {"text": "Locate current Irradiance", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Bess", "steps": [{"text": "Identify each inverters status Online/Offine/Comms Loss/Faulted", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Wind", "steps": [{"text": "Identify a tripped turbine", "notes": ["Via Scada"]}, {"text": "Reset the turbine", "notes": ["According to SOP"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench & the Turbine Trip Logs"]}]}], "notes": [], "icon": "\ud83d\udd27", "category": "Site Events", "trigger": "One or more inverters / turbines offline (Solar, BESS, or Wind)", "stepCount": 16, "slug": "units-off"}, {"id": "Hail Stow", "sheetTitle": "Hail Stow", "phases": [{"name": null, "steps": [{"text": "Identify Alert: damaging hail", "notes": ["(\u2265 1 inch in diameter)"]}, {"text": "Log into NXNavigator", "notes": []}, {"text": "Stow Site", "notes": ["Emergency Stow"]}, {"text": "Notify Site Owner/Field/Scheduling Coordinator", "notes": []}, {"text": "Initiate Auto Tracking 15 minutes after the storm passes", "notes": ["Using Indiji Watch"]}, {"text": "Log it", "notes": []}]}], "notes": [], "icon": "\ud83c\udf28\ufe0f", "category": "Site Events", "trigger": "Damaging hail alert \u2014 emergency stow needed", "stepCount": 6, "slug": "hail-stow"}]
 ;
 
 let pbCheckState = {};
