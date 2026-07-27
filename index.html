@@ -399,6 +399,12 @@ body.dark .card-title{color:var(--text2);}
 
 /* Since-you-were-last-here digest — one line, self-clears on next visit */
 .fleet-digest{font-size:12.5px;color:var(--text2);background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:9px 14px;margin-bottom:16px;}
+.fleet-digest-toggle{color:var(--blue);cursor:pointer;font-size:11.5px;white-space:nowrap;}
+.fleet-digest-toggle:hover{text-decoration:underline;}
+.fleet-digest-detail{margin-top:10px;padding-top:10px;border-top:1px solid var(--border2);display:flex;flex-direction:column;gap:8px;}
+.fleet-digest-row-hdr{display:flex;align-items:center;gap:8px;}
+.fleet-digest-site{font-weight:600;color:var(--text);font-size:12px;}
+.fleet-digest-text{font-size:12px;color:var(--text2);line-height:1.5;margin-top:1px;}
 
 /* Add to handoff — searchable picker replacing the old quiet-chip grid */
 .fleet-add-box.closed{border:1px dashed var(--border2);border-radius:var(--rl);padding:12px 16px;text-align:center;color:var(--text3);font-size:13px;cursor:pointer;transition:all .15s;max-width:420px;margin-bottom:20px;}
@@ -6485,7 +6491,7 @@ function renderFleetOverview(){
     ? `<div class="board-flagged-columns">${colsHtml}</div>`
     : '';
 
-  wrap.innerHTML=`${fleetDigestHtml}${renderFleetAddBox()}
+  wrap.innerHTML=`${renderFleetDigestBanner()}${renderFleetAddBox()}
   ${flaggedHtml}`;
 }
 
@@ -6515,27 +6521,56 @@ function copyRocPassdownText(){
 // and pulls only the entries touched since then from siteStatusHistory.
 // Marking fleetLastViewed happens immediately on open, not after the query
 // resolves, so a slow network doesn't distort what counts as "since."
-let fleetDigestHtml = '';
+//
+// fleetDigestRows holds the raw rows from that one query — the banner text
+// and its optional expanded detail are both built from this same cached
+// data, so opening/closing the detail never re-queries Firestore.
+let fleetDigestRows = null; // null = nothing to show; array = has entries
+let fleetDigestOpen = false;
 
 async function fleetLoadDigest(){
   const prevViewed = S.fleetLastViewed || 0;
   S.fleetLastViewed = Date.now();
   save();
-  if (!prevViewed || !window.db) { fleetDigestHtml=''; return; } // first-ever visit — nothing to compare against
+  fleetDigestOpen = false;
+  if (!prevViewed || !window.db) { fleetDigestRows=null; return; } // first-ever visit — nothing to compare against
   try {
     const snap = await window.db.collection('siteStatusHistory').where('ts','>',prevViewed).get();
-    const rows = snap.docs.map(d=>d.data());
-    const newSites = [...new Set(rows.filter(r=>r.action==='set').map(r=>r.siteLabel))];
-    const resolvedSites = [...new Set(rows.filter(r=>r.action==='clear').map(r=>r.siteLabel))];
-    if (!newSites.length && !resolvedSites.length) { fleetDigestHtml=''; return; }
-    const parts=[];
-    if (newSites.length) parts.push(`<span style="color:var(--amber);font-weight:600;">${newSites.length} new</span> (${esc(newSites.join(', '))})`);
-    if (resolvedSites.length) parts.push(`<span style="color:var(--green);font-weight:600;">${resolvedSites.length} resolved</span> (${esc(resolvedSites.join(', '))})`);
-    fleetDigestHtml = `<div class="fleet-digest">Since you were last here: ${parts.join(' · ')}</div>`;
+    const rows = snap.docs.map(d=>d.data()).sort((a,b)=>a.ts-b.ts);
+    fleetDigestRows = rows.length ? rows : null;
   } catch(e) {
-    fleetDigestHtml='';
+    fleetDigestRows = null;
   }
   renderFleetOverview();
+}
+
+function toggleFleetDigestDetail(){
+  fleetDigestOpen = !fleetDigestOpen;
+  renderFleetOverview();
+}
+
+// Same brief line as before by default — the detail underneath only
+// exists in the DOM when actually opened, so the common case (glance and
+// move on) stays exactly as light as it already was.
+function renderFleetDigestBanner(){
+  if (!fleetDigestRows) return '';
+  const newSites = [...new Set(fleetDigestRows.filter(r=>r.action==='set').map(r=>r.siteLabel))];
+  const resolvedSites = [...new Set(fleetDigestRows.filter(r=>r.action==='clear').map(r=>r.siteLabel))];
+  const parts=[];
+  if (newSites.length) parts.push(`<span style="color:var(--amber);font-weight:600;">${newSites.length} new</span> (${esc(newSites.join(', '))})`);
+  if (resolvedSites.length) parts.push(`<span style="color:var(--green);font-weight:600;">${resolvedSites.length} resolved</span> (${esc(resolvedSites.join(', '))})`);
+  const detail = fleetDigestOpen ? `<div class="fleet-digest-detail">${fleetDigestRows.map(r=>`
+    <div class="fleet-digest-row">
+      <div class="fleet-digest-row-hdr">
+        <span class="fleet-digest-site">${esc(r.siteLabel||'')}</span>
+        <span class="${r.action==='clear'?'sh-action-clear':r.action==='edit'?'sh-action-edit':'sh-action-set'}">${r.action==='clear'?'Resolved':r.action==='edit'?'Updated':'Reported'}</span>
+      </div>
+      <div class="fleet-digest-text">${esc(r.text||'')}</div>
+    </div>`).join('')}</div>` : '';
+  return `<div class="fleet-digest">
+    <div>Since you were last here: ${parts.join(' · ')} <span class="fleet-digest-toggle" onclick="toggleFleetDigestDetail()">${fleetDigestOpen?'Hide details ▲':'See details ▼'}</span></div>
+    ${detail}
+  </div>`;
 }
 
 // Click anywhere outside an open note editor closes it — no Cancel/Close
@@ -8564,7 +8599,7 @@ const AS_SITES = [
         {n:'Inverters [29]', t:'text',   unit:'/29 Online'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'Yes'},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'Yes', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -8579,7 +8614,6 @@ const AS_SITES = [
         {n:'Plant Status[Remote & Auto]', t:'select', opts:['','Remote/Auto','Remote/Manual','Local/Auto','Local/Manual'], alert:''},
         {n:'Control Mode[Voltage]', t:'select', opts:['','Voltage','Reactive Power','Power Factor'], alert:''},
         {n:'Voltage Limit [ON]',   t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Voltage Setpoint[11.8kV]', t:'select', opts:['','Yes','No'], alert:''},
       ]},
       { title:'OUTPUT', fields:[
         {n:'MW',                t:'text',   unit:'MW'},
@@ -8595,7 +8629,7 @@ const AS_SITES = [
         {n:'Inverters[15]', t:'text',   unit:'/15 Online'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'Yes'},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'Yes', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -8630,7 +8664,7 @@ const AS_SITES = [
         {n:'Inverters Online[65]', t:'text',   unit:'/65 Available'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -8667,7 +8701,7 @@ const AS_SITES = [
         {n:'Nodes Connected', t:'text', unit:'Nodes'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'Yes'},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'Yes', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -8731,7 +8765,7 @@ const AS_SITES = [
         {n:'BESS[318]',      t:'text',   unit:'/318 Available'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -8786,7 +8820,7 @@ const AS_SITES = [
         {n:'Inverters[3]', t:'text',   unit:'/3 Online'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'Yes'},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'Yes', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -8846,7 +8880,7 @@ const AS_SITES = [
         {n:'BESS[44]',  t:'text',   unit:'/44 Available'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -8876,7 +8910,7 @@ const AS_SITES = [
         {n:'Inverters[47]', t:'text',   unit:'/47 Online'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -8915,7 +8949,7 @@ const AS_SITES = [
         {n:'BESS[354]',      t:'text',   unit:'/354 Available'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -8935,7 +8969,7 @@ const AS_SITES = [
         {n:'Inverters[2]', t:'text',   unit:'/2 Online'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -8968,7 +9002,7 @@ const AS_SITES = [
         {n:'BESS[174]',  t:'text',   unit:'/174 Available'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -9011,7 +9045,7 @@ const AS_SITES = [
         {n:'Inverters[12]', t:'text',   unit:'/12 Closed'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -9026,7 +9060,6 @@ const AS_SITES = [
         {n:'Plant Status[Remote & Auto]', t:'select', opts:['','Remote/Auto','Remote/Manual','Local/Auto','Local/Manual'], alert:''},
         {n:'Control Mode[Voltage]', t:'select', opts:['','Voltage','Reactive Power','Power Factor'], alert:''},
         {n:'Voltage Limit [ON]',   t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Voltage Setpoint[71kV]', t:'select', opts:['','Yes','No'], alert:''},
       ]},
       { title:'OUTPUT', fields:[
         {n:'MW',                 t:'text',   unit:'MW'},
@@ -9042,7 +9075,7 @@ const AS_SITES = [
         {n:'Inverters[25]', t:'text',   unit:'/25 Online'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -9077,7 +9110,7 @@ const AS_SITES = [
         {n:'Inverters[10]', t:'text',   unit:'/10 Online'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -9107,7 +9140,7 @@ const AS_SITES = [
         {n:'Inverters[77]', t:'text',   unit:'/77 Online'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -9160,7 +9193,7 @@ const AS_SITES = [
         {n:'BESS Available[308]',  t:'text',   unit:'/308 Available'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -9196,7 +9229,7 @@ const AS_SITES = [
         {n:'BESS[112]',  t:'text',   unit:'/112 Available'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -9238,7 +9271,7 @@ const AS_SITES = [
         {n:'Inverters[2]', t:'text',   unit:'/2 Online'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -9281,7 +9314,7 @@ const AS_SITES = [
         {n:'Inverters[4]', t:'text',   unit:'/4 Online'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -9301,7 +9334,7 @@ const AS_SITES = [
         {n:'Inverters[7]', t:'text',   unit:'/7 Online'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -9326,7 +9359,7 @@ const AS_SITES = [
         {n:'BESS[5]',       t:'text',   unit:'/5 Available'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -9359,7 +9392,7 @@ const AS_SITES = [
         {n:'BESS Available[264]',  t:'text',   unit:'/264 Available'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -9390,7 +9423,7 @@ const AS_SITES = [
         {n:'BESS[654]',      t:'text',   unit:'/654 Available'},
       ]},
       { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
+        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'', triggers:{field:'Abnormal Operating Conditions', when:'Yes', value:'Yes', noteField:'Notes', noteText:'Outage in place'}},
         {n:'Notes', t:'textarea'},
       ]},
     ]
@@ -9751,16 +9784,16 @@ function asChange(k, alertId, siteId, si, el) {
   asVals[k]=el.value; asSaveVals();
   // Update site edited timestamp when field values change
   if(asCustom!==null){
-    const site=asCustom.find(s=>s.id===siteId);
-    if(site){
-      site.edited=new Date().toISOString();
+    const csite=asCustom.find(s=>s.id===siteId);
+    if(csite){
+      csite.edited=new Date().toISOString();
       asSaveCustom();
     }
   }
+  const site=asSites().find(s=>s.id===siteId);
+  const fi=parseInt(k.split('|')[2]), f=site?.sections[si]?.fields[fi];
   if(alertId){
     const pill=document.getElementById(alertId);
-    const site=asSites().find(s=>s.id===siteId);
-    const fi=parseInt(k.split('|')[2]), f=site?.sections[si]?.fields[fi];
     if(pill&&f?.alert) pill.classList.toggle('on',el.value.toLowerCase()===f.alert.toLowerCase()&&el.value!=='');
     // update section alert badge inline
     if(site&&site.sections[si]?.title){
@@ -9775,7 +9808,54 @@ function asChange(k, alertId, siteId, si, el) {
       });
     }
   }
+  // Cross-field automation (e.g. Outage In Place -> Abnormal Operating
+  // Conditions). One-directional on purpose: setting the outage forces
+  // Abnormal to Yes, but clearing the outage never forces it back to No —
+  // there could be an unrelated reason conditions are still abnormal, and
+  // that should stay a human call, not something auto-cleared.
+  if(site&&f?.triggers&&el.value&&el.value.toLowerCase()===f.triggers.when.toLowerCase()){
+    asApplyFieldTrigger(site,siteId,f.triggers);
+  }
   asRenderTabs();
+}
+
+// Finds the target field by name anywhere in the site (not just the same
+// section, since Outage In Place and Abnormal Operating Conditions usually
+// live in different sections) and forces its value, updating the visible
+// input and its alert pill if it has one.
+function asApplyFieldTrigger(site, siteId, trig){
+  for(let tsi=0; tsi<site.sections.length; tsi++){
+    const tfi=site.sections[tsi].fields.findIndex(tf=>tf.n===trig.field);
+    if(tfi<0) continue;
+    const tk=asKey(siteId,tsi,tfi);
+    if(asVals[tk]===trig.value) return; // already set, nothing to do or announce
+    asVals[tk]=trig.value; asTimes[tk]=new Date().toISOString(); asSaveTimes(); asSaveVals();
+    const tfid='asf_'+tk.replace(/\|/g,'_');
+    const tEl=document.getElementById(tfid);
+    if(tEl) tEl.value=trig.value;
+    const taid='asa_'+tk.replace(/\|/g,'_');
+    const tPill=document.getElementById(taid);
+    const tf=site.sections[tsi].fields[tfi];
+    if(tPill&&tf?.alert) tPill.classList.toggle('on', trig.value.toLowerCase()===tf.alert.toLowerCase());
+    // Note goes in the same section as the field just triggered, so it
+    // reads right below Abnormal Operating Conditions — makes it obvious
+    // why that flag is Yes instead of leaving it unexplained. Appends
+    // rather than overwrites, in case there's already a note there.
+    if(trig.noteField){
+      const nfi=site.sections[tsi].fields.findIndex(nf=>nf.n===trig.noteField);
+      if(nfi>=0){
+        const nk=asKey(siteId,tsi,nfi);
+        const existing=asVals[nk]||'';
+        asVals[nk]=existing?existing+'\n'+trig.noteText:trig.noteText;
+        asTimes[nk]=new Date().toISOString(); asSaveTimes(); asSaveVals();
+        const nfid='asf_'+nk.replace(/\|/g,'_');
+        const nEl=document.getElementById(nfid);
+        if(nEl) nEl.value=asVals[nk];
+      }
+    }
+    showToast(`${trig.field} set to ${trig.value} — outage in place`);
+    return;
+  }
 }
 
 function asTextBlur(k, kvId, siteId, si, el) {
