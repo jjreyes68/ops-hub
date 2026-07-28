@@ -399,6 +399,12 @@ body.dark .card-title{color:var(--text2);}
 
 /* Since-you-were-last-here digest — one line, self-clears on next visit */
 .fleet-digest{font-size:12.5px;color:var(--text2);background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);padding:9px 14px;margin-bottom:16px;}
+.fleet-digest-toggle{color:var(--blue);cursor:pointer;font-size:11.5px;white-space:nowrap;}
+.fleet-digest-toggle:hover{text-decoration:underline;}
+.fleet-digest-detail{margin-top:10px;padding-top:10px;border-top:1px solid var(--border2);display:flex;flex-direction:column;gap:8px;}
+.fleet-digest-row-hdr{display:flex;align-items:center;gap:8px;}
+.fleet-digest-site{font-weight:600;color:var(--text);font-size:12px;}
+.fleet-digest-text{font-size:12px;color:var(--text2);line-height:1.5;margin-top:1px;}
 
 /* Add to handoff — searchable picker replacing the old quiet-chip grid */
 .fleet-add-box.closed{border:1px dashed var(--border2);border-radius:var(--rl);padding:12px 16px;text-align:center;color:var(--text3);font-size:13px;cursor:pointer;transition:all .15s;max-width:420px;margin-bottom:20px;}
@@ -624,6 +630,9 @@ body.dark .as-banner-stats{color:var(--text2);}
 .as-row:last-child{border-bottom:none;}
 .as-lbl{font-size:13px;font-weight:500;color:var(--text);}
 .as-hint{font-size:11px;color:var(--text3);margin-top:1px;}
+.as-tip-icon{color:var(--text3);cursor:pointer;font-size:12px;}
+.as-tip-icon:hover{color:var(--blue);}
+.as-tip-note{font-size:11px;color:var(--text3);margin-top:3px;padding:5px 8px;background:var(--bg3);border-radius:6px;max-width:280px;}
 .as-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:6px 9px;color:var(--text);font-family:var(--m);font-size:13px;width:100%;}
 .as-inp:focus{outline:none;border-color:var(--blue);background:var(--bg2);}
 .as-sel{background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;width:100%;}
@@ -635,7 +644,6 @@ body.dark .as-banner-stats{color:var(--text2);}
 .kv-bad{background:var(--rbg);color:var(--red);}
 .alert-pill{font-size:11px;font-weight:600;color:var(--red);background:var(--rbg);padding:2px 8px;border-radius:5px;white-space:nowrap;display:none;}
 .alert-pill.on{display:inline-block;}
-.as-export-bar{margin-top:16px;padding-top:14px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
 @media(max-width:600px){.as-row{grid-template-columns:1fr;}.as-lbl{font-size:12px;}}
 
 /* Toast */
@@ -2074,10 +2082,6 @@ body.dark .sp-tag-similar{background:#2a1f3d;color:#c4b5fd;}
 #view-schedule .curr-stat{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:10px 16px;}
 #view-schedule .curr-stat strong{display:block;font-size:20px;font-weight:700;line-height:1;}
 #view-schedule .curr-stat span{font-size:11px;color:var(--text-muted);margin-top:3px;display:block;}
-#view-schedule .curr-person-stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
-#view-schedule .curr-ps{background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:8px 14px;}
-#view-schedule .curr-ps strong{display:block;font-size:18px;font-weight:700;}
-#view-schedule .curr-ps span{font-size:11px;color:var(--text-muted);}
 #view-schedule .curr-day-nav{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
 #view-schedule .curr-day-nav button{padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .14s;}
 #view-schedule .curr-day-nav button:hover{border-color:#8b5cf6;color:#8b5cf6;}
@@ -2415,6 +2419,7 @@ body.dark .corkboard{
   <div class="nav-dropdown" id="navdd-schedule">
     <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-schedule" onclick="navDropdownToggle('schedule', event)" aria-haspopup="true">Schedule Compare <span class="nav-dropdown-caret">▾</span></button>
     <div class="nav-dropdown-menu" id="navdd-menu-schedule">
+      <button class="nav-dropdown-item" data-sched="curr" onclick="navDropdownSelectSchedule('curr')">Current Schedule</button>
       <button class="nav-dropdown-item" data-sched="split" onclick="navDropdownSelectSchedule('split')">Split Week</button>
       <button class="nav-dropdown-item" data-sched="pitman" onclick="navDropdownSelectSchedule('pitman')">Pitman</button>
     </div>
@@ -2447,6 +2452,7 @@ body.dark .corkboard{
   <button class="nav-tab" onclick="switchView('ops',this); toggleMobileMenu()">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
   <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Passdown</button>
+  <button class="nav-tab" onclick="navDropdownSelectSchedule('curr'); toggleMobileMenu()">Schedule – Current</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('split'); toggleMobileMenu()">Schedule – Split Week</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('pitman'); toggleMobileMenu()">Schedule – Pitman</button>
   <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Timezones</button>
@@ -3112,7 +3118,7 @@ body.dark .corkboard{
   <div class="page-header">
     <div>
       <div class="page-title">Asset Scan</div>
-      <div class="page-subtitle">Per-site readings, voltage checks, and shift handoff data</div>
+      <div class="page-subtitle">Per-site voltage, output, and equipment checks for a scan round</div>
     </div>
   </div>
   <div class="as-meta">
@@ -3130,7 +3136,6 @@ body.dark .corkboard{
       <select id="as-shift"><option value="">Select</option><option>Day</option><option>Night</option></select>
     </div>
     <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;">
-      <button class="tbtn" onclick="asOpenEdit()">✏ Edit sites</button>
       <button class="tbtn" style="color:var(--amber);border-color:var(--amber);" onclick="asStartFresh()">↺ Start fresh</button>
       <button class="btn-p" onclick="asExportCSV()">Export CSV</button>
     </div>
@@ -3804,8 +3809,7 @@ body.dark .corkboard{
     </div>
     <div class="page-header-actions">
       <div class="sched-toggle">
-        <!-- Modified DuPont hidden per Josh — model isn't accurate yet, don't want to confuse operators. Code/data left intact in case it's revisited later. -->
-        <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')" style="display:none;">Current &ndash; Modified DuPont</button>
+        <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')">Current Schedule</button>
         <button class="sched-toggle-btn active" id="toggle-split" onclick="showSchedule('split')">Split Week</button>
         <button class="sched-toggle-btn" id="toggle-pit" onclick="showSchedule('pitman')">Pitman</button>
       </div>
@@ -4028,25 +4032,25 @@ body.dark .corkboard{
   <!-- ═══════════════ CURRENT GOP VIEW ═══════════════ -->
   <div id="curr-view" style="display:none;">
 
-    <!-- Current GOP intro -->
+    <!-- Reference Schedule intro -->
     <div class="intro">
       <div class="intro-body" id="curr-intro-body">
         <div class="intro-top">
           <div class="intro-section">
             <h2>How the schedule works</h2>
             <ul>
-              <li><strong>10 operators, 5 daily roles</strong> — D1, D2, D3 cover day shifts · N1, N2 cover nights — all five filled every day</li>
+              <li><strong>7 operators, 2 day + 1 night daily</strong> — two people cover days, one covers nights, every day</li>
               <li><strong>12-hour shifts</strong> — Days 6am–6pm · Nights 6pm–6am</li>
-              <li><strong>Real rotation, not a formula</strong> — each operator's actual pattern, pulled directly from your live schedule. Some cycle through all five roles; others work a consistent subset</li>
-              <li><strong>Verified</strong> — matches your source schedule day-for-day across the full mapped year</li>
-              <li><strong>Result</strong> — Familiar patterns · complete daily coverage · a full year already mapped out</li>
+              <li><strong>Real rotation, not a formula</strong> — the same 42-day pattern that drives Who's on Shift on the Home page, not a separate or hypothetical model</li>
+              <li><strong>Verified</strong> — this is your actual live rotation, not a placeholder</li>
+              <li><strong>Result</strong> — the schedule you're already working, visible here for comparison</li>
             </ul>
           </div>
           <div class="intro-section">
             <h2>Using this view</h2>
             <ul>
-              <li>Pick an operator in <strong>Individual view</strong> to see their complete year-long schedule with role by day</li>
-              <li>Use <strong>Crew by Day</strong> to see exactly who&rsquo;s covering each role on any specific date</li>
+              <li>Pick an operator in <strong>Individual view</strong> to see their complete schedule, day by day</li>
+              <li>Use <strong>Crew by Day</strong> to see exactly who's covering days and nights on any specific date</li>
               <li>Use <strong>Calendar</strong> to see monthly coverage — highlight any operator to track their working days</li>
               <li>Use this as your <strong>baseline</strong> when comparing against the Split or Pitman proposals</li>
             </ul>
@@ -4057,22 +4061,22 @@ body.dark .corkboard{
           <div class="pitch-card">
             <div class="pitch-icon">&#128203;</div>
             <div class="pitch-title">The schedule you already know</div>
-            <div class="pitch-body">No learning curve. No adjustment period. These are the patterns your team already runs. Use this view to see your current schedule clearly before deciding on any change.</div>
+            <div class="pitch-body">No learning curve. No adjustment period. This is the pattern your team already runs. Use this view to see it clearly before deciding on any change.</div>
           </div>
           <div class="pitch-card">
             <div class="pitch-icon">&#128197;</div>
-            <div class="pitch-title">A full year of visibility</div>
-            <div class="pitch-body">Every operator&rsquo;s schedule is mapped through June 2027. Plan PTO, medical appointments, and life around a schedule you can actually see — 12 months out.</div>
+            <div class="pitch-title">Same source as Who's on Shift</div>
+            <div class="pitch-body">This reads from the exact same rotation logic as the Home page tile — not a second, separately-maintained version of your schedule.</div>
           </div>
           <div class="pitch-card">
-            <div class="pitch-icon">&#9989;</div>
-            <div class="pitch-title">Five roles covered daily</div>
-            <div class="pitch-body">D1 through N2 is staffed every single day of the year. No coverage gaps, no role going unfilled, no scrambling last minute when someone calls out.</div>
+            <div class="pitch-icon">&#128564;</div>
+            <div class="pitch-title">Real stretches off</div>
+            <div class="pitch-body">Work a run of 7, then get a genuine 7 days off — not scattered rest days, real time away.</div>
           </div>
           <div class="pitch-card">
             <div class="pitch-icon">&#128269;</div>
             <div class="pitch-title">Your comparison baseline</div>
-            <div class="pitch-body">Toggle between this and the Split or Pitman proposals to see exactly how your personal days and roles would shift. Make an informed call with real schedule data.</div>
+            <div class="pitch-body">Toggle between this and the Split or Pitman proposals to see exactly how your personal days would shift. Make an informed call with real schedule data.</div>
           </div>
         </div>
       </div>
@@ -4085,21 +4089,13 @@ body.dark .corkboard{
     </div>
 
     <div class="halves">
-      <div class="half-card fh">
+      <div class="half-card fh" style="max-width:100%;">
         <div class="half-card-header">
-          <div class="half-title">Operators (Blocks 1&ndash;3)</div>
-          <div class="half-days">Modified DuPont &middot; D1 &middot; D2 &middot; D3 &middot; N1 &middot; N2</div>
+          <div class="half-title">Operators</div>
+          <div class="half-days">Reference Schedule &middot; 2 Day &middot; 1 Night, rotating</div>
         </div>
-        <div id="curr-zone-fh" style="display:flex;flex-direction:column;gap:5px;padding:8px 0 4px;"></div>
-        <div class="hint">Each operator's real rotation, pulled from your live schedule</div>
-      </div>
-      <div class="half-card bh">
-        <div class="half-card-header">
-          <div class="half-title">Operators (Blocks 4&ndash;5)</div>
-          <div class="half-days">Modified DuPont &middot; D1 &middot; D2 &middot; D3 &middot; N1 &middot; N2</div>
-        </div>
-        <div id="curr-zone-bh" style="display:flex;flex-direction:column;gap:5px;padding:8px 0 4px;"></div>
-        <div class="hint">Each operator's real rotation, pulled from your live schedule</div>
+        <div id="curr-zone-roster" style="display:flex;flex-direction:column;gap:5px;padding:8px 0 4px;"></div>
+        <div class="hint">Each operator's real rotation, pulled from the same source as Who's on Shift</div>
       </div>
     </div>
 
@@ -4111,30 +4107,26 @@ body.dark .corkboard{
       <button class="tab-btn curr-tab" data-ctab="curr-calendar">Calendar</button>
     </div>
 
-    <!-- Current · Individual -->
+    <!-- Reference · Individual -->
     <div class="tab-panel active" id="curr-individual">
       <div class="picker-row">
         <label>View schedule for</label>
         <select id="curr-op-select"><option value="">— pick an operator —</option></select>
       </div>
       <div class="legend">
-        <span class="lbadge d1">D1 &middot; 6am&ndash;6pm</span>
-        <span class="lbadge d2">D2 &middot; 6am&ndash;6pm</span>
-        <span class="lbadge d3">D3 &middot; 6am&ndash;6pm</span>
-        <span class="lbadge n1">N1 &middot; 6pm&ndash;6am</span>
-        <span class="lbadge n2">N2 &middot; 6pm&ndash;6am</span>
+        <span class="lbadge d1">Day &middot; 6am&ndash;6pm</span>
+        <span class="lbadge n1">Night &middot; 6pm&ndash;6am</span>
       </div>
-      <div class="curr-person-stats" id="curr-person-stats" style="display:none;"></div>
-      <div class="scroll-note" id="curr-ind-note">Full year &middot; real schedule, verified against source data</div>
+      <div class="scroll-note" id="curr-ind-note">52 weeks &middot; your real schedule, same source as Who's on Shift</div>
       <div class="week-grid">
         <table>
-          <thead><tr><th>Date</th><th>Day</th><th>Role</th><th>Shift</th></tr></thead>
-          <tbody id="curr-ind-body"><tr><td colspan="4" style="text-align:center;padding:28px;color:var(--text-muted);">Pick an operator above to see their full schedule.</td></tr></tbody>
+          <thead><tr><th>Wk</th><th>Dates</th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>
+          <tbody id="curr-ind-body"><tr><td colspan="9" class="empty-state">Pick an operator above to see their full schedule.</td></tr></tbody>
         </table>
       </div>
     </div>
 
-    <!-- Current · Crew by Day -->
+    <!-- Reference · Crew by Day -->
     <div class="tab-panel" id="curr-crew">
       <div class="crew-controls">
         <button onclick="currNavDay(-1)">&#8592; Prev day</button>
@@ -4146,7 +4138,7 @@ body.dark .corkboard{
       <div id="curr-crew-card"></div>
     </div>
 
-    <!-- Current · Calendar -->
+    <!-- Reference · Calendar -->
     <div class="tab-panel" id="curr-calendar">
       <div class="cal-controls">
         <label style="font-size:14px;color:var(--text-muted)">Highlight</label>
@@ -6484,7 +6476,7 @@ function renderFleetOverview(){
     ? `<div class="board-flagged-columns">${colsHtml}</div>`
     : '';
 
-  wrap.innerHTML=`${fleetDigestHtml}${renderFleetAddBox()}
+  wrap.innerHTML=`${renderFleetDigestBanner()}${renderFleetAddBox()}
   ${flaggedHtml}`;
 }
 
@@ -6514,27 +6506,56 @@ function copyRocPassdownText(){
 // and pulls only the entries touched since then from siteStatusHistory.
 // Marking fleetLastViewed happens immediately on open, not after the query
 // resolves, so a slow network doesn't distort what counts as "since."
-let fleetDigestHtml = '';
+//
+// fleetDigestRows holds the raw rows from that one query — the banner text
+// and its optional expanded detail are both built from this same cached
+// data, so opening/closing the detail never re-queries Firestore.
+let fleetDigestRows = null; // null = nothing to show; array = has entries
+let fleetDigestOpen = false;
 
 async function fleetLoadDigest(){
   const prevViewed = S.fleetLastViewed || 0;
   S.fleetLastViewed = Date.now();
   save();
-  if (!prevViewed || !window.db) { fleetDigestHtml=''; return; } // first-ever visit — nothing to compare against
+  fleetDigestOpen = false;
+  if (!prevViewed || !window.db) { fleetDigestRows=null; return; } // first-ever visit — nothing to compare against
   try {
     const snap = await window.db.collection('siteStatusHistory').where('ts','>',prevViewed).get();
-    const rows = snap.docs.map(d=>d.data());
-    const newSites = [...new Set(rows.filter(r=>r.action==='set').map(r=>r.siteLabel))];
-    const resolvedSites = [...new Set(rows.filter(r=>r.action==='clear').map(r=>r.siteLabel))];
-    if (!newSites.length && !resolvedSites.length) { fleetDigestHtml=''; return; }
-    const parts=[];
-    if (newSites.length) parts.push(`<span style="color:var(--amber);font-weight:600;">${newSites.length} new</span> (${esc(newSites.join(', '))})`);
-    if (resolvedSites.length) parts.push(`<span style="color:var(--green);font-weight:600;">${resolvedSites.length} resolved</span> (${esc(resolvedSites.join(', '))})`);
-    fleetDigestHtml = `<div class="fleet-digest">Since you were last here: ${parts.join(' · ')}</div>`;
+    const rows = snap.docs.map(d=>d.data()).sort((a,b)=>a.ts-b.ts);
+    fleetDigestRows = rows.length ? rows : null;
   } catch(e) {
-    fleetDigestHtml='';
+    fleetDigestRows = null;
   }
   renderFleetOverview();
+}
+
+function toggleFleetDigestDetail(){
+  fleetDigestOpen = !fleetDigestOpen;
+  renderFleetOverview();
+}
+
+// Same brief line as before by default — the detail underneath only
+// exists in the DOM when actually opened, so the common case (glance and
+// move on) stays exactly as light as it already was.
+function renderFleetDigestBanner(){
+  if (!fleetDigestRows) return '';
+  const newSites = [...new Set(fleetDigestRows.filter(r=>r.action==='set').map(r=>r.siteLabel))];
+  const resolvedSites = [...new Set(fleetDigestRows.filter(r=>r.action==='clear').map(r=>r.siteLabel))];
+  const parts=[];
+  if (newSites.length) parts.push(`<span style="color:var(--amber);font-weight:600;">${newSites.length} new</span> (${esc(newSites.join(', '))})`);
+  if (resolvedSites.length) parts.push(`<span style="color:var(--green);font-weight:600;">${resolvedSites.length} resolved</span> (${esc(resolvedSites.join(', '))})`);
+  const detail = fleetDigestOpen ? `<div class="fleet-digest-detail">${fleetDigestRows.map(r=>`
+    <div class="fleet-digest-row">
+      <div class="fleet-digest-row-hdr">
+        <span class="fleet-digest-site">${esc(r.siteLabel||'')}</span>
+        <span class="${r.action==='clear'?'sh-action-clear':r.action==='edit'?'sh-action-edit':'sh-action-set'}">${r.action==='clear'?'Resolved':r.action==='edit'?'Updated':'Reported'}</span>
+      </div>
+      <div class="fleet-digest-text">${esc(r.text||'')}</div>
+    </div>`).join('')}</div>` : '';
+  return `<div class="fleet-digest">
+    <div>Since you were last here: ${parts.join(' · ')} <span class="fleet-digest-toggle" onclick="toggleFleetDigestDetail()">${fleetDigestOpen?'Hide details ▲':'See details ▼'}</span></div>
+    ${detail}
+  </div>`;
 }
 
 // Click anywhere outside an open note editor closes it — no Cancel/Close
@@ -8508,894 +8529,3821 @@ function renderAll(){ renderRec(); renderAdhoc(); renderCl(); renderNotes(); ren
 // kvMin/kvMax: triggers in-band / out-of-band indicator
 
 const AS_SITES = [
-  { id:'ROCC1', label:'ROCC1', stats:'',
-    sections:[{ title:'', fields:[
-      {n:'CAISO ADS Accessible',     t:'select', opts:['','Accessible','Unaccessible'], alert:''},
-      {n:'Indji Watch Accessible',     t:'select', opts:['','Accessible','Unaccessible'], alert:''},
-      {n:'TV Monitor Volume High [Min. Lvl. 40]', t:'select', opts:['','Yes','No'], alert:''},
-      {n:'Stay Safe Accessible',       t:'select', opts:['','Accessible','Unaccessible'], alert:''},
-      {n:'Abnormal Conditions',        t:'text',   unit:''},
-      {n:'Notes',                      t:'textarea'},
-    ]}]
-  },
-  { id:'ANGF1', label:'ANGF1-Angel Fire[PV-BESS]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'MWh',  t:'text', unit:'MWh'},
-        {n:'kV',   t:'text', unit:'kV', kvMin:12.16, kvMax:13.44},
-        {n:'MVAR', t:'text', unit:'MVAR'},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers [3]',   t:'text',   unit:'/3 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters [3]',  t:'text',   unit:'/3 Online'},
-        {n:'BESS [3]',       t:'text',   unit:'/3 Available'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage in place', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
+ {
+  "id": "ROCC1",
+  "label": "ROCC1",
+  "stats": "",
+  "sections": [
+   {
+    "title": "",
+    "fields": [
+     {
+      "n": "CAISO ADS Accessible",
+      "t": "select",
+      "opts": [
+       "",
+       "Accessible",
+       "Unaccessible"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Indji Watch Accessible",
+      "t": "select",
+      "opts": [
+       "",
+       "Accessible",
+       "Unaccessible"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "TV Monitor Volume High [Min. Lvl. 40]",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Stay Safe Accessible",
+      "t": "select",
+      "opts": [
+       "",
+       "Accessible",
+       "Unaccessible"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Abnormal Conditions",
+      "t": "text",
+      "unit": ""
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
     ]
-  },
-  { id:'AVLN1', label:'AVLN1-Avalon[PV]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV', kvMin:43.7, kvMax:48.3},
-        {n:'MVAR', t:'text', unit:'MVAR'},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers [2]', t:'text',   unit:'/2 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters [29]', t:'text',   unit:'/29 Online'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
+   }
+  ]
+ },
+ {
+  "id": "ANGF1",
+  "label": "ANGF1-Angel Fire[PV-BESS]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes"
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
     ]
-  },
-  { id:'BLKW1', label:'BLKW1-Blackwell[PV]', stats:'NP: 12MW<br />V SET POINT: 12kV<br />BAND: 11.4kV-12.6kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'Plant Status[Remote & Auto]', t:'select', opts:['','Remote/Auto','Remote/Manual','Local/Auto','Local/Manual'], alert:''},
-        {n:'Control Mode[Voltage]', t:'select', opts:['','Voltage','Reactive Power','Power Factor'], alert:''},
-        {n:'Voltage Limit [ON]',   t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Voltage Setpoint[11.8kV]', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',                t:'text',   unit:'MW'},
-        {n:'Following Setpoint',t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'kV',                t:'text',   unit:'kV', kvMin:11.4, kvMax:12.6},
-        {n:'MVAR',              t:'text',   unit:'MVAR'},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers [1]',   t:'text',   unit:'/1 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters[15]', t:'text',   unit:'/15 Online'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 12.16,
+      "kvMax": 13.44
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
     ]
-  },
-  { id:'BYPS1', label:'BYPS1-Bypass[BESS]', stats:'NP: 400MWh / 200MW<br />Voltage SP: Per SCADA<br />BAND: ±4kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'AVR State[Enabled]', t:'select', opts:['','Enabled','Disabled'], alert:''},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',                 t:'text',   unit:'MW'},
-        {n:'MWh',                t:'text',   unit:'MWh'},
-        {n:'kV Setpoint',        t:'text',   unit:'kV'},
-        {n:'kV',                 t:'text',   unit:'kV'},
-        {n:'MVAR',               t:'text',   unit:'MVAR'},
-        {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'CAPACITY', fields:[
-        {n:'MW[200+]',  t:'select', opts:['','Yes','No'], alert:''},
-        {n:'MWh[400+]', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers[9]',   t:'text',   unit:'/9 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'BESS Online[106]', t:'text',   unit:'/106 Available'},
-        {n:'Inverters Online[65]', t:'text',   unit:'/65 Available'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers [3]",
+      "t": "text",
+      "unit": "/3 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
     ]
-  },
-  { id:'COSO1', label:'COSO1', stats:'NP: 240MWh / 60MW<br />V SET POINT: 235kV<br />BAND:230.3kV-239.7kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'PF Limiter[ON]',       t:'select', opts:['','On','Off'],      alert:'Off'},
-        {n:'PPC Voltage[Voltage]', t:'select', opts:['','Voltage','Var'], alert:''},
-        {n:'PPC Setpoints[ON]',    t:'select', opts:['','On','Off'],      alert:'Off'},
-        {n:'SRC Mode[Auto]',       t:'select', opts:['','Auto','Manual'], alert:''},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',                 t:'text',   unit:'MW'},
-        {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'MWh',                t:'text',   unit:'MWh'},
-        {n:'kV',                 t:'text',   unit:'kV', kvMin:230.3, kvMax:239.7},
-        {n:'MVAR',               t:'text',   unit:'MVAR'},
-      ]},
-      { title:'CAPACITY', fields:[
-        {n:'Charge/Discharge at 60 MW', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Max Energy at 240 MWh',t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers [3]',   t:'text',   unit:'/3 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Nodes Available',    t:'text', unit:' Online'},
-        {n:'Nodes Connected', t:'text', unit:'Nodes'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters [3]",
+      "t": "text",
+      "unit": "/3 Online"
+     },
+     {
+      "n": "BESS [3]",
+      "t": "text",
+      "unit": "/3 Available"
+     }
     ]
-  },
-  { id:'CTFL', label:'CTFL-Centennial Flats[PV-BESS]', stats:'NP: 1069 MWh ±267 MW <br />V SET POINT: 525kV<br />BAND: 521kV-540kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'PV AVR Status[Enabled]',   t:'select', opts:['','Enabled','Disabled'], alert:''},
-        {n:'BESS AVR Status[Enabled]', t:'select', opts:['','Enabled','Disabled'], alert:''},
-      ]},
-      { title:'OUTPUT: HS', fields:[
-        {n:'HS MW',   t:'text', unit:'MW'},
-        {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'HS kV',   t:'text', unit:'kV', kvMin:521, kvMax:540},
-        {n:'HS MVAR', t:'text', unit:'MVAR'},
-      ]},
-      { title:'OUTPUT: PV1 & BESS1', fields:[
-        {n:'PV1 MW',   t:'text', unit:'MW'},
-        {n:'PV1 kV',   t:'text', unit:'kV'},
-        {n:'PV1 MVAR', t:'text', unit:'MVAR'},
-        {n:'BESS1 MW',            t:'text',   unit:'MW'},
-        {n:'BESS1 MWh',           t:'text',   unit:'MWh'},
-        {n:'BESS1 kV',            t:'text',   unit:'kV'},
-        {n:'BESS1 MVAR',          t:'text',   unit:'MVAR'},
-        {n:'Following Setpoint',    t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'OUTPUT: PV2 & BESS2', fields:[
-        {n:'PV2 MW',   t:'text', unit:'MW'},
-        {n:'PV2 kV',   t:'text', unit:'kV'},
-        {n:'PV2 MVAR', t:'text', unit:'MVAR'},
-        {n:'BESS2 MW',            t:'text',   unit:'MW'},
-        {n:'BESS2 MWh',           t:'text',   unit:'MWh'},
-        {n:'BESS2 kV',            t:'text',   unit:'kV'},
-        {n:'BESS2 MVAR',          t:'text',   unit:'MVAR'},
-        {n:'Following Setpoint',    t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'OUTPUT: PV3 & BESS3', fields:[
-        {n:'PV3 MW',   t:'text', unit:'MW'},
-        {n:'PV3 kV',   t:'text', unit:'kV'},
-        {n:'PV3 MVAR', t:'text', unit:'MVAR'},
-        {n:'BESS3 MW',            t:'text',   unit:'MW'},
-        {n:'BESS3 MWh',           t:'text',   unit:'MWh'},
-        {n:'BESS3 kV',            t:'text',   unit:'kV'},
-        {n:'BESS3 MVAR',          t:'text',   unit:'MVAR'},
-        {n:'Following Setpoint',    t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'CAPACITY', fields:[
-        {n:'Charge/Discharge ≥ 267 MW',   t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Max Energy ≥ 1069 MWh', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers [20]',  t:'text',   unit:'/20 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'PV Inverters[129]',  t:'text',   unit:'/129 Online'},
-        {n:'BESS[318]',      t:'text',   unit:'/318 Available'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   }
+  ]
+ },
+ {
+  "id": "AVLN1",
+  "label": "AVLN1-Avalon[PV]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes"
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
     ]
-  },
-  { id:'DLBO1', label:'DLBO1-Diablo[WIND]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV', kvMin:228, kvMax:232},
-        {n:'MVAR', t:'text', unit:'MVAR'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Turbines Online',    t:'text', unit:' Online'},
-        {n:'Turbines Communicating', t:'text', unit:''},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 43.7,
+      "kvMax": 48.3,
+      "tip": "Band moves with system demand \u2014 still flag if out of band. See plant info for detail."
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
     ]
-  },
-  { id:'DFRN1', label:'DFRN1-Dufferin[WIND]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes', hint:'Turbine-only site — no MW/kV/MVAR output tracked here'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Turbines Online',    t:'text', unit:' Online'},
-        {n:'Turbines Communicating', t:'text', unit:''},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers [2]",
+      "t": "text",
+      "unit": "/2 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
     ]
-  },
-  { id:'FRMV1', label:'FRMV1-Farmersville[PV]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV',   hint:'Link'},
-        {n:'MVAR', t:'text', unit:'MVAR', hint:'Data Studio → Select→ Meter → Reactive Power'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters[3]', t:'text',   unit:'/3 Online'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters [29]",
+      "t": "text",
+      "unit": "/29 Online"
+     }
     ]
-  },
-  { id:'GDWL1', label:'GDWL1-Goodwell[WIND]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Bluence Accessible / RDP Open', t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Bluence Receiving Setpoint', t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'Site Following Setpoint', t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV', kvMin:109.25, kvMax:120.75},
-        {n:'MVAR', t:'text', unit:'MVAR', hint:'WindCONTROL - WCS-001- Power Control'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Turbines Online',    t:'text', unit:' Online'},
-        {n:'Turbines Communicating', t:'text', unit:''},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Notes', t:'textarea'},
-      ]},
+   }
+  ]
+ },
+ {
+  "id": "BLKW1",
+  "label": "BLKW1-Blackwell[PV]",
+  "stats": "NP: 12MW<br />V SET POINT: 12kV<br />BAND: 11.4kV-12.6kV",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes"
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
     ]
-  },
-  { id:'GLTA1', label:'GLTA1-Goleta[BESS]', stats:'NP: 160MWh / 60MW<br />V SET POINT: 66.00kV<br />BAND:63.17kV-69.83kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'System Mode[Remote]',          t:'select', opts:['','Yes','No'],    alert:''},
-        {n:'Frequency Droop[On]',          t:'select', opts:['','On','Off'],    alert:'Off'},
-        {n:'Voltage Control[On]',  t:'select', opts:['','On','Off'],    alert:'Off'},
-        {n:'Heat Mode[Off]',               t:'select', opts:['','On','Off'],    alert:'On'},
-        {n:'Closed Loop[On]',              t:'select', opts:['','On','Off'],    alert:''},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',                 t:'text',   unit:'MW'},
-        {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'MWh',                t:'text',   unit:'MWh'},
-        {n:'kV',                 t:'text',   unit:'kV', kvMin:63.17, kvMax:69.83},
-        {n:'MVAR',               t:'text',   unit:'MVAR'},
-      ]},
-      { title:'CAPACITY', fields:[
-        {n:'Charge/Discharge ≥ 60 MW',   t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Max Energy ≥ 160 MWh', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers [4]',   t:'text',   unit:'/4 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'BESS[44]',  t:'text',   unit:'/44 Available'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "Plant Status[Remote & Auto]",
+      "t": "select",
+      "opts": [
+       "",
+       "Remote/Auto",
+       "Remote/Manual",
+       "Local/Auto",
+       "Local/Manual"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Control Mode[Voltage]",
+      "t": "select",
+      "opts": [
+       "",
+       "Voltage",
+       "Reactive Power",
+       "Power Factor"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Voltage Limit [ON]",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
     ]
-  },
-  { id:'HARQ1', label:'HARQ1-Harquahala 1[PV]', stats:'NP: +150MW',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'PV AVR Status[Enabled]', t:'select', opts:['','Enabled','Disabled'], alert:''},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW[COMP]',   t:'text', unit:'MW'},
-        {n:'kV',         t:'text', unit:'kV', kvMin:499, kvMax:551},
-        {n:'MVAR[COMP]', t:'text', unit:'MVAR'},
-      ]},
-      { title:'CAPACITY', fields:[
-        {n:'Discharge ≥ 150 MW', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers [4]',   t:'text',   unit:'/4 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters[47]', t:'text',   unit:'/47 Online'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 11.4,
+      "kvMax": 12.6
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
     ]
-  },
-  { id:'HARQ2', label:'HARQ2-Harquahala 2[PV-BESS]', stats:'NP: 1200MWh / 300MW<br />V SET POINT: 525kV<br />BAND:498.75kV-551.25kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'PV AVR Status[Enabled]',   t:'select', opts:['','Enabled','Disabled'], alert:''},
-        {n:'BESS AVR Status[Enabled]', t:'select', opts:['','Enabled','Disabled'], alert:''},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'HS MW',   t:'text', unit:'MW'},
-        {n:'HS kV',   t:'text', unit:'kV', kvMin:498.75, kvMax:551.25},
-        {n:'HS MVAR', t:'text', unit:'MVAR'},
-        {n:'PV LS MW',   t:'text', unit:'MW'},
-        {n:'PV LS MVAR', t:'text', unit:'MVAR'},
-        {n:'BESS LS MW',            t:'text',   unit:'MW'},
-        {n:'Following Setpoint',    t:'select', opts:['','Yes','No'], alert:''},
-        {n:'BESS LS MWh',           t:'text',   unit:'MWh'},
-        {n:'BESS LS MVAR',          t:'text',   unit:'MVAR'},
-      ]},
-      { title:'CAPACITY', fields:[
-        {n:'Charge/Discharge ≥ 300 MW',   t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Max Energy ≥ 1200 MWh', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers [17]',  t:'text',   unit:'/17 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters[94]',  t:'text',   unit:'/94 Online'},
-        {n:'BESS[354]',      t:'text',   unit:'/354 Available'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers [1]",
+      "t": "text",
+      "unit": "/1 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
     ]
-  },
-  { id:'HNFD1', label:'HNFD1-Handford[PV]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV',   hint:'Data Studio → Select→ Meter → Voltage'},
-        {n:'MVAR', t:'text', unit:'MVAR', hint:'Data Studio → Select→ Meter → Reactive Power'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters[2]', t:'text',   unit:'/2 Online'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters[15]",
+      "t": "text",
+      "unit": "/15 Online"
+     }
     ]
-  },
-  { id:'KUNA1', label:'KUNA1-Kuna[BESS]', stats:'NP: 600MWh / 150MW<br />V SET POINT:142kV<br />BAND: 138kV-144.9kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'AVR State', t:'select', opts:['','Enabled','Disabled'], alert:''},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',                 t:'text',   unit:'MW'},
-        {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'MWh',                t:'text',   unit:'MWh'},
-        {n:'kV',                 t:'text',   unit:'kV', kvMin:138, kvMax:144.9},
-        {n:'MVAR',               t:'text',   unit:'MVAR'},
-      ]},
-      { title:'CAPACITY', fields:[
-        {n:'Charge/Discharge ≥ 150 MW',  t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Max Energy ≥ 600 MWh', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers[4]',   t:'text',   unit:'/4 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'BESS[174]',  t:'text',   unit:'/174 Available'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   }
+  ]
+ },
+ {
+  "id": "BYPS1",
+  "label": "BYPS1-Bypass[BESS]",
+  "stats": "NP: 400MWh / 200MW<br />Voltage SP: Per SCADA<br />BAND: \u00b14kV",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
     ]
-  },
-  { id:'LNDL1', label:'LNDL1-Lindal', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Bluence Accessible / RDP Open', t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Bluence Receiving Setpoint', t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'Site Following Setpoint', t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV', kvMin:109, kvMax:121},
-        {n:'MVAR', t:'text', unit:'MVAR'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Turbines Online',    t:'text', unit:' Online'},
-        {n:'Turbines Communicating', t:'text', unit:''},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "AVR State[Enabled]",
+      "t": "select",
+      "opts": [
+       "",
+       "Enabled",
+       "Disabled"
+      ],
+      "alert": ""
+     }
     ]
-  },
-  { id:'LSTH1', label:'LSTH1-Lost Hills 1[PV]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV',   hint:'Data Studio → Select→ Meter → Voltage (line-to-line)'},
-        {n:'MVAR', t:'text', unit:'MVAR', hint:'Data Studio → Select→ Inverter → Reactive Power'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters[12]', t:'text',   unit:'/12 Closed'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "kV Setpoint",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvRefField": "kV Setpoint",
+      "kvTolerance": 4
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
     ]
-  },
-  { id:'LSTH2', label:'LSTH2-Lost Hills 2[PV]', stats:'NP: 20MW<br />V SET POINT: 71kV<br />BAND: 70.29kV-71.71kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'Plant Status[Remote & Auto]', t:'select', opts:['','Remote/Auto','Remote/Manual','Local/Auto','Local/Manual'], alert:''},
-        {n:'Control Mode[Voltage]', t:'select', opts:['','Voltage','Reactive Power','Power Factor'], alert:''},
-        {n:'Voltage Limit [ON]',   t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Voltage Setpoint[71kV]', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',                 t:'text',   unit:'MW'},
-        {n:'kV',                 t:'text',   unit:'kV', kvMin:70.29, kvMax:71.71},
-        {n:'MVAR',               t:'text',   unit:'MVAR'},
-        {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers [3]',   t:'text',   unit:'/3 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters[25]', t:'text',   unit:'/25 Online'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "CAPACITY",
+    "fields": [
+     {
+      "n": "MW[200+]",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "MWh[400+]",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
     ]
-  },
-  { id:'MCLM1', label:'MCLM1-McLeans Mountain[WIND]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'', hint:'Turbine-only site — no MW/kV/MVAR output tracked here'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Turbines Online',    t:'text', unit:' Online'},
-        {n:'Turbines Communicating', t:'text', unit:''},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers[9]",
+      "t": "text",
+      "unit": "/9 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
     ]
-  },
-  { id:'NCLS1', label:'NCLS1', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV'},
-        {n:'MVAR', t:'text', unit:'MVAR'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters[10]', t:'text',   unit:'/10 Online'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "BESS Online[106]",
+      "t": "text",
+      "unit": "/106 Available"
+     },
+     {
+      "n": "Inverters Online[65]",
+      "t": "text",
+      "unit": "/65 Available"
+     }
     ]
-  },
-  { id:'NSTR', label:'NSTR-Northstar Solar', stats:'NP: 60MW<br />Voltage SP: 119kV<br />Voltage Band: 117.81kV-120.19kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'Plant Status[Remote & Auto]', t:'select', opts:['','Remote/Auto','Remote/Manual','Local/Auto','Local/Manual'], alert:''},
-        {n:'Control Mode[Voltage]',       t:'select', opts:['','Voltage','Reactive Power','Power Factor'], alert:''},
-        {n:'Voltage Limit [ON]',   t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Voltage SP[119V]',   t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',                 t:'text',   unit:'MW'},
-        {n:'kV',                 t:'text',   unit:'kV', kvMin:117.81, kvMax:120.19},
-        {n:'MVAR',               t:'text',   unit:'MVAR'},
-        {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers[5]',   t:'text',   unit:'/5 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters[77]', t:'text',   unit:'/77 Online'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   }
+  ]
+ },
+ {
+  "id": "COSO1",
+  "label": "COSO1",
+  "stats": "NP: 240MWh / 60MW<br />V SET POINT: 235kV<br />BAND:230.3kV-239.7kV",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes"
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
     ]
-  },
-  { id:'ORGN1', label:'ORGN1-Origin[WIND]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV', kvMin:138.8, kvMax:142.8},
-        {n:'MVAR', t:'text', unit:'MVAR', hint:'WindCONTROL - WCS-001- Power Control'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Turbines Online',    t:'text', unit:' Online'},
-        {n:'Turbines Communicating', t:'text', unit:''},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "PF Limiter[ON]",
+      "t": "select",
+      "opts": [
+       "",
+       "On",
+       "Off"
+      ],
+      "alert": "Off"
+     },
+     {
+      "n": "PPC Voltage[Voltage]",
+      "t": "select",
+      "opts": [
+       "",
+       "Voltage",
+       "Var"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "PPC Setpoints[ON]",
+      "t": "select",
+      "opts": [
+       "",
+       "On",
+       "Off"
+      ],
+      "alert": "Off"
+     },
+     {
+      "n": "SRC Mode[Auto]",
+      "t": "select",
+      "opts": [
+       "",
+       "Auto",
+       "Manual"
+      ],
+      "alert": ""
+     }
     ]
-  },
-  { id:'PDMT1', label:'PDMT1-Pediment[BESS]', stats:'NP: 1000MWh / 250MW<br />V SET POINT:236kV<br />BAND: 226kV-241kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'AVR State[Active]', t:'select', opts:['','Active','Disabled'], alert:''},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',                 t:'text',   unit:'MW'},
-        {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'MWh',                t:'text',   unit:'MWh'},
-        {n:'kV',                 t:'text',   unit:'kV', kvMin:226, kvMax:241},
-        {n:'MVAR',               t:'text',   unit:'MVAR'},
-      ]},
-      { title:'CAPACITY', fields:[
-        {n:'Charge/Discharge ≥ 250 MW',  t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Max Energy ≥ 1000 MWh', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers[7]',   t:'text',   unit:'/7 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'BESS Available[308]',  t:'text',   unit:'/308 Available'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     },
+     {
+      "n": "MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 230.3,
+      "kvMax": 239.7
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
     ]
-  },
-  { id:'PRGN1', label:'PRGN1-Peregrine[BESS]', stats:'NP: 430MWh / 200MW<br />V SET POINT: 231.3kV<br />BAND: 228kV-234kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'PPC Control Location[Local]', t:'select', opts:['','Yes','No'],           alert:''},
-        {n:'PPC Control[AVR]',            t:'select', opts:['','AVR','AVG'],  alert:''},
-        {n:'Pri. Freq. Respones[Enabled]',t:'select', opts:['','Enabled','Disabled'], alert:''},
-        {n:'PPC Status[Online]',          t:'select', opts:['','Online','Offline'],   alert:''},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',                 t:'text',   unit:'MW'},
-        {n:'MWh',                t:'text',   unit:'MWh'},
-        {n:'kV',                 t:'text',   unit:'kV', kvMin:228, kvMax:234},
-        {n:'MVAR',               t:'text',   unit:'MVAR'},
-        {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'CAPACITY', fields:[
-        {n:'Charge/Discharge ≥ 200 MW',  t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Max Energy ≥ 230 MWh', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers[6]',   t:'text',   unit:'/6 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'BESS[112]',  t:'text',   unit:'/112 Available'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "CAPACITY",
+    "fields": [
+     {
+      "n": "Charge/Discharge at 60 MW",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Max Energy at 240 MWh",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
     ]
-  },
-  { id:'PRSE1', label:'PRSE1-Prairie Rose[WIND]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Bluence Open & RDP Open', t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Bluence Receiving Setpoint', t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV'},
-        {n:'MVAR', t:'text', unit:'MVAR'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Turbines Online',    t:'text', unit:' Online'},
-        {n:'Turbines Communicating', t:'text', unit:''},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers [3]",
+      "t": "text",
+      "unit": "/3 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
     ]
-  },
-  { id:'PRTV1', label:'PRTV1-Porterville[PV]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV',   hint:'LINK Coming'},
-        {n:'MVAR', t:'text', unit:'MVAR', hint:'Data Studio → Select→ Meter → Reactive Power'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters[2]', t:'text',   unit:'/2 Online'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Nodes Available",
+      "t": "text",
+      "unit": " Online"
+     },
+     {
+      "n": "Nodes Connected",
+      "t": "text",
+      "unit": "Nodes"
+     }
     ]
-  },
-  { id:'RKRG1', label:'RKRG1-Rocky Ridge[WIND]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:'Yes'},
-        {n:'Bluence Open & RDP Open', t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Bluence Receiving Setpoint', t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'Site Following Setpoint', t:'select', opts:['','Yes','No'], alert:'No'},
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV', kvMin:139.2, kvMax:143.4},
-        {n:'MVAR', t:'text', unit:'MVAR'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Turbines Online',    t:'text', unit:' Online'},
-        {n:'Turbines Communicating', t:'text', unit:''},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Notes', t:'textarea'},
-      ]},
+   }
+  ]
+ },
+ {
+  "id": "CTFL",
+  "label": "CTFL-Centennial Flats[PV-BESS]",
+  "stats": "NP: 1069 MWh \u00b1267 MW <br />V SET POINT: 525kV<br />BAND: 521kV-540kV",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
     ]
-  },
-  { id:'TLRE1', label:'TLRE1', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV'},
-        {n:'MVAR', t:'text', unit:'MVAR'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters[4]', t:'text',   unit:'/4 Online'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "PV AVR Status[Enabled]",
+      "t": "select",
+      "opts": [
+       "",
+       "Enabled",
+       "Disabled"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "BESS AVR Status[Enabled]",
+      "t": "select",
+      "opts": [
+       "",
+       "Enabled",
+       "Disabled"
+      ],
+      "alert": ""
+     }
     ]
-  },
-  { id:'TRPC1', label:'TRPC1-Tropico[PV]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'kV',   t:'text', unit:'kV'},
-        {n:'MVAR', t:'text', unit:'MVAR'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters[7]', t:'text',   unit:'/7 Online'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "OUTPUT: HS",
+    "fields": [
+     {
+      "n": "HS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "HS kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 521,
+      "kvMax": 540
+     },
+     {
+      "n": "HS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
     ]
-  },
-  { id:'TSMS1', label:'TSMS1-Taos Mesa[PV-BESS]', stats:'',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',   t:'text', unit:'MW'},
-        {n:'MWh',  t:'text', unit:'MWh'},
-        {n:'kV',   t:'text', unit:'kV'},
-        {n:'MVAR', t:'text', unit:'MVAR'},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers[3]', t:'text', unit:'/3 Closed'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'Inverters[6]',  t:'text',   unit:'/6 Online'},
-        {n:'BESS[5]',       t:'text',   unit:'/5 Available'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "OUTPUT: PV1 & BESS1",
+    "fields": [
+     {
+      "n": "PV1 MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "PV1 kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "PV1 MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "PV1 Inverters [43]",
+      "t": "text",
+      "unit": "/43 Online"
+     },
+     {
+      "n": "BESS1 MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "BESS1 MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "BESS1 kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "BESS1 MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "Megapacks available [106]",
+      "t": "text",
+      "unit": "/106 Available"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
     ]
-  },
-  { id:'FRND1', label:'FRND1-Ferdinand[BESS]', stats:'NP: 800MWh / 200MW<br />V SET POINT:142kV<br />BAND: ±2kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'AVR State[Active]', t:'select', opts:['','Active','Disabled'], alert:''},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'MW',                 t:'text',   unit:'MW'},
-        {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'MWh',                t:'text',   unit:'MWh'},
-        {n:'kV Setpoint',        t:'text',   unit:'kV'},
-        {n:'kV',                 t:'text',   unit:'kV', kvMin:140, kvMax:144},
-        {n:'MVAR',               t:'text',   unit:'MVAR'},
-      ]},
-      { title:'CAPACITY', fields:[
-        {n:'Charge/Discharge ≥ 200 MW',  t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Max Energy ≥ 800 MWh', t:'select', opts:['','Yes','No'], alert:''},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers[6]',   t:'text',   unit:'/6 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'BESS Available[264]',  t:'text',   unit:'/264 Available'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "OUTPUT: PV2 & BESS2",
+    "fields": [
+     {
+      "n": "PV2 MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "PV2 kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "PV2 MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "PV2 Inverters [43]",
+      "t": "text",
+      "unit": "/43 Online"
+     },
+     {
+      "n": "BESS2 MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "BESS2 MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "BESS2 kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "BESS2 MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "Megapacks available [106]",
+      "t": "text",
+      "unit": "/106 Available"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
     ]
-  },
-  { id:'MRCP', label:'MRCP', stats:'NP: XX / XX<br />V SET POINT: 525kV<br />BAND:498.75kV-551.25kV',
-    sections:[
-      { title:'STATUS', fields:[
-        {n:'Abnormal Operating Conditions', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
-      { title:'CONTROL', fields:[
-        {n:'PV AVR Status[Enabled]',   t:'select', opts:['','Enabled','Disabled'], alert:''},
-        {n:'BESS AVR Status[Enabled]', t:'select', opts:['','Enabled','Disabled'], alert:''},
-      ]},
-      { title:'OUTPUT', fields:[
-        {n:'HS MW',   t:'text', unit:'MW'},
-        {n:'Following Setpoint', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'HS kV',   t:'text', unit:'kV', kvMin:498.75, kvMax:551.25},
-        {n:'HS MVAR', t:'text', unit:'MVAR'},
-        {n:'BESS Total MWh', t:'text', unit:'MWh'},
-      ]},
-      { title:'SUBSTATION EQUIPMENT', fields:[
-        {n:'Breakers [28]',  t:'text',   unit:'/28 Closed'},
-        {n:'TO/SC Notified', t:'select', opts:['N/A','Yes','No'], alert:'No'},
-      ]},
-      { title:'FIELD EQUIPMENT', fields:[
-        {n:'PV Inverters[144]',  t:'text',   unit:'/144 Online'},
-        {n:'BESS[654]',      t:'text',   unit:'/654 Available'},
-      ]},
-      { title:'SCHEDULING', fields:[
-        {n:'Outage In Place', t:'select', opts:['','Yes','No'], alert:''},
-        {n:'Notes', t:'textarea'},
-      ]},
+   },
+   {
+    "title": "OUTPUT: PV3 & BESS3",
+    "fields": [
+     {
+      "n": "PV3 MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "PV3 kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "PV3 MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "PV3 Inverters [43]",
+      "t": "text",
+      "unit": "/43 Online"
+     },
+     {
+      "n": "BESS3 MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "BESS3 MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "BESS3 kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "BESS3 MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "Megapacks available [106]",
+      "t": "text",
+      "unit": "/106 Available"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
     ]
-  },
+   },
+   {
+    "title": "CAPACITY",
+    "fields": [
+     {
+      "n": "Charge/Discharge \u2265 267 MW",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Max Energy \u2265 1069 MWh",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers [15]",
+      "t": "text",
+      "unit": "/15 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "DLBO1",
+  "label": "DLBO1-Diablo[WIND]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes"
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 228,
+      "kvMax": 232
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Turbines Online",
+      "t": "text",
+      "unit": " Online"
+     },
+     {
+      "n": "Turbines Communicating",
+      "t": "text",
+      "unit": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "DFRN1",
+  "label": "DFRN1-Dufferin[WIND]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes",
+      "hint": "Turbine-only site \u2014 no MW/kV/MVAR output tracked here"
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Turbines Online",
+      "t": "text",
+      "unit": " Online"
+     },
+     {
+      "n": "Turbines Communicating",
+      "t": "text",
+      "unit": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "FRMV1",
+  "label": "FRMV1-Farmersville[PV]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes"
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "hint": "Link"
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR",
+      "hint": "Data Studio \u2192 Select\u2192 Meter \u2192 Reactive Power"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters[3]",
+      "t": "text",
+      "unit": "/3 Online"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "GDWL1",
+  "label": "GDWL1-Goodwell[WIND]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes"
+     },
+     {
+      "n": "Bluence Accessible / RDP Open",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     },
+     {
+      "n": "Bluence Receiving Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "Site Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     },
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 109.25,
+      "kvMax": 120.75
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR",
+      "hint": "WindCONTROL - WCS-001- Power Control"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Turbines Online",
+      "t": "text",
+      "unit": " Online"
+     },
+     {
+      "n": "Turbines Communicating",
+      "t": "text",
+      "unit": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "GLTA1",
+  "label": "GLTA1-Goleta[BESS]",
+  "stats": "NP: 160MWh / 60MW<br />V SET POINT: 66.00kV<br />BAND:63.17kV-69.83kV",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes"
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "System Mode[Remote]",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Frequency Droop[On]",
+      "t": "select",
+      "opts": [
+       "",
+       "On",
+       "Off"
+      ],
+      "alert": "Off"
+     },
+     {
+      "n": "Voltage Control[On]",
+      "t": "select",
+      "opts": [
+       "",
+       "On",
+       "Off"
+      ],
+      "alert": "Off"
+     },
+     {
+      "n": "Heat Mode[Off]",
+      "t": "select",
+      "opts": [
+       "",
+       "On",
+       "Off"
+      ],
+      "alert": "On"
+     },
+     {
+      "n": "Closed Loop[On]",
+      "t": "select",
+      "opts": [
+       "",
+       "On",
+       "Off"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 63.17,
+      "kvMax": 69.83
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "CAPACITY",
+    "fields": [
+     {
+      "n": "Charge/Discharge \u2265 60 MW",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Max Energy \u2265 160 MWh",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers [4]",
+      "t": "text",
+      "unit": "/4 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "BESS[44]",
+      "t": "text",
+      "unit": "/44 Available"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "HARQ1",
+  "label": "HARQ1-Harquahala 1[PV]",
+  "stats": "NP: +150MW",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "PV AVR Status[Enabled]",
+      "t": "select",
+      "opts": [
+       "",
+       "Enabled",
+       "Disabled"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW[COMP]",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 499,
+      "kvMax": 551
+     },
+     {
+      "n": "MVAR[COMP]",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "CAPACITY",
+    "fields": [
+     {
+      "n": "Discharge \u2265 150 MW",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers [4]",
+      "t": "text",
+      "unit": "/4 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters[47]",
+      "t": "text",
+      "unit": "/47 Online"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "HARQ2",
+  "label": "HARQ2-Harquahala 2[PV-BESS]",
+  "stats": "NP: 1200MWh / 300MW<br />V SET POINT: 525kV<br />BAND:498.75kV-551.25kV",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "PV AVR Status[Enabled]",
+      "t": "select",
+      "opts": [
+       "",
+       "Enabled",
+       "Disabled"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "BESS AVR Status[Enabled]",
+      "t": "select",
+      "opts": [
+       "",
+       "Enabled",
+       "Disabled"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "HS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "HS kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 498.75,
+      "kvMax": 551.25
+     },
+     {
+      "n": "HS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "PV LS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "PV LS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "BESS LS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "BESS LS MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "BESS LS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "CAPACITY",
+    "fields": [
+     {
+      "n": "Charge/Discharge \u2265 300 MW",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Max Energy \u2265 1200 MWh",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers [17]",
+      "t": "text",
+      "unit": "/17 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters[94]",
+      "t": "text",
+      "unit": "/94 Online"
+     },
+     {
+      "n": "BESS[354]",
+      "t": "text",
+      "unit": "/354 Available"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "HNFD1",
+  "label": "HNFD1-Handford[PV]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "hint": "Data Studio \u2192 Select\u2192 Meter \u2192 Voltage"
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR",
+      "hint": "Data Studio \u2192 Select\u2192 Meter \u2192 Reactive Power"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters[2]",
+      "t": "text",
+      "unit": "/2 Online"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "KUNA1",
+  "label": "KUNA1-Kuna[BESS]",
+  "stats": "NP: 600MWh / 150MW<br />V SET POINT:142kV<br />BAND: 138kV-144.9kV",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "AVR State",
+      "t": "select",
+      "opts": [
+       "",
+       "Enabled",
+       "Disabled"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 138,
+      "kvMax": 144.9
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "CAPACITY",
+    "fields": [
+     {
+      "n": "Charge/Discharge \u2265 150 MW",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Max Energy \u2265 600 MWh",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers[4]",
+      "t": "text",
+      "unit": "/4 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "BESS[174]",
+      "t": "text",
+      "unit": "/174 Available"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "LNDL1",
+  "label": "LNDL1-Lindal",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes"
+     },
+     {
+      "n": "Bluence Accessible / RDP Open",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     },
+     {
+      "n": "Bluence Receiving Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "Site Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     },
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 109,
+      "kvMax": 121
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Turbines Online",
+      "t": "text",
+      "unit": " Online"
+     },
+     {
+      "n": "Turbines Communicating",
+      "t": "text",
+      "unit": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "LSTH1",
+  "label": "LSTH1-Lost Hills 1[PV]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "hint": "Data Studio \u2192 Select\u2192 Meter \u2192 Voltage (line-to-line)"
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR",
+      "hint": "Data Studio \u2192 Select\u2192 Inverter \u2192 Reactive Power"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters[12]",
+      "t": "text",
+      "unit": "/12 Closed"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "LSTH2",
+  "label": "LSTH2-Lost Hills 2[PV]",
+  "stats": "NP: 20MW<br />V SET POINT: 71kV<br />BAND: 70.29kV-71.71kV",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "Plant Status[Remote & Auto]",
+      "t": "select",
+      "opts": [
+       "",
+       "Remote/Auto",
+       "Remote/Manual",
+       "Local/Auto",
+       "Local/Manual"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Control Mode[Voltage]",
+      "t": "select",
+      "opts": [
+       "",
+       "Voltage",
+       "Reactive Power",
+       "Power Factor"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Voltage Limit [ON]",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 70.29,
+      "kvMax": 71.71
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers [3]",
+      "t": "text",
+      "unit": "/3 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters[25]",
+      "t": "text",
+      "unit": "/25 Online"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "MCLM1",
+  "label": "MCLM1-McLeans Mountain[WIND]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "hint": "Turbine-only site \u2014 no MW/kV/MVAR output tracked here"
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Turbines Online",
+      "t": "text",
+      "unit": " Online"
+     },
+     {
+      "n": "Turbines Communicating",
+      "t": "text",
+      "unit": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "NCLS1",
+  "label": "NCLS1",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters[10]",
+      "t": "text",
+      "unit": "/10 Online"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "NSTR1",
+  "label": "NSTR1-Northstar Solar",
+  "stats": "NP: 60MW<br />Voltage SP: 119kV<br />Voltage Band: 117.81kV-120.19kV",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "Plant Status[Remote & Auto]",
+      "t": "select",
+      "opts": [
+       "",
+       "Remote/Auto",
+       "Remote/Manual",
+       "Local/Auto",
+       "Local/Manual"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Control Mode[Voltage]",
+      "t": "select",
+      "opts": [
+       "",
+       "Voltage",
+       "Reactive Power",
+       "Power Factor"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Voltage Limit [ON]",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 117.81,
+      "kvMax": 120.19
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers[5]",
+      "t": "text",
+      "unit": "/5 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters[77]",
+      "t": "text",
+      "unit": "/77 Online"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ORGN1",
+  "label": "ORGN1-Origin[WIND]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes"
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 138.8,
+      "kvMax": 142.8
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR",
+      "hint": "WindCONTROL - WCS-001- Power Control"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Turbines Online",
+      "t": "text",
+      "unit": " Online"
+     },
+     {
+      "n": "Turbines Communicating",
+      "t": "text",
+      "unit": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "PDMT1",
+  "label": "PDMT1-Pediment[BESS]",
+  "stats": "NP: 1000MWh / 250MW<br />V SET POINT:236kV<br />BAND: 226kV-241kV",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "AVR State[Active]",
+      "t": "select",
+      "opts": [
+       "",
+       "Active",
+       "Disabled"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 226,
+      "kvMax": 241
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "CAPACITY",
+    "fields": [
+     {
+      "n": "Charge/Discharge \u2265 250 MW",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Max Energy \u2265 1000 MWh",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers[7]",
+      "t": "text",
+      "unit": "/7 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "BESS Available[308]",
+      "t": "text",
+      "unit": "/308 Available"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "PRGN1",
+  "label": "PRGN1-Peregrine[BESS]",
+  "stats": "NP: 430MWh / 200MW<br />V SET POINT: 231.3kV<br />BAND: 228kV-234kV",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "PPC Control Location[Local]",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "PPC Control[AVR]",
+      "t": "select",
+      "opts": [
+       "",
+       "AVR",
+       "AVG"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Pri. Freq. Respones[Enabled]",
+      "t": "select",
+      "opts": [
+       "",
+       "Enabled",
+       "Disabled"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "PPC Status[Online]",
+      "t": "select",
+      "opts": [
+       "",
+       "Online",
+       "Offline"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 228,
+      "kvMax": 234
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "CAPACITY",
+    "fields": [
+     {
+      "n": "Charge/Discharge \u2265 200 MW",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Max Energy \u2265 430 MWh",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers[6]",
+      "t": "text",
+      "unit": "/6 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "BESS[112]",
+      "t": "text",
+      "unit": "/112 Available"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "PRSE1",
+  "label": "PRSE1-Prairie Rose[WIND]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes"
+     },
+     {
+      "n": "Bluence Open & RDP Open",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     },
+     {
+      "n": "Bluence Receiving Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Turbines Online",
+      "t": "text",
+      "unit": " Online"
+     },
+     {
+      "n": "Turbines Communicating",
+      "t": "text",
+      "unit": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "PRTV1",
+  "label": "PRTV1-Porterville[PV]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "hint": "LINK Coming"
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR",
+      "hint": "Data Studio \u2192 Select\u2192 Meter \u2192 Reactive Power"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters[2]",
+      "t": "text",
+      "unit": "/2 Online"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "RKRG1",
+  "label": "RKRG1-Rocky Ridge[WIND]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "Yes"
+     },
+     {
+      "n": "Bluence Open & RDP Open",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     },
+     {
+      "n": "Bluence Receiving Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "Site Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     },
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 139.2,
+      "kvMax": 143.4
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Turbines Online",
+      "t": "text",
+      "unit": " Online"
+     },
+     {
+      "n": "Turbines Communicating",
+      "t": "text",
+      "unit": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "TLRE1",
+  "label": "TLRE1",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters[4]",
+      "t": "text",
+      "unit": "/4 Online"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "TRPC1",
+  "label": "TRPC1-Tropico[PV]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters[7]",
+      "t": "text",
+      "unit": "/7 Online"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "TSMS1",
+  "label": "TSMS1-Taos Mesa[PV-BESS]",
+  "stats": "",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers[3]",
+      "t": "text",
+      "unit": "/3 Closed"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "Inverters[6]",
+      "t": "text",
+      "unit": "/6 Online"
+     },
+     {
+      "n": "BESS[5]",
+      "t": "text",
+      "unit": "/5 Available"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "FRDN1",
+  "label": "FRDN1-Ferdinand[BESS]",
+  "stats": "NP: 800MWh / 200MW<br />V SET POINT:142kV<br />BAND: \u00b12kV",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "AVR State[Active]",
+      "t": "select",
+      "opts": [
+       "",
+       "Active",
+       "Disabled"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 140,
+      "kvMax": 144
+     },
+     {
+      "n": "MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     }
+    ]
+   },
+   {
+    "title": "CAPACITY",
+    "fields": [
+     {
+      "n": "Charge/Discharge \u2265 200 MW",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Max Energy \u2265 800 MWh",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers[6]",
+      "t": "text",
+      "unit": "/6 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "BESS Available[264]",
+      "t": "text",
+      "unit": "/264 Available"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "MRCP",
+  "label": "MRCP",
+  "stats": "NP: XX / XX<br />V SET POINT: 525kV<br />BAND:498.75kV-551.25kV",
+  "sections": [
+   {
+    "title": "STATUS",
+    "fields": [
+     {
+      "n": "Abnormal Operating Conditions",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "Outage In Place",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": "",
+      "triggers": {
+       "field": "Abnormal Operating Conditions",
+       "when": "Yes",
+       "value": "Yes",
+       "noteField": "Notes",
+       "noteText": "Outage in place"
+      }
+     },
+     {
+      "n": "Notes",
+      "t": "textarea"
+     }
+    ]
+   },
+   {
+    "title": "CONTROL",
+    "fields": [
+     {
+      "n": "PV AVR Status[Enabled]",
+      "t": "select",
+      "opts": [
+       "",
+       "Enabled",
+       "Disabled"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "BESS AVR Status[Enabled]",
+      "t": "select",
+      "opts": [
+       "",
+       "Enabled",
+       "Disabled"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT",
+    "fields": [
+     {
+      "n": "HS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     },
+     {
+      "n": "HS kV",
+      "t": "text",
+      "unit": "kV",
+      "kvMin": 498.75,
+      "kvMax": 551.25
+     },
+     {
+      "n": "HS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "BESS Total MWh",
+      "t": "text",
+      "unit": "MWh"
+     }
+    ]
+   },
+   {
+    "title": "SUBSTATION EQUIPMENT",
+    "fields": [
+     {
+      "n": "Breakers [28]",
+      "t": "text",
+      "unit": "/28 Closed"
+     },
+     {
+      "n": "TO/SC Notified",
+      "t": "select",
+      "opts": [
+       "N/A",
+       "Yes",
+       "No"
+      ],
+      "alert": "No"
+     }
+    ]
+   },
+   {
+    "title": "FIELD EQUIPMENT",
+    "fields": [
+     {
+      "n": "PV Inverters[144]",
+      "t": "text",
+      "unit": "/144 Online"
+     },
+     {
+      "n": "BESS[654]",
+      "t": "text",
+      "unit": "/654 Available"
+     }
+    ]
+   }
+  ]
+ }
 ];
 
 // ─── ASSET SCAN ───────────────────────────────────────────────────────────────
@@ -9412,7 +12360,11 @@ let asActiveSite = '';
 let asTypeFilter = ['all']; // Array of selected types: ['all'] or ['BESS','Solar','Wind']
 
 // Effective site list: custom overrides defaults when set AND non-empty
-function asSites() { return (asCustom !== null && asCustom.length > 0) ? asCustom : AS_SITES; }
+// Site list is fixed and shared — no more per-browser custom overrides.
+// asCustom is kept as a variable (rather than deleted outright) only so any
+// legacy localStorage data from before this change doesn't throw errors if
+// referenced elsewhere; it's no longer read from here.
+function asSites() { return AS_SITES; }
 
 function asLoadAll() {
   try { const r=localStorage.getItem(AS_VAL_KEY); if(r) asVals=JSON.parse(r)||{}; } catch(e){}
@@ -9426,6 +12378,104 @@ function asSaveTimes() { try{localStorage.setItem(AS_TIME_KEY,JSON.stringify(asT
 function asSaveCustom() { try{localStorage.setItem(AS_CUSTOM_KEY,JSON.stringify(asSites()));}catch(e){} }
 
 function asKey(siteId, si, fi) { return siteId+'|'+si+'|'+fi; }
+
+// Two site IDs were typo'd from day one (FRND1 instead of FRDN1, NSTR
+// instead of NSTR1) — correcting them here so they match the codes used
+// everywhere else in the app. Renames any already-entered values,
+// timestamps, and completion flags too, so real scan data isn't orphaned
+// under the old id the moment the default config changes.
+const AS_RENAMED_SITES = { FRND1:'FRDN1', NSTR:'NSTR1' };
+function asMigrateRenamedSites() {
+  let changed = false;
+  Object.keys(AS_RENAMED_SITES).forEach(oldId => {
+    const newId = AS_RENAMED_SITES[oldId];
+    Object.keys(asVals).forEach(k => {
+      if (k.startsWith(oldId+'|')) { asVals[newId+k.slice(oldId.length)]=asVals[k]; delete asVals[k]; changed=true; }
+    });
+    Object.keys(asTimes).forEach(k => {
+      if (k.startsWith(oldId+'|')) { asTimes[newId+k.slice(oldId.length)]=asTimes[k]; delete asTimes[k]; changed=true; }
+    });
+    if (asDone[oldId]!==undefined) { asDone[newId]=asDone[oldId]; delete asDone[oldId]; changed=true; }
+    if (asCustom) {
+      const site=asCustom.find(s=>s.id===oldId);
+      if (site) { site.label=site.label.replace(oldId,newId); site.id=newId; changed=true; }
+    }
+  });
+  if (changed) { asSaveVals(); asSaveTimes(); asSaveDone(); if(asCustom) asSaveCustom(); }
+}
+
+// Removing FRDN1's redundant kV Setpoint field (it sat between MWh and kV)
+// shifts every field after it down one slot in the array — without this,
+// any kV/MVAR value already entered for Ferdinand would silently reappear
+// under the wrong field. Guarded by a marker so this can only ever run
+// once, since re-running a shift like this a second time would corrupt it.
+function asMigrateFrdn1FieldShift() {
+  const marker = 'rnwbl_as_frdn1_shift_v1';
+  try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
+  const kvVal=asVals['FRDN1|2|4'], kvTime=asTimes['FRDN1|2|4'];
+  const mvVal=asVals['FRDN1|2|5'], mvTime=asTimes['FRDN1|2|5'];
+  if (kvVal!==undefined) { asVals['FRDN1|2|3']=kvVal; }
+  delete asVals['FRDN1|2|4'];
+  if (kvTime!==undefined) { asTimes['FRDN1|2|3']=kvTime; }
+  delete asTimes['FRDN1|2|4'];
+  if (mvVal!==undefined) { asVals['FRDN1|2|4']=mvVal; }
+  delete asVals['FRDN1|2|5'];
+  if (mvTime!==undefined) { asTimes['FRDN1|2|4']=mvTime; }
+  delete asTimes['FRDN1|2|5'];
+  asSaveVals(); asSaveTimes();
+  try { localStorage.setItem(marker,'1'); } catch(e) {}
+}
+
+// Every site's Outage In Place moved from its own Scheduling section into
+// Status (last, before Notes), and Scheduling's separate Notes field
+// merged into Status's single Notes field — Scheduling itself is gone now
+// for every site except ROCC1, which never had one. This preserves
+// whatever was already entered across that move rather than losing it to
+// the section/field index shift. Scheduling was always the last section,
+// so its old section-index is simply how long a site's sections array
+// would be if it were still there — one more than it is now.
+function asMigrateStatusRestructure() {
+  const marker = 'rnwbl_as_status_restructure_v1';
+  try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
+  let changed = false;
+  AS_SITES.forEach(site => {
+    if (site.id === 'ROCC1') return;
+    const statusIdx = site.sections.findIndex(s => s.title === 'STATUS');
+    if (statusIdx < 0) return;
+    const statusFields = site.sections[statusIdx].fields;
+    const newOutageIdx = statusFields.findIndex(f => f.n === 'Outage In Place');
+    const newNotesIdx = statusFields.findIndex(f => f.n === 'Notes');
+    if (newNotesIdx < 0) return;
+    const hadOutage = newOutageIdx >= 0;
+    const oldNotesIdx = hadOutage ? newNotesIdx - 1 : newNotesIdx; // Status's own Notes, before Outage was inserted ahead of it
+    const oldSchedIdx = site.sections.length; // Scheduling was always last; this is where it used to be
+    const oldStatusNotesKey = asKey(site.id, statusIdx, oldNotesIdx);
+    const newStatusNotesKey = asKey(site.id, statusIdx, newNotesIdx);
+    if (oldStatusNotesKey !== newStatusNotesKey) {
+      if (asVals[oldStatusNotesKey] !== undefined) { asVals[newStatusNotesKey] = asVals[oldStatusNotesKey]; delete asVals[oldStatusNotesKey]; changed = true; }
+      if (asTimes[oldStatusNotesKey] !== undefined) { asTimes[newStatusNotesKey] = asTimes[oldStatusNotesKey]; delete asTimes[oldStatusNotesKey]; changed = true; }
+    }
+    if (hadOutage) {
+      const oldOutageKey = asKey(site.id, oldSchedIdx, 0);
+      const newOutageKey = asKey(site.id, statusIdx, newOutageIdx);
+      if (asVals[oldOutageKey] !== undefined) { asVals[newOutageKey] = asVals[oldOutageKey]; delete asVals[oldOutageKey]; changed = true; }
+      if (asTimes[oldOutageKey] !== undefined) { asTimes[newOutageKey] = asTimes[oldOutageKey]; delete asTimes[oldOutageKey]; changed = true; }
+    }
+    // Scheduling's own Notes — merge any existing text into Status's Notes
+    // instead of silently losing it.
+    const oldSchedNotesFieldIdx = hadOutage ? 1 : 0;
+    const oldSchedNotesKey = asKey(site.id, oldSchedIdx, oldSchedNotesFieldIdx);
+    if (asVals[oldSchedNotesKey] !== undefined && asVals[oldSchedNotesKey] !== '') {
+      const existing = asVals[newStatusNotesKey] || '';
+      asVals[newStatusNotesKey] = existing ? existing + '\n' + asVals[oldSchedNotesKey] : asVals[oldSchedNotesKey];
+      delete asVals[oldSchedNotesKey];
+      changed = true;
+    }
+    if (asTimes[oldSchedNotesKey] !== undefined) delete asTimes[oldSchedNotesKey];
+  });
+  if (changed) { asSaveVals(); asSaveTimes(); }
+  try { localStorage.setItem(marker, '1'); } catch(e) {}
+}
 
 // ── completion ────────────────────────────────────────────────────────────────
 function asSiteFilledPct(siteId) {
@@ -9474,6 +12524,9 @@ function asInit() {
   } catch(e) {}
   if (shiftSel && !shiftSel.value) shiftSel.value = asAutoShift();
   asLoadAll();
+  asMigrateRenamedSites();
+  asMigrateFrdn1FieldShift();
+  asMigrateStatusRestructure();
   // Restore last visited tab; if none saved, skip ROCC1 and land on first real site
   const saved = (()=>{try{return localStorage.getItem('rnwbl_asactive')||'';}catch(e){return '';}})();
   const sites = asSites();
@@ -9661,7 +12714,7 @@ function asRenderForm() {
     sec.fields.forEach((f,fi)=>{
       const k=asKey(site.id,si,fi), val=asVals[k]||'';
       const fid='asf_'+k.replace(/\|/g,'_'), aid='asa_'+k.replace(/\|/g,'_'), kid='askv_'+k.replace(/\|/g,'_');
-      html+=`<div class="as-row"><div><div class="as-lbl">${esc(f.n)}</div>${f.hint?`<div class="as-hint">${esc(f.hint)}</div>`:''}</div><div>`;
+      html+=`<div class="as-row"><div><div class="as-lbl">${esc(f.n)}${f.tip?` <span class="as-tip-icon" onclick="asToggleTip(this)" data-tip="${esc(f.tip)}">ⓘ</span>`:''}</div>${f.hint?`<div class="as-hint">${esc(f.hint)}</div>`:''}</div><div>`;
       if(f.t==='select'){
         html+=`<select class="as-sel" id="${fid}" onchange="asChange('${k}','${aid}','${esc(site.id)}',${si},this)">${(f.opts||[]).map(o=>`<option value="${esc(o)}"${val===o?' selected':''}>${esc(o)}</option>`).join('')}</select>`;
       } else if(f.t==='textarea'){
@@ -9672,20 +12725,25 @@ function asRenderForm() {
       }
       html+=`</div><div>`;
       if(f.t==='select'&&f.alert){ const on=val&&val.toLowerCase()===f.alert.toLowerCase(); html+=`<span class="alert-pill${on?' on':''}" id="${aid}">⚠ TAKE ACTION</span>`; }
-      if(f.kvMin!=null) html+=`<span class="as-status" id="${kid}"></span>`;
+      if(f.kvMin!=null||f.kvRefField) html+=`<span class="as-status" id="${kid}"></span>`;
       html+=`</div></div>`;
     });
   });
 
-  html+=`<div class="as-export-bar"><button class="btn-p" onclick="asExportCSV()">Export CSV</button><span style="font-size:12px;color:var(--text3);">Fill in Date, Operator &amp; Shift above before exporting.</span></div></div>`;
+  html+=`</div>`;
   document.getElementById('as-form-wrap').innerHTML=html;
 
-  // Restore kV indicators
+  // Restore kV indicators — fixed band (kvMin/kvMax) or relative to another
+  // field's value (kvRefField, e.g. BYPS1's kV vs its own Setpoint field).
   site.sections.forEach((sec,si)=>sec.fields.forEach((f,fi)=>{
-    if(f.kvMin==null) return;
-    const k=asKey(site.id,si,fi), val=asVals[k]||'', unit=f.unit||'';
-    const num=parseFloat((unit&&val.endsWith(unit))?val.slice(0,-unit.length):val);
-    if(!isNaN(num)) asUpdateKv('askv_'+k.replace(/\|/g,'_'),num,f.kvMin,f.kvMax);
+    const kid='askv_'+asKey(site.id,si,fi).replace(/\|/g,'_');
+    if(f.kvMin!=null){
+      const k=asKey(site.id,si,fi), val=asVals[k]||'', unit=f.unit||'';
+      const num=parseFloat((unit&&val.endsWith(unit))?val.slice(0,-unit.length):val);
+      if(!isNaN(num)) asUpdateKv(kid,num,f.kvMin,f.kvMax);
+    } else if(f.kvRefField){
+      asUpdateKvRef(kid,site.id,si,sec.fields,f);
+    }
   }));
 }
 
@@ -9694,16 +12752,16 @@ function asChange(k, alertId, siteId, si, el) {
   asVals[k]=el.value; asSaveVals();
   // Update site edited timestamp when field values change
   if(asCustom!==null){
-    const site=asCustom.find(s=>s.id===siteId);
-    if(site){
-      site.edited=new Date().toISOString();
+    const csite=asCustom.find(s=>s.id===siteId);
+    if(csite){
+      csite.edited=new Date().toISOString();
       asSaveCustom();
     }
   }
+  const site=asSites().find(s=>s.id===siteId);
+  const fi=parseInt(k.split('|')[2]), f=site?.sections[si]?.fields[fi];
   if(alertId){
     const pill=document.getElementById(alertId);
-    const site=asSites().find(s=>s.id===siteId);
-    const fi=parseInt(k.split('|')[2]), f=site?.sections[si]?.fields[fi];
     if(pill&&f?.alert) pill.classList.toggle('on',el.value.toLowerCase()===f.alert.toLowerCase()&&el.value!=='');
     // update section alert badge inline
     if(site&&site.sections[si]?.title){
@@ -9718,7 +12776,54 @@ function asChange(k, alertId, siteId, si, el) {
       });
     }
   }
+  // Cross-field automation (e.g. Outage In Place -> Abnormal Operating
+  // Conditions). One-directional on purpose: setting the outage forces
+  // Abnormal to Yes, but clearing the outage never forces it back to No —
+  // there could be an unrelated reason conditions are still abnormal, and
+  // that should stay a human call, not something auto-cleared.
+  if(site&&f?.triggers&&el.value&&el.value.toLowerCase()===f.triggers.when.toLowerCase()){
+    asApplyFieldTrigger(site,siteId,f.triggers);
+  }
   asRenderTabs();
+}
+
+// Finds the target field by name anywhere in the site (not just the same
+// section, since Outage In Place and Abnormal Operating Conditions usually
+// live in different sections) and forces its value, updating the visible
+// input and its alert pill if it has one.
+function asApplyFieldTrigger(site, siteId, trig){
+  for(let tsi=0; tsi<site.sections.length; tsi++){
+    const tfi=site.sections[tsi].fields.findIndex(tf=>tf.n===trig.field);
+    if(tfi<0) continue;
+    const tk=asKey(siteId,tsi,tfi);
+    if(asVals[tk]===trig.value) return; // already set, nothing to do or announce
+    asVals[tk]=trig.value; asTimes[tk]=new Date().toISOString(); asSaveTimes(); asSaveVals();
+    const tfid='asf_'+tk.replace(/\|/g,'_');
+    const tEl=document.getElementById(tfid);
+    if(tEl) tEl.value=trig.value;
+    const taid='asa_'+tk.replace(/\|/g,'_');
+    const tPill=document.getElementById(taid);
+    const tf=site.sections[tsi].fields[tfi];
+    if(tPill&&tf?.alert) tPill.classList.toggle('on', trig.value.toLowerCase()===tf.alert.toLowerCase());
+    // Note goes in the same section as the field just triggered, so it
+    // reads right below Abnormal Operating Conditions — makes it obvious
+    // why that flag is Yes instead of leaving it unexplained. Appends
+    // rather than overwrites, in case there's already a note there.
+    if(trig.noteField){
+      const nfi=site.sections[tsi].fields.findIndex(nf=>nf.n===trig.noteField);
+      if(nfi>=0){
+        const nk=asKey(siteId,tsi,nfi);
+        const existing=asVals[nk]||'';
+        asVals[nk]=existing?existing+'\n'+trig.noteText:trig.noteText;
+        asTimes[nk]=new Date().toISOString(); asSaveTimes(); asSaveVals();
+        const nfid='asf_'+nk.replace(/\|/g,'_');
+        const nEl=document.getElementById(nfid);
+        if(nEl) nEl.value=asVals[nk];
+      }
+    }
+    showToast(`${trig.field} set to ${trig.value} — outage in place`);
+    return;
+  }
 }
 
 function asTextBlur(k, kvId, siteId, si, el) {
@@ -9726,7 +12831,9 @@ function asTextBlur(k, kvId, siteId, si, el) {
   let v=el.value.trim();
   if(!v){
     if(asVals[k]!==''){asTimes[k]=new Date().toISOString();asSaveTimes();}
-    asVals[k]='';asSaveVals();return;
+    asVals[k]='';asSaveVals();
+    asRecomputeSectionKvRefs(siteId,si); // could be the field another field's band is measured against
+    return;
   }
   if(unit&&v.endsWith(unit)) v=v.slice(0,-unit.length).trim();
   if(!isNaN(parseFloat(v))&&isFinite(v)){
@@ -9739,12 +12846,52 @@ function asTextBlur(k, kvId, siteId, si, el) {
     asVals[k]=el.value;
   }
   asSaveVals(); asRenderTabs();
+  asRecomputeSectionKvRefs(siteId,si);
 }
 
 function asUpdateKv(kvId, val, min, max) {
   const sp=document.getElementById(kvId); if(!sp) return;
   if(val>=min&&val<=max){sp.textContent='In band';sp.className='as-status kv-ok';}
   else{sp.textContent='Out of band';sp.className='as-status kv-bad';}
+}
+
+// Compact alternative to a permanent hint line — a small icon that expands
+// a note only when tapped/clicked, works the same on mobile and desktop
+// (a hover-only tooltip wouldn't work reliably on a phone).
+function asToggleTip(el) {
+  const existing = el.parentElement.querySelector('.as-tip-note');
+  if (existing) { existing.remove(); return; }
+  const note = document.createElement('div');
+  note.className = 'as-tip-note';
+  note.textContent = el.getAttribute('data-tip');
+  el.parentElement.appendChild(note);
+}
+
+// BYPS1-style band: not a fixed range, a tolerance around another field's
+// current value (e.g. kV vs kV Setpoint, alert if more than kvTolerance
+// apart). Reuses the exact same in-band/out-of-band pill as the fixed-range
+// case, so it's the same alert operators already know, not a new one.
+function asUpdateKvRef(kvId, siteId, si, fields, f) {
+  const sp=document.getElementById(kvId); if(!sp) return;
+  const fIdx=fields.indexOf(f), refIdx=fields.findIndex(rf=>rf.n===f.kvRefField);
+  if(fIdx<0||refIdx<0){ sp.textContent=''; sp.className='as-status'; return; }
+  const val=parseFloat(asVals[asKey(siteId,si,fIdx)]);
+  const refVal=parseFloat(asVals[asKey(siteId,si,refIdx)]);
+  if(isNaN(val)||isNaN(refVal)){ sp.textContent=''; sp.className='as-status'; return; }
+  if(Math.abs(val-refVal)<=f.kvTolerance){ sp.textContent='In band'; sp.className='as-status kv-ok'; }
+  else { sp.textContent='Out of band'; sp.className='as-status kv-bad'; }
+}
+
+// Either side of a reference-band pair could have just changed — the
+// measurement itself, or the setpoint it's measured against — so recompute
+// every reference-band field in the section. Cheap; sections are small.
+function asRecomputeSectionKvRefs(siteId, si) {
+  const site=asSites().find(s=>s.id===siteId); if(!site) return;
+  const fields=site.sections[si]?.fields; if(!fields) return;
+  fields.forEach((rf,rfi)=>{
+    if(!rf.kvRefField) return;
+    asUpdateKvRef('askv_'+asKey(siteId,si,rfi).replace(/\|/g,'_'), siteId, si, fields, rf);
+  });
 }
 
 function asMarkDone(siteId){asDone[siteId]=true;asSaveDone();asRenderTabs();asRenderForm();showToast(siteId+' marked complete ✓');}
@@ -9816,6 +12963,8 @@ function asFmtAZ(iso) {
 
 function asExportCSV() {
   const date=document.getElementById('as-date').value, op=document.getElementById('as-operator').value, shift=document.getElementById('as-shift').value;
+  const missing=[]; if(!date) missing.push('Date'); if(!op) missing.push('Operator'); if(!shift) missing.push('Shift');
+  if(missing.length && !confirm(`${missing.join(', ')} not filled in — the file name will be generic. Export anyway?`)) return;
   let csv='Date,Operator,Shift,Site,Section,Field,Value,Field Last Edited\n';
   // Only export sites matching the currently selected type filter (mirrors what's shown in the tabs)
   let sites=[...asSites()];
@@ -11324,7 +14473,7 @@ const VCHK_BANDS = {
   COSO1: {min:230.3,  max:239.7,  sp:'235kV'},
   CTFL:  {min:521,    max:540,    sp:'525kV'},
   DLBO1: {min:228,    max:232,    sp:'230kV'},
-  FRND1: {min:140,    max:144,    sp:'142kV'},
+  FRDN1: {min:140,    max:144,    sp:'142kV'},
   GDWL1: {min:109.25, max:120.75, sp:'115kV'},
   GLTA1: {min:63.17,  max:69.83,  sp:'66kV'},
   HARQ1: {min:499,    max:551,    sp:'525kV'},
@@ -11333,7 +14482,7 @@ const VCHK_BANDS = {
   LNDL1: {min:109,    max:121,    sp:'115kV'},
   LSTH2: {min:70.29,  max:71.71,  sp:'71kV'},
   MRCP:  {min:498.75, max:551.25, sp:'525kV'},
-  NSTR:  {min:117.81, max:120.19, sp:'119kV'},
+  NSTR1: {min:117.81, max:120.19, sp:'119kV'},
   ORGN1: {min:138.8,  max:142.8,  sp:'140.8kV'},
   PDMT1: {min:226,    max:241,    sp:'236kV'},
   PRGN1: {min:228,    max:234,    sp:'231.3kV'},
@@ -11411,7 +14560,7 @@ const NPCHK_SITES = {
   DFRN1: {mw:91,     mwh:null,   label:'NP: 91 MW (wind)'},
   DLBO1: {mw:null,   mwh:null,   label:'NP: unknown — no data'},
   FRMV1: {mw:5.4,    mwh:null,   label:'NP: 5.4 MW (solar)'},
-  FRND1: {mw:200,    mwh:800,    label:'NP: 800 MWh / 200 MW'},
+  FRDN1: {mw:200,    mwh:800,    label:'NP: 800 MWh / 200 MW'},
   GDWL1: {mw:200,    mwh:null,   label:'NP: 200 MW (wind)'},
   GLTA1: {mw:60,     mwh:160,    label:'NP: 160 MWh / 60 MW'},
   HARQ1: {mw:150,    mwh:null,   label:'NP: 150 MW (solar)'},
@@ -11424,7 +14573,7 @@ const NPCHK_SITES = {
   MCLM1: {mw:60,     mwh:null,   label:'NP: 60 MW (wind)'},
   MRCP:  {mw:183.33, mwh:733.32, label:'NP: 733.32 MWh / 183.33 MW'},
   NCLS1: {mw:26,     mwh:null,   label:'NP: 26 MW (solar)'},
-  NSTR:  {mw:60,     mwh:null,   label:'NP: 60 MW (solar)'},
+  NSTR1: {mw:60,     mwh:null,   label:'NP: 60 MW (solar)'},
   ORGN1: {mw:150,    mwh:null,   label:'NP: 150 MW (wind)'},
   PDMT1: {mw:250,    mwh:1000,   label:'NP: 1000 MWh / 250 MW'},
   PRGN1: {mw:200,    mwh:430,    label:'NP: 430 MWh / 200 MW'},
@@ -14405,15 +17554,22 @@ const CURR_FIRST_DATE = Object.keys(CURR).sort()[0]; // earliest real date CURR 
 // Render static chips in Current GOP from live state.fh / state.bh.
 // Pitman has its own interactive renderer — see renderPitChips() below.
 function renderStaticChips(){
-  const zones = [
-    ['curr-zone-fh', state.fh, 'fh-chip'],
-    ['curr-zone-bh', state.bh, 'bh-chip'],
-  ];
-  zones.forEach(([id, ops, cls]) => {
-    const el = document.getElementById(id); if(!el) return;
-    el.innerHTML = ops.map(n =>
-      `<div class="chip ${cls} static-chip"><span class="chip-name">${n}</span></div>`
-    ).join('');
+  const el = document.getElementById('curr-zone-roster'); if(!el) return;
+  el.innerHTML = REF_ROSTER.map(n =>
+    `<div class="chip fh-chip static-chip"><span class="chip-name">${n}</span></div>`
+  ).join('');
+}
+
+// Separate from repopulateSelect on purpose — that one's shared with
+// Pitman and driven by state.fh/state.bh, which don't apply here.
+function refPopulateSelect(id, addBlank){
+  const el = document.getElementById(id); if(!el) return;
+  const cur = el.value;
+  el.innerHTML = addBlank ? '<option value="">— pick an operator —</option>' : '<option value="">Everyone</option>';
+  REF_ROSTER.forEach(n=>{
+    const o=document.createElement('option'); o.value=o.textContent=n;
+    if(n===cur) o.selected=true;
+    el.appendChild(o);
   });
 }
 
@@ -14431,7 +17587,7 @@ function repopulateSelect(id, addBlank){
 const CURR_OPS = ["Adam McCauley","Alexander Conway","Christopher Hill","Jesse Snygg-Carrasco","Jonathan Osborne","Mar\u2019Cell Edwards","Morgan Shearer","Rob Seffern","Sergio Torres","Josh Reyes"];
 const CURR_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const CURR_DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const CURR_RCLS={D1:'d1',D2:'d2',D3:'d3',N1:'n1',N2:'n2'};
+const CURR_RCLS={Day1:'d1',Day2:'d1',Night:'n1'};
 // Role lookup
 const CURR_ORIG_ROLES={D1:true,D2:true,N1:true};
 let currCalState={year:new Date().getFullYear(),month:new Date().getMonth()};
@@ -14440,8 +17596,8 @@ let currInited=false;
 function currInitOnce(){
   if(currInited)return; currInited=true;
   renderStaticChips();
-  repopulateSelect('curr-op-select', true);
-  repopulateSelect('curr-cal-focus', false);
+  refPopulateSelect('curr-op-select', true);
+  refPopulateSelect('curr-cal-focus', false);
   document.getElementById('curr-op-select').addEventListener('change',currIndRender);
   document.querySelectorAll('#curr-tabs .curr-tab').forEach(btn=>{
     btn.addEventListener('click',()=>{
@@ -14454,51 +17610,52 @@ function currInitOnce(){
       if(panel) panel.style.display='block';
       if(btn.dataset.ctab==='curr-calendar') currCalRender();
       if(btn.dataset.ctab==='curr-crew'){
-        const td=isoDate(new Date());
         const inp=document.getElementById('curr-crew-date');
         if(!inp.value) inp.value=isoDate(currStart);
         currCrewRender();
       }
     });
   });
-  const td=isoDate(new Date());
+  const dateInp=document.getElementById('curr-date-input');
+  if(dateInp) dateInp.value=isoDate(currStart);
   document.getElementById('curr-crew-date').value=isoDate(currStart);
+  updateCurrIndicator();
   currCrewRender();
 }
 
 function currIndRender(){
   const name=document.getElementById('curr-op-select').value;
   const tbody=document.getElementById('curr-ind-body');
-  const statsEl=document.getElementById('curr-person-stats');
-  if(!name){tbody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:28px;color:var(--text-muted);">Select an operator above.</td></tr>';statsEl.style.display='none';return;}
-  const entries=[]; const td=isoDate(new Date());
-  const startD2=new Date(currStart.getTime());
-  for(let i=0;i<364;i++){
-    const dObj=new Date(startD2.getTime()+i*86400000);
-    const iso=isoDate(dObj);
-    const e=currGetDay(iso);
-    let r=null;
-    if(e.d1===name)r='D1';else if(e.d2===name)r='D2';else if(e.d3===name)r='D3';
-    else if(e.n1===name)r='N1';else if(e.n2===name)r='N2';
-    if(r)entries.push({iso,role:r});
+  if(!name){tbody.innerHTML='<tr><td colspan="9" class="empty-state">Pick an operator above to see their full schedule.</td></tr>';return;}
+  const td=isoDate(new Date());
+  const offBadge=`<span class="rbadge off">off</span>`;
+
+  tbody.innerHTML='';
+  for(let w=0;w<52;w++){
+    const weekStart=new Date(currStart.getTime()+w*7*86400000);
+    const weekEnd=new Date(weekStart.getTime()+6*86400000);
+    const f=dt=>`${dt.getMonth()+1}/${dt.getDate()}`;
+    const dateRange=`${f(weekStart)}\u2013${f(weekEnd)}`;
+    const isoStart=isoDate(weekStart), isoEnd=isoDate(weekEnd);
+    const todayInWeek=td>=isoStart&&td<=isoEnd;
+
+    const cells=[];
+    for(let day=0;day<7;day++){
+      const dObj=new Date(weekStart.getTime()+day*86400000);
+      const iso=isoDate(dObj);
+      const e=currGetDay(iso);
+      let role=null;
+      if(e.day1===name||e.day2===name)role='Day';else if(e.night===name)role='Night';
+      const isToday=iso===td;
+      const wrap=cnt=>`<td${isToday?' class="today-cell"':''}>${cnt}</td>`;
+      cells.push(wrap(role?`<span class="rbadge ${CURR_RCLS[role==='Day'?'Day1':'Night']}">${role}</span>`:offBadge));
+    }
+    const tr=document.createElement('tr');
+    if(w%2===1)tr.classList.add('alt');
+    if(todayInWeek)tr.classList.add('is-today');
+    tr.innerHTML=`<td class="wk-lbl">Wk ${w+1}</td><td class="date-lbl">${dateRange}</td>${cells.join('')}`;
+    tbody.appendChild(tr);
   }
-  const dayC=entries.filter(e=>e.role.startsWith('D')).length;
-  statsEl.style.display='flex';
-  statsEl.innerHTML=`
-    <div class="curr-ps"><strong>${entries.length}</strong><span>Total shifts</span></div>
-    <div class="curr-ps"><strong>${dayC}</strong><span>Day shifts</span></div>
-    <div class="curr-ps"><strong>${entries.length-dayC}</strong><span>Night shifts</span></div>
-    <div class="curr-ps"><strong>${entries.length*12}</strong><span>Total hours</span></div>`;
-  tbody.innerHTML=entries.map((e,i)=>{
-    const d=new Date(e.iso+'T00:00:00');
-    const isT=e.iso===td;
-    return `<tr class="${isT?'is-today':i%2===1?'alt':''}">
-      <td style="font-weight:600">${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}${isT?' <span style="font-size:10px;color:#1d4ed8;font-weight:700">TODAY</span>':''}</td>
-      <td>${CURR_DAYS[d.getDay()].slice(0,3)}</td>
-      <td><span class="rbadge ${CURR_RCLS[e.role]}">${e.role}</span></td>
-      <td>${e.role.startsWith('D')?'Days':'Nights'}</td>
-    </tr>`;
-  }).join('');
 }
 
 function currCrewRender(){
@@ -14514,13 +17671,11 @@ function currCrewRender(){
   const d=new Date(iso+'T00:00:00');
   const isT=iso===isoDate(new Date());
   if(lbl) lbl.textContent=CURR_DAYS[d.getDay()]+', '+CURR_MONTHS[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear()+(isT?' — Today':'');
-  const allOps=[...state.fh,...state.bh]; const offOps=allOps.filter(n=>![e.d1,e.d2,e.d3,e.n1,e.n2].includes(n));
+  const offOps=REF_ROSTER.filter(n=>![e.day1,e.day2,e.night].includes(n));
   const slots=[
-    {r:'D1',c:'d1',n:e.d1,t:'day'},
-    {r:'D2',c:'d2',n:e.d2,t:'day'},
-    {r:'D3',c:'d3',n:e.d3,t:'day'},
-    {r:'N1',c:'n1',n:e.n1,t:'night'},
-    {r:'N2',c:'n2',n:e.n2,t:'night'},
+    {r:'Day', c:'d1', n:e.day1, t:'day'},
+    {r:'Day', c:'d1', n:e.day2, t:'day'},
+    {r:'Night', c:'n1', n:e.night, t:'night'},
   ];
   el.innerHTML=`<div class="curr-day-card">
     <div class="curr-crew-slots">
@@ -14565,16 +17720,14 @@ function currCalRender(){
     const iso=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const e=currGetDay(iso);
     const cell=document.createElement('div');
-    const hasFocus=focus&&e&&[e.d1,e.d2,e.d3,e.n1,e.n2].includes(focus);
-    cell.className='cal-cell'+(iso===td?' today':'')+(e?'':' out-range')+(hasFocus?' has-focus':'');
+    const hasFocus=focus&&[e.day1,e.day2,e.night].includes(focus);
+    cell.className='cal-cell'+(iso===td?' today':'')+(hasFocus?' has-focus':'');
     let inner=`<div class="cal-day-num">${d}</div>`;
-    if(e){
-      inner+=`<div class="curr-cal-sq">GOP</div>`;
-      [{r:'D1',n:e.d1},{r:'D2',n:e.d2},{r:'D3',n:e.d3},{r:'N1',n:e.n1},{r:'N2',n:e.n2}].forEach(s=>{
-        const isFoc=focus&&s.n===focus;
-        inner+=`<div class="cal-person${isFoc?' highlighted':''}${focus&&!isFoc?' faded':''}"><span class="cal-dot ${CURR_RCLS[s.r]}"></span><span>${s.n.split(' ')[0]} <span style="opacity:.6;font-size:9.5px;">${s.r}</span></span></div>`;
-      });
-    }else{inner+='<div class="cal-off-label" style="font-size:10px;color:var(--text-muted);font-style:italic;">out of range</div>';}
+    inner+=`<div class="curr-cal-sq">GOP</div>`;
+    [{r:'Day',n:e.day1},{r:'Day',n:e.day2},{r:'Night',n:e.night}].forEach(s=>{
+      const isFoc=focus&&s.n===focus;
+      inner+=`<div class="cal-person${isFoc?' highlighted':''}${focus&&!isFoc?' faded':''}"><span class="cal-dot ${s.r==='Day'?'d1':'n1'}"></span><span>${s.n} <span style="opacity:.6;font-size:9.5px;">${s.r}</span></span></div>`;
+    });
     cell.innerHTML=inner; grid.appendChild(cell);
   }
 }
@@ -14638,7 +17791,7 @@ function showSchedule(which){
     if(!activeCurrTab) document.querySelector('#curr-tabs .curr-tab').classList.add('active');
     document.getElementById('curr-date-ctrl').style.display='';
     document.getElementById('toggle-curr').classList.add('active');
-    { const el=document.getElementById('sched-subtitle'); if(el) el.textContent='Current Schedule \xB7 Modified DuPont'; }
+    { const el=document.getElementById('sched-subtitle'); if(el) el.textContent='Reference Schedule \xB7 Your real, live rotation'; }
     renderStaticChips(); currInitOnce(); currCalRender();
     updateCurrIndicator();
   }
@@ -14721,15 +17874,16 @@ function updatePitIndicator(){
 // Reading CURR directly removes that whole risk — this is the verified
 // data, not a re-derived approximation of it.
 //
-// currStart is now just the Individual/Crew views' starting point for
-// browsing, not a pattern anchor — CURR's assignments are fixed to real
-// calendar dates and can't be shifted. Dates outside CURR's range
-// (2026-06-18 through 2027-06-18) simply show no data, same as browsing
-// past the end of Split Week's or Pitman's 52-week window.
+// currStart is the Individual/Crew/Calendar views' starting point for
+// browsing — the real rotation itself has no start/end to shift, it's
+// anchored to WOS_ANCHOR and runs indefinitely, so this only controls what
+// date this tab opens showing you, same convenience as Split/Pitman's date
+// picker, different mechanics underneath. Always defaults to this week on
+// load rather than remembering a previously picked date — unlike Split and
+// Pitman's hypothetical proposals, this is a live schedule, so "this week"
+// is the sensible default every time, not wherever you last left it.
 
-let currStart = snapToSunday(
-  new Date(localStorage.getItem('rnwbl_curr_start') || CURR_FIRST_DATE || new Date())
-);
+let currStart = snapToSunday(new Date());
 
 // Reverse of CURR_NAME_MAP (full name -> short name) so CURR's data lines
 // up with the short names used everywhere else in this view (state.fh/bh,
@@ -14738,13 +17892,21 @@ const CURR_NAME_MAP_REV = {};
 Object.entries(CURR_NAME_MAP).forEach(([short, full]) => { CURR_NAME_MAP_REV[full] = short; });
 function currShortName(fullName){ return CURR_NAME_MAP_REV[fullName] || fullName; }
 
+// Reference schedule — this used to be a hardcoded "Modified DuPont" lookup
+// table with 5 named roles a day. Replaced with the same rotation logic
+// that already drives Who's on Shift on the Home page, so this tab shows
+// your actual real schedule instead of an unverified placeholder. Shape is
+// genuinely different underneath: 2 day operators + 1 night operator per
+// day, not 5 roles — every render function below was rewritten to match.
+// Roster only from the ongoing rotation, not WOS_EXCEPTIONS — those are a
+// historical record (real substitutions on real past dates) and should stay
+// accurate as history, but shouldn't make someone who isn't on the team
+// anymore show up as a pickable "current" operator.
+const REF_ROSTER = [...new Set([].concat(...WOS_CANONICAL))].sort();
 function currGetDay(iso){
-  const entry = CURR[iso];
-  if (!entry) return { d1:'—', d2:'—', d3:'—', n1:'—', n2:'—' };
-  return {
-    d1: currShortName(entry.d1), d2: currShortName(entry.d2), d3: currShortName(entry.d3),
-    n1: currShortName(entry.n1), n2: currShortName(entry.n2)
-  };
+  const row = wosRowForDate(new Date(iso+'T00:00:00'));
+  if (!row) return { day1:'—', day2:'—', night:'—' };
+  return { day1: row[0], day2: row[1], night: row[2] };
 }
 
 function getWeekIdxForCurr(date){
@@ -14754,30 +17916,32 @@ function getWeekIdxForCurr(date){
 function applyCurrStart(val){
   if(!val) return;
   currStart = snapToSunday(new Date(val+'T00:00:00'));
-  localStorage.setItem('rnwbl_curr_start', isoDate(currStart));
   const inp = document.getElementById('curr-date-input');
   if(inp) inp.value = isoDate(currStart);
   updateCurrIndicator();
-  currIndRender(); currCrewRender(); currCalRender();
+  currIndRender();
+  document.getElementById('curr-crew-date').value = isoDate(currStart);
+  currCrewRender();
+  currCalState.year = currStart.getFullYear();
+  currCalState.month = currStart.getMonth();
+  currCalRender();
 }
 
 function setCurrToThisWeek(){
   applyCurrStart(isoDate(new Date()));
 }
 
+// The real rotation has no 52-week window to fall outside of — it's an
+// ongoing 42-day cycle, so "which day of that cycle is this" is the
+// accurate, useful thing to show here instead.
 function updateCurrIndicator(){
   const el=document.getElementById('curr-day-indicator'); if(!el) return;
-  const wk = getWeekIdxForCurr(new Date());
-  if(wk >= 0 && wk < 52){
-    el.textContent=`Week ${wk+1} of 52 is current`;
-    el.style.color='var(--green-text,#15803d)';
-  } else if(wk < 0){
-    el.textContent='Today is before schedule start';
-    el.style.color='var(--text-muted)';
-  } else {
-    el.textContent='Today is past the 52-week window';
-    el.style.color='var(--text-muted)';
-  }
+  const anchor = new Date(WOS_ANCHOR+'T00:00:00');
+  const days = Math.round((currStart - anchor) / 86400000);
+  const pos = ((days % WOS_PERIOD) + WOS_PERIOD) % WOS_PERIOD;
+  const isT = isoDate(currStart)===isoDate(new Date());
+  el.textContent = `Day ${pos+1} of the 42-day rotation${isT ? ' — today' : ''}`;
+  el.style.color='var(--text-muted)';
 }
 
 function pitInitOnce(){
