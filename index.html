@@ -12121,7 +12121,7 @@ const AS_SITES = [
     ]
    },
    {
-    "title": "OUTPUT",
+    "title": "OUTPUT: HS",
     "fields": [
      {
       "n": "HS MW",
@@ -12151,44 +12151,189 @@ const AS_SITES = [
       "unit": "MVAR"
      },
      {
-      "n": "BESS Total MWh",
-      "t": "text",
-      "unit": "MWh"
-     }
-    ]
-   },
-   {
-    "title": "SUBSTATION EQUIPMENT",
-    "fields": [
-     {
       "n": "Breakers [28]",
       "t": "text",
       "unit": "/28 Closed"
-     },
-     {
-      "n": "TO/SC Notified",
-      "t": "select",
-      "opts": [
-       "N/A",
-       "Yes",
-       "No"
-      ],
-      "alert": "No"
      }
     ]
    },
    {
-    "title": "FIELD EQUIPMENT",
+    "title": "OUTPUT: MECC1",
     "fields": [
      {
-      "n": "PV Inverters[144]",
+      "n": "MECC1 PV MW",
       "t": "text",
-      "unit": "/144 Online"
+      "unit": "MW"
      },
      {
-      "n": "BESS[654]",
+      "n": "MECC1 PV kV",
       "t": "text",
-      "unit": "/654 Available"
+      "unit": "kV"
+     },
+     {
+      "n": "MECC1 PV MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC1 PV Inverters [48]",
+      "t": "text",
+      "unit": "/48 Online"
+     },
+     {
+      "n": "MECC1 BESS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC1 BESS MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "MECC1 BESS kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC1 BESS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC1 BESS available [218]",
+      "t": "text",
+      "unit": "/218 Available"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT: MECC2A",
+    "fields": [
+     {
+      "n": "MECC2A PV MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC2A PV kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC2A PV MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC2A PV Inverters [48]",
+      "t": "text",
+      "unit": "/48 Online"
+     },
+     {
+      "n": "MECC2A BESS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC2A BESS MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "MECC2A BESS kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC2A BESS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC2A BESS available [218]",
+      "t": "text",
+      "unit": "/218 Available"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT: MECC2B",
+    "fields": [
+     {
+      "n": "MECC2B PV MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC2B PV kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC2B PV MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC2B PV Inverters [48]",
+      "t": "text",
+      "unit": "/48 Online"
+     },
+     {
+      "n": "MECC2B BESS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC2B BESS MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "MECC2B BESS kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC2B BESS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC2B BESS available [218]",
+      "t": "text",
+      "unit": "/218 Available"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
      }
     ]
    }
@@ -12305,6 +12450,71 @@ function asMigrateFrdn1FieldShift() {
 //   [Abnormal, Notes]                    -> [Site Status, Notes]
 //   [Abnormal, Bluence, Bluence, Notes]  -> [Site Status, Bluence, Bluence, Notes]
 // Only the first shape shifts indices; the others map 1:1.
+// Maricopa gained three per-phase OUTPUT sections (MECC1 / MECC2A / MECC2B)
+// mirroring CTFL, inserted after OUTPUT: HS. That pushes the two sections
+// that followed further down, so their storage keys move with them:
+//   SUBSTATION EQUIPMENT  section 3 -> 6
+//   FIELD EQUIPMENT       section 4 -> 7
+// Sections 0-2 (STATUS, CONTROL, OUTPUT: HS) keep their indices and fields,
+// so nothing there needs touching. Guarded — re-running would shift
+// already-correct values into empty sections.
+// Second Maricopa pass: SUBSTATION EQUIPMENT and FIELD EQUIPMENT are gone.
+// Breakers survives — it moves into OUTPUT: HS as the last field, taking the
+// slot BESS Total MWh vacated. Everything else in those two sections is
+// dropped: TO/SC Notified, and the 144/654 totals now covered by the three
+// per-phase counts.
+//
+//   OUTPUT: HS field 4    BESS Total MWh -> Breakers [28]
+//   section 6 field 0     Breakers       -> OUTPUT: HS field 4
+//   section 6 field 1     TO/SC Notified -> dropped
+//   section 7 fields 0,1  PV/BESS totals -> dropped
+//
+// Runs after asMigrateMrcpPhases so both upgrade paths work: a browser
+// coming from before that change gets 3->6 and 4->7 first, then this; one
+// that already ran it skips straight here.
+function asMigrateMrcpTrim() {
+  const marker = 'rnwbl_as_mrcp_trim_v1';
+  try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
+  const hsBreakers = asKey('MRCP', 2, 4);   // was BESS Total MWh, now Breakers
+  const oldBreakers = asKey('MRCP', 6, 0);
+  let changed = false;
+
+  // Clear the vacated slot before moving Breakers in, or the delete below
+  // would wipe the value that just landed there.
+  if (asVals[hsBreakers] !== undefined) { delete asVals[hsBreakers]; changed = true; }
+  if (asTimes[hsBreakers] !== undefined) { delete asTimes[hsBreakers]; changed = true; }
+
+  if (asVals[oldBreakers] !== undefined) { asVals[hsBreakers] = asVals[oldBreakers]; changed = true; }
+  if (asTimes[oldBreakers] !== undefined) { asTimes[hsBreakers] = asTimes[oldBreakers]; changed = true; }
+
+  // Drop the removed fields outright — no destination for them.
+  [asKey('MRCP',6,0), asKey('MRCP',6,1), asKey('MRCP',7,0), asKey('MRCP',7,1)].forEach(k => {
+    if (asVals[k] !== undefined) { delete asVals[k]; changed = true; }
+    if (asTimes[k] !== undefined) { delete asTimes[k]; changed = true; }
+  });
+
+  if (changed) { asSaveVals(); asSaveTimes(); }
+  try { localStorage.setItem(marker, '1'); } catch(e) {}
+}
+
+function asMigrateMrcpPhases() {
+  const marker = 'rnwbl_as_mrcp_phases_v1';
+  try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
+  let changed = false;
+  // High index first isn't required here (targets 6 and 7 are new and empty)
+  // but keeps the intent obvious if more moves get added later.
+  [[4, 7], [3, 6]].forEach(([from, to]) => {
+    for (let fi = 0; fi < 2; fi++) {
+      const oldKey = asKey('MRCP', from, fi);
+      const newKey = asKey('MRCP', to, fi);
+      if (asVals[oldKey] !== undefined) { asVals[newKey] = asVals[oldKey]; delete asVals[oldKey]; changed = true; }
+      if (asTimes[oldKey] !== undefined) { asTimes[newKey] = asTimes[oldKey]; delete asTimes[oldKey]; changed = true; }
+    }
+  });
+  if (changed) { asSaveVals(); asSaveTimes(); }
+  try { localStorage.setItem(marker, '1'); } catch(e) {}
+}
+
 function asMigrateSiteStatus() {
   const marker = 'rnwbl_as_sitestatus_v1';
   try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
@@ -12455,6 +12665,8 @@ function asInit() {
   asMigrateFrdn1FieldShift();
   asMigrateStatusRestructure();
   asMigrateSiteStatus();
+  asMigrateMrcpPhases();
+  asMigrateMrcpTrim();
   // Restore last visited tab; if none saved, skip ROCC1 and land on first real site
   const saved = (()=>{try{return localStorage.getItem('rnwbl_asactive')||'';}catch(e){return '';}})();
   const sites = asSites();
@@ -17478,13 +17690,19 @@ function refPopulateSelect(id, addBlank){
   // Only keep the current selection if that person exists in the model
   // being switched to — otherwise the picker would show a name from the
   // other schedule and render an empty grid.
-  const cur = activeModel().ops.includes(el.value) ? el.value : '';
+  let cur = activeModel().ops.includes(el.value) ? el.value : '';
+  // Individual view lands on Morgan by default, same as Split Week and
+  // Pitman, so the grid shows something real instead of an empty prompt.
+  // addBlank distinguishes the operator picker from the calendar's
+  // "Everyone" highlight filter, which should stay unfiltered.
+  if(!cur && addBlank && activeModel().ops.includes('Morgan')) cur = 'Morgan';
   el.innerHTML = addBlank ? '<option value="">— pick an operator —</option>' : '<option value="">Everyone</option>';
   activeModel().ops.forEach(n=>{
     const o=document.createElement('option'); o.value=o.textContent=n;
     if(n===cur) o.selected=true;
     el.appendChild(o);
   });
+  el.value = cur;
 }
 
 // Repopulate a <select> from current state operators
@@ -18158,7 +18376,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.26';
+const APP_VERSION = 'v1.28';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18167,7 +18385,7 @@ load();
 
 <footer class="app-footer">
   <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-  RNWBL Ops Hub <span class="app-footer-v">v1.26</span>
+  RNWBL Ops Hub <span class="app-footer-v">v1.28</span>
 </footer>
 </body>
 </html>
