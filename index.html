@@ -2420,6 +2420,7 @@ body.dark .corkboard{
     <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-schedule" onclick="navDropdownToggle('schedule', event)" aria-haspopup="true">Schedule Compare <span class="nav-dropdown-caret">▾</span></button>
     <div class="nav-dropdown-menu" id="navdd-menu-schedule">
       <button class="nav-dropdown-item" data-sched="curr" onclick="navDropdownSelectSchedule('curr')">Current Schedule</button>
+      <button class="nav-dropdown-item" data-sched="prop10" onclick="navDropdownSelectSchedule('prop10')">Expanded DuPont</button>
       <button class="nav-dropdown-item" data-sched="split" onclick="navDropdownSelectSchedule('split')">Split Week</button>
       <button class="nav-dropdown-item" data-sched="pitman" onclick="navDropdownSelectSchedule('pitman')">Pitman</button>
     </div>
@@ -2453,6 +2454,7 @@ body.dark .corkboard{
   <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
   <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Passdown</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('curr'); toggleMobileMenu()">Schedule – Current</button>
+  <button class="nav-tab" onclick="navDropdownSelectSchedule('prop10'); toggleMobileMenu()">Schedule – Expanded DuPont</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('split'); toggleMobileMenu()">Schedule – Split Week</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('pitman'); toggleMobileMenu()">Schedule – Pitman</button>
   <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Timezones</button>
@@ -3810,6 +3812,7 @@ body.dark .corkboard{
     <div class="page-header-actions">
       <div class="sched-toggle">
         <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')">Current Schedule</button>
+        <button class="sched-toggle-btn" id="toggle-prop10" onclick="showSchedule('prop10')">Expanded DuPont</button>
         <button class="sched-toggle-btn active" id="toggle-split" onclick="showSchedule('split')">Split Week</button>
         <button class="sched-toggle-btn" id="toggle-pit" onclick="showSchedule('pitman')">Pitman</button>
       </div>
@@ -4039,9 +4042,9 @@ body.dark .corkboard{
           <div class="intro-section">
             <h2>How the schedule works</h2>
             <ul>
-              <li><strong>7 operators, 2 day + 1 night daily</strong> — two people cover days, one covers nights, every day</li>
+              <li id="curr-intro-lead"><strong>6 operators, 2 day + 1 night daily</strong> — two people cover days, one covers nights, every day</li>
               <li><strong>12-hour shifts</strong> — Days 6am–6pm · Nights 6pm–6am</li>
-              <li><strong>Real rotation, not a formula</strong> — the same 42-day pattern that drives Who's on Shift on the Home page, not a separate or hypothetical model</li>
+              <li id="curr-intro-cycle"><strong>Real rotation, not a formula</strong> — the same 42-day pattern that drives Who's on Shift on the Home page</li>
               <li><strong>Verified</strong> — this is your actual live rotation, not a placeholder</li>
               <li><strong>Result</strong> — the schedule you're already working, visible here for comparison</li>
             </ul>
@@ -4091,11 +4094,11 @@ body.dark .corkboard{
     <div class="halves">
       <div class="half-card fh" style="max-width:100%;">
         <div class="half-card-header">
-          <div class="half-title">Operators</div>
-          <div class="half-days">Reference Schedule &middot; 2 Day &middot; 1 Night, rotating</div>
+          <div class="half-title" id="curr-roster-title">Operators</div>
+          <div class="half-days" id="curr-roster-sub">2 day &middot; 1 night, rotating &middot; 42-day cycle</div>
         </div>
         <div id="curr-zone-roster" style="display:flex;flex-direction:column;gap:5px;padding:8px 0 4px;"></div>
-        <div class="hint">Each operator's real rotation, pulled from the same source as Who's on Shift</div>
+        <div class="hint" id="curr-roster-hint">Each operator's real rotation, pulled from the same source as Who's on Shift</div>
       </div>
     </div>
 
@@ -5478,9 +5481,7 @@ function initSharedRemindersListener() {
       checkSharedReminderAlarms();
     }
     renderSharedReminders();
-  }, err => {
-    console.error('Firestore (sharedReminders):', err);
-  });
+  }, err => fsListenerError('sharedReminders', err));
 }
 
 // Fires for any reminder whose time has arrived and hasn't already
@@ -6612,7 +6613,7 @@ function initSiteStatusListener() {
     snap.forEach(doc => { next[doc.id] = doc.data(); });
     siteStatuses = next;
     renderFleetOverview();
-  }, err => console.error('Firestore (siteStatus):', err), err => fsListenerError('siteStatus', err));
+  }, err => fsListenerError('siteStatus', err));
 }
 
 // Defensive against older saved docs from before entries existed — treated
@@ -8544,15 +8545,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -8640,15 +8643,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -8727,15 +8732,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -8861,15 +8868,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -9012,15 +9021,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -9188,15 +9199,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -9504,15 +9517,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -9575,15 +9590,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -9624,15 +9641,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -9690,15 +9709,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -9792,15 +9813,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -9973,15 +9996,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10089,15 +10114,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10265,15 +10292,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10331,15 +10360,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10472,15 +10503,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10573,15 +10606,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10639,15 +10674,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10773,15 +10810,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10822,15 +10861,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10886,15 +10927,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11020,15 +11063,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11092,15 +11137,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11233,15 +11280,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11404,15 +11453,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11493,15 +11544,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11559,15 +11612,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11660,15 +11715,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11724,15 +11781,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11788,15 +11847,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11872,15 +11933,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -12013,15 +12076,17 @@ const AS_SITES = [
        "",
        "Normal",
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
       "alert": [
        "Abnormal",
+       "De-rated",
        "Outage in place"
       ],
-      "autoNote": {
-       "when": "Outage in place",
-       "text": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -12056,7 +12121,7 @@ const AS_SITES = [
     ]
    },
    {
-    "title": "OUTPUT",
+    "title": "OUTPUT: HS",
     "fields": [
      {
       "n": "HS MW",
@@ -12086,44 +12151,189 @@ const AS_SITES = [
       "unit": "MVAR"
      },
      {
-      "n": "BESS Total MWh",
-      "t": "text",
-      "unit": "MWh"
-     }
-    ]
-   },
-   {
-    "title": "SUBSTATION EQUIPMENT",
-    "fields": [
-     {
       "n": "Breakers [28]",
       "t": "text",
       "unit": "/28 Closed"
-     },
-     {
-      "n": "TO/SC Notified",
-      "t": "select",
-      "opts": [
-       "N/A",
-       "Yes",
-       "No"
-      ],
-      "alert": "No"
      }
     ]
    },
    {
-    "title": "FIELD EQUIPMENT",
+    "title": "OUTPUT: MECC1",
     "fields": [
      {
-      "n": "PV Inverters[144]",
+      "n": "MECC1 PV MW",
       "t": "text",
-      "unit": "/144 Online"
+      "unit": "MW"
      },
      {
-      "n": "BESS[654]",
+      "n": "MECC1 PV kV",
       "t": "text",
-      "unit": "/654 Available"
+      "unit": "kV"
+     },
+     {
+      "n": "MECC1 PV MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC1 PV Inverters [48]",
+      "t": "text",
+      "unit": "/48 Online"
+     },
+     {
+      "n": "MECC1 BESS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC1 BESS MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "MECC1 BESS kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC1 BESS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC1 BESS available [218]",
+      "t": "text",
+      "unit": "/218 Available"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT: MECC2A",
+    "fields": [
+     {
+      "n": "MECC2A PV MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC2A PV kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC2A PV MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC2A PV Inverters [48]",
+      "t": "text",
+      "unit": "/48 Online"
+     },
+     {
+      "n": "MECC2A BESS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC2A BESS MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "MECC2A BESS kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC2A BESS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC2A BESS available [218]",
+      "t": "text",
+      "unit": "/218 Available"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT: MECC2B",
+    "fields": [
+     {
+      "n": "MECC2B PV MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC2B PV kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC2B PV MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC2B PV Inverters [48]",
+      "t": "text",
+      "unit": "/48 Online"
+     },
+     {
+      "n": "MECC2B BESS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC2B BESS MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "MECC2B BESS kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC2B BESS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC2B BESS available [218]",
+      "t": "text",
+      "unit": "/218 Available"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
      }
     ]
    }
@@ -12240,6 +12450,71 @@ function asMigrateFrdn1FieldShift() {
 //   [Abnormal, Notes]                    -> [Site Status, Notes]
 //   [Abnormal, Bluence, Bluence, Notes]  -> [Site Status, Bluence, Bluence, Notes]
 // Only the first shape shifts indices; the others map 1:1.
+// Maricopa gained three per-phase OUTPUT sections (MECC1 / MECC2A / MECC2B)
+// mirroring CTFL, inserted after OUTPUT: HS. That pushes the two sections
+// that followed further down, so their storage keys move with them:
+//   SUBSTATION EQUIPMENT  section 3 -> 6
+//   FIELD EQUIPMENT       section 4 -> 7
+// Sections 0-2 (STATUS, CONTROL, OUTPUT: HS) keep their indices and fields,
+// so nothing there needs touching. Guarded — re-running would shift
+// already-correct values into empty sections.
+// Second Maricopa pass: SUBSTATION EQUIPMENT and FIELD EQUIPMENT are gone.
+// Breakers survives — it moves into OUTPUT: HS as the last field, taking the
+// slot BESS Total MWh vacated. Everything else in those two sections is
+// dropped: TO/SC Notified, and the 144/654 totals now covered by the three
+// per-phase counts.
+//
+//   OUTPUT: HS field 4    BESS Total MWh -> Breakers [28]
+//   section 6 field 0     Breakers       -> OUTPUT: HS field 4
+//   section 6 field 1     TO/SC Notified -> dropped
+//   section 7 fields 0,1  PV/BESS totals -> dropped
+//
+// Runs after asMigrateMrcpPhases so both upgrade paths work: a browser
+// coming from before that change gets 3->6 and 4->7 first, then this; one
+// that already ran it skips straight here.
+function asMigrateMrcpTrim() {
+  const marker = 'rnwbl_as_mrcp_trim_v1';
+  try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
+  const hsBreakers = asKey('MRCP', 2, 4);   // was BESS Total MWh, now Breakers
+  const oldBreakers = asKey('MRCP', 6, 0);
+  let changed = false;
+
+  // Clear the vacated slot before moving Breakers in, or the delete below
+  // would wipe the value that just landed there.
+  if (asVals[hsBreakers] !== undefined) { delete asVals[hsBreakers]; changed = true; }
+  if (asTimes[hsBreakers] !== undefined) { delete asTimes[hsBreakers]; changed = true; }
+
+  if (asVals[oldBreakers] !== undefined) { asVals[hsBreakers] = asVals[oldBreakers]; changed = true; }
+  if (asTimes[oldBreakers] !== undefined) { asTimes[hsBreakers] = asTimes[oldBreakers]; changed = true; }
+
+  // Drop the removed fields outright — no destination for them.
+  [asKey('MRCP',6,0), asKey('MRCP',6,1), asKey('MRCP',7,0), asKey('MRCP',7,1)].forEach(k => {
+    if (asVals[k] !== undefined) { delete asVals[k]; changed = true; }
+    if (asTimes[k] !== undefined) { delete asTimes[k]; changed = true; }
+  });
+
+  if (changed) { asSaveVals(); asSaveTimes(); }
+  try { localStorage.setItem(marker, '1'); } catch(e) {}
+}
+
+function asMigrateMrcpPhases() {
+  const marker = 'rnwbl_as_mrcp_phases_v1';
+  try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
+  let changed = false;
+  // High index first isn't required here (targets 6 and 7 are new and empty)
+  // but keeps the intent obvious if more moves get added later.
+  [[4, 7], [3, 6]].forEach(([from, to]) => {
+    for (let fi = 0; fi < 2; fi++) {
+      const oldKey = asKey('MRCP', from, fi);
+      const newKey = asKey('MRCP', to, fi);
+      if (asVals[oldKey] !== undefined) { asVals[newKey] = asVals[oldKey]; delete asVals[oldKey]; changed = true; }
+      if (asTimes[oldKey] !== undefined) { asTimes[newKey] = asTimes[oldKey]; delete asTimes[oldKey]; changed = true; }
+    }
+  });
+  if (changed) { asSaveVals(); asSaveTimes(); }
+  try { localStorage.setItem(marker, '1'); } catch(e) {}
+}
+
 function asMigrateSiteStatus() {
   const marker = 'rnwbl_as_sitestatus_v1';
   try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
@@ -12390,6 +12665,8 @@ function asInit() {
   asMigrateFrdn1FieldShift();
   asMigrateStatusRestructure();
   asMigrateSiteStatus();
+  asMigrateMrcpPhases();
+  asMigrateMrcpTrim();
   // Restore last visited tab; if none saved, skip ROCC1 and land on first real site
   const saved = (()=>{try{return localStorage.getItem('rnwbl_asactive')||'';}catch(e){return '';}})();
   const sites = asSites();
@@ -12640,12 +12917,12 @@ function asChange(k, alertId, siteId, si, el) {
       });
     }
   }
-  // Selecting an outage pre-fills the note explaining it, so the reason is
+  // Certain answers pre-fill a note explaining themselves, so the reason is
   // captured without retyping. Appends rather than overwrites — there may
   // already be a note there — and only fires on the transition into that
   // value, not on every re-select.
-  if(f?.autoNote && el.value===f.autoNote.when && prev!==el.value){
-    asApplyAutoNote(site, siteId, si, f.autoNote);
+  if(f?.autoNotes && f.autoNotes[el.value] && prev!==el.value){
+    asApplyAutoNote(site, siteId, si, { text: f.autoNotes[el.value] });
   }
   asRenderTabs();
 }
@@ -12818,11 +13095,17 @@ function asExportCSV() {
       // Site Status is one control in the UI but exports as the two Yes/No
       // rows it replaced, so anything downstream reading this file — and the
       // NERC record itself — keeps the shape it already expects.
+      //
+      // Those two columns can't distinguish De-rated from a generic Abnormal
+      // (both are abnormal-but-not-outage), so the raw value goes out as a
+      // third row. Additive, not a change: anything reading by field name
+      // sees the same two columns it always did and ignores this one.
       if(f.n==='Site Status'){
         const abnormal = v==='' ? '' : (v==='Normal' ? 'No' : 'Yes');
         const outage   = v==='' ? '' : (v==='Outage in place' ? 'Yes' : 'No');
         csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","Abnormal Operating Conditions","${abnormal}","${fieldEdited}"\n`;
         csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","Outage In Place","${outage}","${fieldEdited}"\n`;
+        csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","Site Status","${v}","${fieldEdited}"\n`;
         return;
       }
       csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","${f.n}","${v}","${fieldEdited}"\n`;
@@ -12867,7 +13150,19 @@ const SW_HARDCODED = [
     body:'Call received from field tech {{TECH}} requesting de-energization of Feeder Breaker 52F{{NUMBER}}:\n– Associated Megapacks disabled locally\n– MVT AC Level Breakers opened locally\n– Feeder Breaker 52F{{NUMBER}} opened remotely' },
   { id:'ctlf-re',  site:'CTLF · Feeder Breaker', action:'Re-Energize', cls:'re',
     numLbl:'Feeder Breaker #', numPh:'e.g. 32',
-    body:'Call received from field tech {{TECH}} requesting energization of Feeder Breaker 52F{{NUMBER}}:\n– Feeder Breaker 52F{{NUMBER}} closed remotely\n– MVT AC Level Breakers closed locally\n– Associated Megapacks enabled locally' }
+    body:'Call received from field tech {{TECH}} requesting energization of Feeder Breaker 52F{{NUMBER}}:\n– Feeder Breaker 52F{{NUMBER}} closed remotely\n– MVT AC Level Breakers closed locally\n– Associated Megapacks enabled locally' },
+  { id:'cflats-bess-de', site:'CFLATS · BESS', action:'De-Energize', cls:'de',
+    numLbl:'Unit #', numPh:'e.g. 12',
+    body:'Call received from field tech {{TECH}} requesting de-energization of Unit {{NUMBER}}:\n\u2013 Associated Megapacks disabled remotely\n\u2013 Unit {{NUMBER}} breakers opened remotely' },
+  { id:'cflats-bess-re', site:'CFLATS \u00B7 BESS', action:'Re-Energize', cls:'re',
+    numLbl:'Unit #', numPh:'e.g. 12',
+    body:'Call received from field tech {{TECH}} requesting energization of Unit {{NUMBER}}:\n\u2013 Unit {{NUMBER}} breakers closed remotely\n\u2013 Associated Megapacks enabled remotely' },
+  { id:'cflats-pv-de', site:'CFLATS \u00B7 PV', action:'De-Energize', cls:'de',
+    numLbl:'Inverter #', numPh:'e.g. 12',
+    body:'Call received from field tech {{TECH}} requesting de-energization of Inverter {{NUMBER}}:\n\u2013 Stop command sent to Inverter {{NUMBER}} remotely' },
+  { id:'cflats-pv-re', site:'CFLATS \u00B7 PV', action:'Re-Energize', cls:'re',
+    numLbl:'Inverter #', numPh:'e.g. 12',
+    body:'Call received from field tech {{TECH}} requesting energization of Inverter {{NUMBER}}:\n\u2013 Start command sent to Inverter {{NUMBER}} remotely' },
 ];
 
 const SW_CUSTOM_KEY = 'rnwbl_sw_custom_v1';
@@ -12894,7 +13189,7 @@ function initSwSharedTplsListener() {
   window.db.collection('sharedTemplates').orderBy('sharedAt', 'desc').onSnapshot(snap => {
     swSharedTpls = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     swRenderTpls();
-  }, err => console.error('Firestore (sharedTemplates):', err), err => fsListenerError('sharedTemplates', err));
+  }, err => fsListenerError('sharedTemplates', err));
 }
 
 function swShareTpl(id) {
@@ -15953,7 +16248,7 @@ function initPbSuggestionsListener() {
     pbSuggestions = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     pbRenderSuggestionsBadge();
     if (document.getElementById('pb-suggestions-panel').style.display !== 'none') pbRenderSuggestionsPanel();
-  }, err => console.error('Firestore (playbookSuggestions):', err), err => fsListenerError('playbookSuggestions', err));
+  }, err => fsListenerError('playbookSuggestions', err));
 }
 
 function pbRenderSuggestionsBadge() {
@@ -16178,7 +16473,7 @@ function initAscClaimsListener() {
     snap.docs.forEach(doc => { ascClaims[doc.id] = doc.data(); });
     ascRenderHomeTile();
     ascRenderClaimStrip();
-  }, err => console.error('Firestore (assetScanClaims):', err), err => fsListenerError('assetScanClaims', err));
+  }, err => fsListenerError('assetScanClaims', err));
 }
 
 // A claim only counts if it's from the current shift — anything else is
@@ -16330,7 +16625,7 @@ function initTeamNotesListener() {
   window.db.collection('teamNotes').orderBy('createdAt', 'desc').onSnapshot(snap => {
     teamNotes = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     homeRenderTeamNotes();
-  }, err => console.error('Firestore (teamNotes):', err), err => fsListenerError('teamNotes', err));
+  }, err => fsListenerError('teamNotes', err));
 }
 
 function homeRenderTeamNotes() {
@@ -17395,7 +17690,7 @@ document.querySelectorAll('#split-tabs .tab-btn').forEach(btn=>{
 // Pitman has its own interactive renderer — see renderPitChips() below.
 function renderStaticChips(){
   const el = document.getElementById('curr-zone-roster'); if(!el) return;
-  el.innerHTML = REF_ROSTER.map(n =>
+  el.innerHTML = activeModel().ops.map(n =>
     `<div class="chip fh-chip static-chip"><span class="chip-name">${n}</span></div>`
   ).join('');
 }
@@ -17404,13 +17699,22 @@ function renderStaticChips(){
 // Pitman and driven by state.fh/state.bh, which don't apply here.
 function refPopulateSelect(id, addBlank){
   const el = document.getElementById(id); if(!el) return;
-  const cur = el.value;
+  // Only keep the current selection if that person exists in the model
+  // being switched to — otherwise the picker would show a name from the
+  // other schedule and render an empty grid.
+  let cur = activeModel().ops.includes(el.value) ? el.value : '';
+  // Individual view lands on Morgan by default, same as Split Week and
+  // Pitman, so the grid shows something real instead of an empty prompt.
+  // addBlank distinguishes the operator picker from the calendar's
+  // "Everyone" highlight filter, which should stay unfiltered.
+  if(!cur && addBlank && activeModel().ops.includes('Morgan')) cur = 'Morgan';
   el.innerHTML = addBlank ? '<option value="">— pick an operator —</option>' : '<option value="">Everyone</option>';
-  REF_ROSTER.forEach(n=>{
+  activeModel().ops.forEach(n=>{
     const o=document.createElement('option'); o.value=o.textContent=n;
     if(n===cur) o.selected=true;
     el.appendChild(o);
   });
+  el.value = cur;
 }
 
 // Repopulate a <select> from current state operators
@@ -17482,7 +17786,7 @@ function currIndRender(){
       const iso=isoDate(dObj);
       const e=currGetDay(iso);
       let role=null;
-      if(e.day1===name||e.day2===name)role='Day';else if(e.night===name)role='Night';
+      if(e.day.includes(name))role='Day';else if(e.night.includes(name))role='Night';
       const isToday=iso===td;
       const wrap=cnt=>`<td${isToday?' class="today-cell"':''}>${cnt}</td>`;
       cells.push(wrap(role?`<span class="rbadge ${CURR_RCLS[role==='Day'?'Day1':'Night']}">${role}</span>`:offBadge));
@@ -17508,11 +17812,11 @@ function currCrewRender(){
   const d=new Date(iso+'T00:00:00');
   const isT=iso===isoDate(new Date());
   if(lbl) lbl.textContent=CURR_DAYS[d.getDay()]+', '+CURR_MONTHS[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear()+(isT?' — Today':'');
-  const offOps=REF_ROSTER.filter(n=>![e.day1,e.day2,e.night].includes(n));
+  const working=[...e.day, ...e.night];
+  const offOps=activeModel().ops.filter(n=>!working.includes(n));
   const slots=[
-    {r:'Day', c:'d1', n:e.day1, t:'day'},
-    {r:'Day', c:'d1', n:e.day2, t:'day'},
-    {r:'Night', c:'n1', n:e.night, t:'night'},
+    ...e.day.map(n=>({r:'Day', c:'d1', n, t:'day'})),
+    ...e.night.map(n=>({r:'Night', c:'n1', n, t:'night'})),
   ];
   el.innerHTML=`<div class="curr-day-card">
     <div class="curr-crew-slots">
@@ -17557,11 +17861,11 @@ function currCalRender(){
     const iso=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const e=currGetDay(iso);
     const cell=document.createElement('div');
-    const hasFocus=focus&&[e.day1,e.day2,e.night].includes(focus);
+    const hasFocus=focus&&[...e.day,...e.night].includes(focus);
     cell.className='cal-cell'+(iso===td?' today':'')+(hasFocus?' has-focus':'');
     let inner=`<div class="cal-day-num">${d}</div>`;
     inner+=`<div class="curr-cal-sq">GOP</div>`;
-    [{r:'Day',n:e.day1},{r:'Day',n:e.day2},{r:'Night',n:e.night}].forEach(s=>{
+    [...e.day.map(n=>({r:'Day',n})), ...e.night.map(n=>({r:'Night',n}))].forEach(s=>{
       const isFoc=focus&&s.n===focus;
       inner+=`<div class="cal-person${isFoc?' highlighted':''}${focus&&!isFoc?' faded':''}"><span class="cal-dot ${s.r==='Day'?'d1':'n1'}"></span><span>${s.n} <span style="opacity:.6;font-size:9.5px;">${s.r}</span></span></div>`;
     });
@@ -17594,7 +17898,7 @@ function showSchedule(which){
     const el=document.getElementById(id); if(el) el.style.display='none';
   });
   // Toggle buttons
-  ['toggle-curr','toggle-split','toggle-pit'].forEach(id=>{
+  ['toggle-curr','toggle-prop10','toggle-split','toggle-pit'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.classList.remove('active');
   });
 
@@ -17620,6 +17924,11 @@ function showSchedule(which){
     renderPitChips(); pitInitOnce(); pitCalRender();
     updatePitIndicator();
   } else {
+    // 'curr' and 'prop10' share one view — only the data model differs, so
+    // switching between them is a model swap plus a re-render, not a
+    // separate set of panels to keep in sync.
+    currModel = (which === 'prop10') ? 'prop10' : 'curr';
+    const model = activeModel();
     document.getElementById('curr-view').style.display='';
     document.getElementById('curr-tabs').style.display='';
     const activeCurrTab=document.querySelector('#curr-tabs .curr-tab.active');
@@ -17627,11 +17936,37 @@ function showSchedule(which){
     if(activeCurrPanel) activeCurrPanel.style.display='block';
     if(!activeCurrTab) document.querySelector('#curr-tabs .curr-tab').classList.add('active');
     document.getElementById('curr-date-ctrl').style.display='';
-    document.getElementById('toggle-curr').classList.add('active');
-    { const el=document.getElementById('sched-subtitle'); if(el) el.textContent='Reference Schedule \xB7 Your real, live rotation'; }
-    renderStaticChips(); currInitOnce(); currCalRender();
+    document.getElementById(currModel==='prop10'?'toggle-prop10':'toggle-curr').classList.add('active');
+    { const el=document.getElementById('sched-subtitle'); if(el) el.textContent=model.label+' \xB7 '+model.subtitle; }
+    currApplyModelChrome();
+    renderStaticChips(); currInitOnce();
+    refPopulateSelect('curr-op-select', true);
+    refPopulateSelect('curr-cal-focus', false);
+    currIndRender(); currCrewRender(); currCalRender();
     updateCurrIndicator();
   }
+}
+
+// Swaps the copy that differs between the two models — the roster card
+// header, the intro bullets, and the cycle-length wording. Everything else
+// on the page is identical because the underlying shape is identical.
+function currApplyModelChrome(){
+  const m = activeModel();
+  const isProp = currModel === 'prop10';
+  const setText = (id, txt) => { const el=document.getElementById(id); if(el) el.textContent = txt; };
+  setText('curr-roster-title', isProp ? 'Operators (proposed)' : 'Operators');
+  setText('curr-roster-sub', m.dayCount + ' day \u00B7 ' + m.nightCount + ' night, rotating \u00B7 ' + m.cycle + '-day cycle');
+  setText('curr-roster-hint', isProp
+    ? 'Ten operators, each with their own rotation \u2014 no shared schedules'
+    : "Each operator's real rotation, pulled from the same source as Who's on Shift");
+  const intro = document.getElementById('curr-intro-lead');
+  if (intro) intro.innerHTML = isProp
+    ? '<strong>10 operators, 3 day + 2 night daily</strong> \u2014 three cover days, two cover nights, every day'
+    : '<strong>' + m.ops.length + ' operators, 2 day + 1 night daily</strong> \u2014 two people cover days, one covers nights, every day';
+  const cyc = document.getElementById('curr-intro-cycle');
+  if (cyc) cyc.innerHTML = isProp
+    ? '<strong>70-day cycle</strong> \u2014 ten rotation slots, one per operator, so nobody shares a schedule'
+    : "<strong>Real rotation, not a formula</strong> \u2014 the same 42-day pattern that drives Who's on Shift on the Home page";
 }
 
 // ══════════════════════════════════════════════════════════════════════
@@ -17726,12 +18061,71 @@ let currStart = snapToSunday(new Date());
 // historical record (real substitutions on real past dates) and should stay
 // accurate as history, but shouldn't make someone who isn't on the team
 // anymore show up as a pickable "current" operator.
-const REF_ROSTER = [...new Set([].concat(...WOS_CANONICAL))].sort();
-function currGetDay(iso){
-  const row = wosRowForDate(new Date(iso+'T00:00:00'));
-  if (!row) return { day1:'—', day2:'—', night:'—' };
-  return { day1: row[0], day2: row[1], night: row[2] };
+// ── Schedule models ──────────────────────────────────────────────────────
+// Both schedules render through the same view — they differ only in roster,
+// cycle length, and how many people cover days vs nights. currGetDay()
+// returns {day:[...], night:[...]} so the renderers never care which model
+// is active or how many slots it has.
+//
+// PROP10 is the expanded DuPont: the same schedule family as the current
+// 6-operator rotation, grown to 10 — same 12-hour shifts, same 50% duty,
+// same 7-on/7-off character with 3s and 4s — but a 70-day cycle instead of
+// 42, because ten operators need ten rotation slots (10 x 7 = 70). Trying
+// to fit ten people into the existing 42-day frame forces four pairs onto
+// identical schedules; stretching the cycle gives everyone their own again.
+const PROP10_OPS = ['Josh','Adam','Alexander','Jesse','Morgan','Sergio','Daniel','Sasha','Ricky','Christian'];
+
+// One operator's 70-day shape, as run-lengths. Everyone runs this exact
+// sequence, each offset a week from the last. Verified: gives exactly 3 day
+// + 2 night every calendar day, and 21 day / 14 night per person per cycle.
+const PROP10_RUNS = [['D',3],[null,3],['N',7],[null,4],['D',4],[null,7],['D',7],[null,7],['N',7],[null,7],['D',7],[null,7]];
+const PROP10_SHAPE = (() => {
+  const out = [];
+  PROP10_RUNS.forEach(([role, len]) => { for (let i = 0; i < len; i++) out.push(role); });
+  return out;
+})();
+
+function prop10RowForDate(dateObj){
+  const anchor = new Date(WOS_ANCHOR + 'T00:00:00');
+  const days = Math.round((dateObj - anchor) / 86400000);
+  const day = [], night = [];
+  PROP10_OPS.forEach((name, i) => {
+    const pos = (((days - i * 7) % 70) + 70) % 70;
+    const role = PROP10_SHAPE[pos];
+    if (role === 'D') day.push(name);
+    else if (role === 'N') night.push(name);
+  });
+  return { day, night };
 }
+
+const SCHED_MODELS = {
+  curr: {
+    label: 'Current schedule',
+    subtitle: 'Your real, live rotation',
+    ops: [...new Set([].concat(...WOS_CANONICAL))].sort(),
+    cycle: 42,
+    dayCount: 2,
+    nightCount: 1,
+    getDay(iso){
+      const row = wosRowForDate(new Date(iso + 'T00:00:00'));
+      if (!row) return { day: ['—','—'], night: ['—'] };
+      return { day: [row[0], row[1]], night: [row[2]] };
+    }
+  },
+  prop10: {
+    label: 'Expanded DuPont',
+    subtitle: 'Same shifts, same duty, 70-day cycle',
+    ops: [...PROP10_OPS].sort(),
+    cycle: 70,
+    dayCount: 3,
+    nightCount: 2,
+    getDay(iso){ return prop10RowForDate(new Date(iso + 'T00:00:00')); }
+  }
+};
+
+let currModel = 'curr';
+function activeModel(){ return SCHED_MODELS[currModel]; }
+function currGetDay(iso){ return activeModel().getDay(iso); }
 
 
 function applyCurrStart(val){
@@ -17757,11 +18151,12 @@ function setCurrToThisWeek(){
 // accurate, useful thing to show here instead.
 function updateCurrIndicator(){
   const el=document.getElementById('curr-day-indicator'); if(!el) return;
+  const cycle = activeModel().cycle;
   const anchor = new Date(WOS_ANCHOR+'T00:00:00');
   const days = Math.round((currStart - anchor) / 86400000);
-  const pos = ((days % WOS_PERIOD) + WOS_PERIOD) % WOS_PERIOD;
+  const pos = ((days % cycle) + cycle) % cycle;
   const isT = isoDate(currStart)===isoDate(new Date());
-  el.textContent = `Day ${pos+1} of the 42-day rotation${isT ? ' — today' : ''}`;
+  el.textContent = `Day ${pos+1} of the ${cycle}-day rotation${isT ? ' — today' : ''}`;
   el.style.color='var(--text-muted)';
 }
 
@@ -17988,12 +18383,21 @@ setTimeout(() => {
   }
 })();
 
+// Deployment is a single cached HTML file, so a browser can quietly keep
+// serving an old copy after a push — which reads as "the fix didn't work"
+// rather than "you're running yesterday's code." This prints the build the
+// page is actually running, so that question takes one glance to answer.
+// Bump APP_VERSION and the footer <span class="app-footer-v"> together.
+const APP_VERSION = 'v1.29';
+console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
+console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
+
 load();
 </script>
 
 <footer class="app-footer">
-  <, err => fsListenerError('sharedReminders', err)svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-  RNWBL Ops Hub <span class="app-footer-v">v1.24</span>
+  <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
+  RNWBL Ops Hub <span class="app-footer-v">v1.29</span>
 </footer>
 </body>
 </html>
