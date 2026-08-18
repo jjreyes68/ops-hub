@@ -2103,7 +2103,6 @@ body.dark .sp-tag-similar{background:#2a1f3d;color:#c4b5fd;}
 #view-schedule .curr-off-op{font-size:12px;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:3px 10px;}
 #view-schedule .curr-no-data{text-align:center;padding:40px;color:var(--text-muted);}
 #view-schedule .curr-extrap-note{font-size:11.5px;color:#7c3aed;background:#f5f3ff;border:1px solid #ddd6fe;border-radius:6px;padding:7px 12px;margin-bottom:12px;}
-#view-schedule .curr-cal-sq{font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;display:inline-block;margin-bottom:3px;background:#f5f3ff;color:#7c3aed;}
 @media(max-width:700px){
 #view-schedule .curr-crew-slots{grid-template-columns:repeat(3,1fr);}
 }
@@ -2238,7 +2237,25 @@ body.dark #view-schedule .chip-del{ background: rgba(255,255,255,0.08); border-c
 .pb-phase-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
 .pb-phase-nav-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-family:var(--f);font-size:11px;font-weight:600;padding:6px 11px;border-radius:14px;cursor:pointer;}
 .pb-phase-nav-btn:hover{border-color:var(--blue);color:var(--blue);}
+.pb-phase-nav-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.pb-phase-nav-btn.active:hover{color:#fff;}
+.pb-phase-nav-btn.complete{border-color:var(--green);color:var(--green);}
+.pb-phase-nav-btn.complete.active{background:var(--green);border-color:var(--green);color:#fff;}
+.pb-phase-count{margin-left:7px;opacity:.65;font-weight:500;font-size:10px;}
+.pb-phase-nav{padding-bottom:14px;border-bottom:1px solid var(--border);}
+/* Choice screen only — cards centred with room around them. Once a path is
+   picked the normal step UI takes over unchanged. */
+.pb-choose{margin:34px auto 38px;max-width:660px;}
+.pb-choose-q{font-size:16.5px;font-weight:600;color:var(--text);margin-bottom:20px;text-align:center;}
+.pb-choose-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;}
+.pb-choose-opt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;min-height:132px;padding:24px 18px;text-align:center;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rl);cursor:pointer;font-family:var(--f);transition:transform .12s,border-color .12s,background .12s,box-shadow .12s;}
+.pb-choose-opt:hover{border-color:var(--blue);background:var(--bbg);transform:translateY(-2px);box-shadow:var(--shs);}
+.pb-choose-name{font-size:14.5px;font-weight:600;color:var(--text);line-height:1.35;}
+.pb-choose-meta{font-size:11px;color:var(--text3);font-family:var(--m);letter-spacing:.03em;}
 .pb-phase-section{margin-bottom:22px;}
+.pb-note-warn{color:var(--amber);font-weight:600;background:var(--abg);display:inline-block;padding:2px 8px;border-radius:5px;margin-top:3px;}
+.pb-step-jump{margin-top:7px;background:var(--bbg);border:1px solid var(--blue);color:var(--blue);font-family:var(--f);font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;cursor:pointer;}
+.pb-step-jump:hover{background:var(--blue);color:#fff;}
 .pb-phase-name{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);scroll-margin-top:16px;}
 .pb-step-row{display:flex;align-items:flex-start;gap:11px;padding:10px 4px;border-radius:8px;cursor:pointer;}
 .pb-step-row:hover{background:var(--bg3);}
@@ -2420,6 +2437,7 @@ body.dark .corkboard{
     <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-schedule" onclick="navDropdownToggle('schedule', event)" aria-haspopup="true">Schedule Compare <span class="nav-dropdown-caret">▾</span></button>
     <div class="nav-dropdown-menu" id="navdd-menu-schedule">
       <button class="nav-dropdown-item" data-sched="curr" onclick="navDropdownSelectSchedule('curr')">Current Schedule</button>
+      <button class="nav-dropdown-item" data-sched="prop10" onclick="navDropdownSelectSchedule('prop10')">Expanded DuPont</button>
       <button class="nav-dropdown-item" data-sched="split" onclick="navDropdownSelectSchedule('split')">Split Week</button>
       <button class="nav-dropdown-item" data-sched="pitman" onclick="navDropdownSelectSchedule('pitman')">Pitman</button>
     </div>
@@ -2453,6 +2471,7 @@ body.dark .corkboard{
   <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
   <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Passdown</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('curr'); toggleMobileMenu()">Schedule – Current</button>
+  <button class="nav-tab" onclick="navDropdownSelectSchedule('prop10'); toggleMobileMenu()">Schedule – Expanded DuPont</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('split'); toggleMobileMenu()">Schedule – Split Week</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('pitman'); toggleMobileMenu()">Schedule – Pitman</button>
   <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Timezones</button>
@@ -3810,6 +3829,7 @@ body.dark .corkboard{
     <div class="page-header-actions">
       <div class="sched-toggle">
         <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')">Current Schedule</button>
+        <button class="sched-toggle-btn" id="toggle-prop10" onclick="showSchedule('prop10')">Expanded DuPont</button>
         <button class="sched-toggle-btn active" id="toggle-split" onclick="showSchedule('split')">Split Week</button>
         <button class="sched-toggle-btn" id="toggle-pit" onclick="showSchedule('pitman')">Pitman</button>
       </div>
@@ -4039,9 +4059,9 @@ body.dark .corkboard{
           <div class="intro-section">
             <h2>How the schedule works</h2>
             <ul>
-              <li><strong>7 operators, 2 day + 1 night daily</strong> — two people cover days, one covers nights, every day</li>
+              <li id="curr-intro-lead"><strong>6 operators, 2 day + 1 night daily</strong> — two people cover days, one covers nights, every day</li>
               <li><strong>12-hour shifts</strong> — Days 6am–6pm · Nights 6pm–6am</li>
-              <li><strong>Real rotation, not a formula</strong> — the same 42-day pattern that drives Who's on Shift on the Home page, not a separate or hypothetical model</li>
+              <li id="curr-intro-cycle"><strong>Real rotation, not a formula</strong> — the same 42-day pattern that drives Who's on Shift on the Home page</li>
               <li><strong>Verified</strong> — this is your actual live rotation, not a placeholder</li>
               <li><strong>Result</strong> — the schedule you're already working, visible here for comparison</li>
             </ul>
@@ -4091,11 +4111,11 @@ body.dark .corkboard{
     <div class="halves">
       <div class="half-card fh" style="max-width:100%;">
         <div class="half-card-header">
-          <div class="half-title">Operators</div>
-          <div class="half-days">Reference Schedule &middot; 2 Day &middot; 1 Night, rotating</div>
+          <div class="half-title" id="curr-roster-title">Operators</div>
+          <div class="half-days" id="curr-roster-sub">2 day &middot; 1 night, rotating &middot; 42-day cycle</div>
         </div>
         <div id="curr-zone-roster" style="display:flex;flex-direction:column;gap:5px;padding:8px 0 4px;"></div>
-        <div class="hint">Each operator's real rotation, pulled from the same source as Who's on Shift</div>
+        <div class="hint" id="curr-roster-hint">Each operator's real rotation, pulled from the same source as Who's on Shift</div>
       </div>
     </div>
 
@@ -4620,7 +4640,7 @@ async function load() {
     const stored = localStorage.getItem('rnwbl_active_tab');
     if (!migrated) {
       savedTab = (stored && stored !== 'scans') ? stored : 'home';
-      localStorage.setItem('rnwbl_home_migration_v1', '1');
+      safeLocalSet('rnwbl_home_migration_v1', '1');
     } else {
       savedTab = stored || 'home';
     }
@@ -5478,9 +5498,7 @@ function initSharedRemindersListener() {
       checkSharedReminderAlarms();
     }
     renderSharedReminders();
-  }, err => {
-    console.error('Firestore (sharedReminders):', err);
-  });
+  }, err => fsListenerError('sharedReminders', err));
 }
 
 // Fires for any reminder whose time has arrived and hasn't already
@@ -6612,7 +6630,7 @@ function initSiteStatusListener() {
     snap.forEach(doc => { next[doc.id] = doc.data(); });
     siteStatuses = next;
     renderFleetOverview();
-  }, err => console.error('Firestore (siteStatus):', err));
+  }, err => fsListenerError('siteStatus', err));
 }
 
 // Defensive against older saved docs from before entries existed — treated
@@ -7241,41 +7259,7 @@ function clDelete(id) {
   clRender();
 }
 
-function clClear() {
-  if (!clEntries.length) return;
-  if (!confirm('Clear all Handoff entries for this shift?')) return;
-  clEntries = [];
-  try { localStorage.removeItem(CL_KEY); } catch(e) {}
-  clRender();
-}
 
-function clCopyHandoff() {
-  if (!clEntries.length) { showToast('No entries to copy'); return; }
-
-  // Date/shift header
-  const dateLabel = clGetDateLabel();
-  const shift = clGetShiftLabel();
-  const shiftLabel = shift ? ` ${shift} Shift` : '';
-  const lines = [`${dateLabel}${shiftLabel}`, ''];
-
-  const sectionLabel = { handoff:'Handoff', upcoming:'Upcoming' };
-  CL_CAT_ORDER.forEach(cat => {
-    const entries = clEntries.filter(e => e.cat === cat);
-    if (!entries.length) return;
-    lines.push(sectionLabel[cat] || cat);
-    entries.forEach(e => {
-      const siteTag   = e.site   ? `${e.site} `    : '';
-      const ticketTag = e.ticket ? ` (#${e.ticket})` : '';
-      lines.push(`• ${siteTag}${e.text}${ticketTag}`);
-    });
-    lines.push('');
-  });
-
-  const text = lines.join('\n').trimEnd();
-  navigator.clipboard.writeText(text)
-    .then(() => showToast('Handoff copied'))
-    .catch(() => showToast('Clipboard blocked — try Ctrl+C'));
-}
 
 // Classify a site name → 'BESS' | 'Solar' | 'Wind' | 'General'
 async function clSaveAsImage(e) {
@@ -7655,25 +7639,6 @@ function spParse(text) {
   return { cat, site: sites[0] || '', ticket, ticketMatchedText, tags, confidence, isResolved, siteMatches };
 }
 
-function spSmartOpen() {
-  if (!scratchpad.length) { showToast('Notepad is empty', 'warn'); return; }
-
-  spSmartState = scratchpad.map((item, idx) => {
-    const p = spParse(item.text);
-    return { idx, id: item.id, text: item.text, time: item.time,
-             cat: p.cat, site: p.site, ticket: p.ticket,
-             ticketMatchedText: p.ticketMatchedText,
-             tags: p.tags, confidence: p.confidence,
-             skip: p.isResolved,
-             siteMatches: p.siteMatches,
-             stripSite: true,    // default on — operator can toggle per row
-             stripTicket: true };
-  });
-
-  spSmartRenderPanel();
-  const panel = document.getElementById('sp-smart-panel');
-  if (panel) { panel.classList.add('open'); panel.scrollIntoView({behavior:'smooth', block:'nearest'}); }
-}
 
 // Single source of truth for "what would get stripped from this row's text
 // right now" — reused by both the render function (to build the strike-
@@ -7879,43 +7844,8 @@ function spInit() {
   renderScratchpad();
 }
 
-function spAdd() {
-  const input = document.getElementById('sp-text');
-  const text = input.value.trim();
-  if (!text) return;
-  const now = new Date();
-  scratchpad.push({
-    id: Date.now(),
-    text: text,
-    time: now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:false})
-  });
-  try { localStorage.setItem(SP_KEY, JSON.stringify(scratchpad)); } catch(e) {}
-  input.value = '';
-  renderScratchpad();
-  // Return focus to the notepad input every time — whether the note came in
-  // via Enter or a click on the Add button — so an operator jotting several
-  // things in a row during a busy stretch never has to click back into the
-  // field between notes.
-  input.focus();
-}
 
-function clStartFresh() {
-  if (!confirm('Clear notepad and shift feed? This cannot be undone.')) return;
-  spClear();
-  clClear();
-  showToast('Ready for a new shift');
-}
 
-function clSyncContext() {
-  // Mirror cl-date/cl-shift back to as-date/as-shift so Asset Scan stays in sync
-  const clDate = document.getElementById('cl-date');
-  const clShift = document.getElementById('cl-shift');
-  const asDate = document.getElementById('as-date');
-  const asShift = document.getElementById('as-shift');
-  if (clDate && asDate && clDate.value) asDate.value = clDate.value;
-  if (clShift && asShift && clShift.value) asShift.value = clShift.value;
-  clRenderPreview();
-}
 
 function clGetDateLabel() {
   const raw = document.getElementById('cl-date')?.value || document.getElementById('as-date')?.value || '';
@@ -7936,14 +7866,6 @@ function spDelete(index) {
   renderScratchpad();
 }
 
-function spClear() {
-  if (!scratchpad.length) return;
-  if (!confirm('Clear scratchpad?')) return;
-  scratchpad = [];
-  spPromoteState = {};
-  try { localStorage.removeItem(SP_KEY); } catch(e) {}
-  renderScratchpad();
-}
 
 // Per-note state for the individual "Add to Handoff" promote menu — keyed
 // by the scratchpad item's stable id (not array index, which shifts as
@@ -8519,6 +8441,41 @@ function showToast(msg,type){
   t._hide=setTimeout(()=>t.classList.remove('show'),2600);
 }
 function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+// ── Firestore listener failure ────────────────────────────────────────────
+// A dropped listener is the quietest possible failure: the page keeps
+// showing whatever it last received, so stale data looks identical to
+// current data. On a passdown board that's worse than a visible error —
+// nobody knows to distrust what's on screen. This surfaces it once per
+// collection (not on every retry) so a real outage is obvious without
+// spamming an operator mid-shift.
+// ── Guarded localStorage write ────────────────────────────────────────────
+// An unguarded setItem throws mid-function when storage is full or the
+// browser is in private mode, taking out whatever was running after it.
+// This never throws; it warns once so a real "nothing is saving" problem
+// is findable instead of presenting as random unrelated breakage.
+let lsWriteFailed = false;
+function safeLocalSet(key, value) {
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch (e) {
+    console.warn('[localStorage write failed: ' + key + ']', e && e.message ? e.message : e);
+    if (!lsWriteFailed) {
+      lsWriteFailed = true;
+      try { showToast('Could not save to this browser — storage may be full. Changes may not persist.'); } catch(e2) {}
+    }
+    return false;
+  }
+}
+
+const fsListenerFailed = {};
+function fsListenerError(collection, err) {
+  console.warn('[Firestore listener: ' + collection + ']', err && err.message ? err.message : err);
+  if (fsListenerFailed[collection]) return;
+  fsListenerFailed[collection] = true;
+  try { showToast('Live updates for ' + collection + ' stopped — data may be stale. Refresh to reconnect.'); } catch(e) {}
+}
 function renderAll(){ renderRec(); renderAdhoc(); renderCl(); renderNotes(); renderTemplates(); updateTimerUI(); renderSites(); }
 
 // ─── ASSET SCAN ───────────────────────────────────────────────────────────────
@@ -8599,30 +8556,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes"
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -8704,30 +8654,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes"
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -8750,7 +8693,7 @@ const AS_SITES = [
       "unit": "kV",
       "kvMin": 43.7,
       "kvMax": 48.3,
-      "tip": "Band moves with system demand \u2014 still flag if out of band. See plant info for detail."
+      "tip": "Band moves with system demand — still flag if out of band. See plant info for detail."
      },
      {
       "n": "MVAR",
@@ -8800,30 +8743,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes"
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -8937,36 +8873,29 @@ const AS_SITES = [
  {
   "id": "BYPS1",
   "label": "BYPS1-Bypass[BESS]",
-  "stats": "NP: 400MWh / 200MW<br />Voltage SP: Per SCADA<br />BAND: \u00b14kV",
+  "stats": "NP: 400MWh / 200MW<br />Voltage SP: Per SCADA<br />BAND: ±4kV",
   "sections": [
    {
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -9103,30 +9032,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes"
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -9167,16 +9089,6 @@ const AS_SITES = [
        "Off"
       ],
       "alert": "Off"
-     },
-     {
-      "n": "SRC Mode[Auto]",
-      "t": "select",
-      "opts": [
-       "",
-       "Auto",
-       "Manual"
-      ],
-      "alert": ""
      }
     ]
    },
@@ -9282,36 +9194,29 @@ const AS_SITES = [
  {
   "id": "CTFL",
   "label": "CTFL-Centennial Flats[PV-BESS]",
-  "stats": "NP: 1069 MWh \u00b1267 MW <br />V SET POINT: 525kV<br />BAND: 521kV-540kV",
+  "stats": "NP: 1069 MWh ±267 MW <br />V SET POINT: 525kV<br />BAND: 521kV-540kV",
   "sections": [
    {
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -9352,16 +9257,6 @@ const AS_SITES = [
       "n": "HS MW",
       "t": "text",
       "unit": "MW"
-     },
-     {
-      "n": "Following Setpoint",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
-      ],
-      "alert": ""
      },
      {
       "n": "HS kV",
@@ -9558,31 +9453,6 @@ const AS_SITES = [
     ]
    },
    {
-    "title": "CAPACITY",
-    "fields": [
-     {
-      "n": "Charge/Discharge \u2265 267 MW",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
-      ],
-      "alert": ""
-     },
-     {
-      "n": "Max Energy \u2265 1069 MWh",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
-      ],
-      "alert": ""
-     }
-    ]
-   },
-   {
     "title": "SUBSTATION EQUIPMENT",
     "fields": [
      {
@@ -9613,14 +9483,24 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
+      ],
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
+      }
      },
      {
       "n": "Notes",
@@ -9676,15 +9556,24 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes",
-      "hint": "Turbine-only site \u2014 no MW/kV/MVAR output tracked here"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
+      ],
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
+      }
      },
      {
       "n": "Notes",
@@ -9718,30 +9607,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes"
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -9763,12 +9645,6 @@ const AS_SITES = [
       "t": "text",
       "unit": "kV",
       "hint": "Link"
-     },
-     {
-      "n": "MVAR",
-      "t": "text",
-      "unit": "MVAR",
-      "hint": "Data Studio \u2192 Select\u2192 Meter \u2192 Reactive Power"
      }
     ]
    },
@@ -9793,14 +9669,24 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
+      ],
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
+      }
      },
      {
       "n": "Bluence Accessible / RDP Open",
@@ -9887,30 +9773,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes"
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -9933,16 +9812,6 @@ const AS_SITES = [
       "alert": ""
      },
      {
-      "n": "Frequency Droop[On]",
-      "t": "select",
-      "opts": [
-       "",
-       "On",
-       "Off"
-      ],
-      "alert": "Off"
-     },
-     {
       "n": "Voltage Control[On]",
       "t": "select",
       "opts": [
@@ -9951,26 +9820,6 @@ const AS_SITES = [
        "Off"
       ],
       "alert": "Off"
-     },
-     {
-      "n": "Heat Mode[Off]",
-      "t": "select",
-      "opts": [
-       "",
-       "On",
-       "Off"
-      ],
-      "alert": "On"
-     },
-     {
-      "n": "Closed Loop[On]",
-      "t": "select",
-      "opts": [
-       "",
-       "On",
-       "Off"
-      ],
-      "alert": ""
      }
     ]
    },
@@ -10015,7 +9864,7 @@ const AS_SITES = [
     "title": "CAPACITY",
     "fields": [
      {
-      "n": "Charge/Discharge \u2265 60 MW",
+      "n": "Charge/Discharge ≥ 60 MW",
       "t": "select",
       "opts": [
        "",
@@ -10025,7 +9874,7 @@ const AS_SITES = [
       "alert": ""
      },
      {
-      "n": "Max Energy \u2265 160 MWh",
+      "n": "Max Energy ≥ 160 MWh",
       "t": "select",
       "opts": [
        "",
@@ -10077,30 +9926,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10147,21 +9989,6 @@ const AS_SITES = [
     ]
    },
    {
-    "title": "CAPACITY",
-    "fields": [
-     {
-      "n": "Discharge \u2265 150 MW",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
-      ],
-      "alert": ""
-     }
-    ]
-   },
-   {
     "title": "SUBSTATION EQUIPMENT",
     "fields": [
      {
@@ -10202,30 +10029,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10320,7 +10140,7 @@ const AS_SITES = [
     "title": "CAPACITY",
     "fields": [
      {
-      "n": "Charge/Discharge \u2265 300 MW",
+      "n": "Charge/Discharge ≥ 300 MW",
       "t": "select",
       "opts": [
        "",
@@ -10330,7 +10150,7 @@ const AS_SITES = [
       "alert": ""
      },
      {
-      "n": "Max Energy \u2265 1200 MWh",
+      "n": "Max Energy ≥ 1200 MWh",
       "t": "select",
       "opts": [
        "",
@@ -10387,30 +10207,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10431,13 +10244,7 @@ const AS_SITES = [
       "n": "kV",
       "t": "text",
       "unit": "kV",
-      "hint": "Data Studio \u2192 Select\u2192 Meter \u2192 Voltage"
-     },
-     {
-      "n": "MVAR",
-      "t": "text",
-      "unit": "MVAR",
-      "hint": "Data Studio \u2192 Select\u2192 Meter \u2192 Reactive Power"
+      "hint": "Data Studio → Select→ Meter → Voltage"
      }
     ]
    },
@@ -10462,30 +10269,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10550,7 +10350,7 @@ const AS_SITES = [
     "title": "CAPACITY",
     "fields": [
      {
-      "n": "Charge/Discharge \u2265 150 MW",
+      "n": "Charge/Discharge ≥ 150 MW",
       "t": "select",
       "opts": [
        "",
@@ -10560,7 +10360,7 @@ const AS_SITES = [
       "alert": ""
      },
      {
-      "n": "Max Energy \u2265 600 MWh",
+      "n": "Max Energy ≥ 600 MWh",
       "t": "select",
       "opts": [
        "",
@@ -10612,14 +10412,24 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
+      ],
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
+      }
      },
      {
       "n": "Bluence Accessible / RDP Open",
@@ -10705,30 +10515,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10749,13 +10552,13 @@ const AS_SITES = [
       "n": "kV",
       "t": "text",
       "unit": "kV",
-      "hint": "Data Studio \u2192 Select\u2192 Meter \u2192 Voltage (line-to-line)"
+      "hint": "Data Studio → Select→ Meter → Voltage (line-to-line)"
      },
      {
       "n": "MVAR",
       "t": "text",
       "unit": "MVAR",
-      "hint": "Data Studio \u2192 Select\u2192 Inverter \u2192 Reactive Power"
+      "hint": "Data Studio → Select→ Inverter → Reactive Power"
      }
     ]
    },
@@ -10780,30 +10583,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -10923,15 +10719,24 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "hint": "Turbine-only site \u2014 no MW/kV/MVAR output tracked here"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
+      ],
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
+      }
      },
      {
       "n": "Notes",
@@ -10965,30 +10770,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11038,30 +10836,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11181,14 +10972,24 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
+      ],
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
+      }
      },
      {
       "n": "Notes",
@@ -11245,30 +11046,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11333,7 +11127,7 @@ const AS_SITES = [
     "title": "CAPACITY",
     "fields": [
      {
-      "n": "Charge/Discharge \u2265 250 MW",
+      "n": "Charge/Discharge ≥ 250 MW",
       "t": "select",
       "opts": [
        "",
@@ -11343,7 +11137,7 @@ const AS_SITES = [
       "alert": ""
      },
      {
-      "n": "Max Energy \u2265 1000 MWh",
+      "n": "Max Energy ≥ 1000 MWh",
       "t": "select",
       "opts": [
        "",
@@ -11395,30 +11189,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11513,7 +11300,7 @@ const AS_SITES = [
     "title": "CAPACITY",
     "fields": [
      {
-      "n": "Charge/Discharge \u2265 200 MW",
+      "n": "Charge/Discharge ≥ 200 MW",
       "t": "select",
       "opts": [
        "",
@@ -11523,7 +11310,7 @@ const AS_SITES = [
       "alert": ""
      },
      {
-      "n": "Max Energy \u2265 430 MWh",
+      "n": "Max Energy ≥ 430 MWh",
       "t": "select",
       "opts": [
        "",
@@ -11575,14 +11362,24 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
+      ],
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
+      }
      },
      {
       "n": "Bluence Open & RDP Open",
@@ -11656,30 +11453,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11701,12 +11491,6 @@ const AS_SITES = [
       "t": "text",
       "unit": "kV",
       "hint": "LINK Coming"
-     },
-     {
-      "n": "MVAR",
-      "t": "text",
-      "unit": "MVAR",
-      "hint": "Data Studio \u2192 Select\u2192 Meter \u2192 Reactive Power"
      }
     ]
    },
@@ -11731,14 +11515,24 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "Yes"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
+      ],
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
+      }
      },
      {
       "n": "Bluence Open & RDP Open",
@@ -11824,30 +11618,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11868,11 +11655,6 @@ const AS_SITES = [
       "n": "kV",
       "t": "text",
       "unit": "kV"
-     },
-     {
-      "n": "MVAR",
-      "t": "text",
-      "unit": "MVAR"
      }
     ]
    },
@@ -11897,30 +11679,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -11970,30 +11745,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -12057,36 +11825,29 @@ const AS_SITES = [
  {
   "id": "FRDN1",
   "label": "FRDN1-Ferdinand[BESS]",
-  "stats": "NP: 800MWh / 200MW<br />V SET POINT:142kV<br />BAND: \u00b12kV",
+  "stats": "NP: 800MWh / 200MW<br />V SET POINT:142kV<br />BAND: ±2kV",
   "sections": [
    {
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -12151,7 +11912,7 @@ const AS_SITES = [
     "title": "CAPACITY",
     "fields": [
      {
-      "n": "Charge/Discharge \u2265 200 MW",
+      "n": "Charge/Discharge ≥ 200 MW",
       "t": "select",
       "opts": [
        "",
@@ -12161,7 +11922,7 @@ const AS_SITES = [
       "alert": ""
      },
      {
-      "n": "Max Energy \u2265 800 MWh",
+      "n": "Max Energy ≥ 800 MWh",
       "t": "select",
       "opts": [
        "",
@@ -12199,6 +11960,11 @@ const AS_SITES = [
       "n": "BESS Available[264]",
       "t": "text",
       "unit": "/264 Available"
+     },
+     {
+      "n": "Units Available[66]",
+      "t": "text",
+      "unit": "/66 Available"
      }
     ]
    }
@@ -12213,30 +11979,23 @@ const AS_SITES = [
     "title": "STATUS",
     "fields": [
      {
-      "n": "Abnormal Operating Conditions",
+      "n": "Site Status",
       "t": "select",
       "opts": [
        "",
-       "Yes",
-       "No"
+       "Normal",
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": ""
-     },
-     {
-      "n": "Outage In Place",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
+      "alert": [
+       "Abnormal",
+       "De-rated",
+       "Outage in place"
       ],
-      "alert": "",
-      "triggers": {
-       "field": "Abnormal Operating Conditions",
-       "when": "Yes",
-       "value": "Yes",
-       "noteField": "Notes",
-       "noteText": "Outage in place"
+      "autoNotes": {
+       "De-rated": "De-rated",
+       "Outage in place": "Outage in place"
       }
      },
      {
@@ -12271,22 +12030,12 @@ const AS_SITES = [
     ]
    },
    {
-    "title": "OUTPUT",
+    "title": "OUTPUT: HS",
     "fields": [
      {
       "n": "HS MW",
       "t": "text",
       "unit": "MW"
-     },
-     {
-      "n": "Following Setpoint",
-      "t": "select",
-      "opts": [
-       "",
-       "Yes",
-       "No"
-      ],
-      "alert": ""
      },
      {
       "n": "HS kV",
@@ -12301,44 +12050,189 @@ const AS_SITES = [
       "unit": "MVAR"
      },
      {
-      "n": "BESS Total MWh",
-      "t": "text",
-      "unit": "MWh"
-     }
-    ]
-   },
-   {
-    "title": "SUBSTATION EQUIPMENT",
-    "fields": [
-     {
       "n": "Breakers [28]",
       "t": "text",
       "unit": "/28 Closed"
-     },
-     {
-      "n": "TO/SC Notified",
-      "t": "select",
-      "opts": [
-       "N/A",
-       "Yes",
-       "No"
-      ],
-      "alert": "No"
      }
     ]
    },
    {
-    "title": "FIELD EQUIPMENT",
+    "title": "OUTPUT: MECC1",
     "fields": [
      {
-      "n": "PV Inverters[144]",
+      "n": "MECC1 PV MW",
       "t": "text",
-      "unit": "/144 Online"
+      "unit": "MW"
      },
      {
-      "n": "BESS[654]",
+      "n": "MECC1 PV kV",
       "t": "text",
-      "unit": "/654 Available"
+      "unit": "kV"
+     },
+     {
+      "n": "MECC1 PV MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC1 PV Inverters [48]",
+      "t": "text",
+      "unit": "/48 Online"
+     },
+     {
+      "n": "MECC1 BESS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC1 BESS MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "MECC1 BESS kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC1 BESS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC1 BESS available [218]",
+      "t": "text",
+      "unit": "/218 Available"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT: MECC2A",
+    "fields": [
+     {
+      "n": "MECC2A PV MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC2A PV kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC2A PV MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC2A PV Inverters [48]",
+      "t": "text",
+      "unit": "/48 Online"
+     },
+     {
+      "n": "MECC2A BESS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC2A BESS MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "MECC2A BESS kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC2A BESS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC2A BESS available [218]",
+      "t": "text",
+      "unit": "/218 Available"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
+     }
+    ]
+   },
+   {
+    "title": "OUTPUT: MECC2B",
+    "fields": [
+     {
+      "n": "MECC2B PV MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC2B PV kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC2B PV MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC2B PV Inverters [48]",
+      "t": "text",
+      "unit": "/48 Online"
+     },
+     {
+      "n": "MECC2B BESS MW",
+      "t": "text",
+      "unit": "MW"
+     },
+     {
+      "n": "MECC2B BESS MWh",
+      "t": "text",
+      "unit": "MWh"
+     },
+     {
+      "n": "MECC2B BESS kV",
+      "t": "text",
+      "unit": "kV"
+     },
+     {
+      "n": "MECC2B BESS MVAR",
+      "t": "text",
+      "unit": "MVAR"
+     },
+     {
+      "n": "MECC2B BESS available [218]",
+      "t": "text",
+      "unit": "/218 Available"
+     },
+     {
+      "n": "Following Setpoint",
+      "t": "select",
+      "opts": [
+       "",
+       "Yes",
+       "No"
+      ],
+      "alert": ""
      }
     ]
    }
@@ -12378,6 +12272,16 @@ function asSaveTimes() { try{localStorage.setItem(AS_TIME_KEY,JSON.stringify(asT
 function asSaveCustom() { try{localStorage.setItem(AS_CUSTOM_KEY,JSON.stringify(asSites()));}catch(e){} }
 
 function asKey(siteId, si, fi) { return siteId+'|'+si+'|'+fi; }
+
+// A field's `alert` may be one value ('No') or several (['Abnormal',
+// 'Outage in place']) — Site Status needs to flag on more than one answer,
+// everything else still declares a single string.
+function asIsAlerting(f, val) {
+  if (!f || !f.alert || !val) return false;
+  const list = Array.isArray(f.alert) ? f.alert : [f.alert];
+  const v = String(val).toLowerCase();
+  return list.some(a => String(a).toLowerCase() === v);
+}
 
 // Two site IDs were typo'd from day one (FRND1 instead of FRDN1, NSTR
 // instead of NSTR1) — correcting them here so they match the codes used
@@ -12434,6 +12338,199 @@ function asMigrateFrdn1FieldShift() {
 // the section/field index shift. Scheduling was always the last section,
 // so its old section-index is simply how long a site's sections array
 // would be if it were still there — one more than it is now.
+// Abnormal Operating Conditions + Outage In Place collapsed into one
+// three-state Site Status field. Both old fields lived in STATUS, so this
+// derives the combined answer and shifts anything after them (Notes, and
+// the Bluence pair on the four wind sites) back into place. Guarded — a
+// second run would shift already-correct values out of alignment.
+//
+// Old layouts, all of which had Abnormal at index 0:
+//   [Abnormal, Outage, Notes]            -> [Site Status, Notes]
+//   [Abnormal, Notes]                    -> [Site Status, Notes]
+//   [Abnormal, Bluence, Bluence, Notes]  -> [Site Status, Bluence, Bluence, Notes]
+// Only the first shape shifts indices; the others map 1:1.
+// Maricopa gained three per-phase OUTPUT sections (MECC1 / MECC2A / MECC2B)
+// mirroring CTFL, inserted after OUTPUT: HS. That pushes the two sections
+// that followed further down, so their storage keys move with them:
+//   SUBSTATION EQUIPMENT  section 3 -> 6
+//   FIELD EQUIPMENT       section 4 -> 7
+// Sections 0-2 (STATUS, CONTROL, OUTPUT: HS) keep their indices and fields,
+// so nothing there needs touching. Guarded — re-running would shift
+// already-correct values into empty sections.
+// Second Maricopa pass: SUBSTATION EQUIPMENT and FIELD EQUIPMENT are gone.
+// Breakers survives — it moves into OUTPUT: HS as the last field, taking the
+// slot BESS Total MWh vacated. Everything else in those two sections is
+// dropped: TO/SC Notified, and the 144/654 totals now covered by the three
+// per-phase counts.
+//
+//   OUTPUT: HS field 4    BESS Total MWh -> Breakers [28]
+//   section 6 field 0     Breakers       -> OUTPUT: HS field 4
+//   section 6 field 1     TO/SC Notified -> dropped
+//   section 7 fields 0,1  PV/BESS totals -> dropped
+//
+// Runs after asMigrateMrcpPhases so both upgrade paths work: a browser
+// coming from before that change gets 3->6 and 4->7 first, then this; one
+// that already ran it skips straight here.
+// Field and section removals across nine sites. Anything sitting after a
+// removed field or section shifts up, so saved readings have to move with
+// it or they end up displayed under the wrong label. Guarded — re-running
+// would shift correct values a second time.
+//
+//   GLTA1  CONTROL      dropped Frequency Droop, Heat Mode, Closed Loop
+//   COSO1  CONTROL      dropped SRC Mode (last field, nothing shifts)
+//   CTFL   OUTPUT: HS   dropped Following Setpoint; CAPACITY section removed
+//   MRCP   OUTPUT: HS   dropped Following Setpoint
+//   HARQ1  CAPACITY     section removed
+//   FRMV1/HNFD1/TLRE1/PRTV1  OUTPUT  dropped MVAR (last field)
+function asMigrateFieldTrim2() {
+  const marker = 'rnwbl_as_field_trim2_v1';
+  try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
+  let changed = false;
+  const K = (id, si, fi) => asKey(id, si, fi);
+  const drop = (id, si, fi) => {
+    const k = K(id, si, fi);
+    if (asVals[k] !== undefined) { delete asVals[k]; changed = true; }
+    if (asTimes[k] !== undefined) { delete asTimes[k]; changed = true; }
+  };
+  // move must run after the destination has been cleared
+  const move = (id, fromSi, fromFi, toSi, toFi) => {
+    const a = K(id, fromSi, fromFi), b = K(id, toSi, toFi);
+    if (asVals[a] !== undefined) { asVals[b] = asVals[a]; delete asVals[a]; changed = true; }
+    if (asTimes[a] !== undefined) { asTimes[b] = asTimes[a]; delete asTimes[a]; changed = true; }
+  };
+
+  // GLTA1 CONTROL: keep System Mode (0) and Voltage Control (was 2 -> 1)
+  drop('GLTA1', 1, 1); drop('GLTA1', 1, 3); drop('GLTA1', 1, 4);
+  move('GLTA1', 1, 2, 1, 1);
+
+  // COSO1 CONTROL: SRC Mode was last, nothing after it to shift
+  drop('COSO1', 1, 3);
+
+  // CTFL OUTPUT: HS lost Following Setpoint (1); kV and MVAR shift up
+  drop('CTFL', 2, 1);
+  move('CTFL', 2, 2, 2, 1);
+  move('CTFL', 2, 3, 2, 2);
+  // CTFL CAPACITY (section 6) removed; SUBSTATION 7 -> 6
+  drop('CTFL', 6, 0); drop('CTFL', 6, 1);
+  move('CTFL', 7, 0, 6, 0); move('CTFL', 7, 1, 6, 1);
+
+  // MRCP OUTPUT: HS lost Following Setpoint (1); kV, MVAR, Breakers shift up
+  drop('MRCP', 2, 1);
+  move('MRCP', 2, 2, 2, 1);
+  move('MRCP', 2, 3, 2, 2);
+  move('MRCP', 2, 4, 2, 3);
+
+  // HARQ1 CAPACITY (section 3) removed; 4 -> 3 and 5 -> 4
+  drop('HARQ1', 3, 0);
+  move('HARQ1', 4, 0, 3, 0); move('HARQ1', 4, 1, 3, 1);
+  move('HARQ1', 5, 0, 4, 0);
+
+  // MVAR was the last OUTPUT field on each of these — nothing shifts
+  ['FRMV1', 'HNFD1', 'TLRE1', 'PRTV1'].forEach(id => drop(id, 1, 2));
+
+  if (changed) { asSaveVals(); asSaveTimes(); }
+  try { localStorage.setItem(marker, '1'); } catch(e) {}
+}
+
+function asMigrateMrcpTrim() {
+  const marker = 'rnwbl_as_mrcp_trim_v1';
+  try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
+  const hsBreakers = asKey('MRCP', 2, 4);   // was BESS Total MWh, now Breakers
+  const oldBreakers = asKey('MRCP', 6, 0);
+  let changed = false;
+
+  // Clear the vacated slot before moving Breakers in, or the delete below
+  // would wipe the value that just landed there.
+  if (asVals[hsBreakers] !== undefined) { delete asVals[hsBreakers]; changed = true; }
+  if (asTimes[hsBreakers] !== undefined) { delete asTimes[hsBreakers]; changed = true; }
+
+  if (asVals[oldBreakers] !== undefined) { asVals[hsBreakers] = asVals[oldBreakers]; changed = true; }
+  if (asTimes[oldBreakers] !== undefined) { asTimes[hsBreakers] = asTimes[oldBreakers]; changed = true; }
+
+  // Drop the removed fields outright — no destination for them.
+  [asKey('MRCP',6,0), asKey('MRCP',6,1), asKey('MRCP',7,0), asKey('MRCP',7,1)].forEach(k => {
+    if (asVals[k] !== undefined) { delete asVals[k]; changed = true; }
+    if (asTimes[k] !== undefined) { delete asTimes[k]; changed = true; }
+  });
+
+  if (changed) { asSaveVals(); asSaveTimes(); }
+  try { localStorage.setItem(marker, '1'); } catch(e) {}
+}
+
+function asMigrateMrcpPhases() {
+  const marker = 'rnwbl_as_mrcp_phases_v1';
+  try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
+  let changed = false;
+  // High index first isn't required here (targets 6 and 7 are new and empty)
+  // but keeps the intent obvious if more moves get added later.
+  [[4, 7], [3, 6]].forEach(([from, to]) => {
+    for (let fi = 0; fi < 2; fi++) {
+      const oldKey = asKey('MRCP', from, fi);
+      const newKey = asKey('MRCP', to, fi);
+      if (asVals[oldKey] !== undefined) { asVals[newKey] = asVals[oldKey]; delete asVals[oldKey]; changed = true; }
+      if (asTimes[oldKey] !== undefined) { asTimes[newKey] = asTimes[oldKey]; delete asTimes[oldKey]; changed = true; }
+    }
+  });
+  if (changed) { asSaveVals(); asSaveTimes(); }
+  try { localStorage.setItem(marker, '1'); } catch(e) {}
+}
+
+function asMigrateSiteStatus() {
+  const marker = 'rnwbl_as_sitestatus_v1';
+  try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
+  let changed = false;
+
+  // Which sites actually carried an Outage In Place field before this
+  // change — captured explicitly because the post-change structure can't
+  // tell them apart (both groups end up as [Site Status, Notes]) and
+  // guessing wrong would shift Notes into the wrong slot.
+  const HAD_OUTAGE = ['ANGF1','AVLN1','BLKW1','BYPS1','COSO1','CTFL','FRMV1','GLTA1',
+    'HARQ1','HARQ2','HNFD1','KUNA1','LSTH1','LSTH2','NCLS1','NSTR1','PDMT1','PRGN1',
+    'PRTV1','TLRE1','TRPC1','TSMS1','FRDN1','MRCP'];
+
+  AS_SITES.forEach(site => {
+    const si = site.sections.findIndex(s => s.title === 'STATUS');
+    if (si < 0) return;
+    const fields = site.sections[si].fields;
+    if (!fields.length || fields[0].n !== 'Site Status') return;
+
+    const hadOutage = HAD_OUTAGE.includes(site.id);
+    const abnKey = asKey(site.id, si, 0);       // old Abnormal, same index as new Site Status
+    const outKey = asKey(site.id, si, 1);       // old Outage (only where one existed)
+    const abnVal = (asVals[abnKey] || '').trim();
+    const outVal = hadOutage ? (asVals[outKey] || '').trim() : '';
+
+    // Derive the combined answer. Blank stays blank — never invent "Normal"
+    // for a site nobody actually scanned.
+    let status = '';
+    if (outVal.toLowerCase() === 'yes') status = 'Outage in place';
+    else if (abnVal.toLowerCase() === 'yes') status = 'Abnormal';
+    else if (abnVal.toLowerCase() === 'no') status = 'Normal';
+
+    if (status) {
+      asVals[abnKey] = status;
+      changed = true;
+    } else if (abnVal) {
+      delete asVals[abnKey];
+      changed = true;
+    }
+
+    // Shift everything that sat after the removed Outage field back one slot.
+    // Clear the old outage key FIRST — Notes is about to move into that exact
+    // index, and deleting afterwards would wipe the value we just moved.
+    if (hadOutage) {
+      delete asVals[outKey]; delete asTimes[outKey];
+      const oldNotesKey = asKey(site.id, si, 2);
+      const newNotesKey = asKey(site.id, si, 1);
+      if (asVals[oldNotesKey] !== undefined) { asVals[newNotesKey] = asVals[oldNotesKey]; delete asVals[oldNotesKey]; changed = true; }
+      if (asTimes[oldNotesKey] !== undefined) { asTimes[newNotesKey] = asTimes[oldNotesKey]; delete asTimes[oldNotesKey]; changed = true; }
+    }
+  });
+
+  if (changed) { asSaveVals(); asSaveTimes(); }
+  try { localStorage.setItem(marker, '1'); } catch(e) {}
+}
+
 function asMigrateStatusRestructure() {
   const marker = 'rnwbl_as_status_restructure_v1';
   try { if (localStorage.getItem(marker)) return; } catch(e) { return; }
@@ -12492,7 +12589,7 @@ function asSiteComplete(siteId) { return asDone[siteId]||asSiteFilledPct(siteId)
 function asSectionHasAlert(siteId, si) {
   const site=asSites().find(s=>s.id===siteId); if(!site) return false;
   return (site.sections[si]?.fields||[]).some((f,fi)=>
-    f.alert && (asVals[asKey(siteId,si,fi)]||'').toLowerCase()===f.alert.toLowerCase() && asVals[asKey(siteId,si,fi)]!==''
+    asIsAlerting(f, asVals[asKey(siteId,si,fi)])
   );
 }
 
@@ -12527,6 +12624,10 @@ function asInit() {
   asMigrateRenamedSites();
   asMigrateFrdn1FieldShift();
   asMigrateStatusRestructure();
+  asMigrateSiteStatus();
+  asMigrateMrcpPhases();
+  asMigrateMrcpTrim();
+  asMigrateFieldTrim2();
   // Restore last visited tab; if none saved, skip ROCC1 and land on first real site
   const saved = (()=>{try{return localStorage.getItem('rnwbl_asactive')||'';}catch(e){return '';}})();
   const sites = asSites();
@@ -12724,7 +12825,7 @@ function asRenderForm() {
         html+=`<input class="as-inp" id="${fid}" value="${esc(dispVal)}" placeholder="${esc(f.n)}${unit?' ('+unit+')':''}" data-unit="${esc(unit)}" data-kv-min="${f.kvMin||''}" data-kv-max="${f.kvMax||''}" data-kv-id="${kid}" onblur="asTextBlur('${k}','${kid}','${esc(site.id)}',${si},this)" onchange="asChange('${k}','','${esc(site.id)}',${si},this)">`;
       }
       html+=`</div><div>`;
-      if(f.t==='select'&&f.alert){ const on=val&&val.toLowerCase()===f.alert.toLowerCase(); html+=`<span class="alert-pill${on?' on':''}" id="${aid}">⚠ TAKE ACTION</span>`; }
+      if(f.t==='select'&&f.alert){ const on=asIsAlerting(f, val); html+=`<span class="alert-pill${on?' on':''}" id="${aid}">⚠ TAKE ACTION</span>`; }
       if(f.kvMin!=null||f.kvRefField) html+=`<span class="as-status" id="${kid}"></span>`;
       html+=`</div></div>`;
     });
@@ -12748,6 +12849,7 @@ function asRenderForm() {
 }
 
 function asChange(k, alertId, siteId, si, el) {
+  const prev = asVals[k] || '';
   if(asVals[k]!==el.value){ asTimes[k]=new Date().toISOString(); asSaveTimes(); }
   asVals[k]=el.value; asSaveVals();
   // Update site edited timestamp when field values change
@@ -12762,7 +12864,7 @@ function asChange(k, alertId, siteId, si, el) {
   const fi=parseInt(k.split('|')[2]), f=site?.sections[si]?.fields[fi];
   if(alertId){
     const pill=document.getElementById(alertId);
-    if(pill&&f?.alert) pill.classList.toggle('on',el.value.toLowerCase()===f.alert.toLowerCase()&&el.value!=='');
+    if(pill&&f?.alert) pill.classList.toggle('on', asIsAlerting(f, el.value));
     // update section alert badge inline
     if(site&&site.sections[si]?.title){
       const hdrs=document.querySelectorAll('.as-section-hdr');
@@ -12776,54 +12878,32 @@ function asChange(k, alertId, siteId, si, el) {
       });
     }
   }
-  // Cross-field automation (e.g. Outage In Place -> Abnormal Operating
-  // Conditions). One-directional on purpose: setting the outage forces
-  // Abnormal to Yes, but clearing the outage never forces it back to No —
-  // there could be an unrelated reason conditions are still abnormal, and
-  // that should stay a human call, not something auto-cleared.
-  if(site&&f?.triggers&&el.value&&el.value.toLowerCase()===f.triggers.when.toLowerCase()){
-    asApplyFieldTrigger(site,siteId,f.triggers);
+  // Certain answers pre-fill a note explaining themselves, so the reason is
+  // captured without retyping. Appends rather than overwrites — there may
+  // already be a note there — and only fires on the transition into that
+  // value, not on every re-select.
+  if(f?.autoNotes && f.autoNotes[el.value] && prev!==el.value){
+    asApplyAutoNote(site, siteId, si, { text: f.autoNotes[el.value] });
   }
   asRenderTabs();
 }
 
-// Finds the target field by name anywhere in the site (not just the same
-// section, since Outage In Place and Abnormal Operating Conditions usually
-// live in different sections) and forces its value, updating the visible
-// input and its alert pill if it has one.
-function asApplyFieldTrigger(site, siteId, trig){
-  for(let tsi=0; tsi<site.sections.length; tsi++){
-    const tfi=site.sections[tsi].fields.findIndex(tf=>tf.n===trig.field);
-    if(tfi<0) continue;
-    const tk=asKey(siteId,tsi,tfi);
-    if(asVals[tk]===trig.value) return; // already set, nothing to do or announce
-    asVals[tk]=trig.value; asTimes[tk]=new Date().toISOString(); asSaveTimes(); asSaveVals();
-    const tfid='asf_'+tk.replace(/\|/g,'_');
-    const tEl=document.getElementById(tfid);
-    if(tEl) tEl.value=trig.value;
-    const taid='asa_'+tk.replace(/\|/g,'_');
-    const tPill=document.getElementById(taid);
-    const tf=site.sections[tsi].fields[tfi];
-    if(tPill&&tf?.alert) tPill.classList.toggle('on', trig.value.toLowerCase()===tf.alert.toLowerCase());
-    // Note goes in the same section as the field just triggered, so it
-    // reads right below Abnormal Operating Conditions — makes it obvious
-    // why that flag is Yes instead of leaving it unexplained. Appends
-    // rather than overwrites, in case there's already a note there.
-    if(trig.noteField){
-      const nfi=site.sections[tsi].fields.findIndex(nf=>nf.n===trig.noteField);
-      if(nfi>=0){
-        const nk=asKey(siteId,tsi,nfi);
-        const existing=asVals[nk]||'';
-        asVals[nk]=existing?existing+'\n'+trig.noteText:trig.noteText;
-        asTimes[nk]=new Date().toISOString(); asSaveTimes(); asSaveVals();
-        const nfid='asf_'+nk.replace(/\|/g,'_');
-        const nEl=document.getElementById(nfid);
-        if(nEl) nEl.value=asVals[nk];
-      }
-    }
-    showToast(`${trig.field} set to ${trig.value} — outage in place`);
-    return;
-  }
+// Pre-fills the Notes field in the same section when Site Status is set to
+// an outage. Appends rather than overwrites so an operator's existing note
+// survives, and skips silently if that section has no Notes field.
+function asApplyAutoNote(site, siteId, si, cfg){
+  const fields = site && site.sections[si] && site.sections[si].fields;
+  if(!fields) return;
+  const nfi = fields.findIndex(nf => nf.n === 'Notes');
+  if(nfi < 0) return;
+  const nk = asKey(siteId, si, nfi);
+  const existing = asVals[nk] || '';
+  if(existing.includes(cfg.text)) return;
+  asVals[nk] = existing ? existing + '\n' + cfg.text : cfg.text;
+  asTimes[nk] = new Date().toISOString();
+  asSaveTimes(); asSaveVals();
+  const nEl = document.getElementById('asf_' + nk.replace(/\|/g, '_'));
+  if(nEl) nEl.value = asVals[nk];
 }
 
 function asTextBlur(k, kvId, siteId, si, el) {
@@ -12903,9 +12983,6 @@ function asStartFresh(){
 }
 
 // ── edit sites ────────────────────────────────────────────────────────────────
-function asOpenEdit(){
-  asRenderEditList(); asEditClear(); openModal('modal-as-edit');
-}
 function asRenderEditList(){
   const el=document.getElementById('as-edit-list'); if(!el) return;
   el.innerHTML=asSites().map((s,i)=>`<div class="task-item">
@@ -12976,6 +13053,22 @@ function asExportCSV() {
       const k=asKey(site.id,si,fi);
       const v=(asVals[k]||'').replace(/"/g,'""');
       const fieldEdited=asFmtAZ(asTimes[k]).replace(/"/g,'""');
+      // Site Status is one control in the UI but exports as the two Yes/No
+      // rows it replaced, so anything downstream reading this file — and the
+      // NERC record itself — keeps the shape it already expects.
+      //
+      // Those two columns can't distinguish De-rated from a generic Abnormal
+      // (both are abnormal-but-not-outage), so the raw value goes out as a
+      // third row. Additive, not a change: anything reading by field name
+      // sees the same two columns it always did and ignores this one.
+      if(f.n==='Site Status'){
+        const abnormal = v==='' ? '' : (v==='Normal' ? 'No' : 'Yes');
+        const outage   = v==='' ? '' : (v==='Outage in place' ? 'Yes' : 'No');
+        csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","Abnormal Operating Conditions","${abnormal}","${fieldEdited}"\n`;
+        csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","Outage In Place","${outage}","${fieldEdited}"\n`;
+        csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","Site Status","${v}","${fieldEdited}"\n`;
+        return;
+      }
       csv+=`"${date}","${op}","${shift}","${site.id}","${sec.title||''}","${f.n}","${v}","${fieldEdited}"\n`;
     }));
   });
@@ -13018,7 +13111,19 @@ const SW_HARDCODED = [
     body:'Call received from field tech {{TECH}} requesting de-energization of Feeder Breaker 52F{{NUMBER}}:\n– Associated Megapacks disabled locally\n– MVT AC Level Breakers opened locally\n– Feeder Breaker 52F{{NUMBER}} opened remotely' },
   { id:'ctlf-re',  site:'CTLF · Feeder Breaker', action:'Re-Energize', cls:'re',
     numLbl:'Feeder Breaker #', numPh:'e.g. 32',
-    body:'Call received from field tech {{TECH}} requesting energization of Feeder Breaker 52F{{NUMBER}}:\n– Feeder Breaker 52F{{NUMBER}} closed remotely\n– MVT AC Level Breakers closed locally\n– Associated Megapacks enabled locally' }
+    body:'Call received from field tech {{TECH}} requesting energization of Feeder Breaker 52F{{NUMBER}}:\n– Feeder Breaker 52F{{NUMBER}} closed remotely\n– MVT AC Level Breakers closed locally\n– Associated Megapacks enabled locally' },
+  { id:'cflats-bess-de', site:'CFLATS · BESS', action:'De-Energize', cls:'de',
+    numLbl:'Unit #', numPh:'e.g. 12',
+    body:'Call received from field tech {{TECH}} requesting de-energization of Unit {{NUMBER}}:\n\u2013 Associated Megapacks disabled remotely\n\u2013 Unit {{NUMBER}} breakers opened remotely' },
+  { id:'cflats-bess-re', site:'CFLATS \u00B7 BESS', action:'Re-Energize', cls:'re',
+    numLbl:'Unit #', numPh:'e.g. 12',
+    body:'Call received from field tech {{TECH}} requesting energization of Unit {{NUMBER}}:\n\u2013 Unit {{NUMBER}} breakers closed remotely\n\u2013 Associated Megapacks enabled remotely' },
+  { id:'cflats-pv-de', site:'CFLATS \u00B7 PV', action:'De-Energize', cls:'de',
+    numLbl:'Inverter #', numPh:'e.g. 12',
+    body:'Call received from field tech {{TECH}} requesting de-energization of Inverter {{NUMBER}}:\n\u2013 Stop command sent to Inverter {{NUMBER}} remotely' },
+  { id:'cflats-pv-re', site:'CFLATS \u00B7 PV', action:'Re-Energize', cls:'re',
+    numLbl:'Inverter #', numPh:'e.g. 12',
+    body:'Call received from field tech {{TECH}} requesting energization of Inverter {{NUMBER}}:\n\u2013 Start command sent to Inverter {{NUMBER}} remotely' },
 ];
 
 const SW_CUSTOM_KEY = 'rnwbl_sw_custom_v1';
@@ -13045,7 +13150,7 @@ function initSwSharedTplsListener() {
   window.db.collection('sharedTemplates').orderBy('sharedAt', 'desc').onSnapshot(snap => {
     swSharedTpls = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     swRenderTpls();
-  }, err => console.error('Firestore (sharedTemplates):', err));
+  }, err => fsListenerError('sharedTemplates', err));
 }
 
 function swShareTpl(id) {
@@ -15371,11 +15476,11 @@ const ROC_QUESTIONS = [
 
   {id:'v5', cat:'voltage', type:'scenario',
    q:'SCENARIO: High voltage, low load, capacitor banks already ON. What are your priority actions?',
-   a:'<ul><li><strong>1. Switch off capacitor banks</strong> — they\'re supplying MVARs into a system that already has too many</li><li><strong>2. Switch in reactor banks</strong> (if available) — absorb the excess VARs</li><li><strong>3. Verify AVR</strong> is in automatic and setpoint is correct</li><li><strong>4. Notify ISO/TOP</strong> if voltage exceeds the operating band — this is reportable</li><li><strong>5. Log all actions</strong> with timestamps and notify SC if output is affected</li></ul><strong>Never add MVARs (capacitors) to a high-voltage system.</strong>'},
+   a:'<ul><li><strong>1. Contact the Transmission Operator</strong> — report the condition and get direction. Reactive equipment is switched on TOP instruction, not unilaterally</li><li><strong>2. Switch off capacitor banks</strong> (on TOP direction) — they\'re supplying MVARs into a system that already has too many</li><li><strong>3. Switch in reactor banks</strong> (if available) — absorb the excess VARs</li><li><strong>4. Verify AVR</strong> is in automatic and setpoint is correct</li><li><strong>5. Log all actions</strong> with timestamps and notify SC if output is affected</li></ul><strong>Never add MVARs (capacitors) to a high-voltage system.</strong><br>Know the correct action, but the TOP owns the voltage schedule — make the call before you make the switch.'},
 
   {id:'v6', cat:'voltage', type:'scenario',
    q:'SCENARIO: Voltage is dropping, load is heavy, reactor is ON. What is your first action and why?',
-   a:'<strong>Immediately switch the reactor OFF.</strong> A reactor absorbs MVARs — with voltage already falling under heavy load, the reactor is making the problem worse. Leaving it on is a voltage death spiral.<br><ul><li>Switch reactor off → stop absorbing VARs</li><li>Check if capacitor banks are available → switch on to inject MVARs</li><li>Verify AVR is in auto and generator is contributing max reactive support</li><li>Notify ISO/TOP if voltage cannot be recovered within operating limits</li><li>Log all actions with times and reasoning</li></ul>'},
+   a:'<strong>Contact the Transmission Operator first.</strong> You already know the reactor needs to come off — it absorbs MVARs, and with voltage falling under heavy load it is making the problem worse. But switching reactive equipment is a TOP-directed action, so report and get direction before you operate.<br><ul><li>Report the condition to the TOP and request direction</li><li>Switch reactor off on TOP direction → stop absorbing VARs</li><li>Check if capacitor banks are available → switch on to inject MVARs</li><li>Verify AVR is in auto and generator is contributing max reactive support</li><li>Log all actions with times and reasoning</li></ul><strong>Leaving the reactor on is a voltage death spiral</strong> — but the call goes through the TOP, not around it.'},
 
   {id:'v7', cat:'voltage', type:'conceptual',
    q:'What affects voltage more — MW or MVAR? Why does this matter operationally?',
@@ -15384,7 +15489,7 @@ const ROC_QUESTIONS = [
   // ── AVR continued
   {id:'v8', cat:'voltage', type:'conceptual',
    q:'What happens if AVR is taken off automatic (switched to manual)? What is required?',
-   a:'In manual mode, excitation is fixed and will NOT respond to voltage changes or disturbances. Risks:<ul><li>Voltage drifts uncontrolled with load changes</li><li>Generator may inject or absorb excessive VARs and trip on limits</li><li>Automatic reactive support during a grid disturbance is lost</li><li>This is a <strong>VAR-002 deviation</strong> — immediate notification required</li></ul><strong>Required action:</strong> Notify the ISO and/or SC immediately. Document time off auto, reason, and restoration. Restore AVR to automatic as soon as possible.'},
+   a:'In manual mode, excitation is fixed and will NOT respond to voltage changes or disturbances. Risks:<ul><li>Voltage drifts uncontrolled with load changes</li><li>Generator may inject or absorb excessive VARs and trip on limits</li><li>Automatic reactive support during a grid disturbance is lost</li><li>This is a <strong>VAR-002 deviation</strong> — notification required</li></ul><strong>Required action:</strong> Notify your <strong>Transmission Operator</strong> any time AVR comes off automatic. VAR-002 puts this obligation between the GOP and its associated TOP — not the ISO and not the SC. Report immediately, every occurrence, however brief — do not wait to see whether it clears itself. Document time off auto, reason, and restoration, and return to automatic as soon as possible.'},
 
   // ══ DISPATCH: ADS / AGC ═══════════════════════════════════════════════════
 
@@ -15446,7 +15551,7 @@ const ROC_QUESTIONS = [
 
   {id:'op4', cat:'operations', type:'application',
    q:'Hail stow procedure for HARQ 1/2 or C-Flats: what are the 7 steps and what is the trigger?',
-   a:'<strong>Trigger:</strong> Damaging hail alert — hail ≥ 1 inch in diameter forecasted or active.<ol style="margin-left:14px;"><li>Identify the alert</li><li>Log into NXNavigator</li><li>Stow the site (panels rotate to protective angle)</li><li>Notify Site Owner, Field team, and SC</li><li>Initiate Auto Tracking <strong>15 minutes after the storm passes</strong></li><li>Notify Site Owner, Field team, and SC again</li><li>Log all steps with timestamps</li></ol><strong>Common gap:</strong> Auto Tracking is never re-initiated after the storm. Panels will show low output with good irradiance and no alarm will fire — it\'s a "normal" stow state. Always verify Auto Tracking is running post-event.'},
+   a:'<strong>Trigger:</strong> Damaging hail alert — hail ≥ 1 inch in diameter forecasted or active.<ol style="margin-left:14px;"><li>Identify the alert</li><li>Log into NXNavigator</li><li>Stow the site (panels rotate to protective angle)</li><li>Notify Site Owner, Field team, and SC</li><li>Initiate Auto Tracking <strong>once the all clear is received</strong> (text or email)</li><li>Notify Site Owner, Field team, and SC again</li><li>Log all steps with timestamps</li></ol><strong>Common gap:</strong> Auto Tracking is never re-initiated after the storm. Panels will show low output with good irradiance and no alarm will fire — it\'s a "normal" stow state. Always verify Auto Tracking is running post-event.'},
 
   {id:'op5', cat:'operations', type:'procedure',
    q:'Walk through the BESS identify/derate procedure. What are the 6 steps?',
@@ -15478,7 +15583,7 @@ const ROC_QUESTIONS = [
 
   {id:'n1', cat:'standards', type:'standard',
    q:'VAR-002: What does it require of a GOP and when is a violation triggered?',
-   a:'<strong>VAR-002 (Voltage and Reactive)</strong> requires Generator Operators to:<ul><li>Operate AVR in <strong>automatic voltage control mode</strong> at all times</li><li>Maintain terminal voltage within the ISO\'s scheduled voltage band</li><li>Manage reactive power resources to support the voltage schedule</li><li><strong>Report immediately to the ISO/SC</strong> any time AVR cannot remain in automatic</li></ul>A violation is triggered when AVR is off auto and the GOP fails to notify. Even planned maintenance requiring manual mode must be pre-coordinated and reported. <strong>There is no grace period — notification is immediate.</strong>'},
+   a:'<strong>VAR-002 (Voltage and Reactive)</strong> requires Generator Operators to:<ul><li>Operate AVR in <strong>automatic voltage control mode</strong>, or in a different control mode as instructed by the Transmission Operator</li><li>Maintain the <strong>voltage schedule provided by the TOP</strong></li><li>Manage reactive power resources to support that schedule</li><li><strong>Notify the Transmission Operator immediately</strong> of an AVR status change, or of a change in reactive capability</li></ul>A violation is triggered when AVR is off automatic and the GOP fails to notify its TOP. Start-up, shutdown and testing are handled by prior arrangement with the TOP.<br><br><strong>The obligation runs to the Transmission Operator</strong> — not the ISO and not the SC. Enforcement actions under VAR-002 are consistently for failing to notify the TOP.'},
 
   {id:'n2', cat:'standards', type:'standard',
    q:'TOP-003: What does it require a GOP to supply, and what does this look like day-to-day?',
@@ -15688,7 +15793,7 @@ function rocLoad() {
 }
 
 function rocSave() {
-  localStorage.setItem('roc_progress', JSON.stringify(rocProgress));
+  safeLocalSet('roc_progress', JSON.stringify(rocProgress));
 }
 
 function rocResetProgress() {
@@ -15941,10 +16046,14 @@ function rocDrillFinish() {
 // progress and an audit trail are a deliberate follow-up once this version's
 // actually been used for a while, not built speculatively up front.
 const PB_CHECK_KEY = 'rnwbl_pb_checks_v1';
-const PB_CATEGORY_ORDER = ['Site Events','Dispatch & Compliance','Safety','Shift Routine'];
-const PB_PLAYBOOKS = [{"id": "Operating Instruction", "sheetTitle": "Operating Instruction", "phases": [{"name": "ISSUED BY CAISO BOARD", "steps": [{"text": "Receive Operating Instruction", "notes": ["Take Picture of the Board and attach to Log."]}, {"text": "Execute the Operating Instruction", "notes": ["Follow direction on CAISO Board."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "ISSUED BY PHONE", "steps": [{"text": "Receive Operating Instruction", "notes": ["Confirm if unsure it\u2019s an operating instruction."]}, {"text": "Repeat Instruction Back Correctly", "notes": ["Use 3-Way Comms. Ask if correct."]}, {"text": "Execute the Operating Instruction", "notes": ["Complete with authority on phone or call back after completion."]}, {"text": "Respond to authority Success/Failure", "notes": ["If Instruction completed off phone, call back."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}, {"text": "Inform Supervisor", "notes": ["So that call logs can be pulled."]}]}], "notes": ["Some operating instructions may de-rate or place the site in outage, follow those procedures as neccesary.", "If at any point a call is made to or received from authority switch to Phone Instructions"], "icon": "\ud83d\udccb", "category": "Dispatch & Compliance", "trigger": "CAISO board or a caller issues a direct operating instruction", "stepCount": 11, "slug": "operating-instruction"}, {"id": "Not Following ADS", "sheetTitle": "Not Following ADS", "phases": [{"name": "If SOC is near 100%", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed &/Or as directed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints DO NOT Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete Outage Card", "notes": ["Full Site Outage"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints as a result of site unable to follow dispatch, place a full site outage"], "icon": "\ud83c\udfaf", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking CAISO ADS dispatch setpoints", "stepCount": 18, "slug": "not-following-ads"}, {"id": "Not Following AGC", "sheetTitle": "Not Following AGC", "phases": [{"name": "If SOC is Limited", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS Works", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant in ADS mode", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS DOES NOT WORK", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints, place a full site outage"], "icon": "\ud83d\udcc9", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking AGC dispatch", "stepCount": 19, "slug": "not-following-agc"}, {"id": "Site Trip", "sheetTitle": "SITE TRIP", "phases": [{"name": "Start", "steps": [{"text": "Notify TOP", "notes": ["Inquire Possible Reason"]}, {"text": "Notify SC", "notes": ["End time 24 hours out"]}, {"text": "Complete Outage Card", "notes": ["As required & as perscribed by the SC"]}, {"text": "Dispatch Field", "notes": ["Coordinate retrieval of Event Files"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify 3AC", "notes": ["Call 1-800 number to get On Call. Tech to coordinate event files to 3AC POC."]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify SC", "notes": ["Request Permission to re-enter Market"]}, {"text": "Close In Site", "notes": ["Follow Swithcing Procedure"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Assume site trip if no parties can confirm comms to site"], "icon": "\u26a0\ufe0f", "category": "Site Events", "trigger": "Site has tripped offline", "stepCount": 14, "slug": "site-trip"}, {"id": "Comms Loss", "sheetTitle": "COMMS LOSS", "phases": [{"name": "Comms Loss Start", "steps": [{"text": "Identify Issue", "notes": ["Re-Fresh SCADA, Try another IP address, Try another Login"]}, {"text": "Notify TOP", "notes": ["Confirm their Comms. If No take direction from TOP"]}, {"text": "Notify SC", "notes": ["Confirm their Comms. If No take direction from SC"]}, {"text": "Notify Field", "notes": ["Via call or email"]}, {"text": "Notify Network Vendor", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["when comms are restored - if taken offline request permission to re-enter the grid"]}, {"text": "Notify SC", "notes": ["when comms are restored - if taken offline request permission to re-enter the market"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Assume site trip if no parties can confirm comms to site"], "icon": "\ud83d\udce1", "category": "Site Events", "trigger": "Lost SCADA / communications to a site", "stepCount": 13, "slug": "comms-loss"}, {"id": "Site De-Rated", "sheetTitle": "Site De-Rated", "phases": [{"name": "De-Rate Start", "steps": [{"text": "Identify Name Plate", "notes": ["Via Plant Info"]}, {"text": "Determine if Fully Availble/Derated", "notes": []}, {"text": "Submit De-rate/Outage to QSE", "notes": ["Via portal/form. Call to confirm"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "De-Rate End", "steps": [{"text": "Update/End Outage", "notes": ["Via Portal/Email"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\ud83d\udcc9", "category": "Site Events", "trigger": "Site is operating below full nameplate capacity", "stepCount": 10, "slug": "site-de-rated"}, {"id": "AVR", "sheetTitle": "Site Not in AVR", "phases": [{"name": "Not in AVR", "steps": [{"text": "Notify TOP", "notes": ["Per VAR-002 this is mandatory"]}, {"text": "Return site to AVR immediately", "notes": ["VIA Scada, Onsite team or other means"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\ud83d\udd0c", "category": "Dispatch & Compliance", "trigger": "Site has dropped out of Automatic Voltage Regulation (VAR-002)", "stepCount": 9, "slug": "avr"}, {"id": "Voltage", "sheetTitle": "Voltage Out of Band", "phases": [{"name": "Start", "steps": [{"text": "Notify TOP", "notes": ["Site voltage is outside the required band"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["If voltage returns in-band within 24 hours"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\u26a1", "category": "Dispatch & Compliance", "trigger": "Site voltage is outside the required band", "stepCount": 4, "slug": "voltage"}, {"id": "Daily Checklist", "sheetTitle": "Daily Checklist", "phases": [{"name": null, "steps": [{"text": "Please notify the ROC in the Teams chat that you are on the way.", "notes": []}, {"text": "Clock into work when at the office door (DSPTCH)", "notes": []}, {"text": "Check Dryerase/Outage board", "notes": []}, {"text": "Receive instructions from offgoing operator/teams", "notes": ["Verbally and via Teams chat"]}, {"text": "Log into D1/D2 duty sites SCADA's", "notes": []}, {"text": "Fill out (ROCC1) Operator Log (Onsite)", "notes": ["Via Softwrench"]}, {"text": "Complete Asset Scanning Tool/Upload", "notes": []}, {"text": "Leave instructions for oncoming operator in teams/turnover", "notes": ["Verbally and via Teams chat"]}, {"text": "Fillout (ROCC1) Operator Log (Offsite)", "notes": ["Via Softwrench"]}, {"text": "Ensure you log out of all sites directly", "notes": []}, {"text": "Leave the ROCC only after relief is logged into their sites.", "notes": []}, {"text": "Clock out (DSPTCH)", "notes": []}]}], "notes": [], "icon": "\u2705", "category": "Shift Routine", "trigger": "Start / end of shift routine", "stepCount": 12, "slug": "daily-checklist"}, {"id": "Fire Alarm", "sheetTitle": "Fire Alarm", "phases": [{"name": null, "steps": [{"text": "Recieve Fire alarm from Hiller or other service provider", "notes": []}, {"text": "Notify Field Team/Review Cameras if Available", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Coordinate Response \u2013 Confirm False Alarm", "notes": ["Work with field team/cameras to determine real vs. false"]}, {"text": "Notify Alarm Company if False Alarm", "notes": ["So they can call off the fire department if already dispatched"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "\ud83d\udd25", "category": "Site Events", "trigger": "Fire alarm received from a site", "stepCount": 6, "slug": "fire-alarm"}, {"id": "Units Off", "sheetTitle": "Units Offline", "phases": [{"name": "Solar", "steps": [{"text": "Identify each inverters status Online/Offine/Comms Loss", "notes": []}, {"text": "Locate current Irradiance", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Bess", "steps": [{"text": "Identify each inverters status Online/Offine/Comms Loss/Faulted", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Wind", "steps": [{"text": "Identify a tripped turbine", "notes": ["Via Scada"]}, {"text": "Reset the turbine", "notes": ["According to SOP"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench & the Turbine Trip Logs"]}]}], "notes": [], "icon": "\ud83d\udd27", "category": "Site Events", "trigger": "One or more inverters / turbines offline (Solar, BESS, or Wind)", "stepCount": 16, "slug": "units-off"}, {"id": "Hail Stow", "sheetTitle": "Hail Stow", "phases": [{"name": null, "steps": [{"text": "Identify Alert: damaging hail", "notes": ["(\u2265 1 inch in diameter)"]}, {"text": "Log into NXNavigator", "notes": []}, {"text": "Stow Site", "notes": ["Emergency Stow"]}, {"text": "Notify Site Owner/Field/Scheduling Coordinator", "notes": []}, {"text": "Initiate Auto Tracking 15 minutes after the storm passes", "notes": ["Using Indiji Watch"]}, {"text": "Log it", "notes": []}]}], "notes": [], "icon": "\ud83c\udf28\ufe0f", "category": "Site Events", "trigger": "Damaging hail alert \u2014 emergency stow needed", "stepCount": 6, "slug": "hail-stow"}]
-;
+const PB_CATEGORY_ORDER = ['Site Events','Dispatch & Compliance','Safety','Shift Routine','Comms Escalation'];
+const PB_PLAYBOOKS = [{"id": "Operating Instruction", "sheetTitle": "Operating Instruction", "phases": [{"name": "ISSUED BY CAISO BOARD", "steps": [{"text": "Receive Operating Instruction", "notes": ["Take Picture of the Board and attach to Log."]}, {"text": "Execute the Operating Instruction", "notes": ["Follow direction on CAISO Board."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "ISSUED BY PHONE", "steps": [{"text": "Receive Operating Instruction", "notes": ["Confirm if unsure it’s an operating instruction."]}, {"text": "Repeat Instruction Back Correctly", "notes": ["Use 3-Way Comms. Ask if correct."]}, {"text": "Execute the Operating Instruction", "notes": ["Complete with authority on phone or call back after completion."]}, {"text": "Respond to authority Success/Failure", "notes": ["If Instruction completed off phone, call back."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}, {"text": "Inform Supervisor", "notes": ["So that call logs can be pulled."]}]}], "notes": ["Some operating instructions may de-rate or place the site in outage, follow those procedures as neccesary.", "If at any point a call is made to or received from authority switch to Phone Instructions"], "icon": "📋", "category": "Dispatch & Compliance", "trigger": "CAISO board or a caller issues a direct operating instruction", "stepCount": 11, "slug": "operating-instruction", "choose": "How was the instruction issued?", "choosePrompt": "How was the instruction issued?"}, {"id": "Not Following ADS", "sheetTitle": "Not Following ADS", "phases": [{"name": "If SOC is near 100%", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed &/Or as directed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints DO NOT Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete Outage Card", "notes": ["Full Site Outage"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints as a result of site unable to follow dispatch, place a full site outage"], "icon": "🎯", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking CAISO ADS dispatch setpoints", "stepCount": 18, "slug": "not-following-ads", "choose": "What is the state of charge?", "choosePrompt": "What is the SOC condition?"}, {"id": "Not Following AGC", "sheetTitle": "Not Following AGC", "phases": [{"name": "If SOC is Limited", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS Works", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant in ADS mode", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS DOES NOT WORK", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints, place a full site outage"], "icon": "📉", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking AGC dispatch", "stepCount": 19, "slug": "not-following-agc", "choose": "What is the state of charge?", "choosePrompt": "What is the SOC condition?"}, {"id": "Site Trip", "sheetTitle": "SITE TRIP", "phases": [{"name": "Start", "steps": [{"text": "Identify Site Trip", "notes": ["High side open · Frozen SCADA data · Comms loss · TO reports a trip"], "jump": {"phase": 2, "label": "Breaker open but still producing?"}}, {"text": "Notify TOP", "notes": ["Inquire Possible Reason. Confirm TOP sees the same breaker position."]}, {"text": "Notify SC", "notes": ["Take direction from the SC operator"]}, {"text": "Complete Outage Card", "notes": ["As required & as perscribed by the SC"]}, {"text": "Dispatch Field", "notes": ["Coordinate retrieval of Event Files"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify 3AC", "notes": ["Call 1-800 number to get On Call. Tech to coordinate event files to 3AC POC."]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify SC", "notes": ["Request Permission to re-enter Market"]}, {"text": "Close In Site", "notes": ["Follow Swithcing Procedure"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "WIND — Breaker Open, Still Producing", "steps": [{"text": "Confirm Production With SC", "notes": ["SC confirms MW output despite the open high-side breaker"]}, {"text": "Leave Site Producing", "notes": ["!Absent an operating instruction: do NOT submit an Outage Card, do NOT update the Outage Board"]}, {"text": "Notify TOP", "notes": ["Report back that the site is producing despite the open breaker indication"]}, {"text": "Dispatch Field", "notes": ["Confirm the high side is actually closed in — expected, since the site is producing"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Field Tech Confirms Breaker Position", "notes": ["Tech reports breaker position back to ROC"]}, {"text": "Notify TOP", "notes": ["Confirm the line is closed"]}, {"text": "Notify Owner & SCADA Vendor", "notes": ["Investigate why SCADA indicated open while the breaker was closed and producing"]}, {"text": "Log It", "notes": ["Via Softwrench. Note breaker indicated open with site producing."]}]}], "notes": ["Assume site trip if no parties can confirm comms to site", "A wind site showing an open high-side breaker while still producing is not a trip — confirm output with the SC before submitting any outage"], "icon": "⚠️", "category": "Site Events", "trigger": "Site has tripped offline", "stepCount": 24, "slug": "site-trip"}, {"id": "Comms Loss", "sheetTitle": "COMMS LOSS", "phases": [{"name": "Comms Loss Start", "steps": [{"text": "Identify Issue", "notes": ["Re-Fresh SCADA, Try another IP address, Try another Login"]}, {"text": "Notify TOP", "notes": ["Confirm their Comms. If No take direction from TOP"]}, {"text": "Notify SC", "notes": ["Confirm their Comms. If No take direction from SC"]}, {"text": "Notify Field", "notes": ["Via call or email"]}, {"text": "Notify Network Vendor", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["when comms are restored - if taken offline request permission to re-enter the grid"]}, {"text": "Notify SC", "notes": ["when comms are restored - if taken offline request permission to re-enter the market"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Assume site trip if no parties can confirm comms to site"], "icon": "📡", "category": "Site Events", "trigger": "Lost SCADA / communications to a site", "stepCount": 13, "slug": "comms-loss"}, {"id": "Site De-Rated", "sheetTitle": "Site De-Rated", "phases": [{"name": "De-Rate Start", "steps": [{"text": "Identify Name Plate", "notes": ["Via Plant Info"]}, {"text": "Determine if Fully Availble/Derated", "notes": []}, {"text": "Submit De-rate/Outage to QSE", "notes": ["Via portal/form. Call to confirm"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "De-Rate End", "steps": [{"text": "Update/End Outage", "notes": ["Via Portal/Email"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "📉", "category": "Site Events", "trigger": "Site is operating below full nameplate capacity", "stepCount": 10, "slug": "site-de-rated"}, {"id": "AVR", "sheetTitle": "Site Not in AVR", "phases": [{"name": "Not in AVR", "steps": [{"text": "Notify TOP", "notes": ["Per VAR-002 this is mandatory"]}, {"text": "Return site to AVR immediately", "notes": ["VIA Scada, Onsite team or other means"]}, {"text": "Take Direction From TOP", "notes": ["If AVR cannot be restored — TOP directs until automatic control is regained"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "🔌", "category": "Dispatch & Compliance", "trigger": "Site has dropped out of Automatic Voltage Regulation (VAR-002)", "stepCount": 10, "slug": "avr"}, {"id": "Voltage", "sheetTitle": "Voltage Out of Band", "phases": [{"name": "Start", "steps": [{"text": "Notify TOP", "notes": ["Site voltage is outside the required band"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["If voltage returns in-band within 24 hours"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "⚡", "category": "Dispatch & Compliance", "trigger": "Site voltage is outside the required band", "stepCount": 4, "slug": "voltage"}, {"id": "Daily Checklist", "sheetTitle": "Daily Checklist", "phases": [{"name": null, "steps": [{"text": "Please notify the ROC in the Teams chat that you are on the way.", "notes": []}, {"text": "Clock into work when at the office door (DSPTCH)", "notes": []}, {"text": "Check Dryerase/Outage board", "notes": []}, {"text": "Receive instructions from offgoing operator/teams", "notes": ["Verbally and via Teams chat"]}, {"text": "Log into D1/D2 duty sites SCADA's", "notes": []}, {"text": "Fill out (ROCC1) Operator Log (Onsite)", "notes": ["Via Softwrench"]}, {"text": "Complete Asset Scanning Tool/Upload", "notes": []}, {"text": "Leave instructions for oncoming operator in teams/turnover", "notes": ["Verbally and via Teams chat"]}, {"text": "Fillout (ROCC1) Operator Log (Offsite)", "notes": ["Via Softwrench"]}, {"text": "Ensure you log out of all sites directly", "notes": []}, {"text": "Leave the ROCC only after relief is logged into their sites.", "notes": []}, {"text": "Clock out (DSPTCH)", "notes": []}]}], "notes": [], "icon": "✅", "category": "Shift Routine", "trigger": "Start / end of shift routine", "stepCount": 12, "slug": "daily-checklist"}, {"id": "Fire Alarm", "sheetTitle": "Fire Alarm", "phases": [{"name": null, "steps": [{"text": "Recieve Fire alarm from Hiller or other service provider", "notes": []}, {"text": "Notify Field Team/Review Cameras if Available", "notes": ["Via Email, include Field, ROC, Ownership"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Coordinate Response – Confirm False Alarm", "notes": ["Work with field team/cameras to determine real vs. false"]}, {"text": "Notify Alarm Company if False Alarm", "notes": ["So they can call off the fire department if already dispatched"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "🔥", "category": "Site Events", "trigger": "Fire alarm received from a site", "stepCount": 6, "slug": "fire-alarm"}, {"id": "Units Off", "sheetTitle": "Units Offline", "phases": [{"name": "Solar", "steps": [{"text": "Identify each inverters status Online/Offine/Comms Loss", "notes": []}, {"text": "Locate current Irradiance", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Bess", "steps": [{"text": "Identify each inverter/battery status Online/Offline/Comms Loss/Faulted", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Wind", "steps": [{"text": "Identify a tripped turbine", "notes": ["Via Scada"]}, {"text": "Reset the turbine", "notes": ["According to, and only if permitted by, the site-specific SOP"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench & the Turbine Trip Logs"]}]}], "notes": [], "icon": "🔧", "category": "Site Events", "trigger": "One or more inverters / turbines offline (Solar, BESS, or Wind)", "stepCount": 16, "slug": "units-off", "choose": "What kind of site?", "choosePrompt": "What type of site?"}, {"id": "Hail Stow", "sheetTitle": "Hail Stow", "phases": [{"name": null, "steps": [{"text": "Identify Alert: damaging hail", "notes": ["(≥ 1 inch in diameter)"]}, {"text": "Log into NXNavigator", "notes": []}, {"text": "Stow Site", "notes": ["Emergency Stow"]}, {"text": "Notify Site Owner/Field/Scheduling Coordinator", "notes": []}, {"text": "Initiate Auto Tracking once all clear is received", "notes": ["All clear arrives via Indji Watch, text or email"]}, {"text": "Update SC & Ownership Communication Thread", "notes": ["Confirm the site is back to auto tracking"]}, {"text": "Log it", "notes": []}]}], "notes": [], "icon": "🌨️", "category": "Site Events", "trigger": "Damaging hail alert — emergency stow needed", "stepCount": 7, "slug": "hail-stow"}, {"id": "Contact Escalation", "sheetTitle": "Contact Escalation", "choose": "S&B or Wind?", "phases": [{"name": "S&B", "steps": [{"text": "Contact Regional Manager", "notes": ["If no answer, continue down"]}, {"text": "Contact S&B Director", "notes": ["Cole Berman", "If no answer, continue down"]}, {"text": "Contact VP of Maintenance & Reliability", "notes": ["Troy Ryan"]}]}, {"name": "Wind", "steps": [{"text": "Contact Site Manager", "notes": ["If no answer, continue down"]}, {"text": "Contact Director of Wind Maintenance", "notes": ["Michael Montes", "If no answer, continue down"]}, {"text": "Contact VP of Maintenance & Reliability", "notes": ["Troy Ryan"]}]}], "notes": ["Work down the list in order — only escalate to the next contact when the one above does not answer"], "icon": "📞", "category": "Comms Escalation", "trigger": "Need to reach plant leadership about a site issue", "stepCount": 6, "slug": "contact-escalation"}];;
 
+// Which phase is currently open, keyed by playbook slug. Phases were
+// previously all stacked on one page, which read as a single long list —
+// an operator could work straight through a branch that did not apply to
+// them. Showing one at a time makes the choice explicit.
+let pbActivePhase = {};
 let pbCheckState = {};
 try { pbCheckState = JSON.parse(localStorage.getItem(PB_CHECK_KEY) || '{}'); } catch(e) { pbCheckState = {}; }
 let pbCurrentSlug = null;
@@ -15955,12 +16064,29 @@ function pbSaveChecks() {
   try { localStorage.setItem(PB_CHECK_KEY, JSON.stringify(pbCheckState)); } catch(e) {}
 }
 
-function pbPlaybookProgress(p) {
+function pbPhaseProgress(p, pi) {
   let total = 0, done = 0;
-  p.phases.forEach((ph, pi) => ph.steps.forEach((s, si) => {
+  p.phases[pi].steps.forEach((s, si) => {
     total++;
     if (pbCheckState[pbStepKey(p.slug, pi, si)]) done++;
-  }));
+  });
+  return { done, total };
+}
+
+// Branching playbooks have phases an operator will never run — the wind
+// branch on Site Trip, the asset-type branches on Units Off. Counting every
+// step made the bar top out well short of full and read as "you missed
+// something." Only phases with activity count, falling back to the first
+// phase when nothing has been touched yet, so the bar can always reach 100%.
+function pbPlaybookProgress(p) {
+  const engaged = p.phases.map((ph, pi) => pi)
+    .filter(pi => p.phases[pi].steps.some((s, si) => pbCheckState[pbStepKey(p.slug, pi, si)]));
+  const counted = engaged.length ? engaged : [0];
+  let total = 0, done = 0;
+  counted.forEach(pi => {
+    const r = pbPhaseProgress(p, pi);
+    total += r.total; done += r.done;
+  });
   return { done, total };
 }
 
@@ -16019,18 +16145,27 @@ function pbOpenPlaybook(slug) {
 function pbRenderDetail() {
   const p = PB_PLAYBOOKS.find(x => x.slug === pbCurrentSlug);
   if (!p) { pbShowList(); return; }
-  const { done, total } = pbPlaybookProgress(p);
-  const pct = total ? Math.round(done / total * 100) : 0;
   const multiPhase = p.phases.length > 1 && p.phases[0].name;
+  // Choose-one playbooks show a prompt until a path is picked, so a second
+  // option cannot be missed by an operator who lands on the first phase and
+  // starts working. Sequential playbooks open on phase 0 as before.
+  const choosing = !!p.choose && pbActivePhase[p.slug] === undefined;
+  const active = multiPhase ? (pbActivePhase[p.slug] || 0) : 0;
+  // With one phase on screen at a time, the bar reflects that phase — the
+  // tabs carry progress for the others.
+  const activeIdx = multiPhase ? (pbActivePhase[p.slug] || 0) : 0;
+  const { done, total } = multiPhase ? pbPhaseProgress(p, activeIdx) : pbPlaybookProgress(p);
+  const pct = total ? Math.round(done / total * 100) : 0;
   const titleEsc = p.sheetTitle.replace(/'/g, "\\'");
 
   let html = `
     <div class="pb-detail-title-row"><span class="pb-detail-icon">${p.icon}</span><span class="pb-detail-title">${esc(p.sheetTitle)}</span></div>
     <span class="pb-cat-pill">${esc(p.category)}</span>
     <div class="pb-detail-trigger">${esc(p.trigger)}</div>
-    <div class="pb-progress-row">
+    <div class="pb-progress-row"${choosing ? ' style="display:none;"' : ''}>
       <div class="pb-progress-bar"><div class="pb-progress-bar-fill" style="width:${pct}%;"></div></div>
-      <span class="pb-progress-label">${done}/${total} steps</span>
+      <span class="pb-progress-label">${done}/${total}${multiPhase ? ' in ' + esc(p.phases[activeIdx].name.split(' \u2014 ')[0]) : ' steps'}</span>
+      ${p.choose ? `<button class="pb-reset-btn" onclick="pbClearPhase('${p.slug}')">Change path</button>` : ''}
       <button class="pb-reset-btn" onclick="pbResetPlaybook()">Reset</button>
     </div>
     <div class="pb-feedback-row">
@@ -16045,15 +16180,33 @@ function pbRenderDetail() {
       </div>
     </div>`;
 
-  if (multiPhase) {
+  if (choosing) {
+    html += `<div class="pb-choose"><div class="pb-choose-q">${esc(p.choose)}</div><div class="pb-choose-grid">`;
+    p.phases.forEach((ph, pi) => {
+      let dn = 0;
+      ph.steps.forEach((s, si) => { if (pbCheckState[pbStepKey(p.slug, pi, si)]) dn++; });
+      html += `<button class="pb-choose-opt" onclick="pbSetPhase('${p.slug}',${pi})">
+        <span class="pb-choose-name">${esc(ph.name)}</span>
+        <span class="pb-choose-meta">${ph.steps.length} steps${dn ? ' \u00b7 ' + dn + ' done' : ''}</span>
+      </button>`;
+    });
+    html += `</div></div>`;
+  }
+
+  if (multiPhase && !choosing) {
     html += `<div class="pb-phase-nav">`;
     p.phases.forEach((ph, pi) => {
-      html += `<button class="pb-phase-nav-btn" onclick="document.getElementById('pb-phase-${pi}').scrollIntoView({behavior:'smooth',block:'start'})">${esc(ph.name)}</button>`;
+      let d = 0;
+      ph.steps.forEach((s, si) => { if (pbCheckState[pbStepKey(p.slug, pi, si)]) d++; });
+      const complete = d === ph.steps.length;
+      html += `<button class="pb-phase-nav-btn${pi === active ? ' active' : ''}${complete ? ' complete' : ''}" onclick="pbSetPhase('${p.slug}',${pi})">${esc(ph.name)}${complete ? '<span class="pb-phase-count">\u2713</span>' : ''}</button>`;
     });
     html += `</div>`;
   }
 
   p.phases.forEach((ph, pi) => {
+    if (choosing) return;
+    if (multiPhase && pi !== active) return;
     html += ph.name ? `<div class="pb-phase-section"><div class="pb-phase-name" id="pb-phase-${pi}">${esc(ph.name)}</div>` : `<div class="pb-phase-section">`;
     ph.steps.forEach((s, si) => {
       const key = pbStepKey(p.slug, pi, si);
@@ -16062,7 +16215,8 @@ function pbRenderDetail() {
         <span class="pb-step-check">${isDone ? '\u2713' : ''}</span>
         <div class="pb-step-body">
           <div class="pb-step-text">${esc(s.text)}</div>
-          ${s.notes.length ? `<div class="pb-step-notes">${s.notes.map(n => `<div>${esc(n)}</div>`).join('')}</div>` : ''}
+          ${s.notes.length ? `<div class="pb-step-notes">${s.notes.map(n => n.startsWith('!') ? `<div class="pb-note-warn">${esc(n.slice(1))}</div>` : `<div>${esc(n)}</div>`).join('')}</div>` : ''}
+          ${s.jump ? `<button class="pb-step-jump" onclick="event.stopPropagation();pbSetPhase('${p.slug}',${s.jump.phase})">${esc(s.jump.label)} &rarr;</button>` : ''}
         </div>
       </div>`;
     });
@@ -16074,6 +16228,18 @@ function pbRenderDetail() {
   }
 
   document.getElementById('pb-detail-body').innerHTML = html;
+}
+
+function pbClearPhase(slug) {
+  delete pbActivePhase[slug];
+  pbRenderDetail();
+}
+
+function pbSetPhase(slug, pi) {
+  pbActivePhase[slug] = pi;
+  pbRenderDetail();
+  const d = document.getElementById('pb-detail-body');
+  if (d) d.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function pbToggleStep(key) {
@@ -16104,7 +16270,7 @@ function initPbSuggestionsListener() {
     pbSuggestions = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     pbRenderSuggestionsBadge();
     if (document.getElementById('pb-suggestions-panel').style.display !== 'none') pbRenderSuggestionsPanel();
-  }, err => console.error('Firestore (playbookSuggestions):', err));
+  }, err => fsListenerError('playbookSuggestions', err));
 }
 
 function pbRenderSuggestionsBadge() {
@@ -16329,7 +16495,7 @@ function initAscClaimsListener() {
     snap.docs.forEach(doc => { ascClaims[doc.id] = doc.data(); });
     ascRenderHomeTile();
     ascRenderClaimStrip();
-  }, err => console.error('Firestore (assetScanClaims):', err));
+  }, err => fsListenerError('assetScanClaims', err));
 }
 
 // A claim only counts if it's from the current shift — anything else is
@@ -16481,7 +16647,7 @@ function initTeamNotesListener() {
   window.db.collection('teamNotes').orderBy('createdAt', 'desc').onSnapshot(snap => {
     teamNotes = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     homeRenderTeamNotes();
-  }, err => console.error('Firestore (teamNotes):', err));
+  }, err => fsListenerError('teamNotes', err));
 }
 
 function homeRenderTeamNotes() {
@@ -16846,7 +17012,7 @@ function moveToPosition(sourceHalf, sourceName, targetHalf, targetName, targetId
 // ── Start date control ──────────────────────────────────────────────────────
 function applyStartDate(date) {
   START = snapToSunday(date);
-  localStorage.setItem(SCHED_START_KEY, isoDate(START));
+  safeLocalSet(SCHED_START_KEY, isoDate(START));
   // Sync date input
   const inp = document.getElementById('start-date-input');
   if (inp) inp.value = isoDate(START);
@@ -17107,7 +17273,7 @@ function renderTable(){
           const covPos=state[covHalf].indexOf(covering.operator);
           const covRole=covPos>=0?getRoleForOp(covPos,w,covHalf):'';
           const rc=ROLE_CLS[covRole]||'';
-          return `<span class="rbadge ${rc} cvr-badge" title="Covering ${covering.operator} — working as ${covRole}">↔ ${covRole||'Cvr'}</span>`;
+          return `<span class="rbadge ${rc} cvr-badge" title="Covering ${esc(covering.operator)} — working as ${covRole}">↔ ${covRole||'Cvr'}</span>`;
         }
         return cell;
       }
@@ -17117,7 +17283,7 @@ function renderTable(){
       if(!to){
         if(covering){
           const role=getRoleForOp(posIdx,w,half);
-          return `<span class="rbadge ${ROLE_CLS[role]}" title="Working own shift + covering ${covering.operator}">${role} <span style="font-size:9px">+↔</span></span>`;
+          return `<span class="rbadge ${ROLE_CLS[role]}" title="Working own shift + covering ${esc(covering.operator)}">${role} <span style="font-size:9px">+↔</span></span>`;
         }
         return cell;
       }
@@ -17354,7 +17520,7 @@ function initTimeOffListener(){
     console.error('Firestore:', err);
     const status=document.getElementById('to-fb-status');
     if(status) status.textContent='⚠ Could not connect to Firestore. Check your security rules in the Firebase console (Firestore → Rules) and make sure reads/writes are allowed.';
-  });
+  }, err => fsListenerError('timeoff', err));
 }
 
 async function submitTimeOff(){
@@ -17452,7 +17618,11 @@ function renderTimeOffList(){
     const segHTML=effectiveSegs.map(s=>{
       const segDateStr=s.startDate===s.endDate?fmtDisp(s.startDate):`${fmtDisp(s.startDate)}–${fmtDisp(s.endDate)}`;
       const bCls={uncovered:'uncovered',pending:'pending',covered:'covered'}[s.status]||'uncovered';
-      const bTxt={uncovered:`⚠ Uncovered`,pending:`⏳ ${s.coveredBy} — pending confirmation`,covered:`✓ ${s.coveredBy} confirmed`}[s.status]||'⚠ Uncovered';
+      // esc() on everything Firestore-sourced below — these fields are typed
+      // by operators and stored shared, so they reach other people's browsers.
+      // Without escaping, anything written into a note/reason/name renders as
+      // live markup for the whole team.
+      const bTxt={uncovered:`⚠ Uncovered`,pending:`⏳ ${esc(s.coveredBy)} — pending confirmation`,covered:`✓ ${esc(s.coveredBy)} confirmed`}[s.status]||'⚠ Uncovered';
 
       // Flag if covering person is now on the same half — can no longer cover
       const coverInvalid = s.coveredBy && !isCoverageValid(t.operator, s.coveredBy);
@@ -17466,14 +17636,14 @@ function renderTimeOffList(){
       return `<div class="to-seg${coverInvalid?' to-seg-invalid':''}">
         <span class="to-seg-dates">${segDateStr}</span>
         <span class="to-status-badge ${bCls}" style="font-size:11px;padding:3px 8px;">${bTxt}</span>
-        ${s.note?`<span class="to-seg-note">📝 ${s.note}</span>`:''}
+        ${s.note?`<span class="to-seg-note">📝 ${esc(s.note)}</span>`:''}
         <span class="to-seg-actions">${segActions}</span>
-        ${coverInvalid?`<div class="to-cover-invalid">⚠ ${s.coveredBy} is now on the same half as ${t.operator} — they work the same days and can't cover this shift. Remove and reassign.</div>`:''}
+        ${coverInvalid?`<div class="to-cover-invalid">⚠ ${esc(s.coveredBy)} is now on the same half as ${esc(t.operator)} — they work the same days and can't cover this shift. Remove and reassign.</div>`:''}
       </div>`;
     }).join('');
 
     // Add coverage segment form
-    const opts=allOps.filter(n=>n!==t.operator).map(n=>`<option value="${n}">${n}</option>`).join('');
+    const opts=allOps.filter(n=>n!==t.operator).map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('');
     const addSegForm=`
       <button class="to-btn propose" style="margin-top:6px;" onclick="document.getElementById('sf-${t.id}').style.display='flex'">+ Add coverage</button>
       <div class="to-propose-form" id="sf-${t.id}" style="flex-direction:column;gap:8px;">
@@ -17497,14 +17667,14 @@ function renderTimeOffList(){
     return `<div class="to-entry to-${overallStatus}">
       <div class="to-entry-header">
         <div class="to-entry-who">
-          <span class="to-op-name">${t.operator}</span>
+          <span class="to-op-name">${esc(t.operator)}</span>
           ${rc?`<span class="to-role-pill ${rc}" style="background:var(--${rc}-bg,#eee);color:var(--${rc}-fg,#333)">${role}</span>`:''}
           <span class="to-half-pill">${half==='fh'?'Front Half':'Back Half'}</span>
         </div>
         <span class="to-dates">${dateStr}</span>
         <button class="to-del" onclick="deleteTimeOff('${t.id}')" title="Delete">✕</button>
       </div>
-      ${t.reason?`<div class="to-entry-reason">📝 ${t.reason}</div>`:''}
+      ${t.reason?`<div class="to-entry-reason">📝 ${esc(t.reason)}</div>`:''}
       <div class="to-segs">${segHTML||'<div class="to-seg-none">No coverage assigned yet</div>'}</div>
       ${addSegForm}
     </div>`;
@@ -17536,26 +17706,13 @@ document.querySelectorAll('#split-tabs .tab-btn').forEach(btn=>{
 // ════════════════════════════════════════════════════════════════════
 // CURRENT GOP SCHEDULE — data + functions
 // ════════════════════════════════════════════════════════════════════
-const CURR = {"2026-06-18":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Alexander Conway","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-06-19":{"d1":"Morgan Shearer","d2":"Josh Reyes","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Christopher Hill"},"2026-06-20":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-06-21":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-06-22":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-06-23":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-06-24":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-06-25":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Christopher Hill","n1":"Morgan Shearer","n2":"Jonathan Osborne"},"2026-06-26":{"d1":"Jesse Snygg-Carrasco","d2":"Josh Reyes","d3":"Adam McCauley","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-06-27":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Adam McCauley","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-06-28":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Adam McCauley","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-06-29":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-06-30":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-07-01":{"d1":"Rob Seffern","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-07-02":{"d1":"Rob Seffern","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-07-03":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-07-04":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-07-05":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-07-06":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-07-07":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Christopher Hill","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-07-08":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-07-09":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-07-10":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-07-11":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-07-12":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-07-13":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-07-14":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-07-15":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Christopher Hill","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-07-16":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Rob Seffern"},"2026-07-17":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Jesse Snygg-Carrasco"},"2026-07-18":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-07-19":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-07-20":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-07-21":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-07-22":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Jonathan Osborne","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-07-23":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Josh Reyes"},"2026-07-24":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Alexander Conway"},"2026-07-25":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-07-26":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-07-27":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-07-28":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-07-29":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Mar'Cell Edwards","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-07-30":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2026-07-31":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-08-01":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-08-02":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-08-03":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2026-08-04":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-08-05":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-08-06":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Christopher Hill","n1":"Morgan Shearer","n2":"Jonathan Osborne"},"2026-08-07":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-08-08":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-08-09":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-08-10":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-08-11":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-08-12":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-08-13":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-08-14":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-08-15":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-08-16":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-08-17":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-08-18":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-08-19":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-08-20":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Christopher Hill","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-08-21":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-08-22":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-08-23":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-08-24":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-08-25":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-08-26":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-08-27":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Rob Seffern"},"2026-08-28":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Jesse Snygg-Carrasco"},"2026-08-29":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-08-30":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-08-31":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-09-01":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-09-02":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-09-03":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Josh Reyes"},"2026-09-04":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Alexander Conway"},"2026-09-05":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-09-06":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-09-07":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-09-08":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-09-09":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-09-10":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2026-09-11":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-09-12":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-09-13":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-09-14":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2026-09-15":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-09-16":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-09-17":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Christopher Hill","n1":"Morgan Shearer","n2":"Jonathan Osborne"},"2026-09-18":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-09-19":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-09-20":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-09-21":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-09-22":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-09-23":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-09-24":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-09-25":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-09-26":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-09-27":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-09-28":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-09-29":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-09-30":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-10-01":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Christopher Hill","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-10-02":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-10-03":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-10-04":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-10-05":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-10-06":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-10-07":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-10-08":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Rob Seffern"},"2026-10-09":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Jesse Snygg-Carrasco"},"2026-10-10":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-10-11":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-10-12":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-10-13":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-10-14":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-10-15":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Josh Reyes"},"2026-10-16":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Alexander Conway"},"2026-10-17":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-10-18":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-10-19":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-10-20":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-10-21":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-10-22":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2026-10-23":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-10-24":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-10-25":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-10-26":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2026-10-27":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-10-28":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-10-29":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Christopher Hill","n1":"Morgan Shearer","n2":"Jonathan Osborne"},"2026-10-30":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-10-31":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-11-01":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-11-02":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-11-03":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-11-04":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-11-05":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-11-06":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-11-07":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-11-08":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-11-09":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-11-10":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-11-11":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-11-12":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Christopher Hill","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-11-13":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-11-14":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-11-15":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-11-16":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-11-17":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-11-18":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-11-19":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Rob Seffern"},"2026-11-20":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Jesse Snygg-Carrasco"},"2026-11-21":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-11-22":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-11-23":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-11-24":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-11-25":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2026-11-26":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Josh Reyes"},"2026-11-27":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Alexander Conway"},"2026-11-28":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-11-29":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-11-30":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-12-01":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-12-02":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2026-12-03":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2026-12-04":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-12-05":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-12-06":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-12-07":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2026-12-08":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-12-09":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2026-12-10":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Christopher Hill","n1":"Morgan Shearer","n2":"Jonathan Osborne"},"2026-12-11":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-12-12":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-12-13":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-12-14":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-12-15":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-12-16":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2026-12-17":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-12-18":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-12-19":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-12-20":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-12-21":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-12-22":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-12-23":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2026-12-24":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Christopher Hill","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-12-25":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-12-26":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-12-27":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-12-28":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-12-29":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-12-30":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2026-12-31":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Rob Seffern"},"2027-01-01":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Jesse Snygg-Carrasco"},"2027-01-02":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-01-03":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-01-04":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-01-05":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-01-06":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-01-07":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Josh Reyes"},"2027-01-08":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Alexander Conway"},"2027-01-09":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-01-10":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-01-11":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-01-12":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-01-13":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-01-14":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2027-01-15":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-01-16":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-01-17":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-01-18":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2027-01-19":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-01-20":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-01-21":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Christopher Hill","n1":"Morgan Shearer","n2":"Jonathan Osborne"},"2027-01-22":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-01-23":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-01-24":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-01-25":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-01-26":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-01-27":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-01-28":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-01-29":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-01-30":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-01-31":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-02-01":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-02-02":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-02-03":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-02-04":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Christopher Hill","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-02-05":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-02-06":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-02-07":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-02-08":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-02-09":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-02-10":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-02-11":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Rob Seffern"},"2027-02-12":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Jesse Snygg-Carrasco"},"2027-02-13":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-02-14":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-02-15":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-02-16":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-02-17":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-02-18":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Josh Reyes"},"2027-02-19":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Alexander Conway"},"2027-02-20":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-02-21":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-02-22":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-02-23":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-02-24":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-02-25":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2027-02-26":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-02-27":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-02-28":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-03-01":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2027-03-02":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-03-03":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-03-04":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Christopher Hill","n1":"Morgan Shearer","n2":"Jonathan Osborne"},"2027-03-05":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-03-06":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-03-07":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-03-08":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-03-09":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-03-10":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-03-11":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-03-12":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-03-13":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-03-14":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-03-15":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-03-16":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-03-17":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-03-18":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Christopher Hill","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-03-19":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-03-20":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-03-21":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-03-22":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-03-23":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-03-24":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-03-25":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Rob Seffern"},"2027-03-26":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Jesse Snygg-Carrasco"},"2027-03-27":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-03-28":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-03-29":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-03-30":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-03-31":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-04-01":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Josh Reyes"},"2027-04-02":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Alexander Conway"},"2027-04-03":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-04-04":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-04-05":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-04-06":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-04-07":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-04-08":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2027-04-09":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-04-10":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-04-11":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-04-12":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2027-04-13":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-04-14":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-04-15":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Christopher Hill","n1":"Morgan Shearer","n2":"Jonathan Osborne"},"2027-04-16":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-04-17":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-04-18":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-04-19":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-04-20":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-04-21":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-04-22":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-04-23":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-04-24":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-04-25":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-04-26":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-04-27":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-04-28":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-04-29":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Christopher Hill","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-04-30":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-05-01":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-05-02":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-05-03":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-05-04":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-05-05":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-05-06":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Rob Seffern"},"2027-05-07":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Jesse Snygg-Carrasco"},"2027-05-08":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-05-09":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-05-10":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-05-11":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-05-12":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Sergio Torres"},"2027-05-13":{"d1":"Alexander Conway","d2":"Morgan Shearer","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Josh Reyes"},"2027-05-14":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Alexander Conway"},"2027-05-15":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-05-16":{"d1":"Sergio Torres","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-05-17":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-05-18":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-05-19":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Jonathan Osborne","n1":"Rob Seffern","n2":"Morgan Shearer"},"2027-05-20":{"d1":"Adam McCauley","d2":"Jesse Snygg-Carrasco","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2027-05-21":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-05-22":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-05-23":{"d1":"Morgan Shearer","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-05-24":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Josh Reyes","n1":"Sergio Torres","n2":"Christopher Hill"},"2027-05-25":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-05-26":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Adam McCauley","n1":"Sergio Torres","n2":"Josh Reyes"},"2027-05-27":{"d1":"Rob Seffern","d2":"Alexander Conway","d3":"Christopher Hill","n1":"Morgan Shearer","n2":"Jonathan Osborne"},"2027-05-28":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-05-29":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-05-30":{"d1":"Jesse Snygg-Carrasco","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-05-31":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-06-01":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-06-02":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Rob Seffern","n1":"Morgan Shearer","n2":"Christopher Hill"},"2027-06-03":{"d1":"Sergio Torres","d2":"Adam McCauley","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-06-04":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-06-05":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-06-06":{"d1":"Alexander Conway","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-06-07":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-06-08":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-06-09":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Josh Reyes","n1":"Jesse Snygg-Carrasco","n2":"Jonathan Osborne"},"2027-06-10":{"d1":"Morgan Shearer","d2":"Rob Seffern","d3":"Christopher Hill","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-06-11":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-06-12":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-06-13":{"d1":"Adam McCauley","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-06-14":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-06-15":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-06-16":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Josh Reyes","n1":"Alexander Conway","n2":"Mar'Cell Edwards"},"2027-06-17":{"d1":"Jesse Snygg-Carrasco","d2":"Sergio Torres","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Morgan Shearer"},"2027-06-18":{"d1":"Rob Seffern","d2":"Morgan Shearer","d3":"Christopher Hill","n1":"Adam McCauley","n2":"Jesse Snygg-Carrasco"}};
 
-
-// ── Operator name mapping: Split short names → Current GOP full names ───
-// Pitman data already uses the same short names as state.fh/bh directly.
-// Current GOP data was built with full names; this maps short→full for lookup.
-const CURR_NAME_MAP = {
-  'Josh':'Josh Reyes','Ricky':'Christopher Hill','Christian':'Jonathan Osborne',
-  'Sergio':'Sergio Torres','Jesse':'Jesse Snygg-Carrasco',
-  'Morgan':'Morgan Shearer','Alex':'Alexander Conway','Adam':'Adam McCauley',
-  'Rob':'Rob Seffern','FNG':"Mar\u2019Cell Edwards"
-};
-function currFullName(n){ return CURR_NAME_MAP[n] || n; }
-const CURR_FIRST_DATE = Object.keys(CURR).sort()[0]; // earliest real date CURR actually covers
 
 // Render static chips in Current GOP from live state.fh / state.bh.
 // Pitman has its own interactive renderer — see renderPitChips() below.
 function renderStaticChips(){
   const el = document.getElementById('curr-zone-roster'); if(!el) return;
-  el.innerHTML = REF_ROSTER.map(n =>
+  el.innerHTML = activeModel().ops.map(n =>
     `<div class="chip fh-chip static-chip"><span class="chip-name">${n}</span></div>`
   ).join('');
 }
@@ -17564,13 +17721,22 @@ function renderStaticChips(){
 // Pitman and driven by state.fh/state.bh, which don't apply here.
 function refPopulateSelect(id, addBlank){
   const el = document.getElementById(id); if(!el) return;
-  const cur = el.value;
+  // Only keep the current selection if that person exists in the model
+  // being switched to — otherwise the picker would show a name from the
+  // other schedule and render an empty grid.
+  let cur = activeModel().ops.includes(el.value) ? el.value : '';
+  // Individual view lands on Morgan by default, same as Split Week and
+  // Pitman, so the grid shows something real instead of an empty prompt.
+  // addBlank distinguishes the operator picker from the calendar's
+  // "Everyone" highlight filter, which should stay unfiltered.
+  if(!cur && addBlank && activeModel().ops.includes('Morgan')) cur = 'Morgan';
   el.innerHTML = addBlank ? '<option value="">— pick an operator —</option>' : '<option value="">Everyone</option>';
-  REF_ROSTER.forEach(n=>{
+  activeModel().ops.forEach(n=>{
     const o=document.createElement('option'); o.value=o.textContent=n;
     if(n===cur) o.selected=true;
     el.appendChild(o);
   });
+  el.value = cur;
 }
 
 // Repopulate a <select> from current state operators
@@ -17584,12 +17750,9 @@ function repopulateSelect(id, addBlank){
     el.appendChild(o);
   });
 }
-const CURR_OPS = ["Adam McCauley","Alexander Conway","Christopher Hill","Jesse Snygg-Carrasco","Jonathan Osborne","Mar\u2019Cell Edwards","Morgan Shearer","Rob Seffern","Sergio Torres","Josh Reyes"];
 const CURR_MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const CURR_DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const CURR_RCLS={Day1:'d1',Day2:'d1',Night:'n1'};
-// Role lookup
-const CURR_ORIG_ROLES={D1:true,D2:true,N1:true};
 let currCalState={year:new Date().getFullYear(),month:new Date().getMonth()};
 let currInited=false;
 
@@ -17645,7 +17808,7 @@ function currIndRender(){
       const iso=isoDate(dObj);
       const e=currGetDay(iso);
       let role=null;
-      if(e.day1===name||e.day2===name)role='Day';else if(e.night===name)role='Night';
+      if(e.day.includes(name))role='Day';else if(e.night.includes(name))role='Night';
       const isToday=iso===td;
       const wrap=cnt=>`<td${isToday?' class="today-cell"':''}>${cnt}</td>`;
       cells.push(wrap(role?`<span class="rbadge ${CURR_RCLS[role==='Day'?'Day1':'Night']}">${role}</span>`:offBadge));
@@ -17671,11 +17834,11 @@ function currCrewRender(){
   const d=new Date(iso+'T00:00:00');
   const isT=iso===isoDate(new Date());
   if(lbl) lbl.textContent=CURR_DAYS[d.getDay()]+', '+CURR_MONTHS[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear()+(isT?' — Today':'');
-  const offOps=REF_ROSTER.filter(n=>![e.day1,e.day2,e.night].includes(n));
+  const working=[...e.day, ...e.night];
+  const offOps=activeModel().ops.filter(n=>!working.includes(n));
   const slots=[
-    {r:'Day', c:'d1', n:e.day1, t:'day'},
-    {r:'Day', c:'d1', n:e.day2, t:'day'},
-    {r:'Night', c:'n1', n:e.night, t:'night'},
+    ...e.day.map(n=>({r:'Day', c:'d1', n, t:'day'})),
+    ...e.night.map(n=>({r:'Night', c:'n1', n, t:'night'})),
   ];
   el.innerHTML=`<div class="curr-day-card">
     <div class="curr-crew-slots">
@@ -17720,11 +17883,10 @@ function currCalRender(){
     const iso=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const e=currGetDay(iso);
     const cell=document.createElement('div');
-    const hasFocus=focus&&[e.day1,e.day2,e.night].includes(focus);
+    const hasFocus=focus&&[...e.day,...e.night].includes(focus);
     cell.className='cal-cell'+(iso===td?' today':'')+(hasFocus?' has-focus':'');
     let inner=`<div class="cal-day-num">${d}</div>`;
-    inner+=`<div class="curr-cal-sq">GOP</div>`;
-    [{r:'Day',n:e.day1},{r:'Day',n:e.day2},{r:'Night',n:e.night}].forEach(s=>{
+    [...e.day.map(n=>({r:'Day',n})), ...e.night.map(n=>({r:'Night',n}))].forEach(s=>{
       const isFoc=focus&&s.n===focus;
       inner+=`<div class="cal-person${isFoc?' highlighted':''}${focus&&!isFoc?' faded':''}"><span class="cal-dot ${s.r==='Day'?'d1':'n1'}"></span><span>${s.n} <span style="opacity:.6;font-size:9.5px;">${s.r}</span></span></div>`;
     });
@@ -17757,7 +17919,7 @@ function showSchedule(which){
     const el=document.getElementById(id); if(el) el.style.display='none';
   });
   // Toggle buttons
-  ['toggle-curr','toggle-split','toggle-pit'].forEach(id=>{
+  ['toggle-curr','toggle-prop10','toggle-split','toggle-pit'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.classList.remove('active');
   });
 
@@ -17783,6 +17945,11 @@ function showSchedule(which){
     renderPitChips(); pitInitOnce(); pitCalRender();
     updatePitIndicator();
   } else {
+    // 'curr' and 'prop10' share one view — only the data model differs, so
+    // switching between them is a model swap plus a re-render, not a
+    // separate set of panels to keep in sync.
+    currModel = (which === 'prop10') ? 'prop10' : 'curr';
+    const model = activeModel();
     document.getElementById('curr-view').style.display='';
     document.getElementById('curr-tabs').style.display='';
     const activeCurrTab=document.querySelector('#curr-tabs .curr-tab.active');
@@ -17790,11 +17957,37 @@ function showSchedule(which){
     if(activeCurrPanel) activeCurrPanel.style.display='block';
     if(!activeCurrTab) document.querySelector('#curr-tabs .curr-tab').classList.add('active');
     document.getElementById('curr-date-ctrl').style.display='';
-    document.getElementById('toggle-curr').classList.add('active');
-    { const el=document.getElementById('sched-subtitle'); if(el) el.textContent='Reference Schedule \xB7 Your real, live rotation'; }
-    renderStaticChips(); currInitOnce(); currCalRender();
+    document.getElementById(currModel==='prop10'?'toggle-prop10':'toggle-curr').classList.add('active');
+    { const el=document.getElementById('sched-subtitle'); if(el) el.textContent=model.label+' \xB7 '+model.subtitle; }
+    currApplyModelChrome();
+    renderStaticChips(); currInitOnce();
+    refPopulateSelect('curr-op-select', true);
+    refPopulateSelect('curr-cal-focus', false);
+    currIndRender(); currCrewRender(); currCalRender();
     updateCurrIndicator();
   }
+}
+
+// Swaps the copy that differs between the two models — the roster card
+// header, the intro bullets, and the cycle-length wording. Everything else
+// on the page is identical because the underlying shape is identical.
+function currApplyModelChrome(){
+  const m = activeModel();
+  const isProp = currModel === 'prop10';
+  const setText = (id, txt) => { const el=document.getElementById(id); if(el) el.textContent = txt; };
+  setText('curr-roster-title', isProp ? 'Operators (proposed)' : 'Operators');
+  setText('curr-roster-sub', m.dayCount + ' day \u00B7 ' + m.nightCount + ' night, rotating \u00B7 ' + m.cycle + '-day cycle');
+  setText('curr-roster-hint', isProp
+    ? 'Ten operators, each with their own rotation \u2014 no shared schedules'
+    : "Each operator's real rotation, pulled from the same source as Who's on Shift");
+  const intro = document.getElementById('curr-intro-lead');
+  if (intro) intro.innerHTML = isProp
+    ? '<strong>10 operators, 3 day + 2 night daily</strong> \u2014 three cover days, two cover nights, every day'
+    : '<strong>' + m.ops.length + ' operators, 2 day + 1 night daily</strong> \u2014 two people cover days, one covers nights, every day';
+  const cyc = document.getElementById('curr-intro-cycle');
+  if (cyc) cyc.innerHTML = isProp
+    ? '<strong>70-day cycle</strong> \u2014 ten rotation slots, one per operator, so nobody shares a schedule'
+    : "<strong>Real rotation, not a formula</strong> \u2014 the same 42-day pattern that drives Who's on Shift on the Home page";
 }
 
 // ══════════════════════════════════════════════════════════════════════
@@ -17833,7 +18026,7 @@ function getWeekIdxForPit(date){
 function applyPitStart(val){
   if(!val) return;
   pitStart = snapToSunday(new Date(val+'T00:00:00'));
-  localStorage.setItem('rnwbl_pit_start', isoDate(pitStart));
+  safeLocalSet('rnwbl_pit_start', isoDate(pitStart));
   const inp = document.getElementById('pit-date-input');
   if(inp) inp.value = isoDate(pitStart);
   updatePitIndicator();
@@ -17860,19 +18053,13 @@ function updatePitIndicator(){
 }
 
 // ══════════════════════════════════════════════════════════════════════
-// CURRENT GOP — real schedule, looked up directly from CURR
+// CURRENT SCHEDULE — reads the live rotation, same source as Who's on Shift
 // ══════════════════════════════════════════════════════════════════════
-// CURR (defined above) is the actual current-live schedule — verified
-// against the source spreadsheet: 358 of 359 overlapping dates match
-// exactly, and the one difference (2026-07-19) is a known PTO cover
-// (Rob's last day, Jesse covering) that CURR correctly shows as the base
-// rotation assignment rather than the ad-hoc cover. This used to be a
-// from-scratch 70-day "3+4 linked block" formula, but that formula didn't
-// match reality (confirmed directly: it split every role into 3-day/4-day
-// segments, but the real schedule has operators working a single role for
-// a full uninterrupted week — see Morgan on N1, 2026-06-25 through 07-01).
-// Reading CURR directly removes that whole risk — this is the verified
-// data, not a re-derived approximation of it.
+// This tab used to carry its own 46KB hardcoded lookup table of full-name
+// day-by-day assignments ("Modified DuPont"). That's gone — it now calls
+// wosRowForDate() so there is exactly one definition of the rotation in
+// this file, shared with the Home page tile. Fix the rotation once and
+// both update; there's no second copy to drift out of sync.
 //
 // currStart is the Individual/Crew/Calendar views' starting point for
 // browsing — the real rotation itself has no start/end to shift, it's
@@ -17885,13 +18072,6 @@ function updatePitIndicator(){
 
 let currStart = snapToSunday(new Date());
 
-// Reverse of CURR_NAME_MAP (full name -> short name) so CURR's data lines
-// up with the short names used everywhere else in this view (state.fh/bh,
-// the operator picker, the crew card, etc.)
-const CURR_NAME_MAP_REV = {};
-Object.entries(CURR_NAME_MAP).forEach(([short, full]) => { CURR_NAME_MAP_REV[full] = short; });
-function currShortName(fullName){ return CURR_NAME_MAP_REV[fullName] || fullName; }
-
 // Reference schedule — this used to be a hardcoded "Modified DuPont" lookup
 // table with 5 named roles a day. Replaced with the same rotation logic
 // that already drives Who's on Shift on the Home page, so this tab shows
@@ -17902,16 +18082,84 @@ function currShortName(fullName){ return CURR_NAME_MAP_REV[fullName] || fullName
 // historical record (real substitutions on real past dates) and should stay
 // accurate as history, but shouldn't make someone who isn't on the team
 // anymore show up as a pickable "current" operator.
-const REF_ROSTER = [...new Set([].concat(...WOS_CANONICAL))].sort();
-function currGetDay(iso){
-  const row = wosRowForDate(new Date(iso+'T00:00:00'));
-  if (!row) return { day1:'—', day2:'—', night:'—' };
-  return { day1: row[0], day2: row[1], night: row[2] };
+// ── Schedule models ──────────────────────────────────────────────────────
+// Both schedules render through the same view — they differ only in roster,
+// cycle length, and how many people cover days vs nights. currGetDay()
+// returns {day:[...], night:[...]} so the renderers never care which model
+// is active or how many slots it has.
+//
+// PROP10 is the expanded DuPont: the same schedule family as the current
+// 6-operator rotation, grown to 10 — same 12-hour shifts, same 50% duty,
+// same 7-on/7-off character with 3s and 4s — but a 70-day cycle instead of
+// 42, because ten operators need ten rotation slots (10 x 7 = 70). Trying
+// to fit ten people into the existing 42-day frame forces four pairs onto
+// identical schedules; stretching the cycle gives everyone their own again.
+// Order here IS the rotation assignment — index = which 7-day slot an
+// operator sits in, which decides who they share shifts with. Today's
+// schedule splits the crew cleanly into {Josh, Alexander, Morgan} and
+// {Adam, Jesse, Sergio} with zero overlap between them. This ordering
+// keeps both trios together: Josh and Sergio hold the hub slots (15 days
+// with each trio-mate), and the only cross-trio contact anywhere is
+// Morgan/Adam. Reordering this array reshuffles who works with whom.
+// The whole roster is also rotated one slot from the obvious ordering:
+// crew bonds depend on the distance between slots, not the absolute
+// position, so rotating everyone leaves the trios untouched while
+// putting all six current operators on the parity that best matches
+// the days they already work (55% instead of 45%).
+const PROP10_OPS = ['Sergio','Morgan','Daniel','Alexander','Jesse','Sasha','Adam','Josh','Ricky','Christian'];
+
+// One operator's 70-day shape, as run-lengths. Everyone runs this exact
+// sequence, each offset a week from the last. Verified: gives exactly 3 day
+// + 2 night every calendar day, and 21 day / 14 night per person per cycle.
+const PROP10_RUNS = [['D',3],[null,3],['N',7],[null,4],['D',4],[null,7],['D',7],[null,7],['N',7],[null,7],['D',7],[null,7]];
+const PROP10_SHAPE = (() => {
+  const out = [];
+  PROP10_RUNS.forEach(([role, len]) => { for (let i = 0; i < len; i++) out.push(role); });
+  return out;
+})();
+
+function prop10RowForDate(dateObj){
+  const anchor = new Date(WOS_ANCHOR + 'T00:00:00');
+  const days = Math.round((dateObj - anchor) / 86400000);
+  const day = [], night = [];
+  PROP10_OPS.forEach((name, i) => {
+    const pos = (((days - i * 7) % 70) + 70) % 70;
+    const role = PROP10_SHAPE[pos];
+    if (role === 'D') day.push(name);
+    else if (role === 'N') night.push(name);
+  });
+  return { day, night };
 }
 
-function getWeekIdxForCurr(date){
-  return Math.floor(Math.round((date - currStart) / 86400000) / 7);
-}
+const SCHED_MODELS = {
+  curr: {
+    label: 'Current schedule',
+    subtitle: 'Your real, live rotation',
+    ops: [...new Set([].concat(...WOS_CANONICAL))].sort(),
+    cycle: 42,
+    dayCount: 2,
+    nightCount: 1,
+    getDay(iso){
+      const row = wosRowForDate(new Date(iso + 'T00:00:00'));
+      if (!row) return { day: ['—','—'], night: ['—'] };
+      return { day: [row[0], row[1]], night: [row[2]] };
+    }
+  },
+  prop10: {
+    label: 'Expanded DuPont',
+    subtitle: 'Same shifts, same duty, 70-day cycle',
+    ops: [...PROP10_OPS].sort(),
+    cycle: 70,
+    dayCount: 3,
+    nightCount: 2,
+    getDay(iso){ return prop10RowForDate(new Date(iso + 'T00:00:00')); }
+  }
+};
+
+let currModel = 'curr';
+function activeModel(){ return SCHED_MODELS[currModel]; }
+function currGetDay(iso){ return activeModel().getDay(iso); }
+
 
 function applyCurrStart(val){
   if(!val) return;
@@ -17936,11 +18184,12 @@ function setCurrToThisWeek(){
 // accurate, useful thing to show here instead.
 function updateCurrIndicator(){
   const el=document.getElementById('curr-day-indicator'); if(!el) return;
+  const cycle = activeModel().cycle;
   const anchor = new Date(WOS_ANCHOR+'T00:00:00');
   const days = Math.round((currStart - anchor) / 86400000);
-  const pos = ((days % WOS_PERIOD) + WOS_PERIOD) % WOS_PERIOD;
+  const pos = ((days % cycle) + cycle) % cycle;
   const isT = isoDate(currStart)===isoDate(new Date());
-  el.textContent = `Day ${pos+1} of the 42-day rotation${isT ? ' — today' : ''}`;
+  el.textContent = `Day ${pos+1} of the ${cycle}-day rotation${isT ? ' — today' : ''}`;
   el.style.color='var(--text-muted)';
 }
 
@@ -18167,12 +18416,21 @@ setTimeout(() => {
   }
 })();
 
+// Deployment is a single cached HTML file, so a browser can quietly keep
+// serving an old copy after a push — which reads as "the fix didn't work"
+// rather than "you're running yesterday's code." This prints the build the
+// page is actually running, so that question takes one glance to answer.
+// Bump APP_VERSION and the footer <span class="app-footer-v"> together.
+const APP_VERSION = 'v1.53';
+console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
+console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
+
 load();
 </script>
 
 <footer class="app-footer">
   <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-  RNWBL Ops Hub <span class="app-footer-v">v1.24</span>
+  RNWBL Ops Hub <span class="app-footer-v">v1.53</span>
 </footer>
 </body>
 </html>
