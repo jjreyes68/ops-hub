@@ -2539,7 +2539,7 @@ body.dark .corkboard{
   <!-- At a glance -->
   <div class="glance-label">At a glance</div>
   <div class="glance-grid">
-    <div class="glance-tile" id="glance-shift">
+    <div class="glance-tile" id="glance-shift" onclick="homeOpenShiftCalendar()">
       <div class="glance-tile-top"><span class="glance-icon">👥</span><span class="glance-tile-label">Who's on Shift</span></div>
       <div class="glance-tile-main" id="glance-shift-main">—</div>
       <div class="glance-tile-sub" id="glance-shift-sub"></div>
@@ -7127,7 +7127,6 @@ const WX_LOCS = [
   {name:'FRMV1', location:'Farmersville, CA',  lat:36.3,    lng:-119.21,    notes:'Farmersville Solar | PV 5.4MW'},
   {name:'HNFD1', location:'Hanford, CA',       lat:36.33,   lng:-119.65,    notes:'Hanford Solar | PV 3.6MW'},
   {name:'LSTH1', location:'Lost Hills, CA',    lat:35.62,   lng:-119.69,    notes:'Lost Hills Solar 1 | PV 26MW'},
-  {name:'PRGV1', location:'San Diego, CA',     lat:32.72,   lng:-117.16,    notes:'Peregrine Solar | PV 60MW'},
   {name:'PRTV1', location:'Porterville, CA',   lat:36.07,   lng:-119.02,    notes:'Porterville Solar | PV 5.4MW'},
   {name:'TLRE1', location:'Tulare, CA',        lat:36.203682,lng:-119.4188,    notes:'Tulare Solar | PV 5.4MW'},
   {name:'TRPC1', location:'Delano, CA',        lat:35.78,   lng:-119.24,    notes:'Tropico Solar | PV 60MW'},
@@ -7328,7 +7327,7 @@ async function clSaveAsImage(e) {
 }
 const CL_SITE_TYPES = {
   // BESS
-  PRGN1:'BESS',PRGV1:'BESS',HARQ2:'BESS',KUNA1:'BESS',GLTA1:'BESS',COSO1:'BESS',
+  PRGN1:'BESS',HARQ2:'BESS',KUNA1:'BESS',GLTA1:'BESS',COSO1:'BESS',
   BYPS1:'BESS',CTLF1:'BESS',CTLF:'BESS',PDMT1:'BESS',MRCP1:'BESS',MRCP:'BESS',FRDN1:'BESS',ANGF1:'BESS',AVLN1:'Solar',TSMS1:'BESS',
   // Solar
   HARQ1:'Solar',NCLS1:'Solar',AVLN2:'Solar',BLKW1:'Solar',LSTH2:'Solar',NSTR1:'Solar',
@@ -16589,6 +16588,16 @@ async function ascRelease(type) {
   }
 }
 
+// Home tile -> the calendar view of the current schedule. Clicking through
+// to the right sub-tab matters here: landing on Individual view with nobody
+// selected would show an empty grid and look broken.
+function homeOpenShiftCalendar() {
+  switchView('schedule', null);
+  showSchedule('curr');
+  const tab = document.querySelector('#curr-tabs .curr-tab[data-ctab="curr-calendar"]');
+  if (tab) tab.click();
+}
+
 function homeRenderWhosOnShift() {
   const mainEl = document.getElementById('glance-shift-main');
   if (!mainEl) return;
@@ -18437,7 +18446,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.55';
+const APP_VERSION = 'v1.57';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18446,7 +18455,7 @@ load();
 
 <footer class="app-footer">
   <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-  RNWBL Ops Hub <span class="app-footer-v">v1.55</span>
+  RNWBL Ops Hub <span class="app-footer-v">v1.57</span>
 </footer>
 </body>
 </html>
