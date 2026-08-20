@@ -12,6 +12,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-check-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G50BZLK3VS"></script>
 <script>
@@ -130,8 +131,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 .nav-version{font-family:var(--m);font-size:10px;font-weight:600;color:var(--text3);white-space:nowrap;padding:0 10px;letter-spacing:.02em;}
 
 /* FIXED FOOTER */
-.app-footer{position:fixed;bottom:0;left:0;right:0;height:28px;display:flex;align-items:center;justify-content:center;gap:5px;background:var(--bg2);border-top:1px solid var(--border);font-family:var(--m);font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.03em;z-index:40;}
+.app-footer{position:fixed;bottom:0;left:0;right:0;height:28px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 14px;background:var(--bg2);border-top:1px solid var(--border);font-family:var(--m);font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.03em;z-index:40;}
 .app-footer-v{opacity:.5;font-weight:400;}
+.app-footer-mid{display:flex;align-items:center;justify-content:center;gap:5px;}
+.app-footer-left{justify-self:start;}
+.app-footer-right{justify-self:end;}
+.footer-link{background:none;border:none;color:var(--text3);font-family:var(--m);font-size:10px;cursor:pointer;padding:2px 0;letter-spacing:.04em;}
+.footer-link:hover{color:var(--text2);}
 body{padding-bottom:28px;}
 
 /* ── Nav timezone strip ───────────────────────────────────── */
@@ -2406,9 +2412,77 @@ body.dark .corkboard{
 .stickynote-form input,.stickynote-form textarea{border:none;background:rgba(255,255,255,.5);border-radius:3px;padding:5px 6px;font-family:var(--f);font-size:11.5px;color:#3a3324;resize:none;}
 .stickynote-form textarea{flex:1;min-height:50px;}
 .stickynote-form button{align-self:flex-end;background:#3a3324;color:#fff6a8;border:none;border-radius:4px;padding:4px 10px;font-size:10.5px;font-weight:700;cursor:pointer;}
+
+/* ── Sign-in gate ─────────────────────────────────────────────────────── */
+.auth-gate{position:fixed;inset:0;z-index:99999;background:#0f1117;display:flex;
+  align-items:center;justify-content:center;padding:20px;}
+.auth-gate.hidden{display:none;}
+/* while the stored session is being checked, show the mark only */
+.auth-gate.checking .auth-sub,.auth-gate.checking .auth-lbl,
+.auth-gate.checking .auth-card input,.auth-gate.checking .auth-err,
+.auth-gate.checking .auth-btn{display:none;}
+.auth-gate.checking .auth-card{text-align:center;padding:34px 26px;}
+.auth-checking{display:none;font-size:12px;color:#7e8a9f;margin-top:14px;}
+.auth-gate.checking .auth-checking{display:block;}
+.auth-card{width:100%;max-width:340px;background:#181c25;border:1px solid #32384a;
+  border-radius:14px;padding:28px 26px;font-family:'DM Sans',system-ui,sans-serif;}
+.auth-mark{font-size:19px;font-weight:700;color:#e8eaf0;letter-spacing:.02em;line-height:1;}
+.auth-mark span{display:block;font-family:'DM Mono',monospace;font-size:9.5px;font-weight:400;
+  color:#7e8a9f;letter-spacing:.22em;margin-top:3px;}
+.auth-sub{font-size:13px;color:#b0b8ce;margin:14px 0 20px;}
+.auth-lbl{display:block;font-size:11.5px;color:#7e8a9f;margin-bottom:5px;}
+.auth-card input{width:100%;padding:9px 11px;margin-bottom:14px;border-radius:7px;
+  border:1px solid #454e66;background:#0f1117;color:#e8eaf0;font-size:13.5px;
+  font-family:'DM Sans',system-ui,sans-serif;}
+.auth-card input:focus{outline:none;border-color:#4a8fe8;}
+.auth-btn{width:100%;padding:10px;border:none;border-radius:7px;background:#2bbd7a;
+  color:#0f1117;font-size:14px;font-weight:600;cursor:pointer;
+  font-family:'DM Sans',system-ui,sans-serif;}
+.auth-btn:hover{filter:brightness(1.07);}
+.auth-btn:disabled{opacity:.6;cursor:default;}
+.auth-err{font-size:12.5px;color:#e05540;margin:-6px 0 12px;min-height:16px;line-height:1.4;}
+.auth-signout{background:none;border:none;color:var(--text3);font-family:var(--m);
+  font-size:10px;cursor:pointer;padding:2px 6px;letter-spacing:.04em;}
+.auth-signout:hover{color:var(--text2);}
+
+/* ── Site feedback modal ──────────────────────────────────────────────── */
+.fb-modal{display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.5);
+  align-items:center;justify-content:center;padding:20px;}
+.fb-modal.open{display:flex;}
+.fb-card{width:100%;max-width:400px;background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--rl);padding:20px;}
+.fb-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.fb-where{font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:14px;}
+.fb-card input,.fb-card textarea{width:100%;padding:8px 10px;margin-bottom:10px;
+  border:1px solid var(--border2);border-radius:7px;background:var(--bg);color:var(--text);
+  font-family:var(--f);font-size:13px;resize:vertical;}
+.fb-card input:focus,.fb-card textarea:focus{outline:none;border-color:var(--blue);}
+.fb-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:4px;}
+.fb-cancel,.fb-send{border-radius:7px;font-family:var(--f);font-size:13px;font-weight:500;
+  padding:7px 14px;cursor:pointer;}
+.fb-cancel{background:none;border:1px solid var(--border2);color:var(--text2);}
+.fb-send{background:var(--green);border:none;color:#fff;}
+.fb-send:disabled{opacity:.6;cursor:default;}
 </style>
 </head>
 <body>
+
+<!-- Sign-in gate. Rendered visible by default and only removed once Firebase
+     confirms a session, so no real data is ever painted to an unauthenticated
+     viewer. Shared team account; sign-in persists per device. -->
+<div id="auth-gate" class="auth-gate checking">
+  <div class="auth-card">
+    <div class="auth-mark">RNWBL<span>OPS HUB</span></div>
+    <div class="auth-checking">Checking session\u2026</div>
+    <div class="auth-sub">Sign in to continue</div>
+    <label class="auth-lbl" for="auth-email">Email</label>
+    <input id="auth-email" type="email" autocomplete="username" placeholder="Email" autofocus>
+    <label class="auth-lbl" for="auth-pass">Password</label>
+    <input id="auth-pass" type="password" autocomplete="current-password" placeholder="Password">
+    <div class="auth-err" id="auth-err"></div>
+    <button class="auth-btn" id="auth-btn" onclick="authSignIn()">Sign in</button>
+  </div>
+</div>
 
 <div class="nav">
   <div class="nav-brand">
@@ -16340,6 +16414,54 @@ function pbToggleSuggestForm(containerId, slug, title) {
   }
 }
 
+// ── Site feedback ────────────────────────────────────────────────────────
+// Goes to the same collection as playbook suggestions with kind:'site', so
+// there is one list to review and the two are still tellable apart. Captures
+// which page the person was on — "the dropdown is broken" is not actionable
+// without it, and nobody thinks to mention it.
+function fbCurrentView() {
+  const v = [...document.querySelectorAll('.view')]
+    .find(el => getComputedStyle(el).display !== 'none');
+  if (!v) return 'Unknown';
+  const t = v.querySelector('.page-title');
+  return (t ? t.textContent.trim() : v.id.replace(/^view-/, '')) || 'Unknown';
+}
+
+function fbOpen() {
+  const where = fbCurrentView();
+  document.getElementById('fb-where').textContent = 'About: ' + where;
+  document.getElementById('fb-modal').dataset.page = where;
+  document.getElementById('fb-modal').classList.add('open');
+  setTimeout(() => document.getElementById('fb-text').focus(), 60);
+}
+
+function fbClose() { document.getElementById('fb-modal').classList.remove('open'); }
+
+async function fbSubmit() {
+  if (!window.db) { showToast('Not connected \u2014 try again in a moment'); return; }
+  const name = document.getElementById('fb-name').value.trim();
+  const text = document.getElementById('fb-text').value.trim();
+  const btn  = document.getElementById('fb-send');
+  if (!text) { showToast('Type something first'); return; }
+  btn.disabled = true; btn.textContent = 'Sending...';
+  try {
+    await window.db.collection('playbookSuggestions').add({
+      kind: 'site',
+      page: document.getElementById('fb-modal').dataset.page || null,
+      text,
+      submittedBy: name || 'Anonymous',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById('fb-text').value = '';
+    fbClose();
+    showToast('Thanks \u2014 logged for review \u2713');
+  } catch (e) {
+    showToast('Could not send: ' + e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Send';
+  }
+}
+
 async function pbSubmitSuggestion(containerId, slug, title) {
   if (!window.db) { showToast('Firebase not connected \u2014 open this file directly in a browser'); return; }
   const nameInp = document.getElementById('pb-suggest-name-' + containerId);
@@ -16350,6 +16472,7 @@ async function pbSubmitSuggestion(containerId, slug, title) {
   if (!text) { showToast('Type something first'); return; }
   try {
     await window.db.collection('playbookSuggestions').add({
+      kind: 'playbook',
       playbookSlug: slug || null,
       playbookTitle: title || null,
       text,
@@ -16776,8 +16899,85 @@ try {
     } catch(ace) { console.warn('[App Check]', ace.message); }
     db = firebase.firestore();
     window.db = db; // exposed so code outside this IIFE (Buyers Curtailment's Set Reminder) reuses the same connection
+
+    // ── Sign-in gate ───────────────────────────────────────────────────────
+    // One shared team account. LOCAL persistence means a device stays signed
+    // in across reloads and restarts, so this is a one-time step per machine
+    // rather than something operators face every shift.
+    //
+    // The gate is visible in the markup by default and only lifted once
+    // Firebase confirms a session — an unauthenticated viewer never sees real
+    // data painted to the screen, even briefly.
+    const auth = firebase.auth();
+    window.auth = auth;
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {});
+
+    auth.onAuthStateChanged(user => {
+      const gate = document.getElementById('auth-gate');
+      if (!gate) return;
+      gate.classList.remove('checking');   // session known — show form or lift
+      gate.classList.toggle('hidden', !!user);
+      if (user) {
+        // Firestore listeners are attached at load; if the session arrived
+        // after that, re-run load so they connect with a signed-in identity.
+        if (window.__authReady === false) { window.__authReady = true; try { load(); } catch(e) {} }
+      }
+    });
+
+    window.authSignIn = function() {
+      const email = document.getElementById('auth-email').value.trim();
+      const pass  = document.getElementById('auth-pass').value;
+      const err   = document.getElementById('auth-err');
+      const btn   = document.getElementById('auth-btn');
+      err.textContent = '';
+      if (!email || !pass) { err.textContent = 'Enter the email and password.'; return; }
+      btn.disabled = true; btn.textContent = 'Signing in...';
+      auth.signInWithEmailAndPassword(email, pass)
+        .then(() => { document.getElementById('auth-pass').value = ''; })
+        .catch(e => {
+          // Firebase codes are opaque to an operator mid-shift; say what to do.
+          const msg = {
+            'auth/wrong-password':  'That password is not right. Check with your supervisor.',
+            'auth/invalid-credential': 'That password is not right. Check with your supervisor.',
+            'auth/user-not-found':  'That account does not exist. Check the email address.',
+            'auth/invalid-email':   'That does not look like a valid email address.',
+            'auth/too-many-requests': 'Too many attempts. Wait a minute and try again.',
+            'auth/network-request-failed': 'No connection to the sign-in service. Check the network.',
+          }[e.code] || ('Could not sign in. ' + (e.message || ''));
+          err.textContent = msg;
+        })
+        .finally(() => { btn.disabled = false; btn.textContent = 'Sign in'; });
+    };
+
+    window.authSignOut = function() {
+      if (confirm('Sign out of Ops Hub on this device?')) auth.signOut();
+    };
+
   }
 } catch(e) { console.warn('[Schedule]', e.message); }
+
+// Runs whether or not the Firebase SDK loaded. Deliberately fails CLOSED: if
+// sign-in is unreachable the gate stays up and says why, rather than letting
+// anyone through. Failing open would make the gate trivially bypassable by
+// simply blocking the SDK.
+(function authGateInit(){
+  const gate = document.getElementById('auth-gate');
+  if (!gate) return;
+  const err = document.getElementById('auth-err');
+  const btn = document.getElementById('auth-btn');
+
+  if (!window.auth) {
+    gate.classList.remove('checking');
+    if (btn) { btn.disabled = true; btn.textContent = 'Sign-in unavailable'; }
+    if (err) err.textContent = 'Cannot reach the sign-in service. Check the network connection, then reload.';
+    console.warn('[Auth] Firebase SDK unavailable — gate held closed');
+    return;
+  }
+  ['auth-email','auth-pass'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', ev => { if (ev.key === 'Enter') window.authSignIn(); });
+  });
+})();
 
 // ── Schedule constants ─────────────────────────────────────────────────────
 const SCHED_START_KEY = 'rnwbl_sched_start';
@@ -18454,7 +18654,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.64';
+const APP_VERSION = 'v1.69';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18462,8 +18662,29 @@ load();
 </script>
 
 <footer class="app-footer">
-  <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-  RNWBL Ops Hub <span class="app-footer-v">v1.64</span>
+  <button class="footer-link app-footer-left" onclick="fbOpen()" title="Suggest an improvement to the site">suggest an improvement</button>
+  <span class="app-footer-mid">
+    <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
+    RNWBL Ops Hub <span class="app-footer-v">v1.69</span>
+  </span>
+  <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
+
+<!-- Site feedback. Separate from the per-playbook Suggest an update button:
+     that one is for corrections to operational steps, this is for the tool
+     itself. Same Firestore collection with a kind field so there is one list
+     to review, and the current page is captured automatically. -->
+<div id="fb-modal" class="fb-modal" onclick="if(event.target===this)fbClose()">
+  <div class="fb-card">
+    <div class="fb-title">Suggest an improvement</div>
+    <div class="fb-where" id="fb-where"></div>
+    <input id="fb-name" type="text" placeholder="Your name">
+    <textarea id="fb-text" rows="4" placeholder="What would make this better? Broken things welcome too."></textarea>
+    <div class="fb-actions">
+      <button class="fb-cancel" onclick="fbClose()">Cancel</button>
+      <button class="fb-send" id="fb-send" onclick="fbSubmit()">Send</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
