@@ -2412,6 +2412,13 @@ body.dark .corkboard{
 .auth-gate{position:fixed;inset:0;z-index:99999;background:#0f1117;display:flex;
   align-items:center;justify-content:center;padding:20px;}
 .auth-gate.hidden{display:none;}
+/* while the stored session is being checked, show the mark only */
+.auth-gate.checking .auth-sub,.auth-gate.checking .auth-lbl,
+.auth-gate.checking .auth-card input,.auth-gate.checking .auth-err,
+.auth-gate.checking .auth-btn{display:none;}
+.auth-gate.checking .auth-card{text-align:center;padding:34px 26px;}
+.auth-checking{display:none;font-size:12px;color:#7e8a9f;margin-top:14px;}
+.auth-gate.checking .auth-checking{display:block;}
 .auth-card{width:100%;max-width:340px;background:#181c25;border:1px solid #32384a;
   border-radius:14px;padding:28px 26px;font-family:'DM Sans',system-ui,sans-serif;}
 .auth-mark{font-size:19px;font-weight:700;color:#e8eaf0;letter-spacing:.02em;line-height:1;}
@@ -2439,9 +2446,10 @@ body.dark .corkboard{
 <!-- Sign-in gate. Rendered visible by default and only removed once Firebase
      confirms a session, so no real data is ever painted to an unauthenticated
      viewer. Shared team account; sign-in persists per device. -->
-<div id="auth-gate" class="auth-gate">
+<div id="auth-gate" class="auth-gate checking">
   <div class="auth-card">
     <div class="auth-mark">RNWBL<span>OPS HUB</span></div>
+    <div class="auth-checking">Checking session\u2026</div>
     <div class="auth-sub">Sign in to continue</div>
     <label class="auth-lbl" for="auth-email">Email</label>
     <input id="auth-email" type="email" autocomplete="username" placeholder="Email" autofocus>
@@ -16834,6 +16842,7 @@ try {
     auth.onAuthStateChanged(user => {
       const gate = document.getElementById('auth-gate');
       if (!gate) return;
+      gate.classList.remove('checking');   // session known — show form or lift
       gate.classList.toggle('hidden', !!user);
       if (user) {
         // Firestore listeners are attached at load; if the session arrived
@@ -16885,6 +16894,7 @@ try {
   const btn = document.getElementById('auth-btn');
 
   if (!window.auth) {
+    gate.classList.remove('checking');
     if (btn) { btn.disabled = true; btn.textContent = 'Sign-in unavailable'; }
     if (err) err.textContent = 'Cannot reach the sign-in service. Check the network connection, then reload.';
     console.warn('[Auth] Firebase SDK unavailable — gate held closed');
@@ -18571,7 +18581,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.67';
+const APP_VERSION = 'v1.68';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18580,7 +18590,7 @@ load();
 
 <footer class="app-footer">
   <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-  RNWBL Ops Hub <span class="app-footer-v">v1.67</span>
+  RNWBL Ops Hub <span class="app-footer-v">v1.68</span>
   <button class="auth-signout" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
 </body>
