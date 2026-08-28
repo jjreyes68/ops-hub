@@ -15739,8 +15739,18 @@ const ROC_QUESTIONS = [
         a:'Plant at reduced capacity. BESS offline — thermal event under investigation, do not restore without HVAC confirmed operational and temperature cleared. Unit 3 inverter offline — cause under investigation, do not reset without maintenance authorization. CAISO curtailment still active — confirm with SC if it has been extended or released. High voltage condition ongoing — reactor still out for maintenance, voltage being monitored, SC aware. Relief operator should: check BESS status with maintenance before shift end, watch voltage closely, and confirm curtailment status with SC.'}
      ]
    }
-  }
-];
+  },
+
+  {id:'r3', cat:'scada', type:'rapid',
+   q:'State the one-line diagram symbol for: Breaker, Transformer, Switch.',
+   a:'<div style="display:flex;gap:26px;flex-wrap:wrap;margin:10px 0 12px;"><div style="text-align:center;"><svg width="86" height="46" viewBox="0 0 86 46" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="23" x2="30" y2="23"/><rect x="30" y="12" width="26" height="22"/><line x1="56" y1="23" x2="84" y2="23"/></svg><div style="font-size:11px;opacity:.75;margin-top:2px;">Breaker</div></div><div style="text-align:center;"><svg width="86" height="46" viewBox="0 0 86 46" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="23" x2="26" y2="23"/><circle cx="36" cy="23" r="11"/><circle cx="50" cy="23" r="11"/><line x1="60" y1="23" x2="84" y2="23"/></svg><div style="font-size:11px;opacity:.75;margin-top:2px;">Transformer</div></div><div style="text-align:center;"><svg width="86" height="46" viewBox="0 0 86 46" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="30" x2="30" y2="30"/><circle cx="30" cy="30" r="2.5" fill="currentColor"/><line x1="30" y1="30" x2="55" y2="14"/><circle cx="57" cy="30" r="2.5" fill="currentColor"/><line x1="57" y1="30" x2="84" y2="30"/></svg><div style="font-size:11px;opacity:.75;margin-top:2px;">Switch (open)</div></div></div><ul><li><strong>Breaker</strong> \u2014 a box (or an arc) drawn across the circuit line</li><li><strong>Transformer</strong> \u2014 two interlocking circles, or two opposing arcs</li><li><strong>Switch</strong> \u2014 a line with a break in it, hinged open like a door</li></ul>The break in a switch symbol shows position: <strong>closed</strong> sits flush with the line, <strong>open</strong> swings away from it. This matters when you are following a switching order against a one-line and the SCADA graphic does not match the print.'},
+  {id:'s5', cat:'scada', type:'conceptual',
+   q:'What is a PPC, and what is it doing between the ISO setpoint and the equipment?',
+   a:'The <strong>Plant Power Controller</strong> takes a plant-wide setpoint and distributes it across the individual inverters, turbines or PCS units, then trims continuously to hold the plant at that target at the point of interconnection.<ul><li>Receives the setpoint from SCADA / ADS / AGC</li><li>Splits it across available equipment, accounting for whatever is derated or offline</li><li>Regulates to the <strong>POI</strong>, not the sum of the equipment</li><li>Runs the control mode the TOP schedule requires</li></ul><strong>Why it matters:</strong> when a site is not following dispatch, the PPC is the layer between \u201cthe setpoint arrived\u201d and \u201cthe equipment moved.\u201d A setpoint visible in SCADA with no MW response usually means the PPC is in the wrong mode, has a limit applied, or has lost communication with the equipment beneath it.<br><br><strong>Modes to recognise:</strong> active power control, voltage control, power factor control, and manual/local \u2014 where the PPC stops regulating and holds whatever it was last given.'},
+  {id:'op7', cat:'operations', type:'procedure',
+   q:'Walk through the outage ticket procedure \u2014 what are the 4 steps?',
+   a:'<ol style="margin-left:14px;"><li><strong>Identify the outage</strong> \u2014 what is out, when it started, and whether it is forced or planned</li><li><strong>Submit the ticket</strong> \u2014 as required and as prescribed by the SC</li><li><strong>Update as conditions change</strong> \u2014 revise the end time or capacity as better information arrives</li><li><strong>Close the ticket</strong> \u2014 once the equipment is returned and output is confirmed recovered</li></ol>The step most often missed is the last one. A ticket left open after the equipment is back keeps the site showing derated to the SC and the market, with nothing alarming to tell you.'},
+  ];
 
 const ROC_CATEGORIES = [
   {key:'grid',       label:'Grid Entities',                icon:'🌐'},
@@ -18657,7 +18667,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.71';
+const APP_VERSION = 'v1.72';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18668,7 +18678,7 @@ load();
   <button class="footer-link app-footer-left" onclick="fbOpen()" title="Suggest an improvement to the site">suggest an improvement</button>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v1.71</span>
+    RNWBL Ops Hub <span class="app-footer-v">v1.72</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
