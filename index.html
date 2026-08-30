@@ -16811,7 +16811,7 @@ function homeRenderShiftList() {
   const pi = a.done < a.total ? 0 : 1;
   const r = prog(pi);
 
-  label.textContent = pi === 0 ? 'Shift start' : 'Shift end';
+  label.textContent = pi === 0 ? 'Start of shift checklist' : 'End of shift checklist';
   main.textContent = r.done + ' of ' + r.total;
   fill.style.width = Math.round(r.done / r.total * 100) + '%';
 
@@ -18762,7 +18762,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.74';
+const APP_VERSION = 'v1.75';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18773,7 +18773,7 @@ load();
   <button class="footer-link app-footer-left" onclick="fbOpen()" title="Suggest an improvement to the site">suggest an improvement</button>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v1.74</span>
+    RNWBL Ops Hub <span class="app-footer-v">v1.75</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
