@@ -4943,7 +4943,8 @@ const TZ_ZONES=[
     {name:'Angel Fire',location:'Angel Fire, NM'},{name:'Kuna',location:'Kuna, ID'},{name:'Taos Mesa',location:'El Prado, NM'}]},
   {key:'CT',label:'Central Time',tz:'America/Chicago',accent:['#10b981','#059669'],sites:[
     {name:'Goodwell',location:'Goodwell, OK'},{name:'Lindahl',location:'Tioga, ND'},{name:'Origin',location:'Hennepin, OK'},
-    {name:'Rocky Ridge',location:'Hobart, OK'},{name:'Prairie Rose',location:'Hardwick, MN'},{name:'Bypass',location:'Richmond, TX'}]},
+    {name:'Rocky Ridge',location:'Hobart, OK'},{name:'Prairie Rose',location:'Hardwick, MN'},{name:'Bypass',location:'Richmond, TX'},
+    {name:'Ferdinand',location:'San Antonio, TX'}]},
   {key:'ET',label:'Eastern Time',tz:'America/Toronto',accent:['#3b82f6','#2563eb'],sites:[
     {name:'Dufferin',location:'Shelburne, ON'},{name:'McLeans Mt',location:'Little Current, ON'}]}
 ];
@@ -18837,7 +18838,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.78';
+const APP_VERSION = 'v1.79';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18911,7 +18912,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v1.78</span>
+    RNWBL Ops Hub <span class="app-footer-v">v1.79</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
