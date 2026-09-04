@@ -2474,6 +2474,26 @@ body.dark .corkboard{
   cursor:pointer;margin-top:1px;transition:all .12s;}
 .sl-check:hover{border-color:var(--green);background:var(--gbg);}
 .sl-done{color:var(--green);}
+
+.as-inp.kv-in{border-color:var(--green);}
+.as-inp.kv-out{border-color:var(--red);background:var(--rbg);}
+
+.wind-mini-cell{cursor:pointer;border-radius:4px;padding:1px 4px;margin:-1px -4px;transition:background .12s;}
+.wind-mini-cell:hover{background:var(--bg3);}
+.wx-fleet-card.wx-flash{outline:2px solid var(--blue);outline-offset:2px;transition:outline .2s;}
+
+.kb-table{width:100%;border-collapse:collapse;margin-bottom:6px;}
+.kb-table td{padding:5px 0;font-size:13px;color:var(--text2);}
+.kb-table td:first-child{width:88px;white-space:nowrap;}
+kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg3);
+  border:1px solid var(--border2);border-bottom-width:2px;border-radius:4px;
+  padding:1px 6px;color:var(--text);}
+
+@media(max-width:560px){
+  .app-footer{padding:0 10px;}
+  .app-footer-mid{display:none;}
+  .app-footer{grid-template-columns:1fr auto;}
+}
 </style>
 </head>
 <body>
@@ -3251,6 +3271,7 @@ body.dark .corkboard{
     </div>
     <div style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;">
       <button class="tbtn" style="color:var(--amber);border-color:var(--amber);" onclick="asStartFresh()">↺ Start fresh</button>
+      <button class="tbtn" onclick="asCopyHandoff()" title="Copy a summary of what is left, for Teams">Copy handoff</button>
       <button class="btn-p" onclick="asExportCSV()">Export CSV</button>
     </div>
   </div>
@@ -4923,7 +4944,8 @@ const TZ_ZONES=[
     {name:'Angel Fire',location:'Angel Fire, NM'},{name:'Kuna',location:'Kuna, ID'},{name:'Taos Mesa',location:'El Prado, NM'}]},
   {key:'CT',label:'Central Time',tz:'America/Chicago',accent:['#10b981','#059669'],sites:[
     {name:'Goodwell',location:'Goodwell, OK'},{name:'Lindahl',location:'Tioga, ND'},{name:'Origin',location:'Hennepin, OK'},
-    {name:'Rocky Ridge',location:'Hobart, OK'},{name:'Prairie Rose',location:'Hardwick, MN'},{name:'Bypass',location:'Richmond, TX'}]},
+    {name:'Rocky Ridge',location:'Hobart, OK'},{name:'Prairie Rose',location:'Hardwick, MN'},{name:'Bypass',location:'Richmond, TX'},
+    {name:'Ferdinand',location:'San Antonio, TX'}]},
   {key:'ET',label:'Eastern Time',tz:'America/Toronto',accent:['#3b82f6','#2563eb'],sites:[
     {name:'Dufferin',location:'Shelburne, ON'},{name:'McLeans Mt',location:'Little Current, ON'}]}
 ];
@@ -12930,7 +12952,8 @@ function asRenderForm() {
         html+=`<textarea class="as-textarea" id="${fid}" rows="2" onchange="asChange('${k}','','${esc(site.id)}',${si},this)">${esc(val)}</textarea>`;
       } else {
         const unit=f.unit||'', dispVal=(unit&&val.endsWith(unit))?val.slice(0,-unit.length):val;
-        html+=`<input class="as-inp" id="${fid}" value="${esc(dispVal)}" placeholder="${esc(f.n)}${unit?' ('+unit+')':''}" data-unit="${esc(unit)}" data-kv-min="${f.kvMin||''}" data-kv-max="${f.kvMax||''}" data-kv-id="${kid}" onblur="asTextBlur('${k}','${kid}','${esc(site.id)}',${si},this)" onchange="asChange('${k}','','${esc(site.id)}',${si},this)">`;
+        const ph = f.kvMin!=null ? `${f.kvMin} \u2013 ${f.kvMax} ${unit||'kV'}` : `${esc(f.n)}${unit?' ('+unit+')':''}`;
+        html+=`<input class="as-inp" id="${fid}" value="${esc(dispVal)}" placeholder="${esc(ph)}" data-unit="${esc(unit)}" data-kv-min="${f.kvMin||''}" data-kv-max="${f.kvMax||''}" data-kv-id="${kid}" oninput="asKvLive(this)" onblur="asTextBlur('${k}','${kid}','${esc(site.id)}',${si},this)" onchange="asChange('${k}','','${esc(site.id)}',${si},this)">`;
       }
       html+=`</div><div>`;
       if(f.t==='select'&&f.alert){ const on=asIsAlerting(f, val); html+=`<span class="alert-pill${on?' on':''}" id="${aid}">⚠ TAKE ACTION</span>`; }
@@ -13034,7 +13057,45 @@ function asTextBlur(k, kvId, siteId, si, el) {
     asVals[k]=el.value;
   }
   asSaveVals(); asRenderTabs();
+  asKvLive(el, true);   // entry finished — red is fair now
   asRecomputeSectionKvRefs(siteId,si);
+}
+
+// Live band feedback while typing. Tints the field itself rather than adding
+// another element, so it reads as the input reacting rather than a new badge
+// appearing. Blank clears it — a half-typed number should not read as an error.
+function asKvLive(el, settled) {
+  const min = parseFloat(el.dataset.kvMin), max = parseFloat(el.dataset.kvMax);
+  el.classList.remove('kv-in', 'kv-out');
+  if (isNaN(min) || isNaN(max)) return;
+  const raw = el.value.replace(/[^\d.\-]/g, '');
+  if (!raw) return;
+  const v = parseFloat(raw);
+  if (isNaN(v)) return;
+  if (v >= min && v <= max) { el.classList.add('kv-in'); return; }
+  // Out of band, but mid-typing "46." is not yet wrong — 46.9 would be fine.
+  // Only flag red once the entry has settled (blur), or when no further digit
+  // could bring it into range.
+  if (settled || !kvCouldStillReach(raw, min, max)) el.classList.add('kv-out');
+}
+
+// Could appending more digits to what has been typed so far land inside the
+// band? "46." can still become 46.9; "51" cannot become anything under 49.2.
+function kvCouldStillReach(raw, min, max) {
+  if (/[.]$/.test(raw)) raw = raw.slice(0, -1);      // trailing dot: judge the stem
+  const v = parseFloat(raw);
+  if (isNaN(v)) return true;
+  if (v >= min && v <= max) return true;
+  // extending a number can only grow it within its current decade
+  for (let i = 1; i <= 3; i++) {
+    const lo = v * Math.pow(10, i), hi = lo + Math.pow(10, i) - 1;
+    if (hi >= min && lo <= max) return true;
+    if (!raw.includes('.') && v > 0) {
+      const dLo = v, dHi = v + 1;                     // 46 -> 46.0 .. 46.999
+      if (dHi >= min && dLo <= max) return true;
+    }
+  }
+  return false;
 }
 
 function asUpdateKv(kvId, val, min, max) {
@@ -13144,6 +13205,46 @@ function asFmtAZ(iso) {
   try {
     return new Date(iso).toLocaleString('en-US',{timeZone:'America/Phoenix',month:'2-digit',day:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})+' AZ';
   } catch(e){ return iso; }
+}
+
+// A scan round often gets split across operators or interrupted. This turns
+// the state the app already holds into a message that can be pasted straight
+// into Teams, grouped by asset type because that is how the handoff actually
+// gets discussed ("I did BESS and Solar, can you pick up the wind sites").
+function asCopyHandoff() {
+  const sites = asSites();
+  const done = [], left = {};
+  sites.forEach(s => {
+    if (asSiteComplete(s.id)) { done.push(s.id); return; }
+    const t = asGetSiteType(s);
+    (left[t] = left[t] || []).push(s.id);
+  });
+
+  const op = (document.getElementById('as-operator') || {}).value || '';
+  const shift = (document.getElementById('as-shift') || {}).value || '';
+  const date = (document.getElementById('as-date') || {}).value || '';
+
+  let head = 'Asset Scan handoff';
+  const who = [op, shift, date].filter(Boolean).join(' \u00B7 ');
+  if (who) head += ' \u00B7 ' + who;
+
+  const lines = [head, ''];
+  if (!left || !Object.keys(left).length) {
+    lines.push('All ' + sites.length + ' sites complete. Nothing outstanding.');
+  } else {
+    const remaining = Object.values(left).reduce((a, b) => a + b.length, 0);
+    lines.push('Completed ' + done.length + ' of ' + sites.length + '. ' + remaining + ' still needed:');
+    lines.push('');
+    // consistent order regardless of how the site list is sorted
+    ['BESS', 'Solar', 'Wind', 'General'].forEach(t => {
+      if (left[t] && left[t].length) lines.push('\u2022 ' + t + ': ' + left[t].join(', '));
+    });
+  }
+
+  const text = lines.join('\n');
+  navigator.clipboard.writeText(text)
+    .then(() => showToast('Handoff copied \u2014 paste into Teams'))
+    .catch(() => showToast('Could not copy to clipboard'));
 }
 
 function asExportCSV() {
@@ -16831,6 +16932,21 @@ function homeTickNext(pi, si) {
   homeRenderShiftList();
 }
 
+// Clicking a site in the Wind Fleet tile goes to that site, not just the
+// page. Scrolls its card into view and flashes it, so it is obvious which one
+// you asked for among a dozen.
+function homeOpenSiteWx(name) {
+  switchView('intel', null);
+  setTimeout(() => {
+    const card = [...document.querySelectorAll('.wx-fleet-card')]
+      .find(el => (el.querySelector('.wx-fc-site') || {}).textContent === name);
+    if (!card) return;
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    card.classList.add('wx-flash');
+    setTimeout(() => card.classList.remove('wx-flash'), 1600);
+  }, 90);
+}
+
 function homeOpenChecklist() {
   switchView('playbooks', null);
   pbOpenPlaybook('daily-checklist');
@@ -16894,9 +17010,10 @@ function homeRenderGlance() {
     } else {
       windRowsEl.innerHTML = '<div class="wind-mini-grid">' + wxPins.map(p => {
         const d = wxFleetData[p.name];
-        if (!d || !d.ok) return `<div class="wind-mini-cell"><span class="wm-site">${esc(p.name)}</span><span class="wm-val">—</span></div>`;
+        const go = `onclick="event.stopPropagation();homeOpenSiteWx('${esc(p.name)}')"`;
+        if (!d || !d.ok) return `<div class="wind-mini-cell" ${go}><span class="wm-site">${esc(p.name)}</span><span class="wm-val">—</span></div>`;
         const cls = d.wind >= 13 ? 'tag-high' : d.wind <= 4 ? 'tag-low' : '';
-        return `<div class="wind-mini-cell"><span class="wm-site">${esc(p.name)}</span><span class="wm-val ${cls}">${d.wind.toFixed(1)} m/s</span></div>`;
+        return `<div class="wind-mini-cell" ${go}><span class="wm-site">${esc(p.name)}</span><span class="wm-val ${cls}">${d.wind.toFixed(1)} m/s</span></div>`;
       }).join('') + '</div>';
     }
   }
@@ -18762,18 +18879,81 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.75';
+const APP_VERSION = 'v1.80';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
+
+// ── Keyboard shortcuts ───────────────────────────────────────────────────
+// Deliberately ignored while typing — an operator entering a scan value
+// should never have a keystroke navigate away mid-number. "g" then a letter
+// follows the convention people know from other tools.
+function kbOpen(){ document.getElementById('kb-modal').classList.add('open'); }
+function kbClose(){ document.getElementById('kb-modal').classList.remove('open'); }
+
+(function kbInit(){
+  let awaitingGo = false, goTimer = null;
+  const SEARCH_BY_VIEW = {
+    'view-playbooks': 'pb-search-inp',
+    'view-intel': 'wx-pin-inp',
+    'view-tools': 'sw-tpl-search',
+  };
+  const GO = { h:'home', p:'playbooks', a:'asset', t:'ops', l:'swbuilder', c:'chron', s:'schedule' };
+
+  function typing(e){
+    const t = e.target;
+    if (!t) return false;
+    const tag = (t.tagName || '').toLowerCase();
+    return tag === 'input' || tag === 'textarea' || tag === 'select' || t.isContentEditable;
+  }
+  function visibleView(){
+    const v = [...document.querySelectorAll('.view')].find(el => getComputedStyle(el).display !== 'none');
+    return v ? v.id : null;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.fb-modal.open').forEach(m => m.classList.remove('open'));
+      if (typing(e)) { e.target.blur(); }
+      return;
+    }
+    if (typing(e)) return;                       // never steal a keystroke mid-entry
+    if (document.querySelector('.auth-gate:not(.hidden)')) return;
+
+    if (e.key === '?') { e.preventDefault(); kbOpen(); return; }
+
+    if (e.key === '/') {
+      const id = SEARCH_BY_VIEW[visibleView()];
+      const el = id && document.getElementById(id);
+      if (el) { e.preventDefault(); el.focus(); el.select && el.select(); }
+      return;
+    }
+
+    if (awaitingGo) {
+      const dest = GO[e.key.toLowerCase()];
+      awaitingGo = false; clearTimeout(goTimer);
+      if (dest) { e.preventDefault(); switchView(dest, null); }
+      return;
+    }
+    if (e.key === 'g') {
+      awaitingGo = true;
+      goTimer = setTimeout(() => { awaitingGo = false; }, 1200);
+    }
+  });
+})();
 
 load();
 </script>
 
 <footer class="app-footer">
-  <button class="footer-link app-footer-left" onclick="fbOpen()" title="Suggest an improvement to the site">suggest an improvement</button>
+  <span class="app-footer-left" style="display:flex;gap:14px;">
+    <button class="footer-link" onclick="fbOpen()" title="Suggest an improvement to the site">suggestion</button>
+    <button class="footer-link" onclick="kbOpen()" title="Keyboard shortcuts (press ?)">shortcuts</button>
+  </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v1.75</span>
+    RNWBL Ops Hub <span class="app-footer-v">v1.80</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
@@ -18782,6 +18962,28 @@ load();
      that one is for corrections to operational steps, this is for the tool
      itself. Same Firestore collection with a kind field so there is one list
      to review, and the current page is captured automatically. -->
+<!-- Keyboard shortcuts. Discoverable via ? rather than documented anywhere,
+     which is the convention people already expect from this pattern. -->
+<div id="kb-modal" class="fb-modal" onclick="if(event.target===this)kbClose()">
+  <div class="fb-card">
+    <div class="fb-title">Keyboard shortcuts</div>
+    <div class="fb-where">Press ? any time to see this</div>
+    <table class="kb-table">
+      <tr><td><kbd>/</kbd></td><td>Search the current page</td></tr>
+      <tr><td><kbd>g</kbd> <kbd>h</kbd></td><td>Go to Home</td></tr>
+      <tr><td><kbd>g</kbd> <kbd>p</kbd></td><td>Go to Playbooks</td></tr>
+      <tr><td><kbd>g</kbd> <kbd>a</kbd></td><td>Go to Asset Scan</td></tr>
+      <tr><td><kbd>g</kbd> <kbd>t</kbd></td><td>Go to Toolbox</td></tr>
+      <tr><td><kbd>g</kbd> <kbd>l</kbd></td><td>Go to Log Builder</td></tr>
+      <tr><td><kbd>g</kbd> <kbd>c</kbd></td><td>Go to Passdown</td></tr>
+      <tr><td><kbd>g</kbd> <kbd>s</kbd></td><td>Go to Schedule Compare</td></tr>
+      <tr><td><kbd>Esc</kbd></td><td>Close a dialog or clear a search</td></tr>
+      <tr><td><kbd>?</kbd></td><td>Show this list</td></tr>
+    </table>
+    <div class="fb-actions"><button class="fb-cancel" onclick="kbClose()">Close</button></div>
+  </div>
+</div>
+
 <div id="fb-modal" class="fb-modal" onclick="if(event.target===this)fbClose()">
   <div class="fb-card">
     <div class="fb-title">Suggest an improvement</div>
