@@ -15868,7 +15868,58 @@ const ROC_QUESTIONS = [
   {id:'op7', cat:'operations', type:'procedure',
    q:'Walk through the outage ticket procedure \u2014 what are the 4 steps?',
    a:'<ol style="margin-left:14px;"><li><strong>Identify the outage</strong> \u2014 what is out, when it started, and whether it is forced or planned</li><li><strong>Submit the ticket</strong> \u2014 as required and as prescribed by the SC</li><li><strong>Update as conditions change</strong> \u2014 revise the end time or capacity as better information arrives</li><li><strong>Close the ticket</strong> \u2014 once the equipment is returned and output is confirmed recovered</li></ol>The step most often missed is the last one. A ticket left open after the equipment is back keeps the site showing derated to the SC and the market, with nothing alarming to tell you.'},
-  ];
+  {id:'s6', cat:'scada', type:'application',
+   q:'How would you recognize a communication issue versus an equipment issue?',
+   a:'<ul><li>Check communication status of all affected devices</li><li>Determine if data values are <strong>frozen or updating</strong></li><li>Compare SCADA with field reports</li><li>Review communications alarms</li><li>Check whether multiple devices failed simultaneously</li><li>Verify if local HMI or PLC still has normal operation</li><li>Determine whether production actually changed or only telemetry was lost — do the math between site output with and without the inverter producing, and compare</li></ul><strong>At Operator 3 level, also:</strong> compare production trends across multiple platforms, and contact QSE / Generation / Transmission to understand whether they also lost visibility.'},
+  {id:'pa3', cat:'plant', type:'conceptual',
+   q:'What is the difference between AC and DC power?',
+   a:'<strong>DC — Direct Current</strong><ul><li>Current flows in one constant direction</li><li>Voltage remains at a steady level</li><li>Produced by batteries, solar panels and fuel cells</li><li>Megapacks store and manage energy internally as DC</li></ul><strong>AC — Alternating Current</strong><ul><li>Current reverses direction periodically</li><li>Voltage oscillates between positive and negative peaks</li><li>In the US the grid runs at 60 Hz (60 cycles per second)</li><li>Produced by generators and inverters</li></ul>'},
+  {id:'pa4', cat:'plant', type:'conceptual',
+   q:'What does an inverter do in a solar plant?',
+   a:'<ul><li>Converts DC power from the solar panels into AC power that can be used on site or exported to the grid</li><li>Battery inverters (like in a Megapack) handle bidirectional AC ↔ DC conversion</li><li>Matches the grid’s voltage, frequency (60 Hz) and phase angle exactly before connecting</li><li>Serves a protection function by identifying faults</li><li>Manages reactive power (VAR)</li><li>Reports performance data</li></ul>'},
+  {id:'pa5', cat:'plant', type:'conceptual',
+   q:'What is a single line diagram?',
+   a:'A single line diagram (SLD), also called a one-line diagram, is a simplified electrical schematic that represents a three-phase power system using a single line to represent all three phases. It shows:<ul><li><strong>Generation sources</strong> — utility interconnect, generators, inverters</li><li><strong>Transformers</strong> — step-up / step-down, with voltage ratings on each side</li><li><strong>Switchgear and breakers</strong> — with voltage, current and interrupting ratings</li><li><strong>Busbars</strong> — the nodes where multiple circuits connect</li><li><strong>Metering and protection devices</strong> — CTs, PTs, relays</li><li><strong>Cables / feeders</strong> — with size and ratings noted</li><li><strong>Utility POI</strong> (point of interconnection) at the top</li></ul>'},
+  {id:'op8', cat:'operations', type:'conceptual',
+   q:'Explain the difference between availability and production.',
+   a:'<ul><li><strong>Availability</strong> refers to whether a plant, inverter or asset is capable of operating when it is needed. It measures readiness — the equipment is online, healthy, and not forced out of service due to faults, maintenance or restrictions.</li><li><strong>Production</strong> refers to the actual amount of energy being generated and delivered over time, typically measured in MWh.</li></ul>A site can be fully available and producing very little (no sun, no wind), or producing well while partially unavailable.'},
+  {id:'op9', cat:'operations', type:'recognition',
+   q:'What are some common causes of inverter outages?',
+   a:'<ul><li>Cooling system failures or high-temperature alarms</li><li>Ground faults or DC faults</li><li>Communication failures between inverter and controller / SCADA</li><li>Internal inverter hardware failures</li><li>Planned maintenance or operational shutdowns</li></ul>'},
+  {id:'op10', cat:'operations', type:'conceptual',
+   q:'What factors impact wind turbine generation?',
+   a:'<ul><li><strong>Wind speed</strong> — power output scales with the <strong>cube</strong> of wind speed, so small speed changes have large impacts. Most turbines reach rated capacity around 12–14 m/s and cut out above roughly 25 m/s for safety.</li><li><strong>Wind consistency</strong> — steady winds outperform gusty, variable ones for overall energy yield.</li><li><strong>Wind direction</strong> — turbines yaw to face the wind; frequent directional shifts reduce efficiency.</li></ul>'},
+  {id:'v9', cat:'voltage', type:'conceptual',
+   q:'Explain voltage, current, frequency and power factor — what each is and why it matters.',
+   a:'<ul><li><strong>Voltage</strong> — the electrical pressure that pushes electricity through a circuit. Must be maintained within required limits so equipment operates properly and grid stability is maintained.</li><li><strong>Current</strong> — the flow of electrical charge through a conductor. High current can indicate increased load and may cause overheating or protection system operations if limits are exceeded.</li><li><strong>Frequency (Hz)</strong> — the rate at which AC electricity cycles each second; 60 Hz in North America. Frequency reflects the balance between generation and load, and significant deviations indicate grid disturbances requiring corrective action.</li><li><strong>Power factor</strong> — a measure of how efficiently electrical power is being used, expressed between 0 and 1. Poor power factor increases losses, reduces efficiency, and can affect compliance with utility or interconnection requirements.</li></ul>'},
+  {id:'op11', cat:'operations', type:'recognition',
+   q:'What could cause a breaker to trip?',
+   a:'<ul><li><strong>Overcurrent / overload</strong> — generation or discharge exceeding breaker rating, feeder overload, transformer inrush</li><li><strong>Fault conditions</strong> — phase-to-phase, phase-to-ground, DC arc fault, ground fault on the DC bus</li><li><strong>Protection system operations</strong> — relay-initiated trip, differential protection, under/overvoltage, under/overfrequency, anti-islanding</li><li><strong>Thermal</strong> — breaker self-heating, high ambient temperature, loose connections generating heat</li><li><strong>Mechanical / hardware</strong> — worn or faulty trip mechanism, vibration, spring mechanism failure</li><li><strong>Power quality</strong> — voltage transients and switching surges, harmonic distortion, DC injection into AC systems, capacitor bank switching</li><li><strong>Site and environmental</strong> — lightning strike or surge, water ingress, animal intrusion, vegetation contact</li></ul>'},
+  {id:'op12', cat:'operations', type:'scenario',
+   q:'How would you prioritize alarms occurring simultaneously across multiple sites?',
+   a:'Prioritize based on:<ol style="margin-left:14px;"><li><strong>Personnel safety</strong></li><li><strong>Grid reliability</strong></li><li><strong>MW impact</strong></li></ol>Continue reassessing priorities as conditions change.'},
+  {id:'op13', cat:'operations', type:'scenario',
+   q:'A BESS site reports an oscillation event. What actions do you take?',
+   a:'<ul><li>Confirm event timing</li><li><strong>Notify QSE and TO immediately</strong> and operate based on their requests — likely will be a forced outage</li><li>Determine whether oscillations are ongoing</li><li>Review site MW and MVAR response</li><li>Verify equipment status</li><li>Review alarms and event logs</li><li>Notify required stakeholders immediately</li><li>Coordinate with site personnel</li><li>Follow applicable operating procedures (check the binder if unsure)</li><li>Continue monitoring until the system stabilizes</li><li>Document the entire event</li></ul>'},
+  {id:'op14', cat:'operations', type:'scenario',
+   q:'What operational risks would concern you before remotely issuing a control command, and what would you do about them?',
+   a:'<ul><li>Confirm correct equipment</li><li>Verify equipment is safe to operate</li><li><strong>Ensure no field personnel are working on affected equipment</strong></li><li>Verify operating procedure</li><li>Understand expected plant response</li><li>Consider grid impacts</li><li>Verify no conflicting commands are active</li></ul><strong>If uncertainty exists:</strong> stop, gather additional information, coordinate with field personnel, escalate if needed.<br><br>Then execute the command and verify expected results.'},
+  {id:'pr5', cat:'operations', type:'scenario',
+   q:'What would you do if a procedure does not match actual field conditions?',
+   a:'<ul><li><strong>Stop before performing any unsafe action</strong></li><li>Verify the discrepancy</li><li>Contact field management for confirmation</li><li>Notify supervision</li><li>Follow approved guidance from the field manager rather than an incorrect procedure</li><li>Document the discrepancy</li><li>Submit feedback for procedure correction after the event</li></ul>'},
+  {id:'pr6', cat:'operations', type:'scenario',
+   q:'During shift turnover you discover a critical alarm was never escalated by the previous operator. What do you do?',
+   a:'<ul><li>Assess the current condition immediately</li><li>Determine whether the issue is still active</li><li>Perform any required notifications immediately</li><li>Begin troubleshooting or restoration if appropriate</li><li>Document all actions</li><li>Inform supervision that the event was missed or not escalated properly</li><li>Ensure complete turnover documentation so the issue is fully understood</li></ul>'},
+  {id:'pr7', cat:'operations', type:'scenario',
+   q:'What would you do if you observed another operator taking shortcuts with procedures?',
+   a:'<ul><li>Address the concern professionally</li><li>Ensure safe operation immediately</li><li>Correct the issue if possible</li><li>Discuss the procedure with the operator</li><li>Escalate to supervision if the behavior continues or presents significant risk</li><li>Document concerns appropriately if required</li></ul><strong>See something, say something.</strong>'},
+  {id:'pr8', cat:'operations', type:'application',
+   q:'What information is most important when escalating an issue to management?',
+   a:'<ul><li>Site name</li><li>Time of event</li><li>Equipment affected</li><li>Current plant status</li><li>Safety concerns (if any)</li><li>Actions already taken and who has been contacted</li><li>Current suspected cause</li><li>Assistance requested</li><li>Estimated restoration time (if known)</li><li>Planned next steps</li></ul><strong>For a major generation loss, also include:</strong> MW lost, percentage of site affected, utility notifications completed, site personnel status, and restoration efforts underway.<br><br><em>“If I’m waking up to a call when I’m away, I need as much information as possible to help diagnose.”</em>'},
+  {id:'pr9', cat:'operations', type:'scenario',
+   q:'How would you coordinate field personnel, management and external stakeholders during a critical event?',
+   a:'<ul><li>Establish current plant status</li><li>Communicate with grid entities as required</li><li>Coordinate with field personnel</li><li>Notify required contacts such as site owners and asset managers</li><li>Provide concise, factual updates</li><li>Maintain awareness of changing conditions</li><li>Continue documenting all actions</li><li>Provide final restoration update</li></ul>'}
+];
 
 const ROC_CATEGORIES = [
   {key:'grid',       label:'Grid Entities',                icon:'🌐'},
@@ -18879,7 +18930,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.80';
+const APP_VERSION = 'v1.82';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18953,7 +19004,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v1.80</span>
+    RNWBL Ops Hub <span class="app-footer-v">v1.82</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
