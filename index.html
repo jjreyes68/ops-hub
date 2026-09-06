@@ -2544,16 +2544,24 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .pm-zone-dp{stroke:var(--text3);opacity:.45;}
 .sld-tower{fill:none;stroke:var(--text3);stroke-width:1.4;}
 
-.roc-predict{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.roc-predict-lead{font-size:11px;color:var(--text3);font-family:var(--m);}
-.roc-pred-btn{padding:4px 12px;border-radius:5px;border:1px solid var(--border2);
   background:var(--bg3);color:var(--text2);font-size:11px;font-family:var(--f);cursor:pointer;
   transition:all .12s;}
-.roc-pred-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
-.roc-postreveal{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.roc-calib{font-size:11px;font-family:var(--f);}
-.roc-calib.warn{color:var(--amber);}
-.roc-calib.good{color:var(--green);}
+
+.roc-due{font-size:10.5px;color:var(--text3);font-family:var(--m);margin-left:2px;}
+
+  padding:5px 14px;cursor:pointer;transition:all .12s;}
+
+.drill-score-big{font-size:44px;font-weight:700;color:var(--green);line-height:1;text-align:center;}
+.drill-score-big span{font-size:22px;color:var(--text3);font-weight:500;}
+.drill-score-sub{text-align:center;font-size:13px;color:var(--text2);margin-top:6px;margin-bottom:22px;}
+.drill-fu-head{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);
+  margin-bottom:10px;padding-bottom:5px;border-bottom:1px solid var(--border);}
+.drill-fu-item{display:flex;align-items:flex-start;gap:9px;padding:7px 0;font-size:13px;color:var(--text2);}
+.drill-fu-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.drill-fu-dot.review-it{background:var(--amber);}
+.drill-fu-dot.missed{background:var(--red);}
+.drill-fu-q{flex:1;line-height:1.4;}
+.drill-fu-when{font-family:var(--m);font-size:10.5px;color:var(--text3);white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -3558,7 +3566,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <div class="page-subtitle">GOP-scoped questions, SOPs &amp; simulation scenarios</div>
       </div>
       <div class="page-header-actions">
-        <button class="tbtn" style="border-color:var(--amber);color:var(--amber);padding:5px 12px;" onclick="rocStartDrill()" title="Daily Drill - 10 random questions">🎯 Drill</button>
+        <button class="btn-p" id="roc-quiz-btn" style="padding:5px 14px;" onclick="rocStartDrill()" title="Quiz yourself on what is due">🎯 Start quiz</button>
         <button class="tbtn" style="padding:5px 10px;font-size:11px;" onclick="rocResetProgress()" title="Reset all progress">↺ Reset</button>
       </div>
     </div>
@@ -4033,10 +4041,23 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 <div class="roc-drill-modal hidden" id="roc-drill-modal">
   <div class="roc-drill-card">
     <div class="roc-drill-hdr">
-      <div class="roc-drill-title">⚡ Daily Drill</div>
+      <div class="roc-drill-title" id="roc-drill-hdr-title">⚡ Quiz</div>
       <div class="roc-drill-progress" id="roc-drill-prog">1 / 10</div>
-      <button class="btn-c" style="padding:4px 10px;font-size:12px;" onclick="rocCloseDrill()">✕ Exit</button>
+      <button class="btn-c" style="padding:4px 10px;font-size:12px;" onclick="rocCloseDrillResults()">✕ Exit</button>
     </div>
+
+    <div id="roc-drill-results" style="display:none;">
+      <div class="roc-drill-body">
+        <div id="roc-drill-score"></div>
+        <div id="roc-drill-followup"></div>
+        <div style="display:flex;gap:8px;margin-top:18px;">
+          <button class="btn-p" onclick="rocCloseDrillResults();rocStartDrill();">Another round</button>
+          <button class="btn-c" onclick="rocCloseDrillResults()">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="roc-drill-body-wrap">
     <div class="roc-drill-body">
       <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
         <span id="roc-drill-type-badge" class="roc-q-type-badge roc-qt-conceptual">Conceptual</span>
@@ -4055,6 +4076,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
           <div id="roc-drill-prog-fill" style="height:100%;background:var(--gmid);border-radius:2px;width:10%;transition:width .3s;"></div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </div>
@@ -16250,6 +16272,8 @@ const ROC_CATEGORIES = [
 
 let rocProgress = {};
 let rocFilter = 'grid';
+let rocDrillResults = [];
+let rocDrillWasDue = 0;
 let rocDrillQueue = [];
 let rocDrillIdx = 0;
 
@@ -16543,8 +16567,12 @@ function rocPopulateTopicCounts() {
     const started = qs.some(q => rocProgress[q.id]);
 
     el.classList.remove('tc-new', 'tc-work', 'tc-done');
-    if (!started)      { el.textContent = qs.length + ' Q';  el.classList.add('tc-new'); }
-    else if (left > 0) { el.textContent = left + ' left';    el.classList.add('tc-work'); }
+    // Once a topic has been worked, "due" is the number that decides where the
+    // next session goes, so it replaces the raw remaining count.
+    const due = qs.filter(q => rocIsDue(q.id)).length;
+    if (!started)      { el.textContent = qs.length + ' Q';       el.classList.add('tc-new'); }
+    else if (due > 0)  { el.textContent = due + ' due';           el.classList.add('tc-work'); }
+    else if (left > 0) { el.textContent = left + ' left';         el.classList.add('tc-work'); }
     else               { el.textContent = '\u2713 ' + qs.length; el.classList.add('tc-done'); }
 
     // thin fill along the bottom of the pill showing how much is mastered
@@ -16589,6 +16617,45 @@ function rocTypeBadge(type) {
   return `<span class="roc-q-type-badge ${t[0]}">${t[1]}</span>`;
 }
 
+// ── Spaced review ────────────────────────────────────────────────────────
+// A rating that only changes a colour is a label. These set when the question
+// comes back in Quiz mode: missed tomorrow, review in a few days, and a
+// correct answer pushes further out each time it stays correct. Questions are
+// never hidden from Study mode — browsing stays a complete reference.
+const ROC_SCHED_KEY = 'roc_sched_v1';
+let rocSched = {};
+try { rocSched = JSON.parse(localStorage.getItem(ROC_SCHED_KEY) || '{}'); } catch(e) { rocSched = {}; }
+function rocSaveSched(){ safeLocalSet(ROC_SCHED_KEY, JSON.stringify(rocSched)); }
+
+const ROC_GOT_STEPS = [7, 14, 30];      // days, escalating while it stays right
+function rocToday(){ const d = new Date(); d.setHours(0,0,0,0); return d.getTime(); }
+function rocDaysUntil(ts){ return Math.round((ts - rocToday()) / 86400000); }
+
+function rocSchedule(qid, rating) {
+  const cur = rocSched[qid] || { streak: 0 };
+  let days, streak = cur.streak || 0;
+  if (rating === 'missed')      { days = 1;  streak = 0; }
+  else if (rating === 'review-it') { days = 3;  streak = 0; }
+  else                          { days = ROC_GOT_STEPS[Math.min(streak, ROC_GOT_STEPS.length - 1)]; streak++; }
+  rocSched[qid] = { due: rocToday() + days * 86400000, streak };
+  rocSaveSched();
+}
+
+function rocIsDue(qid){
+  const s = rocSched[qid];
+  return !s || s.due <= rocToday();      // never rated = due
+}
+function rocDueLabel(qid){
+  const s = rocSched[qid];
+  if (!s) return '';
+  const d = rocDaysUntil(s.due);
+  if (d <= 0) return 'due now';
+  if (d === 1) return 'back tomorrow';
+  if (d < 14) return 'back in ' + d + ' days';
+  return 'back in ' + Math.round(d / 7) + ' weeks';
+}
+function rocDueCount(list){ return list.filter(q => rocIsDue(q.id)).length; }
+
 function rocConfButtons(qid) {
   const p = rocProgress[qid];
   return `<button class="roc-conf-btn${p==='got-it'?' got-it':''}" onclick="rocMark('${qid}','got-it')">✓ Got it</button>
@@ -16598,10 +16665,12 @@ function rocConfButtons(qid) {
 
 function rocMark(qid, val) {
   rocProgress[qid] = val;
+  rocSchedule(qid, val);
   rocSave();
   const el = document.querySelector(`[data-conf="${qid}"]`);
   if (el) el.innerHTML = rocConfButtons(qid);
-  rocShowCalibration(qid);
+  const dl = document.getElementById('roc-due-' + qid);
+  if (dl) dl.textContent = rocDueLabel(qid);
   const catKey = (ROC_QUESTIONS.find(x=>x.id===qid)||{}).cat;
   if (catKey) {
     const catQs = ROC_QUESTIONS.filter(x=>x.cat===catKey);
@@ -16612,45 +16681,7 @@ function rocMark(qid, val) {
   rocUpdateStats();
 }
 
-// Deliberate reveal. Reading an answer feels like knowing it, so the answer
-// is not one click away any more — you commit to a prediction first, while
-// your judgement is still honest. Same number of clicks as before; the first
-// one just carries information now.
-//
-// Predictions are per session, not persisted: coming back tomorrow should ask
-// again rather than showing yesterday's confidence.
 let rocRevealed = {};
-let rocPredicted = {};
-
-function rocReveal(qid, pred) {
-  rocPredicted[qid] = pred;
-  rocRevealed[qid] = true;
-  const ans = document.getElementById('roc-ans-' + qid);
-  if (ans) ans.classList.add('show');
-  const pre = document.getElementById('roc-predict-' + qid);
-  const post = document.getElementById('roc-post-' + qid);
-  if (pre) pre.style.display = 'none';
-  if (post) post.style.display = '';
-  rocShowCalibration(qid);
-}
-
-// The useful signal is the mismatch: said you knew it, then marked it missed.
-// Those are the questions worth coming back to, and nothing else surfaces them.
-function rocShowCalibration(qid) {
-  const el = document.getElementById('roc-calib-' + qid);
-  if (!el) return;
-  const pred = rocPredicted[qid], rate = rocProgress[qid];
-  if (!pred || !rate) { el.textContent = ''; el.className = 'roc-calib'; return; }
-  if (pred === 'know' && rate === 'missed') {
-    el.textContent = 'You expected to know this one \u2014 worth a second look.';
-    el.className = 'roc-calib warn';
-  } else if (pred === 'unsure' && rate === 'got-it') {
-    el.textContent = 'Knew it after all.';
-    el.className = 'roc-calib good';
-  } else {
-    el.textContent = ''; el.className = 'roc-calib';
-  }
-}
 
 function rocToggleAnswer(qid) {
   const el = document.getElementById(`roc-ans-${qid}`);
@@ -16658,6 +16689,7 @@ function rocToggleAnswer(qid) {
   if (!el) return;
   const showing = el.classList.contains('show');
   el.classList.toggle('show');
+  rocRevealed[qid] = !showing;
   if (btn) btn.textContent = showing ? 'Show Answer' : 'Hide Answer';
 }
 
@@ -16667,6 +16699,7 @@ function rocToggleSimReveal(qid, idx) {
   if (!el) return;
   const showing = el.classList.contains('show');
   el.classList.toggle('show');
+  rocRevealed[qid] = !showing;
   if (btn) btn.textContent = showing ? 'Show Answer' : 'Hide Answer';
 }
 
@@ -16733,16 +16766,9 @@ function rocRender() {
             <span class="roc-a-label">Answer</span>${q.a}
           </div>
           <div class="roc-q-actions">
-            <div class="roc-predict" id="roc-predict-${q.id}" style="${rocRevealed[q.id] ? 'display:none;' : ''}">
-              <span class="roc-predict-lead">Answer it in your head first</span>
-              <button class="roc-pred-btn" onclick="rocReveal('${q.id}','know')">I know this</button>
-              <button class="roc-pred-btn" onclick="rocReveal('${q.id}','unsure')">Not sure</button>
-            </div>
-            <div class="roc-postreveal" id="roc-post-${q.id}" style="${rocRevealed[q.id] ? '' : 'display:none;'}">
-              <button class="roc-show-btn" id="roc-show-${q.id}" onclick="rocToggleAnswer('${q.id}')">Hide Answer</button>
-              <div class="roc-confidence" data-conf="${q.id}">${rocConfButtons(q.id)}</div>
-              <div class="roc-calib" id="roc-calib-${q.id}"></div>
-            </div>
+            <button class="roc-show-btn" id="roc-show-${q.id}" onclick="rocToggleAnswer('${q.id}')">${rocRevealed[q.id] ? 'Hide' : 'Show'} Answer</button>
+            <div class="roc-confidence" data-conf="${q.id}">${rocConfButtons(q.id)}</div>
+            <span class="roc-due" id="roc-due-${q.id}">${rocDueLabel(q.id)}</span>
           </div>
         </div>`;
       }
@@ -16750,16 +16776,29 @@ function rocRender() {
     html += `</div></div>`;
   });
   container.innerHTML = html;
-  // calibration notes live outside the template, so repaint them after render
-  Object.keys(rocRevealed).forEach(qid => rocShowCalibration(qid));
 }
 
 // ── DAILY DRILL ────────────────────────────────────────────────────────────
+// Pulls what is actually due rather than 10 at random, so a session clears
+// real backlog instead of re-asking things answered yesterday. Falls back to
+// the full pool when nothing is due, so the button always does something.
 function rocStartDrill() {
-  const pool = ROC_QUESTIONS.filter(q=>q.type!=='simulation');
-  const shuffled = [...pool].sort(()=>Math.random()-.5);
-  rocDrillQueue = shuffled.slice(0,10);
+  const inTopic = rocFilter === 'all' ? ROC_QUESTIONS : ROC_QUESTIONS.filter(q => q.cat === rocFilter);
+  const pool = inTopic.filter(q => q.type !== 'simulation');
+  let due = pool.filter(q => rocIsDue(q.id));
+  rocDrillWasDue = due.length;
+  if (!due.length) due = pool;                      // nothing due: free practice
+  // oldest due first, so the most overdue clears first
+  due = [...due].sort((a, b) => {
+    const sa = rocSched[a.id], sb = rocSched[b.id];
+    if (!sa && !sb) return Math.random() - .5;
+    if (!sa) return -1;
+    if (!sb) return 1;
+    return sa.due - sb.due;
+  });
+  rocDrillQueue = due.slice(0, 10);
   rocDrillIdx = 0;
+  rocDrillResults = [];
   document.getElementById('roc-drill-modal').classList.remove('hidden');
   rocDrillShowQ();
 }
@@ -16799,18 +16838,51 @@ function rocDrillShowAnswer() {
 
 function rocDrillNext(conf) {
   const q = rocDrillQueue[rocDrillIdx];
-  if (q) { rocProgress[q.id]=conf; rocSave(); }
+  if (q) {
+    rocProgress[q.id] = conf; rocSave();
+    rocSchedule(q.id, conf);                        // drilling now moves the schedule
+    rocDrillResults.push({ id: q.id, q: q.q, cat: q.cat, conf });
+  }
   rocDrillIdx++;
   if (rocDrillIdx>=rocDrillQueue.length) rocDrillFinish();
   else rocDrillShowQ();
 }
 
 function rocDrillFinish() {
-  document.getElementById('roc-drill-modal').classList.add('hidden');
-  const got = rocDrillQueue.filter(q=>rocProgress[q.id]==='got-it').length;
-  const missed = rocDrillQueue.filter(q=>rocProgress[q.id]==='missed').length;
+  const got = rocDrillResults.filter(r => r.conf === 'got-it').length;
+  const rev = rocDrillResults.filter(r => r.conf === 'review-it').length;
+  const missed = rocDrillResults.filter(r => r.conf === 'missed').length;
+  const total = rocDrillResults.length || 1;
+  const pct = Math.round(got / total * 100);
+  const followUp = rocDrillResults.filter(r => r.conf !== 'got-it');
+
+  document.getElementById('roc-drill-body-wrap').style.display = 'none';
+  document.getElementById('roc-drill-results').style.display = 'block';
+  document.getElementById('roc-drill-hdr-title').textContent = 'Session complete';
+  document.getElementById('roc-drill-prog').textContent = '';
+
+  document.getElementById('roc-drill-score').innerHTML =
+    `<div class="drill-score-big">${got}<span>/${total}</span></div>
+     <div class="drill-score-sub">${pct}% got it${rev ? ' \u00b7 ' + rev + ' to review' : ''}${missed ? ' \u00b7 ' + missed + ' missed' : ''}</div>`;
+
+  document.getElementById('roc-drill-followup').innerHTML = followUp.length
+    ? `<div class="drill-fu-head">Coming back sooner</div>` + followUp.map(r => {
+        const cat = ROC_CATEGORIES.find(x => x.key === r.cat);
+        return `<div class="drill-fu-item"><span class="drill-fu-dot ${r.conf}"></span>
+          <span class="drill-fu-q">${esc(r.q.length > 92 ? r.q.slice(0, 92) + '\u2026' : r.q)}</span>
+          <span class="drill-fu-when">${esc(rocDueLabel(r.id))}</span></div>`;
+      }).join('')
+    : `<div class="drill-fu-head">Everything correct \u2014 nothing scheduled back soon.</div>`;
+
   rocRender();
-  alert(`Daily Drill Complete! ⚡\n\n✓ Got it: ${got} / ${rocDrillQueue.length}\n✗ Missed: ${missed}\n\nKeep going — review the missed ones.`);
+  rocPopulateTopicCounts();
+}
+
+function rocCloseDrillResults() {
+  document.getElementById('roc-drill-modal').classList.add('hidden');
+  document.getElementById('roc-drill-body-wrap').style.display = '';
+  document.getElementById('roc-drill-results').style.display = 'none';
+  document.getElementById('roc-drill-hdr-title').textContent = '\u26a1 Quiz';
 }
 
 // ── PLAYBOOKS ────────────────────────────────────────────────────────────────
@@ -19472,7 +19544,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.95';
+const APP_VERSION = 'v1.98';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19546,7 +19618,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v1.95</span>
+    RNWBL Ops Hub <span class="app-footer-v">v1.98</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
