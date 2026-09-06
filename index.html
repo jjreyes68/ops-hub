@@ -2543,6 +2543,17 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .pm-zone-them{stroke:var(--blue);opacity:.45;}
 .pm-zone-dp{stroke:var(--text3);opacity:.45;}
 .sld-tower{fill:none;stroke:var(--text3);stroke-width:1.4;}
+
+.roc-predict{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.roc-predict-lead{font-size:11px;color:var(--text3);font-family:var(--m);}
+.roc-pred-btn{padding:4px 12px;border-radius:5px;border:1px solid var(--border2);
+  background:var(--bg3);color:var(--text2);font-size:11px;font-family:var(--f);cursor:pointer;
+  transition:all .12s;}
+.roc-pred-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--bbg);}
+.roc-postreveal{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.roc-calib{font-size:11px;font-family:var(--f);}
+.roc-calib.warn{color:var(--amber);}
+.roc-calib.good{color:var(--green);}
 </style>
 </head>
 <body>
@@ -15890,19 +15901,6 @@ function bcHideExample() { document.getElementById('bc-example-modal').style.dis
    ROC STUDY GUIDE — Question Bank + Self-Test System
    ══════════════════════════════════════════════════════════ */
 
-// Labels and icons for each study topic. Referenced by rocRender, the drill
-// screen and Question of the Day. Kept in the same order as the topic cards.
-const ROC_CATEGORIES = [
-  { key:'grid', icon:'🗺️', label:'Grid Entities' },
-  { key:'voltage', icon:'⚡', label:'Voltage / VARs' },
-  { key:'dispatch', icon:'📡', label:'Dispatch' },
-  { key:'scada', icon:'🖥️', label:'SCADA / Alarms' },
-  { key:'operations', icon:'🔧', label:'Operations' },
-  { key:'standards', icon:'📋', label:'Standards' },
-  { key:'plant', icon:'🏭', label:'Plant Architecture' },
-  { key:'rapid', icon:'⚡', label:'Rapid Fire' }
-];
-
 const ROC_QUESTIONS = [
 
   // ══ GRID ENTITIES ═════════════════════════════════════════════════════════
@@ -16235,6 +16233,12 @@ const ROC_QUESTIONS = [
   {id:'s7', cat:'scada', type:'application',
    q:'How would you identify a site trip?',
    a:'Any one of these is enough to treat it as a trip:<ul><li><strong>High side breaker open</strong></li><li><strong>Frozen data on SCADA</strong></li><li><strong>Complete loss of comms</strong></li><li><strong>The TO reports the site tripped</strong></li></ul>Confirm before acting: <strong>an open high side while the site is still producing is NOT a trip.</strong> Check output before submitting an outage \u2014 if generation is unchanged, you have an indication problem, not a trip.<br><br>Once identified, work the Site Trip playbook. Notify TOP first and confirm they see the same breaker position.'},
+];
+
+// Labels and icons for each study topic. Referenced by rocRender, the drill
+// screen and Question of the Day.
+const ROC_CATEGORIES = [
+  {key:'grid',       label:'Grid Entities',                icon:'🗺️'},
   {key:'voltage',    label:'Voltage, Reactive Power & AVR', icon:'⚡'},
   {key:'dispatch',   label:'Dispatch: ADS / AGC',          icon:'📡'},
   {key:'scada',      label:'SCADA, Alarms & Recognition',  icon:'🖥️'},
@@ -16597,6 +16601,7 @@ function rocMark(qid, val) {
   rocSave();
   const el = document.querySelector(`[data-conf="${qid}"]`);
   if (el) el.innerHTML = rocConfButtons(qid);
+  rocShowCalibration(qid);
   const catKey = (ROC_QUESTIONS.find(x=>x.id===qid)||{}).cat;
   if (catKey) {
     const catQs = ROC_QUESTIONS.filter(x=>x.cat===catKey);
@@ -16605,6 +16610,46 @@ function rocMark(qid, val) {
     if (fill) fill.style.width = Math.round(done/catQs.length*100)+'%';
   }
   rocUpdateStats();
+}
+
+// Deliberate reveal. Reading an answer feels like knowing it, so the answer
+// is not one click away any more — you commit to a prediction first, while
+// your judgement is still honest. Same number of clicks as before; the first
+// one just carries information now.
+//
+// Predictions are per session, not persisted: coming back tomorrow should ask
+// again rather than showing yesterday's confidence.
+let rocRevealed = {};
+let rocPredicted = {};
+
+function rocReveal(qid, pred) {
+  rocPredicted[qid] = pred;
+  rocRevealed[qid] = true;
+  const ans = document.getElementById('roc-ans-' + qid);
+  if (ans) ans.classList.add('show');
+  const pre = document.getElementById('roc-predict-' + qid);
+  const post = document.getElementById('roc-post-' + qid);
+  if (pre) pre.style.display = 'none';
+  if (post) post.style.display = '';
+  rocShowCalibration(qid);
+}
+
+// The useful signal is the mismatch: said you knew it, then marked it missed.
+// Those are the questions worth coming back to, and nothing else surfaces them.
+function rocShowCalibration(qid) {
+  const el = document.getElementById('roc-calib-' + qid);
+  if (!el) return;
+  const pred = rocPredicted[qid], rate = rocProgress[qid];
+  if (!pred || !rate) { el.textContent = ''; el.className = 'roc-calib'; return; }
+  if (pred === 'know' && rate === 'missed') {
+    el.textContent = 'You expected to know this one \u2014 worth a second look.';
+    el.className = 'roc-calib warn';
+  } else if (pred === 'unsure' && rate === 'got-it') {
+    el.textContent = 'Knew it after all.';
+    el.className = 'roc-calib good';
+  } else {
+    el.textContent = ''; el.className = 'roc-calib';
+  }
 }
 
 function rocToggleAnswer(qid) {
@@ -16684,12 +16729,20 @@ function rocRender() {
             ${rocTypeBadge(q.type)}
             <div class="roc-q-text">${q.q}</div>
           </div>
-          <div class="roc-answer" id="roc-ans-${q.id}">
+          <div class="roc-answer${rocRevealed[q.id] ? ' show' : ''}" id="roc-ans-${q.id}">
             <span class="roc-a-label">Answer</span>${q.a}
           </div>
           <div class="roc-q-actions">
-            <button class="roc-show-btn" id="roc-show-${q.id}" onclick="rocToggleAnswer('${q.id}')">Show Answer</button>
-            <div class="roc-confidence" data-conf="${q.id}">${rocConfButtons(q.id)}</div>
+            <div class="roc-predict" id="roc-predict-${q.id}" style="${rocRevealed[q.id] ? 'display:none;' : ''}">
+              <span class="roc-predict-lead">Answer it in your head first</span>
+              <button class="roc-pred-btn" onclick="rocReveal('${q.id}','know')">I know this</button>
+              <button class="roc-pred-btn" onclick="rocReveal('${q.id}','unsure')">Not sure</button>
+            </div>
+            <div class="roc-postreveal" id="roc-post-${q.id}" style="${rocRevealed[q.id] ? '' : 'display:none;'}">
+              <button class="roc-show-btn" id="roc-show-${q.id}" onclick="rocToggleAnswer('${q.id}')">Hide Answer</button>
+              <div class="roc-confidence" data-conf="${q.id}">${rocConfButtons(q.id)}</div>
+              <div class="roc-calib" id="roc-calib-${q.id}"></div>
+            </div>
           </div>
         </div>`;
       }
@@ -16697,6 +16750,8 @@ function rocRender() {
     html += `</div></div>`;
   });
   container.innerHTML = html;
+  // calibration notes live outside the template, so repaint them after render
+  Object.keys(rocRevealed).forEach(qid => rocShowCalibration(qid));
 }
 
 // ── DAILY DRILL ────────────────────────────────────────────────────────────
@@ -19417,7 +19472,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.93';
+const APP_VERSION = 'v1.95';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19491,7 +19546,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v1.93</span>
+    RNWBL Ops Hub <span class="app-footer-v">v1.95</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
