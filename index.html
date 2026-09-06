@@ -2494,6 +2494,55 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   .app-footer-mid{display:none;}
   .app-footer{grid-template-columns:1fr auto;}
 }
+
+/* ── Single line diagram explorer ─────────────────────────────────────── */
+.sld-svg{width:100%;max-width:620px;height:auto;display:block;margin:0 auto;}
+.sld-line{stroke:var(--text3);stroke-width:1.6;}
+.sld-bus{stroke:var(--text2);stroke-width:3.5;}
+.sld-box{fill:var(--bg2);stroke:var(--text2);stroke-width:1.6;}
+.sld-coil{fill:none;stroke:var(--text2);stroke-width:1.6;}
+.sld-src{fill:var(--bbg);stroke:var(--blue);stroke-width:1.6;}
+.sld-dot{fill:var(--text3);}
+.sld-lbl{fill:var(--text2);font-family:var(--m);font-size:10px;}
+.sld-cap{fill:var(--text3);font-family:var(--m);font-size:10px;letter-spacing:.08em;}
+.sld-hit{cursor:pointer;}
+.sld-hit:hover .sld-box,.sld-hit:hover .sld-coil,.sld-hit:hover .sld-src{stroke:var(--blue);stroke-width:2.4;}
+.sld-hit:hover .sld-lbl{fill:var(--blue);}
+.sld-hit:hover .sld-bus,.sld-hit:hover .sld-line{stroke:var(--blue);}
+.sld-hit.sld-on .sld-box,.sld-hit.sld-on .sld-coil,.sld-hit.sld-on .sld-src{stroke:var(--blue);stroke-width:2.4;}
+.sld-hit.sld-on .sld-lbl{fill:var(--blue);font-weight:600;}
+
+.sld-sub{fill:var(--text3);font-family:var(--f);font-size:9.5px;}
+.sld-kv{fill:var(--text3);font-family:var(--m);font-size:10px;letter-spacing:.04em;}
+.sld-node{fill:var(--bg2);stroke:var(--text2);stroke-width:2;}
+.sld-divider{stroke:var(--border2);stroke-width:1;stroke-dasharray:3 4;}
+.sld-far-box{fill:var(--bg3);stroke:var(--text3);stroke-width:1.4;stroke-dasharray:4 3;}
+.sld-far-line{stroke-dasharray:4 3;opacity:.6;}
+.sld-far .sld-lbl{fill:var(--text3);}
+.sld-hit:hover .sld-node,.sld-hit:hover .sld-far-box{stroke:var(--blue);}
+.sld-hit:hover .sld-sub{fill:var(--blue);}
+.sld-hit.sld-on .sld-node,.sld-hit.sld-on .sld-far-box{stroke:var(--blue);stroke-width:2.4;}
+.sld-hit.sld-on .sld-sub{fill:var(--blue);}
+
+.sld-inv-line{stroke:var(--blue);stroke-width:1.4;}
+.sld-inv-gl{fill:var(--blue);font-family:var(--m);font-size:11px;}
+.sld-alt{color:var(--text2);margin-bottom:7px;}
+.sld-alt svg{display:block;}
+
+.pmap-warn{font-size:12px;color:var(--text2);background:var(--abg);border-left:3px solid var(--amber);
+  padding:8px 12px;border-radius:6px;margin-bottom:14px;line-height:1.5;}
+.pm-us{fill:var(--gbg);stroke:var(--green);stroke-width:1.6;}
+.pm-them{fill:var(--bbg);stroke:var(--blue);stroke-width:1.6;}
+.pm-dp{fill:var(--bg3);stroke:var(--text3);stroke-width:1.6;}
+.pm-end{fill:var(--bg3);stroke:var(--text3);stroke-width:1.6;stroke-dasharray:4 3;}
+.sld-hit:hover .pm-us,.sld-hit:hover .pm-them,.sld-hit:hover .pm-dp,.sld-hit:hover .pm-end{stroke-width:2.6;}
+.sld-hit.sld-on .pm-us,.sld-hit.sld-on .pm-them,.sld-hit.sld-on .pm-dp,.sld-hit.sld-on .pm-end{stroke-width:2.6;}
+
+.pm-zone{fill:none;stroke-width:1;stroke-dasharray:5 4;}
+.pm-zone-us{stroke:var(--green);opacity:.45;}
+.pm-zone-them{stroke:var(--blue);opacity:.45;}
+.pm-zone-dp{stroke:var(--text3);opacity:.45;}
+.sld-tower{fill:none;stroke:var(--text3);stroke-width:1.4;}
 </style>
 </head>
 <body>
@@ -2547,6 +2596,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <div class="nav-dropdown-menu" id="navdd-menu-schedule">
       <button class="nav-dropdown-item" data-sched="curr" onclick="navDropdownSelectSchedule('curr')">Current Schedule</button>
       <button class="nav-dropdown-item" data-sched="prop10" onclick="navDropdownSelectSchedule('prop10')">Expanded DuPont</button>
+      <button class="nav-dropdown-item" data-sched="steady" onclick="navDropdownSelectSchedule('steady')">Steady Weeks</button>
       <button class="nav-dropdown-item" data-sched="split" onclick="navDropdownSelectSchedule('split')">Split Week</button>
       <button class="nav-dropdown-item" data-sched="pitman" onclick="navDropdownSelectSchedule('pitman')">Pitman</button>
     </div>
@@ -3558,16 +3608,247 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <span class="roc-stat-badge" style="color:var(--red);" id="roc-stat-missed">0 missed</span>
     </div>
 
+
+    <!-- ── SINGLE LINE DIAGRAM WIDGET ──────────────────────────────────── -->
+    <div id="sld-widget-container" style="display:none;margin-bottom:18px;border:1px solid var(--border);border-radius:var(--rl);background:var(--bg2);overflow:hidden;box-shadow:var(--shs);">
+      <div style="padding:12px 16px;">
+        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="sldToggle()">
+          <span style="font-size:15px;">⚡</span>
+          <span style="font-size:13px;font-weight:700;color:var(--text);">Single Line Diagram</span>
+          <span style="font-size:11px;color:var(--text3);font-family:var(--m);">POI → equipment · Tap a component</span>
+          <span id="sld-chevron" style="margin-left:auto;font-size:11px;color:var(--text3);">▾</span>
+        </div>
+        <div id="sld-body">
+          <div class="gh-wrap">
+            <div class="gh-subtitle">Tap any component to see what it is, what it does, and what an operator checks.</div>
+            <svg viewBox="0 0 640 590" class="sld-svg" role="img" aria-label="Interactive single line diagram">
+  <g class="sld-hit sld-far" onclick="sldPick('transmission')">
+    <rect x="252" y="14" width="136" height="30" rx="4" class="sld-far-box"/>
+    <text x="320" y="34" class="sld-lbl" text-anchor="middle">Transmission</text></g>
+  <line x1="320" y1="44" x2="320" y2="72" class="sld-line sld-far-line"/>
+  <line x1="70" y1="86" x2="570" y2="86" class="sld-divider"/>
+  <text x="70" y="78" class="sld-cap">THEIR SIDE</text>
+  <text x="70" y="102" class="sld-cap">OUR SIDE</text>
+
+  <g class="sld-hit" onclick="sldPick('poi')">
+    <circle cx="320" cy="86" r="5" class="sld-node"/>
+    <text x="360" y="82" class="sld-lbl">Point of interconnection</text>
+    <text x="360" y="95" class="sld-sub">Where the voltage schedule applies</text></g>
+  <line x1="320" y1="91" x2="320" y2="120" class="sld-line"/>
+
+  <g class="sld-hit" onclick="sldPick('airswitch')">
+    <circle cx="320" cy="122" r="3" class="sld-dot"/>
+    <line x1="320" y1="122" x2="342" y2="104" class="sld-line"/>
+    <circle cx="320" cy="146" r="3" class="sld-dot"/>
+    <text x="360" y="122" class="sld-lbl">Disconnect switch</text>
+    <text x="360" y="135" class="sld-sub">Visible open, no load break</text></g>
+  <line x1="320" y1="146" x2="320" y2="172" class="sld-line"/>
+
+  <text x="70" y="192" class="sld-kv">230 kV</text>
+  <g class="sld-hit" onclick="sldPick('hvbreaker')">
+    <rect x="302" y="172" width="36" height="28" rx="3" class="sld-box"/>
+    <text x="360" y="184" class="sld-lbl">High side breaker</text>
+    <text x="360" y="197" class="sld-sub">Interrupts fault current &#183; ANSI 52</text></g>
+  <line x1="320" y1="200" x2="320" y2="228" class="sld-line"/>
+
+  <g class="sld-hit" onclick="sldPick('transformer')">
+    <circle cx="320" cy="240" r="14" class="sld-coil"/><circle cx="320" cy="258" r="14" class="sld-coil"/>
+    <text x="360" y="243" class="sld-lbl">Main transformer (GSU)</text>
+    <text x="360" y="256" class="sld-sub">34.5 kV to 230 kV</text></g>
+  <line x1="320" y1="272" x2="320" y2="286" class="sld-line"/>
+
+  <g class="sld-hit" onclick="sldPick('mvbreaker')">
+    <rect x="302" y="286" width="36" height="26" rx="3" class="sld-box"/>
+    <text x="360" y="298" class="sld-lbl">MV main breaker</text>
+    <text x="360" y="311" class="sld-sub">Drops every feeder at once</text></g>
+  <line x1="320" y1="312" x2="320" y2="340" class="sld-line"/>
+
+  <text x="70" y="346" class="sld-kv">34.5 kV</text>
+  <g class="sld-hit" onclick="sldPick('bus')">
+    <line x1="150" y1="340" x2="490" y2="340" class="sld-bus"/>
+    <text x="360" y="360" class="sld-lbl">Collector bus</text>
+    <text x="360" y="373" class="sld-sub">Feeders combine here</text></g>
+
+  <line x1="200" y1="340" x2="200" y2="364" class="sld-line"/>
+  <line x1="290" y1="340" x2="290" y2="364" class="sld-line"/>
+
+  <g class="sld-hit" onclick="sldPick('feeder')">
+    <rect x="187" y="364" width="26" height="22" rx="3" class="sld-box"/>
+    <rect x="277" y="364" width="26" height="22" rx="3" class="sld-box"/>
+    <text x="150" y="402" class="sld-sub">Feeder breakers</text></g>
+
+  <line x1="200" y1="386" x2="200" y2="434" class="sld-line"/>
+  <line x1="290" y1="386" x2="290" y2="429" class="sld-line"/>
+  <line x1="290" y1="429" x2="360" y2="429" class="sld-line"/>
+
+  <g class="sld-hit" onclick="sldPick('padmount')">
+    <circle cx="200" cy="446" r="12" class="sld-coil"/><circle cx="200" cy="462" r="12" class="sld-coil"/>
+    <text x="224" y="452" class="sld-lbl">Pad-mount transformer</text>
+    <text x="224" y="465" class="sld-sub">600 V to 34.5 kV</text></g>
+  <line x1="200" y1="474" x2="200" y2="510" class="sld-line"/>
+
+  <text x="70" y="528" class="sld-kv">600 V</text>
+  <g class="sld-hit" onclick="sldPick('gen')">
+    <rect x="170" y="504" width="60" height="38" rx="3" class="sld-src"/>
+    <line x1="176" y1="538" x2="224" y2="508" class="sld-inv-line"/>
+    <text x="184" y="521" class="sld-inv-gl">&#8801;</text>
+    <text x="209" y="537" class="sld-inv-gl">&#8764;</text>
+    <text x="200" y="558" class="sld-lbl" text-anchor="middle">Inverter</text>
+    <rect x="360" y="416" width="88" height="26" rx="3" class="sld-src"/>
+    <text x="404" y="433" class="sld-lbl" text-anchor="middle">BESS / PCS</text>
+    <text x="246" y="528" class="sld-sub">Makes AC from DC</text></g>
+</svg>
+            <div id="sld-detail" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── POWER MAP WIDGET ─────────────────────────────────────────────
+         Deliberately separate from the one-line and collapsed by default.
+         A one-line is a single plant; this is the whole delivery chain. An
+         operator who confuses the two will look for distribution feeders on
+         a site drawing that does not have any. The framing line says so. -->
+    <div id="pmap-widget-container" style="display:none;margin-bottom:18px;border:1px solid var(--border);border-radius:var(--rl);background:var(--bg2);overflow:hidden;box-shadow:var(--shs);">
+      <div style="padding:12px 16px;">
+        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="pmapToggle()">
+          <span style="font-size:15px;">🗺️</span>
+          <span style="font-size:13px;font-weight:700;color:var(--text);">Power Map — generation to end user</span>
+          <span style="font-size:11px;color:var(--text3);font-family:var(--m);">Context, not a one-line</span>
+          <span id="pmap-chevron" style="margin-left:auto;font-size:11px;color:var(--text3);">▸</span>
+        </div>
+        <div id="pmap-body" style="display:none;">
+          <div class="gh-wrap">
+            <div class="pmap-warn">This is <strong>not</strong> a single line diagram. A one-line covers one plant.
+              This shows where that plant sits in the wider system, and who owns each part.</div>
+            <svg viewBox="0 0 660 640" class="sld-svg" role="img" aria-label="Full power system schematic from generation to end user">
+
+  <!-- ══ OUR PLANT ══════════════════════════════════════════════════ -->
+  <rect x="14" y="16" width="632" height="212" rx="6" class="pm-zone pm-zone-us"/>
+  <text x="26" y="34" class="sld-cap">GO / GOP &#8212; our plant</text>
+
+  <g class="sld-hit" onclick="pmapPick('gen')">
+    <rect x="40" y="52" width="52" height="34" rx="3" class="sld-src"/>
+    <line x1="45" y1="82" x2="87" y2="56" class="sld-inv-line"/>
+    <text x="50" y="68" class="sld-inv-gl">&#8801;</text>
+    <text x="72" y="82" class="sld-inv-gl">&#8764;</text>
+    <text x="66" y="102" class="sld-sub" text-anchor="middle">Inverter</text>
+    <text x="66" y="114" class="sld-kv" text-anchor="middle">600 V</text></g>
+  <line x1="92" y1="69" x2="126" y2="69" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('padmount')">
+    <circle cx="138" cy="69" r="11" class="sld-coil"/><circle cx="152" cy="69" r="11" class="sld-coil"/>
+    <text x="145" y="102" class="sld-sub" text-anchor="middle">Pad-mount</text>
+    <text x="145" y="114" class="sld-kv" text-anchor="middle">34.5 kV</text></g>
+  <line x1="163" y1="69" x2="200" y2="69" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('collector')">
+    <line x1="200" y1="46" x2="200" y2="150" class="sld-bus"/>
+    <text x="196" y="42" class="sld-sub" text-anchor="end">Collector bus</text></g>
+
+  <line x1="200" y1="120" x2="236" y2="120" class="sld-line"/>
+  <g class="sld-hit" onclick="pmapPick('feeder')">
+    <rect x="236" y="109" width="22" height="22" rx="3" class="sld-box"/>
+    <text x="247" y="148" class="sld-sub" text-anchor="middle">Feeders</text></g>
+  <line x1="258" y1="120" x2="286" y2="120" class="sld-line"/>
+  <text x="292" y="124" class="sld-sub">other arrays</text>
+
+  <line x1="200" y1="69" x2="252" y2="69" class="sld-line"/>
+  <g class="sld-hit" onclick="pmapPick('gsu')">
+    <circle cx="264" cy="69" r="11" class="sld-coil"/><circle cx="278" cy="69" r="11" class="sld-coil"/>
+    <text x="271" y="98" class="sld-sub" text-anchor="middle">GSU</text></g>
+  <line x1="289" y1="69" x2="326" y2="69" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('hvbreaker')">
+    <rect x="326" y="56" width="30" height="26" rx="3" class="sld-box"/>
+    <text x="341" y="102" class="sld-sub" text-anchor="middle">HV brkr</text>
+    <text x="341" y="114" class="sld-kv" text-anchor="middle">230 kV</text></g>
+  <line x1="356" y1="69" x2="392" y2="69" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('disconnect')">
+    <circle cx="392" cy="69" r="3" class="sld-dot"/>
+    <line x1="392" y1="69" x2="414" y2="53" class="sld-line"/>
+    <circle cx="418" cy="69" r="3" class="sld-dot"/>
+    <text x="405" y="102" class="sld-sub" text-anchor="middle">Disconnect</text></g>
+  <line x1="418" y1="69" x2="452" y2="69" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('poi')">
+    <circle cx="458" cy="69" r="5" class="sld-node"/>
+    <text x="458" y="102" class="sld-sub" text-anchor="middle">POI</text>
+    <text x="458" y="114" class="sld-sub" text-anchor="middle">meter</text></g>
+  <line x1="463" y1="69" x2="560" y2="69" class="sld-line"/>
+  <line x1="560" y1="69" x2="560" y2="196" class="sld-line"/>
+  <line x1="14" y1="176" x2="646" y2="176" class="sld-divider"/>
+  <text x="26" y="200" class="sld-cap">TO / TOP</text>
+
+  <!-- ══ TRANSMISSION ═══════════════════════════════════════════════ -->
+  <rect x="14" y="176" width="632" height="230" rx="6" class="pm-zone pm-zone-them"/>
+  <g class="sld-hit" onclick="pmapPick('transmission')">
+    <line x1="150" y1="228" x2="560" y2="228" class="sld-line"/>
+    <path d="M300 228 l-9 22 h18 z" class="sld-tower"/>
+    <path d="M420 228 l-9 22 h18 z" class="sld-tower"/>
+    <text x="360" y="220" class="sld-sub" text-anchor="middle">Transmission line &#183; 230 kV and above</text></g>
+  <line x1="560" y1="196" x2="560" y2="228" class="sld-line"/>
+  <line x1="150" y1="228" x2="150" y2="262" class="sld-line"/>
+
+  <text x="26" y="256" class="sld-cap">SUBSTATION</text>
+  <g class="sld-hit" onclick="pmapPick('subbreaker')">
+    <rect x="135" y="262" width="30" height="26" rx="3" class="sld-box"/>
+    <text x="180" y="280" class="sld-sub">HV breaker</text></g>
+  <line x1="150" y1="288" x2="150" y2="308" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('stepdown')">
+    <circle cx="150" cy="320" r="12" class="sld-coil"/><circle cx="150" cy="336" r="12" class="sld-coil"/>
+    <text x="180" y="324" class="sld-sub">Step-down transformer</text>
+    <text x="180" y="338" class="sld-kv">230 kV to 12 kV</text></g>
+  <line x1="150" y1="348" x2="150" y2="372" class="sld-line"/>
+  <line x1="14" y1="392" x2="646" y2="392" class="sld-divider"/>
+
+  <!-- ══ DISTRIBUTION ═══════════════════════════════════════════════ -->
+  <rect x="14" y="392" width="632" height="230" rx="6" class="pm-zone pm-zone-dp"/>
+  <text x="26" y="418" class="sld-cap">DP &#8212; distribution provider</text>
+
+  <g class="sld-hit" onclick="pmapPick('distbus')">
+    <line x1="90" y1="440" x2="470" y2="440" class="sld-bus"/>
+    <text x="470" y="434" class="sld-sub" text-anchor="end">Distribution bus &#183; 12 kV</text></g>
+  <line x1="150" y1="372" x2="150" y2="440" class="sld-line"/>
+
+  <line x1="180" y1="440" x2="180" y2="470" class="sld-line"/>
+  <line x1="300" y1="440" x2="300" y2="470" class="sld-line"/>
+  <line x1="420" y1="440" x2="420" y2="470" class="sld-line"/>
+  <g class="sld-hit" onclick="pmapPick('distfeeder')">
+    <rect x="169" y="470" width="22" height="20" rx="3" class="sld-box"/>
+    <rect x="289" y="470" width="22" height="20" rx="3" class="sld-box"/>
+    <rect x="409" y="470" width="22" height="20" rx="3" class="sld-box"/>
+    <text x="300" y="506" class="sld-sub" text-anchor="middle">Distribution feeders &#183; the lines down your street</text></g>
+
+  <line x1="300" y1="490" x2="300" y2="522" class="sld-line"/>
+  <g class="sld-hit" onclick="pmapPick('poletx')">
+    <circle cx="300" cy="534" r="11" class="sld-coil"/><circle cx="300" cy="548" r="11" class="sld-coil"/>
+    <text x="330" y="538" class="sld-sub">Pole / pad transformer</text>
+    <text x="330" y="551" class="sld-kv">12 kV to 240 V</text></g>
+  <line x1="300" y1="559" x2="300" y2="584" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('enduser')">
+    <rect x="262" y="584" width="76" height="26" rx="3" class="pm-end"/>
+    <text x="300" y="601" class="sld-lbl" text-anchor="middle">End user</text>
+    <text x="352" y="601" class="sld-kv">240 V</text></g>
+</svg>
+            <div id="pmap-detail" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- ── GRID HIERARCHY WIDGET ─────────────────────────────────────────── -->
     <div id="gh-widget-container" style="margin-bottom:18px;border:1px solid var(--border);border-radius:var(--rl);background:var(--bg2);overflow:hidden;box-shadow:var(--shs);">
-      <div style="padding:12px 16px;border-bottom:1px solid transparent;" id="gh-widget-hdr">
+      <div style="padding:12px 16px;border-bottom:1px solid var(--border);" id="gh-widget-hdr">
         <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="ghToggleWidget()">
           <span style="font-size:15px;">🗺️</span>
           <span style="font-size:13px;font-weight:700;color:var(--text);">Grid Entity Hierarchy</span>
-          <span style="font-size:11px;color:var(--text3);font-family:var(--m);">GOP → NERC · Tap to expand</span>
-          <span id="gh-chevron" style="margin-left:auto;font-size:11px;color:var(--text3);">▸</span>
+          <span style="font-size:11px;color:var(--text3);font-family:var(--m);">GOP → NERC · Tap an entity</span>
+          <span id="gh-chevron" style="margin-left:auto;font-size:11px;color:var(--text3);">▾</span>
         </div>
-        <div id="gh-widget-body" style="display:none;">
+        <div id="gh-widget-body">
           <div class="gh-wrap">
             <div class="gh-tabs">
               <button class="gh-tab active" onclick="ghTab('hierarchy',this)">Hierarchy</button>
@@ -3946,6 +4227,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <div class="sched-toggle">
         <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')">Current Schedule</button>
         <button class="sched-toggle-btn" id="toggle-prop10" onclick="showSchedule('prop10')">Expanded DuPont</button>
+        <button class="sched-toggle-btn" id="toggle-steady" onclick="showSchedule('steady')">Steady Weeks</button>
         <button class="sched-toggle-btn active" id="toggle-split" onclick="showSchedule('split')">Split Week</button>
         <button class="sched-toggle-btn" id="toggle-pit" onclick="showSchedule('pitman')">Pitman</button>
       </div>
@@ -15608,6 +15890,19 @@ function bcHideExample() { document.getElementById('bc-example-modal').style.dis
    ROC STUDY GUIDE — Question Bank + Self-Test System
    ══════════════════════════════════════════════════════════ */
 
+// Labels and icons for each study topic. Referenced by rocRender, the drill
+// screen and Question of the Day. Kept in the same order as the topic cards.
+const ROC_CATEGORIES = [
+  { key:'grid', icon:'🗺️', label:'Grid Entities' },
+  { key:'voltage', icon:'⚡', label:'Voltage / VARs' },
+  { key:'dispatch', icon:'📡', label:'Dispatch' },
+  { key:'scada', icon:'🖥️', label:'SCADA / Alarms' },
+  { key:'operations', icon:'🔧', label:'Operations' },
+  { key:'standards', icon:'📋', label:'Standards' },
+  { key:'plant', icon:'🏭', label:'Plant Architecture' },
+  { key:'rapid', icon:'⚡', label:'Rapid Fire' }
+];
+
 const ROC_QUESTIONS = [
 
   // ══ GRID ENTITIES ═════════════════════════════════════════════════════════
@@ -15775,7 +16070,7 @@ const ROC_QUESTIONS = [
 
   {id:'pr4', cat:'operations', type:'procedure',
    q:'Walk through the Operating Instruction procedure under COM-002 — 5 steps.',
-   a:'<ol style="margin-left:14px;"><li><strong>Receive</strong> the Operating Instruction from the issuing authority (ISO, TOP, SC)</li><li><strong>Repeat the instruction back correctly</strong> — verbatim repeat-back confirms both parties have the same understanding</li><li><strong>Execute</strong> the Operating Instruction</li><li><strong>Respond to the authority</strong> — confirm success or failure of execution</li><li><strong>Log in accordance</strong> — document instruction received, time, who issued it, action taken, outcome</li></ol>COM-002 makes the repeat-back mandatory — it is not optional. A missed readback is a standard violation even if the instruction was executed correctly.'},
+   a:'<ol style="margin-left:14px;"><li><strong>Receive</strong> the Operating Instruction from the issuing authority (ISO, TOP, SC)</li><li><strong>Repeat the instruction back correctly</strong> — verbatim repeat-back confirms both parties have the same understanding</li><li><strong>Execute</strong> the Operating Instruction</li><li><strong>Respond to the authority</strong> — confirm success or failure of execution</li><li><strong>Log in accordance</strong> \u2014 document instruction received, time, who issued it, action taken, outcome. Attach a picture if received and confirmed on the ADS board, along with all call logs if received by phone.</li></ol>COM-002 makes the repeat-back mandatory — it is not optional. A missed readback is a standard violation even if the instruction was executed correctly.'},
 
   // ══ NERC STANDARDS ════════════════════════════════════════════════════════
 
@@ -15867,7 +16162,7 @@ const ROC_QUESTIONS = [
    a:'The <strong>Plant Power Controller</strong> takes a plant-wide setpoint and distributes it across the individual inverters, turbines or PCS units, then trims continuously to hold the plant at that target at the point of interconnection.<ul><li>Receives the setpoint from SCADA / ADS / AGC</li><li>Splits it across available equipment, accounting for whatever is derated or offline</li><li>Regulates to the <strong>POI</strong>, not the sum of the equipment</li><li>Runs the control mode the TOP schedule requires</li></ul><strong>Why it matters:</strong> when a site is not following dispatch, the PPC is the layer between \u201cthe setpoint arrived\u201d and \u201cthe equipment moved.\u201d A setpoint visible in SCADA with no MW response usually means the PPC is in the wrong mode, has a limit applied, or has lost communication with the equipment beneath it.<br><br><strong>Modes to recognise:</strong> active power control, voltage control, power factor control, and manual/local \u2014 where the PPC stops regulating and holds whatever it was last given.'},
   {id:'op7', cat:'operations', type:'procedure',
    q:'Walk through the outage ticket procedure \u2014 what are the 4 steps?',
-   a:'<ol style="margin-left:14px;"><li><strong>Identify the outage</strong> \u2014 what is out, when it started, and whether it is forced or planned</li><li><strong>Submit the ticket</strong> \u2014 as required and as prescribed by the SC</li><li><strong>Update as conditions change</strong> \u2014 revise the end time or capacity as better information arrives</li><li><strong>Close the ticket</strong> \u2014 once the equipment is returned and output is confirmed recovered</li></ol>The step most often missed is the last one. A ticket left open after the equipment is back keeps the site showing derated to the SC and the market, with nothing alarming to tell you.'},
+   a:'<ol style="margin-left:14px;"><li><strong>Identify the outage</strong> \u2014 what is out, when it started, and whether it is forced or planned</li><li><strong>Submit the ticket</strong> \u2014 as required and as prescribed by the SC</li><li><strong>Update as conditions change</strong> \u2014 revise the end time or capacity as better information arrives</li><li><strong>File with the CPUC</strong> for Peregrine or Northstar if the outage is \u226550MW</li><li><strong>Close the ticket</strong> \u2014 once the equipment is returned and output is confirmed recovered</li></ol>The step most often missed is the last one. A ticket left open after the equipment is back keeps the site showing derated to the SC and the market, with nothing alarming to tell you.'},
   {id:'s6', cat:'scada', type:'application',
    q:'How would you recognize a communication issue versus an equipment issue?',
    a:'<ul><li>Check communication status of all affected devices</li><li>Determine if data values are <strong>frozen or updating</strong></li><li>Compare SCADA with field reports</li><li>Review communications alarms</li><li>Check whether multiple devices failed simultaneously</li><li>Verify if local HMI or PLC still has normal operation</li><li>Determine whether production actually changed or only telemetry was lost — do the math between site output with and without the inverter producing, and compare</li></ul><strong>At Operator 3 level, also:</strong> compare production trends across multiple platforms, and contact QSE / Generation / Transmission to understand whether they also lost visibility.'},
@@ -15918,11 +16213,28 @@ const ROC_QUESTIONS = [
    a:'<ul><li>Site name</li><li>Time of event</li><li>Equipment affected</li><li>Current plant status</li><li>Safety concerns (if any)</li><li>Actions already taken and who has been contacted</li><li>Current suspected cause</li><li>Assistance requested</li><li>Estimated restoration time (if known)</li><li>Planned next steps</li></ul><strong>For a major generation loss, also include:</strong> MW lost, percentage of site affected, utility notifications completed, site personnel status, and restoration efforts underway.<br><br><em>“If I’m waking up to a call when I’m away, I need as much information as possible to help diagnose.”</em>'},
   {id:'pr9', cat:'operations', type:'scenario',
    q:'How would you coordinate field personnel, management and external stakeholders during a critical event?',
-   a:'<ul><li>Establish current plant status</li><li>Communicate with grid entities as required</li><li>Coordinate with field personnel</li><li>Notify required contacts such as site owners and asset managers</li><li>Provide concise, factual updates</li><li>Maintain awareness of changing conditions</li><li>Continue documenting all actions</li><li>Provide final restoration update</li></ul>'}
-];
-
-const ROC_CATEGORIES = [
-  {key:'grid',       label:'Grid Entities',                icon:'🌐'},
+   a:'<ul><li>Establish current plant status</li><li>Communicate with grid entities as required</li><li>Coordinate with field personnel</li><li>Notify required contacts such as site owners and asset managers</li><li>Provide concise, factual updates</li><li>Maintain awareness of changing conditions</li><li>Continue documenting all actions</li><li>Provide final restoration update</li></ul>'},
+  {id:'g11', cat:'grid', type:'conceptual',
+   q:'What are the three fundamental responsibilities of the ROC?',
+   a:'Monitoring and reporting the following:<ol style="margin-left:14px;"><li><strong>AVR status, voltage schedule, capacitor and reactor banks</strong></li><li><strong>Site following ADS / AGC</strong></li><li><strong>Site fully available</strong> — MWh, MW and ancillary services</li></ol>Everything else the ROC does follows from these three. If you are not sure whether something matters, ask which of the three it affects.'},
+  {id:'op15', cat:'operations', type:'application',
+   q:'What information would you review first when investigating a plant performance issue?',
+   a:'<ul><li>SCADA alarms and notifications</li><li>Power production trends (MW/MWh)</li><li>Equipment status — inverters, turbines, battery containers, breakers</li><li>Site availability and capability</li><li>Voltage, current, frequency and power factor data</li><li>Weather and environmental conditions</li><li>Communications status (SCADA / network health)</li><li>Active outages or work orders</li><li>Previous operator logs and shift turnover notes</li></ul>'},
+  {id:'pr10', cat:'operations', type:'procedure',
+   q:'What should a clear log or report on an event contain?',
+   a:'<ul><li>Record the <strong>exact time</strong> of the event</li><li>Describe what occurred factually, without assumptions</li><li>Document alarms, equipment affected and MW impact</li><li>Record all troubleshooting steps performed</li><li>Document communications with field personnel, grid entities and management</li><li>Record restoration actions and current plant status</li><li>Include any follow-up actions or outstanding issues</li></ul>'},
+  {id:'op16', cat:'operations', type:'application',
+   q:'You identify an issue at a site. How do you troubleshoot it and lead the restoration attempt?',
+   a:'<ul><li>Verify the issue through SCADA and alarms</li><li>Identify the equipment affected</li><li>Review recent events, switching, weather and maintenance activities</li><li>Determine if the issue appears to be communications, SCADA controls or equipment related</li><li>Coordinate with the site team to gather additional information</li><li>Attempt approved restoration procedures when appropriate</li><li>Continue monitoring and escalate if restoration is unsuccessful</li></ul>'},
+  {id:'pr11', cat:'operations', type:'application',
+   q:'What does it mean to operate and make decisions independently, without supervisor or manager support?',
+   a:'<ul><li>Assess the issue and determine safety and impact</li><li>Review alarms, SCADA, event logs and current operating conditions</li><li><strong>Follow applicable procedures without waiting for direction</strong></li><li>Coordinate with field personnel or third parties as required</li><li>Make operational decisions within your authority</li><li>Escalate only when required by procedure, or when operational limits are exceeded</li><li>Document actions taken and reasoning in the operating log</li></ul>'},
+  {id:'op17', cat:'operations', type:'scenario',
+   q:'SCENARIO: Harquahala 2 PV suddenly drops to 60 MW output. How would you investigate?',
+   a:'<ul><li>Verify actual production loss</li><li>Check irradiance and weather conditions</li><li>Determine if the reduction is site-wide or limited to specific equipment</li><li>Review inverter availability</li><li>Check tracker status</li><li>Review alarms and event history</li><li><strong>Verify no curtailment or dispatch instructions are active</strong></li><li>Identify whether production loss matches unavailable equipment</li><li>Coordinate with field personnel if equipment issues are suspected</li></ul>'},
+  {id:'s7', cat:'scada', type:'application',
+   q:'How would you identify a site trip?',
+   a:'Any one of these is enough to treat it as a trip:<ul><li><strong>High side breaker open</strong></li><li><strong>Frozen data on SCADA</strong></li><li><strong>Complete loss of comms</strong></li><li><strong>The TO reports the site tripped</strong></li></ul>Confirm before acting: <strong>an open high side while the site is still producing is NOT a trip.</strong> Check output before submitting an outage \u2014 if generation is unchanged, you have an indication problem, not a trip.<br><br>Once identified, work the Site Trip playbook. Notify TOP first and confirm they see the same breaker position.'},
   {key:'voltage',    label:'Voltage, Reactive Power & AVR', icon:'⚡'},
   {key:'dispatch',   label:'Dispatch: ADS / AGC',          icon:'📡'},
   {key:'scada',      label:'SCADA, Alarms & Recognition',  icon:'🖥️'},
@@ -16003,6 +16315,136 @@ function ghTab(id, btn) {
   btn.classList.add('active');
 }
 
+// ── Single line diagram explorer ─────────────────────────────────────────
+// Wolf's Operator 3 checklist asks operators to locate transformers, main
+// breakers, feeder breakers and air switches on a real one-line. This is the
+// same shape as the Grid Entity Hierarchy widget: tap a component, read what
+// it is and what you would actually check on it.
+const SLD_DATA = {
+  transmission: { name:'Transmission system', sym:'Everything above the POI, drawn dashed because it is not ours',
+    what:'The TO\u2019s transmission network. We do not own it, operate it or switch it. It is on the one-line so you can see where our responsibility ends.',
+    check:'Nothing directly \u2014 but this is why you request permission from the TOP before opening or closing the high side breaker. You are changing what connects to their system.' },
+  padmount: { name:'Pad-mount transformer', sym:'Two interlocking circles, out at the array',
+    what:'Steps inverter output up from 600 V to collector voltage (34.5 kV). There is one per inverter or small group, out in the field rather than in the substation.',
+    check:'Rarely visible in SCADA. It matters when one inverter block is dark while its neighbours produce \u2014 a pad-mount fault takes out its group without touching the feeder breaker.' },
+  poi: { name:'Point of Interconnection (POI)', sym:'Meter symbol at the top of the drawing',
+    what:'Where the plant connects to the utility system. Everything above it belongs to the TO; everything below it is ours.',
+    check:'POI voltage against the schedule and band, and MW/MVAR as the market sees them. This is the metering point that counts.' },
+  airswitch: { name:'Air switch', sym:'A line with a break in it, hinged open like a door',
+    what:'A visible-break disconnect. It isolates equipment but is not designed to interrupt load current — that is the breaker’s job.',
+    check:'Position. Closed sits flush with the line, open swings away. On a switching order the air switch is what establishes the visible isolation a tech works behind.' },
+  hvbreaker: { name:'High side breaker', sym:'A box (or arc) across the line · ANSI 52',
+    what:'The main breaker between the plant and the utility. Opening it takes the whole site off the grid.',
+    check:'Position. An open high side with no generation is a site trip. An open high side while the site is still producing is not — see the Site Trip playbook.<br><strong>Always request permission from the TOP before opening or closing it.</strong>',
+    altNote:'A box across the line is most common on plant one-lines. Utility drawings often use an <strong>X or bowtie</strong> instead, and a filled square sometimes means normally closed.',
+    altSvg:'<svg width="160" height="46" viewBox="0 0 160 46" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="8" y1="18" x2="22" y2="18"/><rect x="22" y="8" width="20" height="20"/><line x1="42" y1="18" x2="56" y2="18"/><line x1="78" y1="18" x2="92" y2="18"/><line x1="92" y1="8" x2="112" y2="28"/><line x1="112" y1="8" x2="92" y2="28"/><line x1="112" y1="18" x2="126" y2="18"/><text x="32" y="45" font-size="8" stroke="none" fill="currentColor" text-anchor="middle">box</text><text x="102" y="45" font-size="8" stroke="none" fill="currentColor" text-anchor="middle">bowtie</text></svg>' },
+  transformer: { name:'Main transformer', sym:'Two interlocking circles, or two opposing arcs',
+    what:'Also called the <strong>GSU</strong> (generator step-up). Takes collector voltage (34.5 kV) up to transmission voltage (230 kV here). Ratings on each side of the symbol tell you the voltage on that side.',
+    check:'Which side of the drawing you are reading. A 34.5kV reading means nothing if you are looking at the 230kV side. Transformer alarms are on the alarm-monitoring list for a reason.',
+    altNote:'Two interlocking circles is the common form. You will also see <strong>two opposing arcs</strong> \u2014 the same device, drawn differently.',
+    altSvg:'<svg width="150" height="46" viewBox="0 0 150 46" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="30" cy="17" r="9"/><circle cx="30" cy="29" r="9"/><path d="M95 9 a9 9 0 0 1 0 16"/><path d="M107 21 a9 9 0 0 0 0 16"/><text x="30" y="45" font-size="8" stroke="none" fill="currentColor" text-anchor="middle">circles</text><text x="101" y="45" font-size="8" stroke="none" fill="currentColor" text-anchor="middle">arcs</text></svg>' },
+  mvbreaker: { name:'MV main breaker', sym:'A box across the line · ANSI 52',
+    what:'Sits between the transformer and the medium voltage bus. Opening it drops every feeder at once while leaving the high side intact.',
+    check:'During switching this comes out after the feeders and goes back in before them. Closing order matters — allow MVARs to stabilise.' },
+  bus: { name:'Medium voltage bus', sym:'A heavy horizontal line',
+    what:'The common node where all the feeders connect. Not a device — it is the electrical junction everything below hangs off.',
+    check:'What is fed from it. A fault on the bus takes every feeder with it, which is how you tell a bus problem from a single feeder problem.' },
+  feeder: { name:'Feeder breakers', sym:'Boxes on each branch below the bus · ANSI 52',
+    what:'One per circuit heading out to a block of inverters, turbines or megapacks. Each isolates its own section.',
+    check:'How many are open versus expected. One open feeder is a partial derate; all open points at the bus or above. This is the level you switch at for planned work.' },
+  gen: { name:'Generation sources', sym:'Blocks at the bottom of the drawing',
+    what:'The inverters, turbines or battery PCS units producing power. On a solar site the inverters convert DC to AC; on a BESS the PCS runs bidirectionally.',
+    check:'Count online versus total, and whether output matches what is available. A gap between available and producing is where a derate hides.',
+    altNote:'A box split by a diagonal, DC on one side and AC on the other, is the standard inverter symbol. Some drawings use a <strong>triangle</strong>, or just label a plain box PCS or INV.',
+    altSvg:'<svg width="170" height="52" viewBox="0 0 170 52" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="14" y="6" width="42" height="30"/><line x1="18" y1="32" x2="52" y2="10"/><text x="24" y="20" font-size="10" stroke="none" fill="currentColor">&#8801;</text><text x="42" y="32" font-size="10" stroke="none" fill="currentColor">&#8764;</text><path d="M100 6 L128 21 L100 36 Z"/><text x="35" y="49" font-size="8" stroke="none" fill="currentColor" text-anchor="middle">box + diagonal</text><text x="114" y="49" font-size="8" stroke="none" fill="currentColor" text-anchor="middle">triangle</text></svg>' },
+};
+
+let sldPicked = null;
+function sldPick(key) {
+  const d = SLD_DATA[key]; if (!d) return;
+  document.querySelectorAll('.sld-hit').forEach(el => el.classList.remove('sld-on'));
+  const hit = [...document.querySelectorAll('.sld-hit')].find(el => (el.getAttribute('onclick')||'').includes("'"+key+"'"));
+  if (hit) hit.classList.add('sld-on');
+  const box = document.getElementById('sld-detail');
+  box.style.display = 'block';
+  box.innerHTML = `<div class="gh-detail">
+      <h3>${d.name}</h3>
+      <div class="gh-role">${d.sym}</div>
+      <div class="gh-dgrid">
+        <div class="gh-ditem" style="grid-column:1/-1"><div class="gh-ditem-k">What it is</div><div class="gh-ditem-v">${d.what}</div></div>
+        <div class="gh-ditem" style="grid-column:1/-1"><div class="gh-ditem-k">What you check</div><div class="gh-ditem-v">${d.check}</div></div>
+        ${d.altSvg ? `<div class="gh-ditem" style="grid-column:1/-1"><div class="gh-ditem-k">You may also see it drawn as</div><div class="gh-ditem-v"><div class="sld-alt">${d.altSvg}</div>${d.altNote}</div></div>` : ''}
+      </div>
+    </div>`;
+  sldPicked = key;
+}
+
+// ── Power map ────────────────────────────────────────────────────────────
+// Separate widget, collapsed by default, with a banner saying it is not a
+// one-line. The risk of showing this at all is an operator concluding a
+// single line diagram covers the whole grid, so the framing does real work.
+const PMAP_DATA = {
+  collector: { name:'Collector bus', who:'Generator Owner \u2014 us',
+    what:'Where every feeder from the arrays combines before the step-up. Same bus you see on the plant one-line.' },
+  feeder: { name:'Collector feeders', who:'Generator Owner \u2014 us',
+    what:'Each feeder gathers a block of inverters or turbines. One open feeder is a partial derate, not a site outage.' },
+  padmount: { name:'Pad-mount transformer', who:'Generator Owner \u2014 us',
+    what:'Steps inverter output from 600 V up to collector voltage, out in the array.' },
+  hvbreaker: { name:'High side breaker', who:'Generator Owner \u2014 us',
+    what:'The last device we operate before the POI. Opening it takes the plant off the grid, which is why the TOP is asked first.' },
+  disconnect: { name:'Disconnect switch', who:'Generator Owner \u2014 us',
+    what:'Visible break for isolation. Not designed to interrupt load \u2014 the breaker does that first.' },
+  poi: { name:'Point of Interconnection', who:'The boundary \u2014 metered here',
+    what:'Where our system ends and the TO\u2019s begins. The voltage schedule applies here, and this is the meter the market settles against.' },
+  subbreaker: { name:'Substation HV breaker', who:'Transmission Owner',
+    what:'Protects the transmission side of the distribution substation. Not ours to operate.' },
+  stepdown: { name:'Step-down transformer', who:'Transmission Owner',
+    what:'Drops transmission voltage to distribution voltage, typically 230 kV to around 12 kV.' },
+  distbus: { name:'Distribution bus', who:'Distribution Provider',
+    what:'The 12 kV bus feeding local circuits. Nothing here appears on a plant one-line.' },
+  distfeeder: { name:'Distribution feeders', who:'Distribution Provider',
+    what:'The circuits running along streets to neighbourhoods. When one of these trips it is an outage for customers, not for us.' },
+  poletx: { name:'Pole or pad transformer', who:'Distribution Provider',
+    what:'The last transformation, 12 kV down to 240 V at the service.' },
+  gen: { name:'Generation', who:'Generator Owner / Generator Operator \u2014 us',
+    what:'The plant itself: inverters, turbines, battery PCS. Everything on the one-line below the POI.' },
+  gsu: { name:'Step-up transformer (GSU)', who:'Generator Owner \u2014 us',
+    what:'Raises collector voltage to transmission voltage so power can travel. The last piece we own before the POI.' },
+  transmission: { name:'Transmission', who:'Transmission Owner / Transmission Operator',
+    what:'High voltage lines moving bulk power over distance, 230 kV and above. The TOP directs switching here, which is why we ask permission before opening the high side.' },
+  enduser: { name:'End user', who:'The customer',
+    what:'A final pole or pad transformer drops 12 kV to 240 V at the meter. The MW you are watching on SCADA ends up here.' },
+};
+
+function pmapPick(key){
+  const d = PMAP_DATA[key]; if(!d) return;
+  document.querySelectorAll('#pmap-body .sld-hit').forEach(el => el.classList.remove('sld-on'));
+  const hit = [...document.querySelectorAll('#pmap-body .sld-hit')]
+    .find(el => (el.getAttribute('onclick')||'').includes("'"+key+"'"));
+  if (hit) hit.classList.add('sld-on');
+  const box = document.getElementById('pmap-detail');
+  box.style.display = 'block';
+  box.innerHTML = `<div class="gh-detail"><h3>${d.name}</h3><div class="gh-role">${d.who}</div>
+    <div class="gh-dgrid"><div class="gh-ditem" style="grid-column:1/-1">
+    <div class="gh-ditem-k">What it is</div><div class="gh-ditem-v">${d.what}</div></div></div></div>`;
+}
+
+function pmapToggle(){
+  const body = document.getElementById('pmap-body');
+  const chev = document.getElementById('pmap-chevron');
+  const open = getComputedStyle(body).display === 'none';
+  body.style.display = open ? 'block' : 'none';
+  chev.textContent = open ? '\u25BE' : '\u25B8';
+}
+
+function sldToggle() {
+  const body = document.getElementById('sld-body');
+  const chev = document.getElementById('sld-chevron');
+  const open = getComputedStyle(body).display === 'none';
+  body.style.display = open ? 'block' : 'none';
+  chev.textContent = open ? '\u25BE' : '\u25B8';
+}
+
 function ghDetail(key) {
   const d = GH_DATA[key];
   const box = document.getElementById('gh-detail-box');
@@ -16032,7 +16474,7 @@ function ghToggleWidget() {
   const body = document.getElementById('gh-widget-body');
   const chevron = document.getElementById('gh-chevron');
   const hdr = document.getElementById('gh-widget-hdr');
-  if (body.style.display === 'none') {
+  if (getComputedStyle(body).display === 'none') {
     body.style.display = '';
     body.style.animation = 'none';
     void body.offsetWidth;
@@ -16075,9 +16517,13 @@ function rocSetFilter(f, btn) {
   // they picked.
   document.querySelectorAll('.roc-section.open').forEach(el => el.classList.remove('open'));
 
-  // Show/hide Grid Hierarchy widget based on filter
+  // Show/hide topic-specific widgets based on filter
   const ghWidget = document.getElementById('gh-widget-container');
   if (ghWidget) ghWidget.style.display = f === 'grid' ? 'block' : 'none';
+  const sldWidget = document.getElementById('sld-widget-container');
+  if (sldWidget) sldWidget.style.display = f === 'plant' ? 'block' : 'none';
+  const pmapWidget = document.getElementById('pmap-widget-container');
+  if (pmapWidget) pmapWidget.style.display = f === 'plant' ? 'block' : 'none';
 
   rocRender();
 }
@@ -16326,7 +16772,7 @@ function rocDrillFinish() {
 // actually been used for a while, not built speculatively up front.
 const PB_CHECK_KEY = 'rnwbl_pb_checks_v1';
 const PB_CATEGORY_ORDER = ['Site Events','Dispatch & Compliance','Safety','Shift Routine','Comms Escalation'];
-const PB_PLAYBOOKS = [{"id": "Operating Instruction", "sheetTitle": "Operating Instruction", "phases": [{"name": "ISSUED BY CAISO BOARD", "steps": [{"text": "Receive Operating Instruction", "notes": ["Take Picture of the Board and attach to Log."]}, {"text": "Execute the Operating Instruction", "notes": ["Follow direction on CAISO Board."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "ISSUED BY PHONE", "steps": [{"text": "Receive Operating Instruction", "notes": ["Confirm if unsure it’s an operating instruction."]}, {"text": "Repeat Instruction Back Correctly", "notes": ["Use 3-Way Comms. Ask if correct."]}, {"text": "Execute the Operating Instruction", "notes": ["Complete with authority on phone or call back after completion."]}, {"text": "Respond to authority Success/Failure", "notes": ["If Instruction completed off phone, call back."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}, {"text": "Inform Supervisor", "notes": ["So that call logs can be pulled."]}]}], "notes": ["Some operating instructions may de-rate or place the site in outage, follow those procedures as neccesary.", "If at any point a call is made to or received from authority switch to Phone Instructions"], "icon": "📋", "category": "Dispatch & Compliance", "trigger": "CAISO board or a caller issues a direct operating instruction", "stepCount": 11, "slug": "operating-instruction", "choose": "How was the instruction issued?", "choosePrompt": "How was the instruction issued?"}, {"id": "Not Following ADS", "sheetTitle": "Not Following ADS", "phases": [{"name": "If SOC is near 100%", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed &/Or as directed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints DO NOT Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete Outage Card", "notes": ["Full Site Outage"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints as a result of site unable to follow dispatch, place a full site outage"], "icon": "🎯", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking CAISO ADS dispatch setpoints", "stepCount": 18, "slug": "not-following-ads", "choose": "What is the state of charge?", "choosePrompt": "What is the SOC condition?"}, {"id": "Not Following AGC", "sheetTitle": "Not Following AGC", "phases": [{"name": "If SOC is Limited", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS Works", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant in ADS mode", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS DOES NOT WORK", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints, place a full site outage"], "icon": "📉", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking AGC dispatch", "stepCount": 19, "slug": "not-following-agc", "choose": "What is the state of charge?", "choosePrompt": "What is the SOC condition?"}, {"id": "Site Trip", "sheetTitle": "SITE TRIP", "phases": [{"name": "Start", "steps": [{"text": "Identify Site Trip", "notes": ["High side open · Frozen SCADA data · Comms loss · TO reports a trip"], "jump": {"phase": 2, "label": "Breaker open but still producing?"}}, {"text": "Notify TOP", "notes": ["Inquire Possible Reason. Confirm TOP sees the same breaker position."]}, {"text": "Notify SC", "notes": ["Take direction from the SC operator"]}, {"text": "Complete Outage Card", "notes": ["As required & as perscribed by the SC"]}, {"text": "Dispatch Field", "notes": ["Coordinate retrieval of Event Files"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify 3AC", "notes": ["Call 1-800 number to get On Call. Tech to coordinate event files to 3AC POC."]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify SC", "notes": ["Request Permission to re-enter Market"]}, {"text": "Close In Site", "notes": ["Follow Swithcing Procedure"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "WIND — Breaker Open, Still Producing", "steps": [{"text": "Confirm Production With SC", "notes": ["SC confirms MW output despite the open high-side breaker"]}, {"text": "Leave Site Producing", "notes": ["!Absent an operating instruction: do NOT submit an Outage Card, do NOT update the Outage Board"]}, {"text": "Notify TOP", "notes": ["Report back that the site is producing despite the open breaker indication"]}, {"text": "Dispatch Field", "notes": ["Confirm the high side is actually closed in — expected, since the site is producing"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Field Tech Confirms Breaker Position", "notes": ["Tech reports breaker position back to ROC"]}, {"text": "Notify TOP", "notes": ["Confirm the line is closed"]}, {"text": "Notify Owner & SCADA Vendor", "notes": ["Investigate why SCADA indicated open while the breaker was closed and producing"]}, {"text": "Log It", "notes": ["Via Softwrench. Note breaker indicated open with site producing."]}]}], "notes": ["Assume site trip if no parties can confirm comms to site", "A wind site showing an open high-side breaker while still producing is not a trip — confirm output with the SC before submitting any outage"], "icon": "⚠️", "category": "Site Events", "trigger": "Site has tripped offline", "stepCount": 24, "slug": "site-trip"}, {"id": "Comms Loss", "sheetTitle": "COMMS LOSS", "phases": [{"name": "Comms Loss Start", "steps": [{"text": "Identify Issue", "notes": ["Re-Fresh SCADA, Try another IP address, Try another Login"], "jump": {"playbook": "bluence-comms-loss", "label": "Bluence comms loss?"}}, {"text": "Notify TOP", "notes": ["Confirm their Comms. If No take direction from TOP"]}, {"text": "Notify SC", "notes": ["Confirm their Comms. If No take direction from SC"]}, {"text": "Complete Metering/Telemetry Card", "notes": ["As needed &/or as directed"]}, {"text": "Notify Field", "notes": ["Via call or email"]}, {"text": "Notify Network Vendor", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["when comms are restored - if taken offline request permission to re-enter the grid"]}, {"text": "Notify SC", "notes": ["when comms are restored - if taken offline request permission to re-enter the market"]}, {"text": "Close Metering/Telemetry Card", "notes": ["If one was opened"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Assume site trip if no parties can confirm comms to site"], "icon": "📡", "category": "Site Events", "trigger": "Lost SCADA / communications to a site", "stepCount": 15, "slug": "comms-loss"}, {"id": "Bluence Comms Loss", "sheetTitle": "Bluence Comms Loss", "phases": [{"name": "Start", "steps": [{"text": "Identify Issue", "notes": ["Re-Fresh SCADA, Try another IP address, Try another Login"]}, {"text": "Submit support tickets immediately", "notes": ["Opoura, EXUS and Isotrol", "Report the Bluence issue and begin troubleshooting/restoration"]}, {"text": "Call ENEL", "notes": ["Contact ENEL and ask them to confirm whether the ICCP Setpoint data is showing STALE or ACTIVE."]}, {"text": "Call SPP", "notes": ["Contact SPP and ask whether they are also seeing the ICCP Setpoint as STALE or ACTIVE.", "If STALE: Submit a metering/telemetry ticket immediately.", "If ACTIVE: Ask SPP for guidance on how they would like us to proceed while Bluence is unavailable."]}, {"text": "Notify SC", "notes": ["If SPP is not the SC for this site"]}, {"text": "Notify Field", "notes": ["Via call or email"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}]}, {"name": "Resolution", "steps": [{"text": "Confirm Bluence is communicating normally", "notes": []}, {"text": "Contact SPP again", "notes": ["Confirm whether the ICCP Setpoint data is STALE or ACTIVE"]}, {"text": "Close Metering/Telemetry ticket", "notes": ["If one was opened"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Bluence is one of two SCADAs used for wind — voltage stays visible on the other, so this is not a full loss of site visibility"], "icon": "📡", "category": "Site Events", "trigger": "Bluence unavailable at a Harbert wind site", "slug": "bluence-comms-loss", "stepCount": 14}, {"id": "Site De-Rated", "sheetTitle": "Site De-Rated", "phases": [{"name": "De-Rate Start", "steps": [{"text": "Identify Name Plate", "notes": ["Via Plant Info"]}, {"text": "Determine if Fully Availble/Derated", "notes": []}, {"text": "Submit De-rate/Outage to QSE", "notes": ["Via portal/form. Call to confirm"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "De-Rate End", "steps": [{"text": "Update/End Outage", "notes": ["Via Portal/Email"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "📉", "category": "Site Events", "trigger": "Site is operating below full nameplate capacity", "stepCount": 10, "slug": "site-de-rated"}, {"id": "AVR", "sheetTitle": "Site Not in AVR", "phases": [{"name": "Not in AVR", "steps": [{"text": "Notify TOP", "notes": ["Per VAR-002 this is mandatory"]}, {"text": "Return site to AVR immediately", "notes": ["VIA Scada, Onsite team or other means"]}, {"text": "Take Direction From TOP", "notes": ["If AVR cannot be restored — TOP directs until automatic control is regained"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "🔌", "category": "Dispatch & Compliance", "trigger": "Site has dropped out of Automatic Voltage Regulation (VAR-002)", "stepCount": 10, "slug": "avr"}, {"id": "Voltage", "sheetTitle": "Voltage Out of Band", "phases": [{"name": "Start", "steps": [{"text": "Notify TOP", "notes": ["Site voltage is outside the required band"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["If voltage returns in-band within 24 hours"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "⚡", "category": "Dispatch & Compliance", "trigger": "Site voltage is outside the required band", "stepCount": 4, "slug": "voltage"}, {"id": "Daily Checklist", "sheetTitle": "Daily Checklist", "phases": [{"name": "Start of shift", "steps": [{"text": "Please notify the ROC in the Teams chat that you are on the way.", "notes": []}, {"text": "Clock into work when at the office door (DSPTCH)", "notes": []}, {"text": "Check Dryerase/Outage board", "notes": []}, {"text": "Receive instructions from offgoing operator/teams", "notes": ["Verbally and via Teams chat"]}, {"text": "Log into D1/D2 duty sites SCADA's", "notes": []}, {"text": "Fill out (ROCC1) Operator Log (Onsite)", "notes": ["Via Softwrench"]}, {"text": "Complete Asset Scanning Tool/Upload", "notes": []}]}, {"name": "End of shift", "steps": [{"text": "Leave instructions for oncoming operator in teams/turnover", "notes": ["Verbally and via Teams chat"]}, {"text": "Fillout (ROCC1) Operator Log (Offsite)", "notes": ["Via Softwrench"]}, {"text": "Ensure you log out of all sites directly", "notes": []}, {"text": "Leave the ROCC only after relief is logged into their sites.", "notes": []}, {"text": "Clock out (DSPTCH)", "notes": []}]}], "notes": [], "icon": "✅", "category": "Shift Routine", "trigger": "Start / end of shift routine — resets each shift", "stepCount": 12, "slug": "daily-checklist"}, {"id": "Fire Alarm", "sheetTitle": "Fire Alarm", "phases": [{"name": null, "steps": [{"text": "Recieve Fire alarm from Hiller or other service provider", "notes": []}, {"text": "Notify Field Team/Review Cameras if Available", "notes": ["Via Email, include Field, ROC, Ownership"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Coordinate Response – Confirm False Alarm", "notes": ["Work with field team/cameras to determine real vs. false"]}, {"text": "Notify Alarm Company if False Alarm", "notes": ["So they can call off the fire department if already dispatched"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "🔥", "category": "Site Events", "trigger": "Fire alarm received from a site", "stepCount": 6, "slug": "fire-alarm"}, {"id": "Units Off", "sheetTitle": "Units Offline", "phases": [{"name": "Solar", "steps": [{"text": "Identify each inverters status Online/Offine/Comms Loss", "notes": []}, {"text": "Locate current Irradiance", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Bess", "steps": [{"text": "Identify each inverter/battery status Online/Offline/Comms Loss/Faulted", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Wind", "steps": [{"text": "Identify a tripped turbine", "notes": ["Via Scada"]}, {"text": "Reset the turbine", "notes": ["According to, and only if permitted by, the site-specific SOP"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench & the Turbine Trip Logs"]}]}], "notes": [], "icon": "🔧", "category": "Site Events", "trigger": "One or more inverters / turbines offline (Solar, BESS, or Wind)", "stepCount": 16, "slug": "units-off", "choose": "What kind of site?", "choosePrompt": "What type of site?"}, {"id": "Hail Stow", "sheetTitle": "Hail Stow", "phases": [{"name": null, "steps": [{"text": "Identify Alert: damaging hail", "notes": ["(≥ 1 inch in diameter)"]}, {"text": "Log into NXNavigator", "notes": []}, {"text": "Stow Site", "notes": ["Emergency Stow"]}, {"text": "Notify Site Owner/Field/Scheduling Coordinator", "notes": []}, {"text": "Initiate Auto Tracking once all clear is received", "notes": ["All clear arrives via Indji Watch, text or email"]}, {"text": "Update SC & Ownership Communication Thread", "notes": ["Confirm the site is back to auto tracking"]}, {"text": "Log it", "notes": []}]}], "notes": [], "icon": "🌨️", "category": "Site Events", "trigger": "Damaging hail alert — emergency stow needed", "stepCount": 7, "slug": "hail-stow"}, {"id": "Contact Escalation", "sheetTitle": "Contact Escalation", "choose": "S&B or Wind?", "phases": [{"name": "S&B", "steps": [{"text": "Contact Regional Manager", "notes": ["If no answer, continue down"]}, {"text": "Contact S&B Director", "notes": ["Cole Berman", "If no answer, continue down"]}, {"text": "Contact VP of Maintenance & Reliability", "notes": ["Troy Ryan"]}]}, {"name": "Wind", "steps": [{"text": "Contact Site Manager", "notes": ["If no answer, continue down"]}, {"text": "Contact Director of Wind Maintenance", "notes": ["Michael Montes", "If no answer, continue down"]}, {"text": "Contact VP of Maintenance & Reliability", "notes": ["Troy Ryan"]}]}], "notes": ["Work down the list in order — only escalate to the next contact when the one above does not answer"], "icon": "📞", "category": "Comms Escalation", "trigger": "Need to reach plant leadership about a site issue", "stepCount": 6, "slug": "contact-escalation"}];;
+const PB_PLAYBOOKS = [{"id": "Operating Instruction", "sheetTitle": "Operating Instruction", "phases": [{"name": "ISSUED BY CAISO BOARD", "steps": [{"text": "Receive Operating Instruction", "notes": ["Take Picture of the Board and attach to Log."]}, {"text": "Execute the Operating Instruction", "notes": ["Follow direction on CAISO Board."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "ISSUED BY PHONE", "steps": [{"text": "Receive Operating Instruction", "notes": ["Confirm if unsure it’s an operating instruction."]}, {"text": "Repeat Instruction Back Correctly", "notes": ["Use 3-Way Comms. Ask if correct."]}, {"text": "Execute the Operating Instruction", "notes": ["Complete with authority on phone or call back after completion."]}, {"text": "Respond to authority Success/Failure", "notes": ["If Instruction completed off phone, call back."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}, {"text": "Inform Supervisor", "notes": ["So that call logs can be pulled."]}]}], "notes": ["Some operating instructions may de-rate or place the site in outage, follow those procedures as neccesary.", "If at any point a call is made to or received from authority switch to Phone Instructions"], "icon": "📋", "category": "Dispatch & Compliance", "trigger": "CAISO board or a caller issues a direct operating instruction", "stepCount": 11, "slug": "operating-instruction", "choose": "How was the instruction issued?", "choosePrompt": "How was the instruction issued?"}, {"id": "Not Following ADS", "sheetTitle": "Not Following ADS", "phases": [{"name": "If SOC is near 100%", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed &/Or as directed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - Manual Setpoints DO NOT Work", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm the new setpoint is there and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete Outage Card", "notes": ["Full Site Outage"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints as a result of site unable to follow dispatch, place a full site outage"], "icon": "🎯", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking CAISO ADS dispatch setpoints", "stepCount": 18, "slug": "not-following-ads", "choose": "What is the state of charge?", "choosePrompt": "What is the SOC condition?"}, {"id": "Not Following AGC", "sheetTitle": "Not Following AGC", "phases": [{"name": "If SOC is Limited", "steps": [{"text": "Notify SC", "notes": ["Let the QSE know the site is near/at full SOC."]}, {"text": "Submit Outage Card", "notes": ["Only if QSE requests."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS Works", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant in ADS mode", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}, {"name": "IF SOC is Not Limited - ADS DOES NOT WORK", "steps": [{"text": "Check ADS Board", "notes": ["If applicable. Confirm AGC = Yes and assigned to the correct Resource ID"]}, {"text": "Check SCADA", "notes": ["Did the plant's control system receive the new setpoint?", "Is the inverter/BESS in Remote/Auto or stuck in Local/Manual?"]}, {"text": "Active Alarms", "notes": ["Derate, trip, communication loss, or protective limit?"]}, {"text": "Notify SC", "notes": ["Site is not currently following dispatch."]}, {"text": "Complete A/S Outage Card", "notes": ["As needed"]}, {"text": "Operate Plant with Manual Setpoint", "notes": ["If possible and acceptable via QSE."]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance."]}, {"text": "Log It", "notes": ["Via Softwrench."]}]}], "notes": ["If at any point you are unable to keep up with Manual Setpoints, place a full site outage"], "icon": "📉", "category": "Dispatch & Compliance", "trigger": "Site isn't tracking AGC dispatch", "stepCount": 19, "slug": "not-following-agc", "choose": "What is the state of charge?", "choosePrompt": "What is the SOC condition?"}, {"id": "Site Trip", "sheetTitle": "SITE TRIP", "phases": [{"name": "Start", "steps": [{"text": "Identify Site Trip", "notes": ["High side open · Frozen SCADA data · Comms loss · TO reports a trip"], "jump": {"phase": 2, "label": "Breaker open but still producing?"}}, {"text": "Notify TOP", "notes": ["Inquire Possible Reason. Confirm TOP sees the same breaker position."]}, {"text": "Notify SC", "notes": ["Take direction from the SC operator"]}, {"text": "Complete Outage Card", "notes": ["As required & as perscribed by the SC", "Submit with QSE as 0MWh/0MW, 0/0/0/0"]}, {"text": "Dispatch Field", "notes": ["Coordinate retrieval of Event Files"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify 3AC", "notes": ["Call 1-800 number to get On Call. Tech to coordinate event files to 3AC POC."]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify SC", "notes": ["Request Permission to re-enter Market"]}, {"text": "Close In Site", "notes": ["Follow Swithcing Procedure"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "WIND — Breaker Open, Still Producing", "steps": [{"text": "Confirm Production With SC", "notes": ["SC confirms MW output despite the open high-side breaker"]}, {"text": "Leave Site Producing", "notes": ["!Absent an operating instruction: do NOT submit an Outage Card, do NOT update the Outage Board"]}, {"text": "Notify TOP", "notes": ["Report back that the site is producing despite the open breaker indication"]}, {"text": "Dispatch Field", "notes": ["Confirm the high side is actually closed in — expected, since the site is producing"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Field Tech Confirms Breaker Position", "notes": ["Tech reports breaker position back to ROC"]}, {"text": "Notify TOP", "notes": ["Confirm the line is closed"]}, {"text": "Notify Owner & SCADA Vendor", "notes": ["Investigate why SCADA indicated open while the breaker was closed and producing"]}, {"text": "Log It", "notes": ["Via Softwrench. Note breaker indicated open with site producing."]}]}], "notes": ["Assume site trip if no parties can confirm comms to site", "A wind site showing an open high-side breaker while still producing is not a trip — confirm output with the SC before submitting any outage"], "icon": "⚠️", "category": "Site Events", "trigger": "Site has tripped offline", "stepCount": 24, "slug": "site-trip"}, {"id": "Comms Loss", "sheetTitle": "COMMS LOSS", "phases": [{"name": "Comms Loss Start", "steps": [{"text": "Identify Issue", "notes": ["Re-Fresh SCADA, Try another IP address, Try another Login"], "jump": {"playbook": "bluence-comms-loss", "label": "Bluence comms loss?"}}, {"text": "Notify TOP", "notes": ["Confirm their Comms. If No take direction from TOP"]}, {"text": "Notify SC", "notes": ["Confirm their Comms. If No take direction from SC"]}, {"text": "Complete Metering/Telemetry Card", "notes": ["As needed &/or as directed"]}, {"text": "Notify Field", "notes": ["Via call or email"]}, {"text": "Notify Network Vendor", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["when comms are restored - if taken offline request permission to re-enter the grid"]}, {"text": "Notify SC", "notes": ["when comms are restored - if taken offline request permission to re-enter the market"]}, {"text": "Close Metering/Telemetry Card", "notes": ["If one was opened"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Assume site trip if no parties can confirm comms to site"], "icon": "📡", "category": "Site Events", "trigger": "Lost SCADA / communications to a site", "stepCount": 15, "slug": "comms-loss"}, {"id": "Bluence Comms Loss", "sheetTitle": "Bluence Comms Loss", "phases": [{"name": "Start", "steps": [{"text": "Identify Issue", "notes": ["Re-Fresh SCADA, Try another IP address, Try another Login"]}, {"text": "Submit support tickets immediately", "notes": ["Opoura, EXUS and Isotrol", "Report the Bluence issue and begin troubleshooting/restoration"]}, {"text": "Call ENEL", "notes": ["Contact ENEL and ask them to confirm whether the ICCP Setpoint data is showing STALE or ACTIVE."]}, {"text": "Call SPP", "notes": ["Contact SPP and ask whether they are also seeing the ICCP Setpoint as STALE or ACTIVE.", "If STALE: Submit a metering/telemetry ticket immediately.", "If ACTIVE: Ask SPP for guidance on how they would like us to proceed while Bluence is unavailable."]}, {"text": "Notify SC", "notes": ["If SPP is not the SC for this site"]}, {"text": "Notify Field", "notes": ["Via call or email"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC"]}, {"text": "Log It", "notes": ["Via Softwrench"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}]}, {"name": "Resolution", "steps": [{"text": "Confirm Bluence is communicating normally", "notes": []}, {"text": "Contact SPP again", "notes": ["Confirm whether the ICCP Setpoint data is STALE or ACTIVE"]}, {"text": "Close Metering/Telemetry ticket", "notes": ["If one was opened"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Bluence is one of two SCADAs used for wind — voltage stays visible on the other, so this is not a full loss of site visibility"], "icon": "📡", "category": "Site Events", "trigger": "Bluence unavailable at a Harbert wind site", "slug": "bluence-comms-loss", "stepCount": 14}, {"id": "Site De-Rated", "sheetTitle": "Site De-Rated", "phases": [{"name": "De-Rate Start", "steps": [{"text": "Identify Name Plate", "notes": ["Via Plant Info"]}, {"text": "Determine if Fully Availble/Derated", "notes": []}, {"text": "Submit De-rate/Outage to QSE", "notes": ["Via portal/form. Call to confirm"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "De-Rate End", "steps": [{"text": "Update/End Outage", "notes": ["Via Portal/Email"]}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Update Outage Board", "notes": ["Via Microsoft Lists"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "📉", "category": "Site Events", "trigger": "Site is operating below full nameplate capacity", "stepCount": 10, "slug": "site-de-rated"}, {"id": "AVR", "sheetTitle": "Site Not in AVR", "phases": [{"name": "Not in AVR", "steps": [{"text": "Notify TOP", "notes": ["Per VAR-002 this is mandatory"]}, {"text": "Return site to AVR immediately", "notes": ["VIA Scada, Onsite team or other means"]}, {"text": "Take Direction From TOP", "notes": ["If AVR cannot be restored — TOP directs until automatic control is regained"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC"]}, {"text": "Update Outage Boad", "notes": ["Via Microsoft Lists"]}, {"text": "Coordinate Root Cause Analysis", "notes": ["Via Email Chain"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["Request Permission to re-enter Grid"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "🔌", "category": "Dispatch & Compliance", "trigger": "Site has dropped out of Automatic Voltage Regulation (VAR-002)", "stepCount": 10, "slug": "avr"}, {"id": "Voltage", "sheetTitle": "Voltage Out of Band", "phases": [{"name": "Start", "steps": [{"text": "Notify TOP", "notes": ["Site voltage is outside the required band"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Resolution", "steps": [{"text": "Notify TOP", "notes": ["If voltage returns in-band within 24 hours"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "⚡", "category": "Dispatch & Compliance", "trigger": "Site voltage is outside the required band", "stepCount": 4, "slug": "voltage"}, {"id": "Daily Checklist", "sheetTitle": "Daily Checklist", "phases": [{"name": "Start of shift", "steps": [{"text": "Please notify the ROC in the Teams chat that you are on the way.", "notes": []}, {"text": "Clock into work when at the office door (DSPTCH)", "notes": []}, {"text": "Check Dryerase/Outage board", "notes": []}, {"text": "Receive instructions from offgoing operator/teams", "notes": ["Verbally and via Teams chat"]}, {"text": "Log into D1/D2 duty sites SCADA's", "notes": []}, {"text": "Fill out (ROCC1) Operator Log (Onsite)", "notes": ["Via Softwrench"]}, {"text": "Complete Asset Scanning Tool/Upload", "notes": []}]}, {"name": "End of shift", "steps": [{"text": "Leave instructions for oncoming operator in teams/turnover", "notes": ["Verbally and via Teams chat"]}, {"text": "Fillout (ROCC1) Operator Log (Offsite)", "notes": ["Via Softwrench"]}, {"text": "Ensure you log out of all sites directly", "notes": []}, {"text": "Leave the ROCC only after relief is logged into their sites.", "notes": []}, {"text": "Clock out (DSPTCH)", "notes": []}]}], "notes": [], "icon": "✅", "category": "Shift Routine", "trigger": "Start / end of shift routine — resets each shift", "stepCount": 12, "slug": "daily-checklist"}, {"id": "Fire Alarm", "sheetTitle": "Fire Alarm", "phases": [{"name": null, "steps": [{"text": "Recieve Fire alarm from Hiller or other service provider", "notes": []}, {"text": "Notify Field Team/Review Cameras if Available", "notes": ["Via Email, include Field, ROC, Ownership"]}, {"text": "Notify Owner", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Coordinate Response – Confirm False Alarm", "notes": ["Work with field team/cameras to determine real vs. false"]}, {"text": "Notify Alarm Company if False Alarm", "notes": ["So they can call off the fire department if already dispatched"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": [], "icon": "🔥", "category": "Site Events", "trigger": "Fire alarm received from a site", "stepCount": 6, "slug": "fire-alarm"}, {"id": "Units Off", "sheetTitle": "Units Offline", "phases": [{"name": "Solar", "steps": [{"text": "Identify each inverters status Online/Offine/Comms Loss", "notes": []}, {"text": "Locate current Irradiance", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Bess", "steps": [{"text": "Identify each inverter/battery status Online/Offline/Comms Loss/Faulted", "notes": []}, {"text": "Identify if any unit is de-rated", "notes": ["Vs Peers", "Check to see if site is now derated. Move to Site De Rate Playbook"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}, {"name": "Wind", "steps": [{"text": "Identify a tripped turbine", "notes": ["Via Scada"]}, {"text": "Reset the turbine", "notes": ["According to, and only if permitted by, the site-specific SOP"]}, {"text": "Notify Site Team", "notes": []}, {"text": "Notify Owner Contacts", "notes": ["Via Email, include Field, ROC, Performance"]}, {"text": "Log It", "notes": ["Via Softwrench & the Turbine Trip Logs"]}]}], "notes": [], "icon": "🔧", "category": "Site Events", "trigger": "One or more inverters / turbines offline (Solar, BESS, or Wind)", "stepCount": 16, "slug": "units-off", "choose": "What kind of site?", "choosePrompt": "What type of site?"}, {"id": "Hail Stow", "sheetTitle": "Hail Stow", "phases": [{"name": null, "steps": [{"text": "Identify Alert: damaging hail", "notes": ["(≥ 1 inch in diameter)"]}, {"text": "Log into NXNavigator", "notes": []}, {"text": "Stow Site", "notes": ["Emergency Stow"]}, {"text": "Notify Site Owner/Field/Scheduling Coordinator", "notes": []}, {"text": "Initiate Auto Tracking once all clear is received", "notes": ["All clear arrives via Indji Watch, text or email"]}, {"text": "Update SC & Ownership Communication Thread", "notes": ["Confirm the site is back to auto tracking"]}, {"text": "Log it", "notes": []}]}], "notes": [], "icon": "🌨️", "category": "Site Events", "trigger": "Damaging hail alert — emergency stow needed", "stepCount": 7, "slug": "hail-stow"}, {"id": "Contact Escalation", "sheetTitle": "Contact Escalation", "choose": "S&B or Wind?", "phases": [{"name": "S&B", "steps": [{"text": "Contact Regional Manager", "notes": ["If no answer, continue down"]}, {"text": "Contact S&B Director", "notes": ["Cole Berman", "If no answer, continue down"]}, {"text": "Contact VP of Maintenance & Reliability", "notes": ["Troy Ryan"]}]}, {"name": "Wind", "steps": [{"text": "Contact Site Manager", "notes": ["If no answer, continue down"]}, {"text": "Contact Director of Wind Maintenance", "notes": ["Michael Montes", "If no answer, continue down"]}, {"text": "Contact VP of Maintenance & Reliability", "notes": ["Troy Ryan"]}]}], "notes": ["Work down the list in order — only escalate to the next contact when the one above does not answer"], "icon": "📞", "category": "Comms Escalation", "trigger": "Need to reach plant leadership about a site issue", "stepCount": 6, "slug": "contact-escalation"}, {"id": "Feeder Switching", "sheetTitle": "Feeder Switching", "phases": [{"name": "Prepare", "steps": [{"text": "Receive switching procedures", "notes": []}, {"text": "Ensure proper outage/derate is in place", "notes": []}, {"text": "Follow along with tech", "notes": ["Confirm all steps leading up to start of de-energization have been executed"]}, {"text": "Confirm the field is clear", "notes": []}]}, {"name": "De-energize", "steps": [{"text": "Disable Megapack / Sole Bank in Standby Mode", "notes": []}, {"text": "Open AC breakers / shut down PE inverters", "notes": []}, {"text": "Open feeder / MV breakers", "notes": []}, {"text": "Request permission from TOP to open HV breaker", "notes": ["!Always request permission from the TOP to exit or return to the grid"]}, {"text": "Open HV breaker", "notes": []}]}, {"name": "Re-energize", "steps": [{"text": "Request permission from TOP to close HV breaker", "notes": ["!Always request permission from the TOP to exit or return to the grid"]}, {"text": "Close HV breaker", "notes": []}, {"text": "Close MV / feeder breakers", "notes": ["Allow MVARs to stabilize"]}, {"text": "Close AC breakers / turn on PE inverters", "notes": []}, {"text": "Enable Megapacks / Sole Bank in “BESS On”", "notes": []}, {"text": "Follow along with tech", "notes": ["Confirm all steps leading up to energization are complete"]}]}, {"name": "Close out", "steps": [{"text": "End outage / derate", "notes": []}, {"text": "Notify owner contacts", "notes": ["Via Email, include Field, ROC"]}, {"text": "Log It", "notes": ["Via Softwrench"]}]}], "notes": ["Worked alongside the field tech throughout — the ROC operates remotely while the tech confirms each step on site"], "icon": "🔓", "category": "Site Events", "trigger": "Planned feeder switching, de-energization and return to service", "slug": "feeder-switching", "stepCount": 18}, {"id": "StaySafe", "sheetTitle": "StaySafe Lone Worker", "phases": [{"name": null, "steps": [{"text": "Alarm received via StaySafe", "notes": []}, {"text": "Make a single attempt to reach the tech", "notes": []}, {"text": "Attempt to reach supervisor or a nearby employee", "notes": []}, {"text": "After 10 minutes, contact local emergency authorities", "notes": ["!Request a welfare check — do not wait longer than 10 minutes"]}]}], "notes": ["The 10 minute mark is from the original alarm, not from the last call attempt"], "icon": "🦺", "category": "Safety", "trigger": "StaySafe alarm received for a lone worker", "slug": "staysafe", "stepCount": 4}, {"id": "BESS Oscillation", "sheetTitle": "BESS Oscillation Event", "phases": [{"name": null, "steps": [{"text": "Confirm event timing", "notes": []}, {"text": "Notify QSE and TO immediately", "notes": ["!Operate based on their requests — likely will be a forced outage"]}, {"text": "Determine whether oscillations are ongoing", "notes": []}, {"text": "Review site MW and MVAR response", "notes": []}, {"text": "Verify equipment status", "notes": []}, {"text": "Review alarms and event logs", "notes": []}, {"text": "Notify required stakeholders", "notes": ["Owner, Field, ROC"]}, {"text": "Coordinate with site personnel", "notes": []}, {"text": "Follow applicable operating procedures", "notes": ["Check the binder if unsure"]}, {"text": "Continue monitoring until the system stabilizes", "notes": []}, {"text": "Log It", "notes": ["Via Softwrench. Document the entire event."]}]}], "notes": [], "icon": "📉", "category": "Site Events", "trigger": "BESS site reports an oscillation event", "slug": "bess-oscillation", "stepCount": 11}];;
 
 // Which phase is currently open, keyed by playbook slug. Phases were
 // previously all stacked on one page, which read as a single long list —
@@ -18428,7 +18874,7 @@ function showSchedule(which){
     const el=document.getElementById(id); if(el) el.style.display='none';
   });
   // Toggle buttons
-  ['toggle-curr','toggle-prop10','toggle-split','toggle-pit'].forEach(id=>{
+  ['toggle-curr','toggle-prop10','toggle-steady','toggle-split','toggle-pit'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.classList.remove('active');
   });
 
@@ -18454,10 +18900,10 @@ function showSchedule(which){
     renderPitChips(); pitInitOnce(); pitCalRender();
     updatePitIndicator();
   } else {
-    // 'curr' and 'prop10' share one view — only the data model differs, so
-    // switching between them is a model swap plus a re-render, not a
-    // separate set of panels to keep in sync.
-    currModel = (which === 'prop10') ? 'prop10' : 'curr';
+    // 'curr', 'prop10' and 'steady' share one view — only the data model
+    // differs, so switching between them is a model swap plus a re-render,
+    // not a separate set of panels to keep in sync.
+    currModel = SCHED_MODELS[which] ? which : 'curr';
     const model = activeModel();
     document.getElementById('curr-view').style.display='';
     document.getElementById('curr-tabs').style.display='';
@@ -18466,7 +18912,7 @@ function showSchedule(which){
     if(activeCurrPanel) activeCurrPanel.style.display='block';
     if(!activeCurrTab) document.querySelector('#curr-tabs .curr-tab').classList.add('active');
     document.getElementById('curr-date-ctrl').style.display='';
-    document.getElementById(currModel==='prop10'?'toggle-prop10':'toggle-curr').classList.add('active');
+    { const tb = document.getElementById('toggle-' + currModel); if (tb) tb.classList.add('active'); }
     { const el=document.getElementById('sched-subtitle'); if(el) el.textContent=model.label+' \xB7 '+model.subtitle; }
     currApplyModelChrome();
     renderStaticChips(); currInitOnce();
@@ -18482,7 +18928,7 @@ function showSchedule(which){
 // on the page is identical because the underlying shape is identical.
 function currApplyModelChrome(){
   const m = activeModel();
-  const isProp = currModel === 'prop10';
+  const isProp = currModel !== 'curr';   // any 10-operator proposal
   const setText = (id, txt) => { const el=document.getElementById(id); if(el) el.textContent = txt; };
   setText('curr-roster-title', isProp ? 'Operators (proposed)' : 'Operators');
   setText('curr-roster-sub', m.dayCount + ' day \u00B7 ' + m.nightCount + ' night, rotating \u00B7 ' + m.cycle + '-day cycle');
@@ -18640,6 +19086,38 @@ function prop10RowForDate(dateObj){
   return { day, night };
 }
 
+// ── Steady Weeks (10 operator) ──────────────────────────────────────────
+// Built to protect the thing the current 6-operator schedule does well and
+// Expanded DuPont does not: every Monday-to-Sunday week is exactly 3 or 4
+// days, so a weekly paycheck is always 36h or 48h and never anything else.
+//
+// The phase of this string matters. WOS_ANCHOR is a Thursday, so cycle day 0
+// is a Thursday — the pattern is rotated so its internal week boundaries land
+// on Mondays. Without that rotation the 3-or-4 property holds for Thursday
+// weeks and produces zero-day Monday weeks, i.e. an empty paycheck.
+//
+// Nights are assigned to whole work blocks rather than scattered across them.
+// That is what keeps mixed day/night weeks at zero — a night week is a clean
+// night week, same as today — and drops day/night reversals to 10 a year.
+//
+// Trade-off vs Expanded DuPont: it does not hold the existing crew trios
+// together. Work stretches top out at 5 days instead of 7, and the 7-day
+// break survives.
+const STEADY_SHAPE = '-DDD----DDD---DDDDD----NNN---NNN-NNNN--NNNN----DDD---DDD----DDDD------'.split('').map(ch => ch === '-' ? null : ch);
+const STEADY_OPS = [...PROP10_OPS];
+
+function steadyRowForDate(dateObj){
+  const anchor = new Date(WOS_ANCHOR + 'T00:00:00');
+  const days = Math.round((dateObj - anchor) / 86400000);
+  const day = [], night = [];
+  STEADY_OPS.forEach((name, i) => {
+    const role = STEADY_SHAPE[(((days - i * 7) % 70) + 70) % 70];
+    if (role === 'D') day.push(name);
+    else if (role === 'N') night.push(name);
+  });
+  return { day, night };
+}
+
 const SCHED_MODELS = {
   curr: {
     label: 'Current schedule',
@@ -18662,6 +19140,15 @@ const SCHED_MODELS = {
     dayCount: 3,
     nightCount: 2,
     getDay(iso){ return prop10RowForDate(new Date(iso + 'T00:00:00')); }
+  },
+  steady: {
+    label: 'Steady Weeks',
+    subtitle: 'Every week 3 or 4 days \u00b7 max 5 in a row',
+    ops: [...STEADY_OPS].sort(),
+    cycle: 70,
+    dayCount: 3,
+    nightCount: 2,
+    getDay(iso){ return steadyRowForDate(new Date(iso + 'T00:00:00')); }
   }
 };
 
@@ -18930,7 +19417,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.82';
+const APP_VERSION = 'v1.93';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19004,7 +19491,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v1.82</span>
+    RNWBL Ops Hub <span class="app-footer-v">v1.93</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
