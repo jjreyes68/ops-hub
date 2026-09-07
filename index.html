@@ -2547,7 +2547,6 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   background:var(--bg3);color:var(--text2);font-size:11px;font-family:var(--f);cursor:pointer;
   transition:all .12s;}
 
-.roc-due{font-size:10.5px;color:var(--text3);font-family:var(--m);margin-left:2px;}
 
   padding:5px 14px;cursor:pointer;transition:all .12s;}
 
@@ -16701,8 +16700,6 @@ function rocMark(qid, val) {
   rocSave();
   const el = document.querySelector(`[data-conf="${qid}"]`);
   if (el) el.innerHTML = rocConfButtons(qid);
-  const dl = document.getElementById('roc-due-' + qid);
-  if (dl) dl.textContent = rocDueLabel(qid);
   const catKey = (ROC_QUESTIONS.find(x=>x.id===qid)||{}).cat;
   if (catKey) {
     const catQs = ROC_QUESTIONS.filter(x=>x.cat===catKey);
@@ -16800,7 +16797,6 @@ function rocRender() {
           <div class="roc-q-actions">
             <button class="roc-show-btn" id="roc-show-${q.id}" onclick="rocToggleAnswer('${q.id}')">${rocRevealed[q.id] ? 'Hide' : 'Show'} Answer</button>
             <div class="roc-confidence" data-conf="${q.id}">${rocConfButtons(q.id)}</div>
-            <span class="roc-due" id="roc-due-${q.id}">${rocDueLabel(q.id)}</span>
           </div>
         </div>`;
       }
@@ -19653,7 +19649,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.00';
+const APP_VERSION = 'v2.01';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19727,7 +19723,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.00</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.01</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
