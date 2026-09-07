@@ -2511,6 +2511,73 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .sld-hit:hover .sld-bus,.sld-hit:hover .sld-line{stroke:var(--blue);}
 .sld-hit.sld-on .sld-box,.sld-hit.sld-on .sld-coil,.sld-hit.sld-on .sld-src{stroke:var(--blue);stroke-width:2.4;}
 .sld-hit.sld-on .sld-lbl{fill:var(--blue);font-weight:600;}
+
+.sld-sub{fill:var(--text3);font-family:var(--f);font-size:9.5px;}
+.sld-kv{fill:var(--text3);font-family:var(--m);font-size:10px;letter-spacing:.04em;}
+.sld-node{fill:var(--bg2);stroke:var(--text2);stroke-width:2;}
+.sld-divider{stroke:var(--border2);stroke-width:1;stroke-dasharray:3 4;}
+.sld-far-box{fill:var(--bg3);stroke:var(--text3);stroke-width:1.4;stroke-dasharray:4 3;}
+.sld-far-line{stroke-dasharray:4 3;opacity:.6;}
+.sld-far .sld-lbl{fill:var(--text3);}
+.sld-hit:hover .sld-node,.sld-hit:hover .sld-far-box{stroke:var(--blue);}
+.sld-hit:hover .sld-sub{fill:var(--blue);}
+.sld-hit.sld-on .sld-node,.sld-hit.sld-on .sld-far-box{stroke:var(--blue);stroke-width:2.4;}
+.sld-hit.sld-on .sld-sub{fill:var(--blue);}
+
+.sld-inv-line{stroke:var(--blue);stroke-width:1.4;}
+.sld-inv-gl{fill:var(--blue);font-family:var(--m);font-size:11px;}
+.sld-alt{color:var(--text2);margin-bottom:7px;}
+.sld-alt svg{display:block;}
+
+.pmap-warn{font-size:12px;color:var(--text2);background:var(--abg);border-left:3px solid var(--amber);
+  padding:8px 12px;border-radius:6px;margin-bottom:14px;line-height:1.5;}
+.pm-us{fill:var(--gbg);stroke:var(--green);stroke-width:1.6;}
+.pm-them{fill:var(--bbg);stroke:var(--blue);stroke-width:1.6;}
+.pm-dp{fill:var(--bg3);stroke:var(--text3);stroke-width:1.6;}
+.pm-end{fill:var(--bg3);stroke:var(--text3);stroke-width:1.6;stroke-dasharray:4 3;}
+.sld-hit:hover .pm-us,.sld-hit:hover .pm-them,.sld-hit:hover .pm-dp,.sld-hit:hover .pm-end{stroke-width:2.6;}
+.sld-hit.sld-on .pm-us,.sld-hit.sld-on .pm-them,.sld-hit.sld-on .pm-dp,.sld-hit.sld-on .pm-end{stroke-width:2.6;}
+
+.pm-zone{fill:none;stroke-width:1;stroke-dasharray:5 4;}
+.pm-zone-us{stroke:var(--green);opacity:.45;}
+.pm-zone-them{stroke:var(--blue);opacity:.45;}
+.pm-zone-dp{stroke:var(--text3);opacity:.45;}
+.sld-tower{fill:none;stroke:var(--text3);stroke-width:1.4;}
+
+  background:var(--bg3);color:var(--text2);font-size:11px;font-family:var(--f);cursor:pointer;
+  transition:all .12s;}
+
+.roc-due{font-size:10.5px;color:var(--text3);font-family:var(--m);margin-left:2px;}
+
+  padding:5px 14px;cursor:pointer;transition:all .12s;}
+
+.drill-score-big{font-size:44px;font-weight:700;color:var(--green);line-height:1;text-align:center;}
+.drill-score-big span{font-size:22px;color:var(--text3);font-weight:500;}
+.drill-score-sub{text-align:center;font-size:13px;color:var(--text2);margin-top:6px;margin-bottom:22px;}
+.drill-fu-head{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);
+  margin-bottom:10px;padding-bottom:5px;border-bottom:1px solid var(--border);}
+.drill-fu-item{display:flex;align-items:flex-start;gap:9px;padding:7px 0;font-size:13px;color:var(--text2);}
+.drill-fu-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.drill-fu-dot.review-it{background:var(--amber);}
+.drill-fu-dot.missed{background:var(--red);}
+.drill-fu-q{flex:1;line-height:1.4;}
+.drill-fu-when{font-family:var(--m);font-size:10.5px;color:var(--text3);white-space:nowrap;}
+
+.sl-reset{background:none;border:none;color:var(--text3);font-family:var(--m);font-size:10px;
+  cursor:pointer;padding:0 0 0 8px;text-decoration:underline;}
+.sl-reset:hover{color:var(--blue);}
+
+.scope-lead{font-size:13px;color:var(--text2);margin-bottom:16px;}
+.scope-group-label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);
+  margin:14px 0 7px;}
+.scope-group-label:first-of-type{margin-top:0;}
+.scope-row{display:flex;flex-wrap:wrap;gap:7px;}
+.scope-chip{display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+  background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:8px 13px;
+  cursor:pointer;font-family:var(--f);transition:all .12s;}
+.scope-chip:hover{border-color:var(--blue);background:var(--bbg);}
+.scope-chip-name{font-size:12.5px;color:var(--text);font-weight:500;}
+.scope-chip-meta{font-size:10px;color:var(--text3);font-family:var(--m);}
 </style>
 </head>
 <body>
@@ -2564,6 +2631,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <div class="nav-dropdown-menu" id="navdd-menu-schedule">
       <button class="nav-dropdown-item" data-sched="curr" onclick="navDropdownSelectSchedule('curr')">Current Schedule</button>
       <button class="nav-dropdown-item" data-sched="prop10" onclick="navDropdownSelectSchedule('prop10')">Expanded DuPont</button>
+      <button class="nav-dropdown-item" data-sched="steady" onclick="navDropdownSelectSchedule('steady')">Steady Weeks</button>
       <button class="nav-dropdown-item" data-sched="split" onclick="navDropdownSelectSchedule('split')">Split Week</button>
       <button class="nav-dropdown-item" data-sched="pitman" onclick="navDropdownSelectSchedule('pitman')">Pitman</button>
     </div>
@@ -3514,7 +3582,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <div class="page-subtitle">GOP-scoped questions, SOPs &amp; simulation scenarios</div>
       </div>
       <div class="page-header-actions">
-        <button class="tbtn" style="border-color:var(--amber);color:var(--amber);padding:5px 12px;" onclick="rocStartDrill()" title="Daily Drill - 10 random questions">🎯 Drill</button>
+        <button class="btn-p" id="roc-quiz-btn" style="padding:5px 14px;" onclick="rocOpenScope()" title="Choose what to be quizzed on">🎯 Start quiz</button>
         <button class="tbtn" style="padding:5px 10px;font-size:11px;" onclick="rocResetProgress()" title="Reset all progress">↺ Reset</button>
       </div>
     </div>
@@ -3588,59 +3656,220 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <div id="sld-body">
           <div class="gh-wrap">
             <div class="gh-subtitle">Tap any component to see what it is, what it does, and what an operator checks.</div>
-            <svg viewBox="0 0 620 400" class="sld-svg" role="img" aria-label="Interactive single line diagram">
-  <text x="310" y="20" class="sld-cap" text-anchor="middle">Utility POI</text>
-  <line x1="310" y1="28" x2="310" y2="52" class="sld-line"/>
+            <svg viewBox="0 0 640 590" class="sld-svg" role="img" aria-label="Interactive single line diagram">
+  <g class="sld-hit sld-far" onclick="sldPick('transmission')">
+    <rect x="252" y="14" width="136" height="30" rx="4" class="sld-far-box"/>
+    <text x="320" y="34" class="sld-lbl" text-anchor="middle">Transmission</text></g>
+  <line x1="320" y1="44" x2="320" y2="72" class="sld-line sld-far-line"/>
+  <line x1="70" y1="86" x2="570" y2="86" class="sld-divider"/>
+  <text x="70" y="78" class="sld-cap">THEIR SIDE</text>
+  <text x="70" y="102" class="sld-cap">OUR SIDE</text>
 
-  <g class="sld-hit" onclick="sldPick('poi')"><rect x="270" y="52" width="80" height="22" rx="3" class="sld-box"/>
-    <text x="310" y="67" class="sld-lbl" text-anchor="middle">POI Meter</text></g>
-  <line x1="310" y1="74" x2="310" y2="96" class="sld-line"/>
+  <g class="sld-hit" onclick="sldPick('poi')">
+    <circle cx="320" cy="86" r="5" class="sld-node"/>
+    <text x="360" y="82" class="sld-lbl">Point of interconnection</text>
+    <text x="360" y="95" class="sld-sub">Where the voltage schedule applies</text></g>
+  <line x1="320" y1="91" x2="320" y2="120" class="sld-line"/>
 
   <g class="sld-hit" onclick="sldPick('airswitch')">
-    <circle cx="310" cy="98" r="3" class="sld-dot"/><line x1="310" y1="98" x2="332" y2="80" class="sld-line"/>
-    <circle cx="310" cy="120" r="3" class="sld-dot"/>
-    <text x="348" y="106" class="sld-lbl">Air switch</text></g>
-  <line x1="310" y1="120" x2="310" y2="142" class="sld-line"/>
+    <circle cx="320" cy="122" r="3" class="sld-dot"/>
+    <line x1="320" y1="122" x2="342" y2="104" class="sld-line"/>
+    <circle cx="320" cy="146" r="3" class="sld-dot"/>
+    <text x="360" y="122" class="sld-lbl">Disconnect switch</text>
+    <text x="360" y="135" class="sld-sub">Visible open, no load break</text></g>
+  <line x1="320" y1="146" x2="320" y2="172" class="sld-line"/>
 
-  <g class="sld-hit" onclick="sldPick('hvbreaker')"><rect x="292" y="142" width="36" height="26" rx="3" class="sld-box"/>
-    <text x="348" y="159" class="sld-lbl">HV breaker (52)</text></g>
-  <line x1="310" y1="168" x2="310" y2="192" class="sld-line"/>
+  <text x="70" y="192" class="sld-kv">230 kV</text>
+  <g class="sld-hit" onclick="sldPick('hvbreaker')">
+    <rect x="302" y="172" width="36" height="28" rx="3" class="sld-box"/>
+    <text x="360" y="184" class="sld-lbl">High side breaker</text>
+    <text x="360" y="197" class="sld-sub">Interrupts fault current &#183; ANSI 52</text></g>
+  <line x1="320" y1="200" x2="320" y2="228" class="sld-line"/>
 
   <g class="sld-hit" onclick="sldPick('transformer')">
-    <circle cx="310" cy="204" r="13" class="sld-coil"/><circle cx="310" cy="220" r="13" class="sld-coil"/>
-    <text x="348" y="216" class="sld-lbl">Main transformer</text></g>
-  <line x1="310" y1="233" x2="310" y2="256" class="sld-line"/>
+    <circle cx="320" cy="240" r="14" class="sld-coil"/><circle cx="320" cy="258" r="14" class="sld-coil"/>
+    <text x="360" y="243" class="sld-lbl">Main transformer (GSU)</text>
+    <text x="360" y="256" class="sld-sub">34.5 kV to 230 kV</text></g>
+  <line x1="320" y1="272" x2="320" y2="286" class="sld-line"/>
 
-  <g class="sld-hit" onclick="sldPick('mvbreaker')"><rect x="292" y="256" width="36" height="26" rx="3" class="sld-box"/>
-    <text x="348" y="273" class="sld-lbl">MV main breaker</text></g>
-  <line x1="310" y1="282" x2="310" y2="300" class="sld-line"/>
+  <g class="sld-hit" onclick="sldPick('mvbreaker')">
+    <rect x="302" y="286" width="36" height="26" rx="3" class="sld-box"/>
+    <text x="360" y="298" class="sld-lbl">MV main breaker</text>
+    <text x="360" y="311" class="sld-sub">Drops every feeder at once</text></g>
+  <line x1="320" y1="312" x2="320" y2="340" class="sld-line"/>
 
-  <g class="sld-hit" onclick="sldPick('bus')"><line x1="110" y1="302" x2="510" y2="302" class="sld-bus"/>
-    <text x="110" y="294" class="sld-lbl">MV bus</text></g>
+  <text x="70" y="346" class="sld-kv">34.5 kV</text>
+  <g class="sld-hit" onclick="sldPick('bus')">
+    <line x1="150" y1="340" x2="490" y2="340" class="sld-bus"/>
+    <text x="360" y="360" class="sld-lbl">Collector bus</text>
+    <text x="360" y="373" class="sld-sub">Feeders combine here</text></g>
 
-  <line x1="160" y1="302" x2="160" y2="322" class="sld-line"/>
-  <line x1="310" y1="302" x2="310" y2="322" class="sld-line"/>
-  <line x1="460" y1="302" x2="460" y2="322" class="sld-line"/>
+  <line x1="200" y1="340" x2="200" y2="364" class="sld-line"/>
+  <line x1="290" y1="340" x2="290" y2="364" class="sld-line"/>
 
   <g class="sld-hit" onclick="sldPick('feeder')">
-    <rect x="146" y="322" width="28" height="22" rx="3" class="sld-box"/>
-    <rect x="296" y="322" width="28" height="22" rx="3" class="sld-box"/>
-    <rect x="446" y="322" width="28" height="22" rx="3" class="sld-box"/>
-    <text x="310" y="360" class="sld-lbl" text-anchor="middle">Feeder breakers</text></g>
+    <rect x="187" y="364" width="26" height="22" rx="3" class="sld-box"/>
+    <rect x="277" y="364" width="26" height="22" rx="3" class="sld-box"/>
+    <text x="150" y="402" class="sld-sub">Feeder breakers</text></g>
 
-  <line x1="160" y1="344" x2="160" y2="368" class="sld-line"/>
-  <line x1="310" y1="344" x2="310" y2="368" class="sld-line"/>
-  <line x1="460" y1="344" x2="460" y2="368" class="sld-line"/>
+  <line x1="200" y1="386" x2="200" y2="434" class="sld-line"/>
+  <line x1="290" y1="386" x2="290" y2="429" class="sld-line"/>
+  <line x1="290" y1="429" x2="360" y2="429" class="sld-line"/>
 
+  <g class="sld-hit" onclick="sldPick('padmount')">
+    <circle cx="200" cy="446" r="12" class="sld-coil"/><circle cx="200" cy="462" r="12" class="sld-coil"/>
+    <text x="224" y="452" class="sld-lbl">Pad-mount transformer</text>
+    <text x="224" y="465" class="sld-sub">600 V to 34.5 kV</text></g>
+  <line x1="200" y1="474" x2="200" y2="510" class="sld-line"/>
+
+  <text x="70" y="528" class="sld-kv">600 V</text>
   <g class="sld-hit" onclick="sldPick('gen')">
-    <rect x="128" y="368" width="64" height="24" rx="3" class="sld-src"/>
-    <rect x="278" y="368" width="64" height="24" rx="3" class="sld-src"/>
-    <rect x="428" y="368" width="64" height="24" rx="3" class="sld-src"/>
-    <text x="160" y="384" class="sld-lbl" text-anchor="middle">Inverters</text>
-    <text x="310" y="384" class="sld-lbl" text-anchor="middle">Inverters</text>
-    <text x="460" y="384" class="sld-lbl" text-anchor="middle">BESS / PCS</text></g>
+    <rect x="170" y="504" width="60" height="38" rx="3" class="sld-src"/>
+    <line x1="176" y1="538" x2="224" y2="508" class="sld-inv-line"/>
+    <text x="184" y="521" class="sld-inv-gl">&#8801;</text>
+    <text x="209" y="537" class="sld-inv-gl">&#8764;</text>
+    <text x="200" y="558" class="sld-lbl" text-anchor="middle">Inverter</text>
+    <rect x="360" y="416" width="88" height="26" rx="3" class="sld-src"/>
+    <text x="404" y="433" class="sld-lbl" text-anchor="middle">BESS / PCS</text>
+    <text x="246" y="528" class="sld-sub">Makes AC from DC</text></g>
 </svg>
             <div id="sld-detail" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── POWER MAP WIDGET ─────────────────────────────────────────────
+         Deliberately separate from the one-line and collapsed by default.
+         A one-line is a single plant; this is the whole delivery chain. An
+         operator who confuses the two will look for distribution feeders on
+         a site drawing that does not have any. The framing line says so. -->
+    <div id="pmap-widget-container" style="display:none;margin-bottom:18px;border:1px solid var(--border);border-radius:var(--rl);background:var(--bg2);overflow:hidden;box-shadow:var(--shs);">
+      <div style="padding:12px 16px;">
+        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="pmapToggle()">
+          <span style="font-size:15px;">🗺️</span>
+          <span style="font-size:13px;font-weight:700;color:var(--text);">Power Map — generation to end user</span>
+          <span style="font-size:11px;color:var(--text3);font-family:var(--m);">Context, not a one-line</span>
+          <span id="pmap-chevron" style="margin-left:auto;font-size:11px;color:var(--text3);">▸</span>
+        </div>
+        <div id="pmap-body" style="display:none;">
+          <div class="gh-wrap">
+            <div class="pmap-warn">This is <strong>not</strong> a single line diagram. A one-line covers one plant.
+              This shows where that plant sits in the wider system, and who owns each part.</div>
+            <svg viewBox="0 0 660 640" class="sld-svg" role="img" aria-label="Full power system schematic from generation to end user">
+
+  <!-- ══ OUR PLANT ══════════════════════════════════════════════════ -->
+  <rect x="14" y="16" width="632" height="212" rx="6" class="pm-zone pm-zone-us"/>
+  <text x="26" y="34" class="sld-cap">GO / GOP &#8212; our plant</text>
+
+  <g class="sld-hit" onclick="pmapPick('gen')">
+    <rect x="40" y="52" width="52" height="34" rx="3" class="sld-src"/>
+    <line x1="45" y1="82" x2="87" y2="56" class="sld-inv-line"/>
+    <text x="50" y="68" class="sld-inv-gl">&#8801;</text>
+    <text x="72" y="82" class="sld-inv-gl">&#8764;</text>
+    <text x="66" y="102" class="sld-sub" text-anchor="middle">Inverter</text>
+    <text x="66" y="114" class="sld-kv" text-anchor="middle">600 V</text></g>
+  <line x1="92" y1="69" x2="126" y2="69" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('padmount')">
+    <circle cx="138" cy="69" r="11" class="sld-coil"/><circle cx="152" cy="69" r="11" class="sld-coil"/>
+    <text x="145" y="102" class="sld-sub" text-anchor="middle">Pad-mount</text>
+    <text x="145" y="114" class="sld-kv" text-anchor="middle">34.5 kV</text></g>
+  <line x1="163" y1="69" x2="200" y2="69" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('collector')">
+    <line x1="200" y1="46" x2="200" y2="150" class="sld-bus"/>
+    <text x="196" y="42" class="sld-sub" text-anchor="end">Collector bus</text></g>
+
+  <line x1="200" y1="120" x2="236" y2="120" class="sld-line"/>
+  <g class="sld-hit" onclick="pmapPick('feeder')">
+    <rect x="236" y="109" width="22" height="22" rx="3" class="sld-box"/>
+    <text x="247" y="148" class="sld-sub" text-anchor="middle">Feeders</text></g>
+  <line x1="258" y1="120" x2="286" y2="120" class="sld-line"/>
+  <text x="292" y="124" class="sld-sub">other arrays</text>
+
+  <line x1="200" y1="69" x2="252" y2="69" class="sld-line"/>
+  <g class="sld-hit" onclick="pmapPick('gsu')">
+    <circle cx="264" cy="69" r="11" class="sld-coil"/><circle cx="278" cy="69" r="11" class="sld-coil"/>
+    <text x="271" y="98" class="sld-sub" text-anchor="middle">GSU</text></g>
+  <line x1="289" y1="69" x2="326" y2="69" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('hvbreaker')">
+    <rect x="326" y="56" width="30" height="26" rx="3" class="sld-box"/>
+    <text x="341" y="102" class="sld-sub" text-anchor="middle">HV brkr</text>
+    <text x="341" y="114" class="sld-kv" text-anchor="middle">230 kV</text></g>
+  <line x1="356" y1="69" x2="392" y2="69" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('disconnect')">
+    <circle cx="392" cy="69" r="3" class="sld-dot"/>
+    <line x1="392" y1="69" x2="414" y2="53" class="sld-line"/>
+    <circle cx="418" cy="69" r="3" class="sld-dot"/>
+    <text x="405" y="102" class="sld-sub" text-anchor="middle">Disconnect</text></g>
+  <line x1="418" y1="69" x2="452" y2="69" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('poi')">
+    <circle cx="458" cy="69" r="5" class="sld-node"/>
+    <text x="458" y="102" class="sld-sub" text-anchor="middle">POI</text>
+    <text x="458" y="114" class="sld-sub" text-anchor="middle">meter</text></g>
+  <line x1="463" y1="69" x2="560" y2="69" class="sld-line"/>
+  <line x1="560" y1="69" x2="560" y2="196" class="sld-line"/>
+  <line x1="14" y1="176" x2="646" y2="176" class="sld-divider"/>
+  <text x="26" y="200" class="sld-cap">TO / TOP</text>
+
+  <!-- ══ TRANSMISSION ═══════════════════════════════════════════════ -->
+  <rect x="14" y="176" width="632" height="230" rx="6" class="pm-zone pm-zone-them"/>
+  <g class="sld-hit" onclick="pmapPick('transmission')">
+    <line x1="150" y1="228" x2="560" y2="228" class="sld-line"/>
+    <path d="M300 228 l-9 22 h18 z" class="sld-tower"/>
+    <path d="M420 228 l-9 22 h18 z" class="sld-tower"/>
+    <text x="360" y="220" class="sld-sub" text-anchor="middle">Transmission line &#183; 230 kV and above</text></g>
+  <line x1="560" y1="196" x2="560" y2="228" class="sld-line"/>
+  <line x1="150" y1="228" x2="150" y2="262" class="sld-line"/>
+
+  <text x="26" y="256" class="sld-cap">SUBSTATION</text>
+  <g class="sld-hit" onclick="pmapPick('subbreaker')">
+    <rect x="135" y="262" width="30" height="26" rx="3" class="sld-box"/>
+    <text x="180" y="280" class="sld-sub">HV breaker</text></g>
+  <line x1="150" y1="288" x2="150" y2="308" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('stepdown')">
+    <circle cx="150" cy="320" r="12" class="sld-coil"/><circle cx="150" cy="336" r="12" class="sld-coil"/>
+    <text x="180" y="324" class="sld-sub">Step-down transformer</text>
+    <text x="180" y="338" class="sld-kv">230 kV to 12 kV</text></g>
+  <line x1="150" y1="348" x2="150" y2="372" class="sld-line"/>
+  <line x1="14" y1="392" x2="646" y2="392" class="sld-divider"/>
+
+  <!-- ══ DISTRIBUTION ═══════════════════════════════════════════════ -->
+  <rect x="14" y="392" width="632" height="230" rx="6" class="pm-zone pm-zone-dp"/>
+  <text x="26" y="418" class="sld-cap">DP &#8212; distribution provider</text>
+
+  <g class="sld-hit" onclick="pmapPick('distbus')">
+    <line x1="90" y1="440" x2="470" y2="440" class="sld-bus"/>
+    <text x="470" y="434" class="sld-sub" text-anchor="end">Distribution bus &#183; 12 kV</text></g>
+  <line x1="150" y1="372" x2="150" y2="440" class="sld-line"/>
+
+  <line x1="180" y1="440" x2="180" y2="470" class="sld-line"/>
+  <line x1="300" y1="440" x2="300" y2="470" class="sld-line"/>
+  <line x1="420" y1="440" x2="420" y2="470" class="sld-line"/>
+  <g class="sld-hit" onclick="pmapPick('distfeeder')">
+    <rect x="169" y="470" width="22" height="20" rx="3" class="sld-box"/>
+    <rect x="289" y="470" width="22" height="20" rx="3" class="sld-box"/>
+    <rect x="409" y="470" width="22" height="20" rx="3" class="sld-box"/>
+    <text x="300" y="506" class="sld-sub" text-anchor="middle">Distribution feeders &#183; the lines down your street</text></g>
+
+  <line x1="300" y1="490" x2="300" y2="522" class="sld-line"/>
+  <g class="sld-hit" onclick="pmapPick('poletx')">
+    <circle cx="300" cy="534" r="11" class="sld-coil"/><circle cx="300" cy="548" r="11" class="sld-coil"/>
+    <text x="330" y="538" class="sld-sub">Pole / pad transformer</text>
+    <text x="330" y="551" class="sld-kv">12 kV to 240 V</text></g>
+  <line x1="300" y1="559" x2="300" y2="584" class="sld-line"/>
+
+  <g class="sld-hit" onclick="pmapPick('enduser')">
+    <rect x="262" y="584" width="76" height="26" rx="3" class="pm-end"/>
+    <text x="300" y="601" class="sld-lbl" text-anchor="middle">End user</text>
+    <text x="352" y="601" class="sld-kv">240 V</text></g>
+</svg>
+            <div id="pmap-detail" style="display:none;"></div>
           </div>
         </div>
       </div>
@@ -3828,10 +4057,23 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 <div class="roc-drill-modal hidden" id="roc-drill-modal">
   <div class="roc-drill-card">
     <div class="roc-drill-hdr">
-      <div class="roc-drill-title">⚡ Daily Drill</div>
+      <div class="roc-drill-title" id="roc-drill-hdr-title">⚡ Quiz</div>
       <div class="roc-drill-progress" id="roc-drill-prog">1 / 10</div>
-      <button class="btn-c" style="padding:4px 10px;font-size:12px;" onclick="rocCloseDrill()">✕ Exit</button>
+      <button class="btn-c" style="padding:4px 10px;font-size:12px;" onclick="rocCloseDrillResults()">✕ Exit</button>
     </div>
+
+    <div id="roc-drill-results" style="display:none;">
+      <div class="roc-drill-body">
+        <div id="roc-drill-score"></div>
+        <div id="roc-drill-followup"></div>
+        <div style="display:flex;gap:8px;margin-top:18px;">
+          <button class="btn-p" onclick="rocCloseDrillResults();rocStartDrill(rocDrillScope);">Another round</button>
+          <button class="btn-c" onclick="rocCloseDrillResults()">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="roc-drill-body-wrap">
     <div class="roc-drill-body">
       <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
         <span id="roc-drill-type-badge" class="roc-q-type-badge roc-qt-conceptual">Conceptual</span>
@@ -3850,6 +4092,26 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
           <div id="roc-drill-prog-fill" style="height:100%;background:var(--gmid);border-radius:2px;width:10%;transition:width .3s;"></div>
         </div>
       </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ SCOPE PICKER -->
+<div class="roc-drill-modal hidden" id="roc-scope-modal">
+  <div class="roc-drill-card" style="max-width:460px;">
+    <div class="roc-drill-hdr">
+      <div class="roc-drill-title">🎯 Start quiz</div>
+      <button class="btn-c" style="padding:4px 10px;font-size:12px;" onclick="rocCloseScope()">✕</button>
+    </div>
+    <div class="roc-drill-body">
+      <div class="scope-lead">What do you want to be quizzed on?</div>
+      <div class="scope-group-label">Everything</div>
+      <div class="scope-row" id="scope-all"></div>
+      <div class="scope-group-label">By operator level</div>
+      <div class="scope-row" id="scope-levels"></div>
+      <div class="scope-group-label">By topic</div>
+      <div class="scope-row" id="scope-topics"></div>
     </div>
   </div>
 </div>
@@ -4033,6 +4295,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <div class="sched-toggle">
         <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')">Current Schedule</button>
         <button class="sched-toggle-btn" id="toggle-prop10" onclick="showSchedule('prop10')">Expanded DuPont</button>
+        <button class="sched-toggle-btn" id="toggle-steady" onclick="showSchedule('steady')">Steady Weeks</button>
         <button class="sched-toggle-btn active" id="toggle-split" onclick="showSchedule('split')">Split Week</button>
         <button class="sched-toggle-btn" id="toggle-pit" onclick="showSchedule('pitman')">Pitman</button>
       </div>
@@ -15701,234 +15964,234 @@ const ROC_QUESTIONS = [
   // Scope: GO, GOP, TO, TOP, PSE, SC — plus ISO context (CAISO/ERCOT).
   // RC and BA-as-entity removed; ISO is used where the team sees BA function.
 
-  {id:'g1', cat:'grid', type:'conceptual',
+  {id:'g1', lvl:1, cat:'grid', type:'conceptual',
    q:'What is the difference between a Generator Owner (GO) and a Generator Operator (GOP)?',
    a:'<strong>GO (Generator Owner)</strong> owns the physical generation facility — the land, equipment, and assets. They bear the capital and compliance burden for the hardware.<br><strong>GOP (Generator Operator)</strong> operates the facility in real time — monitoring output, responding to dispatch instructions, maintaining reliability compliance, and communicating with the grid. At RNWBL, the ROC operators are acting in the <strong>GOP role</strong>. A single entity can be both GO and GOP, or they can be separate companies under contract.'},
 
-  {id:'g2', cat:'grid', type:'conceptual',
+  {id:'g2', lvl:1, cat:'grid', type:'conceptual',
    q:'What does a Scheduling Coordinator (SC) do, and why does the GOP depend on them?',
    a:'The <strong>SC (Scheduling Coordinator)</strong> submits energy schedules, bids, and resource plans to the ISO (like CAISO or ERCOT) on behalf of the generator. They are the administrative interface between the plant\'s commercial commitments and the ISO\'s market systems.<br><br>The GOP depends on the SC because:<ul><li>Derate and outage notifications often flow through the SC to the ISO</li><li>Dispatch setpoints the GOP receives trace back to schedules the SC submitted</li><li>When a plant event changes capability, the GOP notifies the SC so they can update the market position</li></ul>Think of the SC as the <strong>scheduler and communicator</strong>; the GOP is the <strong>operator executing in the field</strong>.'},
 
-  {id:'g3', cat:'grid', type:'conceptual',
+  {id:'g3', lvl:1, cat:'grid', type:'conceptual',
    q:'What is a PSE (Purchasing-Selling Entity) and what is their relationship to the plant?',
    a:'A <strong>PSE (Purchasing-Selling Entity)</strong> buys and sells electricity in the market — they\'re a commercial participant, not an operator. They hold contracts for the energy the plant produces and are the "owner" of the electrons commercially.<br><br>From a GOP perspective: the PSE\'s schedule drives what the SC submits, which drives what setpoint the plant receives. The GOP doesn\'t interact with the PSE directly in real time — but understanding the chain matters when a derate or outage affects committed schedules. The PSE is ultimately the one affected financially when the plant can\'t deliver.'},
 
-  {id:'g4', cat:'grid', type:'conceptual',
+  {id:'g4', lvl:1, cat:'grid', type:'conceptual',
    q:'What does the TOP (Transmission Operator) do, and when does a GOP need to interact with them?',
    a:'The <strong>TOP (Transmission Operator)</strong> manages the transmission system in real time — they control the high-voltage network the plant interconnects to. The TO (Transmission Owner) owns the infrastructure; the TOP operates it.<br><br>A GOP must contact the TOP when:<ul><li>Performing <strong>HV breaker operations</strong> — TOP permission is required before opening or closing the high-voltage interconnect</li><li>A plant event affects transmission flows or limits</li><li>Planned outages require coordination with the transmission system</li></ul>The switching SOP is clear: <strong>request permission from TOP before any HV breaker operation.</strong> This is a TOP-003 requirement.'},
 
-  {id:'g5', cat:'grid', type:'application',
+  {id:'g5', lvl:1, cat:'grid', type:'application',
    q:'CAISO issues a curtailment order reducing your plant\'s output. Walk through the chain of entities involved before that instruction reaches the GOP.',
    a:'<ol style="margin-left:14px;"><li><strong>CAISO</strong> (the ISO — acting as market operator and grid balancer) determines that the plant needs to reduce output based on grid conditions or economic dispatch</li><li>The curtailment instruction flows to the <strong>SC</strong> (Scheduling Coordinator), who holds the scheduling position with CAISO</li><li>The SC communicates the revised schedule or curtailment order to the <strong>PSE/GO</strong></li><li>The dispatch setpoint reaches the plant via <strong>ADS/AGC</strong>, and the <strong>GOP (ROC operator)</strong> verifies the site is responding accordingly on SCADA</li></ol>The GOP\'s job: confirm the ADS setpoint was received, verify site output is tracking it, and log it. If the site isn\'t responding, investigate and notify the SC.'},
 
-  {id:'g6', cat:'grid', type:'recognition',
+  {id:'g6', lvl:1, cat:'grid', type:'recognition',
    q:'Quick check: match each entity to its one-line function — GO, GOP, TO, TOP, SC, PSE.',
    a:'<ul><li><strong>GO</strong> — Owns the generation facility</li><li><strong>GOP</strong> — Operates the generation facility in real time (you)</li><li><strong>TO</strong> — Owns the transmission infrastructure</li><li><strong>TOP</strong> — Manages the transmission system in real time; permission required for HV switching</li><li><strong>SC</strong> — Submits schedules and bids to the ISO; communicates outages and derates</li><li><strong>PSE</strong> — Buys and sells electricity; the commercial entity behind the energy contracts</li></ul>And the ISO (CAISO, ERCOT): <strong>Operates the market and balances the grid in real time</strong> — in most contexts where you\'d hear "BA," in this market the ISO is that entity.'},
 
-  {id:'g7', cat:'grid', type:'conceptual',
+  {id:'g7', lvl:1, cat:'grid', type:'conceptual',
    q:'What is the RC (Reliability Coordinator), and how does their authority differ from CAISO\'s?',
    a:'The <strong>RC (Reliability Coordinator)</strong> has the highest level of real-time operational authority on the grid — above the ISO/BA. The RC\'s job is wide-area reliability: they monitor the entire interconnection (not just one BA\'s footprint) and can issue emergency instructions to any entity within their area when they see a threat to system integrity.<br><br>In the West, <strong>WECC RC Services</strong> fills this role.<br><br>How RC differs from CAISO:<ul><li><strong>CAISO</strong> dispatches for economic efficiency and balance within California — their instructions are routine market operations</li><li><strong>RC</strong> acts for wide-area stability — their instructions are emergency reliability actions that override normal market operations</li><li>RC can direct CAISO, not the other way around</li></ul><strong>Operationally:</strong> You will rarely hear from the RC directly — usually the RC instructs CAISO, and CAISO relays it to you. But if the RC contacts you directly in an emergency, their instruction takes priority over any existing DOP. Execute, read back, document, then notify SC.'},
 
-  {id:'g8', cat:'grid', type:'application',
+  {id:'g8', lvl:1, cat:'grid', type:'application',
    q:'SCENARIO: The RC issues an emergency directive to curtail your plant. Your current CAISO DOP is higher than the RC\'s target. What do you do?',
    a:'<ol style="margin-left:14px;"><li><strong>Execute the RC directive immediately.</strong> RC authority is above the ISO in a reliability emergency. The DOP reflects market-normal operations; the RC is acting on a wide-area reliability threat.</li><li><strong>Verbal read-back per COM-002.</strong> Confirm the MW target, who issued it, and the time. Do not execute without closing the communication loop.</li><li><strong>Log everything with timestamps.</strong> RC contact name/ID, time received, MW instruction, time of execution, actual output achieved.</li><li><strong>Notify CAISO of the deviation.</strong> You are delivering less than your DOP — CAISO\'s state estimator needs to know why. They will update accordingly.</li><li><strong>Notify SC/PSE.</strong> Commercial position is affected. They need the timestamps and MW numbers to manage market exposure.</li></ol><strong>Key principle:</strong> RC instructions don\'t go through your normal dispatch chain — they arrive because something is wrong at the interconnection level. Speed and documentation matter equally.'},
 
-  {id:'g9', cat:'grid', type:'conceptual',
+  {id:'g9', lvl:1, cat:'grid', type:'conceptual',
    q:'What is the DP (Distribution Provider), and when does a GOP interact with them?',
    a:'The <strong>DP (Distribution Provider)</strong> owns and operates the distribution system — the lower-voltage network (typically below 35 kV) that serves end consumers. Most large generation interconnects at transmission voltage (HV), where the TOP is the relevant authority. But some smaller or behind-the-meter resources interconnect at distribution voltage — that\'s where the DP becomes your grid interface.<br><br>Situations where a GOP may interact with the DP:<ul><li><strong>Distribution-connected generation</strong> — your POI is on the distribution system. The DP manages the interconnection agreement and operating constraints.</li><li><strong>Feeder voltage issues</strong> — the DP may call to curtail your output if local feeder voltage is out of band. Treat this like a TOP curtailment: it\'s a reliability constraint, not a request.</li><li><strong>Planned outages</strong> — if distribution infrastructure adjacent to your interconnect needs maintenance, the DP coordinates the switching and may require temporary curtailment.</li></ul><strong>Authority:</strong> The DP\'s curtailment orders are reliability instructions on their system. They don\'t have CAISO dispatch authority, but they do have the right and obligation to protect the distribution system — which means they can limit your output when necessary.'},
 
-  {id:'g10', cat:'grid', type:'recognition',
+  {id:'g10', lvl:1, cat:'grid', type:'recognition',
    q:'Where does the RC sit relative to CAISO and WECC in the reliability hierarchy? What is the RC\'s one job?',
    a:'<strong>Hierarchy:</strong> NERC → WECC (Regional Entity) → <strong>RC</strong> → CAISO (ISO/BA) → TOP → GOP<br><br>The RC sits between WECC and the ISO. WECC does compliance and planning; the RC does real-time wide-area operations.<br><br><strong>The RC\'s one job:</strong> Maintain reliability across the entire interconnection in real time. They watch flows, stability limits, and contingency exposure across multiple BA areas simultaneously. When they see a wide-area threat that a single BA can\'t resolve on their own, the RC acts.<br><br><strong>Mental model:</strong> \"CAISO manages the California grid. The RC manages everything the California grid is connected to.\"'},
 
   // ══ VOLTAGE & REACTIVE POWER ══════════════════════════════════════════════
 
-  {id:'v1', cat:'voltage', type:'conceptual',
+  {id:'v1', lvl:1, cat:'voltage', type:'conceptual',
    q:'What is the purpose of AVR, and what does the voltage setpoint/band mean in practice?',
    a:'<strong>AVR (Automatic Voltage Regulator)</strong> automatically adjusts the generator\'s excitation to hold the terminal voltage at a defined setpoint. Without it, voltage would drift with every load change and the operator would have to manually adjust excitation constantly.<br><br><strong>Voltage Setpoint</strong>: the target voltage the AVR is trying to maintain (e.g., 115 kV, 525 kV — set per the interconnection agreement).<br><strong>Voltage Band</strong>: the acceptable operating range around that setpoint (e.g., 498.75 kV–551.25 kV for a 525 kV system). The plant must stay within this band. Exceedance triggers notification to the ISO/TOP and may require action.<br><br>NERC <strong>VAR-002</strong> requires AVR to remain in automatic mode.'},
 
-  {id:'v2', cat:'voltage', type:'conceptual',
+  {id:'v2', lvl:1, cat:'voltage', type:'conceptual',
    q:'Why does injecting MVARs raise voltage? Why does light load cause high voltage?',
    a:'<strong>MVARs and voltage:</strong> Reactive power (MVARs) sustains the electromagnetic field that maintains voltage magnitude. Capacitor banks inject MVARs → voltage rises. Reactors absorb MVARs → voltage drops. The rule: <strong>Voltage follows VARs.</strong><br><br><strong>Light load and high voltage:</strong> Transmission lines have natural capacitance that generates MVARs constantly. At light load, there\'s little inductive demand to consume those VARs — they accumulate and push voltage up. Heavy load is the opposite: high inductive demand pulls voltage down.<br><ul><li>Light load → capacitive system → high voltage → switch in reactor or switch off caps</li><li>Heavy load → inductive system → low voltage → switch in caps or switch off reactor</li></ul>'},
 
-  {id:'v3', cat:'voltage', type:'terminology',
+  {id:'v3', lvl:2, cat:'voltage', type:'terminology',
    q:'State the correct function of each: Capacitor Bank vs Reactor Bank (Inductor). Which one raises voltage and which lowers it?',
    a:'<strong>Capacitor Bank</strong>: <em>Supplies</em> MVARs → <strong>raises voltage</strong><br><strong>Reactor Bank (Inductor)</strong>: <em>Absorbs</em> MVARs → <strong>lowers voltage</strong><br><br>A common mistake is saying "capacitors absorb vars" — that is wrong. Capacitors <em>inject/supply</em> VARs. Reactors absorb them.<br><br>Operationally: if voltage is too high, switch in the reactor (absorb VARs). If voltage is too low, switch in the capacitor bank (supply VARs). Getting this backwards during a voltage event causes the wrong action and can damage equipment or trip protection.'},
 
-  {id:'v4', cat:'voltage', type:'terminology',
+  {id:'v4', lvl:2, cat:'voltage', type:'terminology',
    q:'Define leading vs lagging power factor. When does each apply?',
    a:'<strong>Leading PF (capacitive)</strong>: current leads voltage — the system is generating MVARs. This raises voltage. Typical during light load or when capacitor banks are on.<br><strong>Lagging PF (inductive)</strong>: current lags voltage — the system is consuming MVARs. This depresses voltage. Typical during heavy load or when motors and transformers are heavily loaded.<br><br>Generators can operate in either mode by adjusting AVR excitation. Understanding PF helps diagnose whether a voltage condition is being driven by the load profile or the reactive power balance.'},
 
-  {id:'v5', cat:'voltage', type:'scenario',
+  {id:'v5', lvl:2, cat:'voltage', type:'scenario',
    q:'SCENARIO: High voltage, low load, capacitor banks already ON. What are your priority actions?',
    a:'<ul><li><strong>1. Contact the Transmission Operator</strong> — report the condition and get direction. Reactive equipment is switched on TOP instruction, not unilaterally</li><li><strong>2. Switch off capacitor banks</strong> (on TOP direction) — they\'re supplying MVARs into a system that already has too many</li><li><strong>3. Switch in reactor banks</strong> (if available) — absorb the excess VARs</li><li><strong>4. Verify AVR</strong> is in automatic and setpoint is correct</li><li><strong>5. Log all actions</strong> with timestamps and notify SC if output is affected</li></ul><strong>Never add MVARs (capacitors) to a high-voltage system.</strong><br>Know the correct action, but the TOP owns the voltage schedule — make the call before you make the switch.'},
 
-  {id:'v6', cat:'voltage', type:'scenario',
+  {id:'v6', lvl:2, cat:'voltage', type:'scenario',
    q:'SCENARIO: Voltage is dropping, load is heavy, reactor is ON. What is your first action and why?',
    a:'<strong>Contact the Transmission Operator first.</strong> You already know the reactor needs to come off — it absorbs MVARs, and with voltage falling under heavy load it is making the problem worse. But switching reactive equipment is a TOP-directed action, so report and get direction before you operate.<br><ul><li>Report the condition to the TOP and request direction</li><li>Switch reactor off on TOP direction → stop absorbing VARs</li><li>Check if capacitor banks are available → switch on to inject MVARs</li><li>Verify AVR is in auto and generator is contributing max reactive support</li><li>Log all actions with times and reasoning</li></ul><strong>Leaving the reactor on is a voltage death spiral</strong> — but the call goes through the TOP, not around it.'},
 
-  {id:'v7', cat:'voltage', type:'conceptual',
+  {id:'v7', lvl:2, cat:'voltage', type:'conceptual',
    q:'What affects voltage more — MW or MVAR? Why does this matter operationally?',
    a:'<strong>MVAR affects voltage more directly.</strong> Reactive power controls the electromagnetic field that sustains voltage magnitude. MW (real power) primarily affects frequency and real power flow.<br><br>This matters because during a voltage event, the first lever is <strong>reactive power</strong> — not real power. Adjusting MW dispatch won\'t fix a voltage problem. You need caps, reactors, or AVR action. Understanding this prevents operators from chasing the wrong variable.'},
 
   // ── AVR continued
-  {id:'v8', cat:'voltage', type:'conceptual',
+  {id:'v8', lvl:2, cat:'voltage', type:'conceptual',
    q:'What happens if AVR is taken off automatic (switched to manual)? What is required?',
    a:'In manual mode, excitation is fixed and will NOT respond to voltage changes or disturbances. Risks:<ul><li>Voltage drifts uncontrolled with load changes</li><li>Generator may inject or absorb excessive VARs and trip on limits</li><li>Automatic reactive support during a grid disturbance is lost</li><li>This is a <strong>VAR-002 deviation</strong> — notification required</li></ul><strong>Required action:</strong> Notify your <strong>Transmission Operator</strong> any time AVR comes off automatic. VAR-002 puts this obligation between the GOP and its associated TOP — not the ISO and not the SC. Report immediately, every occurrence, however brief — do not wait to see whether it clears itself. Document time off auto, reason, and restoration, and return to automatic as soon as possible.'},
 
   // ══ DISPATCH: ADS / AGC ═══════════════════════════════════════════════════
 
-  {id:'d1', cat:'dispatch', type:'conceptual',
+  {id:'d1', lvl:1, cat:'dispatch', type:'conceptual',
    q:'Walk through how ADS/AGC dispatch works from the ISO down to the plant. What is the operator verifying at each step?',
    a:'<ol style="margin-left:14px;"><li><strong>ISO (CAISO/ERCOT)</strong> sends a dispatch signal — the MW setpoint the plant should be producing</li><li>The setpoint appears on the <strong>ADS board</strong> — the operator identifies the Resource ID and the target setpoint</li><li>The operator checks <strong>on-site SCADA</strong> to confirm the setpoint was received by the plant\'s control system</li><li>The operator verifies the site is <strong>responding accordingly</strong> — actual MW output is tracking toward the setpoint</li></ol>If the site is not responding, that\'s a deviating asset and requires investigation and notification to the SC.'},
 
-  {id:'d2', cat:'dispatch', type:'scenario',
+  {id:'d2', lvl:1, cat:'dispatch', type:'scenario',
    q:'SCENARIO: The ADS setpoint changed but actual MW output hasn\'t moved. What do you check?',
    a:'<ul><li><strong>1. ADS board</strong> — confirm the new setpoint is there and assigned to the correct Resource ID</li><li><strong>2. On-site SCADA</strong> — did the plant\'s control system receive the new setpoint?</li><li><strong>3. Site response mode</strong> — is the inverter/BESS in Remote/Auto or stuck in Local/Manual?</li><li><strong>4. Active alarms</strong> — derate, trip, communication loss, or protective limit?</li><li><strong>5. Communication link</strong> — comm loss between SCADA and the unit means no signal gets through</li><li><strong>6. Log and notify</strong> SC if the deviation is persistent — the ISO schedule is at risk</li></ul>'},
 
-  {id:'d3', cat:'dispatch', type:'scenario',
+  {id:'d3', lvl:2, cat:'dispatch', type:'scenario',
    q:'SCENARIO: AGC is not responding. List 3 possible causes.',
    a:'<ul><li><strong>1. Communication failure</strong> — the dispatch signal from the ISO/ADS isn\'t reaching the plant (check comm link status)</li><li><strong>2. Unit in local/manual control</strong> — inverter or BESS control system set to manual, ignoring remote setpoints</li><li><strong>3. Protective limit active</strong> — plant is capped by a derate, thermal limit, or SoC constraint and cannot respond further</li></ul>Also possible: telemetry mis-tag, ADS software fault, or unit in forced outage mode. Log findings and notify SC.'},
 
-  {id:'d4', cat:'dispatch', type:'terminology',
+  {id:'d4', lvl:2, cat:'dispatch', type:'terminology',
    q:'What does ±0 MW capability mean on a BESS, and who needs to know?',
    a:'±0 MW capability means the BESS has <strong>no available charge or discharge headroom</strong> — either the battery is fully charged (can\'t take more), fully depleted (nothing to dispatch), or a protective condition is preventing operation (thermal limit, HVAC fault, protection trip).<br><br>The SC and ISO need to know because their dispatch plans assume the resource is available. A ±0 BESS that isn\'t reported looks like a non-responding asset and can cause schedule deviation penalties. <strong>Report immediately via the outage/derate process.</strong>'},
 
   // ══ SCADA, ALARMS & RECOGNITION ══════════════════════════════════════════
 
-  {id:'s1', cat:'scada', type:'conceptual',
+  {id:'s1', lvl:1, cat:'scada', type:'conceptual',
    q:'What are the 8 key things an operator needs to be able to navigate to on SCADA/HMI?',
    a:'Per the competency framework:<ul><li><strong>1. AVR status / Voltage at POI / Cap bank status</strong></li><li><strong>2. Site setpoint vs. actual power</strong> (ADS/AGC)</li><li><strong>3. Site current MWh capability / ±0 MW state</strong></li><li><strong>4. Alarms pages</strong> — active and historical</li><li><strong>5. Breaker statuses and breaker controls</strong></li><li><strong>6. Battery status and battery controls</strong></li><li><strong>7. HMI / Manual control screens</strong></li><li><strong>8. Power setpoint and voltage setpoint screens</strong></li></ul>Being able to navigate to all eight without hesitation is the baseline for independent operations.'},
 
-  {id:'s2', cat:'scada', type:'conceptual',
+  {id:'s2', lvl:1, cat:'scada', type:'conceptual',
    q:'What alarm categories require immediate action vs. logging and monitoring? Walk through the priority tiers.',
    a:'<strong>Immediate action required:</strong><ul><li><strong>Fire / Smoke alarms</strong> — follow emergency protocol, notify authorities</li><li><strong>Battery overheating / Thermal runaway risk</strong> — derate or take offline, notify site management</li><li><strong>HVAC failure with rising temps</strong> — BESS must be derated; thermal runaway risk</li></ul><strong>Investigate and communicate:</strong><ul><li><strong>Breaker/inverter trips</strong> — determine cause, log, notify SC of reduced capability</li><li><strong>Transformer alarms</strong> — assess severity, notify</li><li><strong>Loss of communications</strong> — confirm last known status, check network, notify SC (COM-002)</li></ul><strong>Log and monitor:</strong><ul><li><strong>Security alarms</strong> — log and notify site team</li></ul>Rule: never silence an unacknowledged alarm without understanding the cause.'},
 
-  {id:'s3', cat:'scada', type:'scenario',
+  {id:'s3', lvl:2, cat:'scada', type:'scenario',
    q:'SCENARIO: Loss of comms alarm fires on a solar site. What matters most — and what do you NOT assume?',
    a:'<strong>First: Is the equipment in a safe state?</strong><ul><li>Note last known status before comm loss — was it generating normally? Any active alarms before it went dark?</li><li>Comm loss = loss of visibility. It does <strong>NOT</strong> mean equipment tripped or failed.</li><li>Check if other sites on the same network path are affected — network issue vs. site-specific</li><li>Notify SC — comm loss may affect their telemetry and AGC signal (COM-002 trigger)</li><li>If comm cannot be restored quickly or safety is uncertain, dispatch field personnel</li></ul><strong>Do NOT assume: comm loss ≠ equipment failure.</strong> Treat them as separate problems.'},
 
-  {id:'s4', cat:'scada', type:'scenario',
+  {id:'s4', lvl:2, cat:'scada', type:'scenario',
    q:'SCENARIO: Battery temperature is rising AND an HVAC alarm is active. Why is this combination dangerous?',
    a:'<strong>Thermal runaway risk.</strong> BESS cells generate heat during charge/discharge. HVAC removes that heat. If HVAC fails while the battery is running, there is no cooling — temperature climbs unchecked.<br><ul><li>Cell temps rising → accelerated degradation → venting → potential fire or explosion</li><li>This is a <strong>safety-critical cascade</strong>, not just an equipment alarm</li></ul><strong>Immediate actions:</strong><ol style="margin-left:14px;"><li>Derate or take BESS offline per emergency SOP</li><li>Notify site management and fire/safety teams</li><li>Notify SC of loss of resource capability</li><li>Do not restore until HVAC is confirmed operational and temps have returned to safe range</li><li>Log every action with exact timestamps</li></ol>'},
 
-  {id:'r1', cat:'scada', type:'recognition',
+  {id:'r1', lvl:3, cat:'scada', type:'recognition',
    q:'State the ANSI device number for: Breaker, Switch, Relay Overvoltage, Relay Undervoltage, Relay Lockout.',
    a:'<ul><li><strong>ANSI 52</strong> — Breaker (AC circuit breaker)</li><li><strong>ANSI 89</strong> — Switch (disconnect/isolating switch)</li><li><strong>ANSI 59</strong> — Overvoltage Relay</li><li><strong>ANSI 27</strong> — Undervoltage Relay</li><li><strong>ANSI 86</strong> — Lockout Relay</li></ul>The ANSI 86 is critical: it locks out equipment after a serious fault and will <strong>not</strong> auto-reclose. Do not reset an 86 without authorization and investigation.'},
 
-  {id:'r2', cat:'scada', type:'recognition',
+  {id:'r2', lvl:3, cat:'scada', type:'recognition',
    q:'What device absorbs VARs vs. supplies VARs? Which SCADA check tells you if each is active?',
    a:'<strong>Reactor (absorbs MVARs → lowers voltage)</strong>: Check breaker status on SCADA — if the reactor breaker is closed, it\'s absorbing VARs. During high-voltage conditions, you want this ON.<br><strong>Capacitor Bank (supplies MVARs → raises voltage)</strong>: Check cap bank status on SCADA — breaker closed = injecting VARs. During low-voltage conditions, you want this ON.<br><br>Quick check on SCADA: AVR status screen or the voltage/reactive power display will show POI voltage, MVAR output, and cap/reactor bank status together.'},
 
   // ══ OPERATIONS: SOLAR, WIND, BESS, SWITCHING ════════════════════════════
 
-  {id:'op1', cat:'operations', type:'application',
+  {id:'op1', lvl:1, cat:'operations', type:'application',
    q:'Walk through the solar monitoring procedure: what are the 4 steps and what is each looking for?',
    a:'Per the competency framework:<ol style="margin-left:14px;"><li><strong>Identify each inverter\'s status</strong> — Online, Offline, or Comms Loss. A comms loss is not the same as an offline inverter.</li><li><strong>Locate current irradiance</strong> — what is the available sunlight? This is the benchmark for expected output.</li><li><strong>Identify each inverter\'s output and site total</strong> — actual MW vs. expected given irradiance.</li><li><strong>Identify any derated inverters</strong> — is the underperformance due to a derate (intentional) or a fault (unintentional)?</li></ol>If irradiance is high and output is low with no derate active → investigate. Check inverter alarms, then check AGC setpoint, then notify SC if unexplained.'},
 
-  {id:'op2', cat:'operations', type:'application',
+  {id:'op2', lvl:1, cat:'operations', type:'application',
    q:'A tripped wind turbine needs to be reset. Walk through the steps and when you escalate.',
    a:'<ol style="margin-left:14px;"><li><strong>Identify the tripped turbine</strong> on SCADA — confirm it\'s a genuine trip vs. a comms loss or planned outage</li><li><strong>Reset the turbine per SOP</strong> — follow the site-specific reset procedure exactly</li><li><strong>Notify site team if needed</strong> — if the turbine trips again after reset, or if the trip reason is unclear, escalate to field team</li><li><strong>Create or update the operator log</strong> — document the trip time, reset time, cause if known, and any escalation</li></ol>Repeated trips on the same turbine = do not keep resetting. Escalate to maintenance and log accordingly.'},
 
-  {id:'op3', cat:'operations', type:'application',
+  {id:'op3', lvl:2, cat:'operations', type:'application',
    q:'Solar site is underperforming with high irradiance. How do you determine if it\'s an asset issue vs. a curtailment order?',
    a:'Cross-reference these four data points:<ul><li><strong>Inverter status</strong> — are they online, faulted, or showing comms loss?</li><li><strong>Current irradiance</strong> — is there actually enough sun to justify higher output?</li><li><strong>ADS setpoint</strong> — is there an active curtailment or derate reducing the setpoint?</li><li><strong>Active alarms</strong> — any inverter trips, thermal limits, or protection flags?</li></ul><strong>If inverters show faults with good irradiance</strong> → asset issue (inverter trip, string problem). Investigate, log, notify SC.<br><strong>If inverters show normal but setpoint is low</strong> → curtailment is the cause. Confirm it\'s logged as a valid order.<br><strong>If other nearby sites are also low</strong> → likely a grid curtailment affecting the area.'},
 
-  {id:'op4', cat:'operations', type:'application',
+  {id:'op4', lvl:1, cat:'operations', type:'application',
    q:'Hail stow procedure for HARQ 1/2 or C-Flats: what are the 7 steps and what is the trigger?',
    a:'<strong>Trigger:</strong> Damaging hail alert — hail ≥ 1 inch in diameter forecasted or active.<ol style="margin-left:14px;"><li>Identify the alert</li><li>Log into NXNavigator</li><li>Stow the site (panels rotate to protective angle)</li><li>Notify Site Owner, Field team, and SC</li><li>Initiate Auto Tracking <strong>once the all clear is received</strong> (text or email)</li><li>Notify Site Owner, Field team, and SC again</li><li>Log all steps with timestamps</li></ol><strong>Common gap:</strong> Auto Tracking is never re-initiated after the storm. Panels will show low output with good irradiance and no alarm will fire — it\'s a "normal" stow state. Always verify Auto Tracking is running post-event.'},
 
-  {id:'op5', cat:'operations', type:'procedure',
+  {id:'op5', lvl:1, cat:'operations', type:'procedure',
    q:'Walk through the BESS identify/derate procedure. What are the 6 steps?',
    a:'<ol style="margin-left:14px;"><li><strong>Identify BESS nameplate info</strong> — MW capacity, MWh capacity, voltage setpoint, operating band</li><li><strong>Determine if BESS is Fully Available or Derated</strong> — check SCADA for actual capability vs. nameplate</li><li><strong>Submit derate/outage to QSE and notify Owner Contacts</strong> — use the proper template/email; this goes to the SC</li><li><strong>Update the Outage Board and create an Operator Log</strong> — document start time, cause, expected duration</li><li><strong>Update/End Outage</strong> when the condition clears</li><li><strong>Update Outage Board, Operator Log, and notify Owner Contacts</strong> again at close-out</li></ol>'},
 
-  {id:'op6', cat:'operations', type:'procedure',
+  {id:'op6', lvl:1, cat:'operations', type:'procedure',
    q:'Walk through feeder switching — what are the 15 steps and what is the critical step that requires TOP permission?',
    a:'<ol style="margin-left:14px;"><li>Receive switching procedures</li><li>Ensure proper outage/derate is in place</li><li>Follow along with tech confirming all pre-deenergization steps are complete</li><li>Confirm field is clear</li><li>Disable Megapack / Sole Bank → Standby Mode</li><li>Open AC Breakers / Shutdown PE inverters</li><li>Open Feeder/MV Breakers</li><li><strong>Request permission from TOP to open HV Breaker</strong> ← critical step</li><li>Open/Close HV Breaker</li><li>Close MV/Feeder Breakers (allow MVARs to stabilize)</li><li>Close AC Breakers / Turn on PE Inverters</li><li>Enable Megapacks / Sole Bank → "BESS On"</li><li>Follow along with tech confirming all energization steps complete</li><li>End Outage/Derate</li><li>Notify Owner Contacts and log accordingly</li></ol><strong>Step 8 is the critical gate: no HV breaker operation without TOP permission.</strong>'},
 
   // ── SHIFT PROCEDURES ──────────────────────────────────────────────────────
 
-  {id:'pr1', cat:'operations', type:'procedure',
+  {id:'pr1', lvl:1, cat:'operations', type:'procedure',
    q:'Walk through the start-of-shift turnover — 12 steps in order.',
    a:'<ol style="margin-left:14px;"><li>Notify ROC in Teams chat that you are on the way</li><li>Clock in at the office door (DSPTCH)</li><li>Check the dry-erase / outage board</li><li>Receive instructions from offgoing operator (Teams or in person)</li><li>Log into D1/D2 duty site SCADAs</li><li>Fill out (ROCC1) Operator Log — Onsite</li><li>Complete Asset Scanning Tool and upload</li><li>Leave instructions for oncoming operator in Teams/turnover</li><li>Fill out (ROCC1) Operator Log — Offsite</li><li>Ensure you log out of all sites directly</li><li>Leave the ROCC only after relief is logged into their sites</li><li>Clock out (DSPTCH)</li></ol><strong>Step 11 is non-negotiable:</strong> the ROCC cannot be without coverage. Your accountability doesn\'t end until relief is confirmed online.'},
 
-  {id:'pr2', cat:'operations', type:'procedure',
+  {id:'pr2', lvl:1, cat:'operations', type:'procedure',
    q:'What is the StaySafe Lone Worker protocol? Walk through the 4 steps.',
    a:'<ol style="margin-left:14px;"><li><strong>Alarm received via StaySafe</strong> — a lone worker check-in was missed</li><li><strong>Operator makes a single attempt to reach the tech</strong> — call or message once</li><li><strong>Attempt to reach Supervisor or a nearby employee</strong> — escalate immediately if tech is unreachable</li><li><strong>Once 10 minutes have passed without contact — call local emergency authorities</strong> and request a well-being check</li></ol>Do not delay past 10 minutes waiting for a callback. The protocol exists because a worker may be incapacitated. Err on the side of the well-being check.'},
 
-  {id:'pr3', cat:'operations', type:'procedure',
+  {id:'pr3', lvl:1, cat:'operations', type:'procedure',
    q:'What information is required when creating an Operator Log, and what extra fields are required for a Visitor Log?',
    a:'<strong>Standard Operator Log fields:</strong><ul><li>Select Site / Equipment</li><li>Log Type</li><li>GADS Code</li><li>Start and Forecast Dates</li><li>Sub-log (details of why the log was created)</li></ul><strong>Visitor Log — additional required fields:</strong><ul><li>Visitor First and Last Name</li><li>Company they work for</li><li>Cell phone number</li><li>Nature of work</li></ul>Incomplete logs are a compliance gap. If it wasn\'t logged, it didn\'t happen.'},
 
-  {id:'pr4', cat:'operations', type:'procedure',
+  {id:'pr4', lvl:1, cat:'operations', type:'procedure',
    q:'Walk through the Operating Instruction procedure under COM-002 — 5 steps.',
    a:'<ol style="margin-left:14px;"><li><strong>Receive</strong> the Operating Instruction from the issuing authority (ISO, TOP, SC)</li><li><strong>Repeat the instruction back correctly</strong> — verbatim repeat-back confirms both parties have the same understanding</li><li><strong>Execute</strong> the Operating Instruction</li><li><strong>Respond to the authority</strong> — confirm success or failure of execution</li><li><strong>Log in accordance</strong> \u2014 document instruction received, time, who issued it, action taken, outcome. Attach a picture if received and confirmed on the ADS board, along with all call logs if received by phone.</li></ol>COM-002 makes the repeat-back mandatory — it is not optional. A missed readback is a standard violation even if the instruction was executed correctly.'},
 
   // ══ NERC STANDARDS ════════════════════════════════════════════════════════
 
-  {id:'n1', cat:'standards', type:'standard',
+  {id:'n1', lvl:2, cat:'standards', type:'standard',
    q:'VAR-002: What does it require of a GOP and when is a violation triggered?',
    a:'<strong>VAR-002 (Voltage and Reactive)</strong> requires Generator Operators to:<ul><li>Operate AVR in <strong>automatic voltage control mode</strong>, or in a different control mode as instructed by the Transmission Operator</li><li>Maintain the <strong>voltage schedule provided by the TOP</strong></li><li>Manage reactive power resources to support that schedule</li><li><strong>Notify the Transmission Operator immediately</strong> of an AVR status change, or of a change in reactive capability</li></ul>A violation is triggered when AVR is off automatic and the GOP fails to notify its TOP. Start-up, shutdown and testing are handled by prior arrangement with the TOP.<br><br><strong>The obligation runs to the Transmission Operator</strong> — not the ISO and not the SC. Enforcement actions under VAR-002 are consistently for failing to notify the TOP.'},
 
-  {id:'n2', cat:'standards', type:'standard',
+  {id:'n2', lvl:2, cat:'standards', type:'standard',
    q:'TOP-003: What does it require a GOP to supply, and what does this look like day-to-day?',
    a:'<strong>TOP-003 (Operational Planning)</strong> requires GOPs to provide data to the TOP and ISO as defined, including:<ul><li><strong>Planned outage data</strong> — upcoming maintenance, switching, or derates need to be submitted in advance</li><li><strong>Operating limits</strong> — current capability, any active constraints</li></ul>Day-to-day: when you submit an outage ticket or derate notification to the SC/QSE, you\'re fulfilling a TOP-003 data obligation. The ISO uses this data for their reliability planning. Failing to report a planned outage in advance is a TOP-003 issue.'},
 
-  {id:'n3', cat:'standards', type:'standard',
+  {id:'n3', lvl:2, cat:'standards', type:'standard',
    q:'COM-002: What does it require, and what does the repeat-back rule specifically apply to?',
    a:'<strong>COM-002 (Communications and Coordination)</strong> requires:<ul><li>GOPs to use <strong>verbal repeat-back</strong> when receiving Operating Instructions from the issuing authority</li><li>The issuing authority must confirm the readback or correct it before execution</li><li>Documentation of the communication and action taken</li></ul>The repeat-back rule applies specifically to <strong>Operating Instructions</strong> — a directive requiring real-time action (open this breaker, reduce output to X MW, etc.). It does not apply to every phone call. But when an authoritative instruction is issued, the loop must be closed.'},
 
-  {id:'n4', cat:'standards', type:'standard',
+  {id:'n4', lvl:2, cat:'standards', type:'standard',
    q:'PER-006: Why does NERC require GOPs to train operators on protection systems and RAS?',
    a:'<strong>PER-006 (Specific Training for Personnel)</strong> requires GOP operators to understand the protection systems and Remedial Action Schemes (RAS) affecting their generators because:<ul><li>A relay trip is only meaningful if the operator understands <em>why</em> it tripped — spurious vs. valid</li><li>Wrong response to a protection operation (e.g., re-energizing into a fault) can cause catastrophic equipment damage or cascade failures</li><li>RAS schemes take automatic action during grid disturbances — operators must know what the scheme does and what their role is before and after it fires</li><li>Protection system knowledge is the difference between a controlled response and making a bad situation worse</li></ul>'},
 
   // ══ PLANT ARCHITECTURE ════════════════════════════════════════════════════
 
-  {id:'pa1', cat:'plant', type:'conceptual',
+  {id:'pa1', lvl:2, cat:'plant', type:'conceptual',
    q:'What are the voltage classifications used in power plant architecture? Give the ranges.',
    a:'<ul><li><strong>Extra-Low Voltage (ELV)</strong>: Less than 50V — DC string level at solar panels</li><li><strong>Low Voltage (LV)</strong>: 1V to 1,000V — inverter AC output, battery module level</li><li><strong>Medium Voltage (MV)</strong>: 1 kV to 35 kV — collector system, step-up transformers</li><li><strong>High Voltage (HV)</strong>: Above 35 kV — transmission interconnect, POI</li></ul>Operationally: when you\'re requesting TOP permission, you\'re working in the HV zone. When field techs are working on inverters, that\'s LV/MV.'},
 
-  {id:'pa2', cat:'plant', type:'conceptual',
+  {id:'pa2', lvl:2, cat:'plant', type:'conceptual',
    q:'Explain the energy conversion chain for PV solar, wind, and battery storage.',
    a:'<strong>PV Solar:</strong> Solar irradiance → photovoltaic cells convert sunlight to DC (extra-low voltage) → panels connect in series (strings) to increase voltage → strings connect to combiner boxes to form an array → DC fed into an inverter → inverter outputs AC → stepped up through transformer to MV/HV.<br><br><strong>Wind:</strong> Kinetic energy (wind) → turbine blades capture energy → mechanical rotation → generator converts to AC electricity → stepped up through transformer.<br><br><strong>Battery (BESS):</strong> Chemical energy stored as DC → DC inverter converts to AC → stepped up through transformer → returned to grid. Charging reverses the flow: AC from grid → stepped down → converted to DC → stored in batteries.'},
 
   // ══ RAPID FIRE ════════════════════════════════════════════════════════════
 
-  {id:'rf1', cat:'rapid', type:'rapid',
+  {id:'rf1', lvl:1, cat:'rapid', type:'rapid',
    q:'What is HE 12?',
    a:'<strong>Hour Ending 12</strong> — the hour from 11:00 to 12:00 (noon). Power schedules use hour-ending notation. HE 1 = midnight to 1 AM. HE 24 = 11 PM to midnight.'},
 
-  {id:'rf2', cat:'rapid', type:'rapid',
+  {id:'rf2', lvl:1, cat:'rapid', type:'rapid',
    q:'In CAISO\'s market, who is performing the function of balancing load in real time?',
    a:'<strong>CAISO</strong> (the ISO) — acting as the Balancing Authority for the grid. They issue dispatch signals and AGC instructions that the GOP executes.'},
 
-  {id:'rf3', cat:'rapid', type:'rapid',
+  {id:'rf3', lvl:1, cat:'rapid', type:'rapid',
    q:'AVR vs AGC — one line each on what each controls.',
    a:'<strong>AVR → Voltage</strong> (adjusts excitation to hold terminal voltage / reactive power)<br><strong>AGC → MW</strong> (adjusts real power output per ISO dispatch signal)'},
 
-  {id:'rf4', cat:'rapid', type:'rapid',
+  {id:'rf4', lvl:1, cat:'rapid', type:'rapid',
    q:'Who submits the energy schedule to CAISO — the GO, the GOP, or the SC?',
    a:'The <strong>SC (Scheduling Coordinator)</strong> submits schedules to CAISO. The GO/GOP provides the capability data and outage information; the SC handles the market-facing submission.'},
 
-  {id:'rf5', cat:'rapid', type:'rapid',
+  {id:'rf5', lvl:1, cat:'rapid', type:'rapid',
    q:'What happens to frequency when load exceeds generation?',
    a:'<strong>Frequency drops.</strong> More demand than supply = generators slow down under the drag = frequency decreases below 60 Hz. The ISO responds with AGC dispatch to increase generation.'},
 
-  {id:'rf6', cat:'rapid', type:'rapid',
+  {id:'rf6', lvl:1, cat:'rapid', type:'rapid',
    q:'MW vs MWh — one line each.',
    a:'<strong>MW</strong> = power rate right now (dispatch setpoint, real-time output)<br><strong>MWh</strong> = energy over time (BESS state of charge, schedule settlement, production totals)'},
 
-  {id:'rf7', cat:'rapid', type:'rapid',
+  {id:'rf7', lvl:1, cat:'rapid', type:'rapid',
    q:'ANSI 86 fires — what does the operator do first?',
    a:'<strong>Do not reset it.</strong> ANSI 86 is the Lockout Relay — it fired because a serious fault was detected. Log the event, notify supervision and SC, follow outage procedures. Investigation must happen before the 86 is reset and equipment is re-energized.'},
 
-  {id:'rf8', cat:'rapid', type:'rapid',
+  {id:'rf8', lvl:1, cat:'rapid', type:'rapid',
    q:'You receive an Operating Instruction from CAISO. What must you do before executing it?',
    a:'<strong>Repeat it back verbatim</strong> and wait for confirmation from the issuing authority. COM-002 requirement. No execution until the loop is closed.'},
 
   // ══ FULL SIMULATION SCENARIO ══════════════════════════════════════════════
 
-  {id:'sim1', cat:'operations', type:'simulation',
+  {id:'sim1', lvl:3, cat:'operations', type:'simulation',
    q:'START-OF-SHIFT SCENARIO — Incoming conditions: CAISO curtailment active on solar | High voltage across the plant bus | Reactor offline for maintenance | Inverter Unit 3 tripped | BESS high temp alarm | BESS HVAC alarm active',
    a:'',
    sim: {
@@ -15946,91 +16209,93 @@ const ROC_QUESTIONS = [
    }
   },
 
-  {id:'r3', cat:'scada', type:'rapid',
+  {id:'r3', lvl:3, cat:'scada', type:'rapid',
    q:'State the one-line diagram symbol for: Breaker, Transformer, Switch.',
    a:'<div style="display:flex;gap:26px;flex-wrap:wrap;margin:10px 0 12px;"><div style="text-align:center;"><svg width="86" height="46" viewBox="0 0 86 46" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="23" x2="30" y2="23"/><rect x="30" y="12" width="26" height="22"/><line x1="56" y1="23" x2="84" y2="23"/></svg><div style="font-size:11px;opacity:.75;margin-top:2px;">Breaker</div></div><div style="text-align:center;"><svg width="86" height="46" viewBox="0 0 86 46" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="23" x2="26" y2="23"/><circle cx="36" cy="23" r="11"/><circle cx="50" cy="23" r="11"/><line x1="60" y1="23" x2="84" y2="23"/></svg><div style="font-size:11px;opacity:.75;margin-top:2px;">Transformer</div></div><div style="text-align:center;"><svg width="86" height="46" viewBox="0 0 86 46" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="30" x2="30" y2="30"/><circle cx="30" cy="30" r="2.5" fill="currentColor"/><line x1="30" y1="30" x2="55" y2="14"/><circle cx="57" cy="30" r="2.5" fill="currentColor"/><line x1="57" y1="30" x2="84" y2="30"/></svg><div style="font-size:11px;opacity:.75;margin-top:2px;">Switch (open)</div></div></div><ul><li><strong>Breaker</strong> \u2014 a box (or an arc) drawn across the circuit line</li><li><strong>Transformer</strong> \u2014 two interlocking circles, or two opposing arcs</li><li><strong>Switch</strong> \u2014 a line with a break in it, hinged open like a door</li></ul>The break in a switch symbol shows position: <strong>closed</strong> sits flush with the line, <strong>open</strong> swings away from it. This matters when you are following a switching order against a one-line and the SCADA graphic does not match the print.'},
-  {id:'s5', cat:'scada', type:'conceptual',
+  {id:'s5', lvl:3, cat:'scada', type:'conceptual',
    q:'What is a PPC, and what is it doing between the ISO setpoint and the equipment?',
    a:'The <strong>Plant Power Controller</strong> takes a plant-wide setpoint and distributes it across the individual inverters, turbines or PCS units, then trims continuously to hold the plant at that target at the point of interconnection.<ul><li>Receives the setpoint from SCADA / ADS / AGC</li><li>Splits it across available equipment, accounting for whatever is derated or offline</li><li>Regulates to the <strong>POI</strong>, not the sum of the equipment</li><li>Runs the control mode the TOP schedule requires</li></ul><strong>Why it matters:</strong> when a site is not following dispatch, the PPC is the layer between \u201cthe setpoint arrived\u201d and \u201cthe equipment moved.\u201d A setpoint visible in SCADA with no MW response usually means the PPC is in the wrong mode, has a limit applied, or has lost communication with the equipment beneath it.<br><br><strong>Modes to recognise:</strong> active power control, voltage control, power factor control, and manual/local \u2014 where the PPC stops regulating and holds whatever it was last given.'},
-  {id:'op7', cat:'operations', type:'procedure',
+  {id:'op7', lvl:1, cat:'operations', type:'procedure',
    q:'Walk through the outage ticket procedure \u2014 what are the 4 steps?',
    a:'<ol style="margin-left:14px;"><li><strong>Identify the outage</strong> \u2014 what is out, when it started, and whether it is forced or planned</li><li><strong>Submit the ticket</strong> \u2014 as required and as prescribed by the SC</li><li><strong>Update as conditions change</strong> \u2014 revise the end time or capacity as better information arrives</li><li><strong>File with the CPUC</strong> for Peregrine or Northstar if the outage is \u226550MW</li><li><strong>Close the ticket</strong> \u2014 once the equipment is returned and output is confirmed recovered</li></ol>The step most often missed is the last one. A ticket left open after the equipment is back keeps the site showing derated to the SC and the market, with nothing alarming to tell you.'},
-  {id:'s6', cat:'scada', type:'application',
+  {id:'s6', lvl:2, cat:'scada', type:'application',
    q:'How would you recognize a communication issue versus an equipment issue?',
    a:'<ul><li>Check communication status of all affected devices</li><li>Determine if data values are <strong>frozen or updating</strong></li><li>Compare SCADA with field reports</li><li>Review communications alarms</li><li>Check whether multiple devices failed simultaneously</li><li>Verify if local HMI or PLC still has normal operation</li><li>Determine whether production actually changed or only telemetry was lost — do the math between site output with and without the inverter producing, and compare</li></ul><strong>At Operator 3 level, also:</strong> compare production trends across multiple platforms, and contact QSE / Generation / Transmission to understand whether they also lost visibility.'},
-  {id:'pa3', cat:'plant', type:'conceptual',
+  {id:'pa3', lvl:2, cat:'plant', type:'conceptual',
    q:'What is the difference between AC and DC power?',
    a:'<strong>DC — Direct Current</strong><ul><li>Current flows in one constant direction</li><li>Voltage remains at a steady level</li><li>Produced by batteries, solar panels and fuel cells</li><li>Megapacks store and manage energy internally as DC</li></ul><strong>AC — Alternating Current</strong><ul><li>Current reverses direction periodically</li><li>Voltage oscillates between positive and negative peaks</li><li>In the US the grid runs at 60 Hz (60 cycles per second)</li><li>Produced by generators and inverters</li></ul>'},
-  {id:'pa4', cat:'plant', type:'conceptual',
+  {id:'pa4', lvl:2, cat:'plant', type:'conceptual',
    q:'What does an inverter do in a solar plant?',
    a:'<ul><li>Converts DC power from the solar panels into AC power that can be used on site or exported to the grid</li><li>Battery inverters (like in a Megapack) handle bidirectional AC ↔ DC conversion</li><li>Matches the grid’s voltage, frequency (60 Hz) and phase angle exactly before connecting</li><li>Serves a protection function by identifying faults</li><li>Manages reactive power (VAR)</li><li>Reports performance data</li></ul>'},
-  {id:'pa5', cat:'plant', type:'conceptual',
+  {id:'pa5', lvl:2, cat:'plant', type:'conceptual',
    q:'What is a single line diagram?',
    a:'A single line diagram (SLD), also called a one-line diagram, is a simplified electrical schematic that represents a three-phase power system using a single line to represent all three phases. It shows:<ul><li><strong>Generation sources</strong> — utility interconnect, generators, inverters</li><li><strong>Transformers</strong> — step-up / step-down, with voltage ratings on each side</li><li><strong>Switchgear and breakers</strong> — with voltage, current and interrupting ratings</li><li><strong>Busbars</strong> — the nodes where multiple circuits connect</li><li><strong>Metering and protection devices</strong> — CTs, PTs, relays</li><li><strong>Cables / feeders</strong> — with size and ratings noted</li><li><strong>Utility POI</strong> (point of interconnection) at the top</li></ul>'},
-  {id:'op8', cat:'operations', type:'conceptual',
+  {id:'op8', lvl:2, cat:'operations', type:'conceptual',
    q:'Explain the difference between availability and production.',
    a:'<ul><li><strong>Availability</strong> refers to whether a plant, inverter or asset is capable of operating when it is needed. It measures readiness — the equipment is online, healthy, and not forced out of service due to faults, maintenance or restrictions.</li><li><strong>Production</strong> refers to the actual amount of energy being generated and delivered over time, typically measured in MWh.</li></ul>A site can be fully available and producing very little (no sun, no wind), or producing well while partially unavailable.'},
-  {id:'op9', cat:'operations', type:'recognition',
+  {id:'op9', lvl:2, cat:'operations', type:'recognition',
    q:'What are some common causes of inverter outages?',
    a:'<ul><li>Cooling system failures or high-temperature alarms</li><li>Ground faults or DC faults</li><li>Communication failures between inverter and controller / SCADA</li><li>Internal inverter hardware failures</li><li>Planned maintenance or operational shutdowns</li></ul>'},
-  {id:'op10', cat:'operations', type:'conceptual',
+  {id:'op10', lvl:2, cat:'operations', type:'conceptual',
    q:'What factors impact wind turbine generation?',
    a:'<ul><li><strong>Wind speed</strong> — power output scales with the <strong>cube</strong> of wind speed, so small speed changes have large impacts. Most turbines reach rated capacity around 12–14 m/s and cut out above roughly 25 m/s for safety.</li><li><strong>Wind consistency</strong> — steady winds outperform gusty, variable ones for overall energy yield.</li><li><strong>Wind direction</strong> — turbines yaw to face the wind; frequent directional shifts reduce efficiency.</li></ul>'},
-  {id:'v9', cat:'voltage', type:'conceptual',
+  {id:'v9', lvl:2, cat:'voltage', type:'conceptual',
    q:'Explain voltage, current, frequency and power factor — what each is and why it matters.',
    a:'<ul><li><strong>Voltage</strong> — the electrical pressure that pushes electricity through a circuit. Must be maintained within required limits so equipment operates properly and grid stability is maintained.</li><li><strong>Current</strong> — the flow of electrical charge through a conductor. High current can indicate increased load and may cause overheating or protection system operations if limits are exceeded.</li><li><strong>Frequency (Hz)</strong> — the rate at which AC electricity cycles each second; 60 Hz in North America. Frequency reflects the balance between generation and load, and significant deviations indicate grid disturbances requiring corrective action.</li><li><strong>Power factor</strong> — a measure of how efficiently electrical power is being used, expressed between 0 and 1. Poor power factor increases losses, reduces efficiency, and can affect compliance with utility or interconnection requirements.</li></ul>'},
-  {id:'op11', cat:'operations', type:'recognition',
+  {id:'op11', lvl:2, cat:'operations', type:'recognition',
    q:'What could cause a breaker to trip?',
    a:'<ul><li><strong>Overcurrent / overload</strong> — generation or discharge exceeding breaker rating, feeder overload, transformer inrush</li><li><strong>Fault conditions</strong> — phase-to-phase, phase-to-ground, DC arc fault, ground fault on the DC bus</li><li><strong>Protection system operations</strong> — relay-initiated trip, differential protection, under/overvoltage, under/overfrequency, anti-islanding</li><li><strong>Thermal</strong> — breaker self-heating, high ambient temperature, loose connections generating heat</li><li><strong>Mechanical / hardware</strong> — worn or faulty trip mechanism, vibration, spring mechanism failure</li><li><strong>Power quality</strong> — voltage transients and switching surges, harmonic distortion, DC injection into AC systems, capacitor bank switching</li><li><strong>Site and environmental</strong> — lightning strike or surge, water ingress, animal intrusion, vegetation contact</li></ul>'},
-  {id:'op12', cat:'operations', type:'scenario',
+  {id:'op12', lvl:3, cat:'operations', type:'scenario',
    q:'How would you prioritize alarms occurring simultaneously across multiple sites?',
    a:'Prioritize based on:<ol style="margin-left:14px;"><li><strong>Personnel safety</strong></li><li><strong>Grid reliability</strong></li><li><strong>MW impact</strong></li></ol>Continue reassessing priorities as conditions change.'},
-  {id:'op13', cat:'operations', type:'scenario',
+  {id:'op13', lvl:3, cat:'operations', type:'scenario',
    q:'A BESS site reports an oscillation event. What actions do you take?',
    a:'<ul><li>Confirm event timing</li><li><strong>Notify QSE and TO immediately</strong> and operate based on their requests — likely will be a forced outage</li><li>Determine whether oscillations are ongoing</li><li>Review site MW and MVAR response</li><li>Verify equipment status</li><li>Review alarms and event logs</li><li>Notify required stakeholders immediately</li><li>Coordinate with site personnel</li><li>Follow applicable operating procedures (check the binder if unsure)</li><li>Continue monitoring until the system stabilizes</li><li>Document the entire event</li></ul>'},
-  {id:'op14', cat:'operations', type:'scenario',
+  {id:'op14', lvl:3, cat:'operations', type:'scenario',
    q:'What operational risks would concern you before remotely issuing a control command, and what would you do about them?',
    a:'<ul><li>Confirm correct equipment</li><li>Verify equipment is safe to operate</li><li><strong>Ensure no field personnel are working on affected equipment</strong></li><li>Verify operating procedure</li><li>Understand expected plant response</li><li>Consider grid impacts</li><li>Verify no conflicting commands are active</li></ul><strong>If uncertainty exists:</strong> stop, gather additional information, coordinate with field personnel, escalate if needed.<br><br>Then execute the command and verify expected results.'},
-  {id:'pr5', cat:'operations', type:'scenario',
+  {id:'pr5', lvl:2, cat:'operations', type:'scenario',
    q:'What would you do if a procedure does not match actual field conditions?',
    a:'<ul><li><strong>Stop before performing any unsafe action</strong></li><li>Verify the discrepancy</li><li>Contact field management for confirmation</li><li>Notify supervision</li><li>Follow approved guidance from the field manager rather than an incorrect procedure</li><li>Document the discrepancy</li><li>Submit feedback for procedure correction after the event</li></ul>'},
-  {id:'pr6', cat:'operations', type:'scenario',
+  {id:'pr6', lvl:2, cat:'operations', type:'scenario',
    q:'During shift turnover you discover a critical alarm was never escalated by the previous operator. What do you do?',
    a:'<ul><li>Assess the current condition immediately</li><li>Determine whether the issue is still active</li><li>Perform any required notifications immediately</li><li>Begin troubleshooting or restoration if appropriate</li><li>Document all actions</li><li>Inform supervision that the event was missed or not escalated properly</li><li>Ensure complete turnover documentation so the issue is fully understood</li></ul>'},
-  {id:'pr7', cat:'operations', type:'scenario',
+  {id:'pr7', lvl:3, cat:'operations', type:'scenario',
    q:'What would you do if you observed another operator taking shortcuts with procedures?',
    a:'<ul><li>Address the concern professionally</li><li>Ensure safe operation immediately</li><li>Correct the issue if possible</li><li>Discuss the procedure with the operator</li><li>Escalate to supervision if the behavior continues or presents significant risk</li><li>Document concerns appropriately if required</li></ul><strong>See something, say something.</strong>'},
-  {id:'pr8', cat:'operations', type:'application',
+  {id:'pr8', lvl:2, cat:'operations', type:'application',
    q:'What information is most important when escalating an issue to management?',
    a:'<ul><li>Site name</li><li>Time of event</li><li>Equipment affected</li><li>Current plant status</li><li>Safety concerns (if any)</li><li>Actions already taken and who has been contacted</li><li>Current suspected cause</li><li>Assistance requested</li><li>Estimated restoration time (if known)</li><li>Planned next steps</li></ul><strong>For a major generation loss, also include:</strong> MW lost, percentage of site affected, utility notifications completed, site personnel status, and restoration efforts underway.<br><br><em>“If I’m waking up to a call when I’m away, I need as much information as possible to help diagnose.”</em>'},
-  {id:'pr9', cat:'operations', type:'scenario',
+  {id:'pr9', lvl:3, cat:'operations', type:'scenario',
    q:'How would you coordinate field personnel, management and external stakeholders during a critical event?',
    a:'<ul><li>Establish current plant status</li><li>Communicate with grid entities as required</li><li>Coordinate with field personnel</li><li>Notify required contacts such as site owners and asset managers</li><li>Provide concise, factual updates</li><li>Maintain awareness of changing conditions</li><li>Continue documenting all actions</li><li>Provide final restoration update</li></ul>'},
-  {id:'g11', cat:'grid', type:'conceptual',
+  {id:'g11', lvl:1, cat:'grid', type:'conceptual',
    q:'What are the three fundamental responsibilities of the ROC?',
    a:'Monitoring and reporting the following:<ol style="margin-left:14px;"><li><strong>AVR status, voltage schedule, capacitor and reactor banks</strong></li><li><strong>Site following ADS / AGC</strong></li><li><strong>Site fully available</strong> — MWh, MW and ancillary services</li></ol>Everything else the ROC does follows from these three. If you are not sure whether something matters, ask which of the three it affects.'},
-  {id:'op15', cat:'operations', type:'application',
+  {id:'op15', lvl:2, cat:'operations', type:'application',
    q:'What information would you review first when investigating a plant performance issue?',
    a:'<ul><li>SCADA alarms and notifications</li><li>Power production trends (MW/MWh)</li><li>Equipment status — inverters, turbines, battery containers, breakers</li><li>Site availability and capability</li><li>Voltage, current, frequency and power factor data</li><li>Weather and environmental conditions</li><li>Communications status (SCADA / network health)</li><li>Active outages or work orders</li><li>Previous operator logs and shift turnover notes</li></ul>'},
-  {id:'pr10', cat:'operations', type:'procedure',
+  {id:'pr10', lvl:2, cat:'operations', type:'procedure',
    q:'What should a clear log or report on an event contain?',
    a:'<ul><li>Record the <strong>exact time</strong> of the event</li><li>Describe what occurred factually, without assumptions</li><li>Document alarms, equipment affected and MW impact</li><li>Record all troubleshooting steps performed</li><li>Document communications with field personnel, grid entities and management</li><li>Record restoration actions and current plant status</li><li>Include any follow-up actions or outstanding issues</li></ul>'},
-  {id:'op16', cat:'operations', type:'application',
+  {id:'op16', lvl:2, cat:'operations', type:'application',
    q:'You identify an issue at a site. How do you troubleshoot it and lead the restoration attempt?',
    a:'<ul><li>Verify the issue through SCADA and alarms</li><li>Identify the equipment affected</li><li>Review recent events, switching, weather and maintenance activities</li><li>Determine if the issue appears to be communications, SCADA controls or equipment related</li><li>Coordinate with the site team to gather additional information</li><li>Attempt approved restoration procedures when appropriate</li><li>Continue monitoring and escalate if restoration is unsuccessful</li></ul>'},
-  {id:'pr11', cat:'operations', type:'application',
+  {id:'pr11', lvl:2, cat:'operations', type:'application',
    q:'What does it mean to operate and make decisions independently, without supervisor or manager support?',
    a:'<ul><li>Assess the issue and determine safety and impact</li><li>Review alarms, SCADA, event logs and current operating conditions</li><li><strong>Follow applicable procedures without waiting for direction</strong></li><li>Coordinate with field personnel or third parties as required</li><li>Make operational decisions within your authority</li><li>Escalate only when required by procedure, or when operational limits are exceeded</li><li>Document actions taken and reasoning in the operating log</li></ul>'},
-  {id:'op17', cat:'operations', type:'scenario',
+  {id:'op17', lvl:3, cat:'operations', type:'scenario',
    q:'SCENARIO: Harquahala 2 PV suddenly drops to 60 MW output. How would you investigate?',
    a:'<ul><li>Verify actual production loss</li><li>Check irradiance and weather conditions</li><li>Determine if the reduction is site-wide or limited to specific equipment</li><li>Review inverter availability</li><li>Check tracker status</li><li>Review alarms and event history</li><li><strong>Verify no curtailment or dispatch instructions are active</strong></li><li>Identify whether production loss matches unavailable equipment</li><li>Coordinate with field personnel if equipment issues are suspected</li></ul>'},
-  {id:'s7', cat:'scada', type:'application',
-   q:'How would you determine whether units are actually offline, or just showing a comms issue?',
-   a:'Work the same identification criteria used for a site trip, then narrow:<ul><li><strong>High side open</strong>, frozen SCADA data, comms loss, or the TO reports a trip</li><li>Check whether values are <strong>frozen or still updating</strong></li><li>Check whether multiple devices dropped at the same moment — simultaneous failure points at comms</li><li>Do the math: compare site output with and against the unit reportedly offline. If total output did not change, you lost visibility rather than generation</li><li>Verify whether the local HMI or PLC still shows normal operation</li><li>Confirm with the TO or QSE whether they see the same picture</li></ul>'}
+  {id:'s7', lvl:3, cat:'scada', type:'application',
+   q:'How would you identify a site trip?',
+   a:'Any one of these is enough to treat it as a trip:<ul><li><strong>High side breaker open</strong></li><li><strong>Frozen data on SCADA</strong></li><li><strong>Complete loss of comms</strong></li><li><strong>The TO reports the site tripped</strong></li></ul>Confirm before acting: <strong>an open high side while the site is still producing is NOT a trip.</strong> Check output before submitting an outage \u2014 if generation is unchanged, you have an indication problem, not a trip.<br><br>Once identified, work the Site Trip playbook. Notify TOP first and confirm they see the same breaker position.'},
 ];
 
+// Labels and icons for each study topic. Referenced by rocRender, the drill
+// screen and Question of the Day.
 const ROC_CATEGORIES = [
-  {key:'grid',       label:'Grid Entities',                icon:'🌐'},
+  {key:'grid',       label:'Grid Entities',                icon:'🗺️'},
   {key:'voltage',    label:'Voltage, Reactive Power & AVR', icon:'⚡'},
   {key:'dispatch',   label:'Dispatch: ADS / AGC',          icon:'📡'},
   {key:'scada',      label:'SCADA, Alarms & Recognition',  icon:'🖥️'},
@@ -16042,6 +16307,9 @@ const ROC_CATEGORIES = [
 
 let rocProgress = {};
 let rocFilter = 'grid';
+let rocDrillResults = [];
+let rocDrillScope = { kind: 'all' };
+let rocDrillWasDue = 0;
 let rocDrillQueue = [];
 let rocDrillIdx = 0;
 
@@ -16117,6 +16385,12 @@ function ghTab(id, btn) {
 // same shape as the Grid Entity Hierarchy widget: tap a component, read what
 // it is and what you would actually check on it.
 const SLD_DATA = {
+  transmission: { name:'Transmission system', sym:'Everything above the POI, drawn dashed because it is not ours',
+    what:'The TO\u2019s transmission network. We do not own it, operate it or switch it. It is on the one-line so you can see where our responsibility ends.',
+    check:'Nothing directly \u2014 but this is why you request permission from the TOP before opening or closing the high side breaker. You are changing what connects to their system.' },
+  padmount: { name:'Pad-mount transformer', sym:'Two interlocking circles, out at the array',
+    what:'Steps inverter output up from 600 V to collector voltage (34.5 kV). There is one per inverter or small group, out in the field rather than in the substation.',
+    check:'Rarely visible in SCADA. It matters when one inverter block is dark while its neighbours produce \u2014 a pad-mount fault takes out its group without touching the feeder breaker.' },
   poi: { name:'Point of Interconnection (POI)', sym:'Meter symbol at the top of the drawing',
     what:'Where the plant connects to the utility system. Everything above it belongs to the TO; everything below it is ours.',
     check:'POI voltage against the schedule and band, and MW/MVAR as the market sees them. This is the metering point that counts.' },
@@ -16125,10 +16399,14 @@ const SLD_DATA = {
     check:'Position. Closed sits flush with the line, open swings away. On a switching order the air switch is what establishes the visible isolation a tech works behind.' },
   hvbreaker: { name:'High side breaker', sym:'A box (or arc) across the line · ANSI 52',
     what:'The main breaker between the plant and the utility. Opening it takes the whole site off the grid.',
-    check:'Position. An open high side with no generation is a site trip. An open high side while the site is still producing is not — see the Site Trip playbook.<br><strong>Always request permission from the TOP before opening or closing it.</strong>' },
+    check:'Position. An open high side with no generation is a site trip. An open high side while the site is still producing is not — see the Site Trip playbook.<br><strong>Always request permission from the TOP before opening or closing it.</strong>',
+    altNote:'A box across the line is most common on plant one-lines. Utility drawings often use an <strong>X or bowtie</strong> instead, and a filled square sometimes means normally closed.',
+    altSvg:'<svg width="160" height="46" viewBox="0 0 160 46" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="8" y1="18" x2="22" y2="18"/><rect x="22" y="8" width="20" height="20"/><line x1="42" y1="18" x2="56" y2="18"/><line x1="78" y1="18" x2="92" y2="18"/><line x1="92" y1="8" x2="112" y2="28"/><line x1="112" y1="8" x2="92" y2="28"/><line x1="112" y1="18" x2="126" y2="18"/><text x="32" y="45" font-size="8" stroke="none" fill="currentColor" text-anchor="middle">box</text><text x="102" y="45" font-size="8" stroke="none" fill="currentColor" text-anchor="middle">bowtie</text></svg>' },
   transformer: { name:'Main transformer', sym:'Two interlocking circles, or two opposing arcs',
-    what:'Steps the plant’s medium voltage up to transmission voltage. Ratings on each side of the symbol tell you the voltage on that side.',
-    check:'Which side of the drawing you are reading. A 34.5kV reading means nothing if you are looking at the 230kV side. Transformer alarms are on the alarm-monitoring list for a reason.' },
+    what:'Also called the <strong>GSU</strong> (generator step-up). Takes collector voltage (34.5 kV) up to transmission voltage (230 kV here). Ratings on each side of the symbol tell you the voltage on that side.',
+    check:'Which side of the drawing you are reading. A 34.5kV reading means nothing if you are looking at the 230kV side. Transformer alarms are on the alarm-monitoring list for a reason.',
+    altNote:'Two interlocking circles is the common form. You will also see <strong>two opposing arcs</strong> \u2014 the same device, drawn differently.',
+    altSvg:'<svg width="150" height="46" viewBox="0 0 150 46" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="30" cy="17" r="9"/><circle cx="30" cy="29" r="9"/><path d="M95 9 a9 9 0 0 1 0 16"/><path d="M107 21 a9 9 0 0 0 0 16"/><text x="30" y="45" font-size="8" stroke="none" fill="currentColor" text-anchor="middle">circles</text><text x="101" y="45" font-size="8" stroke="none" fill="currentColor" text-anchor="middle">arcs</text></svg>' },
   mvbreaker: { name:'MV main breaker', sym:'A box across the line · ANSI 52',
     what:'Sits between the transformer and the medium voltage bus. Opening it drops every feeder at once while leaving the high side intact.',
     check:'During switching this comes out after the feeders and goes back in before them. Closing order matters — allow MVARs to stabilise.' },
@@ -16140,7 +16418,9 @@ const SLD_DATA = {
     check:'How many are open versus expected. One open feeder is a partial derate; all open points at the bus or above. This is the level you switch at for planned work.' },
   gen: { name:'Generation sources', sym:'Blocks at the bottom of the drawing',
     what:'The inverters, turbines or battery PCS units producing power. On a solar site the inverters convert DC to AC; on a BESS the PCS runs bidirectionally.',
-    check:'Count online versus total, and whether output matches what is available. A gap between available and producing is where a derate hides.' },
+    check:'Count online versus total, and whether output matches what is available. A gap between available and producing is where a derate hides.',
+    altNote:'A box split by a diagonal, DC on one side and AC on the other, is the standard inverter symbol. Some drawings use a <strong>triangle</strong>, or just label a plain box PCS or INV.',
+    altSvg:'<svg width="170" height="52" viewBox="0 0 170 52" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="14" y="6" width="42" height="30"/><line x1="18" y1="32" x2="52" y2="10"/><text x="24" y="20" font-size="10" stroke="none" fill="currentColor">&#8801;</text><text x="42" y="32" font-size="10" stroke="none" fill="currentColor">&#8764;</text><path d="M100 6 L128 21 L100 36 Z"/><text x="35" y="49" font-size="8" stroke="none" fill="currentColor" text-anchor="middle">box + diagonal</text><text x="114" y="49" font-size="8" stroke="none" fill="currentColor" text-anchor="middle">triangle</text></svg>' },
 };
 
 let sldPicked = null;
@@ -16157,9 +16437,68 @@ function sldPick(key) {
       <div class="gh-dgrid">
         <div class="gh-ditem" style="grid-column:1/-1"><div class="gh-ditem-k">What it is</div><div class="gh-ditem-v">${d.what}</div></div>
         <div class="gh-ditem" style="grid-column:1/-1"><div class="gh-ditem-k">What you check</div><div class="gh-ditem-v">${d.check}</div></div>
+        ${d.altSvg ? `<div class="gh-ditem" style="grid-column:1/-1"><div class="gh-ditem-k">You may also see it drawn as</div><div class="gh-ditem-v"><div class="sld-alt">${d.altSvg}</div>${d.altNote}</div></div>` : ''}
       </div>
     </div>`;
   sldPicked = key;
+}
+
+// ── Power map ────────────────────────────────────────────────────────────
+// Separate widget, collapsed by default, with a banner saying it is not a
+// one-line. The risk of showing this at all is an operator concluding a
+// single line diagram covers the whole grid, so the framing does real work.
+const PMAP_DATA = {
+  collector: { name:'Collector bus', who:'Generator Owner \u2014 us',
+    what:'Where every feeder from the arrays combines before the step-up. Same bus you see on the plant one-line.' },
+  feeder: { name:'Collector feeders', who:'Generator Owner \u2014 us',
+    what:'Each feeder gathers a block of inverters or turbines. One open feeder is a partial derate, not a site outage.' },
+  padmount: { name:'Pad-mount transformer', who:'Generator Owner \u2014 us',
+    what:'Steps inverter output from 600 V up to collector voltage, out in the array.' },
+  hvbreaker: { name:'High side breaker', who:'Generator Owner \u2014 us',
+    what:'The last device we operate before the POI. Opening it takes the plant off the grid, which is why the TOP is asked first.' },
+  disconnect: { name:'Disconnect switch', who:'Generator Owner \u2014 us',
+    what:'Visible break for isolation. Not designed to interrupt load \u2014 the breaker does that first.' },
+  poi: { name:'Point of Interconnection', who:'The boundary \u2014 metered here',
+    what:'Where our system ends and the TO\u2019s begins. The voltage schedule applies here, and this is the meter the market settles against.' },
+  subbreaker: { name:'Substation HV breaker', who:'Transmission Owner',
+    what:'Protects the transmission side of the distribution substation. Not ours to operate.' },
+  stepdown: { name:'Step-down transformer', who:'Transmission Owner',
+    what:'Drops transmission voltage to distribution voltage, typically 230 kV to around 12 kV.' },
+  distbus: { name:'Distribution bus', who:'Distribution Provider',
+    what:'The 12 kV bus feeding local circuits. Nothing here appears on a plant one-line.' },
+  distfeeder: { name:'Distribution feeders', who:'Distribution Provider',
+    what:'The circuits running along streets to neighbourhoods. When one of these trips it is an outage for customers, not for us.' },
+  poletx: { name:'Pole or pad transformer', who:'Distribution Provider',
+    what:'The last transformation, 12 kV down to 240 V at the service.' },
+  gen: { name:'Generation', who:'Generator Owner / Generator Operator \u2014 us',
+    what:'The plant itself: inverters, turbines, battery PCS. Everything on the one-line below the POI.' },
+  gsu: { name:'Step-up transformer (GSU)', who:'Generator Owner \u2014 us',
+    what:'Raises collector voltage to transmission voltage so power can travel. The last piece we own before the POI.' },
+  transmission: { name:'Transmission', who:'Transmission Owner / Transmission Operator',
+    what:'High voltage lines moving bulk power over distance, 230 kV and above. The TOP directs switching here, which is why we ask permission before opening the high side.' },
+  enduser: { name:'End user', who:'The customer',
+    what:'A final pole or pad transformer drops 12 kV to 240 V at the meter. The MW you are watching on SCADA ends up here.' },
+};
+
+function pmapPick(key){
+  const d = PMAP_DATA[key]; if(!d) return;
+  document.querySelectorAll('#pmap-body .sld-hit').forEach(el => el.classList.remove('sld-on'));
+  const hit = [...document.querySelectorAll('#pmap-body .sld-hit')]
+    .find(el => (el.getAttribute('onclick')||'').includes("'"+key+"'"));
+  if (hit) hit.classList.add('sld-on');
+  const box = document.getElementById('pmap-detail');
+  box.style.display = 'block';
+  box.innerHTML = `<div class="gh-detail"><h3>${d.name}</h3><div class="gh-role">${d.who}</div>
+    <div class="gh-dgrid"><div class="gh-ditem" style="grid-column:1/-1">
+    <div class="gh-ditem-k">What it is</div><div class="gh-ditem-v">${d.what}</div></div></div></div>`;
+}
+
+function pmapToggle(){
+  const body = document.getElementById('pmap-body');
+  const chev = document.getElementById('pmap-chevron');
+  const open = getComputedStyle(body).display === 'none';
+  body.style.display = open ? 'block' : 'none';
+  chev.textContent = open ? '\u25BE' : '\u25B8';
 }
 
 function sldToggle() {
@@ -16247,6 +16586,8 @@ function rocSetFilter(f, btn) {
   if (ghWidget) ghWidget.style.display = f === 'grid' ? 'block' : 'none';
   const sldWidget = document.getElementById('sld-widget-container');
   if (sldWidget) sldWidget.style.display = f === 'plant' ? 'block' : 'none';
+  const pmapWidget = document.getElementById('pmap-widget-container');
+  if (pmapWidget) pmapWidget.style.display = f === 'plant' ? 'block' : 'none';
 
   rocRender();
 }
@@ -16262,8 +16603,8 @@ function rocPopulateTopicCounts() {
     const started = qs.some(q => rocProgress[q.id]);
 
     el.classList.remove('tc-new', 'tc-work', 'tc-done');
-    if (!started)      { el.textContent = qs.length + ' Q';  el.classList.add('tc-new'); }
-    else if (left > 0) { el.textContent = left + ' left';    el.classList.add('tc-work'); }
+    if (!started)      { el.textContent = qs.length + ' Q';       el.classList.add('tc-new'); }
+    else if (left > 0) { el.textContent = left + ' left';         el.classList.add('tc-work'); }
     else               { el.textContent = '\u2713 ' + qs.length; el.classList.add('tc-done'); }
 
     // thin fill along the bottom of the pill showing how much is mastered
@@ -16308,6 +16649,45 @@ function rocTypeBadge(type) {
   return `<span class="roc-q-type-badge ${t[0]}">${t[1]}</span>`;
 }
 
+// ── Spaced review ────────────────────────────────────────────────────────
+// A rating that only changes a colour is a label. These set when the question
+// comes back in Quiz mode: missed tomorrow, review in a few days, and a
+// correct answer pushes further out each time it stays correct. Questions are
+// never hidden from Study mode — browsing stays a complete reference.
+const ROC_SCHED_KEY = 'roc_sched_v1';
+let rocSched = {};
+try { rocSched = JSON.parse(localStorage.getItem(ROC_SCHED_KEY) || '{}'); } catch(e) { rocSched = {}; }
+function rocSaveSched(){ safeLocalSet(ROC_SCHED_KEY, JSON.stringify(rocSched)); }
+
+const ROC_GOT_STEPS = [7, 14, 30];      // days, escalating while it stays right
+function rocToday(){ const d = new Date(); d.setHours(0,0,0,0); return d.getTime(); }
+function rocDaysUntil(ts){ return Math.round((ts - rocToday()) / 86400000); }
+
+function rocSchedule(qid, rating) {
+  const cur = rocSched[qid] || { streak: 0 };
+  let days, streak = cur.streak || 0;
+  if (rating === 'missed')      { days = 1;  streak = 0; }
+  else if (rating === 'review-it') { days = 3;  streak = 0; }
+  else                          { days = ROC_GOT_STEPS[Math.min(streak, ROC_GOT_STEPS.length - 1)]; streak++; }
+  rocSched[qid] = { due: rocToday() + days * 86400000, streak };
+  rocSaveSched();
+}
+
+function rocIsDue(qid){
+  const s = rocSched[qid];
+  return !s || s.due <= rocToday();      // never rated = due
+}
+function rocDueLabel(qid){
+  const s = rocSched[qid];
+  if (!s) return '';
+  const d = rocDaysUntil(s.due);
+  if (d <= 0) return 'due now';
+  if (d === 1) return 'back tomorrow';
+  if (d < 14) return 'back in ' + d + ' days';
+  return 'back in ' + Math.round(d / 7) + ' weeks';
+}
+function rocDueCount(list){ return list.filter(q => rocIsDue(q.id)).length; }
+
 function rocConfButtons(qid) {
   const p = rocProgress[qid];
   return `<button class="roc-conf-btn${p==='got-it'?' got-it':''}" onclick="rocMark('${qid}','got-it')">✓ Got it</button>
@@ -16317,9 +16697,12 @@ function rocConfButtons(qid) {
 
 function rocMark(qid, val) {
   rocProgress[qid] = val;
+  rocSchedule(qid, val);
   rocSave();
   const el = document.querySelector(`[data-conf="${qid}"]`);
   if (el) el.innerHTML = rocConfButtons(qid);
+  const dl = document.getElementById('roc-due-' + qid);
+  if (dl) dl.textContent = rocDueLabel(qid);
   const catKey = (ROC_QUESTIONS.find(x=>x.id===qid)||{}).cat;
   if (catKey) {
     const catQs = ROC_QUESTIONS.filter(x=>x.cat===catKey);
@@ -16330,12 +16713,15 @@ function rocMark(qid, val) {
   rocUpdateStats();
 }
 
+let rocRevealed = {};
+
 function rocToggleAnswer(qid) {
   const el = document.getElementById(`roc-ans-${qid}`);
   const btn = document.getElementById(`roc-show-${qid}`);
   if (!el) return;
   const showing = el.classList.contains('show');
   el.classList.toggle('show');
+  rocRevealed[qid] = !showing;
   if (btn) btn.textContent = showing ? 'Show Answer' : 'Hide Answer';
 }
 
@@ -16345,6 +16731,7 @@ function rocToggleSimReveal(qid, idx) {
   if (!el) return;
   const showing = el.classList.contains('show');
   el.classList.toggle('show');
+  rocRevealed[qid] = !showing;
   if (btn) btn.textContent = showing ? 'Show Answer' : 'Hide Answer';
 }
 
@@ -16407,12 +16794,13 @@ function rocRender() {
             ${rocTypeBadge(q.type)}
             <div class="roc-q-text">${q.q}</div>
           </div>
-          <div class="roc-answer" id="roc-ans-${q.id}">
+          <div class="roc-answer${rocRevealed[q.id] ? ' show' : ''}" id="roc-ans-${q.id}">
             <span class="roc-a-label">Answer</span>${q.a}
           </div>
           <div class="roc-q-actions">
-            <button class="roc-show-btn" id="roc-show-${q.id}" onclick="rocToggleAnswer('${q.id}')">Show Answer</button>
+            <button class="roc-show-btn" id="roc-show-${q.id}" onclick="rocToggleAnswer('${q.id}')">${rocRevealed[q.id] ? 'Hide' : 'Show'} Answer</button>
             <div class="roc-confidence" data-conf="${q.id}">${rocConfButtons(q.id)}</div>
+            <span class="roc-due" id="roc-due-${q.id}">${rocDueLabel(q.id)}</span>
           </div>
         </div>`;
       }
@@ -16423,11 +16811,73 @@ function rocRender() {
 }
 
 // ── DAILY DRILL ────────────────────────────────────────────────────────────
-function rocStartDrill() {
-  const pool = ROC_QUESTIONS.filter(q=>q.type!=='simulation');
-  const shuffled = [...pool].sort(()=>Math.random()-.5);
-  rocDrillQueue = shuffled.slice(0,10);
+// ── Quiz scope ───────────────────────────────────────────────────────────
+// The quiz used to silently inherit whatever topic filter the page happened
+// to be on. Now it asks, and offers the operator levels as well as topics,
+// so someone working toward Operator 2 sign-off can drill exactly that set.
+const ROC_LEVEL_LABELS = { 1: 'Operator 1', 2: 'Operator 2', 3: 'Operator 3' };
+
+function rocScopePool(scope) {
+  const base = ROC_QUESTIONS.filter(q => q.type !== 'simulation');
+  if (!scope || scope.kind === 'all') return base;
+  if (scope.kind === 'level') return base.filter(q => q.lvl === scope.value);
+  return base.filter(q => q.cat === scope.value);
+}
+
+function rocScopeChip(label, scope, count) {
+  const due = rocScopePool(scope).filter(q => rocIsDue(q.id)).length;
+  const s = JSON.stringify(scope).replace(/"/g, '&quot;');
+  return `<button class="scope-chip" onclick='rocStartDrill(${JSON.stringify(scope)})'>
+    <span class="scope-chip-name">${esc(label)}</span>
+    <span class="scope-chip-meta">${count} q${due ? ' \u00b7 ' + due + ' due' : ''}</span></button>`;
+}
+
+function rocOpenScope() {
+  const all = rocScopePool({ kind: 'all' });
+  document.getElementById('scope-all').innerHTML =
+    rocScopeChip('All topics', { kind: 'all' }, all.length);
+
+  document.getElementById('scope-levels').innerHTML = [1, 2, 3].map(lv => {
+    const n = all.filter(q => q.lvl === lv).length;
+    return n ? rocScopeChip(ROC_LEVEL_LABELS[lv], { kind: 'level', value: lv }, n) : '';
+  }).join('');
+
+  document.getElementById('scope-topics').innerHTML = ROC_CATEGORIES.map(cat => {
+    const n = all.filter(q => q.cat === cat.key).length;
+    return n ? rocScopeChip(cat.icon + ' ' + cat.label, { kind: 'topic', value: cat.key }, n) : '';
+  }).join('');
+
+  document.getElementById('roc-scope-modal').classList.remove('hidden');
+}
+function rocCloseScope(){ document.getElementById('roc-scope-modal').classList.add('hidden'); }
+
+// Pulls what is actually due rather than 10 at random, so a session clears
+// real backlog instead of re-asking things answered yesterday. Falls back to
+// the full pool when nothing is due, so the button always does something.
+function rocStartDrill(scope) {
+  rocCloseScope();
+  rocDrillScope = scope || { kind: 'all' };
+  const pool = rocScopePool(rocDrillScope);
+  let due = pool.filter(q => rocIsDue(q.id));
+  rocDrillWasDue = due.length;
+  if (!due.length) due = pool;                      // nothing due: free practice
+  // oldest due first, so the most overdue clears first
+  due = [...due].sort((a, b) => {
+    const sa = rocSched[a.id], sb = rocSched[b.id];
+    if (!sa && !sb) return Math.random() - .5;
+    if (!sa) return -1;
+    if (!sb) return 1;
+    return sa.due - sb.due;
+  });
+  rocDrillQueue = due.slice(0, 10);
   rocDrillIdx = 0;
+  rocDrillResults = [];
+  const sc = rocDrillScope;
+  const scopeName = sc.kind === 'all' ? 'All topics'
+    : sc.kind === 'level' ? ROC_LEVEL_LABELS[sc.value]
+    : (ROC_CATEGORIES.find(x => x.key === sc.value) || {}).label || sc.value;
+  const ht = document.getElementById('roc-drill-hdr-title');
+  if (ht) ht.textContent = '\u26a1 ' + scopeName;
   document.getElementById('roc-drill-modal').classList.remove('hidden');
   rocDrillShowQ();
 }
@@ -16467,18 +16917,51 @@ function rocDrillShowAnswer() {
 
 function rocDrillNext(conf) {
   const q = rocDrillQueue[rocDrillIdx];
-  if (q) { rocProgress[q.id]=conf; rocSave(); }
+  if (q) {
+    rocProgress[q.id] = conf; rocSave();
+    rocSchedule(q.id, conf);                        // drilling now moves the schedule
+    rocDrillResults.push({ id: q.id, q: q.q, cat: q.cat, conf });
+  }
   rocDrillIdx++;
   if (rocDrillIdx>=rocDrillQueue.length) rocDrillFinish();
   else rocDrillShowQ();
 }
 
 function rocDrillFinish() {
-  document.getElementById('roc-drill-modal').classList.add('hidden');
-  const got = rocDrillQueue.filter(q=>rocProgress[q.id]==='got-it').length;
-  const missed = rocDrillQueue.filter(q=>rocProgress[q.id]==='missed').length;
+  const got = rocDrillResults.filter(r => r.conf === 'got-it').length;
+  const rev = rocDrillResults.filter(r => r.conf === 'review-it').length;
+  const missed = rocDrillResults.filter(r => r.conf === 'missed').length;
+  const total = rocDrillResults.length || 1;
+  const pct = Math.round(got / total * 100);
+  const followUp = rocDrillResults.filter(r => r.conf !== 'got-it');
+
+  document.getElementById('roc-drill-body-wrap').style.display = 'none';
+  document.getElementById('roc-drill-results').style.display = 'block';
+  document.getElementById('roc-drill-hdr-title').textContent = 'Session complete';
+  document.getElementById('roc-drill-prog').textContent = '';
+
+  document.getElementById('roc-drill-score').innerHTML =
+    `<div class="drill-score-big">${got}<span>/${total}</span></div>
+     <div class="drill-score-sub">${pct}% got it${rev ? ' \u00b7 ' + rev + ' to review' : ''}${missed ? ' \u00b7 ' + missed + ' missed' : ''}</div>`;
+
+  document.getElementById('roc-drill-followup').innerHTML = followUp.length
+    ? `<div class="drill-fu-head">Coming back sooner</div>` + followUp.map(r => {
+        const cat = ROC_CATEGORIES.find(x => x.key === r.cat);
+        return `<div class="drill-fu-item"><span class="drill-fu-dot ${r.conf}"></span>
+          <span class="drill-fu-q">${esc(r.q.length > 92 ? r.q.slice(0, 92) + '\u2026' : r.q)}</span>
+          <span class="drill-fu-when">${esc(rocDueLabel(r.id))}</span></div>`;
+      }).join('')
+    : `<div class="drill-fu-head">Everything correct \u2014 nothing scheduled back soon.</div>`;
+
   rocRender();
-  alert(`Daily Drill Complete! ⚡\n\n✓ Got it: ${got} / ${rocDrillQueue.length}\n✗ Missed: ${missed}\n\nKeep going — review the missed ones.`);
+  rocPopulateTopicCounts();
+}
+
+function rocCloseDrillResults() {
+  document.getElementById('roc-drill-modal').classList.add('hidden');
+  document.getElementById('roc-drill-body-wrap').style.display = '';
+  document.getElementById('roc-drill-results').style.display = 'none';
+  document.getElementById('roc-drill-hdr-title').textContent = '\u26a1 Quiz';
 }
 
 // ── PLAYBOOKS ────────────────────────────────────────────────────────────────
@@ -16519,21 +17002,36 @@ function pbShiftId(d) {
   const iso = day.getFullYear() + '-' + String(day.getMonth()+1).padStart(2,'0') + '-' + String(day.getDate()).padStart(2,'0');
   return iso + (h >= 6 && h < 18 ? '-D' : '-N');
 }
-(function pbResetDailyOnShiftChange(){
+function pbResetDailyOnShiftChange(){
   let last = null;
-  try { last = localStorage.getItem(PB_SHIFT_KEY); } catch(e) { return; }
+  try { last = localStorage.getItem(PB_SHIFT_KEY); } catch(e) { return false; }
   const now = pbShiftId();
-  if (last !== now) {
-    let cleared = 0;
-    Object.keys(pbCheckState).forEach(k => {
-      if (k.indexOf('daily-checklist::') === 0) { delete pbCheckState[k]; cleared++; }
-    });
-    try {
-      if (cleared) localStorage.setItem(PB_CHECK_KEY, JSON.stringify(pbCheckState));
-      localStorage.setItem(PB_SHIFT_KEY, now);
-    } catch(e) {}
-  }
-})();
+  if (last === now) return false;
+  let cleared = 0;
+  Object.keys(pbCheckState).forEach(k => {
+    if (k.indexOf('daily-checklist::') === 0) { delete pbCheckState[k]; cleared++; }
+  });
+  try {
+    if (cleared) localStorage.setItem(PB_CHECK_KEY, JSON.stringify(pbCheckState));
+    localStorage.setItem(PB_SHIFT_KEY, now);
+  } catch(e) {}
+  return true;
+}
+pbResetDailyOnShiftChange();
+
+// The page stays open across a shift change, so a load-time check is not
+// enough. Poll, and check again whenever the tab is brought back into focus.
+function pbWatchShiftBoundary(){
+  const check = () => {
+    if (pbResetDailyOnShiftChange()) {
+      try { homeRenderShiftList(); } catch(e) {}
+      try { if (typeof pbRenderDetail === 'function') pbRenderDetail(); } catch(e) {}
+    }
+  };
+  setInterval(check, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) check(); });
+}
+pbWatchShiftBoundary();
 let pbCurrentSlug = null;
 
 function pbStepKey(slug, pi, si) { return slug + '::' + pi + '::' + si; }
@@ -17138,12 +17636,27 @@ function homeRenderShiftList() {
 
   const nextIdx = p.phases[pi].steps.findIndex((s, si) => !pbCheckState[pbStepKey(p.slug, pi, si)]);
   if (nextIdx === -1) {
-    next.innerHTML = '<span class="sl-done">\u2713 All done</span>';
+    // Both halves finished. The list resets itself at the next shift boundary,
+    // but an operator who finishes early needs a way to start over now.
+    const bothDone = prog(0).done === prog(0).total && prog(1).done === prog(1).total;
+    next.innerHTML = '<span class="sl-done">\u2713 ' + (bothDone ? 'Shift complete' : 'All done') + '</span>'
+      + '<button class="sl-reset" onclick="event.stopPropagation();homeResetChecklist()" title="Clear and start over">start fresh</button>';
   } else {
     const txt = p.phases[pi].steps[nextIdx].text;
     next.innerHTML = '<span class="sl-check" onclick="event.stopPropagation();homeTickNext(' + pi + ',' + nextIdx + ')" title="Mark done"></span>' +
       '<span>' + esc(txt.length > 58 ? txt.slice(0, 58) + '\u2026' : txt) + '</span>';
   }
+}
+
+function homeResetChecklist() {
+  const p = PB_PLAYBOOKS.find(x => x.slug === 'daily-checklist');
+  if (!p) return;
+  p.phases.forEach((ph, pi) => ph.steps.forEach((s, si) => {
+    delete pbCheckState[pbStepKey('daily-checklist', pi, si)];
+  }));
+  pbSaveChecks();
+  homeRenderShiftList();
+  showToast('Checklist reset');
 }
 
 function homeTickNext(pi, si) {
@@ -18597,7 +19110,7 @@ function showSchedule(which){
     const el=document.getElementById(id); if(el) el.style.display='none';
   });
   // Toggle buttons
-  ['toggle-curr','toggle-prop10','toggle-split','toggle-pit'].forEach(id=>{
+  ['toggle-curr','toggle-prop10','toggle-steady','toggle-split','toggle-pit'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.classList.remove('active');
   });
 
@@ -18623,10 +19136,10 @@ function showSchedule(which){
     renderPitChips(); pitInitOnce(); pitCalRender();
     updatePitIndicator();
   } else {
-    // 'curr' and 'prop10' share one view — only the data model differs, so
-    // switching between them is a model swap plus a re-render, not a
-    // separate set of panels to keep in sync.
-    currModel = (which === 'prop10') ? 'prop10' : 'curr';
+    // 'curr', 'prop10' and 'steady' share one view — only the data model
+    // differs, so switching between them is a model swap plus a re-render,
+    // not a separate set of panels to keep in sync.
+    currModel = SCHED_MODELS[which] ? which : 'curr';
     const model = activeModel();
     document.getElementById('curr-view').style.display='';
     document.getElementById('curr-tabs').style.display='';
@@ -18635,7 +19148,7 @@ function showSchedule(which){
     if(activeCurrPanel) activeCurrPanel.style.display='block';
     if(!activeCurrTab) document.querySelector('#curr-tabs .curr-tab').classList.add('active');
     document.getElementById('curr-date-ctrl').style.display='';
-    document.getElementById(currModel==='prop10'?'toggle-prop10':'toggle-curr').classList.add('active');
+    { const tb = document.getElementById('toggle-' + currModel); if (tb) tb.classList.add('active'); }
     { const el=document.getElementById('sched-subtitle'); if(el) el.textContent=model.label+' \xB7 '+model.subtitle; }
     currApplyModelChrome();
     renderStaticChips(); currInitOnce();
@@ -18651,7 +19164,7 @@ function showSchedule(which){
 // on the page is identical because the underlying shape is identical.
 function currApplyModelChrome(){
   const m = activeModel();
-  const isProp = currModel === 'prop10';
+  const isProp = currModel !== 'curr';   // any 10-operator proposal
   const setText = (id, txt) => { const el=document.getElementById(id); if(el) el.textContent = txt; };
   setText('curr-roster-title', isProp ? 'Operators (proposed)' : 'Operators');
   setText('curr-roster-sub', m.dayCount + ' day \u00B7 ' + m.nightCount + ' night, rotating \u00B7 ' + m.cycle + '-day cycle');
@@ -18809,6 +19322,38 @@ function prop10RowForDate(dateObj){
   return { day, night };
 }
 
+// ── Steady Weeks (10 operator) ──────────────────────────────────────────
+// Built to protect the thing the current 6-operator schedule does well and
+// Expanded DuPont does not: every Monday-to-Sunday week is exactly 3 or 4
+// days, so a weekly paycheck is always 36h or 48h and never anything else.
+//
+// The phase of this string matters. WOS_ANCHOR is a Thursday, so cycle day 0
+// is a Thursday — the pattern is rotated so its internal week boundaries land
+// on Mondays. Without that rotation the 3-or-4 property holds for Thursday
+// weeks and produces zero-day Monday weeks, i.e. an empty paycheck.
+//
+// Nights are assigned to whole work blocks rather than scattered across them.
+// That is what keeps mixed day/night weeks at zero — a night week is a clean
+// night week, same as today — and drops day/night reversals to 10 a year.
+//
+// Trade-off vs Expanded DuPont: it does not hold the existing crew trios
+// together. Work stretches top out at 5 days instead of 7, and the 7-day
+// break survives.
+const STEADY_SHAPE = '-DDD----DDD---DDDDD----NNN---NNN-NNNN--NNNN----DDD---DDD----DDDD------'.split('').map(ch => ch === '-' ? null : ch);
+const STEADY_OPS = [...PROP10_OPS];
+
+function steadyRowForDate(dateObj){
+  const anchor = new Date(WOS_ANCHOR + 'T00:00:00');
+  const days = Math.round((dateObj - anchor) / 86400000);
+  const day = [], night = [];
+  STEADY_OPS.forEach((name, i) => {
+    const role = STEADY_SHAPE[(((days - i * 7) % 70) + 70) % 70];
+    if (role === 'D') day.push(name);
+    else if (role === 'N') night.push(name);
+  });
+  return { day, night };
+}
+
 const SCHED_MODELS = {
   curr: {
     label: 'Current schedule',
@@ -18831,6 +19376,15 @@ const SCHED_MODELS = {
     dayCount: 3,
     nightCount: 2,
     getDay(iso){ return prop10RowForDate(new Date(iso + 'T00:00:00')); }
+  },
+  steady: {
+    label: 'Steady Weeks',
+    subtitle: 'Every week 3 or 4 days \u00b7 max 5 in a row',
+    ops: [...STEADY_OPS].sort(),
+    cycle: 70,
+    dayCount: 3,
+    nightCount: 2,
+    getDay(iso){ return steadyRowForDate(new Date(iso + 'T00:00:00')); }
   }
 };
 
@@ -19099,7 +19653,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.87';
+const APP_VERSION = 'v2.00';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19173,7 +19727,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v1.87</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.00</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
