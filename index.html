@@ -2562,6 +2562,10 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .drill-fu-dot.missed{background:var(--red);}
 .drill-fu-q{flex:1;line-height:1.4;}
 .drill-fu-when{font-family:var(--m);font-size:10.5px;color:var(--text3);white-space:nowrap;}
+
+.sl-reset{background:none;border:none;color:var(--text3);font-family:var(--m);font-size:10px;
+  cursor:pointer;padding:0 0 0 8px;text-decoration:underline;}
+.sl-reset:hover{color:var(--blue);}
 </style>
 </head>
 <body>
@@ -16923,21 +16927,36 @@ function pbShiftId(d) {
   const iso = day.getFullYear() + '-' + String(day.getMonth()+1).padStart(2,'0') + '-' + String(day.getDate()).padStart(2,'0');
   return iso + (h >= 6 && h < 18 ? '-D' : '-N');
 }
-(function pbResetDailyOnShiftChange(){
+function pbResetDailyOnShiftChange(){
   let last = null;
-  try { last = localStorage.getItem(PB_SHIFT_KEY); } catch(e) { return; }
+  try { last = localStorage.getItem(PB_SHIFT_KEY); } catch(e) { return false; }
   const now = pbShiftId();
-  if (last !== now) {
-    let cleared = 0;
-    Object.keys(pbCheckState).forEach(k => {
-      if (k.indexOf('daily-checklist::') === 0) { delete pbCheckState[k]; cleared++; }
-    });
-    try {
-      if (cleared) localStorage.setItem(PB_CHECK_KEY, JSON.stringify(pbCheckState));
-      localStorage.setItem(PB_SHIFT_KEY, now);
-    } catch(e) {}
-  }
-})();
+  if (last === now) return false;
+  let cleared = 0;
+  Object.keys(pbCheckState).forEach(k => {
+    if (k.indexOf('daily-checklist::') === 0) { delete pbCheckState[k]; cleared++; }
+  });
+  try {
+    if (cleared) localStorage.setItem(PB_CHECK_KEY, JSON.stringify(pbCheckState));
+    localStorage.setItem(PB_SHIFT_KEY, now);
+  } catch(e) {}
+  return true;
+}
+pbResetDailyOnShiftChange();
+
+// The page stays open across a shift change, so a load-time check is not
+// enough. Poll, and check again whenever the tab is brought back into focus.
+function pbWatchShiftBoundary(){
+  const check = () => {
+    if (pbResetDailyOnShiftChange()) {
+      try { homeRenderShiftList(); } catch(e) {}
+      try { if (typeof pbRenderDetail === 'function') pbRenderDetail(); } catch(e) {}
+    }
+  };
+  setInterval(check, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) check(); });
+}
+pbWatchShiftBoundary();
 let pbCurrentSlug = null;
 
 function pbStepKey(slug, pi, si) { return slug + '::' + pi + '::' + si; }
@@ -17542,12 +17561,27 @@ function homeRenderShiftList() {
 
   const nextIdx = p.phases[pi].steps.findIndex((s, si) => !pbCheckState[pbStepKey(p.slug, pi, si)]);
   if (nextIdx === -1) {
-    next.innerHTML = '<span class="sl-done">\u2713 All done</span>';
+    // Both halves finished. The list resets itself at the next shift boundary,
+    // but an operator who finishes early needs a way to start over now.
+    const bothDone = prog(0).done === prog(0).total && prog(1).done === prog(1).total;
+    next.innerHTML = '<span class="sl-done">\u2713 ' + (bothDone ? 'Shift complete' : 'All done') + '</span>'
+      + '<button class="sl-reset" onclick="event.stopPropagation();homeResetChecklist()" title="Clear and start over">start fresh</button>';
   } else {
     const txt = p.phases[pi].steps[nextIdx].text;
     next.innerHTML = '<span class="sl-check" onclick="event.stopPropagation();homeTickNext(' + pi + ',' + nextIdx + ')" title="Mark done"></span>' +
       '<span>' + esc(txt.length > 58 ? txt.slice(0, 58) + '\u2026' : txt) + '</span>';
   }
+}
+
+function homeResetChecklist() {
+  const p = PB_PLAYBOOKS.find(x => x.slug === 'daily-checklist');
+  if (!p) return;
+  p.phases.forEach((ph, pi) => ph.steps.forEach((s, si) => {
+    delete pbCheckState[pbStepKey('daily-checklist', pi, si)];
+  }));
+  pbSaveChecks();
+  homeRenderShiftList();
+  showToast('Checklist reset');
 }
 
 function homeTickNext(pi, si) {
@@ -19544,7 +19578,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v1.98';
+const APP_VERSION = 'v1.99';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19618,7 +19652,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v1.98</span>
+    RNWBL Ops Hub <span class="app-footer-v">v1.99</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
