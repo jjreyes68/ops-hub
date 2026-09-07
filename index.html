@@ -2577,6 +2577,22 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .scope-chip:hover{border-color:var(--blue);background:var(--bbg);}
 .scope-chip-name{font-size:12.5px;color:var(--text);font-weight:500;}
 .scope-chip-meta{font-size:10px;color:var(--text3);font-family:var(--m);}
+
+.ec-svg{width:100%;max-width:660px;height:auto;display:block;margin:2px 0 14px;}
+.ec-sub{fill:var(--text3);font-family:var(--f);font-size:8.5px;text-anchor:middle;}
+.ec-t{fill:var(--text);font-family:var(--f);font-size:10.5px;text-anchor:middle;}
+.ec-lbl{fill:var(--text2);font-family:var(--m);font-size:10px;font-weight:700;letter-spacing:.06em;}
+.ec-key{fill:var(--text3);font-family:var(--m);font-size:9.5px;}
+.ec-note{fill:var(--text3);font-family:var(--f);font-size:9px;font-style:italic;}
+.ec-take{fill:var(--text2);font-family:var(--f);font-size:11px;font-weight:600;}
+.ec-dc{fill:var(--abg);stroke:var(--amber);stroke-width:1.3;}
+.ec-ac{fill:var(--bbg);stroke:var(--blue);stroke-width:1.3;}
+.ec-raw{fill:var(--bg3);stroke:var(--border2);stroke-width:1.3;}
+.ec-inv{fill:var(--gbg);stroke:var(--green);stroke-width:1.6;}
+.ec-grid{fill:var(--bg4);stroke:var(--text3);stroke-width:1.3;}
+.ec-arrow{stroke:var(--text3);stroke-width:1.4;fill:none;}
+.ec-arrow-bi{stroke:var(--text3);stroke-width:1.4;stroke-dasharray:4 3;fill:none;}
+.ec-rail{stroke:var(--text3);stroke-width:1.4;fill:none;}
 </style>
 </head>
 <body>
@@ -16152,7 +16168,7 @@ const ROC_QUESTIONS = [
 
   {id:'pa2', lvl:2, cat:'plant', type:'conceptual',
    q:'Explain the energy conversion chain for PV solar, wind, and battery storage.',
-   a:'<strong>PV Solar:</strong> Solar irradiance → photovoltaic cells convert sunlight to DC (extra-low voltage) → panels connect in series (strings) to increase voltage → strings connect to combiner boxes to form an array → DC fed into an inverter → inverter outputs AC → stepped up through transformer to MV/HV.<br><br><strong>Wind:</strong> Kinetic energy (wind) → turbine blades capture energy → mechanical rotation → generator converts to AC electricity → stepped up through transformer.<br><br><strong>Battery (BESS):</strong> Chemical energy stored as DC → DC inverter converts to AC → stepped up through transformer → returned to grid. Charging reverses the flow: AC from grid → stepped down → converted to DC → stored in batteries.'},
+   a:'<svg viewBox="0 0 660 250" class="ec-svg" role="img" aria-label="Energy conversion chains for solar, wind and battery"><rect x="8" y="6" width="9" height="9" rx="2" class="ec-dc"/><text x="22" y="14" class="ec-key">DC</text><rect x="52" y="6" width="9" height="9" rx="2" class="ec-ac"/><text x="66" y="14" class="ec-key">AC</text><rect x="96" y="6" width="9" height="9" rx="2" class="ec-raw"/><text x="110" y="14" class="ec-key">before electricity</text><text x="8" y="52" class="ec-lbl">PV SOLAR</text><rect x="86" y="36" width="76" height="26" rx="4" class="ec-raw"/><text x="124" y="53" class="ec-t">Irradiance</text><path d="M166 49 h16" class="ec-arrow"/><rect x="186" y="36" width="86" height="26" rx="4" class="ec-dc"/><text x="229" y="53" class="ec-t">PV cells</text><path d="M276 49 h16" class="ec-arrow"/><rect x="296" y="36" width="96" height="26" rx="4" class="ec-dc"/><text x="344" y="53" class="ec-t">Strings, array</text><path d="M396 49 h16" class="ec-arrow"/><rect x="416" y="36" width="76" height="26" rx="4" class="ec-inv"/><text x="454" y="53" class="ec-t">Inverter</text><path d="M496 49 h20" class="ec-arrow"/><text x="8" y="112" class="ec-lbl">WIND</text><rect x="86" y="96" width="76" height="26" rx="4" class="ec-raw"/><text x="124" y="113" class="ec-t">Kinetic</text><path d="M166 109 h16" class="ec-arrow"/><rect x="186" y="96" width="86" height="26" rx="4" class="ec-raw"/><text x="229" y="113" class="ec-t">Blades turn</text><path d="M276 109 h16" class="ec-arrow"/><rect x="296" y="96" width="96" height="26" rx="4" class="ec-ac"/><text x="344" y="113" class="ec-t">Generator</text><path d="M396 109 h120" class="ec-arrow"/><text x="456" y="105" class="ec-note" text-anchor="middle">no inverter</text><text x="8" y="172" class="ec-lbl">BESS</text><rect x="86" y="156" width="76" height="26" rx="4" class="ec-raw"/><text x="124" y="173" class="ec-t">Chemical</text><path d="M166 169 h16" class="ec-arrow"/><rect x="186" y="156" width="86" height="26" rx="4" class="ec-dc"/><text x="229" y="173" class="ec-t">Cells (DC)</text><path d="M276 169 h130" class="ec-arrow-bi"/><rect x="410" y="152" width="88" height="34" rx="4" class="ec-inv"/><text x="454" y="166" class="ec-t">PCS</text><text x="454" y="179" class="ec-sub">inverter, both ways</text><path d="M498 169 h18" class="ec-arrow-bi"/><text x="341" y="163" class="ec-note" text-anchor="middle">charges and discharges</text><path d="M516 49 V 169" class="ec-rail"/><rect x="516" y="88" width="70" height="42" rx="4" class="ec-ac"/><text x="551" y="105" class="ec-t">Step-up</text><text x="551" y="120" class="ec-t">transformer</text><path d="M586 109 h20" class="ec-arrow"/><rect x="606" y="96" width="46" height="26" rx="4" class="ec-grid"/><text x="629" y="113" class="ec-t">Grid</text><text x="330" y="228" class="ec-take" text-anchor="middle">Solar and BESS make DC and need an inverter. Wind makes AC already.</text></svg><strong>PV Solar:</strong> Solar irradiance → photovoltaic cells convert sunlight to DC (extra-low voltage) → panels connect in series (strings) to increase voltage → strings connect to combiner boxes to form an array → DC fed into an inverter → inverter outputs AC → stepped up through transformer to MV/HV.<br><br><strong>Wind:</strong> Kinetic energy (wind) → turbine blades capture energy → mechanical rotation → generator converts to AC electricity → stepped up through transformer.<br><br><strong>Battery (BESS):</strong> Chemical energy stored as DC → DC inverter converts to AC → stepped up through transformer → returned to grid. Charging reverses the flow: AC from grid → stepped down → converted to DC → stored in batteries.'},
 
   // ══ RAPID FIRE ════════════════════════════════════════════════════════════
 
@@ -19649,7 +19665,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.01';
+const APP_VERSION = 'v2.03';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19723,7 +19739,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.01</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.03</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
