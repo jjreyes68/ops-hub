@@ -2646,7 +2646,10 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <div class="nav-dropdown-menu" id="navdd-menu-schedule">
       <button class="nav-dropdown-item" data-sched="curr" onclick="navDropdownSelectSchedule('curr')">Current Schedule</button>
       <button class="nav-dropdown-item" data-sched="prop10" onclick="navDropdownSelectSchedule('prop10')">Expanded DuPont</button>
-      <button class="nav-dropdown-item" data-sched="steady" onclick="navDropdownSelectSchedule('steady')">Steady Weeks</button>
+      <!-- Steady Weeks: hidden while the day/night structure is still being worked out.
+           The model and pattern remain in SCHED_MODELS; remove the comment markers
+           here and on the in-page toggle below to bring it back. -->
+      <!-- <button class="nav-dropdown-item" data-sched="steady" onclick="navDropdownSelectSchedule('steady')">Steady Weeks</button> -->
       <button class="nav-dropdown-item" data-sched="split" onclick="navDropdownSelectSchedule('split')">Split Week</button>
       <button class="nav-dropdown-item" data-sched="pitman" onclick="navDropdownSelectSchedule('pitman')">Pitman</button>
     </div>
@@ -4310,7 +4313,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <div class="sched-toggle">
         <button class="sched-toggle-btn" id="toggle-curr" onclick="showSchedule('curr')">Current Schedule</button>
         <button class="sched-toggle-btn" id="toggle-prop10" onclick="showSchedule('prop10')">Expanded DuPont</button>
-        <button class="sched-toggle-btn" id="toggle-steady" onclick="showSchedule('steady')">Steady Weeks</button>
+        <!-- <button class="sched-toggle-btn" id="toggle-steady" onclick="showSchedule('steady')">Steady Weeks</button> -->
         <button class="sched-toggle-btn active" id="toggle-split" onclick="showSchedule('split')">Split Week</button>
         <button class="sched-toggle-btn" id="toggle-pit" onclick="showSchedule('pitman')">Pitman</button>
       </div>
@@ -16082,9 +16085,9 @@ const ROC_QUESTIONS = [
    q:'What alarm categories require immediate action vs. logging and monitoring? Walk through the priority tiers.',
    a:'<strong>Immediate action required:</strong><ul><li><strong>Fire / Smoke alarms</strong> — follow emergency protocol, notify authorities</li><li><strong>Battery overheating / Thermal runaway risk</strong> — derate or take offline, notify site management</li><li><strong>HVAC failure with rising temps</strong> — BESS must be derated; thermal runaway risk</li></ul><strong>Investigate and communicate:</strong><ul><li><strong>Breaker/inverter trips</strong> — determine cause, log, notify SC of reduced capability</li><li><strong>Transformer alarms</strong> — assess severity, notify</li><li><strong>Loss of communications</strong> — confirm last known status, check network, notify SC (COM-002)</li></ul><strong>Log and monitor:</strong><ul><li><strong>Security alarms</strong> — log and notify site team</li></ul>Rule: never silence an unacknowledged alarm without understanding the cause.'},
 
-  {id:'s3', lvl:2, cat:'scada', type:'scenario',
-   q:'SCENARIO: Loss of comms alarm fires on a solar site. What matters most — and what do you NOT assume?',
-   a:'<strong>First: Is the equipment in a safe state?</strong><ul><li>Note last known status before comm loss — was it generating normally? Any active alarms before it went dark?</li><li>Comm loss = loss of visibility. It does <strong>NOT</strong> mean equipment tripped or failed.</li><li>Check if other sites on the same network path are affected — network issue vs. site-specific</li><li>Notify SC — comm loss may affect their telemetry and AGC signal (COM-002 trigger)</li><li>If comm cannot be restored quickly or safety is uncertain, dispatch field personnel</li></ul><strong>Do NOT assume: comm loss ≠ equipment failure.</strong> Treat them as separate problems.'},
+  {id:'s3', lvl:2, cat:'scada', type:'application',
+   q:'How would you notice a site has lost comms, and what does that actually tell you?',
+   a:'<strong>There is usually no alarm.</strong> A site cannot report that it stopped talking to you \u2014 the message would have to travel over the link that just failed \u2014 and nothing in our stack flags stale values on its own.<br><br><strong>How it actually surfaces:</strong><ul><li>The <strong>SC or TO calls</strong> \u2014 they lost your telemetry and noticed before you did</li><li>Values sit frozen at the same numbers, or timestamps stop advancing</li><li>SCADA will not load, or will not let you log in</li><li><strong>Trend it to confirm</strong> \u2014 a flat line at an unchanged value, instead of the normal minute-to-minute movement, is stale data rather than a steady plant</li></ul><strong>What it tells you: you have lost visibility.</strong> It does <strong>not</strong> mean the site tripped or that equipment failed. The plant may be running normally and generating the whole time.<br><br>Before acting, note the last known state before it went dark, and check whether other sites on the same network path dropped too \u2014 that separates a network problem from a site problem.<br><br>Comms alarms you <em>will</em> see are a level down: an inverter or PCS dropping off the plant controller. The site is still talking to you, so it can report that one.'},
 
   {id:'s4', lvl:2, cat:'scada', type:'scenario',
    q:'SCENARIO: Battery temperature is rising AND an HVAC alarm is active. Why is this combination dangerous?',
@@ -19665,7 +19668,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.03';
+const APP_VERSION = 'v2.05';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19739,7 +19742,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.03</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.05</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
