@@ -2593,6 +2593,92 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .ec-arrow{stroke:var(--text3);stroke-width:1.4;fill:none;}
 .ec-arrow-bi{stroke:var(--text3);stroke-width:1.4;stroke-dasharray:4 3;fill:none;}
 .ec-rail{stroke:var(--text3);stroke-width:1.4;fill:none;}
+
+.roc-steps{margin:6px 0 10px 18px;padding:0;}
+.roc-steps li{margin-bottom:6px;line-height:1.5;}
+.roc-step-next{list-style:none;margin-left:-18px;border:1px dashed var(--border2);border-radius:6px;
+  height:26px;background:var(--bg3);opacity:.5;}
+.roc-step-btn{background:var(--bg3);border:1px solid var(--blue);color:var(--blue);border-radius:6px;
+  padding:5px 13px;font-family:var(--f);font-size:12px;cursor:pointer;display:inline-flex;
+  align-items:center;gap:9px;}
+.roc-step-btn:hover{background:var(--bbg);}
+.roc-step-count{font-family:var(--m);font-size:10px;opacity:.7;}
+
+.ord-lead{font-size:12px;color:var(--text3);margin-bottom:10px;}
+.ord-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+.ord-item{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:8px 12px;
+  border:1px solid var(--border2);border-radius:7px;background:var(--bg2);cursor:pointer;
+  font-family:var(--f);font-size:13px;color:var(--text);transition:all .12s;}
+.ord-item:hover{border-color:var(--blue);}
+.ord-item[disabled],.ord-item:not([onclick]){cursor:default;}
+.ord-picked{border-color:var(--blue);background:var(--bbg);}
+.ord-right{border-color:var(--green);background:var(--gbg);}
+.ord-wrong{border-color:var(--red);background:var(--rbg);}
+.ord-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-family:var(--m);font-size:11px;font-weight:700;
+  background:var(--bg4);color:var(--text2);}
+.ord-picked .ord-num{background:var(--blue);color:#fff;}
+.ord-right .ord-num{background:var(--green);color:#fff;}
+.ord-wrong .ord-num{background:var(--red);color:#fff;}
+.ord-num-empty{background:transparent;border:1px dashed var(--border2);}
+.ord-text{flex:1;line-height:1.4;}
+.ord-should{font-family:var(--m);font-size:10px;color:var(--text3);white-space:nowrap;}
+.ord-actions{display:flex;align-items:center;gap:10px;}
+.ord-btn{background:var(--green);border:none;color:#fff;border-radius:6px;padding:6px 15px;
+  font-family:var(--f);font-size:12.5px;cursor:pointer;}
+.ord-btn[disabled]{opacity:.4;cursor:default;}
+.ord-clear{background:none;border:none;color:var(--text3);font-size:11px;cursor:pointer;
+  text-decoration:underline;font-family:var(--f);}
+.ord-score{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;}
+.ord-explain{font-size:13px;color:var(--text2);line-height:1.55;margin-bottom:12px;}
+
+.mt-lead{font-size:12px;color:var(--text3);margin-bottom:10px;}
+.mt-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px;}
+.mt-col{display:flex;flex-direction:column;gap:6px;}
+.mt-item{display:flex;align-items:center;gap:9px;text-align:left;padding:7px 11px;border-radius:7px;
+  border:1px solid var(--border2);background:var(--bg2);cursor:pointer;font-family:var(--f);
+  font-size:12.5px;color:var(--text);transition:all .12s;}
+.mt-item:hover{border-color:var(--blue);}
+.mt-sel{border-color:var(--blue);background:var(--bbg);box-shadow:0 0 0 2px var(--bbg);}
+.mt-linked{border-color:var(--border2);}
+.mt-right{border-color:var(--green);background:var(--gbg);}
+.mt-wrong{border-color:var(--red);background:var(--rbg);}
+.mt-key{font-family:var(--m);font-weight:700;font-size:12px;min-width:46px;flex-shrink:0;}
+.mt-val{color:var(--text2);line-height:1.3;}
+.mt-empty{color:var(--text3);opacity:.6;}
+.mt-bank{padding-left:4px;}
+.mt-opt{text-align:left;padding:7px 11px;border-radius:7px;border:1px dashed var(--border2);
+  background:var(--bg3);cursor:pointer;font-family:var(--f);font-size:12.5px;color:var(--text2);
+  transition:all .12s;}
+.mt-opt:hover{border-color:var(--blue);color:var(--blue);}
+.mt-used{opacity:.25;cursor:default;}
+.mt-score{font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px;}
+.mt-fix{font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:10px;}
+@media(max-width:640px){.mt-grid{grid-template-columns:1fr;}}
+
+.bk-lead{font-size:12px;color:var(--text3);margin-bottom:10px;}
+.bk-items{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+.bk-row{display:flex;align-items:center;gap:12px;padding:7px 11px;border-radius:7px;
+  border:1px solid var(--border2);background:var(--bg2);}
+.bk-ok{border-color:var(--green);background:var(--gbg);}
+.bk-no{border-color:var(--red);background:var(--rbg);}
+.bk-text{flex:1;font-size:12.5px;color:var(--text);line-height:1.35;}
+.bk-opts{display:flex;gap:5px;flex-shrink:0;}
+.bk-btn{padding:4px 11px;border-radius:5px;border:1px solid var(--border2);background:var(--bg3);
+  color:var(--text3);font-family:var(--f);font-size:11px;cursor:pointer;white-space:nowrap;transition:all .12s;}
+.bk-btn:hover{border-color:var(--blue);color:var(--blue);}
+.bk-on{background:var(--blue);border-color:var(--blue);color:#fff;}
+.bk-answer{box-shadow:inset 0 0 0 2px var(--green);}
+@media(max-width:640px){.bk-row{flex-direction:column;align-items:flex-start;gap:7px;}}
+
+.pk-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+.pk-opt{text-align:left;padding:9px 13px;border-radius:7px;border:1px solid var(--border2);
+  background:var(--bg2);cursor:pointer;font-family:var(--f);font-size:13px;color:var(--text);
+  transition:all .12s;}
+.pk-opt:hover{border-color:var(--blue);background:var(--bbg);}
+.pk-right{border-color:var(--green);background:var(--gbg);cursor:default;}
+.pk-wrong{border-color:var(--red);background:var(--rbg);cursor:default;}
+.pk-dim{opacity:.45;cursor:default;}
 </style>
 </head>
 <body>
@@ -16059,7 +16145,7 @@ const ROC_QUESTIONS = [
 
   // ══ DISPATCH: ADS / AGC ═══════════════════════════════════════════════════
 
-  {id:'d1', lvl:1, cat:'dispatch', type:'conceptual',
+  {id:'d1', stepwise:true, lvl:1, cat:'dispatch', type:'conceptual',
    q:'Walk through how ADS/AGC dispatch works from the ISO down to the plant. What is the operator verifying at each step?',
    a:'<ol style="margin-left:14px;"><li><strong>ISO (CAISO/ERCOT)</strong> sends a dispatch signal — the MW setpoint the plant should be producing</li><li>The setpoint appears on the <strong>ADS board</strong> — the operator identifies the Resource ID and the target setpoint</li><li>The operator checks <strong>on-site SCADA</strong> to confirm the setpoint was received by the plant\'s control system</li><li>The operator verifies the site is <strong>responding accordingly</strong> — actual MW output is tracking toward the setpoint</li></ol>If the site is not responding, that\'s a deviating asset and requires investigation and notification to the SC.'},
 
@@ -16103,11 +16189,11 @@ const ROC_QUESTIONS = [
 
   // ══ OPERATIONS: SOLAR, WIND, BESS, SWITCHING ════════════════════════════
 
-  {id:'op1', lvl:1, cat:'operations', type:'application',
+  {id:'op1', stepwise:true, lvl:1, cat:'operations', type:'application',
    q:'Walk through the solar monitoring procedure: what are the 4 steps and what is each looking for?',
    a:'Per the competency framework:<ol style="margin-left:14px;"><li><strong>Identify each inverter\'s status</strong> — Online, Offline, or Comms Loss. A comms loss is not the same as an offline inverter.</li><li><strong>Locate current irradiance</strong> — what is the available sunlight? This is the benchmark for expected output.</li><li><strong>Identify each inverter\'s output and site total</strong> — actual MW vs. expected given irradiance.</li><li><strong>Identify any derated inverters</strong> — is the underperformance due to a derate (intentional) or a fault (unintentional)?</li></ol>If irradiance is high and output is low with no derate active → investigate. Check inverter alarms, then check AGC setpoint, then notify SC if unexplained.'},
 
-  {id:'op2', lvl:1, cat:'operations', type:'application',
+  {id:'op2', stepwise:true, lvl:1, cat:'operations', type:'application',
    q:'A tripped wind turbine needs to be reset. Walk through the steps and when you escalate.',
    a:'<ol style="margin-left:14px;"><li><strong>Identify the tripped turbine</strong> on SCADA — confirm it\'s a genuine trip vs. a comms loss or planned outage</li><li><strong>Reset the turbine per SOP</strong> — follow the site-specific reset procedure exactly</li><li><strong>Notify site team if needed</strong> — if the turbine trips again after reset, or if the trip reason is unclear, escalate to field team</li><li><strong>Create or update the operator log</strong> — document the trip time, reset time, cause if known, and any escalation</li></ol>Repeated trips on the same turbine = do not keep resetting. Escalate to maintenance and log accordingly.'},
 
@@ -16115,11 +16201,11 @@ const ROC_QUESTIONS = [
    q:'Solar site is underperforming with high irradiance. How do you determine if it\'s an asset issue vs. a curtailment order?',
    a:'Cross-reference these four data points:<ul><li><strong>Inverter status</strong> — are they online, faulted, or showing comms loss?</li><li><strong>Current irradiance</strong> — is there actually enough sun to justify higher output?</li><li><strong>ADS setpoint</strong> — is there an active curtailment or derate reducing the setpoint?</li><li><strong>Active alarms</strong> — any inverter trips, thermal limits, or protection flags?</li></ul><strong>If inverters show faults with good irradiance</strong> → asset issue (inverter trip, string problem). Investigate, log, notify SC.<br><strong>If inverters show normal but setpoint is low</strong> → curtailment is the cause. Confirm it\'s logged as a valid order.<br><strong>If other nearby sites are also low</strong> → likely a grid curtailment affecting the area.'},
 
-  {id:'op4', lvl:1, cat:'operations', type:'application',
+  {id:'op4', stepwise:true, lvl:1, cat:'operations', type:'application',
    q:'Hail stow procedure for HARQ 1/2 or C-Flats: what are the 7 steps and what is the trigger?',
    a:'<strong>Trigger:</strong> Damaging hail alert — hail ≥ 1 inch in diameter forecasted or active.<ol style="margin-left:14px;"><li>Identify the alert</li><li>Log into NXNavigator</li><li>Stow the site (panels rotate to protective angle)</li><li>Notify Site Owner, Field team, and SC</li><li>Initiate Auto Tracking <strong>once the all clear is received</strong> (text or email)</li><li>Notify Site Owner, Field team, and SC again</li><li>Log all steps with timestamps</li></ol><strong>Common gap:</strong> Auto Tracking is never re-initiated after the storm. Panels will show low output with good irradiance and no alarm will fire — it\'s a "normal" stow state. Always verify Auto Tracking is running post-event.'},
 
-  {id:'op5', lvl:1, cat:'operations', type:'procedure',
+  {id:'op5', stepwise:true, lvl:1, cat:'operations', type:'procedure',
    q:'Walk through the BESS identify/derate procedure. What are the 6 steps?',
    a:'<ol style="margin-left:14px;"><li><strong>Identify BESS nameplate info</strong> — MW capacity, MWh capacity, voltage setpoint, operating band</li><li><strong>Determine if BESS is Fully Available or Derated</strong> — check SCADA for actual capability vs. nameplate</li><li><strong>Submit derate/outage to QSE and notify Owner Contacts</strong> — use the proper template/email; this goes to the SC</li><li><strong>Update the Outage Board and create an Operator Log</strong> — document start time, cause, expected duration</li><li><strong>Update/End Outage</strong> when the condition clears</li><li><strong>Update Outage Board, Operator Log, and notify Owner Contacts</strong> again at close-out</li></ol>'},
 
@@ -16133,7 +16219,7 @@ const ROC_QUESTIONS = [
    q:'Walk through the start-of-shift turnover — 12 steps in order.',
    a:'<ol style="margin-left:14px;"><li>Notify ROC in Teams chat that you are on the way</li><li>Clock in at the office door (DSPTCH)</li><li>Check the dry-erase / outage board</li><li>Receive instructions from offgoing operator (Teams or in person)</li><li>Log into D1/D2 duty site SCADAs</li><li>Fill out (ROCC1) Operator Log — Onsite</li><li>Complete Asset Scanning Tool and upload</li><li>Leave instructions for oncoming operator in Teams/turnover</li><li>Fill out (ROCC1) Operator Log — Offsite</li><li>Ensure you log out of all sites directly</li><li>Leave the ROCC only after relief is logged into their sites</li><li>Clock out (DSPTCH)</li></ol><strong>Step 11 is non-negotiable:</strong> the ROCC cannot be without coverage. Your accountability doesn\'t end until relief is confirmed online.'},
 
-  {id:'pr2', lvl:1, cat:'operations', type:'procedure',
+  {id:'pr2', stepwise:true, lvl:1, cat:'operations', type:'procedure',
    q:'What is the StaySafe Lone Worker protocol? Walk through the 4 steps.',
    a:'<ol style="margin-left:14px;"><li><strong>Alarm received via StaySafe</strong> — a lone worker check-in was missed</li><li><strong>Operator makes a single attempt to reach the tech</strong> — call or message once</li><li><strong>Attempt to reach Supervisor or a nearby employee</strong> — escalate immediately if tech is unreachable</li><li><strong>Once 10 minutes have passed without contact — call local emergency authorities</strong> and request a well-being check</li></ol>Do not delay past 10 minutes waiting for a callback. The protocol exists because a worker may be incapacitated. Err on the side of the well-being check.'},
 
@@ -16141,7 +16227,7 @@ const ROC_QUESTIONS = [
    q:'What information is required when creating an Operator Log, and what extra fields are required for a Visitor Log?',
    a:'<strong>Standard Operator Log fields:</strong><ul><li>Select Site / Equipment</li><li>Log Type</li><li>GADS Code</li><li>Start and Forecast Dates</li><li>Sub-log (details of why the log was created)</li></ul><strong>Visitor Log — additional required fields:</strong><ul><li>Visitor First and Last Name</li><li>Company they work for</li><li>Cell phone number</li><li>Nature of work</li></ul>Incomplete logs are a compliance gap. If it wasn\'t logged, it didn\'t happen.'},
 
-  {id:'pr4', lvl:1, cat:'operations', type:'procedure',
+  {id:'pr4', stepwise:true, lvl:1, cat:'operations', type:'procedure',
    q:'Walk through the Operating Instruction procedure under COM-002 — 5 steps.',
    a:'<ol style="margin-left:14px;"><li><strong>Receive</strong> the Operating Instruction from the issuing authority (ISO, TOP, SC)</li><li><strong>Repeat the instruction back correctly</strong> — verbatim repeat-back confirms both parties have the same understanding</li><li><strong>Execute</strong> the Operating Instruction</li><li><strong>Respond to the authority</strong> — confirm success or failure of execution</li><li><strong>Log in accordance</strong> \u2014 document instruction received, time, who issued it, action taken, outcome. Attach a picture if received and confirmed on the ADS board, along with all call logs if received by phone.</li></ol>COM-002 makes the repeat-back mandatory — it is not optional. A missed readback is a standard violation even if the instruction was executed correctly.'},
 
@@ -16210,22 +16296,36 @@ const ROC_QUESTIONS = [
   // ══ FULL SIMULATION SCENARIO ══════════════════════════════════════════════
 
   {id:'sim1', lvl:3, cat:'operations', type:'simulation',
-   q:'START-OF-SHIFT SCENARIO — Incoming conditions: CAISO curtailment active on solar | High voltage across the plant bus | Reactor offline for maintenance | Inverter Unit 3 tripped | BESS high temp alarm | BESS HVAC alarm active',
-   a:'',
-   sim: {
-     inputs: ['CAISO curtailment active — solar derate in effect','High voltage — plant bus elevated above band','Reactor offline (maintenance outage)','Inverter trip — Unit 3','BESS high temp alarm','BESS HVAC alarm'],
-     tasks: [
-       {q:'1. Priority Actions — what do you do first, second, third? Who do you call?',
-        a:'<strong>1st — BESS safety (immediate):</strong> HVAC alarm + rising temps = thermal runaway risk. Derate or take BESS offline per emergency SOP. Notify site management. Notify SC of loss of resource capability.<br><strong>2nd — High voltage:</strong> Reactor is offline, so there\'s no automatic MVAR absorption. Check if cap banks can be switched off. Notify SC/ISO if voltage is outside operating band — this is a reportable condition under VAR-002.<br><strong>3rd — Unit 3 inverter trip:</strong> Investigate cause on SCADA (fault? comms? protection?). Log it. Notify SC of reduced solar capability.<br><strong>4th — Curtailment confirmation:</strong> Confirm the CAISO curtailment order is logged with correct MW level, time received, and source. Verify site is tracking the reduced setpoint.'},
-       {q:'2. Root cause thinking — what is the highest-risk cascade at this moment?',
-        a:'The BESS thermal condition is the most immediate safety risk — it can escalate to fire without warning. The high voltage situation is the biggest grid reliability risk: with the reactor offline and no reactive absorption available, if voltage keeps rising it could trip a protection relay on the interconnect line and take the entire plant offline simultaneously. The cascade: high volt → relay trip → more inverters trip → plant goes dark → SC scrambles with CAISO.'},
-       {q:'3. What logs are required before you can leave this shift?',
-        a:'<ul><li><strong>BESS thermal event:</strong> time, temp readings, HVAC alarm, actions taken, who was notified and when</li><li><strong>Unit 3 inverter trip:</strong> unit ID, trip time, cause if determined, restoration status, SC notification</li><li><strong>Voltage exceedance:</strong> if voltage left the operating band — log time, peak value, actions taken, ISO/SC notification</li><li><strong>CAISO curtailment:</strong> order source, MW level, time received, confirmed on SCADA, logged as outage/derate</li><li><strong>All communications</strong> with SC, ISO, site management — time, content, outcome</li></ul>'},
-       {q:'4. What grid condition are you handing off to the next operator?',
-        a:'Plant at reduced capacity. BESS offline — thermal event under investigation, do not restore without HVAC confirmed operational and temperature cleared. Unit 3 inverter offline — cause under investigation, do not reset without maintenance authorization. CAISO curtailment still active — confirm with SC if it has been extended or released. High voltage condition ongoing — reactor still out for maintenance, voltage being monitored, SC aware. Relief operator should: check BESS status with maintenance before shift end, watch voltage closely, and confirm curtailment status with SC.'}
+   q:'START-OF-SHIFT SCENARIO \u2014 you take over at 06:00. Conditions develop through the morning.',
+   sim:{
+     inputs:[
+       '06:00 handover \u2014 reactor out on a planned maintenance outage, bus voltage running high but in band',
+       '06:00 handover \u2014 CAISO curtailment active on solar, site following setpoint',
+       '07:10 \u2014 BESS HVAC alarm',
+       '07:25 \u2014 BESS container temperature climbing, still below trip',
+       '07:40 \u2014 Inverter Unit 3 trips'
+     ],
+     tasks:[
+       {q:'1. At 07:40, what is the highest-risk condition on the plant?',
+        a:'<strong>The BESS thermal condition.</strong> The HVAC alarm at 07:10 and the rising temperature at 07:25 are the same event \u2014 cooling has failed and the container is heating. That is the only condition here with a path to thermal runaway.<br><br>Everything else is a production problem. The inverter trip costs MW. The curtailment costs MW. The reactor being out is planned and the voltage is still in band. None of them can hurt anyone.'},
+       {q:'2. Which conditions here are actually the same event?',
+        a:'<ul><li><strong>HVAC alarm + rising temperature</strong> \u2014 one event. The cooling failure is the cause, the temperature is the symptom. Do not log or report them separately.</li><li><strong>Reactor offline + high voltage</strong> \u2014 one event. The reactor absorbs VARs; with it out, voltage sits higher. Expected, not a new problem.</li><li><strong>Curtailment + inverter trip</strong> \u2014 unrelated, but both reduce output. Be careful not to read the trip as curtailment following, or the curtailment as masking the trip.</li></ul>'},
+       {q:'3. What do you hand off at 18:00?',
+        a:'Plant state and what is still open:<ul><li>BESS status and whether the thermal event is resolved, being worked, or still degrading</li><li>Whether an outage was submitted, and its end time</li><li>Inverter 3 \u2014 restored or still out, and whether field is engaged</li><li>Reactor return-to-service time from the planned outage</li><li>Current voltage and whether it is holding in band without the reactor</li><li>Anything the next operator needs to watch rather than act on</li></ul>'}
      ]
-   }
-  },
+   },
+   a:''},
+  {id:'ord1', lvl:3, cat:'operations', type:'ordering',
+   q:'07:40. BESS HVAC alarm at 07:10, container temperature climbing since 07:25, Inverter Unit 3 just tripped, CAISO curtailment active. Put these actions in the order you would take them.',
+   order:[
+     'Assess the BESS thermal condition \u2014 is it still climbing, and is it approaching a trip?',
+     'Notify the SC and TO of the BESS condition and likely capacity impact',
+     'Dispatch field to the BESS for the HVAC failure',
+     'Submit the outage or derate for the affected BESS capacity',
+     'Investigate the Inverter 3 trip',
+     'Log both events with times, alarms and actions taken'
+   ],
+   a:'<strong>Safety first, then grid, then production, then paperwork.</strong> The thermal condition leads because it is the only one that can hurt someone. Notification follows immediately \u2014 the SC and TO need to know before capacity moves, not after. Field goes next because they are the only ones who can fix the cause. The outage is submitted once you know the impact.<br><br>Inverter 3 waits. It costs MW and nothing else, and working it first is the classic mistake \u2014 the newest alarm feels most urgent.<br><br>Logging is last, but not optional.'},
 
   {id:'r3', lvl:3, cat:'scada', type:'rapid',
    q:'State the one-line diagram symbol for: Breaker, Transformer, Switch.',
@@ -16233,7 +16333,7 @@ const ROC_QUESTIONS = [
   {id:'s5', lvl:3, cat:'scada', type:'conceptual',
    q:'What is a PPC, and what is it doing between the ISO setpoint and the equipment?',
    a:'The <strong>Plant Power Controller</strong> takes a plant-wide setpoint and distributes it across the individual inverters, turbines or PCS units, then trims continuously to hold the plant at that target at the point of interconnection.<ul><li>Receives the setpoint from SCADA / ADS / AGC</li><li>Splits it across available equipment, accounting for whatever is derated or offline</li><li>Regulates to the <strong>POI</strong>, not the sum of the equipment</li><li>Runs the control mode the TOP schedule requires</li></ul><strong>Why it matters:</strong> when a site is not following dispatch, the PPC is the layer between \u201cthe setpoint arrived\u201d and \u201cthe equipment moved.\u201d A setpoint visible in SCADA with no MW response usually means the PPC is in the wrong mode, has a limit applied, or has lost communication with the equipment beneath it.<br><br><strong>Modes to recognise:</strong> active power control, voltage control, power factor control, and manual/local \u2014 where the PPC stops regulating and holds whatever it was last given.'},
-  {id:'op7', lvl:1, cat:'operations', type:'procedure',
+  {id:'op7', stepwise:true, lvl:1, cat:'operations', type:'procedure',
    q:'Walk through the outage ticket procedure \u2014 what are the 4 steps?',
    a:'<ol style="margin-left:14px;"><li><strong>Identify the outage</strong> \u2014 what is out, when it started, and whether it is forced or planned</li><li><strong>Submit the ticket</strong> \u2014 as required and as prescribed by the SC</li><li><strong>Update as conditions change</strong> \u2014 revise the end time or capacity as better information arrives</li><li><strong>File with the CPUC</strong> for Peregrine or Northstar if the outage is \u226550MW</li><li><strong>Close the ticket</strong> \u2014 once the equipment is returned and output is confirmed recovered</li></ol>The step most often missed is the last one. A ticket left open after the equipment is back keeps the site showing derated to the SC and the market, with nothing alarming to tell you.'},
   {id:'s6', lvl:2, cat:'scada', type:'application',
@@ -16308,6 +16408,55 @@ const ROC_QUESTIONS = [
   {id:'s7', lvl:3, cat:'scada', type:'application',
    q:'How would you identify a site trip?',
    a:'Any one of these is enough to treat it as a trip:<ul><li><strong>High side breaker open</strong></li><li><strong>Frozen data on SCADA</strong></li><li><strong>Complete loss of comms</strong></li><li><strong>The TO reports the site tripped</strong></li></ul>Confirm before acting: <strong>an open high side while the site is still producing is NOT a trip.</strong> Check output before submitting an outage \u2014 if generation is unchanged, you have an indication problem, not a trip.<br><br>Once identified, work the Site Trip playbook. Notify TOP first and confirm they see the same breaker position.'},
+  {id:'mt1', lvl:3, cat:'scada', type:'matching',
+   q:'Match each ANSI device number to what it is.',
+   match:[['52','Breaker'],['89','Switch'],['59','Overvoltage relay'],['27','Undervoltage relay'],['86','Lockout relay']],
+   a:'These turn up on prints, in relay targets and in switching orders. <strong>52</strong> and <strong>86</strong> are the two you will meet most \u2014 a breaker, and the lockout that stops it being closed back in until someone resets it.'},
+  {id:'mt2', lvl:1, cat:'grid', type:'matching',
+   q:'Match each grid entity to what it does.',
+   match:[
+     ['GO','Owns the generation facility'],
+     ['GOP','Operates the facility in real time \u2014 us'],
+     ['TO','Owns the transmission infrastructure'],
+     ['TOP','Manages transmission in real time, directs switching'],
+     ['PSE','Buys and sells the electricity'],
+     ['SC','Schedules the plant into the market'],
+     ['BA','Balances supply and demand'],
+     ['RC','Oversees wide-area reliability']],
+   a:'The pair worth keeping straight is <strong>TO vs TOP</strong>. The TO owns the wires; the <strong>TOP</strong> is who you ask before opening the high side. Owning and operating are different jobs, and it is the operator you call.'},
+  {id:'bk1', lvl:1, cat:'scada', type:'sorting',
+   q:'Sort these alarms: act on it now, or log and monitor?',
+   buckets:{ names:['Act now','Log & monitor'], items:[
+     ['Fire or smoke alarm', 0],
+     ['Battery overheating or thermal runaway indication', 0],
+     ['Breaker or inverter trip', 0],
+     ['Loss of communications', 0],
+     ['HVAC failure with temperature rising', 0],
+     ['Transformer alarm', 1],
+     ['Security alarm', 1],
+     ['Single inverter offline, site output otherwise normal', 1]]},
+   a:'The dividing line is whether it can hurt someone or take the site off the grid. <strong>Fire, thermal and trips act now.</strong> Comms loss acts now too \u2014 not because it is dangerous, but because you have lost the ability to see anything else on this list.<br><br>An HVAC alarm on its own would be monitor. <strong>HVAC plus rising temperature is the same event as a thermal condition</strong>, which is why it sits in act now.'},
+  {id:'bk2', lvl:2, cat:'scada', type:'sorting',
+   q:'Site trip, or not a site trip?',
+   buckets:{ names:['Site trip','Not a trip'], items:[
+     ['High-side breaker shows open, no generation', 0],
+     ['Frozen data on SCADA, output last seen at zero', 0],
+     ['Complete loss of comms, TO confirms the site is offline', 0],
+     ['TO calls and reports the site tripped', 0],
+     ['High-side breaker shows open but the site is still producing', 1],
+     ['One feeder open, rest of the plant generating', 1],
+     ['Site at reduced output following a curtailment setpoint', 1]]},
+   a:'<strong>An open breaker with the site still producing is an indication problem, not a trip.</strong> Confirm output with the SC before submitting anything \u2014 the Site Trip playbook has a branch for exactly this.<br><br>A single open feeder is a partial derate. Following a curtailment setpoint is the plant doing what it was told.'},
+  {id:'pk1', lvl:2, cat:'standards', type:'pick-one',
+   q:'AVR drops out of automatic. Who must be notified?',
+   choices:['The ISO','The Scheduling Coordinator','The Transmission Operator','The site owner'],
+   answer:2,
+   a:'<strong>VAR-002 puts the obligation between the GOP and its associated TOP.</strong> Not the ISO, not the SC. NERC enforcement actions under VAR-002 are consistently for failing to notify the TOP.<br><br>Notify immediately, every occurrence, however brief.'},
+  {id:'pk2', lvl:2, cat:'operations', type:'pick-one',
+   q:'An outage of 50MW or more at Peregrine or Northstar requires an extra filing. With whom?',
+   choices:['NERC','WECC','CPUC','The Balancing Authority'],
+   answer:2,
+   a:'<strong>CPUC.</strong> It is a California state filing and it applies at the 50MW threshold for those two sites specifically. Easy one to miss, because nothing in the normal outage ticket flow prompts you for it.'}
 ];
 
 // Labels and icons for each study topic. Referenced by rocRender, the drill
@@ -16729,6 +16878,322 @@ function rocMark(qid, val) {
   rocUpdateStats();
 }
 
+// ── Step-at-a-time reveal ────────────────────────────────────────────────
+// For ordered procedures, showing every step at once lets an operator read
+// rather than recall. These reveal one at a time so you commit to "step 2 is
+// ..." before seeing whether it matches. Only used where the list is genuinely
+// sequential and short enough to be worth the clicks.
+let rocStepAt = {};
+
+function rocSplitSteps(html) {
+  const m = html.match(/<(ul|ol)[^>]*>([\s\S]*?)<\/\1>/);
+  if (!m) return null;
+  const items = [...m[2].matchAll(/<li>([\s\S]*?)<\/li>/g)].map(x => x[1]);
+  if (items.length < 3) return null;
+  return { before: html.slice(0, m.index), items, after: html.slice(m.index + m[0].length) };
+}
+
+function rocStepHtml(qid) {
+  const q = ROC_QUESTIONS.find(x => x.id === qid);
+  if (!q) return '';
+  const parts = rocSplitSteps(q.a);
+  if (!parts) return q.a;
+  const shown = rocStepAt[qid] || 0;
+  const done = shown >= parts.items.length;
+  let h = parts.before + '<ol class="roc-steps">';
+  parts.items.forEach((it, i) => {
+    if (i < shown) h += '<li class="roc-step-on">' + it + '</li>';
+    else if (i === shown) h += '<li class="roc-step-next">&nbsp;</li>';
+  });
+  h += '</ol>';
+  h += done ? parts.after
+     : '<button class="roc-step-btn" onclick="rocNextStep(\'' + qid + '\')">' +
+       'Reveal step ' + (shown + 1) +
+       '<span class="roc-step-count">of ' + parts.items.length + '</span></button>';
+  return h;
+}
+
+function rocNextStep(qid) {
+  rocStepAt[qid] = (rocStepAt[qid] || 0) + 1;
+  const el = document.getElementById('roc-ans-' + qid);
+  if (el) el.innerHTML = '<span class="roc-a-label">Answer</span>' + rocStepHtml(qid);
+}
+
+// ── Ordering questions ───────────────────────────────────────────────────
+// Click the items in the order you would actually do them, then check. No free
+// text, so this grades itself — the operator finds out whether they were right
+// rather than deciding it for themselves. Used where sequence is the whole
+// point: priority under multiple conditions, switching order, escalation.
+let rocOrderPick = {};     // qid -> array of chosen indices
+let rocOrderDone = {};     // qid -> true once checked
+
+function rocOrderShuffle(qid, n) {
+  // stable per question per session, so re-rendering does not reshuffle mid-answer
+  if (!rocOrderShuffle.cache) rocOrderShuffle.cache = {};
+  if (!rocOrderShuffle.cache[qid]) {
+    const idx = [...Array(n).keys()];
+    for (let i = idx.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [idx[i], idx[j]] = [idx[j], idx[i]];
+    }
+    rocOrderShuffle.cache[qid] = idx;
+  }
+  return rocOrderShuffle.cache[qid];
+}
+
+function rocOrderHtml(qid) {
+  const q = ROC_QUESTIONS.find(x => x.id === qid);
+  if (!q || !q.order) return '';
+  const picked = rocOrderPick[qid] || [];
+  const checked = rocOrderDone[qid];
+  const shuffled = rocOrderShuffle(qid, q.order.length);
+
+  let h = '<div class="ord-lead">' + (checked ? 'Correct order:' : 'Click them in the order you would do them.') + '</div><div class="ord-list">';
+  shuffled.forEach(i => {
+    const pos = picked.indexOf(i);
+    let cls = 'ord-item', badge = '';
+    if (checked) {
+      const right = pos === i;                       // chosen slot matches true slot
+      cls += right ? ' ord-right' : ' ord-wrong';
+      badge = '<span class="ord-num">' + (pos >= 0 ? pos + 1 : '\u2013') + '</span>';
+    } else if (pos >= 0) {
+      cls += ' ord-picked';
+      badge = '<span class="ord-num">' + (pos + 1) + '</span>';
+    } else {
+      badge = '<span class="ord-num ord-num-empty"></span>';
+    }
+    h += '<button class="' + cls + '" ' + (checked ? '' : 'onclick="rocOrderTap(\'' + qid + '\',' + i + ')"') + '>' +
+         badge + '<span class="ord-text">' + q.order[i] + '</span>' +
+         (checked && pos !== i ? '<span class="ord-should">should be ' + (i + 1) + '</span>' : '') +
+         '</button>';
+  });
+  h += '</div>';
+
+  if (!checked) {
+    h += '<div class="ord-actions">' +
+      '<button class="ord-btn" onclick="rocOrderCheck(\'' + qid + '\')"' +
+        (picked.length === q.order.length ? '' : ' disabled') + '>Check order</button>' +
+      (picked.length ? '<button class="ord-clear" onclick="rocOrderReset(\'' + qid + '\')">start over</button>' : '') +
+      '</div>';
+  } else {
+    const score = picked.filter((v, n) => v === n).length;
+    h += '<div class="ord-score">' + score + ' of ' + q.order.length + ' in the right place</div>';
+    h += '<div class="ord-explain">' + (q.a || '') + '</div>';
+    h += '<div class="ord-actions"><button class="ord-clear" onclick="rocOrderReset(\'' + qid + '\')">try again</button></div>';
+  }
+  return h;
+}
+
+function rocOrderTap(qid, i) {
+  const picked = rocOrderPick[qid] || (rocOrderPick[qid] = []);
+  const at = picked.indexOf(i);
+  if (at >= 0) picked.splice(at, 1); else picked.push(i);
+  rocOrderPaint(qid);
+}
+function rocOrderCheck(qid){ rocOrderDone[qid] = true; rocOrderPaint(qid); }
+function rocOrderReset(qid){
+  rocOrderPick[qid] = []; rocOrderDone[qid] = false;
+  if (rocOrderShuffle.cache) delete rocOrderShuffle.cache[qid];
+  rocOrderPaint(qid);
+}
+function rocOrderPaint(qid){
+  const el = document.getElementById('roc-ans-' + qid);
+  if (el) el.innerHTML = '<span class="roc-a-label">Your order</span>' + rocOrderHtml(qid);
+}
+
+// ── Matching questions ───────────────────────────────────────────────────
+// Tap a term, then tap its pair. Fixed choices on both sides, so it grades
+// itself. Suits anything that is really a lookup table wearing a recall
+// question's clothes — ANSI numbers, entity acronyms.
+let rocMatchSel = {};      // qid -> currently selected left index
+let rocMatchLink = {};     // qid -> { leftIdx: rightIdx }
+let rocMatchDone = {};
+
+function rocMatchOrder(qid, n, side) {
+  if (!rocMatchOrder.cache) rocMatchOrder.cache = {};
+  const k = qid + side;
+  if (!rocMatchOrder.cache[k]) {
+    const idx = [...Array(n).keys()];
+    for (let i = idx.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [idx[i], idx[j]] = [idx[j], idx[i]];
+    }
+    rocMatchOrder.cache[k] = idx;
+  }
+  return rocMatchOrder.cache[k];
+}
+
+function rocMatchHtml(qid) {
+  const q = ROC_QUESTIONS.find(x => x.id === qid);
+  if (!q || !q.match) return '';
+  const pairs = q.match, n = pairs.length;
+  const links = rocMatchLink[qid] || (rocMatchLink[qid] = {});
+  const done = rocMatchDone[qid];
+  const sel = rocMatchSel[qid];
+  const rightOrder = rocMatchOrder(qid, n, 'R');
+
+  let h = '<div class="mt-lead">' + (done ? 'How you did:' : 'Tap a term, then tap what it pairs with.') + '</div>';
+  h += '<div class="mt-grid">';
+  // left column: fixed order
+  h += '<div class="mt-col">';
+  pairs.forEach((p, i) => {
+    const linked = links[i] !== undefined;
+    let cls = 'mt-item';
+    if (done) cls += (links[i] === i ? ' mt-right' : ' mt-wrong');
+    else if (sel === i) cls += ' mt-sel';
+    else if (linked) cls += ' mt-linked';
+    h += '<button class="' + cls + '"' + (done ? '' : ' onclick="rocMatchTapL(\'' + qid + '\',' + i + ')"') + '>' +
+         '<span class="mt-key">' + p[0] + '</span>' +
+         (linked ? '<span class="mt-val">' + pairs[links[i]][1] + '</span>' : '<span class="mt-val mt-empty">\u2014</span>') +
+         '</button>';
+  });
+  h += '</div>';
+  // right column: shuffled bank of remaining options
+  h += '<div class="mt-col mt-bank">';
+  rightOrder.forEach(ri => {
+    const used = Object.values(links).includes(ri);
+    if (done) return;
+    h += '<button class="mt-opt' + (used ? ' mt-used' : '') + '"' +
+         (used ? ' disabled' : ' onclick="rocMatchTapR(\'' + qid + '\',' + ri + ')"') + '>' +
+         pairs[ri][1] + '</button>';
+  });
+  h += '</div></div>';
+
+  if (done) {
+    const score = pairs.filter((p, i) => links[i] === i).length;
+    h += '<div class="mt-score">' + score + ' of ' + n + ' matched correctly</div>';
+    const wrong = pairs.map((p, i) => links[i] === i ? null : p).filter(Boolean);
+    if (wrong.length) h += '<div class="mt-fix">' + wrong.map(p =>
+      '<div><strong>' + p[0] + '</strong> \u2192 ' + p[1] + '</div>').join('') + '</div>';
+    if (q.a) h += '<div class="ord-explain">' + q.a + '</div>';
+    h += '<div class="ord-actions"><button class="ord-clear" onclick="rocMatchReset(\'' + qid + '\')">try again</button></div>';
+  } else {
+    const all = Object.keys(links).length === n;
+    h += '<div class="ord-actions"><button class="ord-btn" onclick="rocMatchCheck(\'' + qid + '\')"' +
+         (all ? '' : ' disabled') + '>Check matches</button>' +
+         (Object.keys(links).length ? '<button class="ord-clear" onclick="rocMatchReset(\'' + qid + '\')">start over</button>' : '') +
+         '</div>';
+  }
+  return h;
+}
+
+function rocMatchTapL(qid, i) {
+  const links = rocMatchLink[qid] || (rocMatchLink[qid] = {});
+  if (links[i] !== undefined) { delete links[i]; rocMatchSel[qid] = undefined; }
+  else rocMatchSel[qid] = (rocMatchSel[qid] === i) ? undefined : i;
+  rocMatchPaint(qid);
+}
+function rocMatchTapR(qid, ri) {
+  const sel = rocMatchSel[qid];
+  if (sel === undefined) return;                 // pick a term first
+  (rocMatchLink[qid] || (rocMatchLink[qid] = {}))[sel] = ri;
+  rocMatchSel[qid] = undefined;
+  rocMatchPaint(qid);
+}
+function rocMatchCheck(qid){ rocMatchDone[qid] = true; rocMatchPaint(qid); }
+function rocMatchReset(qid){
+  rocMatchLink[qid] = {}; rocMatchDone[qid] = false; rocMatchSel[qid] = undefined;
+  if (rocMatchOrder.cache) { delete rocMatchOrder.cache[qid + 'R']; }
+  rocMatchPaint(qid);
+}
+function rocMatchPaint(qid){
+  const el = document.getElementById('roc-ans-' + qid);
+  if (el) el.innerHTML = '<span class="roc-a-label">Your matches</span>' + rocMatchHtml(qid);
+}
+
+// ── Bucket questions ─────────────────────────────────────────────────────
+// Sort items into two or three named buckets. Fixed choices, so it grades
+// itself. Suits real operational judgment calls where the categories matter
+// more than the wording — act now vs monitor, trip vs not a trip.
+let rocBucketPick = {};    // qid -> { itemIdx: bucketIdx }
+let rocBucketDone = {};
+
+function rocBucketHtml(qid) {
+  const q = ROC_QUESTIONS.find(x => x.id === qid);
+  if (!q || !q.buckets) return '';
+  const { names, items } = q.buckets;
+  const picks = rocBucketPick[qid] || (rocBucketPick[qid] = {});
+  const done = rocBucketDone[qid];
+
+  let h = '<div class="bk-lead">' + (done ? 'How you did:' : 'Put each one where it belongs.') + '</div>';
+  h += '<div class="bk-items">';
+  items.forEach((it, i) => {
+    const chosen = picks[i];
+    const right = chosen === it[1];
+    let cls = 'bk-row';
+    if (done) cls += right ? ' bk-ok' : ' bk-no';
+    h += '<div class="' + cls + '"><span class="bk-text">' + it[0] + '</span><span class="bk-opts">';
+    names.forEach((nm, bi) => {
+      const on = chosen === bi;
+      let bcls = 'bk-btn' + (on ? ' bk-on' : '');
+      if (done && bi === it[1]) bcls += ' bk-answer';
+      h += '<button class="' + bcls + '"' + (done ? '' : ' onclick="rocBucketTap(\'' + qid + '\',' + i + ',' + bi + ')"') +
+           '>' + nm + '</button>';
+    });
+    h += '</span></div>';
+  });
+  h += '</div>';
+
+  if (done) {
+    const score = items.filter((it, i) => picks[i] === it[1]).length;
+    h += '<div class="mt-score">' + score + ' of ' + items.length + ' sorted correctly</div>';
+    if (q.a) h += '<div class="ord-explain">' + q.a + '</div>';
+    h += '<div class="ord-actions"><button class="ord-clear" onclick="rocBucketReset(\'' + qid + '\')">try again</button></div>';
+  } else {
+    const all = Object.keys(picks).length === items.length;
+    h += '<div class="ord-actions"><button class="ord-btn" onclick="rocBucketCheck(\'' + qid + '\')"' +
+         (all ? '' : ' disabled') + '>Check</button>' +
+         (Object.keys(picks).length ? '<button class="ord-clear" onclick="rocBucketReset(\'' + qid + '\')">start over</button>' : '') +
+         '</div>';
+  }
+  return h;
+}
+function rocBucketTap(qid, i, bi){
+  (rocBucketPick[qid] || (rocBucketPick[qid] = {}))[i] = bi;
+  rocBucketPaint(qid);
+}
+function rocBucketCheck(qid){ rocBucketDone[qid] = true; rocBucketPaint(qid); }
+function rocBucketReset(qid){ rocBucketPick[qid] = {}; rocBucketDone[qid] = false; rocBucketPaint(qid); }
+function rocBucketPaint(qid){
+  const el = document.getElementById('roc-ans-' + qid);
+  if (el) el.innerHTML = '<span class="roc-a-label">Your sort</span>' + rocBucketHtml(qid);
+}
+
+// ── Pick-one questions ───────────────────────────────────────────────────
+// Deliberately narrow: only used where the wrong answer is a real mistake with
+// a consequence, and the plausible wrong answers write themselves. Not a
+// general-purpose multiple choice — inventing distractors risks teaching them.
+let rocPickSel = {};
+function rocPickHtml(qid) {
+  const q = ROC_QUESTIONS.find(x => x.id === qid);
+  if (!q || !q.choices) return '';
+  const sel = rocPickSel[qid];
+  let h = '<div class="bk-lead">' + (sel !== undefined ? '' : 'Pick one.') + '</div><div class="pk-list">';
+  q.choices.forEach((ch, i) => {
+    let cls = 'pk-opt';
+    if (sel !== undefined) {
+      if (i === q.answer) cls += ' pk-right';
+      else if (i === sel) cls += ' pk-wrong';
+      else cls += ' pk-dim';
+    }
+    h += '<button class="' + cls + '"' + (sel !== undefined ? '' : ' onclick="rocPickTap(\'' + qid + '\',' + i + ')"') +
+         '>' + ch + '</button>';
+  });
+  h += '</div>';
+  if (sel !== undefined) {
+    h += '<div class="mt-score">' + (sel === q.answer ? 'Correct' : 'Not this one') + '</div>';
+    if (q.a) h += '<div class="ord-explain">' + q.a + '</div>';
+    h += '<div class="ord-actions"><button class="ord-clear" onclick="rocPickReset(\'' + qid + '\')">try again</button></div>';
+  }
+  return h;
+}
+function rocPickTap(qid, i){ rocPickSel[qid] = i; rocPickPaint(qid); }
+function rocPickReset(qid){ rocPickSel[qid] = undefined; rocPickPaint(qid); }
+function rocPickPaint(qid){
+  const el = document.getElementById('roc-ans-' + qid);
+  if (el) el.innerHTML = '<span class="roc-a-label">Your answer</span>' + rocPickHtml(qid);
+}
+
 let rocRevealed = {};
 
 function rocToggleAnswer(qid) {
@@ -16738,6 +17203,13 @@ function rocToggleAnswer(qid) {
   const showing = el.classList.contains('show');
   el.classList.toggle('show');
   rocRevealed[qid] = !showing;
+  if (showing) {                       // collapsing: restart the walk-through
+    const q = ROC_QUESTIONS.find(x => x.id === qid);
+    if (q && q.stepwise) {
+      rocStepAt[qid] = 0;
+      el.innerHTML = '<span class="roc-a-label">Answer</span>' + rocStepHtml(qid);
+    }
+  }
   if (btn) btn.textContent = showing ? 'Show Answer' : 'Hide Answer';
 }
 
@@ -16811,7 +17283,7 @@ function rocRender() {
             <div class="roc-q-text">${q.q}</div>
           </div>
           <div class="roc-answer${rocRevealed[q.id] ? ' show' : ''}" id="roc-ans-${q.id}">
-            <span class="roc-a-label">Answer</span>${q.a}
+            <span class="roc-a-label">${q.order ? 'Your order' : q.match ? 'Your matches' : q.buckets ? 'Your sort' : q.choices ? 'Your answer' : 'Answer'}</span>${q.order ? rocOrderHtml(q.id) : q.match ? rocMatchHtml(q.id) : q.buckets ? rocBucketHtml(q.id) : q.choices ? rocPickHtml(q.id) : q.stepwise ? rocStepHtml(q.id) : q.a}
           </div>
           <div class="roc-q-actions">
             <button class="roc-show-btn" id="roc-show-${q.id}" onclick="rocToggleAnswer('${q.id}')">${rocRevealed[q.id] ? 'Hide' : 'Show'} Answer</button>
@@ -19668,7 +20140,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.05';
+const APP_VERSION = 'v2.09';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19742,7 +20214,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.05</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.09</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
