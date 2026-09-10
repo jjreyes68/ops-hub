@@ -2679,6 +2679,30 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .pk-right{border-color:var(--green);background:var(--gbg);cursor:default;}
 .pk-wrong{border-color:var(--red);background:var(--rbg);cursor:default;}
 .pk-dim{opacity:.45;cursor:default;}
+
+.gs-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.45);display:flex;
+  align-items:flex-start;justify-content:center;padding:9vh 20px 20px;}
+.gs-overlay.hidden{display:none;}
+.gs-panel{width:100%;max-width:620px;background:var(--bg2);border:1px solid var(--border2);
+  border-radius:12px;box-shadow:var(--shl);overflow:hidden;}
+.gs-input{width:100%;border:none;border-bottom:1px solid var(--border);background:transparent;
+  padding:15px 18px;font-family:var(--f);font-size:15px;color:var(--text);}
+.gs-input:focus{outline:none;}
+.gs-results{max-height:52vh;overflow-y:auto;}
+.gs-hit{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 16px;
+  background:none;border:none;cursor:pointer;font-family:var(--f);border-bottom:1px solid var(--border);}
+.gs-hit:hover,.gs-on{background:var(--bg3);}
+.gs-kind{flex-shrink:0;font-family:var(--m);font-size:9px;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 7px;border-radius:4px;background:var(--bg4);color:var(--text3);}
+.gs-kind-playbook{background:var(--abg);color:var(--amber);}
+.gs-kind-study{background:var(--bbg);color:var(--blue);}
+.gs-kind-site{background:var(--gbg);color:var(--green);}
+.gs-label{flex:1;font-size:13px;color:var(--text);line-height:1.35;}
+.gs-sub{font-size:10.5px;color:var(--text3);font-family:var(--m);white-space:nowrap;}
+.gs-empty{padding:26px 18px;text-align:center;color:var(--text3);font-size:13px;}
+.gs-foot{display:flex;gap:8px;align-items:center;padding:8px 16px;border-top:1px solid var(--border);
+  font-size:10.5px;color:var(--text3);}
+.gs-foot kbd{margin-right:2px;}
 </style>
 </head>
 <body>
@@ -2714,7 +2738,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <span></span>
   </button>
   <button class="nav-tab active" id="nav-tab-home" onclick="switchView('home',this)">Home</button>
-  <button class="nav-tab" id="nav-tab-scans" onclick="switchView('scans',this)">Scans</button>
+  <button class="nav-tab" id="nav-tab-scans" onclick="switchView('scans',this)" style="display:none;">Scans</button>
   <button class="nav-tab" onclick="switchView('playbooks',this)">Playbooks</button>
   <button class="nav-tab" onclick="switchView('asset',this)">Asset Scan</button>
   <div class="nav-dropdown" id="navdd-study">
@@ -2759,7 +2783,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 </div>
 <div class="mobile-nav-drawer" id="mobile-nav-drawer">
   <button class="nav-tab" onclick="switchView('home',this); toggleMobileMenu()">Home</button>
-  <button class="nav-tab" onclick="switchView('scans',this); toggleMobileMenu()">Scans</button>
+  <button class="nav-tab" onclick="switchView('scans',this); toggleMobileMenu()" style="display:none;">Scans</button>
   <button class="nav-tab" onclick="switchView('playbooks',this); toggleMobileMenu()">Playbooks</button>
   <button class="nav-tab" onclick="switchView('asset',this); toggleMobileMenu()">Asset Scan</button>
   <button class="nav-tab" onclick="switchView('nerc',this); toggleMobileMenu()">NERC Study</button>
@@ -4198,6 +4222,16 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       </div>
     </div>
     </div>
+  </div>
+</div>
+
+<!-- GLOBAL SEARCH -->
+<div class="gs-overlay hidden" id="gs-modal" onclick="if(event.target===this)gsClose()">
+  <div class="gs-panel">
+    <input id="gs-input" class="gs-input" placeholder="Search playbooks, study questions, sites, templates&hellip;"
+           oninput="gsRun()" onkeydown="gsKey(event)" autocomplete="off">
+    <div class="gs-results" id="gs-results"></div>
+    <div class="gs-foot"><kbd>&uarr;</kbd><kbd>&darr;</kbd> move <kbd>&crarr;</kbd> open <kbd>Esc</kbd> close</div>
   </div>
 </div>
 
@@ -7699,7 +7733,7 @@ const WX_LOCS = [
   {name:'TRPC1', location:'Delano, CA',        lat:35.78,   lng:-119.24,    notes:'Tropico Solar | PV 60MW'},
   // ── Wind ───────────────────────────────────────────────────────────────────
   {name:'RKRG1', location:'Hobart, OK',        lat:35.095959,lng:-98.990771, notes:'NERC Wind | 149MW'},
-  {name:'PRSE1', location:'Hardwick, MN',      lat:37.363,  lng:-96.252,    notes:'NERC Wind | 200MW'},
+  {name:'PRSE1', location:'Hardwick, MN',      lat:43.7742, lng:-96.1975,   notes:'NERC Wind | 200MW'},
 ];
 
 function wxFilter(){
@@ -8751,7 +8785,7 @@ function wxFleetInit() {
     // storage is empty for this browser/device.
     if (!wxPins.length) {
       wxPins = [
-        {name:'PRSE1', location:'Hardwick, MN',      lat:37.363,   lng:-96.252},
+        {name:'PRSE1', location:'Hardwick, MN',      lat:43.7742,  lng:-96.1975},
         {name:'RKRG1', location:'Hobart, OK',        lat:35.095959,lng:-98.990771},
         {name:'ORGN1', location:'Hennepin, OK',      lat:34.490682,lng:-97.334319},
         {name:'LNDL1', location:'Tioga, ND',         lat:48.397,   lng:-102.938},
@@ -20140,7 +20174,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.09';
+const APP_VERSION = 'v2.11';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -20148,6 +20182,89 @@ console.log('If this does not match what you just deployed, you are on a cached 
 // Deliberately ignored while typing — an operator entering a scan value
 // should never have a keystroke navigate away mid-number. "g" then a letter
 // follows the convention people know from other tools.
+// ── Global search ────────────────────────────────────────────────────────
+// Seventeen playbooks, ~90 study questions, 40 sites, 14 log templates, all
+// behind their own tabs. Someone who hears "hail stow" had no way to find it
+// without already knowing which tab it lives under. One index, one shortcut.
+function gsIndex() {
+  const out = [];
+  try {
+    PB_PLAYBOOKS.forEach(p => {
+      out.push({ kind:'Playbook', label:p.sheetTitle, sub:p.trigger || p.category,
+                 text:(p.sheetTitle+' '+(p.trigger||'')+' '+p.category+' '+
+                   p.phases.map(ph=>(ph.name||'')+' '+ph.steps.map(s=>s.text+' '+s.notes.join(' ')).join(' ')).join(' ')).toLowerCase(),
+                 go:()=>{ switchView('playbooks',null); pbOpenPlaybook(p.slug); } });
+    });
+  } catch(e) {}
+  try {
+    ROC_QUESTIONS.forEach(q => {
+      const cat = (ROC_CATEGORIES.find(x=>x.key===q.cat)||{}).label || q.cat;
+      out.push({ kind:'Study', label:q.q, sub:cat,
+                 text:(q.q+' '+(q.a||'')).toLowerCase().replace(/<[^>]+>/g,' '),
+                 go:()=>{ switchView('roc',null);
+                          rocSetFilter(q.cat, document.querySelector('[data-filter="'+q.cat+'"]'));
+                          setTimeout(()=>{ const r=document.querySelector('[data-qid="'+q.id+'"]');
+                            if(r){ r.scrollIntoView({behavior:'smooth',block:'center'});
+                                   r.style.outline='2px solid var(--blue)'; r.style.outlineOffset='3px';
+                                   setTimeout(()=>{r.style.outline='';},1800); } }, 120); } });
+    });
+  } catch(e) {}
+  try {
+    AS_SITES.forEach(s => out.push({ kind:'Site', label:s.id, sub:'Asset Scan',
+      text:(s.id+' '+(s.label||'')).toLowerCase(),
+      go:()=>{ switchView('asset',null); asSwitch(s.id); } }));
+  } catch(e) {}
+  try {
+    SW_HARDCODED.forEach(t => out.push({ kind:'Template', label:t.name||t.title||t.id, sub:'Log Builder',
+      text:JSON.stringify(t).toLowerCase(),
+      go:()=>{ switchView('swbuilder',null); } }));
+  } catch(e) {}
+  return out;
+}
+
+let gsCache = null, gsHits = [], gsSel = 0;
+
+function gsOpen() {
+  gsCache = gsCache || gsIndex();
+  document.getElementById('gs-modal').classList.remove('hidden');
+  const inp = document.getElementById('gs-input');
+  inp.value = ''; gsRun();
+  setTimeout(()=>inp.focus(), 40);
+}
+function gsClose(){ document.getElementById('gs-modal').classList.add('hidden'); }
+
+function gsRun() {
+  const q = document.getElementById('gs-input').value.trim().toLowerCase();
+  const box = document.getElementById('gs-results');
+  if (!q) { gsHits = []; box.innerHTML = '<div class="gs-empty">Type to search across the whole site.</div>'; return; }
+  const terms = q.split(/\s+/);
+  gsHits = gsCache
+    .map(it => ({ it, score: terms.every(t => it.text.includes(t))
+        ? (it.label.toLowerCase().includes(q) ? 0 : 1) : -1 }))
+    .filter(x => x.score >= 0)
+    .sort((a,b) => a.score - b.score)
+    .slice(0, 24).map(x => x.it);
+  gsSel = 0;
+  box.innerHTML = gsHits.length
+    ? gsHits.map((h,i) => `<button class="gs-hit${i===0?' gs-on':''}" onclick="gsGo(${i})">
+        <span class="gs-kind gs-kind-${h.kind.toLowerCase()}">${h.kind}</span>
+        <span class="gs-label">${esc(h.label.length>96?h.label.slice(0,96)+'\u2026':h.label)}</span>
+        <span class="gs-sub">${esc(h.sub||'')}</span></button>`).join('')
+    : '<div class="gs-empty">Nothing matched.</div>';
+}
+function gsGo(i){ const h = gsHits[i]; if (!h) return; gsClose(); h.go(); }
+function gsKey(e) {
+  if (e.key === 'Escape') { gsClose(); return; }
+  if (!gsHits.length) return;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    gsSel = (gsSel + (e.key === 'ArrowDown' ? 1 : -1) + gsHits.length) % gsHits.length;
+    document.querySelectorAll('.gs-hit').forEach((el,n)=>el.classList.toggle('gs-on', n===gsSel));
+    document.querySelectorAll('.gs-hit')[gsSel].scrollIntoView({block:'nearest'});
+  }
+  if (e.key === 'Enter') { e.preventDefault(); gsGo(gsSel); }
+}
+
 function kbOpen(){ document.getElementById('kb-modal').classList.add('open'); }
 function kbClose(){ document.getElementById('kb-modal').classList.remove('open'); }
 
@@ -20185,11 +20302,14 @@ function kbClose(){ document.getElementById('kb-modal').classList.remove('open')
     if (e.key === '?') { e.preventDefault(); kbOpen(); return; }
 
     if (e.key === '/') {
+      e.preventDefault();
       const id = SEARCH_BY_VIEW[visibleView()];
       const el = id && document.getElementById(id);
-      if (el) { e.preventDefault(); el.focus(); el.select && el.select(); }
+      if (el) { el.focus(); el.select && el.select(); }
+      else gsOpen();                       // no page search here: search everything
       return;
     }
+    if (e.key.toLowerCase() === 'k' && !awaitingGo) { e.preventDefault(); gsOpen(); return; }
 
     if (awaitingGo) {
       const dest = GO[e.key.toLowerCase()];
@@ -20210,11 +20330,12 @@ load();
 <footer class="app-footer">
   <span class="app-footer-left" style="display:flex;gap:14px;">
     <button class="footer-link" onclick="fbOpen()" title="Suggest an improvement to the site">suggestion</button>
+    <button class="footer-link" onclick="gsOpen()" title="Search everything (press k)">search</button>
     <button class="footer-link" onclick="kbOpen()" title="Keyboard shortcuts (press ?)">shortcuts</button>
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.09</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.11</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
@@ -20230,7 +20351,8 @@ load();
     <div class="fb-title">Keyboard shortcuts</div>
     <div class="fb-where">Press ? any time to see this</div>
     <table class="kb-table">
-      <tr><td><kbd>/</kbd></td><td>Search the current page</td></tr>
+      <tr><td><kbd>k</kbd></td><td>Search everything</td></tr>
+      <tr><td><kbd>/</kbd></td><td>Search the current page, or everything</td></tr>
       <tr><td><kbd>g</kbd> <kbd>h</kbd></td><td>Go to Home</td></tr>
       <tr><td><kbd>g</kbd> <kbd>p</kbd></td><td>Go to Playbooks</td></tr>
       <tr><td><kbd>g</kbd> <kbd>a</kbd></td><td>Go to Asset Scan</td></tr>
