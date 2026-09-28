@@ -16813,37 +16813,15 @@ const ROC_QUESTIONS = [
 
   // ══ FULL SIMULATION SCENARIO ══════════════════════════════════════════════
 
-  {id:'sim1', lvl:3, cat:'operations', type:'simulation',
-   q:'START-OF-SHIFT SCENARIO \u2014 you take over at 06:00. Conditions develop through the morning.',
-   sim:{
-     inputs:[
-       '06:00 handover \u2014 reactor out on a planned maintenance outage, bus voltage running high but in band',
-       '06:00 handover \u2014 CAISO curtailment active on solar, site following setpoint',
-       '07:10 \u2014 BESS HVAC alarm',
-       '07:25 \u2014 BESS container temperature climbing, still below trip',
-       '07:40 \u2014 Inverter Unit 3 trips'
-     ],
-     tasks:[
-       {q:'1. At 07:40, what is the highest-risk condition on the plant?',
-        a:'<strong>The BESS thermal condition.</strong> The HVAC alarm at 07:10 and the rising temperature at 07:25 are the same event \u2014 cooling has failed and the container is heating. That is the only condition here with a path to thermal runaway.<br><br>Everything else is a production problem. The inverter trip costs MW. The curtailment costs MW. The reactor being out is planned and the voltage is still in band. None of them can hurt anyone.'},
-       {q:'2. Which conditions here are actually the same event?',
-        a:'<ul><li><strong>HVAC alarm + rising temperature</strong> \u2014 one event. The cooling failure is the cause, the temperature is the symptom. Do not log or report them separately.</li><li><strong>Reactor offline + high voltage</strong> \u2014 one event. The reactor absorbs VARs; with it out, voltage sits higher. Expected, not a new problem.</li><li><strong>Curtailment + inverter trip</strong> \u2014 unrelated, but both reduce output. Be careful not to read the trip as curtailment following, or the curtailment as masking the trip.</li></ul>'},
-       {q:'3. What do you hand off at 18:00?',
-        a:'Plant state and what is still open:<ul><li>BESS status and whether the thermal event is resolved, being worked, or still degrading</li><li>Whether an outage was submitted, and its end time</li><li>Inverter 3 \u2014 restored or still out, and whether field is engaged</li><li>Reactor return-to-service time from the planned outage</li><li>Current voltage and whether it is holding in band without the reactor</li><li>Anything the next operator needs to watch rather than act on</li></ul>'}
-     ]
-   },
-   a:''},
   {id:'ord1', lvl:3, cat:'operations', type:'ordering',
    q:'07:40. BESS HVAC alarm at 07:10, container temperature climbing since 07:25, Inverter Unit 3 just tripped, CAISO curtailment active. Put these actions in the order you would take them.',
    order:[
      'Assess the BESS thermal condition \u2014 is it still climbing, and is it approaching a trip?',
      'Notify the SC and TO of the BESS condition and likely capacity impact',
      'Dispatch field to the BESS for the HVAC failure',
-     'Submit the outage or derate for the affected BESS capacity',
-     'Investigate the Inverter 3 trip',
-     'Log both events with times, alarms and actions taken'
+     'Investigate the Inverter 3 trip'
    ],
-   a:'<strong>Safety first, then grid, then production, then paperwork.</strong> The thermal condition leads because it is the only one that can hurt someone. Notification follows immediately \u2014 the SC and TO need to know before capacity moves, not after. Field goes next because they are the only ones who can fix the cause. The outage is submitted once you know the impact.<br><br>Inverter 3 waits. It costs MW and nothing else, and working it first is the classic mistake \u2014 the newest alarm feels most urgent.<br><br>Logging is last, but not optional.'},
+   a:'<strong>Safety first, then grid, then production.</strong> The thermal condition leads because it is the only one that can hurt someone. Notification follows immediately \u2014 the SC and TO need to know before capacity moves, not after. Field goes next because they are the only ones who can fix the cause.<br><br>Inverter 3 waits. It costs MW and nothing else, and working it first is the classic mistake \u2014 the newest alarm feels most urgent.<br><br><strong>This is the order you start things in, not finish them.</strong> Field is driving out while you are already working the inverter, and the outage ticket and the log are written alongside everything else rather than at the end.<br><br>Keep reassessing as conditions change \u2014 if the container temperature stabilises, or the inverter turns out to have tripped on something that affects the whole block, the order changes with it.'},
 
   {id:'r3', lvl:3, cat:'scada', type:'rapid',
    q:'State the one-line diagram symbol for: Breaker, Transformer, Switch.',
@@ -16881,9 +16859,6 @@ const ROC_QUESTIONS = [
   {id:'op11', lvl:2, cat:'operations', type:'recognition',
    q:'What could cause a breaker to trip?',
    a:'<ul><li><strong>Overcurrent / overload</strong> — generation or discharge exceeding breaker rating, feeder overload, transformer inrush</li><li><strong>Fault conditions</strong> — phase-to-phase, phase-to-ground, DC arc fault, ground fault on the DC bus</li><li><strong>Protection system operations</strong> — relay-initiated trip, differential protection, under/overvoltage, under/overfrequency, anti-islanding</li><li><strong>Thermal</strong> — breaker self-heating, high ambient temperature, loose connections generating heat</li><li><strong>Mechanical / hardware</strong> — worn or faulty trip mechanism, vibration, spring mechanism failure</li><li><strong>Power quality</strong> — voltage transients and switching surges, harmonic distortion, DC injection into AC systems, capacitor bank switching</li><li><strong>Site and environmental</strong> — lightning strike or surge, water ingress, animal intrusion, vegetation contact</li></ul>'},
-  {id:'op12', lvl:3, cat:'operations', type:'scenario',
-   q:'How would you prioritize alarms occurring simultaneously across multiple sites?',
-   a:'Prioritize based on:<ol style="margin-left:14px;"><li><strong>Personnel safety</strong></li><li><strong>Grid reliability</strong></li><li><strong>MW impact</strong></li></ol>Continue reassessing priorities as conditions change.'},
   {id:'op13', lvl:3, cat:'operations', type:'scenario',
    q:'A BESS site reports an oscillation event. What actions do you take?',
    a:'<ul><li>Confirm event timing</li><li><strong>Notify QSE and TO immediately</strong> and operate based on their requests — likely will be a forced outage</li><li>Determine whether oscillations are ongoing</li><li>Review site MW and MVAR response</li><li>Verify equipment status</li><li>Review alarms and event logs</li><li>Notify required stakeholders immediately</li><li>Coordinate with site personnel</li><li>Follow applicable operating procedures (check the binder if unsure)</li><li>Continue monitoring until the system stabilizes</li><li>Document the entire event</li></ul>'},
@@ -16974,7 +16949,51 @@ const ROC_QUESTIONS = [
    q:'An outage of 50MW or more at Peregrine or Northstar requires an extra filing. With whom?',
    choices:['NERC','WECC','CPUC','The Balancing Authority'],
    answer:2,
-   a:'<strong>CPUC.</strong> It is a California state filing and it applies at the 50MW threshold for those two sites specifically. Easy one to miss, because nothing in the normal outage ticket flow prompts you for it.'}
+   a:'<strong>CPUC.</strong> It is a California state filing and it applies at the 50MW threshold for those two sites specifically. Easy one to miss, because nothing in the normal outage ticket flow prompts you for it.'},
+  {id:'d4', lvl:1, cat:'dispatch', type:'sorting',
+   q:'Both reach the plant automatically. Sort each one by whether it belongs to ADS or AGC.',
+   buckets:{ names:['ADS','AGC'], items:[
+     ['Arrives roughly every five minutes', 0],
+     ['Updates every few seconds', 1],
+     ['Instruction is a Dispatch Operating Target (DOT)', 0],
+     ['Follows system frequency to correct imbalance', 1],
+     ['Current setpoint is readable off the CAISO board', 0],
+     ['Setpoint changes too often to display on a board', 1]]},
+   a:'<strong>ADS is an economic instruction. AGC is a regulation signal.</strong><br><br>'
+   + '<strong>ADS</strong> comes from the real-time market roughly every five minutes as a Dispatch Operating '
+   + 'Target. Because it holds for the interval, the '
+   + 'current value is readable on the CAISO ADS board.<br><br>'
+   + '<strong>AGC</strong> is continuous regulation \u2014 the signal moves every few seconds chasing frequency, '
+   + 'which is exactly why the board shows you that a site <em>is</em> on AGC but not what its setpoint is. '
+   + 'There is no stable number to display.<br><br>'
+   + 'Both land in site SCADA automatically. The board tells you which mode a site is in, not what to do.'},
+  {id:'d5', lvl:2, cat:'dispatch', type:'pick-one',
+   q:'A new ADS setpoint lands 40 MW above current output, and the site takes several minutes to get there. What is going on?',
+   choices:[
+     'Ramp rate is limiting how fast output can change',
+     'The instruction was rejected and never took effect',
+     'Site comms have failed',
+     'The site is following AGC instead of ADS'],
+   answer:0,
+   a:'<strong>Plants cannot step instantly to a new setpoint.</strong> Ramp rate caps MW per minute, so a large '
+   + 'change takes time by design \u2014 the plant is complying, just not instantly.<br><br>'
+   + 'This matters when you are checking why output has not moved. A site that is ramping looks similar to a site '
+   + 'that is ignoring the instruction, and the difference is whether MW is <em>changing</em> at all. Give it the '
+   + 'ramp time before treating it as a problem.'},
+  {id:'d6', lvl:2, cat:'dispatch', type:'pick-one',
+   q:'A BESS on AGC stops following the signal upward. State of charge is sitting at its lower limit. What is this?',
+   choices:[
+     'A physical limit \u2014 the plant cannot discharge further and is not faulted',
+     'A comms failure between the ISO and the site',
+     'A PPC failure requiring a restart',
+     'The site has dropped to local control'],
+   answer:0,
+   a:'<strong>The plant is doing what it should.</strong> An empty battery cannot discharge, so the signal goes '
+   + 'unanswered for a reason that is not a fault \u2014 nothing to troubleshoot at the site.<br><br>'
+   + 'What it does need is <strong>notification</strong>. The SC is bidding capacity the plant no longer has, and '
+   + 'only you can see that. The same is true at the top of the range: a full battery cannot charge.<br><br>'
+   + 'Worth separating from the other causes \u2014 comms, control mode and plant limit all look like "not '
+   + 'following" on SCADA, and the response to each is different.'}
 ];
 
 // Labels and icons for each study topic. Referenced by rocRender, the drill
@@ -20658,7 +20677,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.26';
+const APP_VERSION = 'v2.30';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -20900,7 +20919,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.26</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.30</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
