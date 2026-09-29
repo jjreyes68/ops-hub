@@ -19849,12 +19849,18 @@ async function proposeSegment(toId,coveredBy,segStart,segEnd,note){
 // would need individual logins and per-user Firestore rules.
 let toPinCache = null;
 
+let toPinState = 'unknown';   // 'set' | 'missing' | 'error'
 async function toGetPin() {
   if (toPinCache !== null) return toPinCache;
+  if (!db) { toPinState = 'error'; toPinCache = ''; return ''; }
   try {
     const d = await db.collection('settings').doc('approval').get();
-    toPinCache = (d.exists && d.data().pin) ? String(d.data().pin) : '';
-  } catch (e) { toPinCache = ''; }
+    if (d.exists && d.data().pin) { toPinCache = String(d.data().pin); toPinState = 'set'; }
+    else { toPinCache = ''; toPinState = 'missing'; }
+  } catch (e) {
+    console.warn('approval PIN lookup failed:', e && e.message);
+    toPinCache = ''; toPinState = 'error';
+  }
   return toPinCache;
 }
 
@@ -19867,8 +19873,10 @@ function toAskApproval(what) {
     wrap.innerHTML = '<div class="ap-card">'
       + '<div class="ap-title">Manager approval</div>'
       + '<div class="ap-what">' + esc(what) + '</div>'
-      + (pin ? '' : '<div class="ap-warn">No approval PIN has been set yet. '
-          + 'Create a <code>settings/approval</code> document in Firestore with a <code>pin</code> field.</div>')
+      + (pin ? '' : '<div class="ap-warn">' + (toPinState === 'error'
+          ? 'Could not read the approval PIN from Firestore \u2014 check the browser console. Proceeding without it.'
+          : 'No approval PIN is set. Create a <code>settings/approval</code> document with a <code>pin</code> field '
+            + '(type: string). Until then this records your name only.') + '</div>')
       + '<label class="ap-lbl">Your name</label>'
       + '<input class="ap-in" id="ap-name" autocomplete="off">'
       + (pin ? '<label class="ap-lbl">PIN</label><input class="ap-in" id="ap-pin" type="password" autocomplete="off">' : '')
@@ -19969,9 +19977,12 @@ function toRenderBand() {
   const today = isoDate(new Date());
   const rows = (timeOffData || []).filter(t => (t.endDate || t.startDate) >= today)
     .sort((a, b) => a.startDate.localeCompare(b.startDate));
-  if (!rows.length) { band.style.display = 'none'; return; }
+  // Hiding the whole band when empty also hid the only way to add — keep the
+  // header and the Request button, drop just the list.
   band.style.display = '';
-  document.getElementById('curr-to-count').textContent = rows.length + ' upcoming';
+  document.getElementById('curr-to-count').textContent =
+    rows.length ? rows.length + ' upcoming' : 'nothing upcoming';
+  if (!rows.length) { document.getElementById('curr-to-list').innerHTML = ''; return; }
 
   document.getElementById('curr-to-list').innerHTML = rows.map(t => {
     const segs = t.coverage && t.coverage.length ? t.coverage
@@ -20958,7 +20969,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.37';
+const APP_VERSION = 'v2.38';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -21200,7 +21211,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.37</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.38</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
