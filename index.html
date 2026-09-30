@@ -2851,6 +2851,12 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   font-family:var(--f);font-size:12.5px;cursor:pointer;}
 .ap-cancel{background:none;border:none;color:var(--text3);font-size:12px;cursor:pointer;text-decoration:underline;}
 .to-seg-appr{font-size:10.5px;color:var(--text3);font-family:var(--m);}
+
+.roc-pb{display:flex;align-items:center;gap:9px;margin-top:11px;padding-top:9px;border-top:1px solid var(--border);}
+.roc-pb-lbl{font-family:var(--m);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);}
+.roc-pb-btn{background:var(--bbg);border:1px solid var(--blue);color:var(--blue);border-radius:5px;
+  padding:3px 11px;font-family:var(--f);font-size:11.5px;cursor:pointer;}
+.roc-pb-btn:hover{background:var(--blue);color:#fff;}
 </style>
 </head>
 <body>
@@ -4177,6 +4183,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
             <!-- HIERARCHY TAB -->
             <div class="gh-panel active" id="gh-panel-hierarchy">
               <div class="gh-subtitle">Tap any entity for its real-world role, authority, and mental model.</div>
+              <div style="margin:0 0 12px;padding:8px 11px;border-left:3px solid var(--blue);background:var(--bbg);border-radius:0 7px 7px 0;font-size:11.5px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Boxes are roles, not companies.</strong> For our CAISO sites the same organisation fills <strong>RC</strong> (as RC West), <strong>ISO</strong> and <strong>BA</strong> — three boxes, one phone number. The roles still rank as shown, and elsewhere in the West they are separate entities.</div>
               <div class="gh-tier"><button class="gh-node ghn-nerc" onclick="ghDetail('nerc')"><div class="gh-node-lbl">NERC</div><div class="gh-node-sub">North American regulator</div></button></div>
               <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
               <div class="gh-tier"><button class="gh-node ghn-wecc" onclick="ghDetail('wecc')"><div class="gh-node-lbl">WECC</div><div class="gh-node-sub">Regional Entity (West)</div></button></div>
@@ -4218,7 +4225,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
                   <div class="gh-ch-node" style="background:#3B6D11;color:#EAF3DE;">TO / TOP</div>
                   <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">transmission limits</div>
                   <div class="gh-ch-node" style="background:#993C1D;color:#FAECE7;">GOP (you)</div>
-                  <div style="margin-top:8px;font-size:11px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Mandatory.</strong> Non-compliance = NERC violation. RC can override everyone except emergency safety.</div>
+                  <div style="margin-top:8px;padding:7px 9px;border-left:3px solid var(--blue);background:var(--bbg);border-radius:0 6px 6px 0;font-size:11px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Same company, two hats.</strong> For our CAISO sites, RC West and CAISO are one organisation — those two boxes are the same phone number. The roles stay distinct (the RC really can override the ISO), but elsewhere in the West they are separate entities.</div><div style="margin-top:8px;font-size:11px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Mandatory.</strong> Non-compliance = NERC violation. RC can override everyone except emergency safety.</div>
                 </div>
                 <div class="gh-chain-col">
                   <h4 style="color:var(--amber);">💰 Commercial / Merchant</h4>
@@ -16730,34 +16737,70 @@ const ROC_QUESTIONS = [
    q:'Define leading vs lagging power factor. When does each apply?',
    a:'<strong>Leading PF (capacitive)</strong>: current leads voltage — the system is generating MVARs. This raises voltage. Typical during light load or when capacitor banks are on.<br><strong>Lagging PF (inductive)</strong>: current lags voltage — the system is consuming MVARs. This depresses voltage. Typical during heavy load or when motors and transformers are heavily loaded.<br><br>Generators can operate in either mode by adjusting AVR excitation. Understanding PF helps diagnose whether a voltage condition is being driven by the load profile or the reactive power balance.'},
 
-  {id:'v5', lvl:2, cat:'voltage', type:'scenario',
-   q:'SCENARIO: High voltage, low load, capacitor banks already ON. What are your priority actions?',
-   a:'<ul><li><strong>1. Contact the Transmission Operator</strong> — report the condition and get direction. Reactive equipment is switched on TOP instruction, not unilaterally</li><li><strong>2. Switch off capacitor banks</strong> (on TOP direction) — they\'re supplying MVARs into a system that already has too many</li><li><strong>3. Switch in reactor banks</strong> (if available) — absorb the excess VARs</li><li><strong>4. Verify AVR</strong> is in automatic and setpoint is correct</li><li><strong>5. Log all actions</strong> with timestamps and notify SC if output is affected</li></ul><strong>Never add MVARs (capacitors) to a high-voltage system.</strong><br>Know the correct action, but the TOP owns the voltage schedule — make the call before you make the switch.'},
-
-  {id:'v6', lvl:2, cat:'voltage', type:'scenario',
-   q:'SCENARIO: Voltage is dropping, load is heavy, reactor is ON. What is your first action and why?',
-   a:'<strong>Contact the Transmission Operator first.</strong> You already know the reactor needs to come off — it absorbs MVARs, and with voltage falling under heavy load it is making the problem worse. But switching reactive equipment is a TOP-directed action, so report and get direction before you operate.<br><ul><li>Report the condition to the TOP and request direction</li><li>Switch reactor off on TOP direction → stop absorbing VARs</li><li>Check if capacitor banks are available → switch on to inject MVARs</li><li>Verify AVR is in auto and generator is contributing max reactive support</li><li>Log all actions with times and reasoning</li></ul><strong>Leaving the reactor on is a voltage death spiral</strong> — but the call goes through the TOP, not around it.'},
-
-  {id:'v7', lvl:2, cat:'voltage', type:'conceptual',
+  {id:'v5', pb:'voltage', lvl:1, cat:'voltage', type:'application',
+   q:'Voltage is out of band at one of your sites. What do you do?',
+   a:'<ul>'
+   + '<li><strong>Call the TOP and report it.</strong> They own the voltage schedule, and switching reactive '
+   + 'equipment is TOP-directed \u2014 the call comes before any action.</li>'
+   + '<li><strong>Do what they direct.</strong> Caps in or out, reactor in or out, setpoint change. The '
+   + 'equipment varies with the condition; the sequence does not.</li>'
+   + '<li><strong>Check AVR is in automatic</strong> and on the correct setpoint. If it is not, that is ours to '
+   + 'report.</li>'
+   + '<li><strong>Log it.</strong> Time, condition, who you spoke to, what they directed, what you did.</li>'
+   + '</ul>'
+   + '<strong>No email for this one.</strong> Out of band is routine \u2014 the log is the record and that is '
+   + 'enough.<br><br>'
+   + 'You will often know what is needed before they say it: high voltage with the caps already on means the '
+   + 'caps should come off. Knowing it does not make it ours to switch.'},
+    {id:'v6', pb:'voltage', lvl:2, cat:'voltage', type:'application',
+   q:'You notice a site\'s capacitor banks are in a state you did not expect \u2014 open when they should be closed, or the reverse. What do you do?',
+   a:'Same first steps as any voltage condition: <strong>call the TOP</strong>, do what they direct, confirm '
+   + 'AVR is in automatic, and log it.<br><br>'
+   + '<strong>But this one also gets an email.</strong> Out of band is routine and the log covers it. Cap banks '
+   + 'sitting in an unexpected state is not routine \u2014 something changed them, and nobody has told us what. '
+   + 'That needs coordinating and root causing, so notify ownership in writing rather than leaving it in the '
+   + 'log for someone to find later.<br><br>'
+   + '<strong>The distinction worth carrying:</strong> log what is expected, email what is not. A condition the '
+   + 'schedule accounts for is a log entry. Equipment in a state nobody can explain is a conversation.'},
+    {id:'v7', lvl:2, cat:'voltage', type:'conceptual',
    q:'What affects voltage more — MW or MVAR? Why does this matter operationally?',
    a:'<strong>MVAR affects voltage more directly.</strong> Reactive power controls the electromagnetic field that sustains voltage magnitude. MW (real power) primarily affects frequency and real power flow.<br><br>This matters because during a voltage event, the first lever is <strong>reactive power</strong> — not real power. Adjusting MW dispatch won\'t fix a voltage problem. You need caps, reactors, or AVR action. Understanding this prevents operators from chasing the wrong variable.'},
 
   // ── AVR continued
-  {id:'v8', lvl:2, cat:'voltage', type:'conceptual',
+  {id:'v8', pb:'avr', lvl:2, cat:'voltage', type:'conceptual',
    q:'What happens if AVR is taken off automatic (switched to manual)? What is required?',
    a:'In manual mode, excitation is fixed and will NOT respond to voltage changes or disturbances. Risks:<ul><li>Voltage drifts uncontrolled with load changes</li><li>Generator may inject or absorb excessive VARs and trip on limits</li><li>Automatic reactive support during a grid disturbance is lost</li><li>This is a <strong>VAR-002 deviation</strong> — notification required</li></ul><strong>Required action:</strong> Notify your <strong>Transmission Operator</strong> any time AVR comes off automatic. VAR-002 puts this obligation between the GOP and its associated TOP — not the ISO and not the SC. Report immediately, every occurrence, however brief — do not wait to see whether it clears itself. Document time off auto, reason, and restoration, and return to automatic as soon as possible.'},
 
   // ══ DISPATCH: ADS / AGC ═══════════════════════════════════════════════════
 
-  {id:'d1', stepwise:true, lvl:1, cat:'dispatch', type:'conceptual',
-   q:'Walk through how ADS/AGC dispatch works from the ISO down to the plant. What is the operator verifying at each step?',
-   a:'<ol style="margin-left:14px;"><li><strong>ISO (CAISO/ERCOT)</strong> sends a dispatch signal — the MW setpoint the plant should be producing</li><li>The setpoint appears on the <strong>ADS board</strong> — the operator identifies the Resource ID and the target setpoint</li><li>The operator checks <strong>on-site SCADA</strong> to confirm the setpoint was received by the plant\'s control system</li><li>The operator verifies the site is <strong>responding accordingly</strong> — actual MW output is tracking toward the setpoint</li></ol>If the site is not responding, that\'s a deviating asset and requires investigation and notification to the SC.'},
-
-  {id:'d2', lvl:1, cat:'dispatch', type:'scenario',
+  {id:'d1', lvl:1, cat:'dispatch', type:'conceptual',
+   q:'What is ADS?',
+   a:'<strong>ADS is the market telling you what to produce.</strong> CAISO sends a Dispatch Operating Target '
+   + '(DOT) roughly every five minutes, based on economic dispatch \u2014 what is cheapest to run right now to '
+   + 'serve load.<br><br>'
+   + '<strong>Timing:</strong> about every five minutes, holding for the interval. Because it holds, the current '
+   + 'value is readable on the CAISO ADS board.<br><br>'
+   + '<strong>It also carries</strong> startup and shutdown instructions and your ancillary service awards \u2014 '
+   + 'the regulation capacity you are on the hook for this interval.<br><br>'
+   + 'It arrives in site SCADA automatically. The board tells you what was sent and whether a site is on ADS or '
+   + 'AGC; it does not tell you whether the plant complied \u2014 that is what you check.'},
+  {id:'d1b', lvl:1, cat:'dispatch', type:'conceptual',
+   q:'What is AGC, and how is it different from ADS?',
+   a:'<strong>AGC is the grid asking you to help hold frequency.</strong> Where ADS is an economic instruction, '
+   + 'AGC is continuous regulation \u2014 the signal moves you up and down to correct the imbalance between '
+   + 'generation and load in real time.<br><br>'
+   + '<strong>Timing:</strong> every few seconds, not every five minutes. That is the headline difference, and it '
+   + 'is why the CAISO board shows that a site <em>is</em> on AGC but not what its setpoint is \u2014 the number '
+   + 'moves too fast for there to be a stable value to display.<br><br>'
+   + '<strong>Purpose:</strong> frequency response and the ancillary services that go with it. ADS awards you the '
+   + 'regulation capacity; AGC is how that award actually gets delivered, moving you inside the awarded band.<br><br>'
+   + '<strong>Short version:</strong> ADS is economics on a five-minute clock. AGC is reliability on a '
+   + 'few-second clock.'},
+    {id:'d2', pb:'not-following-ads', lvl:1, cat:'dispatch', type:'scenario',
    q:'SCENARIO: The ADS setpoint changed but actual MW output hasn\'t moved. What do you check?',
    a:'<ul><li><strong>1. ADS board</strong> — confirm the new setpoint is there and assigned to the correct Resource ID</li><li><strong>2. On-site SCADA</strong> — did the plant\'s control system receive the new setpoint?</li><li><strong>3. Site response mode</strong> — is the inverter/BESS in Remote/Auto or stuck in Local/Manual?</li><li><strong>4. Active alarms</strong> — derate, trip, communication loss, or protective limit?</li><li><strong>5. Communication link</strong> — comm loss between SCADA and the unit means no signal gets through</li><li><strong>6. Log and notify</strong> SC if the deviation is persistent — the ISO schedule is at risk</li></ul>'},
 
-  {id:'d3', lvl:2, cat:'dispatch', type:'sorting',
+  {id:'d3', pb:'not-following-agc', lvl:2, cat:'dispatch', type:'sorting',
    q:'AGC is not responding. Sort each symptom by what it points to.',
    buckets:{ names:['Comms','Control mode','Plant limit'], items:[
      ['Setpoint on the ISO board never appeared in site SCADA', 0],
@@ -16772,11 +16815,20 @@ const ROC_QUESTIONS = [
    q:'What are the 8 key things an operator needs to be able to navigate to on SCADA/HMI?',
    a:'Per the competency framework:<ul><li><strong>1. AVR status / Voltage at POI / Cap bank status</strong></li><li><strong>2. Site setpoint vs. actual power</strong> (ADS/AGC)</li><li><strong>3. Site current MWh capability / ±0 MW state</strong></li><li><strong>4. Alarms pages</strong> — active and historical</li><li><strong>5. Breaker statuses and breaker controls</strong></li><li><strong>6. Battery status and battery controls</strong></li><li><strong>7. HMI / Manual control screens</strong></li><li><strong>8. Power setpoint and voltage setpoint screens</strong></li></ul>Being able to navigate to all eight without hesitation is the baseline for independent operations.'},
 
-  {id:'s3', lvl:2, cat:'scada', type:'application',
-   q:'How would you notice a site has lost comms, and what does that actually tell you?',
-   a:'<strong>There is usually no alarm.</strong> A site cannot report that it stopped talking to you \u2014 the message would have to travel over the link that just failed \u2014 and nothing in our stack flags stale values on its own.<br><br><strong>How it actually surfaces:</strong><ul><li>The <strong>SC or TO calls</strong> \u2014 they lost your telemetry and noticed before you did</li><li>Values sit frozen at the same numbers, or timestamps stop advancing</li><li>SCADA will not load, or will not let you log in</li><li><strong>Trend it to confirm</strong> \u2014 a flat line at an unchanged value, instead of the normal minute-to-minute movement, is stale data rather than a steady plant</li></ul><strong>What it tells you: you have lost visibility.</strong> It does <strong>not</strong> mean the site tripped or that equipment failed. The plant may be running normally and generating the whole time.<br><br>Before acting, note the last known state before it went dark, and check whether other sites on the same network path dropped too \u2014 that separates a network problem from a site problem.<br><br>Comms alarms you <em>will</em> see are a level down: an inverter or PCS dropping off the plant controller. The site is still talking to you, so it can report that one.'},
-
-  {id:'s4', lvl:2, cat:'scada', type:'scenario',
+  {id:'s3', lvl:2, cat:'scada', type:'application', pb:'comms-loss',
+   q:'How would you notice a site has lost comms, and what do you do about it?',
+   a:'<strong>How you notice.</strong> There is usually no alarm \u2014 a site cannot report that it stopped '
+   + 'talking to you, because the message would have to travel over the link that just failed.<ul>'
+   + '<li>The SC or TO calls \u2014 they lost your telemetry and noticed before you did</li>'
+   + '<li>Values sit frozen at the same numbers, or timestamps stop advancing</li>'
+   + '<li>SCADA will not load, or a whole site is missing from the overview</li>'
+   + '<li>A trend confirms it: a real value moves, a frozen one draws a flat line</li></ul>'
+   + '<strong>What you do.</strong> Work the Comms Loss playbook \u2014 confirm it is comms rather than the plant '
+   + 'being down, check whether it is one site or several (several points at our end, not theirs), notify per the '
+   + 'playbook, and log it as COMSC.<br><br>'
+   + '<strong>Worth separating:</strong> inverter-level comms loss is not site comms loss. If you can still see '
+   + 'the site but not one inverter, the link is fine and the problem is on site.'},
+    {id:'s4', pb:'bess-oscillation', lvl:2, cat:'scada', type:'scenario',
    q:'SCENARIO: Battery temperature is rising AND an HVAC alarm is active. Why is this combination dangerous?',
    a:'<strong>Thermal runaway risk.</strong> BESS cells generate heat during charge/discharge. HVAC removes that heat. If HVAC fails while the battery is running, there is no cooling — temperature climbs unchecked.<br><ul><li>Cell temps rising → accelerated degradation → venting → potential fire or explosion</li><li>This is a <strong>safety-critical cascade</strong>, not just an equipment alarm</li></ul><strong>Immediate actions:</strong><ol style="margin-left:14px;"><li>Derate or take BESS offline per emergency SOP</li><li>Notify site management and fire/safety teams</li><li>Notify SC of loss of resource capability</li><li>Do not restore until HVAC is confirmed operational and temps have returned to safe range</li><li>Log every action with exact timestamps</li></ol>'},
 
@@ -16786,11 +16838,11 @@ const ROC_QUESTIONS = [
 
   // ══ OPERATIONS: SOLAR, WIND, BESS, SWITCHING ════════════════════════════
 
-  {id:'op1', stepwise:true, lvl:1, cat:'operations', type:'application',
+  {id:'op1', pb:'daily-checklist', stepwise:true, lvl:1, cat:'operations', type:'application',
    q:'Walk through the solar monitoring procedure: what are the 4 steps and what is each looking for?',
    a:'Per the competency framework:<ol style="margin-left:14px;"><li><strong>Identify each inverter\'s status</strong> — Online, Offline, or Comms Loss. A comms loss is not the same as an offline inverter.</li><li><strong>Locate current irradiance</strong> — what is the available sunlight? This is the benchmark for expected output.</li><li><strong>Identify each inverter\'s output and site total</strong> — actual MW vs. expected given irradiance.</li><li><strong>Identify any derated inverters</strong> — is the underperformance due to a derate (intentional) or a fault (unintentional)?</li></ol>If irradiance is high and output is low with no derate active → investigate. Check inverter alarms, then check AGC setpoint, then notify SC if unexplained.'},
 
-  {id:'op2', stepwise:true, lvl:1, cat:'operations', type:'application',
+  {id:'op2', pb:'units-off', stepwise:true, lvl:1, cat:'operations', type:'application',
    q:'A tripped wind turbine needs to be reset. Walk through the steps and when you escalate.',
    a:'<ol style="margin-left:14px;"><li><strong>Identify the tripped turbine</strong> on SCADA — confirm it\'s a genuine trip vs. a comms loss or planned outage</li><li><strong>Reset the turbine per SOP</strong> — follow the site-specific reset procedure exactly</li><li><strong>Notify site team if needed</strong> — if the turbine trips again after reset, or if the trip reason is unclear, escalate to field team</li><li><strong>Create or update the operator log</strong> — document the trip time, reset time, cause if known, and any escalation</li></ol>Repeated trips on the same turbine = do not keep resetting. Escalate to maintenance and log accordingly.'},
 
@@ -16798,11 +16850,11 @@ const ROC_QUESTIONS = [
    q:'Solar site is underperforming with high irradiance. How do you determine if it\'s an asset issue vs. a curtailment order?',
    a:'Cross-reference these four data points:<ul><li><strong>Inverter status</strong> — are they online, faulted, or showing comms loss?</li><li><strong>Current irradiance</strong> — is there actually enough sun to justify higher output?</li><li><strong>ADS setpoint</strong> — is there an active curtailment or derate reducing the setpoint?</li><li><strong>Active alarms</strong> — any inverter trips, thermal limits, or protection flags?</li></ul><strong>If inverters show faults with good irradiance</strong> → asset issue (inverter trip, string problem). Investigate, log, notify SC.<br><strong>If inverters show normal but setpoint is low</strong> → curtailment is the cause. Confirm it\'s logged as a valid order.<br><strong>If other nearby sites are also low</strong> → likely a grid curtailment affecting the area.'},
 
-  {id:'op4', stepwise:true, lvl:1, cat:'operations', type:'application',
+  {id:'op4', pb:'hail-stow', stepwise:true, lvl:1, cat:'operations', type:'application',
    q:'Hail stow procedure for HARQ 1/2 or C-Flats: what are the 7 steps and what is the trigger?',
    a:'<strong>Trigger:</strong> Damaging hail alert — hail ≥ 1 inch in diameter forecasted or active.<ol style="margin-left:14px;"><li>Identify the alert</li><li>Log into NXNavigator</li><li>Stow the site (panels rotate to protective angle)</li><li>Notify Site Owner, Field team, and SC</li><li>Initiate Auto Tracking <strong>once the all clear is received</strong> (text or email)</li><li>Notify Site Owner, Field team, and SC again</li><li>Log all steps with timestamps</li></ol><strong>Common gap:</strong> Auto Tracking is never re-initiated after the storm. Panels will show low output with good irradiance and no alarm will fire — it\'s a "normal" stow state. Always verify Auto Tracking is running post-event.'},
 
-  {id:'op5', stepwise:true, lvl:1, cat:'operations', type:'procedure',
+  {id:'op5', pb:'site-de-rated', stepwise:true, lvl:1, cat:'operations', type:'procedure',
    q:'Walk through the BESS identify/derate procedure. What are the 6 steps?',
    a:'<ol style="margin-left:14px;"><li><strong>Identify BESS nameplate info</strong> — MW capacity, MWh capacity, voltage setpoint, operating band</li><li><strong>Determine if BESS is Fully Available or Derated</strong> — check SCADA for actual capability vs. nameplate</li><li><strong>Submit derate/outage to QSE and notify Owner Contacts</strong> — use the proper template/email; this goes to the SC</li><li><strong>Update the Outage Board and create an Operator Log</strong> — document start time, cause, expected duration</li><li><strong>Update/End Outage</strong> when the condition clears</li><li><strong>Update Outage Board, Operator Log, and notify Owner Contacts</strong> again at close-out</li></ol>'},
 
@@ -16816,7 +16868,7 @@ const ROC_QUESTIONS = [
    q:'Walk through the start-of-shift turnover — 12 steps in order.',
    a:'<ol style="margin-left:14px;"><li>Notify ROC in Teams chat that you are on the way</li><li>Clock in at the office door (DSPTCH)</li><li>Check the dry-erase / outage board</li><li>Receive instructions from offgoing operator (Teams or in person)</li><li>Log into D1/D2 duty site SCADAs</li><li>Fill out (ROCC1) Operator Log — Onsite</li><li>Complete Asset Scanning Tool and upload</li><li>Leave instructions for oncoming operator in Teams/turnover</li><li>Fill out (ROCC1) Operator Log — Offsite</li><li>Ensure you log out of all sites directly</li><li>Leave the ROCC only after relief is logged into their sites</li><li>Clock out (DSPTCH)</li></ol><strong>Step 11 is non-negotiable:</strong> the ROCC cannot be without coverage. Your accountability doesn\'t end until relief is confirmed online.'},
 
-  {id:'pr2', stepwise:true, lvl:1, cat:'operations', type:'procedure',
+  {id:'pr2', pb:'staysafe', stepwise:true, lvl:1, cat:'operations', type:'procedure',
    q:'What is the StaySafe Lone Worker protocol? Walk through the 4 steps.',
    a:'<ol style="margin-left:14px;"><li><strong>Alarm received via StaySafe</strong> — a lone worker check-in was missed</li><li><strong>Operator makes a single attempt to reach the tech</strong> — call or message once</li><li><strong>Attempt to reach Supervisor or a nearby employee</strong> — escalate immediately if tech is unreachable</li><li><strong>Once 10 minutes have passed without contact — call local emergency authorities</strong> and request a well-being check</li></ol>Do not delay past 10 minutes waiting for a callback. The protocol exists because a worker may be incapacitated. Err on the side of the well-being check.'},
 
@@ -16824,7 +16876,7 @@ const ROC_QUESTIONS = [
    q:'What information is required when creating an Operator Log, and what extra fields are required for a Visitor Log?',
    a:'<strong>Standard Operator Log fields:</strong><ul><li>Select Site / Equipment</li><li>Log Type</li><li>GADS Code</li><li>Start and Forecast Dates</li><li>Sub-log (details of why the log was created)</li></ul><strong>Visitor Log — additional required fields:</strong><ul><li>Visitor First and Last Name</li><li>Company they work for</li><li>Cell phone number</li><li>Nature of work</li></ul>Incomplete logs are a compliance gap. If it wasn\'t logged, it didn\'t happen.'},
 
-  {id:'pr4', stepwise:true, lvl:1, cat:'operations', type:'procedure',
+  {id:'pr4', pb:'operating-instruction', stepwise:true, lvl:1, cat:'operations', type:'procedure',
    q:'Walk through the Operating Instruction procedure under COM-002 — 5 steps.',
    a:'<ol style="margin-left:14px;"><li><strong>Receive</strong> the Operating Instruction from the issuing authority (ISO, TOP, SC)</li><li><strong>Repeat the instruction back correctly</strong> — verbatim repeat-back confirms both parties have the same understanding</li><li><strong>Execute</strong> the Operating Instruction</li><li><strong>Respond to the authority</strong> — confirm success or failure of execution</li><li><strong>Log in accordance</strong> \u2014 document instruction received, time, who issued it, action taken, outcome. Attach a picture if received and confirmed on the ADS board, along with all call logs if received by phone.</li></ol>COM-002 makes the repeat-back mandatory — it is not optional. A missed readback is a standard violation even if the instruction was executed correctly.'},
 
@@ -16892,7 +16944,7 @@ const ROC_QUESTIONS = [
 
   // ══ FULL SIMULATION SCENARIO ══════════════════════════════════════════════
 
-  {id:'ord1', lvl:3, cat:'operations', type:'ordering',
+  {id:'ord1', pb:'bess-oscillation', lvl:3, cat:'operations', type:'ordering',
    q:'All of this is on your screen at once: BESS HVAC alarm with container temperature climbing, Inverter Unit 3 tripped, CAISO curtailment active. Put these actions in the order you would take them.',
    order:[
      'Assess the BESS thermal condition \u2014 is it still climbing, and is it approaching a trip?',
@@ -16908,10 +16960,10 @@ const ROC_QUESTIONS = [
   {id:'s5', lvl:3, cat:'scada', type:'conceptual',
    q:'What is a PPC, and what is it doing between the ISO setpoint and the equipment?',
    a:'The <strong>Plant Power Controller</strong> takes a plant-wide setpoint and distributes it across the individual inverters, turbines or PCS units, then trims continuously to hold the plant at that target at the point of interconnection.<ul><li>Receives the setpoint from SCADA / ADS / AGC</li><li>Splits it across available equipment, accounting for whatever is derated or offline</li><li>Regulates to the <strong>POI</strong>, not the sum of the equipment</li><li>Runs the control mode the TOP schedule requires</li></ul><strong>Why it matters:</strong> when a site is not following dispatch, the PPC is the layer between \u201cthe setpoint arrived\u201d and \u201cthe equipment moved.\u201d A setpoint visible in SCADA with no MW response usually means the PPC is in the wrong mode, has a limit applied, or has lost communication with the equipment beneath it.<br><br><strong>Modes to recognise:</strong> active power control, voltage control, power factor control, and manual/local \u2014 where the PPC stops regulating and holds whatever it was last given.'},
-  {id:'op7', stepwise:true, lvl:1, cat:'operations', type:'procedure',
+  {id:'op7', pb:'site-de-rated', stepwise:true, lvl:1, cat:'operations', type:'procedure',
    q:'Walk through the outage ticket procedure \u2014 what are the 4 steps?',
    a:'<ol style="margin-left:14px;"><li><strong>Identify the outage</strong> \u2014 what is out, when it started, and whether it is forced or planned</li><li><strong>Submit the ticket</strong> \u2014 as required and as prescribed by the SC</li><li><strong>Update as conditions change</strong> \u2014 revise the end time or capacity as better information arrives</li><li><strong>File with the CPUC</strong> for Peregrine or Northstar if the outage is \u226550MW</li><li><strong>Close the ticket</strong> \u2014 once the equipment is returned and output is confirmed recovered</li></ol>The step most often missed is the last one. A ticket left open after the equipment is back keeps the site showing derated to the SC and the market, with nothing alarming to tell you.'},
-  {id:'s6', lvl:2, cat:'scada', type:'application',
+  {id:'s6', pb:'comms-loss', lvl:2, cat:'scada', type:'application',
    q:'How would you recognize a communication issue versus an equipment issue?',
    a:'<ul><li>Check communication status of all affected devices</li><li>Determine if data values are <strong>frozen or updating</strong></li><li>Compare SCADA with field reports</li><li>Review communications alarms</li><li>Check whether multiple devices failed simultaneously</li><li>Verify if local HMI or PLC still has normal operation</li><li>Determine whether production actually changed or only telemetry was lost — do the math between site output with and without the inverter producing, and compare</li></ul><strong>At Operator 3 level, also:</strong> compare production trends across multiple platforms, and contact QSE / Generation / Transmission to understand whether they also lost visibility.'},
   {id:'pa3', lvl:2, cat:'plant', type:'conceptual',
@@ -16977,7 +17029,7 @@ const ROC_QUESTIONS = [
   {id:'op17', lvl:3, cat:'operations', type:'scenario',
    q:'SCENARIO: Harquahala 2 PV suddenly drops to 60 MW output. How would you investigate?',
    a:'<ul><li>Verify actual production loss</li><li>Check irradiance and weather conditions</li><li>Determine if the reduction is site-wide or limited to specific equipment</li><li>Review inverter availability</li><li>Check tracker status</li><li>Review alarms and event history</li><li><strong>Verify no curtailment or dispatch instructions are active</strong></li><li>Identify whether production loss matches unavailable equipment</li><li>Coordinate with field personnel if equipment issues are suspected</li></ul>'},
-  {id:'s7', lvl:3, cat:'scada', type:'application',
+  {id:'s7', pb:'site-trip', lvl:3, cat:'scada', type:'application',
    q:'How would you identify a site trip?',
    a:'Any one of these is enough to treat it as a trip:<ul><li><strong>High side breaker open</strong></li><li><strong>Frozen data on SCADA</strong></li><li><strong>Complete loss of comms</strong></li><li><strong>The TO reports the site tripped</strong></li></ul>Confirm before acting: <strong>an open high side while the site is still producing is NOT a trip.</strong> Check output before submitting an outage \u2014 if generation is unchanged, you have an indication problem, not a trip.<br><br>Once identified, work the Site Trip playbook. Notify TOP first and confirm they see the same breaker position.'},
   {id:'mt1', lvl:3, cat:'scada', type:'matching',
@@ -17008,7 +17060,7 @@ const ROC_QUESTIONS = [
      ['Security alarm', 1],
      ['Single inverter offline, site output otherwise normal', 1]]},
    a:'<strong>None of these is a no-action alarm.</strong> The question is only whether it interrupts what you are doing right now.<br><br><strong>Drop what you are doing</strong> \u2014 it can hurt someone, or it takes the site off the grid:<ul><li><strong>Fire or smoke</strong>, <strong>battery thermal</strong>, <strong>HVAC with temperature rising</strong> \u2014 safety, and the thermal ones can run away</li><li><strong>Breaker or inverter trip</strong> \u2014 generation is already lost</li><li><strong>Loss of comms</strong> \u2014 not dangerous in itself, but you have lost the ability to see everything else on this list</li></ul><strong>Work the normal process</strong> \u2014 still gets attention today, just not ahead of the above:<ul><li><strong>Transformer alarm</strong> \u2014 dispatch a tech to investigate</li><li><strong>Security alarm</strong> \u2014 dispatch a tech and notify your supervisor. A site break-in can be a CIP reportable event, so it is logged as a Regulatory Event</li><li><strong>Single inverter offline</strong> \u2014 log it, email the owner, and monitor. Site output is otherwise normal, so it is a derate rather than an event</li></ul>An HVAC alarm on its own would be the normal process. <strong>HVAC plus rising temperature is a thermal condition</strong>, which is why it moves up.<br><br><strong>Whichever bucket it lands in, never silence an unacknowledged alarm before you understand what caused it.</strong>'},
-  {id:'bk2', lvl:2, cat:'scada', type:'sorting',
+  {id:'bk2', pb:'site-trip', lvl:2, cat:'scada', type:'sorting',
    q:'Site trip, or not a site trip?',
    buckets:{ names:['Site trip','Not a trip'], items:[
      ['High-side breaker shows open, no generation', 0],
@@ -17059,7 +17111,7 @@ const ROC_QUESTIONS = [
    + 'This matters when you are checking why output has not moved. A site that is ramping looks similar to a site '
    + 'that is ignoring the instruction, and the difference is whether MW is <em>changing</em> at all. Give it the '
    + 'ramp time before treating it as a problem.'},
-  {id:'d6', lvl:2, cat:'dispatch', type:'pick-one',
+  {id:'d6', pb:'not-following-agc', lvl:2, cat:'dispatch', type:'pick-one',
    q:'A BESS on AGC stops following the signal upward. State of charge is sitting at its lower limit. What is this?',
    choices:[
      'A physical limit \u2014 the plant cannot discharge further and is not faulted',
@@ -17501,6 +17553,22 @@ function rocMark(qid, val) {
 // sequential and short enough to be worth the clicks.
 let rocStepAt = {};
 
+// Surface the matching playbook under an answer that describes the situation
+// it covers. Playbooks are the least-used part of the app and the most useful
+// during an event, so point at them where someone is already reading.
+function rocPbLink(q) {
+  if (!q.pb) return '';
+  const p = (typeof PB_PLAYBOOKS !== 'undefined') && PB_PLAYBOOKS.find(x => x.slug === q.pb);
+  if (!p) return '';
+  return '<div class="roc-pb"><span class="roc-pb-lbl">Playbook</span>'
+    + '<button class="roc-pb-btn" onclick="rocGoPlaybook(\'' + p.slug + '\')">'
+    + esc(p.sheetTitle) + ' \u2192</button></div>';
+}
+function rocGoPlaybook(slug) {
+  switchView('playbooks', null);
+  setTimeout(() => { try { pbActivePhase = {}; pbOpenPlaybook(slug); } catch (e) {} }, 60);
+}
+
 function rocSplitSteps(html) {
   const m = html.match(/<(ul|ol)[^>]*>([\s\S]*?)<\/\1>/);
   if (!m) return null;
@@ -17899,7 +17967,7 @@ function rocRender() {
             <div class="roc-q-text">${q.q}</div>
           </div>
           <div class="roc-answer${rocRevealed[q.id] ? ' show' : ''}" id="roc-ans-${q.id}">
-            <span class="roc-a-label">${q.order ? 'Your order' : q.match ? 'Your matches' : q.buckets ? 'Your sort' : q.choices ? 'Your answer' : 'Answer'}</span>${q.order ? rocOrderHtml(q.id) : q.match ? rocMatchHtml(q.id) : q.buckets ? rocBucketHtml(q.id) : q.choices ? rocPickHtml(q.id) : q.stepwise ? rocStepHtml(q.id) : q.a}
+            <span class="roc-a-label">${q.order ? 'Your order' : q.match ? 'Your matches' : q.buckets ? 'Your sort' : q.choices ? 'Your answer' : 'Answer'}</span>${q.order ? rocOrderHtml(q.id) : q.match ? rocMatchHtml(q.id) : q.buckets ? rocBucketHtml(q.id) : q.choices ? rocPickHtml(q.id) : q.stepwise ? rocStepHtml(q.id) : q.a}${rocPbLink(q)}
           </div>
           <div class="roc-q-actions">
             <button class="roc-show-btn" id="roc-show-${q.id}" onclick="rocToggleAnswer('${q.id}')">${rocRevealed[q.id] ? 'Hide' : 'Show'} Answer</button>
@@ -20990,7 +21058,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.42';
+const APP_VERSION = 'v2.45';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -21232,7 +21300,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.42</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.45</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
