@@ -4211,7 +4211,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
                   <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">sets standards</div>
                   <div class="gh-ch-node" style="background:#534AB7;color:#EEEDFE;">WECC</div>
                   <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">audits &amp; enforces</div>
-                  <div class="gh-ch-node" style="background:#185FA5;color:#E6F1FB;">RC (WECC RC)</div>
+                  <div class="gh-ch-node" style="background:#185FA5;color:#E6F1FB;">RC (RC West)</div>
                   <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">wide-area oversight</div>
                   <div class="gh-ch-node" style="background:#0F6E56;color:#E1F5EE;">CAISO (ISO / BA)</div>
                   <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">real-time dispatch</div>
@@ -4282,7 +4282,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
                   <span class="gh-scen-chev">▾</span>
                 </div>
                 <div class="gh-scen-body">
-                  <div class="gh-scen-setup">Setup: Grid event in the Western Interconnection. WECC RC calls CAISO and issues an emergency directive to curtail specific resources including yours. CAISO may not yet have updated your DOP.</div>
+                  <div class="gh-scen-setup">Setup: Grid event in the Western Interconnection. RC West calls CAISO and issues an emergency directive to curtail specific resources including yours. CAISO may not yet have updated your DOP.</div>
                   <div class="gh-step"><div class="gh-step-num">1</div><div class="gh-step-txt"><strong>RC directive received (via CAISO or directly).</strong> This is a wide-area stability instruction — highest reliability authority below emergency safety.</div></div>
                   <div class="gh-step"><div class="gh-step-num">2</div><div class="gh-step-txt"><strong>Execute immediately.</strong> Read back per COM-002. Do not wait for your DOP to update — RC instructions act on the grid faster than market signals.</div></div>
                   <div class="gh-step"><div class="gh-step-num">3</div><div class="gh-step-txt"><strong>Notify SC and log.</strong> Timestamp the directive receipt, who issued it, the MW instruction, and your confirmation. This is your paper trail.</div></div>
@@ -16678,33 +16678,43 @@ const ROC_QUESTIONS = [
    q:'What does the TOP (Transmission Operator) do, and when does a GOP need to interact with them?',
    a:'The <strong>TOP (Transmission Operator)</strong> manages the transmission system in real time — they control the high-voltage network the plant interconnects to. The TO (Transmission Owner) owns the infrastructure; the TOP operates it.<br><br>A GOP must contact the TOP when:<ul><li>Performing <strong>HV breaker operations</strong> — TOP permission is required before opening or closing the high-voltage interconnect</li><li>A plant event affects transmission flows or limits</li><li>Planned outages require coordination with the transmission system</li></ul>The switching SOP is clear: <strong>request permission from TOP before any HV breaker operation.</strong> This is a TOP-003 requirement.'},
 
-  {id:'g5', lvl:1, cat:'grid', type:'application',
-   q:'CAISO issues a curtailment order reducing your plant\'s output. Walk through the chain of entities involved before that instruction reaches the GOP.',
-   a:'<ol style="margin-left:14px;"><li><strong>CAISO</strong> (the ISO — acting as market operator and grid balancer) determines that the plant needs to reduce output based on grid conditions or economic dispatch</li><li>The curtailment instruction flows to the <strong>SC</strong> (Scheduling Coordinator), who holds the scheduling position with CAISO</li><li>The SC communicates the revised schedule or curtailment order to the <strong>PSE/GO</strong></li><li>The dispatch setpoint reaches the plant via <strong>ADS/AGC</strong>, and the <strong>GOP (ROC operator)</strong> verifies the site is responding accordingly on SCADA</li></ol>The GOP\'s job: confirm the ADS setpoint was received, verify site output is tracking it, and log it. If the site isn\'t responding, investigate and notify the SC.'},
-
-  {id:'g6', lvl:1, cat:'grid', type:'recognition',
-   q:'Quick check: match each entity to its one-line function — GO, GOP, TO, TOP, SC, PSE.',
-   a:'<ul><li><strong>GO</strong> — Owns the generation facility</li><li><strong>GOP</strong> — Operates the generation facility in real time (you)</li><li><strong>TO</strong> — Owns the transmission infrastructure</li><li><strong>TOP</strong> — Manages the transmission system in real time; permission required for HV switching</li><li><strong>SC</strong> — Submits schedules and bids to the ISO; communicates outages and derates</li><li><strong>PSE</strong> — Buys and sells electricity; the commercial entity behind the energy contracts</li></ul>And the ISO (CAISO, ERCOT): <strong>Operates the market and balances the grid in real time</strong> — in most contexts where you\'d hear "BA," in this market the ISO is that entity.'},
-
-  {id:'g7', lvl:1, cat:'grid', type:'conceptual',
-   q:'What is the RC (Reliability Coordinator), and how does their authority differ from CAISO\'s?',
-   a:'The <strong>RC (Reliability Coordinator)</strong> has the highest level of real-time operational authority on the grid — above the ISO/BA. The RC\'s job is wide-area reliability: they monitor the entire interconnection (not just one BA\'s footprint) and can issue emergency instructions to any entity within their area when they see a threat to system integrity.<br><br>In the West, <strong>WECC RC Services</strong> fills this role.<br><br>How RC differs from CAISO:<ul><li><strong>CAISO</strong> dispatches for economic efficiency and balance within California — their instructions are routine market operations</li><li><strong>RC</strong> acts for wide-area stability — their instructions are emergency reliability actions that override normal market operations</li><li>RC can direct CAISO, not the other way around</li></ul><strong>Operationally:</strong> You will rarely hear from the RC directly — usually the RC instructs CAISO, and CAISO relays it to you. But if the RC contacts you directly in an emergency, their instruction takes priority over any existing DOP. Execute, read back, document, then notify SC.'},
-
-  {id:'g8', lvl:1, cat:'grid', type:'application',
-   q:'SCENARIO: The RC issues an emergency directive to curtail your plant. Your current CAISO DOP is higher than the RC\'s target. What do you do?',
-   a:'<ol style="margin-left:14px;"><li><strong>Execute the RC directive immediately.</strong> RC authority is above the ISO in a reliability emergency. The DOP reflects market-normal operations; the RC is acting on a wide-area reliability threat.</li><li><strong>Verbal read-back per COM-002.</strong> Confirm the MW target, who issued it, and the time. Do not execute without closing the communication loop.</li><li><strong>Log everything with timestamps.</strong> RC contact name/ID, time received, MW instruction, time of execution, actual output achieved.</li><li><strong>Notify CAISO of the deviation.</strong> You are delivering less than your DOP — CAISO\'s state estimator needs to know why. They will update accordingly.</li><li><strong>Notify SC/PSE.</strong> Commercial position is affected. They need the timestamps and MW numbers to manage market exposure.</li></ol><strong>Key principle:</strong> RC instructions don\'t go through your normal dispatch chain — they arrive because something is wrong at the interconnection level. Speed and documentation matter equally.'},
-
-  {id:'g9', lvl:1, cat:'grid', type:'conceptual',
-   q:'What is the DP (Distribution Provider), and when does a GOP interact with them?',
-   a:'The <strong>DP (Distribution Provider)</strong> owns and operates the distribution system — the lower-voltage network (typically below 35 kV) that serves end consumers. Most large generation interconnects at transmission voltage (HV), where the TOP is the relevant authority. But some smaller or behind-the-meter resources interconnect at distribution voltage — that\'s where the DP becomes your grid interface.<br><br>Situations where a GOP may interact with the DP:<ul><li><strong>Distribution-connected generation</strong> — your POI is on the distribution system. The DP manages the interconnection agreement and operating constraints.</li><li><strong>Feeder voltage issues</strong> — the DP may call to curtail your output if local feeder voltage is out of band. Treat this like a TOP curtailment: it\'s a reliability constraint, not a request.</li><li><strong>Planned outages</strong> — if distribution infrastructure adjacent to your interconnect needs maintenance, the DP coordinates the switching and may require temporary curtailment.</li></ul><strong>Authority:</strong> The DP\'s curtailment orders are reliability instructions on their system. They don\'t have CAISO dispatch authority, but they do have the right and obligation to protect the distribution system — which means they can limit your output when necessary.'},
-
-  {id:'g10', lvl:1, cat:'grid', type:'recognition',
-   q:'Where does the RC sit relative to CAISO and WECC in the reliability hierarchy? What is the RC\'s one job?',
-   a:'<strong>Hierarchy:</strong> NERC → WECC (Regional Entity) → <strong>RC</strong> → CAISO (ISO/BA) → TOP → GOP<br><br>The RC sits between WECC and the ISO. WECC does compliance and planning; the RC does real-time wide-area operations.<br><br><strong>The RC\'s one job:</strong> Maintain reliability across the entire interconnection in real time. They watch flows, stability limits, and contingency exposure across multiple BA areas simultaneously. When they see a wide-area threat that a single BA can\'t resolve on their own, the RC acts.<br><br><strong>Mental model:</strong> \"CAISO manages the California grid. The RC manages everything the California grid is connected to.\"'},
-
-  // ══ VOLTAGE & REACTIVE POWER ══════════════════════════════════════════════
-
-  {id:'v1', lvl:1, cat:'voltage', type:'conceptual',
+  {id:'g7', lvl:2, cat:'grid', type:'conceptual',
+   q:'What is the RC (Reliability Coordinator), and who is ours?',
+   a:'The RC holds the highest real-time operational authority on the grid \u2014 above the ISO and the BA. '
+   + 'Its job is <strong>wide-area reliability</strong>: watching the whole interconnection rather than one '
+   + 'balancing area, and issuing emergency instructions to any entity inside its footprint when system '
+   + 'integrity is threatened.<br><br>'
+   + '<strong>In the West the RC is RC West, which CAISO operates.</strong> It is the RC of record for around '
+   + '24 balancing authorities and 40 transmission operators across the western states. SPP runs a separate RC '
+   + 'covering some other western entities.<br><br>'
+   + '<strong>WECC is not the RC.</strong> WECC is the Regional Entity \u2014 compliance, standards and '
+   + 'planning. It audits and enforces; it does not operate anything in real time. The RC used to be Peak '
+   + 'Reliability, which wound down in 2019 when CAISO took the role on.'},
+    {id:'g9', lvl:3, cat:'grid', type:'conceptual',
+   q:'What is the DP (Distribution Provider), and do we ever deal with them?',
+   a:'The DP owns and operates the distribution system \u2014 the lower-voltage network, typically below 35 kV, '
+   + 'that carries power the last stretch to end consumers.<br><br>'
+   + '<strong>In practice we almost never interact with them.</strong> Our sites interconnect at transmission '
+   + 'voltage, so the TOP is the authority we deal with for switching and voltage. Worth knowing the term for '
+   + 'the exam and for reading a one-line, but it is not a number you will be calling.<br><br>'
+   + 'The exception is a resource that interconnects at distribution voltage \u2014 smaller or behind-the-meter '
+   + 'plant \u2014 where the DP becomes the grid interface instead of the TOP.'},
+    {id:'g10', lvl:2, cat:'grid', type:'recognition',
+   q:'Most of our sites are CAISO. What roles is CAISO actually playing, and where does the RC sit?',
+   a:'<strong>CAISO wears three hats at once, which is what makes this confusing.</strong> For our CAISO sites '
+   + 'the same organisation is:<ul>'
+   + '<li><strong>The ISO</strong> \u2014 runs the market, issues ADS dispatch</li>'
+   + '<li><strong>The BA</strong> \u2014 balances generation against load in its footprint</li>'
+   + '<li><strong>The RC</strong>, operating as RC West \u2014 wide-area reliability across the western states</li>'
+   + '</ul>So when CAISO contacts us it is worth knowing which hat is on: an ADS setpoint is the market, an '
+   + 'emergency directive is the RC.<br><br>'
+   + '<strong>The chain:</strong> NERC \u2192 WECC (Regional Entity: compliance and planning) \u2192 RC (real-time '
+   + 'wide-area authority) \u2192 BA / ISO \u2192 TOP \u2192 GOP.<br><br>'
+   + '<strong>It is not always one company.</strong> RC West covers far more than CAISO\'s own footprint \u2014 '
+   + 'around 24 balancing authorities \u2014 so a BA elsewhere in the West has RC West as its RC while being an '
+   + 'entirely separate organisation. SPP runs its own RC for other entities. CAISO holding all three roles is '
+   + 'our common case, not the general rule.'},
+    {id:'v1', lvl:1, cat:'voltage', type:'conceptual',
    q:'What is the purpose of AVR, and what does the voltage setpoint/band mean in practice?',
    a:'<strong>AVR (Automatic Voltage Regulator)</strong> automatically adjusts the generator\'s excitation to hold the terminal voltage at a defined setpoint. Without it, voltage would drift with every load change and the operator would have to manually adjust excitation constantly.<br><br><strong>Voltage Setpoint</strong>: the target voltage the AVR is trying to maintain (e.g., 115 kV, 525 kV — set per the interconnection agreement).<br><strong>Voltage Band</strong>: the acceptable operating range around that setpoint (e.g., 498.75 kV–551.25 kV for a 525 kV system). The plant must stay within this band. Exceedance triggers notification to the ISO/TOP and may require action.<br><br>NERC <strong>VAR-002</strong> requires AVR to remain in automatic mode.'},
 
@@ -17098,7 +17108,7 @@ const GH_DATA = {
     auth:'Conducts compliance audits. Issues Notices of Alleged Violation (NAVs). Delegates enforcement to NERC.',
     signal:'Audit requests, compliance questionnaires, self-report forms. Not calling you during a shift.',
     mental:'"WECC is the referee for the West. They watch the film after the game, not during it."'},
-  rc:{name:'RC',full:'Reliability Coordinator — WECC RC Services (West)',
+  rc:{name:'RC',full:'Reliability Coordinator — RC West, operated by CAISO',
     what:'Highest real-time operational authority. Monitors the entire Western Interconnection across multiple BA areas simultaneously. Issues emergency directives when wide-area stability is threatened. Can override ISO instructions.',
     auth:'Can direct any entity — including CAISO — to take immediate action to preserve interconnection reliability. RC directives are the highest operational priority below emergency safety.',
     signal:'Emergency phone calls, direct real-time instructions. Rare, but when they call, everything else waits. Usually their instructions reach you via CAISO — but in a true emergency they may contact you directly.',
@@ -20980,7 +20990,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.41';
+const APP_VERSION = 'v2.42';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -21222,7 +21232,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.41</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.42</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
