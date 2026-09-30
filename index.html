@@ -4176,8 +4176,6 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
             <div class="gh-tabs">
               <button class="gh-tab active" onclick="ghTab('hierarchy',this)">Hierarchy</button>
               <button class="gh-tab" onclick="ghTab('chains',this)">Two Chains</button>
-              <button class="gh-tab" onclick="ghTab('priority',this)">Priority Order</button>
-              <button class="gh-tab" onclick="ghTab('scenarios',this)">Scenarios</button>
             </div>
 
             <!-- HIERARCHY TAB -->
@@ -4225,7 +4223,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
                   <div class="gh-ch-node" style="background:#3B6D11;color:#EAF3DE;">TO / TOP</div>
                   <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">transmission limits</div>
                   <div class="gh-ch-node" style="background:#993C1D;color:#FAECE7;">GOP (you)</div>
-                  <div style="margin-top:8px;padding:7px 9px;border-left:3px solid var(--blue);background:var(--bbg);border-radius:0 6px 6px 0;font-size:11px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Same company, two hats.</strong> For our CAISO sites, RC West and CAISO are one organisation — those two boxes are the same phone number. The roles stay distinct (the RC really can override the ISO), but elsewhere in the West they are separate entities.</div><div style="margin-top:8px;font-size:11px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Mandatory.</strong> Non-compliance = NERC violation. RC can override everyone except emergency safety.</div>
+                  <div style="margin-top:8px;padding:7px 9px;border-left:3px solid var(--blue);background:var(--bbg);border-radius:0 6px 6px 0;font-size:11px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Same company, two hats.</strong> For our CAISO sites, RC West and CAISO are one organisation — those two boxes are the same phone number. The roles stay distinct (the RC really can override the ISO), but elsewhere in the West they are separate entities.</div><div style="margin-top:8px;font-size:11px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Mandatory.</strong> Non-compliance = NERC violation. The RC can override everyone \u2014 except that <strong style="color:var(--text);">nothing overrides personal safety</strong>. Beyond that, whose instruction wins is case by case: report the conflict and get direction rather than working from a fixed ranking.</div>
                 </div>
                 <div class="gh-chain-col">
                   <h4 style="color:var(--amber);">💰 Commercial / Merchant</h4>
@@ -4234,104 +4232,20 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
                   <div class="gh-ch-node" style="background:#993556;color:#FBEAF0;">PPA (contract limit)</div>
                   <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">defines max MW &amp; price</div>
                   <div class="gh-ch-node" style="background:#854F0B;color:#FAEEDA;">SC (market bid)</div>
+                  <div style="text-align:center;font-size:9.5px;color:var(--text3);font-style:italic;margin:-1px 0 3px;">often two companies — marketing decides, SC submits</div>
                   <div class="gh-ch-arr">↓</div><div class="gh-ch-rel">submits bids to CAISO</div>
                   <div class="gh-ch-node" style="background:#993C1D;color:#FAECE7;">GOP (you)</div>
                   <div style="margin-top:8px;font-size:11px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Contractual.</strong> Violating PPA is financial, not a grid violation — but still matters commercially.</div>
                 </div>
               </div>
-              <div class="gh-conflict">
-                <h4>⚠ When the two chains conflict</h4>
-                <p>CAISO dispatches you to 80 MW. Your PPA cap is 75 MW. <strong>Follow CAISO.</strong> Log the exceedance, notify SC/PSE, document it.<br><br>
-                RC issues an emergency directive to reduce output immediately. <strong>RC overrides everything</strong> — execute first, document simultaneously, notify SC after.<br><br>
-                The DP limits interconnection because of distribution voltage issues. That's a reliability constraint — follow it like a TOP curtailment.</p>
-              </div>
+              
             </div>
 
             <!-- PRIORITY TAB -->
-            <div class="gh-panel" id="gh-panel-priority">
-              <div class="gh-note">When instructions stack up and conflict, this is the order you follow. No exceptions.</div>
-              <div class="gh-prio-list" style="margin-top:12px;">
-                <div class="gh-prio-item">
-                  <div class="gh-prio-num" style="background:#3C3489;">1</div>
-                  <div><strong>Emergency / Safety</strong><p>Immediate threat to life, equipment, or grid stability. Your SOPs and judgment. Nothing overrides this.</p></div>
-                </div>
-                <div class="gh-prio-item">
-                  <div class="gh-prio-num" style="background:#185FA5;">2</div>
-                  <div><strong>RC Emergency Directive</strong><p>The RC has wider-area visibility. Their emergency instruction can override the ISO. Rare — but when it comes, it takes the chain.</p></div>
-                </div>
-                <div class="gh-prio-item">
-                  <div class="gh-prio-num" style="background:#0F6E56;">3</div>
-                  <div><strong>CAISO real-time dispatch</strong><p>A DOP or direct CAISO instruction is a reliability obligation. Log it, execute it, document deviations with justification.</p></div>
-                </div>
-                <div class="gh-prio-item">
-                  <div class="gh-prio-num" style="background:#3B6D11;">4</div>
-                  <div><strong>Transmission constraint (TOP / DP)</strong><p>TOP curtailment orders, DP interconnection limits — both are reliability constraints overriding your dispatch target.</p></div>
-                </div>
-                <div class="gh-prio-item">
-                  <div class="gh-prio-num" style="background:#854F0B;">5</div>
-                  <div><strong>Plant physical limits</strong><p>Ramp rates, inverter limits, transformer ratings. Never dispatch to a point that damages equipment.</p></div>
-                </div>
-                <div class="gh-prio-item">
-                  <div class="gh-prio-num" style="background:#993556;">6</div>
-                  <div><strong>PPA / Commercial limits</strong><p>Last in the reliability stack. Exceeding or missing it due to grid instructions is force-majeure, not a violation on your part.</p></div>
-                </div>
-              </div>
-              <div class="gh-note" style="margin-top:12px;">"Grid first, plant second, contract third. Log everything, call everybody, explain later."</div>
-            </div>
+            
 
             <!-- SCENARIOS TAB -->
-            <div class="gh-panel" id="gh-panel-scenarios">
-
-              <div class="gh-scen">
-                <div class="gh-scen-hdr" onclick="ghToggleScen(this)">
-                  <span class="gh-scen-badge" style="background:var(--bbg);color:var(--blue);">RC Directive</span>
-                  <h4>RC issues wide-area emergency curtailment</h4>
-                  <span class="gh-scen-chev">▾</span>
-                </div>
-                <div class="gh-scen-body">
-                  <div class="gh-scen-setup">Setup: Grid event in the Western Interconnection. RC West calls CAISO and issues an emergency directive to curtail specific resources including yours. CAISO may not yet have updated your DOP.</div>
-                  <div class="gh-step"><div class="gh-step-num">1</div><div class="gh-step-txt"><strong>RC directive received (via CAISO or directly).</strong> This is a wide-area stability instruction — highest reliability authority below emergency safety.</div></div>
-                  <div class="gh-step"><div class="gh-step-num">2</div><div class="gh-step-txt"><strong>Execute immediately.</strong> Read back per COM-002. Do not wait for your DOP to update — RC instructions act on the grid faster than market signals.</div></div>
-                  <div class="gh-step"><div class="gh-step-num">3</div><div class="gh-step-txt"><strong>Notify SC and log.</strong> Timestamp the directive receipt, who issued it, the MW instruction, and your confirmation. This is your paper trail.</div></div>
-                  <div class="gh-step"><div class="gh-step-num">4</div><div class="gh-step-txt"><strong>Monitor for CAISO DOP update.</strong> CAISO will catch up — but you executed on RC authority. The two should align quickly.</div></div>
-                  <div class="gh-op-action">Operator action: RC authority &gt; CAISO DOP. Execute, read back, notify SC, log everything.</div>
-                </div>
-              </div>
-
-              <div class="gh-scen">
-                <div class="gh-scen-hdr" onclick="ghToggleScen(this)">
-                  <span class="gh-scen-badge" style="background:var(--abg);color:var(--amber);">DP Constraint</span>
-                  <h4>Distribution Provider limits your interconnection output</h4>
-                  <span class="gh-scen-chev">▾</span>
-                </div>
-                <div class="gh-scen-body">
-                  <div class="gh-scen-setup">Setup: Your plant interconnects at distribution voltage. The DP calls with a curtailment — local distribution feeder is overloaded and voltage is out of band. Your CAISO DOP is 50 MW but the DP says hold to 30 MW.</div>
-                  <div class="gh-step"><div class="gh-step-num">1</div><div class="gh-step-txt"><strong>DP curtailment received.</strong> This is a distribution-level reliability constraint. Treat it like a TOP curtailment — it's a physical limit on what the grid can safely absorb at your POI.</div></div>
-                  <div class="gh-step"><div class="gh-step-num">2</div><div class="gh-step-txt"><strong>Confirm and read back.</strong> "Confirmed, holding to 30 MW, feeder voltage constraint." Log time and who issued.</div></div>
-                  <div class="gh-step"><div class="gh-step-num">3</div><div class="gh-step-txt"><strong>Execute curtailment.</strong> You are now deviating from your CAISO DOP — this needs to be documented.</div></div>
-                  <div class="gh-step"><div class="gh-step-num">4</div><div class="gh-step-txt"><strong>Notify CAISO of deviation.</strong> Log the DOP vs actual discrepancy and the reason (DP constraint, feeder name/ID). CAISO state estimator needs to know.</div></div>
-                  <div class="gh-step"><div class="gh-step-num">5</div><div class="gh-step-txt"><strong>Notify SC/PSE.</strong> Lost 20 MW — commercial position is affected. SC needs to adjust their market exposure.</div></div>
-                  <div class="gh-op-action">Operator action: DP limit is a reliability constraint. Follow it, notify CAISO, then notify SC.</div>
-                </div>
-              </div>
-
-              <div class="gh-scen">
-                <div class="gh-scen-hdr" onclick="ghToggleScen(this)">
-                  <span class="gh-scen-badge" style="background:var(--rbg);color:var(--red);">PPA Conflict</span>
-                  <h4>CAISO dispatches below PPA minimum</h4>
-                  <span class="gh-scen-chev">▾</span>
-                </div>
-                <div class="gh-scen-body">
-                  <div class="gh-scen-setup">Setup: PPA requires 60 MW minimum. CAISO sends a 40 MW DOP due to local congestion.</div>
-                  <div class="gh-step"><div class="gh-step-num">1</div><div class="gh-step-txt"><strong>CAISO sends DOP: 40 MW.</strong> This lands in your EMS as a new dispatch target.</div></div>
-                  <div class="gh-step"><div class="gh-step-num">2</div><div class="gh-step-txt"><strong>Execute.</strong> Ramp to 40 MW per your unit's ramp rate. Do not hold at 60 MW "for the PPA."</div></div>
-                  <div class="gh-step"><div class="gh-step-num">3</div><div class="gh-step-txt"><strong>Notify SC/PSE immediately.</strong> Call or log that a CAISO curtailment is active and you are below PPA minimum. Give them MW and timestamp.</div></div>
-                  <div class="gh-step"><div class="gh-step-num">4</div><div class="gh-step-txt"><strong>Document everything.</strong> DOP receipt time, ramp, PPA deviation, notification. This is your force-majeure paper trail.</div></div>
-                  <div class="gh-op-action">Operator action: Follow CAISO, notify SC, document. The commercial fix is not your problem to solve in real time.</div>
-                </div>
-              </div>
-
-            </div>
+            
           </div>
         </div>
       </div>
@@ -21058,7 +20972,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.45';
+const APP_VERSION = 'v2.46';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -21300,7 +21214,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.45</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.46</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
