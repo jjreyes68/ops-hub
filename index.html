@@ -3262,14 +3262,15 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         </div>
       </div>
       <div class="tool-card-body">
-        <div class="section-divider" style="margin-top:0;">
-          <span class="section-divider-lbl">Voltage band</span>
-          <div class="section-divider-line"></div>
-        </div>
-        <div style="margin-bottom:8px;position:relative;">
+        <input id="npchk-site-inp" type="hidden">
+        <div style="margin-bottom:10px;position:relative;">
           <input id="vchk-site-inp" placeholder="Type site name or code..." oninput="vchkFilter()" onblur="setTimeout(vchkCloseMatches,180)" autocomplete="off"
             style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;">
           <div class="wx-matches" id="vchk-site-matches"></div>
+        </div>
+        <div class="section-divider" id="sc-band-hdr" style="margin-top:0;display:none;">
+          <span class="section-divider-lbl">Voltage band</span>
+          <div class="section-divider-line"></div>
         </div>
         <div id="vchk-band-row" style="display:none;margin-bottom:8px;">
           <div id="vchk-band-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:6px;"></div>
@@ -3283,14 +3284,9 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
           <div id="vchk-verdict" style="font-size:16px;font-weight:700;letter-spacing:-.01em;"></div>
           <div id="vchk-detail" style="font-size:11px;margin-top:3px;opacity:.8;font-family:var(--m);"></div>
         </div>
-        <div class="section-divider">
+        <div class="section-divider" id="sc-np-hdr" style="display:none;">
           <span class="section-divider-lbl">Nameplate</span>
           <div class="section-divider-line"></div>
-        </div>
-        <div style="margin-bottom:8px;position:relative;">
-          <input id="npchk-site-inp" placeholder="Type site name or code..." oninput="npchkFilter()" onblur="setTimeout(npchkCloseMatches,180)" autocomplete="off"
-            style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;">
-          <div class="wx-matches" id="npchk-site-matches"></div>
         </div>
         <div id="npchk-body" style="display:none;">
           <div id="npchk-np-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:8px;"></div>
@@ -3759,7 +3755,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <button class="nerc-setup-start" onclick="nercExamStartExam()">▶ BEGIN EXAM</button>
 
         <div class="nerc-resources">
-          <div class="nerc-resources-hdr nerc-fold" onclick="nercFold(this)"><span class="nerc-fold-arrow">&#9656;</span> Exam Coverage by Role</div><div class="nerc-foldable" style="display:none;">
+          <div class="nerc-resources-hdr nerc-fold" onclick="nercFold(this)"><span class="nerc-fold-arrow">&#9662;</span> Exam Coverage by Role</div><div class="nerc-foldable">
           <div class="nerc-coverage-grid">
             <div class="nerc-cov-card">
               <div class="nerc-cov-role to">TO &#8212; Transmission Operator</div>
@@ -3778,11 +3774,8 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
               <span class="nerc-cov-tag">Blackstart</span><span class="nerc-cov-tag">Restoration</span><span class="nerc-cov-tag">Fatigue / PER-006</span><span class="nerc-cov-tag">Cert Requirements</span><span class="nerc-cov-tag">Scenario-Based</span>
             </div>
           </div>
-          <div class="nerc-gap-note">
-            <strong>&#9888; Supplement with external study for:</strong><br>
-            FAC facility modeling &#183; MOD (power flow modeling) &#183; COM documentation requirements &#183; Market protocols &amp; e-Tags &#183; Specific regional procedures (WECC, SERC, RFC, etc.)
-          </div>
-          </div><div class="nerc-resources-hdr nerc-fold" onclick="nercFold(this)"><span class="nerc-fold-arrow">&#9656;</span> Free Study Resources</div><div class="nerc-foldable" style="display:none;">
+          
+          </div><div class="nerc-resources-hdr nerc-fold" onclick="nercFold(this)"><span class="nerc-fold-arrow">&#9662;</span> Free Study Resources</div><div class="nerc-foldable">
           <div class="nerc-links">
             <a class="nerc-link-item" href="https://www.nerc.com/globalassets/programs/system-operator-certification--continuing-education/exam_resource_materials.pdf" target="_blank" rel="noopener">
               <span class="nerc-link-icon">&#128196;</span>
@@ -3804,7 +3797,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
               <div class="nerc-link-body"><div class="nerc-link-title">NERC System Operator Certification &#8212; One-Stop Shop</div><div class="nerc-link-desc">Exam scheduling, credential maintenance, CEH requirements, and candidate resources. Official NERC certification program hub.</div></div>
               <span class="nerc-link-arrow">&#8599;</span>
             </a>
-            <a class="nerc-link-item" href="https://www.nerc.com/globalassets/programs/system-operator-certification--continuing-education/soc_program_manual.pdf" target="_blank" rel="noopener">
+            <a class="nerc-link-item" href="https://www.nerc.com/globalassets/programs/system-operator-certification--continuing-education/soc_program_manual_v4.2.pdf" target="_blank" rel="noopener">
               <span class="nerc-link-icon">&#128220;</span>
               <div class="nerc-link-body"><div class="nerc-link-title">NERC SOC Program Manual</div><div class="nerc-link-desc">Detailed program requirements including exam content outlines by credential type (RC, TOP/TO, BA/TO, GOP), CEH rules, and recertification procedures.</div></div>
               <span class="nerc-link-arrow">&#8599;</span>
@@ -15862,6 +15855,25 @@ function vchkPick(id) {
   document.getElementById('vchk-site-inp').value = id;
   vchkCloseMatches();
   vchkActivateSite(id);
+  scSyncNameplate(id);
+}
+
+// Voltage band and nameplate are wanted together, so one site pick fills both.
+// Each heading appears only when that site actually has that kind of data.
+function scSyncNameplate(id) {
+  const bandHdr = document.getElementById('sc-band-hdr');
+  const npHdr   = document.getElementById('sc-np-hdr');
+  if (bandHdr) bandHdr.style.display =
+    (document.getElementById('vchk-band-row').style.display !== 'none') ? '' : 'none';
+  let has = false;
+  try {
+    npchkActiveId = id;
+    const el = document.getElementById('npchk-site-inp');
+    if (el) el.value = id;
+    npchkActivateSite(id);
+    has = document.getElementById('npchk-body').style.display !== 'none';
+  } catch (e) {}
+  if (npHdr) npHdr.style.display = has ? '' : 'none';
 }
 
 function vchkActivateSite(id) {
@@ -21052,7 +21064,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.51';
+const APP_VERSION = 'v2.53';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -21294,7 +21306,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.51</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.53</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
