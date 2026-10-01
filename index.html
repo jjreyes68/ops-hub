@@ -4388,7 +4388,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <!-- Fields -->
       <div class="sw-lbl">Details</div>
       <div class="sw-field">
-        <label>Field Tech Name</label>
+        <label id="sw-tech-lbl">Field Tech Name</label>
         <input id="sw-tech" list="sw-tech-list" placeholder="e.g. Jake Zulaf" oninput="swBuild()">
         <datalist id="sw-tech-list">
           <option>Adam McCauley</option><option>Alexander Conway</option><option>Christopher Hill</option>
@@ -14040,6 +14040,68 @@ const SW_HARDCODED = [
   { id:'cflats-pv-re', site:'CFLATS \u00B7 PV', action:'Re-Energize', cls:'re',
     numLbl:'Inverter #', numPh:'e.g. 12',
     body:'Call received from field tech {{TECH}} requesting energization of Inverter {{NUMBER}}:\n\u2013 Start command sent to Inverter {{NUMBER}} remotely' },
+{
+    "id": "cb-de",
+    "site": "Combiner Box \u00b7 Local",
+    "action": "De-Energize",
+    "cls": "de",
+    "numLbl": "Block / Inv / CB",
+    "numPh": "e.g. 70, Inv 3, CB 1",
+    "body": "{{TECH}} requested permission from ROC to take down Block {{NUMBER}} locally. ROC granted permission."
+  },
+{
+    "id": "cb-en",
+    "site": "Combiner Box \u00b7 Local",
+    "action": "Energize",
+    "cls": "re",
+    "numLbl": "Block / Inv / CB",
+    "numPh": "e.g. 70, Inv 3, CB 1",
+    "body": "{{TECH}} requested permission from ROC to close in Block {{NUMBER}} locally. ROC granted permission."
+  },
+  {
+    "id": "opinst",
+    "site": "Operating Instruction",
+    "action": "Log",
+    "cls": "other",
+    "techLbl": "Issued by",
+    "techPh": "e.g. CAISO, TOP, SC",
+    "numLbl": "Instruction \u00b7 window \u00b7 reason",
+    "numPh": "e.g. curtail to 50 MW from 14:00 to 16:00 for line work",
+    "body": "Operating instruction received from {{TECH}}.\nInstruction: {{NUMBER}}. ROC acknowledged and complied. Instruction successfully executed. ADS board screenshot and call log attached."
+  },
+  {
+    "id": "unpou-site",
+    "site": "Unplanned Outage",
+    "action": "Site Trip",
+    "cls": "de",
+    "techLbl": "Site",
+    "techPh": "e.g. HARQ1",
+    "numLbl": "Time of trip",
+    "numPh": "e.g. 14:32",
+    "body": "{{TECH}} tripped at {{NUMBER}}. Site at 0 MW. SC and TO notified. Outage submitted with QSE as 0MWh/0MW, 0/0/0/0."
+  },
+  {
+    "id": "unpou-feeder",
+    "site": "Unplanned Outage",
+    "action": "Feeder Trip",
+    "cls": "de",
+    "techLbl": "Site \u00b7 feeder",
+    "techPh": "e.g. HARQ1 feeder 3",
+    "numLbl": "Time of trip",
+    "numPh": "e.g. 14:32",
+    "body": "{{TECH}} tripped at {{NUMBER}}. Remainder of the plant still generating \u2014 partial derate, not a site trip. SC and TO notified. Derate submitted for the affected capacity."
+  },
+  {
+    "id": "comsc",
+    "site": "Communication / SCADA",
+    "action": "Comms Loss",
+    "cls": "de",
+    "techLbl": "Site",
+    "techPh": "e.g. HARQ1",
+    "numLbl": "Time lost",
+    "numPh": "e.g. 14:32",
+    "body": "Communications lost to {{TECH}} at {{NUMBER}}. Unable to monitor the site remotely. SC and TO notified. Field dispatched to investigate."
+  }
 ];
 
 const SW_CUSTOM_KEY = 'rnwbl_sw_custom_v1';
@@ -14194,6 +14256,10 @@ function swSelect(id, el) {
   el.classList.add('sel-' + tpl.cls);
   document.getElementById('sw-num-lbl').textContent = tpl.numLbl || 'Number';
   document.getElementById('sw-num').placeholder = tpl.numPh || '';
+  const tl = document.getElementById('sw-tech-lbl');
+  if (tl) tl.textContent = tpl.techLbl || 'Field Tech Name';
+  const ti = document.getElementById('sw-tech');
+  if (ti) ti.placeholder = tpl.techPh || 'e.g. Jake Zulaf';
   swBuild();
 }
 
@@ -21013,7 +21079,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.60';
+const APP_VERSION = 'v2.63';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -21255,7 +21321,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.60</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.63</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
