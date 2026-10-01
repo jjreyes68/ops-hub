@@ -2915,6 +2915,14 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .fc-na{color:var(--text3);font-weight:400;} .fc-dim{color:var(--text3);}
 .fc-msg{padding:22px;text-align:center;color:var(--text3);font-size:12.5px;background:var(--bg2);}
 .fc-foot{padding:8px 2px 0;font-size:11px;color:var(--text3);font-family:var(--m);}
+
+.to-seg-done{display:flex;align-items:center;gap:10px;margin-top:7px;padding-top:8px;
+  border-top:1px solid var(--border);font-size:12px;color:var(--green);font-weight:600;}
+.to-seg-more{margin-left:auto;font-weight:400;}
+
+.to-seg-gap{margin-top:7px;padding:6px 9px;border-left:3px solid var(--amber);background:var(--abg);
+  border-radius:0 5px 5px 0;font-size:11.5px;color:var(--amber);font-weight:600;}
+.fc-good{color:var(--green);}
 </style>
 </head>
 <body>
@@ -9193,14 +9201,36 @@ async function wxFetchOne(pin) {
 // snapshot makes today, for four times the sites.
 let fcData = null, fcMetric = 'wind', fcAt = 0, fcBusy = false;
 
+// Classify from the notes field. PV-BESS hybrids count as solar — irradiance
+// still drives their generation side, so they belong in that view.
+function fcKind(site) {
+  let t = 'General';
+  try { t = clGetAssetType(site.name, site.id); } catch (e) {}
+  if (t === 'Wind') return 'wind';
+  // BESS sites in this fleet are paired with PV, so irradiance still applies.
+  if (t === 'Solar' || t === 'BESS') return 'solar';
+  const n = (site.notes || '').toLowerCase();
+  if (/\bwind\b/.test(n)) return 'wind';
+  if (/\bpv\b|mwh/.test(n)) return 'solar';
+  return 'unknown';
+}
+
 function fcSites() {
   const seen = new Set(), out = [];
   (typeof SITES !== 'undefined' ? SITES : []).forEach(s => {
     if (s.lat == null || s.lng == null || seen.has(s.name)) return;
     seen.add(s.name);
-    out.push({ id: s.name, lat: s.lat, lng: s.lng, type: (s.notes || '').toLowerCase() });
+    out.push({ id: s.name, lat: s.lat, lng: s.lng, kind: fcKind(s), type: (s.notes || '').toLowerCase() });
   });
   return out;
+}
+
+// Each metric shows only the sites it actually means something for. Wind speed
+// on a solar site is noise; temperature matters everywhere.
+function fcRelevant(sites, metric) {
+  if (metric === 'wind') return sites.filter(s => s.kind === 'wind');
+  if (metric === 'ghi')  return sites.filter(s => s.kind === 'solar');
+  return sites;
 }
 
 async function fcFetch() {
@@ -9291,26 +9321,31 @@ function fcRender() {
   if (fcBusy && !fcData) { g.innerHTML = '<div class="fc-msg">Fetching the fleet\u2026</div>'; return; }
   if (!fcData)           { g.innerHTML = '<div class="fc-msg">Press Refresh to load every site.</div>'; return; }
 
-  g.innerHTML = sites.map(s => {
+  const shown = fcRelevant(sites, fcMetric);
+  if (!shown.length) { g.innerHTML = '<div class="fc-msg">No sites for this measure.</div>'; return; }
+  g.innerHTML = shown.map(s => {
     const d = fcData[s.id];
-    const isWind = /wind/.test(s.type);
+    const isWind = s.kind === 'wind';
     let val = '\u2014', unit = '', cls = 'fc-na';
     if (d) {
       if (fcMetric === 'wind' && d.wind != null) {
         val = d.wind.toFixed(1); unit = 'm/s';
-        cls = d.wind >= 13 ? 'fc-hi' : d.wind <= 4 ? 'fc-lo' : '';
+        cls = d.wind >= 22 ? 'fc-hi'      // nearing cut-out, turbine will stow
+            : d.wind >= 13 ? 'fc-good'    // around rated output
+            : d.wind < 4   ? 'fc-dim'     // below cut-in, nothing turning
+            : '';
       } else if (fcMetric === 'ghi' && d.ghi != null) {
         // Solar sites read zero at night. Showing a dash rather than hiding the
         // site keeps the fleet count steady through sunset.
         val = d.ghi > 0 ? Math.round(d.ghi) : '\u2014';
         unit = d.ghi > 0 ? 'W/m\u00b2' : '';
-        cls = d.ghi <= 0 ? 'fc-na' : d.ghi < 200 ? 'fc-dim' : '';
+        cls = d.ghi <= 0 ? 'fc-na' : d.ghi < 200 ? 'fc-dim' : d.ghi >= 600 ? 'fc-good' : '';
       } else if (fcMetric === 'temp' && d.temp != null) {
         val = Math.round(d.temp); unit = '\u00b0F';
         cls = d.temp >= 100 ? 'fc-hi' : d.temp <= 32 ? 'fc-lo' : '';
       }
     }
-    return '<div class="fc-cell"><span class="fc-dot ' + (isWind ? 'fc-d-w' : 'fc-d-s') + '"></span>'
+    return '<div class="fc-cell">'
       + '<span class="fc-id">' + esc(s.id) + '</span>'
       + '<span class="fc-v ' + cls + '">' + val + (unit ? '<span class="fc-u">' + unit + '</span>' : '') + '</span></div>';
   }).join('');
@@ -9318,10 +9353,11 @@ function fcRender() {
   const f = document.getElementById('fc-foot');
   if (f) {
     const mins = fcAt ? Math.round((Date.now() - fcAt) / 60000) : null;
-    const legend = fcMetric === 'wind' ? 'amber \u2265 13 m/s \u00b7 blue \u2264 4 m/s'
-      : fcMetric === 'ghi' ? '~1000 W/m\u00b2 is full sun \u00b7 dash means dark'
+    const legend = fcMetric === 'wind' ? 'green \u2265 13 (rated) \u00b7 grey < 4 (cut-in) \u00b7 amber \u2265 22 (nearing cut-out)'
+      : fcMetric === 'ghi' ? 'green \u2265 600 \u00b7 grey < 200 \u00b7 dash = dark \u00b7 1000 W/m\u00b2 = standard test conditions'
       : 'amber \u2265 100\u00b0F \u00b7 blue \u2264 32\u00b0F';
-    f.textContent = sites.length + ' sites \u00b7 ' + legend
+    const what = fcMetric === 'wind' ? 'wind sites' : fcMetric === 'ghi' ? 'solar sites' : 'sites';
+    f.textContent = shown.length + ' ' + what + ' \u00b7 ' + legend
       + (mins === null ? '' : ' \u00b7 ' + (mins < 1 ? 'just now' : mins + 'm ago'));
   }
 }
@@ -16494,6 +16530,31 @@ function toAllOperators() {
 // One line per person instead of a card, because this is now on screen all the
 // time rather than behind a tab. The request form stays collapsed until asked
 // for, and the whole band disappears when nothing is upcoming.
+// Fully covered means every day the person was actually rostered inside the
+// request is inside a confirmed segment — not merely that each segment says
+// "covered". Days they were off anyway need nobody.
+function toWorkingDays(operator, startISO, endISO) {
+  const out = [];
+  const d = new Date(startISO + 'T00:00:00'), end = new Date(endISO + 'T00:00:00');
+  let m = null;
+  try { const a = toActiveSchedule(); if (a !== 'split' && a !== 'pitman') m = SCHED_MODELS[a]; } catch (e) {}
+  while (d <= end) {
+    const iso = isoDate(d);
+    let working = true;                       // no model: assume every day counts
+    if (m) { try { const r = m.getDay(iso); working = r.day.includes(operator) || r.night.includes(operator); }
+             catch (e) {} }
+    if (working) out.push(iso);
+    d.setDate(d.getDate() + 1);
+  }
+  return out;
+}
+
+function toUncoveredDays(t) {
+  const segs = (t.coverage || []).filter(s => s.status === 'covered');
+  return toWorkingDays(t.operator, t.startDate, t.endDate)
+    .filter(iso => !segs.some(s => iso >= s.startDate && iso <= s.endDate));
+}
+
 function toRenderBand() {
   const band = document.getElementById('curr-to-band');
   if (!band) return;
@@ -16515,8 +16576,11 @@ function toRenderBand() {
         ? [{ id:'legacy', coveredBy: t.coveredBy || '', startDate: t.startDate, endDate: t.endDate,
              status: t.status || 'uncovered' }] : [];
     let cover, cls;
+    const gaps = toUncoveredDays(t);
     if (!segs.length)                                 { cover = 'Uncovered'; cls = 'un'; }
-    else if (segs.every(s => s.status === 'covered')) { cover = segs.map(s => s.coveredBy).join(', ') + ' confirmed'; cls = 'ok'; }
+    else if (segs.every(s => s.status === 'covered') && !gaps.length)
+                                                      { cover = segs.map(s => s.coveredBy).join(', ') + ' confirmed'; cls = 'ok'; }
+    else if (segs.every(s => s.status === 'covered'))  { cover = gaps.length + ' day' + (gaps.length===1?'':'s') + ' uncovered'; cls = 'pend'; }
     else if (segs.some(s => s.status === 'pending'))  { cover = segs.map(s => s.coveredBy).filter(Boolean).join(', ') + ' pending'; cls = 'pend'; }
     else                                              { cover = 'Partly covered'; cls = 'pend'; }
     const dates = t.startDate === t.endDate ? fmtDisp(t.startDate)
@@ -16540,8 +16604,16 @@ function toRenderBand() {
       }).join('');
       const opts = toAllOperators().filter(n => n !== t.operator)
         .map(n => '<option>' + esc(n) + '</option>').join('');
+      // Fully confirmed means nothing left to arrange \u2014 drop the picker.
+      const gapDays = toUncoveredDays(t);
+      const allCovered = segs.length > 0 && segs.every(s => s.status === 'covered') && !gapDays.length;
       detail = '<div class="to-detail">' + (segHtml || '<div class="to-seg-none">No coverage arranged yet.</div>')
-        + '<div class="to-seg-add">'
+        + (!allCovered && gapDays.length ? '<div class="to-seg-gap">\u26A0 Still uncovered: '
+            + gapDays.map(d => fmtDisp(d)).join(', ') + '</div>' : '')
+        + (allCovered ? '<div class="to-seg-done">\u2713 Fully covered \u2014 nothing outstanding.'
+            + '<button class="to-mini to-seg-more" onclick="toShowAdd(\'' + t.id + '\')">Add another</button></div>'
+            + '<div class="to-seg-add" id="sfb-wrap-' + t.id + '" style="display:none;">'
+          : '<div class="to-seg-add">')
         + '<select id="sfb-op-' + t.id + '"><option value="">\u2014 who covers \u2014</option>' + opts + '</select>'
         + '<input type="date" id="sfb-start-' + t.id + '" value="' + t.startDate + '" min="' + t.startDate + '" max="' + t.endDate + '">'
         + '<input type="date" id="sfb-end-' + t.id + '" value="' + t.endDate + '" min="' + t.startDate + '" max="' + t.endDate + '">'
@@ -16563,6 +16635,11 @@ function toRenderBand() {
 
 let toOpenRow = null;
 function toToggleRow(id){ toOpenRow = (toOpenRow === id) ? null : id; toRenderBand(); }
+function toShowAdd(id){
+  const w = document.getElementById('sfb-wrap-' + id);
+  if (w) w.style.display = '';
+}
+
 function toAddCover(id){
   const who = document.getElementById('sfb-op-' + id).value;
   const s = document.getElementById('sfb-start-' + id).value;
@@ -17466,6 +17543,7 @@ setTimeout(() => {
   window.setSchedMe=setSchedMe;
   window.schedMe=schedMe;
   window.toAddCover=toAddCover;
+  window.toShowAdd=toShowAdd;
   window.pitNavDay=pitNavDay;
   window.pitGoToday=pitGoToday;
   window.pitCalNav=pitCalNav;
@@ -17505,7 +17583,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.70';
+const APP_VERSION = 'v2.77';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -17747,7 +17825,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.70</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.77</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
