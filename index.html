@@ -2896,6 +2896,33 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .tmr-seg-btn.active{background:var(--bg2);color:var(--green);font-weight:700;
   box-shadow:0 0 0 1px var(--green), var(--sh);}
 .tmr-seg-btn:not(.active){opacity:.75;}
+
+.sw-grp{font-family:var(--m);font-size:9px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--text3);padding:9px 2px 4px;border-bottom:1px solid var(--border);margin-bottom:5px;}
+.sw-grp:first-child{padding-top:2px;}
+
+.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(134px,1fr));gap:1px;
+  background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-top:10px;}
+.fc-cell{background:var(--bg2);padding:7px 10px;display:flex;align-items:baseline;gap:7px;min-width:0;}
+.fc-cell:hover{background:var(--bg3);}
+.fc-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;align-self:center;}
+.fc-d-w{background:#5f9b75;} .fc-d-s{background:#d98c1f;}
+.fc-id{font-family:var(--m);font-size:10.5px;color:var(--text2);flex:1;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fc-v{font-family:var(--m);font-size:12.5px;font-weight:700;white-space:nowrap;color:var(--text);}
+.fc-u{font-size:8px;color:var(--text3);font-weight:400;margin-left:1px;}
+.fc-hi{color:var(--amber);} .fc-lo{color:var(--blue);}
+.fc-na{color:var(--text3);font-weight:400;} .fc-dim{color:var(--text3);}
+.fc-msg{padding:22px;text-align:center;color:var(--text3);font-size:12.5px;background:var(--bg2);}
+.fc-foot{padding:8px 2px 0;font-size:11px;color:var(--text3);font-family:var(--m);}
+
+.to-seg-done{display:flex;align-items:center;gap:10px;margin-top:7px;padding-top:8px;
+  border-top:1px solid var(--border);font-size:12px;color:var(--green);font-weight:600;}
+.to-seg-more{margin-left:auto;font-weight:400;}
+
+.to-seg-gap{margin-top:7px;padding:6px 9px;border-left:3px solid var(--amber);background:var(--abg);
+  border-radius:0 5px 5px 0;font-size:11.5px;color:var(--amber);font-weight:600;}
+.fc-good{color:var(--green);}
 </style>
 </head>
 <body>
@@ -2948,13 +2975,13 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-schedule" onclick="navDropdownToggle('schedule', event)" aria-haspopup="true">Schedule Compare <span class="nav-dropdown-caret">▾</span></button>
     <div class="nav-dropdown-menu" id="navdd-menu-schedule">
       <button class="nav-dropdown-item" data-sched="curr" onclick="navDropdownSelectSchedule('curr')">Current Schedule</button>
-      <button class="nav-dropdown-item" data-sched="prop10" onclick="navDropdownSelectSchedule('prop10')">Expanded DuPont</button>
+      <button class="nav-dropdown-item" data-sched="r27" onclick="navDropdownSelectSchedule('r27')">New Schedule (10/16)</button>
+      <!-- Expanded DuPont kept but hidden, as on the toggle row. -->
+      <button class="nav-dropdown-item" data-sched="prop10" onclick="navDropdownSelectSchedule('prop10')" style="display:none;">Expanded DuPont</button>
       <!-- Steady Weeks: hidden while the day/night structure is still being worked out.
            The model and pattern remain in SCHED_MODELS; remove the comment markers
            here and on the in-page toggle below to bring it back. -->
-      <!-- <button class="nav-dropdown-item" data-sched="steady" onclick="navDropdownSelectSchedule('steady')">Steady Weeks</button> -->
-      <button class="nav-dropdown-item" data-sched="split" onclick="navDropdownSelectSchedule('split')">Split Week</button>
-      <button class="nav-dropdown-item" data-sched="pitman" onclick="navDropdownSelectSchedule('pitman')">Pitman</button>
+      <!-- -->
     </div>
   </div>
   <div class="nav-dropdown" id="navdd-site-conditions">
@@ -2988,9 +3015,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
   <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Passdown</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('curr'); toggleMobileMenu()">Schedule – Current</button>
-  <button class="nav-tab" onclick="navDropdownSelectSchedule('prop10'); toggleMobileMenu()">Schedule – Expanded DuPont</button>
-  <button class="nav-tab" onclick="navDropdownSelectSchedule('split'); toggleMobileMenu()">Schedule – Split Week</button>
-  <button class="nav-tab" onclick="navDropdownSelectSchedule('pitman'); toggleMobileMenu()">Schedule – Pitman</button>
+  <button class="nav-tab" onclick="navDropdownSelectSchedule('r27'); toggleMobileMenu()">Schedule – New Schedule (10/16)</button>
   <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Timezones</button>
   <button class="nav-tab" onclick="switchView('sitemap',this); toggleMobileMenu()">Map</button>
 </div>
@@ -3090,18 +3115,18 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <div class="qotd-card-answer" id="qotd-answer"></div>
   </div>
 
-  <!-- Team Notes -->
-  <div class="glance-label" style="margin-top:20px;">Team Notes</div>
-  <div class="corkboard">
-    <div class="corkboard-notes" id="corkboard-notes">
-      <div class="stickynote add-note" id="add-note-trigger" onclick="homeShowAddForm()">+ Add a note</div>
-      <div class="stickynote-form" id="add-note-form">
-        <input type="text" placeholder="Your name" id="tn-name">
-        <textarea placeholder="Note..." id="tn-text"></textarea>
-        <button onclick="homePostNote()">Pin it</button>
-      </div>
-    </div>
+  <!-- Fleet Conditions — paints from cache so it is never blank on arrival,
+       then refreshes only if that cache is older than ten minutes. -->
+  <div class="glance-label" style="margin-top:20px;display:flex;align-items:center;gap:10px;">
+    <span>Fleet Conditions</span>
+    <span id="hfc-age" style="font-family:var(--m);font-size:10px;color:var(--text3);font-weight:400;"></span>
+    <span class="tmr-seg" style="margin:0 0 0 auto;max-width:250px;">
+      <button class="tmr-seg-btn" data-hfc="wind" onclick="hfcTab('wind',this)">Wind</button>
+      <button class="tmr-seg-btn active" data-hfc="ghi" onclick="hfcTab('ghi',this)">Irradiance</button>
+      <button class="tmr-seg-btn" data-hfc="temp" onclick="hfcTab('temp',this)">Temp</button>
+    </span>
   </div>
+  <div class="fc-grid" id="hfc-grid"></div>
 </div>
 
 <div class="view" id="view-scans">
@@ -3522,6 +3547,26 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <div class="wx-pins-list" id="wx-pins-list"></div>
     <div class="wx-fleet-grid" id="wx-fleet-grid"></div>
   </div>
+  <!-- FLEET CONDITIONS — every site in one batched call. Open-Meteo takes
+       comma-separated coordinate lists, so 33 sites costs one request, fewer
+       than the pinned snapshot's one-per-site. -->
+  <div class="wx-fleet-section" style="margin-top:18px;">
+    <div class="wx-fleet-hdr">
+      <div>
+        <div class="wx-fleet-title">⛅ Fleet Conditions</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:2px;" id="fc-sub">All sites, one request</div>
+      </div>
+      <div class="tmr-seg" style="margin:0;max-width:300px;">
+        <button class="tmr-seg-btn active" data-fc="wind" onclick="fcTab('wind',this)">Wind</button>
+        <button class="tmr-seg-btn" data-fc="ghi" onclick="fcTab('ghi',this)">Irradiance</button>
+        <button class="tmr-seg-btn" data-fc="temp" onclick="fcTab('temp',this)">Temp</button>
+      </div>
+      <button class="ibtn ibtn-p" onclick="fcFetch()">↻ Refresh</button>
+    </div>
+    <div class="fc-grid" id="fc-grid"></div>
+    <div class="fc-foot" id="fc-foot"></div>
+  </div>
+
 </div>
 
 <!-- MODALS -->
@@ -3553,7 +3598,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <span class="step-token-lbl">Insert:</span>
         <button type="button" class="step-token-btn" onclick="swInsertToken('{{TECH}}')">+ Tech Name</button>
         <button type="button" class="step-token-btn" onclick="swInsertToken('{{NUMBER}}')">+ Number</button>
-        <button type="button" class="step-token-btn" onclick="swInsertToken('{{TIME}}')">+ Time</button>
+        <button type="button" class="step-token-btn" onclick="swInsertToken('{{SITE}}')">Site</button><button type="button" class="step-token-btn" onclick="swInsertToken('{{TIME}}')">+ Time</button>
         <button type="button" class="step-token-btn" onclick="swInsertBulletLine()">+ Bullet line</button>
       </div>
       <div class="tpl-body-editable" id="wzd-body-editable" contenteditable="true"
@@ -4387,6 +4432,10 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 
       <!-- Fields -->
       <div class="sw-lbl">Details</div>
+      <div class="sw-field" id="sw-site-wrap" style="display:none;">
+        <label>Site</label>
+        <input id="sw-site" placeholder="e.g. HARQ1" oninput="swBuild()">
+      </div>
       <div class="sw-field">
         <label id="sw-tech-lbl">Field Tech Name</label>
         <input id="sw-tech" list="sw-tech-list" placeholder="e.g. Jake Zulaf" oninput="swBuild()">
@@ -4448,10 +4497,10 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <div class="page-header-actions">
       <div class="sched-toggle">
         <button class="sched-toggle-btn active" id="toggle-curr" onclick="showSchedule('curr')">Current Schedule</button>
-        <button class="sched-toggle-btn" id="toggle-prop10" onclick="showSchedule('prop10')">Expanded DuPont</button>
+        <button class="sched-toggle-btn" id="toggle-r27" onclick="showSchedule('r27')">New Schedule (10/16)</button>
+        <!-- Kept but hidden: not chosen, may be wanted for comparison later. -->
+        <button class="sched-toggle-btn" id="toggle-prop10" onclick="showSchedule('prop10')" style="display:none;">Expanded DuPont</button>
         <!-- <button class="sched-toggle-btn" id="toggle-steady" onclick="showSchedule('steady')">Steady Weeks</button> -->
-        <button class="sched-toggle-btn" id="toggle-split" onclick="showSchedule('split')">Split Week</button>
-        <button class="sched-toggle-btn" id="toggle-pit" onclick="showSchedule('pitman')">Pitman</button>
       </div>
     </div>
   </div>
@@ -5319,6 +5368,7 @@ function ltToggle(){
 function ltInitOnce(){ try { ltRender(); } catch(e) {} }
 
 function switchView(v, el) {
+  if (arguments[0] === 'home') setTimeout(()=>{ try{ hfcInit(); }catch(e){} }, 0);
   document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-dropdown-item').forEach(x=>x.classList.remove('active'));
@@ -9143,6 +9193,173 @@ async function wxFetchOne(pin) {
   }
 }
 
+// ── Fleet conditions ─────────────────────────────────────────────────────
+// Open-Meteo accepts comma-separated coordinate lists, so the whole fleet is a
+// single request rather than one per site — fewer calls than the pinned
+// snapshot makes today, for four times the sites.
+let fcData = null, fcMetric = 'wind', fcAt = 0, fcBusy = false;
+
+// Classify from the notes field. PV-BESS hybrids count as solar — irradiance
+// still drives their generation side, so they belong in that view.
+function fcKind(site) {
+  let t = 'General';
+  try { t = clGetAssetType(site.name, site.id); } catch (e) {}
+  if (t === 'Wind') return 'wind';
+  // BESS sites in this fleet are paired with PV, so irradiance still applies.
+  if (t === 'Solar' || t === 'BESS') return 'solar';
+  const n = (site.notes || '').toLowerCase();
+  if (/\bwind\b/.test(n)) return 'wind';
+  if (/\bpv\b|mwh/.test(n)) return 'solar';
+  return 'unknown';
+}
+
+function fcSites() {
+  const seen = new Set(), out = [];
+  (typeof SITES !== 'undefined' ? SITES : []).forEach(s => {
+    if (s.lat == null || s.lng == null || seen.has(s.name)) return;
+    seen.add(s.name);
+    out.push({ id: s.name, lat: s.lat, lng: s.lng, kind: fcKind(s), type: (s.notes || '').toLowerCase() });
+  });
+  return out;
+}
+
+// Each metric shows only the sites it actually means something for. Wind speed
+// on a solar site is noise; temperature matters everywhere.
+function fcRelevant(sites, metric) {
+  if (metric === 'wind') return sites.filter(s => s.kind === 'wind');
+  if (metric === 'ghi')  return sites.filter(s => s.kind === 'solar');
+  return sites;
+}
+
+async function fcFetch() {
+  if (fcBusy) return;
+  const sites = fcSites();
+  if (!sites.length) { fcRender(); return; }
+  fcBusy = true; fcRender();
+  try {
+    const lat = sites.map(s => s.lat).join(','), lng = sites.map(s => s.lng).join(',');
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lng
+      + '&current=wind_speed_10m,temperature_2m,shortwave_radiation'
+      + '&wind_speed_unit=ms&temperature_unit=fahrenheit&timezone=auto';
+    const j = await (await fetch(url)).json();
+    const rows = Array.isArray(j) ? j : [j];
+    fcData = {};
+    sites.forEach((s, i) => {
+      const cur = rows[i] && rows[i].current;
+      fcData[s.id] = cur ? { wind: cur.wind_speed_10m, temp: cur.temperature_2m, ghi: cur.shortwave_radiation } : null;
+    });
+    fcAt = Date.now();
+  } catch (e) { console.warn('fleet conditions fetch failed:', e && e.message); }
+  fcBusy = false; fcRender();
+}
+
+// ── Home fleet strip ─────────────────────────────────────────────────────
+// Cached in localStorage so the card paints instantly rather than showing an
+// empty box, then refetches only when that cache is older than the TTL. One
+// request covers every site, so this costs about six calls an hour per browser.
+const HFC_KEY = 'fleetCond_v1', HFC_TTL = 10 * 60 * 1000;
+let hfcMetric = 'ghi';   // wind already has its own card above
+
+function hfcLoad(){
+  try { const r = JSON.parse(localStorage.getItem(HFC_KEY) || 'null');
+        return (r && r.data) ? r : null; } catch(e){ return null; }
+}
+function hfcSave(data){
+  try { localStorage.setItem(HFC_KEY, JSON.stringify({ at: Date.now(), data })); } catch(e){}
+}
+
+async function hfcInit(){
+  const cached = hfcLoad();
+  if (cached) { fcData = cached.data; fcAt = cached.at; }
+  hfcRender();
+  if (!cached || (Date.now() - cached.at) > HFC_TTL) {
+    await fcFetch();
+    if (fcData) hfcSave(fcData);
+    hfcRender();
+  }
+}
+
+function hfcTab(m, btn){
+  hfcMetric = m;
+  document.querySelectorAll('.tmr-seg-btn[data-hfc]').forEach(b=>b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  hfcRender();
+}
+
+function hfcRender(){
+  const g = document.getElementById('hfc-grid'); if (!g) return;
+  const sites = fcSites();
+  if (!fcData) { g.innerHTML = '<div class="fc-msg">Loading fleet conditions\u2026</div>'; return; }
+  const saved = fcMetric; fcMetric = hfcMetric;
+  const real = document.getElementById('fc-grid');
+  // reuse the same cell builder by pointing it at this grid
+  const tmp = document.createElement('div'); tmp.id = 'fc-grid';
+  const realId = real ? (real.id = 'fc-grid-real', true) : false;
+  document.body.appendChild(tmp);
+  fcRender();
+  g.innerHTML = tmp.innerHTML;
+  tmp.remove();
+  if (realId) real.id = 'fc-grid';
+  fcMetric = saved;
+  const a = document.getElementById('hfc-age');
+  if (a) { const m = fcAt ? Math.round((Date.now()-fcAt)/60000) : null;
+           a.textContent = m===null ? '' : (m<1 ? 'just now' : m+'m ago'); }
+}
+
+function fcTab(m, btn) {
+  fcMetric = m;
+  document.querySelectorAll('.tmr-seg-btn[data-fc]').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  fcRender();
+}
+
+function fcRender() {
+  const g = document.getElementById('fc-grid'); if (!g) return;
+  const sites = fcSites();
+  if (fcBusy && !fcData) { g.innerHTML = '<div class="fc-msg">Fetching the fleet\u2026</div>'; return; }
+  if (!fcData)           { g.innerHTML = '<div class="fc-msg">Press Refresh to load every site.</div>'; return; }
+
+  const shown = fcRelevant(sites, fcMetric);
+  if (!shown.length) { g.innerHTML = '<div class="fc-msg">No sites for this measure.</div>'; return; }
+  g.innerHTML = shown.map(s => {
+    const d = fcData[s.id];
+    const isWind = s.kind === 'wind';
+    let val = '\u2014', unit = '', cls = 'fc-na';
+    if (d) {
+      if (fcMetric === 'wind' && d.wind != null) {
+        val = d.wind.toFixed(1); unit = 'm/s';
+        cls = d.wind >= 22 ? 'fc-hi'      // nearing cut-out, turbine will stow
+            : d.wind >= 13 ? 'fc-good'    // around rated output
+            : d.wind < 4   ? 'fc-dim'     // below cut-in, nothing turning
+            : '';
+      } else if (fcMetric === 'ghi' && d.ghi != null) {
+        // Solar sites read zero at night. Showing a dash rather than hiding the
+        // site keeps the fleet count steady through sunset.
+        val = d.ghi > 0 ? Math.round(d.ghi) : '\u2014';
+        unit = d.ghi > 0 ? 'W/m\u00b2' : '';
+        cls = d.ghi <= 0 ? 'fc-na' : d.ghi < 200 ? 'fc-dim' : d.ghi >= 600 ? 'fc-good' : '';
+      } else if (fcMetric === 'temp' && d.temp != null) {
+        val = Math.round(d.temp); unit = '\u00b0F';
+        cls = d.temp >= 100 ? 'fc-hi' : d.temp <= 32 ? 'fc-lo' : '';
+      }
+    }
+    return '<div class="fc-cell">'
+      + '<span class="fc-id">' + esc(s.id) + '</span>'
+      + '<span class="fc-v ' + cls + '">' + val + (unit ? '<span class="fc-u">' + unit + '</span>' : '') + '</span></div>';
+  }).join('');
+
+  const f = document.getElementById('fc-foot');
+  if (f) {
+    const mins = fcAt ? Math.round((Date.now() - fcAt) / 60000) : null;
+    const legend = fcMetric === 'wind' ? 'green \u2265 13 (rated) \u00b7 grey < 4 (cut-in) \u00b7 amber \u2265 22 (nearing cut-out)'
+      : fcMetric === 'ghi' ? 'green \u2265 600 \u00b7 grey < 200 \u00b7 dash = dark \u00b7 1000 W/m\u00b2 = standard test conditions'
+      : 'amber \u2265 100\u00b0F \u00b7 blue \u2264 32\u00b0F';
+    const what = fcMetric === 'wind' ? 'wind sites' : fcMetric === 'ghi' ? 'solar sites' : 'sites';
+    f.textContent = shown.length + ' ' + what + ' \u00b7 ' + legend
+      + (mins === null ? '' : ' \u00b7 ' + (mins < 1 ? 'just now' : mins + 'm ago'));
+  }
+}
+
 async function wxFetchAll() {
   if (!wxPins.length) { showToast('Pin at least one site first'); return; }
   // Show loading state
@@ -10423,7 +10640,15 @@ function swBuildText(tpl, tech, num) {
   if (prefix && cleanNum.toUpperCase().startsWith(prefix.toUpperCase())) {
     cleanNum = cleanNum.slice(prefix.length).trim();
   }
-  return tpl.body.replace(/\{\{TECH\}\}/g, tech || '[Tech Name]').replace(/\{\{NUMBER\}\}/g, cleanNum || '[Number]');
+  const now = new Date();
+  const hhmm = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  const site = (document.getElementById('sw-site')?.value || '').trim();
+  const ph = '[' + (tpl.techLbl || 'Tech Name') + ']';
+  return tpl.body
+    .replace(/\{\{TECH\}\}/g, tech || ph)
+    .replace(/\{\{NUMBER\}\}/g, cleanNum || ('[' + (tpl.numLbl || 'Number') + ']'))
+    .replace(/\{\{SITE\}\}/g, site || '[Site]')
+    .replace(/\{\{TIME\}\}/g, hhmm);
 }
 
 function swInit() {
@@ -10493,6 +10718,8 @@ function swSelect(id, el) {
   if (tl) tl.textContent = tpl.techLbl || 'Field Tech Name';
   const ti = document.getElementById('sw-tech');
   if (ti) ti.placeholder = tpl.techPh || 'e.g. Jake Zulaf';
+  const sw = document.getElementById('sw-site-wrap');
+  if (sw) sw.style.display = /\{\{SITE\}\}/.test(tpl.body || '') ? '' : 'none';
   swBuild();
 }
 
@@ -12997,8 +13224,8 @@ const ROC_QUESTIONS = [
   // ══ DISPATCH: ADS / AGC ═══════════════════════════════════════════════════
 
   {id:'d1', lvl:1, cat:'dispatch', type:'conceptual',
-   q:'What is ADS?',
-   a:'<strong>ADS is the market telling you what to produce.</strong> CAISO sends a Dispatch Operating Target '
+   q:'What is ADS (Automated Dispatch System)?',
+   a:'<strong>ADS \u2014 Automated Dispatch System.</strong> It is the market telling you what to produce. CAISO sends a Dispatch Operating Target '
    + '(DOT) roughly every five minutes, based on economic dispatch \u2014 what is cheapest to run right now to '
    + 'serve load.<br><br>'
    + '<strong>Timing:</strong> about every five minutes, holding for the interval. Because it holds, the current '
@@ -13008,8 +13235,8 @@ const ROC_QUESTIONS = [
    + 'It arrives in site SCADA automatically. The board tells you what was sent and whether a site is on ADS or '
    + 'AGC; it does not tell you whether the plant complied \u2014 that is what you check.'},
   {id:'d1b', lvl:1, cat:'dispatch', type:'conceptual',
-   q:'What is AGC, and how is it different from ADS?',
-   a:'<strong>AGC is the grid asking you to help hold frequency.</strong> Where ADS is an economic instruction, '
+   q:'What is AGC (Automatic Generation Control), and how is it different from ADS?',
+   a:'<strong>AGC \u2014 Automatic Generation Control.</strong> It is the grid asking you to help hold frequency. Where ADS is an economic instruction, '
    + 'AGC is continuous regulation \u2014 the signal moves you up and down to correct the imbalance between '
    + 'generation and load in real time.<br><br>'
    + '<strong>Timing:</strong> every few seconds, not every five minutes. That is the headline difference, and it '
@@ -16301,6 +16528,31 @@ function toAllOperators() {
 // One line per person instead of a card, because this is now on screen all the
 // time rather than behind a tab. The request form stays collapsed until asked
 // for, and the whole band disappears when nothing is upcoming.
+// Fully covered means every day the person was actually rostered inside the
+// request is inside a confirmed segment — not merely that each segment says
+// "covered". Days they were off anyway need nobody.
+function toWorkingDays(operator, startISO, endISO) {
+  const out = [];
+  const d = new Date(startISO + 'T00:00:00'), end = new Date(endISO + 'T00:00:00');
+  let m = null;
+  try { const a = toActiveSchedule(); if (a !== 'split' && a !== 'pitman') m = SCHED_MODELS[a]; } catch (e) {}
+  while (d <= end) {
+    const iso = isoDate(d);
+    let working = true;                       // no model: assume every day counts
+    if (m) { try { const r = m.getDay(iso); working = r.day.includes(operator) || r.night.includes(operator); }
+             catch (e) {} }
+    if (working) out.push(iso);
+    d.setDate(d.getDate() + 1);
+  }
+  return out;
+}
+
+function toUncoveredDays(t) {
+  const segs = (t.coverage || []).filter(s => s.status === 'covered');
+  return toWorkingDays(t.operator, t.startDate, t.endDate)
+    .filter(iso => !segs.some(s => iso >= s.startDate && iso <= s.endDate));
+}
+
 function toRenderBand() {
   const band = document.getElementById('curr-to-band');
   if (!band) return;
@@ -16322,8 +16574,11 @@ function toRenderBand() {
         ? [{ id:'legacy', coveredBy: t.coveredBy || '', startDate: t.startDate, endDate: t.endDate,
              status: t.status || 'uncovered' }] : [];
     let cover, cls;
+    const gaps = toUncoveredDays(t);
     if (!segs.length)                                 { cover = 'Uncovered'; cls = 'un'; }
-    else if (segs.every(s => s.status === 'covered')) { cover = segs.map(s => s.coveredBy).join(', ') + ' confirmed'; cls = 'ok'; }
+    else if (segs.every(s => s.status === 'covered') && !gaps.length)
+                                                      { cover = segs.map(s => s.coveredBy).join(', ') + ' confirmed'; cls = 'ok'; }
+    else if (segs.every(s => s.status === 'covered'))  { cover = gaps.length + ' day' + (gaps.length===1?'':'s') + ' uncovered'; cls = 'pend'; }
     else if (segs.some(s => s.status === 'pending'))  { cover = segs.map(s => s.coveredBy).filter(Boolean).join(', ') + ' pending'; cls = 'pend'; }
     else                                              { cover = 'Partly covered'; cls = 'pend'; }
     const dates = t.startDate === t.endDate ? fmtDisp(t.startDate)
@@ -16347,8 +16602,16 @@ function toRenderBand() {
       }).join('');
       const opts = toAllOperators().filter(n => n !== t.operator)
         .map(n => '<option>' + esc(n) + '</option>').join('');
+      // Fully confirmed means nothing left to arrange \u2014 drop the picker.
+      const gapDays = toUncoveredDays(t);
+      const allCovered = segs.length > 0 && segs.every(s => s.status === 'covered') && !gapDays.length;
       detail = '<div class="to-detail">' + (segHtml || '<div class="to-seg-none">No coverage arranged yet.</div>')
-        + '<div class="to-seg-add">'
+        + (!allCovered && gapDays.length ? '<div class="to-seg-gap">\u26A0 Still uncovered: '
+            + gapDays.map(d => fmtDisp(d)).join(', ') + '</div>' : '')
+        + (allCovered ? '<div class="to-seg-done">\u2713 Fully covered \u2014 nothing outstanding.'
+            + '<button class="to-mini to-seg-more" onclick="toShowAdd(\'' + t.id + '\')">Add another</button></div>'
+            + '<div class="to-seg-add" id="sfb-wrap-' + t.id + '" style="display:none;">'
+          : '<div class="to-seg-add">')
         + '<select id="sfb-op-' + t.id + '"><option value="">\u2014 who covers \u2014</option>' + opts + '</select>'
         + '<input type="date" id="sfb-start-' + t.id + '" value="' + t.startDate + '" min="' + t.startDate + '" max="' + t.endDate + '">'
         + '<input type="date" id="sfb-end-' + t.id + '" value="' + t.endDate + '" min="' + t.startDate + '" max="' + t.endDate + '">'
@@ -16370,6 +16633,11 @@ function toRenderBand() {
 
 let toOpenRow = null;
 function toToggleRow(id){ toOpenRow = (toOpenRow === id) ? null : id; toRenderBand(); }
+function toShowAdd(id){
+  const w = document.getElementById('sfb-wrap-' + id);
+  if (w) w.style.display = '';
+}
+
 function toAddCover(id){
   const who = document.getElementById('sfb-op-' + id).value;
   const s = document.getElementById('sfb-start-' + id).value;
@@ -16751,6 +17019,7 @@ let pitCalState={year:new Date().getFullYear(),month:new Date().getMonth()};
 let pitInited=false;
 
 function showSchedule(which){
+  if (which === 'split' || which === 'pitman' || which === 'steady') which = 'curr';
   toSchedule = which;
   // ── Hide everything ──────────────────────────────────────────────
   // Split sections
@@ -17007,6 +17276,22 @@ function steadyRowForDate(dateObj){
   return { day, night };
 }
 
+// ── New Schedule (10/16) ─────────────────────────────────────
+// Straight from the operator workbook. Ten operators walk through ten weekly
+// slots, so it repeats every 70 days. Each row is one day: five digits for
+// D1 D2 D3 N1 N2, each an index into R27_OPS.
+const R27_OPS = ["Adam", "Alex", "Christian", "Daniel", "Jesse", "Josh", "Morgan", "Ricky", "Sasha", "Sergio"];
+const R27_ANCHOR = '2026-10-01';
+const R27_PAT = ["65318", "09718", "09718", "09718", "49218", "49218", "49218", "49207", "36507", "36507", "36507", "16807", "16807", "16807", "16835", "24935", "24935", "24935", "04735", "04735", "04735", "04729", "81629", "81629", "81629", "31529", "31529", "31529", "31586", "70486", "70486", "70486", "20986", "20986", "20986", "20974", "53174", "53174", "53174", "83674", "83674", "83674", "83651", "92051", "92051", "92051", "72451", "72451", "72451", "72490", "68390", "68390", "68390", "58190", "58190", "58190", "58163", "47263", "47263", "47263", "97063", "97063", "97063", "97042", "15842", "15842", "15842", "65342", "65342", "65342"];
+
+function r27RowForDate(dt){
+  const a = new Date(R27_ANCHOR + 'T00:00:00');
+  const diff = Math.round((new Date(dt.getFullYear(), dt.getMonth(), dt.getDate()) - a) / 86400000);
+  const row = R27_PAT[((diff % 70) + 70) % 70];
+  const names = [...row].map(ch => ch === '.' ? null : R27_OPS[+ch]);
+  return { day: names.slice(0,3).filter(Boolean), night: names.slice(3).filter(Boolean) };
+}
+
 const SCHED_MODELS = {
   curr: {
     label: 'Current schedule',
@@ -17020,6 +17305,15 @@ const SCHED_MODELS = {
       if (!row) return { day: ['—','—'], night: ['—'] };
       return { day: [row[0], row[1]], night: [row[2]] };
     }
+  },
+  r27: {
+    label: 'New Schedule (10/16)',
+    subtitle: 'Ten slots, 70-day cycle \u00b7 3 day + 2 night',
+    ops: [...R27_OPS].sort(),
+    cycle: 70,
+    dayCount: 3,
+    nightCount: 2,
+    getDay(iso){ return r27RowForDate(new Date(iso + 'T00:00:00')); }
   },
   prop10: {
     label: 'Expanded DuPont',
@@ -17273,6 +17567,7 @@ setTimeout(() => {
   window.setSchedMe=setSchedMe;
   window.schedMe=schedMe;
   window.toAddCover=toAddCover;
+  window.toShowAdd=toShowAdd;
   window.pitNavDay=pitNavDay;
   window.pitGoToday=pitGoToday;
   window.pitCalNav=pitCalNav;
@@ -17312,7 +17607,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.64';
+const APP_VERSION = 'v2.81';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -17554,7 +17849,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.64</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.81</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
