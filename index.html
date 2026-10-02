@@ -2975,13 +2975,13 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-schedule" onclick="navDropdownToggle('schedule', event)" aria-haspopup="true">Schedule Compare <span class="nav-dropdown-caret">▾</span></button>
     <div class="nav-dropdown-menu" id="navdd-menu-schedule">
       <button class="nav-dropdown-item" data-sched="curr" onclick="navDropdownSelectSchedule('curr')">Current Schedule</button>
-      <button class="nav-dropdown-item" data-sched="prop10" onclick="navDropdownSelectSchedule('prop10')">Expanded DuPont</button>
+      <button class="nav-dropdown-item" data-sched="r27" onclick="navDropdownSelectSchedule('r27')">New Schedule (10/16)</button>
+      <!-- Expanded DuPont kept but hidden, as on the toggle row. -->
+      <button class="nav-dropdown-item" data-sched="prop10" onclick="navDropdownSelectSchedule('prop10')" style="display:none;">Expanded DuPont</button>
       <!-- Steady Weeks: hidden while the day/night structure is still being worked out.
            The model and pattern remain in SCHED_MODELS; remove the comment markers
            here and on the in-page toggle below to bring it back. -->
-      <!-- <button class="nav-dropdown-item" data-sched="steady" onclick="navDropdownSelectSchedule('steady')">Steady Weeks</button> -->
-      <button class="nav-dropdown-item" data-sched="split" onclick="navDropdownSelectSchedule('split')">Split Week</button>
-      <button class="nav-dropdown-item" data-sched="pitman" onclick="navDropdownSelectSchedule('pitman')">Pitman</button>
+      <!-- -->
     </div>
   </div>
   <div class="nav-dropdown" id="navdd-site-conditions">
@@ -3015,9 +3015,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
   <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Passdown</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('curr'); toggleMobileMenu()">Schedule – Current</button>
-  <button class="nav-tab" onclick="navDropdownSelectSchedule('prop10'); toggleMobileMenu()">Schedule – Expanded DuPont</button>
-  <button class="nav-tab" onclick="navDropdownSelectSchedule('split'); toggleMobileMenu()">Schedule – Split Week</button>
-  <button class="nav-tab" onclick="navDropdownSelectSchedule('pitman'); toggleMobileMenu()">Schedule – Pitman</button>
+  <button class="nav-tab" onclick="navDropdownSelectSchedule('r27'); toggleMobileMenu()">Schedule – New Schedule (10/16)</button>
   <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Timezones</button>
   <button class="nav-tab" onclick="switchView('sitemap',this); toggleMobileMenu()">Map</button>
 </div>
@@ -4499,10 +4497,10 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <div class="page-header-actions">
       <div class="sched-toggle">
         <button class="sched-toggle-btn active" id="toggle-curr" onclick="showSchedule('curr')">Current Schedule</button>
-        <button class="sched-toggle-btn" id="toggle-prop10" onclick="showSchedule('prop10')">Expanded DuPont</button>
+        <button class="sched-toggle-btn" id="toggle-r27" onclick="showSchedule('r27')">New Schedule (10/16)</button>
+        <!-- Kept but hidden: not chosen, may be wanted for comparison later. -->
+        <button class="sched-toggle-btn" id="toggle-prop10" onclick="showSchedule('prop10')" style="display:none;">Expanded DuPont</button>
         <!-- <button class="sched-toggle-btn" id="toggle-steady" onclick="showSchedule('steady')">Steady Weeks</button> -->
-        <button class="sched-toggle-btn" id="toggle-split" onclick="showSchedule('split')">Split Week</button>
-        <button class="sched-toggle-btn" id="toggle-pit" onclick="showSchedule('pitman')">Pitman</button>
       </div>
     </div>
   </div>
@@ -17021,6 +17019,7 @@ let pitCalState={year:new Date().getFullYear(),month:new Date().getMonth()};
 let pitInited=false;
 
 function showSchedule(which){
+  if (which === 'split' || which === 'pitman' || which === 'steady') which = 'curr';
   toSchedule = which;
   // ── Hide everything ──────────────────────────────────────────────
   // Split sections
@@ -17277,6 +17276,22 @@ function steadyRowForDate(dateObj){
   return { day, night };
 }
 
+// ── New Schedule (10/16) ─────────────────────────────────────
+// Straight from the operator workbook. Ten operators walk through ten weekly
+// slots, so it repeats every 70 days. Each row is one day: five digits for
+// D1 D2 D3 N1 N2, each an index into R27_OPS.
+const R27_OPS = ["Adam", "Alex", "Christian", "Daniel", "Jesse", "Josh", "Morgan", "Ricky", "Sasha", "Sergio"];
+const R27_ANCHOR = '2026-10-01';
+const R27_PAT = ["65318", "09718", "09718", "09718", "49218", "49218", "49218", "49207", "36507", "36507", "36507", "16807", "16807", "16807", "16835", "24935", "24935", "24935", "04735", "04735", "04735", "04729", "81629", "81629", "81629", "31529", "31529", "31529", "31586", "70486", "70486", "70486", "20986", "20986", "20986", "20974", "53174", "53174", "53174", "83674", "83674", "83674", "83651", "92051", "92051", "92051", "72451", "72451", "72451", "72490", "68390", "68390", "68390", "58190", "58190", "58190", "58163", "47263", "47263", "47263", "97063", "97063", "97063", "97042", "15842", "15842", "15842", "65342", "65342", "65342"];
+
+function r27RowForDate(dt){
+  const a = new Date(R27_ANCHOR + 'T00:00:00');
+  const diff = Math.round((new Date(dt.getFullYear(), dt.getMonth(), dt.getDate()) - a) / 86400000);
+  const row = R27_PAT[((diff % 70) + 70) % 70];
+  const names = [...row].map(ch => ch === '.' ? null : R27_OPS[+ch]);
+  return { day: names.slice(0,3).filter(Boolean), night: names.slice(3).filter(Boolean) };
+}
+
 const SCHED_MODELS = {
   curr: {
     label: 'Current schedule',
@@ -17290,6 +17305,15 @@ const SCHED_MODELS = {
       if (!row) return { day: ['—','—'], night: ['—'] };
       return { day: [row[0], row[1]], night: [row[2]] };
     }
+  },
+  r27: {
+    label: 'New Schedule (10/16)',
+    subtitle: 'Ten slots, 70-day cycle \u00b7 3 day + 2 night',
+    ops: [...R27_OPS].sort(),
+    cycle: 70,
+    dayCount: 3,
+    nightCount: 2,
+    getDay(iso){ return r27RowForDate(new Date(iso + 'T00:00:00')); }
   },
   prop10: {
     label: 'Expanded DuPont',
@@ -17583,7 +17607,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.77';
+const APP_VERSION = 'v2.81';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -17825,7 +17849,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.77</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.81</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
