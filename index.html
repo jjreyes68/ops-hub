@@ -2923,6 +2923,11 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .to-seg-gap{margin-top:7px;padding:6px 9px;border-left:3px solid var(--amber);background:var(--abg);
   border-radius:0 5px 5px 0;font-size:11.5px;color:var(--amber);font-weight:600;}
 .fc-good{color:var(--green);}
+
+@media (max-width: 760px){
+  .cal-grid-wrap{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;}
+  .cal-dow-headers, .cal-days{min-width:640px;}
+}
 </style>
 </head>
 <body>
@@ -17607,7 +17612,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.81';
+const APP_VERSION = 'v2.82';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -17849,7 +17854,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.81</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.82</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
