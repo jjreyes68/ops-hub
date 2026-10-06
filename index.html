@@ -2947,6 +2947,14 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   border-radius:3px;padding:1px 4px;margin-bottom:2px;white-space:nowrap;overflow:hidden;
   text-overflow:ellipsis;}
 @media (max-width:760px){ .cal-hol{font-size:7px;padding:0 2px;} }
+
+.sch-off{text-decoration:line-through;opacity:.55;}
+.sch-cov{color:var(--green);font-weight:700;}
+.sch-pend{color:var(--amber);font-weight:700;}
+.sch-unc{color:var(--red);font-weight:700;font-size:8.5px;letter-spacing:.04em;}
+
+.ind-cov{font-size:8px;font-weight:700;margin-top:1px;line-height:1.2;}
+.ind-cov.ok{color:var(--green);} .ind-cov.pend{color:var(--amber);} .ind-cov.unc{color:var(--red);}
 </style>
 </head>
 <body>
@@ -16953,7 +16961,14 @@ function currIndRender(){
       if(e.day.includes(name))role='Day';else if(e.night.includes(name))role='Night';
       const isToday=iso===td;
       const wrap=cnt=>`<td${isToday?' class="today-cell"':''}>${cnt}</td>`;
-      cells.push(wrap(role?`<span class="rbadge ${CURR_RCLS[role==='Day'?'Day1':'Night']}">${role}</span>`:offBadge));
+      const _oi = role ? offInfo(name, iso) : null;
+      cells.push(wrap(
+        !role ? offBadge
+        : !_oi ? `<span class="rbadge ${CURR_RCLS[role==='Day'?'Day1':'Night']}">${role}</span>`
+        : `<span class="rbadge ${CURR_RCLS[role==='Day'?'Day1':'Night']}" style="opacity:.4;text-decoration:line-through;">${role}</span>`
+          + (_oi.by ? `<div class="ind-cov ${_oi.status==='covered'?'ok':'pend'}">${_oi.by}${_oi.status==='covered'?'':'?'}</div>`
+                    : `<div class="ind-cov unc">UNCOVERED</div>`)
+      ));
     }
     const tr=document.createElement('tr');
     if(w%2===1)tr.classList.add('alt');
@@ -16986,7 +17001,7 @@ function currCrewRender(){
     <div class="curr-crew-slots">
       ${slots.map(s=>`<div class="curr-slot ${s.t==='day'?'day-s':'night-s'}">
         <span class="rbadge ${s.c}">${s.r}</span>
-        <div class="curr-slot-name">${s.n}</div>
+        <div class="curr-slot-name">${offLabel(s.n, iso, null)}</div>
         <div class="curr-slot-shift">${s.t==='day'?'Days 6am\u20136pm':'Nights 6pm\u20136am'}</div>
       </div>`).join('')}
     </div>
@@ -17062,6 +17077,32 @@ function holBadge(isoDate, cell){
   return `<div class="cal-hol" title="${h}">${h}</div>`;
 }
 
+// ── Time off on the schedule views ───────────────────────────────
+// The rotation says who is rostered; time off says whether they are actually
+// there. Show both, because a name on the grid that is really on PTO is the
+// kind of thing someone acts on at 3am.
+function offInfo(operator, iso){
+  const list = (typeof timeOffData !== 'undefined' && timeOffData) || [];
+  for (const t of list) {
+    if (t.operator !== operator) continue;
+    if (iso < t.startDate || iso > (t.endDate || t.startDate)) continue;
+    const seg = (t.coverage || []).find(s => iso >= s.startDate && iso <= s.endDate);
+    return { off:true, by: seg ? seg.coveredBy : null, status: seg ? seg.status : 'uncovered' };
+  }
+  return null;
+}
+// name as it should read on a grid cell
+function offLabel(operator, iso, role){
+  const o = offInfo(operator, iso);
+  const r = role ? ` <span style="opacity:.6;font-size:9.5px;">${role}</span>` : '';
+  if (!o) return `${operator}${r}`;
+  if (o.by && o.status === 'covered')
+    return `<span class="sch-off">${operator}</span> <span class="sch-cov">\u2192 ${o.by}</span>${r}`;
+  if (o.by)
+    return `<span class="sch-off">${operator}</span> <span class="sch-pend">\u2192 ${o.by}?</span>${r}`;
+  return `<span class="sch-off">${operator}</span> <span class="sch-unc">OFF</span>${r}`;
+}
+
 function currCalRender(){
   const{year,month}=currCalState;
   document.getElementById('curr-cal-label').textContent=CURR_MONTHS[month]+' '+year;
@@ -17081,7 +17122,7 @@ function currCalRender(){
     let inner=`<div class="cal-day-num">${d}</div>`+holBadge(iso, cell);
     [...e.day.map(n=>({r:'Day',n})), ...e.night.map(n=>({r:'Night',n}))].forEach(s=>{
       const isFoc=focus&&s.n===focus;
-      inner+=`<div class="cal-person${isFoc?' highlighted':''}${focus&&!isFoc?' faded':''}"><span class="cal-dot ${s.r==='Day'?'d1':'n1'}"></span><span>${s.n} <span style="opacity:.6;font-size:9.5px;">${s.r}</span></span></div>`;
+      inner+=`<div class="cal-person${isFoc?' highlighted':''}${focus&&!isFoc?' faded':''}"><span class="cal-dot ${s.r==='Day'?'d1':'n1'}"></span><span>${offLabel(s.n, iso, s.r)}</span></div>`;
     });
     cell.innerHTML=inner; grid.appendChild(cell);
   }
@@ -17584,7 +17625,7 @@ function pitCalRender(){
       inner+=`<div class="pit-cal-sq ${e.sq}">Sq ${e.sq}</div>`;
       [{r:'D1',n:e.d1},{r:'D2',n:e.d2},{r:'D3',n:e.d3},{r:'N1',n:e.n1},{r:'N2',n:e.n2}].forEach(s=>{
         const isFoc=focus&&s.n===focus;
-        inner+=`<div class="cal-person${isFoc?' highlighted':''}${focus&&!isFoc?' faded':''}"><span class="cal-dot ${PIT_RCLS[s.r]}"></span><span>${s.n} <span style="opacity:.6;font-size:9.5px;">${s.r}</span></span></div>`;
+        inner+=`<div class="cal-person${isFoc?' highlighted':''}${focus&&!isFoc?' faded':''}"><span class="cal-dot ${PIT_RCLS[s.r]}"></span><span>${offLabel(s.n, iso, s.r)}</span></div>`;
       });
     }else{inner+='<div class="cal-off-label" style="font-size:10px;color:var(--text-muted);font-style:italic;">out of range</div>';}
     cell.innerHTML=inner; grid.appendChild(cell);
@@ -17682,7 +17723,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.84';
+const APP_VERSION = 'v2.86';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -17924,7 +17965,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.84</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.86</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
