@@ -2925,8 +2925,19 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .fc-good{color:var(--green);}
 
 @media (max-width: 760px){
-  .cal-grid-wrap{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;}
-  .cal-dow-headers, .cal-days{min-width:640px;}
+  #view-schedule .cal-cell{min-height:74px;padding:3px 2px;gap:1px;}
+  #view-schedule .cal-person{font-size:9px;padding:1px 2px;gap:2px;border-radius:3px;}
+  #view-schedule .cal-person > span:last-child{
+    white-space:nowrap;overflow:hidden;text-overflow:clip;display:block;min-width:0;}
+  /* the dot already encodes day vs night, so the word is redundant here */
+  #view-schedule .cal-person span[style*="opacity"]{display:none;}
+  #view-schedule .cal-dot{width:4px;height:4px;flex-shrink:0;}
+  #view-schedule .cal-day-num{font-size:10px;margin-bottom:1px;}
+  .cal-dow-headers > *{font-size:8.5px;padding:4px 1px;letter-spacing:0;}
+}
+@media (max-width: 420px){
+  #view-schedule .cal-person{font-size:8px;}
+  #view-schedule .cal-cell{min-height:66px;padding:2px 1px;}
 }
 </style>
 </head>
@@ -17612,7 +17623,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.82';
+const APP_VERSION = 'v2.83';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -17854,7 +17865,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.82</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.83</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
