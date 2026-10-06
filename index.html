@@ -17085,6 +17085,20 @@ function holBadge(isoDate, cell){
 // The rotation says who is rostered; time off says whether they are actually
 // there. Show both, because a name on the grid that is really on PTO is the
 // kind of thing someone acts on at 3am.
+// Who is actually on that day: rostered, minus anyone off, plus whoever is
+// covering them. Highlighting should follow reality, not the rotation — if
+// Sergio is on PTO his cells should not light up, and the person covering
+// should.
+function actuallyWorking(e, iso){
+  const out = new Set();
+  [...e.day, ...e.night].forEach(n => {
+    const o = offInfo(n, iso);
+    if (!o) { out.add(n); return; }
+    if (o.by) out.add(o.by);          // the cover stands in
+  });
+  return out;
+}
+
 function offInfo(operator, iso){
   const list = (typeof timeOffData !== 'undefined' && timeOffData) || [];
   for (const t of list) {
@@ -17121,7 +17135,7 @@ function currCalRender(){
     const iso=`${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const e=currGetDay(iso);
     const cell=document.createElement('div');
-    const hasFocus=focus&&[...e.day,...e.night].includes(focus);
+    const hasFocus=focus&&actuallyWorking(e, iso).has(focus);
     cell.className='cal-cell'+(iso===td?' today':'')+(hasFocus?' has-focus':'');
     let inner=`<div class="cal-day-num">${d}</div>`+holBadge(iso, cell);
     [...e.day.map(n=>({r:'Day',n})), ...e.night.map(n=>({r:'Night',n}))].forEach(s=>{
@@ -17727,7 +17741,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.87';
+const APP_VERSION = 'v2.88';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -17969,7 +17983,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.87</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.88</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
