@@ -2939,6 +2939,14 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   #view-schedule .cal-person{font-size:8px;}
   #view-schedule .cal-cell{min-height:66px;padding:2px 1px;}
 }
+
+#view-schedule .cal-cell.holiday,
+#view-pitman .cal-cell.holiday{background:var(--abg);}
+#view-schedule .cal-cell.holiday.today{background:#fff4d6;}
+.cal-hol{font-size:8.5px;font-weight:700;color:var(--amber);background:rgba(180,101,15,.13);
+  border-radius:3px;padding:1px 4px;margin-bottom:2px;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;}
+@media (max-width:760px){ .cal-hol{font-size:7px;padding:0 2px;} }
 </style>
 </head>
 <body>
@@ -17003,6 +17011,57 @@ function currCalNav(dir){
   currCalRender();
 }
 
+// ── Company holidays ─────────────────────────────────────────
+// Computed by rule so they hold for any year. Fixed-date holidays move to the
+// nearest weekday when they land on a weekend — which is why 4 July 2026 is
+// observed on Friday the 3rd.
+function holNth(y, m, dow, n){
+  const d = new Date(y, m, 1);
+  d.setDate(1 + ((dow - d.getDay() + 7) % 7) + (n - 1) * 7);
+  return d;
+}
+function holLast(y, m, dow){
+  const d = new Date(y, m + 1, 0);
+  d.setDate(d.getDate() - ((d.getDay() - dow + 7) % 7));
+  return d;
+}
+function holObserved(y, m, day){
+  const d = new Date(y, m, day);
+  if (d.getDay() === 6) d.setDate(d.getDate() - 1);
+  if (d.getDay() === 0) d.setDate(d.getDate() + 1);
+  return d;
+}
+function holsForYear(y){
+  const iso = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0')
+                 + '-' + String(d.getDate()).padStart(2,'0');
+  const tg = holNth(y, 10, 4, 4);
+  const after = new Date(tg); after.setDate(tg.getDate() + 1);
+  const out = {}; const put = (d, n) => { out[iso(d)] = n; };
+  put(holObserved(y, 0, 1),   "New Year's Day");
+  put(holNth(y, 0, 1, 3),     'MLK Jr. Day');
+  put(holLast(y, 4, 1),       'Memorial Day');
+  put(holObserved(y, 6, 4),   'Independence Day');
+  put(holNth(y, 8, 1, 1),     'Labor Day');
+  put(holObserved(y, 10, 11), 'Veterans Day');
+  put(tg,                     'Thanksgiving');
+  put(after,                  'Day After Thanksgiving');
+  put(holObserved(y, 11, 24), 'Christmas Eve');
+  put(holObserved(y, 11, 25), 'Christmas Day');
+  return out;
+}
+const HOL_CACHE = {};
+function holName(isoDate){
+  const y = +isoDate.slice(0,4);
+  if (!HOL_CACHE[y]) HOL_CACHE[y] = holsForYear(y);
+  return HOL_CACHE[y][isoDate] || null;
+}
+function holBadge(isoDate, cell){
+  const h = holName(isoDate);
+  if (!h) return '';
+  if (cell) cell.classList.add('holiday');
+  return `<div class="cal-hol" title="${h}">${h}</div>`;
+}
+
 function currCalRender(){
   const{year,month}=currCalState;
   document.getElementById('curr-cal-label').textContent=CURR_MONTHS[month]+' '+year;
@@ -17019,7 +17078,7 @@ function currCalRender(){
     const cell=document.createElement('div');
     const hasFocus=focus&&[...e.day,...e.night].includes(focus);
     cell.className='cal-cell'+(iso===td?' today':'')+(hasFocus?' has-focus':'');
-    let inner=`<div class="cal-day-num">${d}</div>`;
+    let inner=`<div class="cal-day-num">${d}</div>`+holBadge(iso, cell);
     [...e.day.map(n=>({r:'Day',n})), ...e.night.map(n=>({r:'Night',n}))].forEach(s=>{
       const isFoc=focus&&s.n===focus;
       inner+=`<div class="cal-person${isFoc?' highlighted':''}${focus&&!isFoc?' faded':''}"><span class="cal-dot ${s.r==='Day'?'d1':'n1'}"></span><span>${s.n} <span style="opacity:.6;font-size:9.5px;">${s.r}</span></span></div>`;
@@ -17520,7 +17579,7 @@ function pitCalRender(){
     const cell=document.createElement('div');
     const hasFocus=focus&&e&&[e.d1,e.d2,e.d3,e.n1,e.n2].includes(focus);
     cell.className='cal-cell'+(iso===td?' today':'')+(e?'':' out-range')+(hasFocus?' has-focus':'');
-    let inner=`<div class="cal-day-num">${d}</div>`;
+    let inner=`<div class="cal-day-num">${d}</div>`+holBadge(iso, cell);
     if(e){
       inner+=`<div class="pit-cal-sq ${e.sq}">Sq ${e.sq}</div>`;
       [{r:'D1',n:e.d1},{r:'D2',n:e.d2},{r:'D3',n:e.d3},{r:'N1',n:e.n1},{r:'N2',n:e.n2}].forEach(s=>{
@@ -17623,7 +17682,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.83';
+const APP_VERSION = 'v2.84';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -17865,7 +17924,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.83</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.84</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
