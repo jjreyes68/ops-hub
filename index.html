@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<!-- Firebase Compat SDK — Schedule Compare -->
+<!-- Firebase Compat SDK — Schedule -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-check-compat.js"></script>
@@ -2124,7 +2124,7 @@ body.dark .sp-tag-similar{background:#2a1f3d;color:#c4b5fd;}
 body.dark #view-schedule .sched-toggle{background:var(--bg3);border-color:var(--border2);}
 body.dark #view-schedule .sched-toggle-btn.active{background:var(--bg4);}
 
-/* ── Dark mode: full Schedule Compare fix ──────────────────────────────────
+/* ── Dark mode: full Schedule fix ──────────────────────────────────
    #view-schedule locally redefines --text/--bg/--surface/--border/etc for
    its own light-mode design, which shadows the app's real theme-aware
    versions of those same variable names — so in dark mode this whole page
@@ -2961,6 +2961,40 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   letter-spacing:.03em;white-space:nowrap;}
 
 #vid-date.vid-bad{border-color:var(--red)!important;background:var(--rbg)!important;}
+
+.fc-alert-strip{display:flex;flex-direction:column;gap:3px;margin:6px 0 4px;}
+.fc-alert{display:flex;align-items:center;gap:9px;padding:5px 11px;border-radius:6px;font-size:12px;
+  border-left:3px solid;}
+.fc-alert.ex{background:var(--rbg);border-color:var(--red);color:var(--red);}
+.fc-alert.sv{background:var(--abg);border-color:var(--amber);color:var(--amber);}
+.fc-alert.mn{background:var(--bg3);border-color:var(--border2);color:var(--text2);}
+.fc-alert-site{font-family:var(--m);font-size:11px;font-weight:700;min-width:58px;}
+.fc-alert-ev{font-weight:600;flex:1;}
+.fc-alert-t{font-family:var(--m);font-size:10.5px;opacity:.8;}
+.fc-cell.fc-alerted{box-shadow:inset 3px 0 0 var(--red);}
+
+.fc-alert-item{border-radius:6px;overflow:hidden;}
+.fc-alert{cursor:pointer;}
+.fc-alert:hover{filter:brightness(.97);}
+.fc-alert-more{font-family:var(--m);font-size:10px;font-weight:700;background:rgba(0,0,0,.08);
+  border-radius:9px;padding:1px 7px;}
+.fc-alert-caret{font-size:9px;opacity:.7;margin-left:4px;}
+.fc-alert-detail{display:none;padding:8px 12px 10px 20px;background:var(--bg3);
+  border-left:3px solid var(--border2);font-size:12px;}
+.fc-alert-item.open .fc-alert-detail{display:block;}
+.fc-alert-row{padding:5px 0;border-bottom:1px solid var(--border);}
+.fc-alert-row:last-of-type{border-bottom:0;}
+.fc-alert-sev{font-family:var(--m);font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--text3);}
+.fc-alert-hl{font-size:11.5px;color:var(--text2);margin-top:2px;line-height:1.45;}
+.fc-alert-area{font-size:10.5px;color:var(--text3);margin-top:2px;}
+.fc-alert-link{display:inline-block;margin-top:7px;font-size:11.5px;color:var(--blue);text-decoration:none;}
+.fc-alert-link:hover{text-decoration:underline;}
+
+.fc-alert-nws{font-family:var(--m);font-size:10px;font-weight:700;border:1px solid currentColor;
+  border-radius:4px;padding:1px 7px;text-decoration:none;color:inherit;opacity:.85;}
+.fc-alert-nws:hover{opacity:1;background:rgba(0,0,0,.06);}
+.fc-alert-caret{font-family:var(--m);font-size:9.5px;opacity:.7;margin-left:6px;white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -3009,19 +3043,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
   <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Passdown</button>
-  <div class="nav-dropdown" id="navdd-schedule">
-    <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-schedule" onclick="navDropdownToggle('schedule', event)" aria-haspopup="true">Schedule Compare <span class="nav-dropdown-caret">▾</span></button>
-    <div class="nav-dropdown-menu" id="navdd-menu-schedule">
-      <button class="nav-dropdown-item" data-sched="curr" onclick="navDropdownSelectSchedule('curr')">Current Schedule</button>
-      <button class="nav-dropdown-item" data-sched="r27" onclick="navDropdownSelectSchedule('r27')">New Schedule (10/16)</button>
-      <!-- Expanded DuPont kept but hidden, as on the toggle row. -->
-      <button class="nav-dropdown-item" data-sched="prop10" onclick="navDropdownSelectSchedule('prop10')" style="display:none;">Expanded DuPont</button>
-      <!-- Steady Weeks: hidden while the day/night structure is still being worked out.
-           The model and pattern remain in SCHED_MODELS; remove the comment markers
-           here and on the in-page toggle below to bring it back. -->
-      <!-- -->
-    </div>
-  </div>
+  <button class="nav-tab" onclick="switchView('schedule',this)">Schedule</button>
   <div class="nav-dropdown" id="navdd-site-conditions">
     <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-site-conditions" onclick="navDropdownToggle('site-conditions', event)" aria-haspopup="true">Site Conditions <span class="nav-dropdown-caret">▾</span></button>
     <div class="nav-dropdown-menu" id="navdd-menu-site-conditions">
@@ -3052,8 +3074,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   <button class="nav-tab" onclick="switchView('ops',this); toggleMobileMenu()">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
   <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Passdown</button>
-  <button class="nav-tab" onclick="navDropdownSelectSchedule('curr'); toggleMobileMenu()">Schedule – Current</button>
-  <button class="nav-tab" onclick="navDropdownSelectSchedule('r27'); toggleMobileMenu()">Schedule – New Schedule (10/16)</button>
+  <button class="nav-tab" onclick="navDropdownSelectSchedule('curr'); toggleMobileMenu()">Schedule</button>
   <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Timezones</button>
   <button class="nav-tab" onclick="switchView('sitemap',this); toggleMobileMenu()">Map</button>
 </div>
@@ -3164,6 +3185,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <button class="tmr-seg-btn" data-hfc="temp" onclick="hfcTab('temp',this)">Temp</button>
     </span>
   </div>
+  <div class="fc-alert-strip" style="display:none;"></div>
   <div class="fc-grid" id="hfc-grid"></div>
 </div>
 
@@ -3622,6 +3644,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       </div>
       <button class="ibtn ibtn-p" onclick="fcFetch()">↻ Refresh</button>
     </div>
+    <div class="fc-alert-strip" style="display:none;"></div>
     <div class="fc-grid" id="fc-grid"></div>
     <div class="fc-foot" id="fc-foot"></div>
   </div>
@@ -4551,10 +4574,10 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   <div class="page-header">
     <div>
       <div class="page-title">ROC Schedule</div>
-      <div class="page-subtitle">Comparison tool — exploring proposed shift structures, not yet finalized</div>
+      <div class="page-subtitle">Operator rotation · 70-day cycle</div>
     </div>
     <div class="page-header-actions">
-      <div class="sched-toggle">
+      <div class="sched-toggle" style="display:none;">
         <button class="sched-toggle-btn active" id="toggle-curr" onclick="showSchedule('curr')">Current Schedule</button>
         <button class="sched-toggle-btn" id="toggle-r27" onclick="showSchedule('r27')">New Schedule (10/16)</button>
         <!-- Kept but hidden: not chosen, may be wanted for comparison later. -->
@@ -4564,10 +4587,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     </div>
   </div>
 
-  <div style="display:flex;align-items:center;gap:8px;background:var(--abg);border:1px solid var(--amber);border-radius:var(--r);padding:9px 13px;margin-bottom:14px;font-size:12.5px;color:var(--amber);font-weight:500;">
-    <span style="font-size:14px;">⚠</span>
-    <span><strong>Draft / under review</strong> — these are candidate schedules for evaluating a potential shift structure change. Nothing here is in effect. The current live rotation is unaffected.</span>
-  </div>
+  
 
   <!-- Date controls -->
   <div class="start-date-control" id="split-date-ctrl" style="justify-content:flex-start;margin-bottom:14px;">
@@ -5300,7 +5320,7 @@ async function load() {
   // fallback string here wouldn't actually change anything for anyone real.
   // Instead: the first time this runs on a given browser, anyone whose
   // saved tab is still the old default ('scans') gets bumped to Home once;
-  // anyone who'd deliberately parked on something else (Schedule Compare,
+  // anyone who'd deliberately parked on something else (Schedule,
   // Toolbox, etc.) keeps that choice. After this one-time migration, normal
   // restoration behavior resumes — including going back to Scans if that's
   // where someone deliberately navigates.
@@ -5496,7 +5516,7 @@ function navDropdownSelect(v, groupId) {
   if (menu) menu.classList.remove('open');
   if (wrap) wrap.classList.remove('open');
 }
-// Schedule Compare dropdown — jumps into #view-schedule AND selects a specific
+// Schedule dropdown — jumps into #view-schedule AND selects a specific
 // sub-schedule (split/pitman), without touching showSchedule() or the in-page
 // toggle pills at all. window._navScheduleTarget is read once by switchView().
 function navDropdownSelectSchedule(which) {
@@ -6200,7 +6220,7 @@ function qtDismissDurationSuggestion() {
 // Team-wide reminders — writable from right here (native add + edit), and
 // also written in bulk by Buyers Curtailment's "Set All Reminders". Stored
 // in the same Firestore project already used for Time Off (see the
-// Schedule Compare section for the db connection), in their own collection
+// Schedule section for the db connection), in their own collection
 // so they never mix with time-off records.
 let sharedReminders = [];
 let editingReminderId = null; // id of the reminder currently in inline-edit mode, or null
@@ -7625,7 +7645,7 @@ let shSortKey = 'ts';
 let shSortDir = 'desc';
 let shFilterText = '';
 
-// Schedule Compare has its own isoDate, but it's private to that module —
+// Schedule has its own isoDate, but it's private to that module —
 // invisible from here even though it looks global. This is a standalone
 // copy so History never silently depends on another feature's internals.
 function shIsoDate(d){
@@ -9328,6 +9348,7 @@ function hfcSave(data){
 }
 
 async function hfcInit(){
+  try { alertInit(); } catch(e) {}
   const cached = hfcLoad();
   if (cached) { fcData = cached.data; fcAt = cached.at; }
   hfcRender();
@@ -9372,6 +9393,140 @@ function fcTab(m, btn) {
   fcRender();
 }
 
+// ── Severe weather alerts ────────────────────────────────────
+// Open-Meteo has no alerts feed, so these come from the National Weather
+// Service. NWS has no bulk point lookup, so the trick is to pay once: resolve
+// each site's forecast zone and keep it forever (coordinates do not move),
+// then fetch alerts by state — a handful of calls covers the whole fleet
+// however many sites there are.
+const ALERT_ZONE_KEY = 'nwsZones_v1', ALERT_KEY = 'nwsAlerts_v1', ALERT_TTL = 30 * 60 * 1000;
+let alertData = null;
+
+function alertZones(){ try { return JSON.parse(localStorage.getItem(ALERT_ZONE_KEY) || '{}'); } catch(e){ return {}; } }
+function alertSaveZones(z){ try { localStorage.setItem(ALERT_ZONE_KEY, JSON.stringify(z)); } catch(e){} }
+
+// One-off per browser, and only for sites not already resolved.
+async function alertResolveZones(sites){
+  const z = alertZones();
+  const todo = sites.filter(s => !z[s.id]);
+  for (const s of todo) {
+    try {
+      const r = await fetch(`https://api.weather.gov/points/${s.lat.toFixed(4)},${s.lng.toFixed(4)}`);
+      if (!r.ok) { z[s.id] = { zone: null, state: null }; continue; }   // outside the US, e.g. Ontario
+      const j = await r.json();
+      const p = j.properties || {};
+      z[s.id] = {
+        lat: s.lat, lng: s.lng,
+        zone:  (p.forecastZone || '').split('/').pop() || null,
+        county:(p.county || '').split('/').pop() || null,
+        state: (p.relativeLocation && p.relativeLocation.properties
+                && p.relativeLocation.properties.state) || null };
+    } catch(e) { z[s.id] = { zone: null, state: null }; }
+  }
+  if (todo.length) alertSaveZones(z);
+  return z;
+}
+
+async function alertFetch(){
+  const sites = fcSites();
+  const z = await alertResolveZones(sites);
+  const states = [...new Set(Object.values(z).map(v => v && v.state).filter(Boolean))];
+  if (!states.length) { alertData = {}; return; }
+  const byZone = {};
+  // one call per state, not per site
+  for (const st of states) {
+    try {
+      const r = await fetch(`https://api.weather.gov/alerts/active?area=${st}`);
+      if (!r.ok) continue;
+      const j = await r.json();
+      (j.features || []).forEach(f => {
+        const p = f.properties || {};
+        (p.affectedZones || []).forEach(zu => {
+          const id = zu.split('/').pop();
+          (byZone[id] = byZone[id] || []).push({
+            event: p.event, severity: p.severity, ends: p.ends || p.expires,
+            headline: p.headline || '', url: (f.id || ''), area: p.areaDesc || '' });
+        });
+      });
+    } catch(e) {}
+  }
+  alertData = {};
+  sites.forEach(s => {
+    const zz = z[s.id]; if (!zz) return;
+    const hits = [...(byZone[zz.zone] || []), ...(byZone[zz.county] || [])];
+    if (hits.length) {
+      // sites share zone objects, so copy before tagging with coordinates
+      for (let i = 0; i < hits.length; i++) hits[i] = { ...hits[i], lat: s.lat, lng: s.lng };
+      // worst first, so the strip leads with what matters
+      const rank = { Extreme:0, Severe:1, Moderate:2, Minor:3, Unknown:4 };
+      hits.sort((a,b) => (rank[a.severity] ?? 9) - (rank[b.severity] ?? 9));
+      alertData[s.id] = hits;
+    }
+  });
+  try { localStorage.setItem(ALERT_KEY, JSON.stringify({ at: Date.now(), data: alertData })); } catch(e){}
+}
+
+async function alertInit(){
+  try {
+    const cached = JSON.parse(localStorage.getItem(ALERT_KEY) || 'null');
+    if (cached && cached.data) { alertData = cached.data; alertRender(); }
+    if (!cached || (Date.now() - cached.at) > ALERT_TTL) { await alertFetch(); alertRender(); }
+  } catch(e) {}
+}
+
+function alertRender(){
+  document.querySelectorAll('.fc-alert-strip').forEach(el => {
+    const ids = Object.keys(alertData || {});
+    if (!ids.length) { el.style.display = 'none'; el.innerHTML = ''; return; }
+    el.style.display = '';
+    el.innerHTML = ids.map(id => {
+      const list = alertData[id];
+      const a = list[0];
+      const sev = (a.severity || '').toLowerCase();
+      const cls = sev === 'extreme' ? 'ex' : sev === 'severe' ? 'sv' : 'mn';
+      const t = a.ends ? new Date(a.ends).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
+      // More than one alert on a site: make them reachable rather than a "+1".
+      const extra = list.length > 1
+        ? `<span class="fc-alert-more">+${list.length - 1} more</span>` : '';
+      const rows = list.map(x => {
+        const xt = x.ends ? new Date(x.ends).toLocaleString([], {month:'numeric', day:'numeric',
+                              hour:'2-digit', minute:'2-digit'}) : '';
+        return '<div class="fc-alert-row"><strong>' + esc(x.event) + '</strong>'
+          + (xt ? ` <span class="fc-alert-t">until ${xt}</span>` : '')
+          + (x.severity ? ` <span class="fc-alert-sev">${esc(x.severity)}</span>` : '')
+          + (x.headline ? `<div class="fc-alert-hl">${esc(x.headline)}</div>` : '')
+          + (x.area ? `<div class="fc-alert-area">${esc(x.area)}</div>` : '')
+          + '</div>';
+      }).join('');
+      return `<div class="fc-alert-item">`
+        + `<div class="fc-alert ${cls}" onclick="alertToggle(this)">`
+        + `<span class="fc-alert-site">${esc(id)}</span>`
+        + `<span class="fc-alert-ev">${esc(a.event)}</span>` + extra
+        + (t ? `<span class="fc-alert-t">until ${t}</span>` : '')
+        + (a.lat != null
+            ? `<a class="fc-alert-nws" href="https://forecast.weather.gov/MapClick.php?lat=${a.lat}&lon=${a.lng}" target="_blank" rel="noopener" onclick="event.stopPropagation()">NWS \u2197</a>`
+            : '')
+        + `<span class="fc-alert-caret">details \u25B8</span></div>`
+        + `<div class="fc-alert-detail">${rows}`
+        + (a.lat != null
+            ? `<a class="fc-alert-link" href="https://forecast.weather.gov/MapClick.php?lat=${a.lat}&lon=${a.lng}" target="_blank" rel="noopener">NWS forecast &amp; hazards for ${esc(id)} \u2197</a>`
+            : '')
+        + `</div></div>`;
+    }).join('');
+  });
+  document.querySelectorAll('.fc-cell').forEach(cell => {
+    const id = cell.querySelector('.fc-id')?.textContent;
+    cell.classList.toggle('fc-alerted', !!(alertData && alertData[id]));
+  });
+}
+
+function alertToggle(row){
+  const item = row.parentElement;
+  const open = item.classList.toggle('open');
+  const car = row.querySelector('.fc-alert-caret');
+  if (car) car.textContent = open ? 'details \u25BE' : 'details \u25B8';
+}
+
 function fcRender() {
   const g = document.getElementById('fc-grid'); if (!g) return;
   const sites = fcSites();
@@ -9407,6 +9562,7 @@ function fcRender() {
       + '<span class="fc-v ' + cls + '">' + val + (unit ? '<span class="fc-u">' + unit + '</span>' : '') + '</span></div>';
   }).join('');
 
+  try { alertRender(); } catch(e) {}
   const f = document.getElementById('fc-foot');
   if (f) {
     const mins = fcAt ? Math.round((Date.now() - fcAt) / 60000) : null;
@@ -15309,7 +15465,7 @@ function homeGoToStudy(catKey) {
 // small cluster of real substitutions in the first ~3.5 weeks (Rob Seffern
 // covering for Josh Reyes) — so it's stored as the 42-day base pattern plus
 // just those specific exception dates, not hundreds of hardcoded lines.
-// This is a REFERENCE schedule, not the finalized one — Schedule Compare's
+// This is a REFERENCE schedule, not the finalized one — Schedule's
 // Split Week/Pitman proposals are still being evaluated. If/when a schedule
 // is finalized, this same structure just needs its three data values
 // (anchor date, canonical pattern, exceptions) replaced — the lookup logic
@@ -15326,9 +15482,20 @@ function wosDateKey(d) {
 // Day shift: 6am-6pm same calendar date. Night shift: 6pm-6am, spanning
 // midnight — so between midnight and 6am, the active night shift actually
 // started (and its roster row lives) on the PREVIOUS calendar date.
+// The team moves to the new rotation on this date. Before it, Who's On Shift
+// reads the old pattern; from it, the new one. One constant to change if the
+// date moves.
+const SCHED_CUTOVER = '2026-10-15';
+
 function wosRowForDate(d) {
   const key = wosDateKey(d);
   if (WOS_EXCEPTIONS[key]) return WOS_EXCEPTIONS[key];
+  if (key >= SCHED_CUTOVER) {
+    try {
+      const r = window.r27RowForDate(d);
+      return [...r.day, ...r.night];
+    } catch (e) { /* fall through to the old pattern */ }
+  }
   const anchor = new Date(WOS_ANCHOR + 'T00:00:00');
   const days = Math.round((d - anchor) / 86400000);
   const pos = ((days % WOS_PERIOD) + WOS_PERIOD) % WOS_PERIOD;
@@ -17380,7 +17547,7 @@ let pitCalState={year:new Date().getFullYear(),month:new Date().getMonth()};
 let pitInited=false;
 
 function showSchedule(which){
-  if (which === 'split' || which === 'pitman' || which === 'steady') which = 'curr';
+  if (which !== 'r27') which = 'r27';   // one schedule; everything else is retired
   toSchedule = which;
   // ── Hide everything ──────────────────────────────────────────────
   // Split sections
@@ -17894,7 +18061,7 @@ setTimeout(() => {
   if (inp) inp.value = isoDate(START);
   updateWeekIndicator();
   renderStaticChips();
-  showSchedule('curr'); // ensure correct initial display state
+  showSchedule('r27'); // only schedule in use
   // Default individual view to Morgan after split is fully shown
   if(!state.selected && [...state.fh,...state.bh].includes('Morgan')){
     const opSel=document.getElementById('op-select');
@@ -17911,6 +18078,7 @@ setTimeout(() => {
 
 // ── Window exports for inline onclick handlers ──────────────────────────────
   window.showSchedule=showSchedule;
+  window.r27RowForDate=r27RowForDate;
   window.onStartDateChange=onStartDateChange;
   window.setStartToThisWeek=setStartToThisWeek;
   window.applyPitStart=applyPitStart;
@@ -17929,6 +18097,7 @@ setTimeout(() => {
   window.schedMe=schedMe;
   window.toAddCover=toAddCover;
   window.toShowAdd=toShowAdd;
+  window.alertToggle=alertToggle;
   window.copyVidal=copyVidal;
   window.clearVidal=clearVidal;
   window.processVidal=processVidal;
@@ -17950,7 +18119,7 @@ setTimeout(() => {
   window.movePitChip=movePitChip;
 })(); // end SCHEDULE COMPARE
 
-// Sync the Schedule Compare nav-dropdown item highlighting whenever showSchedule()
+// Sync the Schedule nav-dropdown item highlighting whenever showSchedule()
 // runs — from the in-page toggle pills, the nav dropdown, or anywhere else.
 // Wraps the original function rather than editing it, so its own logic and
 // the in-page toggle pills are completely untouched.
@@ -17971,7 +18140,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.97';
+const APP_VERSION = 'v3.07';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18213,7 +18382,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.97</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.07</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
@@ -18237,7 +18406,7 @@ load();
       <tr><td><kbd>g</kbd> <kbd>t</kbd></td><td>Go to Toolbox</td></tr>
       <tr><td><kbd>g</kbd> <kbd>l</kbd></td><td>Go to Log Builder</td></tr>
       <tr><td><kbd>g</kbd> <kbd>c</kbd></td><td>Go to Passdown</td></tr>
-      <tr><td><kbd>g</kbd> <kbd>s</kbd></td><td>Go to Schedule Compare</td></tr>
+      <tr><td><kbd>g</kbd> <kbd>s</kbd></td><td>Go to Schedule</td></tr>
       <tr><td><kbd>Esc</kbd></td><td>Close a dialog or clear a search</td></tr>
       <tr><td><kbd>?</kbd></td><td>Show this list</td></tr>
     </table>
