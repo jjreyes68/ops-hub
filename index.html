@@ -2959,6 +2959,8 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .to-slot{font-family:var(--m);font-size:9.5px;font-weight:700;color:var(--text3);
   background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:0 5px;
   letter-spacing:.03em;white-space:nowrap;}
+
+#vid-date.vid-bad{border-color:var(--red)!important;background:var(--rbg)!important;}
 </style>
 </head>
 <body>
@@ -3429,6 +3431,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <div style="margin-bottom:10px;">
           <label style="font-size:11px;color:var(--text3);margin-bottom:4px;display:block;">Date</label>
           <input type="date" id="vid-date" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;">
+          <div id="vid-date-warn" style="display:none;font-size:11px;color:var(--red);font-weight:600;margin-top:5px;"></div>
         </div>
         <div style="margin-bottom:10px;">
           <label style="font-size:11px;color:var(--text3);margin-bottom:4px;display:block;">Paste the whole table, or just columns K and L (POI MW, POI MVAR)</label>
@@ -12546,10 +12549,11 @@ function parseVidal(text){
     // the arithmetic can be checked rather than taken on trust.
     if (parts.length >= 12 && num(parts[10]) !== null) {
       const hour = num(parts[3]) || (out.length + 1);
+      const pdate = vidParseDate(parts[0]);
       out.push({ hour, time: String(hour - 1).padStart(2,'0') + ':00',
         pv: num(parts[4]), pvState: (parts[6] || '').toUpperCase(),
         bess: num(parts[7]), bessState: (parts[9] || '').toUpperCase(),
-        mw: num(parts[10]) || 0, mvar: num(parts[11]) || 0, note: (parts[12] || '').trim(),
+        mw: num(parts[10]) || 0, mvar: num(parts[11]) || 0, note: (parts[12] || '').trim(), pdate,
         status: deriveVidStatus(num(parts[4]), num(parts[7]), num(parts[10])), full: true });
       return;
     }
@@ -12576,6 +12580,25 @@ function deriveVidStatus(pv, bess, poi){
 // Content checks on a full paste. The scheduler books POI, so the thing worth
 // catching is POI not matching what the legs add up to — a broken formula in
 // the sheet looks exactly like a real number otherwise.
+// The portal file carries its own date, so use it rather than making someone
+// retype it — and say so loudly when it disagrees with what is in the box,
+// because a schedule pasted against the wrong day is the expensive mistake.
+function vidParseDate(v){
+  if (!v) return null;
+  const s = String(v).trim();
+  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return `${m[1]}-${m[2]}-${m[3]}`;
+  m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (m) return `${m[3]}-${m[1].padStart(2,'0')}-${m[2].padStart(2,'0')}`;
+  return null;
+}
+function vidDateWarn(msg){
+  const el = document.getElementById('vid-date');
+  const w  = document.getElementById('vid-date-warn');
+  if (el) el.classList.toggle('vid-bad', !!msg);
+  if (w)  { w.textContent = msg || ''; w.style.display = msg ? '' : 'none'; }
+}
+
 function vidalChecks(data, capMW){
   const flags = [];
   data.forEach(h => {
@@ -12622,6 +12645,17 @@ function processVidal(){
   }
   groups.push(g);
 
+  // adopt the pasted date, or flag a disagreement
+  const pasted = data.map(h => h.pdate).find(Boolean);
+  const dateEl = document.getElementById('vid-date');
+  vidDateWarn('');
+  if (pasted) {
+    if (!dateEl.value) { dateEl.value = pasted; }
+    else if (dateEl.value !== pasted) {
+      vidDateWarn(`Pasted data is for ${pasted}, but the date above says ${dateEl.value}.`);
+    }
+  }
+
   let output = '';
   const dateInput = document.getElementById('vid-date').value;
   if (dateInput) {
@@ -12658,6 +12692,7 @@ function processVidal(){
 }
 
 function clearVidal(){
+  vidDateWarn('');
   document.getElementById('vid-paste').value = '';
   document.getElementById('vid-output').textContent = '';
 }
@@ -17937,7 +17972,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v2.94';
+const APP_VERSION = 'v2.95';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18179,7 +18214,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v2.94</span>
+    RNWBL Ops Hub <span class="app-footer-v">v2.95</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
