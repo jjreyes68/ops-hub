@@ -2995,6 +2995,13 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   border-radius:4px;padding:1px 7px;text-decoration:none;color:inherit;opacity:.85;}
 .fc-alert-nws:hover{opacity:1;background:rgba(0,0,0,.06);}
 .fc-alert-caret{font-family:var(--m);font-size:9.5px;opacity:.7;margin-left:6px;white-space:nowrap;}
+
+.hfc-age{font-family:var(--m);font-size:10px;font-weight:700;border-radius:9px;padding:1px 8px;
+  cursor:pointer;user-select:none;}
+.hfc-age.fresh{color:var(--green);background:var(--gbg);}
+.hfc-age.aging{color:var(--amber);background:var(--abg);}
+.hfc-age.stale{color:var(--red);background:var(--rbg);}
+.hfc-age:hover{filter:brightness(.95);}
 </style>
 </head>
 <body>
@@ -3178,7 +3185,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
        then refreshes only if that cache is older than ten minutes. -->
   <div class="glance-label" style="margin-top:20px;display:flex;align-items:center;gap:10px;">
     <span>Fleet Conditions</span>
-    <span id="hfc-age" style="font-family:var(--m);font-size:10px;color:var(--text3);font-weight:400;"></span>
+    <span id="hfc-age" class="hfc-age" onclick="hfcForce()"></span>
     <span class="tmr-seg" style="margin:0 0 0 auto;max-width:250px;">
       <button class="tmr-seg-btn" data-hfc="wind" onclick="hfcTab('wind',this)">Wind</button>
       <button class="tmr-seg-btn active" data-hfc="ghi" onclick="hfcTab('ghi',this)">Irradiance</button>
@@ -3648,6 +3655,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <div class="fc-grid" id="fc-grid"></div>
     <div class="fc-foot" id="fc-foot"></div>
   </div>
+
 
 </div>
 
@@ -9349,6 +9357,8 @@ function hfcSave(data){
 
 async function hfcInit(){
   try { alertInit(); } catch(e) {}
+  // keep the age honest without re-fetching
+  if (!window.__hfcTick) window.__hfcTick = setInterval(() => { try { hfcRender(); } catch(e){} }, 60000);
   const cached = hfcLoad();
   if (cached) { fcData = cached.data; fcAt = cached.at; }
   hfcRender();
@@ -9357,6 +9367,15 @@ async function hfcInit(){
     if (fcData) hfcSave(fcData);
     hfcRender();
   }
+}
+
+// Force a pull regardless of cache age — clicking the age chip.
+async function hfcForce(){
+  const a = document.getElementById('hfc-age');
+  if (a) { a.textContent = '\u25CF refreshing'; a.className = 'hfc-age fresh'; }
+  await fcFetch();
+  if (fcData) hfcSave(fcData);
+  hfcRender();
 }
 
 function hfcTab(m, btn){
@@ -9382,8 +9401,12 @@ function hfcRender(){
   if (realId) real.id = 'fc-grid';
   fcMetric = saved;
   const a = document.getElementById('hfc-age');
-  if (a) { const m = fcAt ? Math.round((Date.now()-fcAt)/60000) : null;
-           a.textContent = m===null ? '' : (m<1 ? 'just now' : m+'m ago'); }
+  if (a) {
+    const m = fcAt ? Math.round((Date.now() - fcAt) / 60000) : null;
+    a.textContent = m === null ? '' : (m < 1 ? '\u25CF live' : '\u25CF ' + m + 'm old');
+    a.className = 'hfc-age ' + (m === null ? '' : m < 11 ? 'fresh' : m < 31 ? 'aging' : 'stale');
+    a.title = 'Click to refresh now';
+  }
 }
 
 function fcTab(m, btn) {
@@ -18098,6 +18121,7 @@ setTimeout(() => {
   window.toAddCover=toAddCover;
   window.toShowAdd=toShowAdd;
   window.alertToggle=alertToggle;
+  window.hfcForce=hfcForce;
   window.copyVidal=copyVidal;
   window.clearVidal=clearVidal;
   window.processVidal=processVidal;
@@ -18140,7 +18164,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.07';
+const APP_VERSION = 'v3.12';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18382,7 +18406,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.07</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.12</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
