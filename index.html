@@ -3080,6 +3080,29 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .sl-d-row:last-child{border-bottom:0;}
 .sl-d-row strong{display:block;font-size:12.5px;color:var(--text);}
 .sl-d-row span{font-size:11.5px;color:var(--text3);line-height:1.5;}
+
+.vb-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:12px;margin-top:14px;}
+.vb-card{border-radius:8px;padding:11px 13px;font-size:12px;color:var(--text2);line-height:1.55;}
+.vb-card.in{background:var(--gbg);border-left:3px solid var(--green);}
+.vb-card.out{background:var(--abg);border-left:3px solid var(--amber);}
+.vb-h{font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:5px;}
+.vb-note{display:block;margin-top:6px;font-size:11px;color:var(--text3);font-style:italic;}
+.dt-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 4px;}
+.dt-card{border-radius:8px;padding:10px 12px;font-size:11.5px;color:var(--text2);line-height:1.5;}
+.dt-card.ads{background:var(--abg);border-left:3px solid #d98c1f;}
+.dt-card.agc{background:var(--bbg);border-left:3px solid #2a6ba8;}
+.dt-c-h{font-family:var(--m);font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.at-banner{margin:-10px -12px 8px;padding:8px 12px;border-radius:8px 8px 0 0;font-size:12.5px;font-weight:700;color:#fff;}
+.at-banner.drop{background:var(--red);}
+.at-banner.work{background:var(--text3);}
+.at-banner span{display:block;font-weight:400;font-size:10.5px;opacity:.92;}
+.sl-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.sl-col-h{font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:7px;padding-bottom:6px;border-bottom:2px solid var(--border2);}
+.sl-col-h span{float:right;font-family:var(--m);font-size:9.5px;font-weight:400;color:var(--text3);}
+.sl-s{display:flex;gap:9px;padding:5px 0;font-size:12px;color:var(--text2);line-height:1.45;}
+.sl-s-n{font-family:var(--m);font-size:10px;font-weight:700;color:#fff;background:var(--text3);
+  border-radius:50%;width:16px;height:16px;line-height:16px;text-align:center;flex-shrink:0;margin-top:1px;}
+@media(max-width:700px){.vb-grid,.dt-cards,.sl-cols{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -4187,28 +4210,21 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
          number. Reading BAL-003 or VAR-002 in a document is a lot easier when
          you know what the family is. -->
 
-    <!-- VOLTAGE LADDER -->
 
-    <!-- SHIFT DAY TIMELINE — the procedures hung off the point in the shift
-         you would actually reach for them. -->
+    <!-- DAILY CHECKLIST — from the playbook, the only part of the shift that
+         is actually fixed. -->
     <div id="shiftline" class="roc-widget" style="display:none;">
       <div class="roc-w-hdr"><span style="font-size:15px;">🕒</span>
-        <span class="roc-w-t">The Shift, End to End</span>
-        <span class="roc-w-s">tap a stage for the procedures that live there</span></div>
-      <div style="padding:14px 16px;">
-        <div class="sl-track" id="sl-track"></div>
-        <div id="sl-detail" class="sl-detail"></div>
-      </div>
+        <span class="roc-w-t">The Daily Checklist</span>
+        <span class="roc-w-s">as written in the playbook</span></div>
+      <div style="padding:14px 16px;" id="sl-body"></div>
     </div>
+
     <div id="vladder" class="roc-widget" style="display:none;">
       <div class="roc-w-hdr"><span style="font-size:15px;">⚡</span>
-        <span class="roc-w-t">Reactive Response Ladder</span>
-        <span class="roc-w-s">drag the voltage · see what responds, in order</span></div>
-      <div style="padding:14px 16px;">
-        <input id="vl-slider" type="range" min="0" max="100" value="50" oninput="vlRender()" style="width:100%;">
-        <div id="vl-read" style="text-align:center;font-family:var(--m);font-size:15px;font-weight:700;margin:6px 0 12px;"></div>
-        <div id="vl-steps"></div>
-      </div>
+        <span class="roc-w-t">The Voltage Band</span>
+        <span class="roc-w-s">one answer when you leave it</span></div>
+      <div style="padding:16px;" id="vb-body"></div>
     </div>
 
     <!-- DISPATCH TIMELINE -->
@@ -14432,53 +14448,76 @@ function slRender(){
 }
 function slPick(i){ slOpen = i; slRender(); }
 
-const VL_STEPS = [
-  ['AVR trims automatically', 'The plant responds on its own within its band. Nothing for you to do but confirm it is in automatic.'],
-  ['Capacitors or reactors switch', 'Bigger correction, TOP-directed. You do not operate these on your own initiative.'],
-  ['Call the TOP', 'Outside the band and still moving. They own the voltage schedule and the switching decision.'],
-  ['Log it', 'Time, condition, who you spoke to, what they directed. Routine out-of-band needs no email.'],
-];
-function vlRender(){
-  const v = +document.getElementById('vl-slider').value;
-  const kv = (0.94 + (v / 100) * 0.12).toFixed(3);
-  const low = v < 30, high = v > 70, band = !low && !high;
-  const r = document.getElementById('vl-read');
-  r.textContent = kv + ' pu \u00b7 ' + (band ? 'in band' : high ? 'HIGH \u2014 out of band' : 'LOW \u2014 out of band');
-  r.style.color = band ? 'var(--green)' : 'var(--amber)';
-  const far = v < 12 || v > 88;
-  const active = band ? 0 : far ? 4 : 2;
-  document.getElementById('vl-steps').innerHTML = VL_STEPS.map((s, i) => {
-    const on = i < active;
-    const note = i === 1 && !band
-      ? (high ? ' \u2014 high voltage: caps out, or reactor in' : ' \u2014 low voltage: caps in')
-      : '';
-    return `<div class="vl-step ${on ? 'on' : ''}"><span class="vl-n">${i + 1}</span>`
-      + `<span class="vl-b"><strong>${s[0]}${note}</strong><span>${s[1]}</span></span></div>`;
-  }).join('')
-  + (band ? '<div class="vl-foot">In band, nothing to do \u2014 but AVR should still be in automatic.</div>'
-          : far ? '<div class="vl-foot">Well outside band: the full sequence applies.</div>'
-                : '<div class="vl-foot">Out of band: call before anything is switched.</div>');
+// Voltage: there is no ladder. The plant trims inside the band on its own, and
+// the moment it leaves, the response is identical whichever way it went.
+function vbRender(){
+  const el = document.getElementById('vb-body'); if (!el || el.childElementCount) return;
+  el.innerHTML = `
+    <svg viewBox="0 0 640 150" style="width:100%;height:auto;">
+      <defs><marker id="vbA" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+        <path d="M0,0 L7,3.5 L0,7 z" fill="#8b93a1"/></marker></defs>
+      <rect x="40" y="16"  width="560" height="26" rx="4" fill="#fdf3e3"/>
+      <rect x="40" y="48"  width="560" height="46" rx="4" fill="#e8f3ed"/>
+      <rect x="40" y="100" width="560" height="26" rx="4" fill="#fdf3e3"/>
+      <text x="52" y="33"  style="font:700 11px var(--f);fill:#b4650f">ABOVE BAND</text>
+      <text x="52" y="76"  style="font:700 11px var(--f);fill:#1a7f52">IN BAND \u2014 AVR holds it here</text>
+      <text x="52" y="117" style="font:700 11px var(--f);fill:#b4650f">BELOW BAND</text>
+      <line x1="40" y1="47" x2="600" y2="47" stroke="#b4650f" stroke-width="1.4" stroke-dasharray="4 3"/>
+      <line x1="40" y1="95" x2="600" y2="95" stroke="#b4650f" stroke-width="1.4" stroke-dasharray="4 3"/>
+      <path d="M300,71 C330,71 340,40 372,34" fill="none" stroke="#8b93a1" stroke-width="1.6" marker-end="url(#vbA)"/>
+      <path d="M300,71 C330,71 340,102 372,108" fill="none" stroke="#8b93a1" stroke-width="1.6" marker-end="url(#vbA)"/>
+      <circle cx="300" cy="71" r="5" fill="#1a7f52"/>
+      <text x="386" y="30"  style="font:600 11px var(--f);fill:var(--text2)">same response</text>
+      <text x="386" y="122" style="font:600 11px var(--f);fill:var(--text2)">same response</text>
+    </svg>
+    <div class="vb-grid">
+      <div class="vb-card in"><div class="vb-h">In band</div>
+        <div>AVR trims it automatically. Confirm AVR is in automatic and on the right setpoint. Nothing else to do.</div></div>
+      <div class="vb-card out"><div class="vb-h">Out of band \u2014 either direction</div>
+        <div><strong>Call the TOP.</strong> They own the voltage schedule and all reactive switching.<br>
+        <strong>Do what they direct</strong> \u2014 caps, reactor or setpoint. We do not switch on our own.<br>
+        <strong>Log it.</strong> Time, condition, who you spoke to, what they directed.<br>
+        <span class="vb-note">No email for routine out of band \u2014 the log is the record.</span></div></div>
+    </div>
+    <div class="vl-foot">High or low does not change what you do. It only changes what the TOP will tell you to switch.</div>`;
 }
 
-// Dispatch: the timing difference is the whole point, and a static answer
-// cannot show one signal holding while the other moves.
+// Dispatch: show the MW shape each signal produces, not just when it arrives.
+// A staircase against a jitter line is the whole lesson in one picture.
 function dtRender(){
   const el = document.getElementById('dt-body'); if (!el || el.childElementCount) return;
-  const ads = [0, 5, 10, 15].map(m => `<div class="dt-tick" style="left:${m / 15 * 100}%"><span>${m}</span></div>`).join('');
-  let agc = '';
-  for (let i = 0; i <= 60; i++) agc += `<div class="dt-blip" style="left:${i / 60 * 100}%"></div>`;
+  const lv = [70, 44, 44, 30, 30, 58, 58, 70];
+  let stair = '';
+  for (let k = 0; k < 8; k++) stair += `${k ? 'L' : 'M'}${k * 75},${lv[k]} L${(k + 1) * 75},${lv[k]} `;
+  let jit = 'M0,60 ';
+  for (let k = 1; k <= 120; k++)
+    jit += `L${k * 5},${(52 + Math.sin(k / 9) * 10 + (k % 3 - 1) * 3.5).toFixed(1)} `;
   el.innerHTML = `
-    <div class="dt-row"><div class="dt-lbl">ADS<span>every ~5 min</span></div>
-      <div class="dt-track ads">${ads}</div></div>
-    <div class="dt-note">A Dispatch Operating Target that <strong>holds for the interval</strong>. Because it holds, the current value is readable on the CAISO board.</div>
-    <div class="dt-row"><div class="dt-lbl">AGC<span>every few sec</span></div>
-      <div class="dt-track agc">${agc}</div></div>
-    <div class="dt-note">Continuous regulation chasing frequency. <strong>No stable number to display</strong> \u2014 the board shows a site is on AGC, not its setpoint.</div>
+    <svg viewBox="0 0 620 235" style="width:100%;height:auto;">
+      <text x="0" y="11" style="font:700 10px var(--m);fill:#b4650f">ADS \u2014 a new target every ~5 min, then it holds</text>
+      <g transform="translate(10,20)">
+        <rect width="600" height="92" rx="5" fill="var(--bg3)"/>
+        ${[0,150,300,450,600].map(x=>`<line x1="${x}" y1="0" x2="${x}" y2="92" stroke="#d98c1f" stroke-width="1" stroke-dasharray="3 3" opacity=".5"/>`).join('')}
+        <path d="${stair}" fill="none" stroke="#d98c1f" stroke-width="2.4"/>
+        ${[0,150,300,450].map(x=>`<circle cx="${x}" cy="${lv[x/75]}" r="3.6" fill="#d98c1f"/>`).join('')}
+        <text x="4" y="88" style="font:9px var(--m);fill:var(--text3)">0 min</text>
+        <text x="556" y="88" style="font:9px var(--m);fill:var(--text3)">20 min</text>
+      </g>
+      <text x="0" y="137" style="font:700 10px var(--m);fill:#2a6ba8">AGC \u2014 moving every few seconds, chasing frequency</text>
+      <g transform="translate(10,146)">
+        <rect width="600" height="78" rx="5" fill="var(--bg3)"/>
+        <path d="${jit}" fill="none" stroke="#2a6ba8" stroke-width="1.6"/>
+      </g>
+    </svg>
+    <div class="dt-cards">
+      <div class="dt-card ads"><div class="dt-c-h">ADS</div>
+        <div>Economic. Holds for the interval, so there is a stable number \u2014 which is why the CAISO board can show it.</div></div>
+      <div class="dt-card agc"><div class="dt-c-h">AGC</div>
+        <div>Reliability. Never settles, so there is nothing stable to display \u2014 the board shows a site is on AGC, not its setpoint.</div></div>
+    </div>
     <div class="dt-sum">ADS is economics on a five-minute clock. AGC is reliability on a few-second clock.</div>`;
 }
 
-// SCADA: the standing version of the triage question, so it is reference
-// rather than something you only meet once in a quiz.
 const AT_ROWS = [
   ['drop', 'Unit or site trip', 'MW is gone. Work the Site Trip playbook.'],
   ['drop', 'Fire, smoke or gas alarm', 'Life safety. Notify immediately, nobody dispatched until cleared.'],
@@ -14490,20 +14529,49 @@ const AT_ROWS = [
 ];
 function atRender(){
   const el = document.getElementById('at-body'); if (!el || el.childElementCount) return;
-  const col = (k, title, sub) => `<div class="at-col ${k}"><div class="at-h">${title}<span>${sub}</span></div>`
-    + AT_ROWS.filter(r => r[0] === k).map(r => `<div class="at-item"><strong>${r[1]}</strong><span>${r[2]}</span></div>`).join('')
+  const col = (k, title, sub) => `<div class="at-col ${k}">`
+    + `<div class="at-banner ${k}">${title}<span>${sub}</span></div>`
+    + AT_ROWS.filter(r => r[0] === k).map(r =>
+        `<div class="at-item"><strong>${r[1]}</strong><span>${r[2]}</span></div>`).join('')
     + '</div>';
   el.innerHTML = '<div class="at-grid">'
-    + col('drop', 'Drop what you are doing', 'safety or MW at stake')
-    + col('work', 'Work the normal process', 'real, but not this second')
+    + col('drop', '\u{1F6D1} Drop what you are doing', 'safety or MW at stake')
+    + col('work', '\u{1F527} Work the normal process', 'real, but not this second')
     + '</div><div class="vl-foot">Never silence an alarm you have not acknowledged and understood.</div>';
+}
+
+// Procedures: the daily checklist is the one part of the shift that is written
+// down and fixed, so show that rather than an invented shape for the day.
+const SHIFT_PHASES = [
+  ['Start of shift', '\u{1F6AA}', [
+    'Notify the ROC in the Teams chat that you are on the way',
+    'Clock in at the office door (DSPTCH)',
+    'Check the dry-erase and outage board',
+    'Take instructions from the offgoing operator',
+    'Log into D1 and D2 duty site SCADAs',
+    'Fill out the ROCC1 Operator Log (onsite)',
+    'Complete the Asset Scanning Tool and upload']],
+  ['End of shift', '\u{1F3C1}', [
+    'Leave instructions for the oncoming operator in Teams',
+    'Fill out the ROCC1 Operator Log (offsite)',
+    'Log out of all sites directly',
+    'Leave the ROCC only once relief is logged into their sites',
+    'Clock out (DSPTCH)']],
+];
+function slRender(){
+  const el = document.getElementById('sl-body'); if (!el || el.childElementCount) return;
+  el.innerHTML = '<div class="sl-cols">' + SHIFT_PHASES.map(([name, icon, steps]) =>
+    `<div class="sl-col"><div class="sl-col-h">${icon} ${name}<span>${steps.length} steps</span></div>`
+    + steps.map((s, n) => `<div class="sl-s"><span class="sl-s-n">${n + 1}</span><span>${s}</span></div>`).join('')
+    + '</div>').join('') + '</div>'
+    + '<div class="vl-foot">Straight from the Daily Checklist playbook. Everything else here is a procedure for a situation, not a fixed point in the shift.</div>';
 }
 
 function rocWidgets(f){
   const show = (id, on, fn) => { const el = document.getElementById(id); if (!el) return;
     el.style.display = on ? '' : 'none'; if (on && fn) fn(); };
   show('shiftline', f === 'procedures', slRender);
-  show('vladder',   f === 'voltage',  vlRender);
+  show('vladder',   f === 'voltage',  vbRender);
   show('dtimeline', f === 'dispatch', dtRender);
   show('atriage',   f === 'scada',    atRender);
 }
@@ -18438,8 +18506,6 @@ setTimeout(() => {
   window.alertToggle=alertToggle;
   window.hfcForce=hfcForce;
   window.stdPick=stdPick;
-  window.vlRender=vlRender;
-  window.slPick=slPick;
   window.copyVidal=copyVidal;
   window.clearVidal=clearVidal;
   window.processVidal=processVidal;
@@ -18482,7 +18548,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.23';
+const APP_VERSION = 'v3.25';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18724,7 +18790,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.23</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.25</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
