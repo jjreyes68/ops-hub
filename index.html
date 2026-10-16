@@ -3140,6 +3140,19 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .ss-reveal:hover{border-color:var(--green);color:var(--green);}
 .ss-ans{padding:12px 14px;border-left:3px solid var(--green);background:var(--gbg);
   border-radius:0 8px 8px 0;font-size:12.5px;color:var(--text2);line-height:1.65;}
+
+.roc-widget{border:1px solid var(--border);border-top:3px solid var(--blue);}
+.roc-w-hdr{cursor:pointer;user-select:none;background:var(--bg3);}
+.roc-w-hdr:hover{filter:brightness(.98);}
+.roc-w-eyebrow{font-family:var(--m);font-size:8.5px;font-weight:700;letter-spacing:.12em;
+  color:var(--blue);background:var(--bbg);border-radius:4px;padding:2px 6px;}
+.roc-w-car{margin-left:auto;font-size:10px;color:var(--text3);}
+.roc-widget.collapsed > div:not(.roc-w-hdr){display:none;}
+.roc-widget.collapsed{border-top-color:var(--border2);}
+.roc-practice{display:flex;align-items:center;gap:10px;margin:22px 0 10px;}
+.roc-practice::after{content:'';flex:1;height:1px;background:var(--border);}
+.roc-practice span{font-family:var(--m);font-size:9px;font-weight:700;letter-spacing:.14em;
+  color:var(--text3);}
 </style>
 </head>
 <body>
@@ -3330,8 +3343,8 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <button class="tmr-seg-btn" data-hfc="temp" onclick="hfcTab('temp',this)">Temp</button>
     </span>
   </div>
-  <div class="fc-alert-strip" style="display:none;"></div>
   <div class="fc-grid" id="hfc-grid"></div>
+    <div class="fc-alert-strip" style="display:none;"></div>
 </div>
 
 <div class="view" id="view-scans">
@@ -3789,8 +3802,8 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       </div>
       <button class="ibtn ibtn-p" onclick="fcFetch()">↻ Refresh</button>
     </div>
-    <div class="fc-alert-strip" style="display:none;"></div>
     <div class="fc-grid" id="fc-grid"></div>
+    <div class="fc-alert-strip" style="display:none;"></div>
     <div class="fc-foot" id="fc-foot"></div>
   </div>
 
@@ -4254,9 +4267,9 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
          judgement questions ask what you would check; this shows what it
          looks like when you are checking. -->
     <div id="scadasim" class="roc-widget" style="display:none;">
-      <div class="roc-w-hdr"><span style="font-size:15px;">🖥️</span>
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">🖥️</span>
         <span class="roc-w-t">What Does It Look Like?</span>
-        <span class="roc-w-s">four screens · tap anything that looks wrong</span></div>
+        <span class="roc-w-s">four screens · tap anything that looks wrong</span><span class="roc-w-car">▾</span></div>
       <div style="padding:14px 16px;">
         <div class="tmr-seg" style="margin-bottom:12px;" id="ss-tabs"></div>
         <div id="ss-screen"></div>
@@ -4266,49 +4279,41 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     </div>
 
     <div id="shiftline" class="roc-widget" style="display:none;">
-      <div class="roc-w-hdr"><span style="font-size:15px;">🕒</span>
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">🕒</span>
         <span class="roc-w-t">The Daily Checklist</span>
-        <span class="roc-w-s">as written in the playbook</span></div>
+        <span class="roc-w-s">as written in the playbook</span><span class="roc-w-car">▾</span></div>
       <div style="padding:14px 16px;" id="sl-body"></div>
     </div>
 
     <div id="vladder" class="roc-widget" style="display:none;">
-      <div class="roc-w-hdr"><span style="font-size:15px;">⚡</span>
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">⚡</span>
         <span class="roc-w-t">The Voltage Band</span>
-        <span class="roc-w-s">one answer when you leave it</span></div>
+        <span class="roc-w-s">one answer when you leave it</span><span class="roc-w-car">▾</span></div>
       <div style="padding:16px;" id="vb-body"></div>
     </div>
 
     <!-- DISPATCH TIMELINE -->
     <div id="dtimeline" class="roc-widget" style="display:none;">
-      <div class="roc-w-hdr"><span style="font-size:15px;">📡</span>
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">📡</span>
         <span class="roc-w-t">ADS vs AGC on the Clock</span>
-        <span class="roc-w-s">same 15 minutes, two very different signals</span></div>
+        <span class="roc-w-s">same 15 minutes, two very different signals</span><span class="roc-w-car">▾</span></div>
       <div style="padding:14px 16px;" id="dt-body"></div>
     </div>
 
     <!-- ALARM TRIAGE -->
     <div id="atriage" class="roc-widget" style="display:none;">
-      <div class="roc-w-hdr"><span style="font-size:15px;">🚨</span>
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">🚨</span>
         <span class="roc-w-t">Alarm Triage</span>
-        <span class="roc-w-s">none of these is a no-action alarm</span></div>
+        <span class="roc-w-s">none of these is a no-action alarm</span><span class="roc-w-car">▾</span></div>
       <div style="padding:14px 16px;" id="at-body"></div>
     </div>
-    <div id="stdref" style="display:none;margin-bottom:18px;border:1px solid var(--border);border-radius:var(--rl);background:var(--bg2);overflow:hidden;box-shadow:var(--shs);">
-      <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);">
-        <span style="font-size:15px;">📘</span>
-        <span style="font-size:13px;font-weight:700;color:var(--text);">NERC Standard Prefixes</span>
-        <span style="font-size:11px;color:var(--text3);font-family:var(--m);">what the letters mean</span>
-      </div>
+    <div id="stdref" class="roc-widget" style="display:none;">
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">📘</span><span class="roc-w-t">NERC Standard Prefixes</span><span class="roc-w-s">tap a family for its standards</span><span class="roc-w-car">▾</span></div>
       <div class="std-grid" id="std-grid"></div>
       <div id="std-detail" style="display:none;"></div>
     </div>
-    <div id="dia-picker" style="display:none;margin-bottom:18px;">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px;">
-        <span style="font-size:15px;">📐</span>
-        <span style="font-size:13px;font-weight:700;color:var(--text);">Diagrams</span>
-        <span style="font-size:11px;color:var(--text3);font-family:var(--m);">pick a view</span>
-      </div>
+    <div id="dia-picker" class="roc-widget" style="display:none;">
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">📐</span><span class="roc-w-t">Diagrams</span><span class="roc-w-s">pick a view</span><span class="roc-w-car">▾</span></div>
       <div class="tmr-seg" style="margin-bottom:0;">
         <button class="tmr-seg-btn active" data-dia="build" onclick="diaTab('build',this)">Energy build-up</button>
         <button class="tmr-seg-btn" data-dia="sld"   onclick="diaTab('sld',this)">Single line</button>
@@ -4441,15 +4446,10 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       </div>
     </div>
     <!-- ── GRID HIERARCHY WIDGET ─────────────────────────────────────────── -->
-    <div id="gh-widget-container" style="margin-bottom:18px;border:1px solid var(--border);border-radius:var(--rl);background:var(--bg2);overflow:hidden;box-shadow:var(--shs);">
-      <div style="padding:12px 16px;border-bottom:1px solid var(--border);" id="gh-widget-hdr">
-        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="ghToggleWidget()">
-          <span style="font-size:15px;">🗺️</span>
-          <span style="font-size:13px;font-weight:700;color:var(--text);">Grid Entity Hierarchy</span>
-          <span style="font-size:11px;color:var(--text3);font-family:var(--m);">GOP → NERC · Tap an entity</span>
-          <span id="gh-chevron" style="margin-left:auto;font-size:11px;color:var(--text3);">▾</span>
-        </div>
-        <div id="gh-widget-body">
+    <div id="gh-widget-container" class="roc-widget">
+      <div id="gh-widget-hdr">
+        <div class="roc-w-hdr" onclick="ghToggleWidget()"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">🗺️</span><span class="roc-w-t">Grid Entity Hierarchy</span><span class="roc-w-s">GOP → NERC · tap an entity</span><span id="gh-chevron" class="roc-w-car">▾</span></div>
+        <div id="gh-widget-body" style="padding:14px 16px;">
           <div class="gh-wrap">
             <div class="tmr-seg" style="margin-bottom:12px;"><button class="tmr-seg-btn active" onclick="ghTab(&quot;hierarchy&quot;,this)">Chain of authority</button><button class="tmr-seg-btn" onclick="ghTab(&quot;chains&quot;,this)">Reliability vs commercial</button></div>
 
@@ -14756,9 +14756,27 @@ function slRender(){
     + '<div class="vl-foot">Straight from the Daily Checklist playbook. Everything else here is a procedure for a situation, not a fixed point in the shift.</div>';
 }
 
+// Collapse a reference widget — useful the first few times, noise after that.
+function rocWToggle(hdr){
+  const w = hdr.parentElement;
+  const open = !w.classList.toggle('collapsed');
+  const car = hdr.querySelector('.roc-w-car');
+  if (car) car.textContent = open ? '\u25BE' : '\u25B8';
+  try { localStorage.setItem('rocW_' + w.id, open ? '1' : '0'); } catch(e) {}
+}
+function rocWRestore(id){
+  try {
+    if (localStorage.getItem('rocW_' + id) === '0') {
+      const w = document.getElementById(id);
+      if (w) { w.classList.add('collapsed');
+        const car = w.querySelector('.roc-w-car'); if (car) car.textContent = '\u25B8'; }
+    }
+  } catch(e) {}
+}
+
 function rocWidgets(f){
   const show = (id, on, fn) => { const el = document.getElementById(id); if (!el) return;
-    el.style.display = on ? '' : 'none'; if (on && fn) fn(); };
+    el.style.display = on ? '' : 'none'; if (on && fn) { fn(); rocWRestore(id); } };
   show('scadasim',  f === 'operations', ssRender);
   show('shiftline', f === 'procedures', slRender);
   show('vladder',   f === 'voltage',  vbRender);
@@ -18700,6 +18718,7 @@ setTimeout(() => {
   window.ssGo=ssGo;
   window.ssTell=ssTell;
   window.ssReveal=ssReveal;
+  window.rocWToggle=rocWToggle;
   window.copyVidal=copyVidal;
   window.clearVidal=clearVidal;
   window.processVidal=processVidal;
@@ -18742,7 +18761,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.33';
+const APP_VERSION = 'v3.39';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18984,7 +19003,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.33</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.39</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
