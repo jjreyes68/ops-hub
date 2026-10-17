@@ -3204,12 +3204,6 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .sw-card .sw-tpl-actions{opacity:0;}
 .sw-card:hover .sw-tpl-actions{opacity:1;}
 
-.fc-pin-row{position:relative;margin-bottom:9px;}
-.fc-pin-row #wx-pin-inp{width:100%;max-width:280px;background:var(--bg3);border:1px solid var(--border);
-  border-radius:7px;padding:6px 10px;color:var(--text);font-family:var(--f);font-size:12.5px;}
-.fc-pin-row .wx-pins-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
-.fc-pin-btn{white-space:nowrap;}
-.fc-pin-btn.active{color:var(--amber)!important;}
 </style>
 </head>
 <body>
@@ -3838,15 +3832,10 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <div class="tmr-seg" style="margin:0;max-width:300px;">
         <button class="tmr-seg-btn active" data-fc="wind" onclick="fcTab('wind',this)">Wind</button>
         <button class="tmr-seg-btn" data-fc="ghi" onclick="fcTab('ghi',this)">Irradiance</button>
-        <button class="tmr-seg-btn" data-fc="temp" onclick="fcTab('temp',this)">Temp</button><button class="tmr-seg-btn fc-pin-btn" id="fc-pin-only" onclick="fcTogglePinned(this)" title="Show only pinned sites">Pinned</button>
+        <button class="tmr-seg-btn" data-fc="temp" onclick="fcTab('temp',this)">Temp</button>
       </div>
       <button class="ibtn ibtn-p" onclick="fcFetch()">↻ Refresh</button>
     </div>
-          <div class="fc-pin-row">
-        <input id="wx-pin-inp" placeholder="Pin a site…" oninput="wxPinFilter()" autocomplete="off">
-        <div class="wx-pin-matches" id="wx-pin-matches"></div>
-        <div class="wx-pins-list" id="wx-pins-list"></div>
-      </div>
     <div class="fc-grid" id="fc-grid"></div>
     <div class="fc-alert-strip" style="display:none;"></div>
     <div class="fc-foot" id="fc-foot"></div>
@@ -5525,7 +5514,6 @@ async function load() {
   asInit();
   swInit();
   clInit();
-  wxFleetInit();
   dmInit();
   // Restore escalation contacts
   const rows = document.querySelectorAll('#esc-tbody tr');
@@ -5724,6 +5712,7 @@ function ltToggle(){
 function ltInitOnce(){ try { ltRender(); } catch(e) {} }
 
 function switchView(v, el) {
+  if (arguments[0] === 'intel') setTimeout(()=>{ try{ alertInit(); }catch(e){} }, 80);
   if (arguments[0] === 'home') setTimeout(()=>{ try{ hfcInit(); }catch(e){} }, 0);
   document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
@@ -5745,7 +5734,6 @@ function switchView(v, el) {
   if(v==='playbooks') pbShowList();
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
   if(v==='timezones') initTimeZones();
-  if(v==='intel') wxFleetInit();
   if(v==='roc') { rocLoad(); rocRender(); }
   if(v==='schedule') {
     // navDropdownSelectSchedule() sets this right before calling switchView so a specific
@@ -8006,35 +7994,6 @@ const WX_LOCS = [
   {name:'PRSE1', location:'Hardwick, MN',      lat:43.7742, lng:-96.1975,   notes:'NERC Wind | 200MW'},
 ];
 
-function wxFilter(){
-  const q=document.getElementById('wx-site-inp').value.toLowerCase().trim();
-  const box=document.getElementById('wx-matches');
-  if(!q){ box.style.display='none'; return; }
-  const siteHits=SITES.filter(s=>spSiteMatchesQuery(s.name,q)||(s.location||'').toLowerCase().includes(q));
-  // Keep the actual WX_LOCS index so wxPickWx resolves correctly
-  const wxHitsWithIdx=WX_LOCS.map((s,i)=>({...s,_wxIdx:i}))
-    .filter(s=>spSiteMatchesQuery(s.name,q)||(s.location||'').toLowerCase().includes(q));
-  const allHits=[
-    ...siteHits.map(s=>({...s,_src:'site'})),
-    ...wxHitsWithIdx.map(s=>({...s,_src:'wx'}))
-  ].slice(0,8);
-  if(!allHits.length){ box.style.display='none'; return; }
-  box.style.display='block';
-  box.innerHTML=allHits.map(s=>{
-    const onclick=s._src==='site'?`wxPick(${s.id})`:`wxPickWx(${s._wxIdx})`;
-    return `<div class="wx-match-item" onclick="${onclick}">
-    <strong>${esc(s.name)}</strong>${s.location?' — <span style="color:var(--text3);font-size:11px;">'+esc(s.location)+'</span>':''}
-    </div>`;
-  }).join('');
-}
-function wxCloseMatches(){ document.getElementById('wx-matches').style.display='none'; }
-function wxPick(id){
-  const s=SITES.find(x=>x.id===id); if(!s)return;
-  document.getElementById('wx-site-inp').value=s.name;
-  document.getElementById('wx-location').value=s.location||s.name;
-  wxCloseMatches();
-  document.getElementById('wx-location').focus();
-}
 function wxPickWx(i){
   const s=WX_LOCS[i]; if(!s)return;
   document.getElementById('wx-site-inp').value=s.name;
@@ -9048,47 +9007,6 @@ function wxResolveCoords(name) {
   return s && s.lat != null && s.lng != null ? { lat: s.lat, lng: s.lng } : null;
 }
 
-function wxFleetInit() {
-  if (!wxFleetInited) {
-    try { wxPins = JSON.parse(localStorage.getItem(WX_PINS_KEY) || '[]'); } catch(e) { wxPins = []; }
-    // Wind fleet is the standard default set, in this order, whenever
-    // storage is empty for this browser/device.
-    if (!wxPins.length) {
-      wxPins = [
-        {name:'PRSE1', location:'Hardwick, MN',      lat:43.7742,  lng:-96.1975},
-        {name:'RKRG1', location:'Hobart, OK',        lat:35.095959,lng:-98.990771},
-        {name:'ORGN1', location:'Hennepin, OK',      lat:34.490682,lng:-97.334319},
-        {name:'LNDL1', location:'Tioga, ND',         lat:48.397,   lng:-102.938},
-        {name:'DFRN1', location:'Dufferin, Ontario', lat:44.152,   lng:-80.109},
-        {name:'MCLM1', location:'Little Current, ON',lat:45.9331,  lng:-81.9855},
-        {name:'GDWL1', location:'Goodwell, OK',      lat:36.600,   lng:-101.630},
-        {name:'DBLO1', location:'Little Lake, CA',   lat:36.0059762,lng:-117.8083968}
-      ];
-      try { localStorage.setItem(WX_PINS_KEY, JSON.stringify(wxPins)); } catch(e) {}
-    } else {
-      // Patch any pins that are missing coordinates (e.g. carried over
-      // from an older save) rather than letting them fetch undefined.
-      let patched = false;
-      wxPins = wxPins.map(p => {
-        if (p.lat != null && p.lng != null) return p;
-        const coords = wxResolveCoords(p.name);
-        if (coords) { patched = true; return { ...p, ...coords }; }
-        return p;
-      });
-      if (patched) { try { localStorage.setItem(WX_PINS_KEY, JSON.stringify(wxPins)); } catch(e) {} }
-    }
-    wxFleetInited = true;
-  }
-  wxRenderPins();
-  wxRenderFleetGrid();
-  // Auto-fetch weather for pinned sites — runs on page load (this function
-  // is called once during global init regardless of active tab) and again
-  // every time the operator switches into the Weather tab.
-  if (wxPins.length) {
-    wxFetchAll();
-  }
-  wxStartAutoRefresh();
-}
 
 // Keeps Fleet Snapshot current while the page just sits open, rather than
 // only updating on page load or a manual "Refresh All" click. 30 minutes
@@ -9101,60 +9019,10 @@ function wxFleetInit() {
 // tabs back and forth never stacks up duplicate intervals.
 const WX_AUTOREFRESH_MS = 30 * 60 * 1000;
 let wxAutoRefreshTimer = null;
-function wxStartAutoRefresh() {
-  if (wxAutoRefreshTimer) return;
-  wxAutoRefreshTimer = setInterval(() => {
-    if (wxPins.length) wxFetchAll();
-  }, WX_AUTOREFRESH_MS);
-}
 
-function wxPinFilter() {
-  const q = document.getElementById('wx-pin-inp').value.toLowerCase().trim();
-  const box = document.getElementById('wx-pin-matches');
-  if (!q) { box.style.display = 'none'; return; }
-  const siteHits = SITES.filter(s => spSiteMatchesQuery(s.name,q) || (s.location||'').toLowerCase().includes(q));
-  const wxHits   = WX_LOCS.filter(s => spSiteMatchesQuery(s.name,q) || (s.location||'').toLowerCase().includes(q));
-  const all = [
-    ...siteHits.map(s => ({name:s.name, location:s.location||s.name, lat:s.lat, lng:s.lng})),
-    ...wxHits.map(s   => ({name:s.name, location:s.location||s.name, lat:s.lat, lng:s.lng}))
-  ].slice(0, 8);
-  // Remove already-pinned
-  const filtered = all.filter(s => !wxPins.some(p => p.name === s.name));
-  if (!filtered.length) { box.style.display = 'none'; return; }
-  box.style.display = 'block';
-  box.innerHTML = filtered.map(s =>
-    `<div class="wx-pin-match-item" onclick="wxAddPin('${esc(s.name)}','${esc(s.location)}',${s.lat},${s.lng})">
-      <strong>${esc(s.name)}</strong> — <span style="color:var(--text3);font-size:11px;">${esc(s.location)}</span>
-    </div>`
-  ).join('');
-}
 
-function wxAddPin(name, location, lat, lng) {
-  if (wxPins.length >= 12) { showToast('Max 12 pinned sites'); return; }
-  if (wxPins.some(p => p.name === name)) return;
-  wxPins.push({name, location, lat, lng});
-  try { localStorage.setItem(WX_PINS_KEY, JSON.stringify(wxPins)); } catch(e) {}
-  document.getElementById('wx-pin-inp').value = '';
-  document.getElementById('wx-pin-matches').style.display = 'none';
-  wxRenderPins();
-  wxRenderFleetGrid();
-}
 
-function wxRemovePin(name) {
-  wxPins = wxPins.filter(p => p.name !== name);
-  delete wxFleetData[name];
-  try { localStorage.setItem(WX_PINS_KEY, JSON.stringify(wxPins)); } catch(e) {}
-  wxRenderPins();
-  wxRenderFleetGrid();
-}
 
-function wxRenderPins() {
-  const el = document.getElementById('wx-pins-list'); if (!el) return;
-  if (!wxPins.length) { el.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">🌤️</div><div class="empty-state-title">No sites pinned</div><div class="empty-state-sub">Search above to add up to 12 sites.</div></div>'; return; }
-  el.innerHTML = wxPins.map(p =>
-    `<div class="wx-pin-chip">${esc(p.name)}<button class="wx-pin-chip-del" onclick="wxRemovePin('${esc(p.name)}')">✕</button></div>`
-  ).join('');
-}
 
 function wxWeatherIcon(desc) {
   const d = desc.toLowerCase();
@@ -9273,23 +9141,9 @@ function fcSites() {
 
 // Each metric shows only the sites it actually means something for. Wind speed
 // on a solar site is noise; temperature matters everywhere.
-// Pinned is a filter on the one fleet grid now, not a second section.
-let fcPinnedOnly = false;
-function fcTogglePinned(btn){
-  fcPinnedOnly = !fcPinnedOnly;
-  if (btn) btn.classList.toggle('active', fcPinnedOnly);
-  try { localStorage.setItem('fcPinnedOnly', fcPinnedOnly ? '1' : '0'); } catch(e) {}
-  fcRender();
-}
-function fcPinnedSet(){
-  try {
-    const raw = JSON.parse(localStorage.getItem(WX_PINS_KEY) || '[]');
-    return new Set(raw.map(p => (typeof p === 'string' ? p : p && p.name)).filter(Boolean));
-  } catch(e) { return new Set(); }
-}
 
 function fcRelevant(sites, metric) {
-  if (fcPinnedOnly) { const p = fcPinnedSet(); sites = sites.filter(s => p.has(s.id)); }
+
   if (metric === 'wind') return sites.filter(s => s.kind === 'wind');
   if (metric === 'ghi')  return sites.filter(s => s.kind === 'solar');
   return sites;
@@ -9476,9 +9330,7 @@ async function alertInit(){
 
 function alertRender(){
   document.querySelectorAll('.fc-alert-strip').forEach(el => {
-    let ids = Object.keys(alertData || {});
-    // follow whatever the grid is showing — pinned filter included
-    if (fcPinnedOnly) { const p = fcPinnedSet(); ids = ids.filter(id => p.has(id)); }
+    const ids = Object.keys(alertData || {});
     if (!ids.length) { el.style.display = 'none'; el.innerHTML = ''; return; }
     el.style.display = '';
     const head = '<div class="fc-alert-head"><span>\u26A0\uFE0F Active advisories</span>'
@@ -9579,44 +9431,7 @@ function fcRender() {
   }
 }
 
-async function wxFetchAll() {
-  if (!wxPins.length) { showToast('Pin at least one site first'); return; }
-  // Show loading state
-  wxRenderFleetGrid(true);
-  await Promise.all(wxPins.map(p => wxFetchOne(p)));
-  wxRenderFleetGrid(false);
-}
 
-function wxRenderFleetGrid(loading) {
-  const grid = document.getElementById('wx-fleet-grid'); if (!grid) return;
-  if (!wxPins.length) { grid.innerHTML = ''; return; }
-  if (loading) {
-    grid.innerHTML = wxPins.map(p =>
-      `<div class="wx-fleet-card"><div class="wx-fc-site">${esc(p.name)}</div><div class="wx-fc-loc">${esc(p.location)}</div><div class="wx-fc-loading">Fetching…</div></div>`
-    ).join('');
-    return;
-  }
-  grid.innerHTML = wxPins.map(p => {
-    const d = wxFleetData[p.name];
-    if (!d) return `<div class="wx-fleet-card"><div class="wx-fc-site">${esc(p.name)}</div><div class="wx-fc-loc">${esc(p.location)}</div><div style="font-size:11px;color:var(--text3);padding-top:6px;">Not yet fetched</div></div>`;
-    if (!d.ok) return `<div class="wx-fleet-card"><div class="wx-fc-site">${esc(p.name)}</div><div class="wx-fc-loc">${esc(p.location)}</div><div class="wx-fc-err">Could not fetch</div></div>`;
-    const isLow = d.wind <= 4;
-    const isHigh = d.wind >= 13;
-    const alertCls = isHigh ? 'wind-high' : isLow ? 'wind-low' : '';
-    const tag = isHigh ? '<span class="wx-fc-tag tag-high">High Wind</span>' : isLow ? '<span class="wx-fc-tag tag-low">Low Wind</span>' : '';
-    return `<div class="wx-fleet-card ${alertCls}">
-      <div class="wx-fc-site">${esc(p.name)}${tag}</div>
-      <div class="wx-fc-loc">${esc(p.location)}</div>
-      <div class="wx-fc-main">
-        <span class="wx-fc-icon">${wxWeatherIcon(d.desc)}</span>
-        <span class="wx-fc-temp">${esc(d.temp)}°F</span>
-      </div>
-      <div class="wx-fc-wind">💨 ${esc(d.wind.toFixed(1))} m/s ${esc(d.windDir)} <span style="color:var(--text3);">@${esc(d.windHeight)}</span></div>
-      <div class="wx-fc-hum">💧 Humidity ${esc(d.hum)}%</div>
-      <div class="wx-fc-ts">Updated ${esc(d.ts)}</div>
-    </div>`;
-  }).join('');
-}
 // ─── SAFETY CHECK ─────────────────────────────────────────────────────────────
 const SAFETY=['Hard hat worn','High-vis vest on','Safety glasses','Steel-toe boots','Gloves available','First aid kit accessible','Buddy check complete','Radio/comms operational','Weather conditions acceptable','Site hazards reviewed'];
 let safetyS={};
@@ -16230,10 +16045,13 @@ function homeRenderGlance() {
 
   const windRowsEl = document.getElementById('glance-wind-rows');
   if (windRowsEl) {
-    if (!wxPins.length) {
+    const windSites = (typeof SITES !== 'undefined' ? SITES : [])
+        .filter(s => s.lat != null && /wind/i.test(s.notes || ''))
+        .filter((s, n, a) => a.findIndex(x => x.name === s.name) === n);
+      if (!windSites.length) {
       windRowsEl.innerHTML = '<div class="glance-tile-sub">No sites pinned</div>';
     } else {
-      windRowsEl.innerHTML = '<div class="wind-mini-grid">' + wxPins.map(p => {
+      windRowsEl.innerHTML = '<div class="wind-mini-grid">' + windSites.map(p => {
         const d = wxFleetData[p.name];
         const go = `onclick="event.stopPropagation();homeOpenSiteWx('${esc(p.name)}')"`;
         if (!d || !d.ok) return `<div class="wind-mini-cell" ${go}><span class="wm-site">${esc(p.name)}</span><span class="wm-val">—</span></div>`;
@@ -18542,7 +18360,6 @@ setTimeout(() => {
   window.toShowAdd=toShowAdd;
   window.alertToggle=alertToggle;
   window.hfcForce=hfcForce;
-  window.fcTogglePinned=fcTogglePinned;
   window.stdPick=stdPick;
   window.vbPick=vbPick;
   window.ssGo=ssGo;
@@ -18591,7 +18408,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.68';
+const APP_VERSION = 'v3.71';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18770,7 +18587,7 @@ function kbClose(){ document.getElementById('kb-modal').classList.remove('open')
   let awaitingGo = false, goTimer = null;
   const SEARCH_BY_VIEW = {
     'view-playbooks': 'pb-search-inp',
-    'view-intel': 'wx-pin-inp',
+    'view-intel': 'wx-site-inp',
     'view-tools': 'sw-tpl-search',
   };
   const GO = { h:'home', p:'playbooks', a:'asset', t:'ops', l:'swbuilder', s:'schedule' };
@@ -18833,7 +18650,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.68</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.71</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
