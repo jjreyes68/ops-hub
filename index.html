@@ -3204,6 +3204,18 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .sw-card .sw-tpl-actions{opacity:0;}
 .sw-card:hover .sw-tpl-actions{opacity:1;}
 
+
+#curr-ind-body td.is-off{opacity:.3;}
+#curr-ind-body td.is-off .rbadge.off{background:transparent;border:0;color:var(--text3);
+  font-size:13px;letter-spacing:.1em;box-shadow:none;}
+#curr-ind-body tr.is-today{box-shadow:inset 3px 0 0 var(--green);}
+#curr-ind-body tr.is-today .wk-lbl{color:var(--green);font-weight:700;}
+#curr-ind-summary{font-size:12.5px;color:var(--text2);margin:4px 0 10px;display:flex;align-items:center;flex-wrap:wrap;gap:3px;}
+.ind-sum-n{font-family:var(--m);font-weight:700;color:var(--text);}
+.ind-sum-btn{margin-left:10px;background:var(--bg3);border:1px solid var(--border);
+  border-radius:6px;padding:3px 10px;font-family:var(--f);font-size:11.5px;
+  color:var(--text2);cursor:pointer;}
+.ind-sum-btn:hover{border-color:var(--border2);color:var(--text);}
 </style>
 </head>
 <body>
@@ -4916,7 +4928,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <span class="lbadge n2">N2 · 6pm–6am</span>
       <span class="lbadge off">off</span>
     </div>
-    <div class="scroll-note">52 weeks · starting Aug 2, 2026</div>
+    <div class="scroll-note"></div>
     <div class="week-grid">
       <table>
         <thead>
@@ -5035,8 +5047,9 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <span class="lbadge d1">Day &middot; 6am&ndash;6pm</span>
         <span class="lbadge n1">Night &middot; 6pm&ndash;6am</span>
       </div>
-      <div class="scroll-note" id="curr-ind-note">52 weeks &middot; your real schedule, same source as Who's on Shift</div>
+      <div class="scroll-note" id="curr-ind-note"><span id="curr-ind-summary"></span></div>
       <div class="week-grid">
+      <div id="curr-ind-summary"></div>
         <table>
           <thead><tr><th>Wk</th><th>Dates</th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>
           <tbody id="curr-ind-body"><tr><td colspan="9" class="empty-state">Pick an operator above to see their full schedule.</td></tr></tbody>
@@ -17570,15 +17583,39 @@ function currInitOnce(){
   currCrewRender();
 }
 
+// 52 rows where "off" shouted as loudly as the shifts made the pattern
+// invisible. Mute the off days, anchor on this week, and show a quarter by
+// default — the 7-day night blocks then read as solid runs.
+let currIndAll = false;
+function currIndToggleAll(btn){
+  currIndAll = !currIndAll;
+  if (btn) btn.textContent = currIndAll ? 'Show 12 weeks' : 'Show all 52 weeks';
+  currIndRender();
+}
 function currIndRender(){
   const name=document.getElementById('curr-op-select').value;
   const tbody=document.getElementById('curr-ind-body');
-  if(!name){tbody.innerHTML='<tr><td colspan="9" class="empty-state">Pick an operator above to see their full schedule.</td></tr>';return;}
+  const sumEl=document.getElementById('curr-ind-summary');
+  if(!name){
+    tbody.innerHTML='<tr><td colspan="9" class="empty-state">Pick an operator above to see their full schedule.</td></tr>';
+    if(sumEl) sumEl.innerHTML=''; return;
+  }
   const td=isoDate(new Date());
-  const offBadge=`<span class="rbadge off">off</span>`;
+  const offBadge=`<span class="rbadge off">\u00b7</span>`;
 
+  // start at the current week when we can, so you are looking at now
+  let startWeek = 0;
+  if (!currIndAll) {
+    for (let w=0; w<52; w++){
+      const ws=new Date(currStart.getTime()+w*7*86400000);
+      if (td <= isoDate(new Date(ws.getTime()+6*86400000))) { startWeek=w; break; }
+    }
+  }
+  const endWeek = currIndAll ? 52 : Math.min(52, startWeek+12);
+
+  let worked=0, nights=0, firstNight=null;
   tbody.innerHTML='';
-  for(let w=0;w<52;w++){
+  for(let w=startWeek;w<endWeek;w++){
     const weekStart=new Date(currStart.getTime()+w*7*86400000);
     const weekEnd=new Date(weekStart.getTime()+6*86400000);
     const f=dt=>`${dt.getMonth()+1}/${dt.getDate()}`;
@@ -17593,8 +17630,9 @@ function currIndRender(){
       const e=currGetDay(iso);
       let role=null;
       if(e.day.includes(name))role='Day';else if(e.night.includes(name))role='Night';
+      if(role && iso>=td){ worked++; if(role==='Night'){ nights++; if(!firstNight) firstNight=dObj; } }
       const isToday=iso===td;
-      const wrap=cnt=>`<td${isToday?' class="today-cell"':''}>${cnt}</td>`;
+      const wrap=cnt=>`<td class="${isToday?'today-cell ':''}${role?'':'is-off'}">${cnt}</td>`;
       const _oi = role ? offInfo(name, iso) : null;
       cells.push(wrap(
         !role ? offBadge
@@ -17609,6 +17647,17 @@ function currIndRender(){
     if(todayInWeek)tr.classList.add('is-today');
     tr.innerHTML=`<td class="wk-lbl">Wk ${w+1}</td><td class="date-lbl">${dateRange}</td>${cells.join('')}`;
     tbody.appendChild(tr);
+  }
+
+  if (sumEl) {
+    const span = currIndAll ? 'the next 52 weeks' : 'the next 12 weeks';
+    const fn = firstNight ? `${firstNight.getMonth()+1}/${firstNight.getDate()}` : null;
+    sumEl.innerHTML =
+        `<span class="ind-sum-n">${worked}</span> shifts in ${span}`
+      + ` \u00b7 <span class="ind-sum-n">${nights}</span> of them nights`
+      + (fn ? ` \u00b7 next nights start <span class="ind-sum-n">${fn}</span>` : '')
+      + ` <button class="ind-sum-btn" onclick="currIndToggleAll(this)">`
+      + (currIndAll ? 'Show 12 weeks' : 'Show all 52 weeks') + '</button>';
   }
 }
 
@@ -18360,6 +18409,7 @@ setTimeout(() => {
   window.toShowAdd=toShowAdd;
   window.alertToggle=alertToggle;
   window.hfcForce=hfcForce;
+  window.currIndToggleAll=currIndToggleAll;
   window.stdPick=stdPick;
   window.vbPick=vbPick;
   window.ssGo=ssGo;
@@ -18408,7 +18458,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.71';
+const APP_VERSION = 'v3.74';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18650,7 +18700,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.71</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.74</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
