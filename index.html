@@ -674,7 +674,7 @@ body.dark .as-banner-stats{color:var(--text2);}
 .empty-state.compact .empty-state-title{font-size:12px;}
 select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;}
 /* ── Log BUILDER ─────────────────────────────────────────────────────────────── */
-.sw-wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start;}
+.sw-wrap{display:grid;grid-template-columns:320px 1fr;gap:14px;align-items:start;}
 @media(max-width:680px){.sw-wrap{grid-template-columns:1fr;}}
 .sw-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;box-shadow:var(--shs);}
 .sw-right-panel{display:flex;flex-direction:column;gap:0;}
@@ -696,8 +696,8 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .sw-tpl.sel-de{border-color:var(--red)!important;background:var(--rbg)!important;color:var(--red)!important;}
 .sw-tpl.sel-re{border-color:var(--green)!important;background:var(--gbg)!important;color:var(--green)!important;}
 .sw-tpl-stripe{width:4px;align-self:stretch;flex-shrink:0;}
-.sw-tpl-stripe.de{background:var(--red);}
-.sw-tpl-stripe.re{background:var(--green);}
+.sw-tpl-stripe.de{background:var(--green);}
+.sw-tpl-stripe.re{background:var(--red);}
 .sw-tpl-body{padding:8px 10px;flex:1;}
 .sw-tpl-site{font-size:10px;font-weight:500;color:var(--text3);display:block;margin-bottom:1px;}
 .sw-tpl.sel-de .sw-tpl-site,.sw-tpl.sel-re .sw-tpl-site{color:inherit;opacity:.75;}
@@ -715,8 +715,8 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .sw-save-btn{padding:8px 14px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;white-space:nowrap;}
 .sw-save-btn:hover{border-color:var(--border2);color:var(--text);}
 .sw-result-hdr{font-size:12px;font-weight:700;text-align:center;padding:5px 10px;border-radius:5px;margin-bottom:10px;letter-spacing:.03em;}
-.sw-result-hdr.de{background:var(--rbg);color:var(--red);}
-.sw-result-hdr.re{background:var(--gbg);color:var(--green);}
+.sw-result-hdr.de{background:var(--gbg);color:var(--green);}
+.sw-result-hdr.re{background:var(--rbg);color:var(--red);}
 .sw-result-body{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:var(--m);font-size:12.5px;line-height:1.85;color:var(--text);min-height:100px;white-space:pre-wrap;word-break:break-word;}
 .sw-empty{color:var(--text3);font-size:12px;text-align:center;padding:28px 0;font-family:var(--f);}
 .sw-hist-list{display:flex;flex-direction:column;gap:4px;max-height:240px;overflow-y:auto;margin-top:6px;}
@@ -3179,6 +3179,30 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .nav-tz-pop-f{margin-top:7px;padding-top:6px;border-top:1px solid var(--border);
   font-size:10px;color:var(--text3);}
 @media(max-width:760px){.nav-tz-pop{display:none!important;}}
+
+.sw-group{margin-bottom:13px;}
+.sw-group-h{font-family:var(--m);font-size:9px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text3);margin-bottom:7px;}
+.sw-grid{display:grid;grid-template-columns:1fr;gap:6px;}
+.sw-card{border:1px solid var(--border);border-radius:8px;background:var(--bg2);
+  padding:7px 9px;display:flex;flex-direction:column;gap:5px;}
+.sw-card.solo{cursor:pointer;}
+.sw-card.solo:hover,.sw-card:hover{border-color:var(--border2);}
+.sw-card.sel{border-color:var(--text3);box-shadow:inset 0 0 0 1px var(--text3);}
+.sw-card.sel-de{border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green);}
+.sw-card.sel-re{border-color:var(--red);box-shadow:inset 0 0 0 1px var(--red);}
+.sw-card-top{display:flex;align-items:center;gap:7px;}
+.sw-card-site{font-size:12px;font-weight:700;color:var(--text);flex:1;line-height:1.3;}
+.sw-card-sub{font-size:11px;color:var(--text3);margin-top:-3px;}
+.sw-card-pills{display:flex;gap:5px;}
+.sw-pill{flex:1;border:1px solid var(--border);background:var(--bg3);border-radius:5px;
+  padding:4px 6px;font-family:var(--f);font-size:10.5px;font-weight:600;color:var(--text2);
+  cursor:pointer;white-space:nowrap;}
+.sw-pill:hover{border-color:var(--border2);}
+.sw-pill.de.on{background:var(--gbg);border-color:var(--green);color:var(--green);}
+.sw-pill.re.on{background:var(--rbg);border-color:var(--red);color:var(--red);}
+.sw-card .sw-tpl-actions{opacity:0;}
+.sw-card:hover .sw-tpl-actions{opacity:1;}
 </style>
 </head>
 <body>
@@ -4704,13 +4728,20 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <div id="sw-tpls-list"></div>
         <button class="sw-new-tpl-btn" onclick="swOpenNewTpl()">＋ New template</button>
       </div>
+
       <div class="sw-history-box">
         <div class="sw-history-header">
           <div class="sw-history-title">Recent Entries</div>
           <button class="tbtn" style="font-size:11px;padding:2px 8px;" onclick="swClearHistory()">Clear</button>
         </div>
-        <div id="sw-hist-wrap"><div class="empty-state compact"><div class="empty-state-icon">🕓</div><div class="empty-state-title">No history yet</div><div class="empty-state-sub">Generated logs will appear here.</div></div></div>
+        
       </div>
+      <div id="sw-hist-wrap"><div class="empty-state compact"><div class="empty-state-icon">🕓</div><div class="empty-state-title">No history yet</div><div class="empty-state-sub">Generated logs will appear here.</div></div></div>
+
+      
+
+      
+      
     </div>
 
     <!-- RIGHT: Fields + Output -->
@@ -4752,6 +4783,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     </div>
 
   </div>
+  
 </div>
 
 <!-- HANDOFF ─────────────────────────────────────────────────────────────── -->
@@ -10843,47 +10875,78 @@ function swRenderTpls() {
   const wrap = document.getElementById('sw-tpls-list');
   if (!wrap) return;
   if (q && !all.length) {
-    wrap.innerHTML = `<div class="empty-state compact"><div class="empty-state-icon">🔍</div><div class="empty-state-title">No templates match "${esc(q)}"</div></div>`;
+    wrap.innerHTML = `<div class="empty-state compact"><div class="empty-state-icon">\u{1F50D}</div><div class="empty-state-title">No templates match "${esc(q)}"</div></div>`;
     return;
   }
-  wrap.innerHTML = all.map(tpl => {
+
+  // Most templates are the same thing in two directions — de-energize and
+  // re-energize the same equipment. Showing both as separate rows doubled the
+  // list and made near-identical entries you had to read carefully. Pair them
+  // on their site and put the direction on a pill.
+  const bySite = new Map(), singles = [];
+  all.forEach(tpl => {
+    if (tpl.site && (tpl.cls === 'de' || tpl.cls === 're')) {
+      const g = bySite.get(tpl.site) || { site: tpl.site, de: [], re: [] };
+      g[tpl.cls].push(tpl);
+      bySite.set(tpl.site, g);
+    } else singles.push(tpl);
+  });
+  const paired = [];
+  bySite.forEach(g => {
+    if (g.de.length === 1 && g.re.length === 1) paired.push({ site: g.site, de: g.de[0], re: g.re[0] });
+    else [...g.de, ...g.re].forEach(t => singles.push(t));   // not a pair — keep every one
+  });
+
+  const outage  = singles.filter(t => /outage|trip/i.test(t.site + ' ' + t.action));
+  const other   = singles.filter(t => !outage.includes(t));
+
+  const actionsFor = tpl => {
     const isHard = SW_HARDCODED.some(h => h.id === tpl.id);
     const isShared = !isHard && swSharedTpls.some(s => s.id === tpl.id);
-    const selCls = swActive === tpl.id ? 'sel-'+tpl.cls : '';
-    let actions;
-    if (isHard) {
-      actions = `<span class="sw-tpl-lock" title="Built-in">🔒</span>`;
-    } else if (isShared) {
-      actions = `<span class="sw-tpl-shared-badge" title="${tpl.sharedBy ? 'Shared by ' + esc(tpl.sharedBy) : 'Shared with the team'}">🌐</span>
-         <span class="sw-tpl-actions">
-           <button class="sw-tpl-act-btn" title="Duplicate as your own draft" onclick="event.stopPropagation();swDupeTpl('${tpl.id}')">⧉</button>
-           <button class="sw-tpl-act-btn" title="Edit (changes for everyone)" onclick="event.stopPropagation();swOpenEditTpl('${tpl.id}','shared')">✎</button>
-           <button class="sw-tpl-act-btn" title="Delete (removes for everyone)" onclick="event.stopPropagation();swDeleteSharedTpl('${tpl.id}')">✕</button>
-         </span>`;
-    } else {
-      actions = `<span class="sw-tpl-actions">
-           <button class="sw-tpl-act-btn" title="Share with the team" onclick="event.stopPropagation();swShareTpl('${tpl.id}')">📤</button>
-           <button class="sw-tpl-act-btn" title="Duplicate" onclick="event.stopPropagation();swDupeTpl('${tpl.id}')">⧉</button>
-           <button class="sw-tpl-act-btn" title="Edit" onclick="event.stopPropagation();swOpenEditTpl('${tpl.id}')">✎</button>
-           <button class="sw-tpl-act-btn" title="Delete" onclick="event.stopPropagation();swDelTpl('${tpl.id}')">✕</button>
-         </span>`;
-    }
-    const displayLabel = tpl.displayName || `${tpl.action} ${tpl.site}`;
-    const shortLabel = displayLabel.length > 35 ? displayLabel.slice(0, 35) + '…' : displayLabel;
-    return `<button class="sw-tpl ${selCls}" id="swtpl-${tpl.id}" onclick="swSelect('${tpl.id}',this)">
-      <span class="sw-tpl-stripe ${tpl.cls}"></span>
-      <span class="sw-tpl-body">${tpl.site ? `<span class="sw-tpl-site">${esc(tpl.site)}</span>` : ''}${esc(shortLabel)}</span>
-      ${actions}
-    </button>`;
-  }).join('');
+    if (isHard) return `<span class="sw-tpl-lock" title="Built-in">\u{1F512}</span>`;
+    if (isShared) return `<span class="sw-tpl-shared-badge" title="${tpl.sharedBy ? 'Shared by ' + esc(tpl.sharedBy) : 'Shared with the team'}">\u{1F310}</span>`
+      + `<span class="sw-tpl-actions">`
+      + `<button class="sw-tpl-act-btn" title="Duplicate as your own draft" onclick="event.stopPropagation();swDupeTpl('${tpl.id}')">\u29C9</button>`
+      + `<button class="sw-tpl-act-btn" title="Edit (changes for everyone)" onclick="event.stopPropagation();swOpenEditTpl('${tpl.id}','shared')">\u270E</button>`
+      + `<button class="sw-tpl-act-btn" title="Delete (removes for everyone)" onclick="event.stopPropagation();swDeleteSharedTpl('${tpl.id}')">\u2715</button></span>`;
+    return `<span class="sw-tpl-actions">`
+      + `<button class="sw-tpl-act-btn" title="Share with the team" onclick="event.stopPropagation();swShareTpl('${tpl.id}')">\u{1F4E4}</button>`
+      + `<button class="sw-tpl-act-btn" title="Duplicate" onclick="event.stopPropagation();swDupeTpl('${tpl.id}')">\u29C9</button>`
+      + `<button class="sw-tpl-act-btn" title="Edit" onclick="event.stopPropagation();swOpenEditTpl('${tpl.id}')">\u270E</button>`
+      + `<button class="sw-tpl-act-btn" title="Delete" onclick="event.stopPropagation();swDelTpl('${tpl.id}')">\u2715</button></span>`;
+  };
+
+  const pairCard = g => {
+    const on = swActive === g.de.id ? 'de' : swActive === g.re.id ? 're' : '';
+    return `<div class="sw-card ${on ? 'sel sel-' + on : ''}">
+      <div class="sw-card-top"><span class="sw-card-site">${esc(g.site)}</span>${actionsFor(g.de)}</div>
+      <div class="sw-card-pills">
+        <button class="sw-pill de ${on === 'de' ? 'on' : ''}" onclick="swSelect('${g.de.id}',this)">De-energize</button>
+        <button class="sw-pill re ${on === 're' ? 'on' : ''}" onclick="swSelect('${g.re.id}',this)">${esc(g.re.action).replace('Re-Energize','Re-energize')}</button>
+      </div></div>`;
+  };
+  const soloCard = tpl => {
+    const label = tpl.displayName || tpl.action;
+    return `<div class="sw-card solo ${swActive === tpl.id ? 'sel sel-' + tpl.cls : ''}"
+        onclick="swSelect('${tpl.id}',this)">
+      <div class="sw-card-top"><span class="sw-card-site">${esc(tpl.site || label)}</span>${actionsFor(tpl)}</div>
+      ${tpl.site ? `<div class="sw-card-sub">${esc(label)}</div>` : ''}</div>`;
+  };
+  const group = (title, html) => html ? `<div class="sw-group"><div class="sw-group-h">${title}</div>
+      <div class="sw-grid">${html}</div></div>` : '';
+
+  wrap.innerHTML =
+      group('Switching', paired.map(pairCard).join(''))
+    + group('Outages',   outage.map(soloCard).join(''))
+    + group('Other',     other.map(soloCard).join(''));
 }
 
 function swSelect(id, el) {
   swActive = id;
   const tpl = swGetAllTpls().find(t => t.id === id);
   if (!tpl) return;
-  document.querySelectorAll('.sw-tpl').forEach(b => b.classList.remove('sel-de','sel-re','sel-other'));
-  el.classList.add('sel-' + tpl.cls);
+  // the card grid shows selection on the pill and the card, so redraw it
+  try { swRenderTpls(); } catch (e) {}
   document.getElementById('sw-num-lbl').textContent = tpl.numLbl || 'Number';
   document.getElementById('sw-num').placeholder = tpl.numPh || '';
   const tl = document.getElementById('sw-tech-lbl');
@@ -18512,7 +18575,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.54';
+const APP_VERSION = 'v3.65';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18754,7 +18817,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.54</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.65</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
