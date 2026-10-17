@@ -3162,6 +3162,23 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   font-family:var(--m);font-size:9.5px;font-weight:700;letter-spacing:.1em;
   text-transform:uppercase;color:var(--text3);}
 .fc-alert-n{margin-left:auto;font-weight:400;letter-spacing:.04em;text-transform:none;}
+
+.nav-tz-item{position:relative;}
+
+.nav-tz-pop{position:fixed;z-index:9999;display:none;min-width:212px;max-width:300px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:9px;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);padding:9px 11px;}
+.nav-tz-pop-h{display:flex;align-items:center;gap:8px;font-family:var(--m);font-size:10px;
+  font-weight:700;color:var(--text);padding-bottom:6px;margin-bottom:6px;
+  border-bottom:1px solid var(--border);white-space:nowrap;}
+.nav-tz-pop-h span{margin-left:auto;font-weight:400;color:var(--text3);}
+.nav-tz-pop-l{display:flex;flex-wrap:wrap;gap:4px;}
+.nav-tz-pop-l span{font-family:var(--m);font-size:10px;color:var(--text2);
+  background:var(--bg3);border-radius:4px;padding:1px 6px;}
+.nav-tz-pop-e{font-size:11px;color:var(--text3);}
+.nav-tz-pop-f{margin-top:7px;padding-top:6px;border-top:1px solid var(--border);
+  font-size:10px;color:var(--text3);}
+@media(max-width:760px){.nav-tz-pop{display:none!important;}}
 </style>
 </head>
 <body>
@@ -5603,8 +5620,67 @@ async function load() {
 
     item.appendChild(key);
     item.appendChild(time);
+
+    // Hover shows which sites sit in that zone — the question you actually
+    // have when glancing at a clock. Click opens the full Timezones page.
+    item.style.cursor = 'pointer';
+    item.addEventListener('mouseleave', () => {
+      const pop = document.getElementById('nav-tz-pop');
+      if (pop) pop.dataset.hide = '1';
+      setTimeout(() => { if (pop && pop.dataset.hide === '1') pop.style.display = 'none'; }, 120);
+    });
+    item.addEventListener('mouseenter', () => {
+      let pop = document.getElementById('nav-tz-pop');
+      if (!pop) {
+        pop = document.createElement('div');
+        pop.id = 'nav-tz-pop'; pop.className = 'nav-tz-pop';
+        pop.addEventListener('mouseenter', () => { pop.dataset.hide = ''; });
+        pop.addEventListener('mouseleave', () => { pop.style.display = 'none'; });
+        document.body.appendChild(pop);
+      }
+      pop.dataset.hide = '';
+      const r = item.getBoundingClientRect();
+      pop.style.top = (r.bottom + 7) + 'px';
+      pop.style.left = Math.max(8, Math.min(r.left - 40, window.innerWidth - 320)) + 'px';
+      pop.style.display = 'block';
+      {
+        let names = [];
+        try {
+          names = (typeof SITES !== 'undefined' ? SITES : [])
+            .filter(s => s.lat != null && s.tz === z.tz)
+            .map(s => s.name);
+          if (!names.length) names = navTzSitesFor(z.tz);
+        } catch (e) {}
+        names = [...new Set(names)].sort();
+        pop.innerHTML = '<div class="nav-tz-pop-h">' + z.key + ' \u00b7 ' + z.tz.split('/')[1].replace('_', ' ')
+          + '<span>' + names.length + ' site' + (names.length === 1 ? '' : 's') + '</span></div>'
+          + (names.length
+              ? '<div class="nav-tz-pop-l">' + names.map(n => '<span>' + n + '</span>').join('') + '</div>'
+              : '<div class="nav-tz-pop-e">No sites in this zone</div>')
+          + '<div class="nav-tz-pop-f">Click for the full Timezones page</div>';
+      }
+    });
+    item.addEventListener('click', () => { try { switchView('timezones', null); } catch (e) {} });
+
     bar.appendChild(item);
   });
+
+  // Longitude is a good enough proxy when a site has no tz field, but the
+  // bands overlap — Arizona sits inside Mountain's longitudes while keeping
+  // its own time. Assign each site to exactly one zone, Arizona first.
+  function navTzZoneOf(s){
+    if (s.lng == null || s.lat == null) return null;
+    // Arizona: roughly the state box, and it does not observe DST
+    if (s.lng >= -115 && s.lng < -109 && s.lat >= 31 && s.lat < 37.1) return 'America/Phoenix';
+    if (s.lng < -114.5) return 'America/Los_Angeles';
+    if (s.lng < -102)   return 'America/Denver';
+    if (s.lng < -87)    return 'America/Chicago';
+    return 'America/New_York';
+  }
+  function navTzSitesFor(tz){
+    if (typeof SITES === 'undefined') return [];
+    return SITES.filter(s => navTzZoneOf(s) === tz).map(s => s.name);
+  }
 
   function tickNavTz() {
     const now = new Date();
@@ -16132,6 +16208,20 @@ function wosRowForDate(d) {
 // it, so the tile can show "who's on" prominently and "who's next" faded
 // beneath it — no persistent state to track, this is recomputed fresh
 // every render from whatever time it is right now.
+// How a given date's row splits between days and nights. The old pattern ran
+// 2 day + 1 night; the new one runs 3 + 2, so position alone is not enough.
+function wosSplit(d, row){
+  if (!row) return null;
+  const key = wosDateKey(d);
+  if (key >= SCHED_CUTOVER) {
+    try {
+      const r = window.r27RowForDate(d);
+      if (r && r.day.length) return { day: r.day, night: r.night };
+    } catch (e) {}
+  }
+  return { day: row.slice(0, 2), night: row.slice(2) };
+}
+
 function wosCurrentAndNext() {
   const now = new Date();
   const hour = now.getHours();
@@ -16140,17 +16230,19 @@ function wosCurrentAndNext() {
   if (hour >= 6 && hour < 18) {
     // Currently day shift — nights tonight (same date) are next.
     const row = wosRowForDate(today);
-    if (!row) return null;
-    current = { label: 'Day Shift', names: [row[0], row[1]] };
-    next = { label: 'Nights', names: [row[2]] };
+    const sp = wosSplit(today, row);
+    if (!sp) return null;
+    current = { label: 'Day Shift', names: sp.day };
+    next = { label: 'Nights', names: sp.night };
   } else if (hour >= 18) {
     // Currently night shift, started this evening — tomorrow's days are next.
     const row = wosRowForDate(today);
     const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
     const nextRow = wosRowForDate(tomorrow);
-    if (!row || !nextRow) return null;
-    current = { label: 'Night Shift', names: [row[2]] };
-    next = { label: 'Days', names: [nextRow[0], nextRow[1]] };
+    const sp = wosSplit(today, row), spN = wosSplit(tomorrow, nextRow);
+    if (!sp || !spN) return null;
+    current = { label: 'Night Shift', names: sp.night };
+    next = { label: 'Days', names: spN.day };
   } else {
     // Before 6am — still last night's shift (row lives on yesterday's
     // date), today's days start soon and are next.
@@ -16158,8 +16250,8 @@ function wosCurrentAndNext() {
     const row = wosRowForDate(yesterday);
     const todayRow = wosRowForDate(today);
     if (!row || !todayRow) return null;
-    current = { label: 'Night Shift', names: [row[2]] };
-    next = { label: 'Days', names: [todayRow[0], todayRow[1]] };
+    current = { label: 'Night Shift', names: (wosSplit(yesterday, row)||{night:[]}).night };
+    next = { label: 'Days', names: (wosSplit(today, todayRow)||{day:[]}).day };
   }
   return { current, next };
 }
@@ -18773,7 +18865,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.42';
+const APP_VERSION = 'v3.46';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19015,7 +19107,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.42</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.46</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
