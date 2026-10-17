@@ -3226,7 +3226,6 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   </div>
   <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
-  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Passdown</button>
   <button class="nav-tab" onclick="switchView('schedule',this)">Schedule</button>
   <div class="nav-dropdown" id="navdd-site-conditions">
     <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-site-conditions" onclick="navDropdownToggle('site-conditions', event)" aria-haspopup="true">Site Conditions <span class="nav-dropdown-caret">▾</span></button>
@@ -3257,7 +3256,6 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   <button class="nav-tab" onclick="switchView('intel',this); toggleMobileMenu()">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this); toggleMobileMenu()">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
-  <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Passdown</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('curr'); toggleMobileMenu()">Schedule</button>
   <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Timezones</button>
   <button class="nav-tab" onclick="switchView('sitemap',this); toggleMobileMenu()">Map</button>
@@ -4293,7 +4291,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
          judgement questions ask what you would check; this shows what it
          looks like when you are checking. -->
     <div id="scadasim" class="roc-widget" style="display:none;">
-      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">🖥️</span>
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">🖥️</span>
         <span class="roc-w-t">What Does It Look Like?</span>
         <span class="roc-w-s">four screens · tap anything that looks wrong</span><span class="roc-w-car">▾</span></div>
       <div style="padding:14px 16px;">
@@ -4305,14 +4303,14 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     </div>
 
     <div id="shiftline" class="roc-widget" style="display:none;">
-      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">🕒</span>
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">🕒</span>
         <span class="roc-w-t">The Daily Checklist</span>
         <span class="roc-w-s">as written in the playbook</span><span class="roc-w-car">▾</span></div>
       <div style="padding:14px 16px;" id="sl-body"></div>
     </div>
 
     <div id="vladder" class="roc-widget" style="display:none;">
-      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">⚡</span>
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">⚡</span>
         <span class="roc-w-t">The Voltage Band</span>
         <span class="roc-w-s">one answer when you leave it</span><span class="roc-w-car">▾</span></div>
       <div style="padding:16px;" id="vb-body"></div>
@@ -4320,7 +4318,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 
     <!-- DISPATCH TIMELINE -->
     <div id="dtimeline" class="roc-widget" style="display:none;">
-      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">📡</span>
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">📡</span>
         <span class="roc-w-t">ADS vs AGC on the Clock</span>
         <span class="roc-w-s">same 15 minutes, two very different signals</span><span class="roc-w-car">▾</span></div>
       <div style="padding:14px 16px;" id="dt-body"></div>
@@ -4328,18 +4326,18 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 
     <!-- ALARM TRIAGE -->
     <div id="atriage" class="roc-widget" style="display:none;">
-      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">🚨</span>
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">🚨</span>
         <span class="roc-w-t">Alarm Triage</span>
         <span class="roc-w-s">none of these is a no-action alarm</span><span class="roc-w-car">▾</span></div>
       <div style="padding:14px 16px;" id="at-body"></div>
     </div>
     <div id="stdref" class="roc-widget" style="display:none;">
-      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">📘</span><span class="roc-w-t">NERC Standard Prefixes</span><span class="roc-w-s">tap a family for its standards</span><span class="roc-w-car">▾</span></div>
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">📘</span><span class="roc-w-t">NERC Standard Prefixes</span><span class="roc-w-s">tap a family for its standards</span><span class="roc-w-car">▾</span></div>
       <div class="std-grid" id="std-grid"></div>
       <div id="std-detail" style="display:none;"></div>
     </div>
     <div id="dia-picker" class="roc-widget" style="display:none;">
-      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">📐</span><span class="roc-w-t">Diagrams</span><span class="roc-w-s">pick a view</span><span class="roc-w-car">▾</span></div>
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">📐</span><span class="roc-w-t">Diagrams</span><span class="roc-w-s">pick a view</span><span class="roc-w-car">▾</span></div>
       <div class="tmr-seg" style="margin-bottom:0;">
         <button class="tmr-seg-btn active" data-dia="build" onclick="diaTab('build',this)">Energy build-up</button>
         <button class="tmr-seg-btn" data-dia="sld"   onclick="diaTab('sld',this)">Single line</button>
@@ -4474,7 +4472,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <!-- ── GRID HIERARCHY WIDGET ─────────────────────────────────────────── -->
     <div id="gh-widget-container" class="roc-widget">
       <div id="gh-widget-hdr">
-        <div class="roc-w-hdr" onclick="ghToggleWidget()"><span class="roc-w-eyebrow">REFERENCE</span><span style="font-size:15px;">🗺️</span><span class="roc-w-t">Grid Entity Hierarchy</span><span class="roc-w-s">GOP → NERC · tap an entity</span><span id="gh-chevron" class="roc-w-car">▾</span></div>
+        <div class="roc-w-hdr" onclick="ghToggleWidget()"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">🗺️</span><span class="roc-w-t">Grid Entity Hierarchy</span><span class="roc-w-s">GOP → NERC · tap an entity</span><span id="gh-chevron" class="roc-w-car">▾</span></div>
         <div id="gh-widget-body" style="padding:14px 16px;">
           <div class="gh-wrap">
             <div class="tmr-seg" style="margin-bottom:12px;"><button class="tmr-seg-btn active" onclick="ghTab(&quot;hierarchy&quot;,this)">Chain of authority</button><button class="tmr-seg-btn" onclick="ghTab(&quot;chains&quot;,this)">Reliability vs commercial</button></div>
@@ -4688,34 +4686,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 </div>
 
 <!-- SITE HISTORY (manager report) ────────────────────────────────────────── -->
-<div class="view" id="view-sitehistory">
-  <button class="tbtn" onclick="switchView('chron', null)" style="margin-bottom:14px;">&larr; Back to ROC Passdown</button>
-  <div class="page-header">
-    <div>
-      <div class="page-title">Site history</div>
-      <div class="page-subtitle">Every status change, timestamped — pulled straight from the board, not a separate log</div>
-    </div>
-  </div>
 
-  <div class="sh-filters">
-    <div class="sh-field">
-      <label>From</label>
-      <input type="date" id="sh-from">
-    </div>
-    <div class="sh-field">
-      <label>To</label>
-      <input type="date" id="sh-to">
-    </div>
-    <div class="sh-field">
-      <label>Site</label>
-      <select id="sh-site"><option value="">All sites</option></select>
-    </div>
-    <button class="tbtn" onclick="shRunQuery()">Run report</button>
-    <button class="tbtn" onclick="shDownloadExcel()">↓ Download as Excel</button>
-  </div>
-
-  <div id="sh-results"></div>
-</div>
 
 <!-- Log BUILDER ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-swbuilder">
@@ -4784,22 +4755,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 </div>
 
 <!-- HANDOFF ─────────────────────────────────────────────────────────────── -->
-<div class="view" id="view-chron">
 
-  <div class="page-header">
-    <div>
-      <div class="page-title">ROC Passdown</div>
-      <div class="page-subtitle">Everything the next operator needs to know, site by site</div>
-    </div>
-    <div class="page-header-actions">
-      <button class="tbtn" title="Copy current passdown as text — paste into Teams" onclick="copyRocPassdownText()" style="font-size:11px;color:var(--text3);"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
-      <button class="tbtn" onclick="switchView('sitehistory',null)" style="font-size:11px;color:var(--text3);">History</button>
-    </div>
-  </div>
-
-  <div id="fleet-overview-wrap"></div>
-
-</div>
 
 <!-- SCHEDULE COMPARE ───────────────────────────────────────────────────────── -->
 <div class="view" id="view-schedule">
@@ -5557,7 +5513,7 @@ async function load() {
   // Toolbox, etc.) keeps that choice. After this one-time migration, normal
   // restoration behavior resumes — including going back to Scans if that's
   // where someone deliberately navigates.
-  const TAB_VIEWS = ['home','scans','asset','nerc','roc','intel','ops','swbuilder','chron','timezones','schedule','sitemap'];
+  const TAB_VIEWS = ['home','scans','asset','nerc','roc','intel','ops','swbuilder','timezones','schedule','sitemap'];
   let savedTab = 'home';
   try {
     const migrated = localStorage.getItem('rnwbl_home_migration_v1');
@@ -5758,10 +5714,8 @@ function switchView(v, el) {
   if(v==='home') homeRenderGlance();
   if(v==='scans') { refreshScanStatuses(); renderSites(); }
   if(v==='playbooks') pbShowList();
-  if(v==='sitehistory') shInit();
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
   if(v==='timezones') initTimeZones();
-  if(v==='chron') { renderFleetOverview(); fleetLoadDigest(); }
   if(v==='intel') wxFleetInit();
   if(v==='roc') { rocLoad(); rocRender(); }
   if(v==='schedule') {
@@ -7526,44 +7480,7 @@ function fmtLightTs(ts){
   return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
 }
 
-function statusEntryRow(boardKey, e, labelEsc){
-  const editKey = boardKey+'|'+e.id;
-  if (siteStatusEntryEditingId === editKey) {
-    return `<div class="status-entry-row editing" data-entry-zone="${editKey}">
-      <textarea id="status-edit-${boardKey}-${e.id}">${esc(e.text)}</textarea>
-      <div class="board-status-editor-actions">
-        <button class="save" onclick="saveEditedStatusEntry('${boardKey}','${e.id}','${labelEsc}')">Save</button>
-      </div>
-    </div>`;
-  }
-  return `<div class="status-entry-row">
-    <div class="status-entry-main">
-      <span class="status-entry-text" title="Click to edit" onclick="event.stopPropagation();editSiteStatusEntry('${boardKey}','${e.id}')">${esc(e.text)}</span>
-      <span class="status-entry-ts">${fmtLightTs(e.ts)}</span>
-    </div>
-    <button class="status-entry-resolve" title="Resolve this note only" onclick="removeSiteStatusEntry('${boardKey}','${e.id}','${labelEsc}')">Resolve</button>
-  </div>`;
-}
 
-function fleetFlaggedCard(item){
-  const entries=siteStatusEntries(item.boardKey);
-  const adding=siteStatusEditingKey===item.boardKey;
-  const labelEsc=esc(item.label).replace(/'/g,"\\'");
-  const entryRows=entries.map(e=>statusEntryRow(item.boardKey,e,labelEsc)).join('');
-  return `<div class="board-flagged-card${item.pinned?' advisory':''}">
-    <div class="board-flagged-hdr">
-      <span class="board-site-name">${esc(item.label)}</span>
-      <button class="board-status-addbtn" title="Add a note" onclick="event.stopPropagation();toggleStatusEditor('${item.boardKey}')">+</button>
-    </div>
-    <div class="board-flagged-body">
-      ${entryRows}
-      ${adding ? `<div class="board-status-editor-zone" data-status-zone="${item.boardKey}">
-        <textarea id="status-new-${item.boardKey}" placeholder="Add a new note about ${esc(item.label)}..."></textarea>
-        <div class="board-status-editor-actions"><button class="save" onclick="addSiteStatusEntry('${item.boardKey}','${labelEsc}')">Add note</button></div>
-      </div>` : ''}
-    </div>
-  </div>`;
-}
 
 // Not real scan sites — always available in the search below, never part
 // of the Scans checklist (getBoardItems), only shown here on ROC Passdown.
@@ -7575,31 +7492,12 @@ const FLEET_EXTRA_ITEMS=[
   {boardKey:'x_ALLBESS', label:'All BESS', fleetCategory:'BESS', pinned:true}
 ];
 
-function fleetAllItems(){
-  return [...getBoardItems(), ...FLEET_EXTRA_ITEMS];
-}
 
 let fleetAddOpen = false;
 let fleetAddQuery = '';
 let fleetAddSelected = null; // boardKey once a site is chosen from search
 
-function toggleFleetAddBox(){
-  fleetAddOpen = !fleetAddOpen;
-  fleetAddQuery = '';
-  fleetAddSelected = null;
-  renderFleetOverview();
-  if (fleetAddOpen) {
-    const inp = document.getElementById('fleet-add-search');
-    if (inp) inp.focus();
-  }
-}
 
-function selectFleetAddSite(boardKey){
-  fleetAddSelected = boardKey;
-  renderFleetOverview();
-  const ta = document.getElementById('status-new-' + boardKey);
-  if (ta) ta.focus();
-}
 
 function fleetAddResultsHtml(matches){
   if (!matches.length) return `<div class="fleet-add-empty">No matches</div>`;
@@ -7620,30 +7518,6 @@ function renderFleetAddResultsOnly(){
   if (resultsEl) resultsEl.innerHTML = fleetAddResultsHtml(matches);
 }
 
-function renderFleetAddBox(){
-  if (!fleetAddOpen) {
-    return `<div class="fleet-add-box closed" onclick="event.stopPropagation();toggleFleetAddBox()">+ Add to handoff</div>`;
-  }
-  if (fleetAddSelected) {
-    const item = fleetAllItems().find(i => i.boardKey === fleetAddSelected);
-    if (item) {
-      const labelEsc = esc(item.label).replace(/'/g,"\\'");
-      return `<div class="fleet-add-box open" data-status-zone="fleet-add">
-        <div class="fleet-add-selected-hdr">
-          <span class="board-site-name">${esc(item.label)}</span>
-          <button class="board-status-addbtn" title="Choose a different site" onclick="event.stopPropagation();fleetAddSelected=null;renderFleetOverview();">↺</button>
-        </div>
-        <textarea id="status-new-${item.boardKey}" placeholder="What's going on at ${esc(item.label)}..."></textarea>
-        <div class="board-status-editor-actions"><button class="save" onclick="addSiteStatusEntry('${item.boardKey}','${labelEsc}')">Add note</button></div>
-      </div>`;
-    }
-  }
-  const matches = fleetAllItems().sort((a,b) => a.label.localeCompare(b.label)).slice(0, 8);
-  return `<div class="fleet-add-box open" data-status-zone="fleet-add">
-    <input id="fleet-add-search" type="text" placeholder="Search a site..." oninput="renderFleetAddResultsOnly()">
-    <div class="fleet-add-results" id="fleet-add-results">${fleetAddResultsHtml(matches)}</div>
-  </div>`;
-}
 
 // Same categorization already used on the Log Builder tab, reused here so
 // 20+ flagged cards land in stable, evenly-sized columns instead of one
@@ -7666,35 +7540,6 @@ function fleetItemCategory(item){
 }
 const FLEET_CAT_ORDER=['BESS','Solar','Wind','Other'];
 
-function renderFleetOverview(){
-  const wrap=document.getElementById('fleet-overview-wrap');
-  if(!wrap) return;
-  const flagged=fleetAllItems()
-    .filter(i=>siteStatusEntries(i.boardKey).length>0)
-    .sort((a,b)=>{
-      if(a.pinned && !b.pinned) return -1;
-      if(b.pinned && !a.pinned) return 1;
-      return a.label.localeCompare(b.label);
-    });
-
-  const byCat={};
-  flagged.forEach(item=>{
-    const cat=fleetItemCategory(item);
-    (byCat[cat]=byCat[cat]||[]).push(item);
-  });
-  const colsHtml=FLEET_CAT_ORDER.filter(cat=>byCat[cat]&&byCat[cat].length).map(cat=>`
-    <div class="board-flagged-col">
-      <div class="board-flagged-col-hdr">${cat} <span class="board-col-count">${byCat[cat].length}</span></div>
-      ${byCat[cat].map(fleetFlaggedCard).join('')}
-    </div>`).join('');
-
-  const flaggedHtml = flagged.length
-    ? `<div class="board-flagged-columns">${colsHtml}</div>`
-    : '';
-
-  wrap.innerHTML=`${renderFleetDigestBanner()}${renderFleetAddBox()}
-  ${flaggedHtml}`;
-}
 
 // Interim bridge while the team transitions to actually using this page —
 // reads whatever's currently flagged and formats it site-by-site, ready to
@@ -7729,50 +7574,11 @@ function copyRocPassdownText(){
 let fleetDigestRows = null; // null = nothing to show; array = has entries
 let fleetDigestOpen = false;
 
-async function fleetLoadDigest(){
-  const prevViewed = S.fleetLastViewed || 0;
-  S.fleetLastViewed = Date.now();
-  save();
-  fleetDigestOpen = false;
-  if (!prevViewed || !window.db) { fleetDigestRows=null; return; } // first-ever visit — nothing to compare against
-  try {
-    const snap = await window.db.collection('siteStatusHistory').where('ts','>',prevViewed).get();
-    const rows = snap.docs.map(d=>d.data()).sort((a,b)=>a.ts-b.ts);
-    fleetDigestRows = rows.length ? rows : null;
-  } catch(e) {
-    fleetDigestRows = null;
-  }
-  renderFleetOverview();
-}
 
-function toggleFleetDigestDetail(){
-  fleetDigestOpen = !fleetDigestOpen;
-  renderFleetOverview();
-}
 
 // Same brief line as before by default — the detail underneath only
 // exists in the DOM when actually opened, so the common case (glance and
 // move on) stays exactly as light as it already was.
-function renderFleetDigestBanner(){
-  if (!fleetDigestRows) return '';
-  const newSites = [...new Set(fleetDigestRows.filter(r=>r.action==='set').map(r=>r.siteLabel))];
-  const resolvedSites = [...new Set(fleetDigestRows.filter(r=>r.action==='clear').map(r=>r.siteLabel))];
-  const parts=[];
-  if (newSites.length) parts.push(`<span style="color:var(--amber);font-weight:600;">${newSites.length} new</span> (${esc(newSites.join(', '))})`);
-  if (resolvedSites.length) parts.push(`<span style="color:var(--green);font-weight:600;">${resolvedSites.length} resolved</span> (${esc(resolvedSites.join(', '))})`);
-  const detail = fleetDigestOpen ? `<div class="fleet-digest-detail">${fleetDigestRows.map(r=>`
-    <div class="fleet-digest-row">
-      <div class="fleet-digest-row-hdr">
-        <span class="fleet-digest-site">${esc(r.siteLabel||'')}</span>
-        <span class="${r.action==='clear'?'sh-action-clear':r.action==='edit'?'sh-action-edit':'sh-action-set'}">${r.action==='clear'?'Resolved':r.action==='edit'?'Updated':'Reported'}</span>
-      </div>
-      <div class="fleet-digest-text">${esc(r.text||'')}</div>
-    </div>`).join('')}</div>` : '';
-  return `<div class="fleet-digest">
-    <div>Since you were last here: ${parts.join(' · ')} <span class="fleet-digest-toggle" onclick="toggleFleetDigestDetail()">${fleetDigestOpen?'Hide details ▲':'See details ▼'}</span></div>
-    ${detail}
-  </div>`;
-}
 
 // Click anywhere outside an open note editor closes it — no Cancel/Close
 // button needed, one fewer thing on screen. Open-triggers (+ buttons, click
@@ -7792,7 +7598,6 @@ document.addEventListener('click', function(ev){
     const zone = document.querySelector('[data-status-zone="fleet-add"]');
     if (!zone || !zone.contains(ev.target)) { fleetAddOpen=false; fleetAddSelected=null; fleetAddQuery=''; changed=true; }
   }
-  if (changed) renderFleetOverview();
 });
 
 // ── SITE STATUS ───────────────────────────────────────────────────────────
@@ -7821,15 +7626,6 @@ document.addEventListener('click', function(ev){
 let siteStatuses = {}; // boardKey -> {siteLabel, entries:[{id,text,ts}], updatedAt}
 let siteStatusEditingKey = null;
 
-function initSiteStatusListener() {
-  if (!window.db) return;
-  window.db.collection('siteStatus').onSnapshot(snap => {
-    const next = {};
-    snap.forEach(doc => { next[doc.id] = doc.data(); });
-    siteStatuses = next;
-    renderFleetOverview();
-  }, err => fsListenerError('siteStatus', err));
-}
 
 // Defensive against older saved docs from before entries existed — treated
 // as having no open notes rather than crashing the render.
@@ -7838,89 +7634,10 @@ function siteStatusEntries(boardKey) {
   return (s && Array.isArray(s.entries)) ? s.entries : [];
 }
 
-function toggleStatusEditor(boardKey) {
-  siteStatusEditingKey = siteStatusEditingKey === boardKey ? null : boardKey;
-  renderFleetOverview();
-  if (siteStatusEditingKey) {
-    const ta = document.getElementById('status-new-' + boardKey);
-    if (ta) ta.focus();
-  }
-}
 
-async function addSiteStatusEntry(boardKey, label) {
-  if (!window.db) { showToast('Offline — open this file directly in a browser to update status'); return; }
-  const ta = document.getElementById('status-new-' + boardKey);
-  const text = ta ? ta.value.trim() : '';
-  if (!text) { showToast('Nothing to add'); return; }
-  const entry = { id: 'e' + Date.now(), text, ts: Date.now() };
-  try {
-    const entries = siteStatusEntries(boardKey).concat([entry]);
-    await window.db.collection('siteStatus').doc(boardKey).set({
-      siteLabel: label, entries, updatedAt: Date.now()
-    });
-    await window.db.collection('siteStatusHistory').add({
-      boardKey, siteLabel: label, action: 'set', text, ts: Date.now()
-    });
-    siteStatuses[boardKey] = { siteLabel: label, entries, updatedAt: Date.now() };
-    siteStatusEditingKey = null;
-    fleetAddOpen = false; fleetAddSelected = null; fleetAddQuery = '';
-    renderFleetOverview();
-    showToast('Note added');
-  } catch (e) { showToast('Could not add note: ' + e.message); }
-}
 
-function editSiteStatusEntry(boardKey, entryId) {
-  const key = boardKey + '|' + entryId;
-  siteStatusEntryEditingId = siteStatusEntryEditingId === key ? null : key;
-  renderFleetOverview();
-  if (siteStatusEntryEditingId) {
-    const ta = document.getElementById('status-edit-' + boardKey + '-' + entryId);
-    if (ta) ta.focus();
-  }
-}
 
-async function saveEditedStatusEntry(boardKey, entryId, label) {
-  if (!window.db) { showToast('Offline — open this file directly in a browser to update status'); return; }
-  const ta = document.getElementById('status-edit-' + boardKey + '-' + entryId);
-  const newText = ta ? ta.value.trim() : '';
-  if (!newText) { showToast('Nothing to save'); return; }
-  const entries = siteStatusEntries(boardKey);
-  const updated = entries.map(e => e.id === entryId ? { ...e, text: newText } : e);
-  try {
-    await window.db.collection('siteStatus').doc(boardKey).set({
-      siteLabel: label, entries: updated, updatedAt: Date.now()
-    });
-    await window.db.collection('siteStatusHistory').add({
-      boardKey, siteLabel: label, action: 'edit', text: newText, ts: Date.now()
-    });
-    siteStatuses[boardKey] = { siteLabel: label, entries: updated, updatedAt: Date.now() };
-    siteStatusEntryEditingId = null;
-    renderFleetOverview();
-    showToast('Note updated');
-  } catch (e) { showToast('Could not update note: ' + e.message); }
-}
 
-async function removeSiteStatusEntry(boardKey, entryId, label) {
-  if (!window.db) { showToast('Offline — open this file directly in a browser to update status'); return; }
-  const entries = siteStatusEntries(boardKey);
-  const entry = entries.find(e => e.id === entryId);
-  if (!entry) return;
-  const resolutionNote = prompt('Optional — what fixed it? (Leave blank to skip)') || '';
-  try {
-    const remaining = entries.filter(e => e.id !== entryId);
-    await window.db.collection('siteStatus').doc(boardKey).set({
-      siteLabel: label, entries: remaining, updatedAt: Date.now()
-    });
-    await window.db.collection('siteStatusHistory').add({
-      boardKey, siteLabel: label, action: 'clear',
-      text: resolutionNote ? (entry.text + ' — fixed by: ' + resolutionNote) : entry.text,
-      ts: Date.now()
-    });
-    siteStatuses[boardKey] = { siteLabel: label, entries: remaining, updatedAt: Date.now() };
-    renderFleetOverview();
-    showToast('Note resolved');
-  } catch (e) { showToast('Could not resolve note: ' + e.message); }
-}
 
 // ── SITE HISTORY (manager report) ───────────────────────────────────────────
 // Reads siteStatusHistory — never writes. A generated view of the same data
@@ -7944,63 +7661,12 @@ function shIsoDate(d){
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
 
-function shInit(){
-  const fromEl=document.getElementById('sh-from');
-  const toEl=document.getElementById('sh-to');
-  if(!fromEl.value){
-    const from=new Date(); from.setDate(from.getDate()-SH_DEFAULT_DAYS);
-    fromEl.value=shIsoDate(from);
-  }
-  if(!toEl.value) toEl.value=shIsoDate(new Date());
-  const siteSel=document.getElementById('sh-site');
-  if(siteSel && siteSel.options.length<=1){
-    const labels=[...new Set(getBoardItems().map(i=>i.label))].sort();
-    labels.forEach(l=>{
-      const opt=document.createElement('option'); opt.value=l; opt.textContent=l;
-      siteSel.appendChild(opt);
-    });
-  }
-  shRunQuery();
-}
 
 // Default window kept small on purpose — most of what's in this collection
 // right now is test data from building this feature. Widen with the date
 // pickers any time a real wider pull is actually needed.
 const SH_DEFAULT_DAYS = 7;
 
-async function shRunQuery(){
-  const resultsEl=document.getElementById('sh-results');
-  if(!resultsEl) return;
-  if(!window.db){
-    resultsEl.innerHTML='<div class="empty-state compact"><div class="empty-state-title">Offline</div><div class="empty-state-sub">Open this file directly in a browser to pull history.</div></div>';
-    return;
-  }
-  const fromEl=document.getElementById('sh-from');
-  const toEl=document.getElementById('sh-to');
-  const siteVal=document.getElementById('sh-site').value;
-  // An empty field never means "no lower bound" — that would silently pull
-  // the entire collection. Falls back to the same default window instead.
-  const fromTs = fromEl.value ? new Date(fromEl.value+'T00:00:00').getTime() : (Date.now() - SH_DEFAULT_DAYS*24*60*60*1000);
-  const toTs = toEl.value ? new Date(toEl.value+'T23:59:59').getTime() : Date.now();
-  // Whatever actually gets queried gets written back into the visible
-  // fields — the boxes on screen can never silently disagree with the data
-  // below them, regardless of how this got triggered.
-  fromEl.value = shIsoDate(new Date(fromTs));
-  toEl.value = shIsoDate(new Date(toTs));
-  resultsEl.innerHTML='<div class="empty-state compact"><div class="empty-state-title">Loading…</div></div>';
-  try{
-    const snap=await window.db.collection('siteStatusHistory')
-      .where('ts','>=',fromTs).where('ts','<=',toTs).orderBy('ts','desc').get();
-    let rows=snap.docs.map(d=>d.data());
-    if(siteVal) rows=rows.filter(r=>r.siteLabel===siteVal);
-    shLastRows=rows;
-    shFilterText='';
-    const qEl=document.getElementById('sh-quickfilter'); if(qEl) qEl.value='';
-    shRenderTable();
-  }catch(e){
-    resultsEl.innerHTML=`<div class="empty-state compact"><div class="empty-state-title">Could not load history</div><div class="empty-state-sub">${esc(e.message)}</div></div>`;
-  }
-}
 
 function shSetSort(key){
   if (shSortKey===key) { shSortDir = shSortDir==='asc' ? 'desc' : 'asc'; }
@@ -8082,24 +7748,6 @@ function shRenderTableContainer(){
   </tbody></table>`;
 }
 
-function shDownloadExcel(){
-  const rows=shGetDisplayRows();
-  if(!rows.length){ showToast('Run a report first'); return; }
-  if(typeof XLSX==='undefined'){ showToast('Excel library not loaded'); return; }
-  const data=rows.map(r=>({
-    Site: r.siteLabel||'',
-    When: new Date(r.ts).toLocaleString(),
-    Action: r.action==='clear'?'Resolved':r.action==='edit'?'Updated':'Reported',
-    Text: r.text||''
-  }));
-  const ws=XLSX.utils.json_to_sheet(data);
-  ws['!cols']=[{wch:12},{wch:20},{wch:10},{wch:60}];
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,ws,'Site history');
-  const from=document.getElementById('sh-from').value||'start';
-  const to=document.getElementById('sh-to').value||'end';
-  XLSX.writeFile(wb,`site-history_${from}_to_${to}.xlsx`);
-}
 
 function saveSite(){
   const name=document.getElementById('site-name').value.trim(); if(!name)return;
@@ -18766,7 +18414,6 @@ renderChips();
 updateSelect();
 initTimeOffListener();
 initSharedRemindersListener();
-initSiteStatusListener();
 homeInit();
 initPbSuggestionsListener();
 initSwSharedTplsListener();
@@ -18865,7 +18512,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.46';
+const APP_VERSION = 'v3.54';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19047,7 +18694,7 @@ function kbClose(){ document.getElementById('kb-modal').classList.remove('open')
     'view-intel': 'wx-pin-inp',
     'view-tools': 'sw-tpl-search',
   };
-  const GO = { h:'home', p:'playbooks', a:'asset', t:'ops', l:'swbuilder', c:'chron', s:'schedule' };
+  const GO = { h:'home', p:'playbooks', a:'asset', t:'ops', l:'swbuilder', s:'schedule' };
 
   function typing(e){
     const t = e.target;
@@ -19107,7 +18754,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.46</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.54</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
@@ -19130,7 +18777,6 @@ load();
       <tr><td><kbd>g</kbd> <kbd>a</kbd></td><td>Go to Asset Scan</td></tr>
       <tr><td><kbd>g</kbd> <kbd>t</kbd></td><td>Go to Toolbox</td></tr>
       <tr><td><kbd>g</kbd> <kbd>l</kbd></td><td>Go to Log Builder</td></tr>
-      <tr><td><kbd>g</kbd> <kbd>c</kbd></td><td>Go to Passdown</td></tr>
       <tr><td><kbd>g</kbd> <kbd>s</kbd></td><td>Go to Schedule</td></tr>
       <tr><td><kbd>Esc</kbd></td><td>Close a dialog or clear a search</td></tr>
       <tr><td><kbd>?</kbd></td><td>Show this list</td></tr>
