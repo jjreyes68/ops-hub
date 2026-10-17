@@ -3153,6 +3153,9 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .roc-practice::after{content:'';flex:1;height:1px;background:var(--border);}
 .roc-practice span{font-family:var(--m);font-size:9px;font-weight:700;letter-spacing:.14em;
   color:var(--text3);}
+
+.roc-section{border-top:3px solid var(--text3);}
+.roc-w-eyebrow.prac{color:var(--text3);background:var(--bg3);}
 </style>
 </head>
 <body>
@@ -15407,9 +15410,10 @@ function rocRender() {
     const isOpen = openCats.size ? openCats.has(catKey) : ci===0;
     html += `<div class="roc-section${isOpen?' open':''}" data-cat="${catKey}">
       <div class="roc-section-hdr" onclick="rocToggleSection(this.parentElement)">
+        <span class="roc-w-eyebrow prac">PRACTICE</span>
         <span class="roc-section-icon">${catDef.icon}</span>
-        <span class="roc-section-name">${catDef.label}</span>
-        <span class="roc-section-count">${catQs.length} questions</span>
+        <span class="roc-section-name">${usedCats.length > 1 ? catDef.label : 'Practice Questions'}</span>
+        <span class="roc-section-count">${catQs.length}</span>
         <div class="roc-section-prog"><div class="roc-section-prog-fill" data-sect-fill="${catKey}" style="width:${pct}%"></div></div>
         <span class="roc-section-chevron">▼</span>
       </div>
@@ -18761,7 +18765,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.39';
+const APP_VERSION = 'v3.41';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19003,7 +19007,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.39</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.41</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
