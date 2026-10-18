@@ -3226,6 +3226,9 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .cn-names{font-weight:600;margin-right:6px;}
 .cn-me{margin-left:auto;font-size:12px;color:var(--text2);}
 .cn-me strong{color:var(--text);}
+
+.cn-lbl{font-family:var(--m);font-size:9px;font-weight:700;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--text3);margin-right:4px;}
 </style>
 </head>
 <body>
@@ -4833,7 +4836,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   </div>
   <div class="start-date-control" id="curr-date-ctrl" style="display:none;justify-content:flex-start;margin-bottom:14px;">
     <button class="this-week-btn" id="curr-jump-today" onclick="setCurrToThisWeek()" style="display:none;">Jump to today</button>
-    <span class="week-indicator" id="curr-day-indicator"></span>
+    <span class="week-indicator" id="curr-day-indicator" style="display:none;"></span>
     <input type="date" id="curr-date-input" style="display:none;" onchange="applyCurrStart(this.value)">
   </div>
 
@@ -17618,7 +17621,8 @@ function currNowRender(){
   const onDays = hr >= 6 && hr < 18;
 
   el.innerHTML =
-      `<span class="cn-tag ${onDays ? 'on' : ''}">Days</span>`
+      `<span class="cn-lbl">On shift today</span>`
+    + `<span class="cn-tag ${onDays ? 'on' : ''}">Days</span>`
     + `<span class="cn-names">${row.day.map(esc).join(', ') || '\u2014'}</span>`
     + `<span class="cn-tag ${onDays ? '' : 'on'}">Nights</span>`
     + `<span class="cn-names">${row.night.map(esc).join(', ') || '\u2014'}</span>`
@@ -18496,7 +18500,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.79';
+const APP_VERSION = 'v3.80';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18738,7 +18742,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.79</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.80</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
