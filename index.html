@@ -3216,6 +3216,16 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   border-radius:6px;padding:3px 10px;font-family:var(--f);font-size:11.5px;
   color:var(--text2);cursor:pointer;}
 .ind-sum-btn:hover{border-color:var(--border2);color:var(--text);}
+
+.curr-now{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;
+  padding:9px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);
+  font-size:13px;color:var(--text);box-shadow:var(--shs);}
+.cn-tag{font-family:var(--m);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text3);background:var(--bg3);border-radius:4px;padding:2px 7px;}
+.cn-tag.on{color:var(--green);background:var(--gbg);}
+.cn-names{font-weight:600;margin-right:6px;}
+.cn-me{margin-left:auto;font-size:12px;color:var(--text2);}
+.cn-me strong{color:var(--text);}
 </style>
 </head>
 <body>
@@ -4808,12 +4818,12 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 
   
 
+  <div id="curr-now" class="curr-now"></div>
   <!-- Date controls -->
   <div class="start-date-control" id="split-date-ctrl" style="justify-content:flex-start;margin-bottom:14px;">
-    <label class="start-date-lbl">Schedule start</label>
-    <input type="date" id="start-date-input" onchange="onStartDateChange(this.value)">
-    <button class="this-week-btn" onclick="setStartToThisWeek()">This week</button>
+    <button class="this-week-btn" onclick="setStartToThisWeek()">← This week</button>
     <span class="week-indicator" id="week-indicator"></span>
+    <input type="date" id="start-date-input" style="display:none;" onchange="onStartDateChange(this.value)">
   </div>
   <div class="start-date-control" id="pit-date-ctrl" style="display:none;justify-content:flex-start;margin-bottom:14px;">
     <label class="start-date-lbl">Schedule start</label>
@@ -4822,10 +4832,9 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <span class="week-indicator" id="pit-day-indicator"></span>
   </div>
   <div class="start-date-control" id="curr-date-ctrl" style="display:none;justify-content:flex-start;margin-bottom:14px;">
-    <label class="start-date-lbl">Schedule start</label>
-    <input type="date" id="curr-date-input" onchange="applyCurrStart(this.value)">
-    <button class="this-week-btn" onclick="setCurrToThisWeek()">This week</button>
+    <button class="this-week-btn" id="curr-jump-today" onclick="setCurrToThisWeek()" style="display:none;">Jump to today</button>
     <span class="week-indicator" id="curr-day-indicator"></span>
+    <input type="date" id="curr-date-input" style="display:none;" onchange="applyCurrStart(this.value)">
   </div>
 
 <div class="intro" id="split-intro">
@@ -5034,7 +5043,6 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <div class="tabs" id="curr-tabs">
       <button class="tab-btn curr-tab active" data-ctab="curr-calendar">Calendar</button>
       <button class="tab-btn curr-tab" data-ctab="curr-individual">Individual view</button>
-      <button class="tab-btn curr-tab" data-ctab="curr-crew">Crew by Day</button>
     </div>
 
     <!-- Reference · Individual -->
@@ -5058,16 +5066,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     </div>
 
     <!-- Reference · Crew by Day -->
-    <div class="tab-panel" id="curr-crew">
-      <div class="crew-controls">
-        <button onclick="currNavDay(-1)">&#8592; Prev day</button>
-        <button onclick="currNavDay(1)">Next day &#8594;</button>
-        <input type="date" id="curr-crew-date" onchange="currCrewRender()">
-        <button onclick="currGoToday()" style="background:var(--blue-text);color:#fff;border-color:var(--blue-text);">Today</button>
-      </div>
-      <div class="scroll-note" id="curr-crew-label"></div>
-      <div id="curr-crew-card"></div>
-    </div>
+    
 
     <!-- Reference · Calendar -->
     <div class="tab-panel active" id="curr-calendar">
@@ -5745,6 +5744,7 @@ function switchView(v, el) {
   if(v==='home') homeRenderGlance();
   if(v==='scans') { refreshScanStatuses(); renderSites(); }
   if(v==='playbooks') pbShowList();
+  if(v==='schedule') { try{ currNowRender(); currJumpVis(); }catch(e){} }
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
   if(v==='timezones') initTimeZones();
   if(v==='roc') { rocLoad(); rocRender(); }
@@ -17578,7 +17578,7 @@ function currInitOnce(){
   });
   const dateInp=document.getElementById('curr-date-input');
   if(dateInp) dateInp.value=isoDate(currStart);
-  document.getElementById('curr-crew-date').value=isoDate(currStart);
+  (document.getElementById('curr-crew-date')||{}).value=isoDate(currStart);
   updateCurrIndicator();
   currCrewRender();
 }
@@ -17592,6 +17592,39 @@ function currIndToggleAll(btn){
   if (btn) btn.textContent = currIndAll ? 'Show 12 weeks' : 'Show all 52 weeks';
   currIndRender();
 }
+// The most common question on this page is "who is on right now", and the
+// month grid does not answer it without reading. One line, at the top.
+// Only worth showing when you have navigated away from the current week.
+function currJumpVis(){
+  const b = document.getElementById('curr-jump-today'); if (!b) return;
+  let away = false;
+  try {
+    const here = snapToSunday(new Date()).getTime();
+    away = snapToSunday(new Date(currStart)).getTime() !== here;
+  } catch(e) {}
+  b.style.display = away ? '' : 'none';
+}
+
+function currNowRender(){
+  const el = document.getElementById('curr-now'); if (!el) return;
+  const today = new Date(), iso = isoDate(today);
+  let row = null;
+  try {
+    if (iso >= SCHED_CUTOVER) row = window.r27RowForDate(today);   // same source as the calendar
+  } catch(e) {}
+  if (!row) { try { row = currGetDay(iso); } catch(e) {} }
+  if (!row || !row.day) { el.innerHTML = ''; return; }
+  const hr = today.getHours();
+  const onDays = hr >= 6 && hr < 18;
+
+  el.innerHTML =
+      `<span class="cn-tag ${onDays ? 'on' : ''}">Days</span>`
+    + `<span class="cn-names">${row.day.map(esc).join(', ') || '\u2014'}</span>`
+    + `<span class="cn-tag ${onDays ? '' : 'on'}">Nights</span>`
+    + `<span class="cn-names">${row.night.map(esc).join(', ') || '\u2014'}</span>`
+    ;
+}
+
 function currIndRender(){
   const name=document.getElementById('curr-op-select').value;
   const tbody=document.getElementById('curr-ind-body');
@@ -17662,7 +17695,8 @@ function currIndRender(){
 }
 
 function currCrewRender(){
-  const iso=document.getElementById('curr-crew-date').value;
+  if (!document.getElementById('curr-crew-date')) return;   // view removed
+  const iso=(document.getElementById('curr-crew-date')||{}).value;
   const el=document.getElementById('curr-crew-card');
   const lbl=document.getElementById('curr-crew-label');
   if(!iso){
@@ -17700,7 +17734,7 @@ function currNavDay(dir){
   const d=inp.value?new Date(inp.value+'T00:00:00'):new Date();
   d.setDate(d.getDate()+dir); inp.value=isoDate(d); currCrewRender();
 }
-function currGoToday(){document.getElementById('curr-crew-date').value=isoDate(new Date());currCrewRender();}
+function currGoToday(){(document.getElementById('curr-crew-date')||{}).value=isoDate(new Date());currCrewRender();}
 
 function currCalNav(dir){
   currCalState.month+=dir;
@@ -18180,13 +18214,14 @@ function currGetDay(iso){ return activeModel().getDay(iso); }
 
 
 function applyCurrStart(val){
+  setTimeout(()=>{ try{ currJumpVis(); }catch(e){} }, 0);
   if(!val) return;
   currStart = snapToSunday(new Date(val+'T00:00:00'));
   const inp = document.getElementById('curr-date-input');
   if(inp) inp.value = isoDate(currStart);
   updateCurrIndicator();
   currIndRender();
-  document.getElementById('curr-crew-date').value = isoDate(currStart);
+  (document.getElementById('curr-crew-date')||{}).value = isoDate(currStart);
   currCrewRender();
   currCalState.year = currStart.getFullYear();
   currCalState.month = currStart.getMonth();
@@ -18194,6 +18229,7 @@ function applyCurrStart(val){
 }
 
 function setCurrToThisWeek(){
+  setTimeout(()=>{ try{ currJumpVis(); }catch(e){} }, 0);
   applyCurrStart(isoDate(new Date()));
 }
 
@@ -18410,6 +18446,8 @@ setTimeout(() => {
   window.alertToggle=alertToggle;
   window.hfcForce=hfcForce;
   window.currIndToggleAll=currIndToggleAll;
+  window.currNowRender=currNowRender;
+  window.currJumpVis=currJumpVis;
   window.stdPick=stdPick;
   window.vbPick=vbPick;
   window.ssGo=ssGo;
@@ -18458,7 +18496,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.74';
+const APP_VERSION = 'v3.79';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18700,7 +18738,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.74</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.79</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
