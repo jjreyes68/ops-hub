@@ -674,7 +674,7 @@ body.dark .as-banner-stats{color:var(--text2);}
 .empty-state.compact .empty-state-title{font-size:12px;}
 select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 9px;color:var(--text);font-family:var(--f);font-size:13px;}
 /* ── Log BUILDER ─────────────────────────────────────────────────────────────── */
-.sw-wrap{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start;}
+.sw-wrap{display:grid;grid-template-columns:320px 1fr;gap:14px;align-items:start;}
 @media(max-width:680px){.sw-wrap{grid-template-columns:1fr;}}
 .sw-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px;box-shadow:var(--shs);}
 .sw-right-panel{display:flex;flex-direction:column;gap:0;}
@@ -696,8 +696,8 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .sw-tpl.sel-de{border-color:var(--red)!important;background:var(--rbg)!important;color:var(--red)!important;}
 .sw-tpl.sel-re{border-color:var(--green)!important;background:var(--gbg)!important;color:var(--green)!important;}
 .sw-tpl-stripe{width:4px;align-self:stretch;flex-shrink:0;}
-.sw-tpl-stripe.de{background:var(--red);}
-.sw-tpl-stripe.re{background:var(--green);}
+.sw-tpl-stripe.de{background:var(--green);}
+.sw-tpl-stripe.re{background:var(--red);}
 .sw-tpl-body{padding:8px 10px;flex:1;}
 .sw-tpl-site{font-size:10px;font-weight:500;color:var(--text3);display:block;margin-bottom:1px;}
 .sw-tpl.sel-de .sw-tpl-site,.sw-tpl.sel-re .sw-tpl-site{color:inherit;opacity:.75;}
@@ -715,8 +715,8 @@ select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;pa
 .sw-save-btn{padding:8px 14px;border-radius:7px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;white-space:nowrap;}
 .sw-save-btn:hover{border-color:var(--border2);color:var(--text);}
 .sw-result-hdr{font-size:12px;font-weight:700;text-align:center;padding:5px 10px;border-radius:5px;margin-bottom:10px;letter-spacing:.03em;}
-.sw-result-hdr.de{background:var(--rbg);color:var(--red);}
-.sw-result-hdr.re{background:var(--gbg);color:var(--green);}
+.sw-result-hdr.de{background:var(--gbg);color:var(--green);}
+.sw-result-hdr.re{background:var(--rbg);color:var(--red);}
 .sw-result-body{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:var(--m);font-size:12.5px;line-height:1.85;color:var(--text);min-height:100px;white-space:pre-wrap;word-break:break-word;}
 .sw-empty{color:var(--text3);font-size:12px;text-align:center;padding:28px 0;font-family:var(--f);}
 .sw-hist-list{display:flex;flex-direction:column;gap:4px;max-height:240px;overflow-y:auto;margin-top:6px;}
@@ -3002,6 +3002,239 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .hfc-age.aging{color:var(--amber);background:var(--abg);}
 .hfc-age.stale{color:var(--red);background:var(--rbg);}
 .hfc-age:hover{filter:brightness(.95);}
+
+.std-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1px;background:var(--border);}
+.std-row{background:var(--bg2);padding:8px 14px;display:flex;align-items:baseline;gap:11px;}
+.std-p{font-family:var(--m);font-size:12px;font-weight:700;color:var(--blue);min-width:34px;}
+.std-n{font-size:12.5px;color:var(--text2);}
+
+.std-row{cursor:pointer;}
+.std-row:hover{background:var(--bg3);}
+.std-row.on{background:var(--bbg);box-shadow:inset 3px 0 0 var(--blue);}
+.std-c{margin-left:auto;font-family:var(--m);font-size:9.5px;color:var(--text3);
+  background:var(--bg3);border-radius:8px;padding:0 6px;}
+#std-detail{border-top:1px solid var(--border);padding:12px 16px 14px;background:var(--bg3);}
+.std-d-h{font-family:var(--m);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--blue);font-weight:700;margin-bottom:8px;}
+.std-d-row{display:flex;gap:12px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
+.std-d-row:last-of-type{border-bottom:0;}
+.std-d-n{font-family:var(--m);font-size:11.5px;font-weight:700;color:var(--text);min-width:64px;}
+.std-d-t{color:var(--text2);line-height:1.5;}
+.std-d-foot{font-size:11px;color:var(--text3);margin-top:9px;line-height:1.5;}
+.std-d-foot a{color:var(--blue);}
+.std-d-more{display:block;font-size:11.5px;color:var(--text3);line-height:1.55;margin-top:3px;}
+
+.roc-widget{margin-bottom:18px;border:1px solid var(--border);border-radius:var(--rl);
+  background:var(--bg2);overflow:hidden;box-shadow:var(--shs);}
+.roc-w-hdr{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);}
+.roc-w-t{font-size:13px;font-weight:700;color:var(--text);}
+.roc-w-s{font-size:11px;color:var(--text3);font-family:var(--m);}
+.vl-step{display:flex;gap:11px;padding:8px 0;border-bottom:1px solid var(--border);opacity:.35;transition:opacity .15s;}
+.vl-step:last-of-type{border-bottom:0;}
+.vl-step.on{opacity:1;}
+.vl-n{font-family:var(--m);font-size:11px;font-weight:700;color:var(--text3);width:18px;flex-shrink:0;}
+.vl-b{display:flex;flex-direction:column;gap:2px;}
+.vl-b strong{font-size:12.5px;color:var(--text);}
+.vl-b span{font-size:11.5px;color:var(--text3);line-height:1.5;}
+.vl-foot{margin-top:10px;padding-top:9px;border-top:1px solid var(--border);
+  font-size:11.5px;color:var(--text3);font-style:italic;}
+.dt-row{display:flex;align-items:center;gap:12px;margin-bottom:4px;}
+.dt-lbl{width:92px;flex-shrink:0;font-family:var(--m);font-size:11px;font-weight:700;color:var(--text);}
+.dt-lbl span{display:block;font-weight:400;font-size:9.5px;color:var(--text3);}
+.dt-track{flex:1;height:30px;position:relative;border-radius:5px;background:var(--bg3);
+  border:1px solid var(--border);}
+.dt-track.ads{border-left:3px solid #d98c1f;}
+.dt-track.agc{border-left:3px solid #3b7cc4;}
+.dt-tick{position:absolute;top:0;bottom:0;width:2px;background:#d98c1f;}
+.dt-tick span{position:absolute;top:-1px;left:4px;font-family:var(--m);font-size:9px;color:var(--text3);}
+.dt-blip{position:absolute;top:40%;width:1px;height:20%;background:#3b7cc4;opacity:.75;}
+.dt-note{font-size:11.5px;color:var(--text2);line-height:1.55;margin:0 0 14px 104px;}
+.dt-sum{margin-top:4px;padding-top:10px;border-top:1px solid var(--border);
+  font-size:12.5px;font-weight:600;color:var(--text);text-align:center;}
+.at-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.at-col{border-radius:8px;padding:10px 12px;}
+.at-col.drop{background:var(--rbg);border-left:3px solid var(--red);}
+.at-col.work{background:var(--bg3);border-left:3px solid var(--border2);}
+.at-h{font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.at-h span{display:block;font-weight:400;font-size:10.5px;color:var(--text3);}
+.at-item{padding:6px 0;border-top:1px solid var(--border);}
+.at-item strong{display:block;font-size:12px;color:var(--text);}
+.at-item span{font-size:11px;color:var(--text3);line-height:1.45;}
+@media(max-width:700px){.at-grid{grid-template-columns:1fr;}.dt-note{margin-left:0;}}
+
+.sl-track{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:4px;}
+.sl-stage{display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 12px;
+  border-radius:8px;cursor:pointer;min-width:94px;flex-shrink:0;border:1px solid transparent;}
+.sl-stage:hover{background:var(--bg3);}
+.sl-stage.on{background:var(--bbg);border-color:var(--blue);}
+.sl-ico{font-size:17px;}
+.sl-name{font-size:11px;font-weight:600;color:var(--text);text-align:center;line-height:1.25;}
+.sl-n{font-family:var(--m);font-size:9px;color:var(--text3);background:var(--bg3);
+  border-radius:8px;padding:0 6px;}
+.sl-stage.on .sl-n{background:var(--bg2);color:var(--blue);}
+.sl-arrow{align-self:center;color:var(--border2);font-size:15px;flex-shrink:0;}
+.sl-detail{margin-top:12px;padding-top:11px;border-top:1px solid var(--border);}
+.sl-d-h{font-family:var(--m);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--blue);font-weight:700;margin-bottom:8px;}
+.sl-d-row{padding:6px 0;border-bottom:1px solid var(--border);}
+.sl-d-row:last-child{border-bottom:0;}
+.sl-d-row strong{display:block;font-size:12.5px;color:var(--text);}
+.sl-d-row span{font-size:11.5px;color:var(--text3);line-height:1.5;}
+
+.vb-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:12px;margin-top:14px;}
+.vb-card{border-radius:8px;padding:11px 13px;font-size:12px;color:var(--text2);line-height:1.55;}
+.vb-card.in{background:var(--gbg);border-left:3px solid var(--green);}
+.vb-card.out{background:var(--abg);border-left:3px solid var(--amber);}
+.vb-h{font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:5px;}
+.vb-note{display:block;margin-top:6px;font-size:11px;color:var(--text3);font-style:italic;}
+.dt-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 4px;}
+.dt-card{border-radius:8px;padding:10px 12px;font-size:11.5px;color:var(--text2);line-height:1.5;}
+.dt-card.ads{background:var(--abg);border-left:3px solid #d98c1f;}
+.dt-card.agc{background:var(--bbg);border-left:3px solid #2a6ba8;}
+.dt-c-h{font-family:var(--m);font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.at-banner{margin:-10px -12px 8px;padding:8px 12px;border-radius:8px 8px 0 0;font-size:12.5px;font-weight:700;color:#fff;}
+.at-banner.drop{background:var(--red);}
+.at-banner.work{background:var(--text3);}
+.at-banner span{display:block;font-weight:400;font-size:10.5px;opacity:.92;}
+.sl-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.sl-col-h{font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:7px;padding-bottom:6px;border-bottom:2px solid var(--border2);}
+.sl-col-h span{float:right;font-family:var(--m);font-size:9.5px;font-weight:400;color:var(--text3);}
+.sl-s{display:flex;gap:9px;padding:5px 0;font-size:12px;color:var(--text2);line-height:1.45;}
+.sl-s-n{font-family:var(--m);font-size:10px;font-weight:700;color:#fff;background:var(--text3);
+  border-radius:50%;width:16px;height:16px;line-height:16px;text-align:center;flex-shrink:0;margin-top:1px;}
+@media(max-width:700px){.vb-grid,.dt-cards,.sl-cols{grid-template-columns:1fr;}}
+
+.vb-sub{font-size:11.5px;color:var(--text3);margin-bottom:8px;}
+.vb-hit{cursor:pointer;}
+.vb-hit:hover{opacity:.75;}
+.vb-hit.on rect,.vb-hit.on circle{filter:drop-shadow(0 0 3px var(--green));}
+#vb-detail{margin-top:10px;padding:11px 14px;border-left:3px solid var(--green);
+  background:var(--gbg);border-radius:0 8px 8px 0;}
+.vb-d-h{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.vb-d-b{font-size:12.5px;color:var(--text2);line-height:1.6;}
+.dt-why{margin:12px 0 4px;padding:10px 13px;background:var(--bg3);border-radius:8px;
+  font-size:11.5px;color:var(--text2);line-height:1.6;display:flex;flex-direction:column;gap:4px;}
+.dt-why strong{color:var(--text);}
+
+.ss-bar{display:flex;align-items:center;gap:10px;background:#1d2733;color:#e8eaed;
+  padding:7px 12px;border-radius:7px 7px 0 0;font-family:var(--m);font-size:11px;}
+.ss-site{font-weight:700;letter-spacing:.04em;}
+.ss-live{margin-left:auto;color:#5fd38d;font-size:9.5px;}
+.ss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(146px,1fr));gap:1px;
+  background:#2b3644;border:1px solid #2b3644;border-radius:0 0 7px 7px;overflow:hidden;}
+.ss-tile{background:#121a24;padding:9px 11px;display:flex;flex-direction:column;gap:3px;cursor:pointer;}
+.ss-tile:hover{background:#1a2533;}
+.ss-tile.sel{outline:2px solid #5aa9ff;outline-offset:-2px;}
+.ss-k{font-family:var(--m);font-size:9.5px;color:#8b98a8;letter-spacing:.04em;text-transform:uppercase;}
+.ss-v{font-family:var(--m);font-size:15px;font-weight:700;color:#d7dde5;}
+.ss-tile.bad .ss-v{color:#ff7b6b;}
+.ss-tile.bad{box-shadow:inset 3px 0 0 #ff7b6b;}
+.ss-tile.ok .ss-v{color:#7fd79a;}
+.ss-detail{margin-top:11px;padding:11px 14px;border-left:3px solid var(--blue);
+  background:var(--bbg);border-radius:0 8px 8px 0;}
+.ss-d-h{font-family:var(--m);font-size:11.5px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.ss-d-b{font-size:12.5px;color:var(--text2);line-height:1.6;}
+.ss-answer{margin-top:12px;}
+.ss-reveal{background:var(--bg3);border:1px solid var(--border2);color:var(--text2);
+  border-radius:7px;padding:7px 14px;font-family:var(--f);font-size:12.5px;cursor:pointer;}
+.ss-reveal:hover{border-color:var(--green);color:var(--green);}
+.ss-ans{padding:12px 14px;border-left:3px solid var(--green);background:var(--gbg);
+  border-radius:0 8px 8px 0;font-size:12.5px;color:var(--text2);line-height:1.65;}
+
+.roc-widget{border:1px solid var(--border);border-top:3px solid var(--blue);}
+.roc-w-hdr{cursor:pointer;user-select:none;background:var(--bg3);}
+.roc-w-hdr:hover{filter:brightness(.98);}
+.roc-w-eyebrow{font-family:var(--m);font-size:8.5px;font-weight:700;letter-spacing:.12em;
+  color:var(--blue);background:var(--bbg);border-radius:4px;padding:2px 6px;}
+.roc-w-car{margin-left:auto;font-size:10px;color:var(--text3);}
+.roc-widget.collapsed > div:not(.roc-w-hdr){display:none;}
+.roc-widget.collapsed{border-top-color:var(--border2);}
+.roc-practice{display:flex;align-items:center;gap:10px;margin:22px 0 10px;}
+.roc-practice::after{content:'';flex:1;height:1px;background:var(--border);}
+.roc-practice span{font-family:var(--m);font-size:9px;font-weight:700;letter-spacing:.14em;
+  color:var(--text3);}
+
+.roc-section{border-top:3px solid var(--text3);}
+.roc-w-eyebrow.prac{color:var(--text3);background:var(--bg3);}
+
+.fc-alert-strip{margin-top:16px;padding-top:0;border-top:1px solid var(--border);}
+.fc-alert-head{display:flex;align-items:center;gap:9px;padding:10px 2px 7px;
+  font-family:var(--m);font-size:9.5px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text3);}
+.fc-alert-n{margin-left:auto;font-weight:400;letter-spacing:.04em;text-transform:none;}
+
+.nav-tz-item{position:relative;}
+
+.nav-tz-pop{position:fixed;z-index:9999;display:none;min-width:212px;max-width:300px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:9px;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);padding:9px 11px;}
+.nav-tz-pop-h{display:flex;align-items:center;gap:8px;font-family:var(--m);font-size:10px;
+  font-weight:700;color:var(--text);padding-bottom:6px;margin-bottom:6px;
+  border-bottom:1px solid var(--border);white-space:nowrap;}
+.nav-tz-pop-h span{margin-left:auto;font-weight:400;color:var(--text3);}
+.nav-tz-pop-l{display:flex;flex-wrap:wrap;gap:4px;}
+.nav-tz-pop-l span{font-family:var(--m);font-size:10px;color:var(--text2);
+  background:var(--bg3);border-radius:4px;padding:1px 6px;}
+.nav-tz-pop-e{font-size:11px;color:var(--text3);}
+.nav-tz-pop-f{margin-top:7px;padding-top:6px;border-top:1px solid var(--border);
+  font-size:10px;color:var(--text3);}
+@media(max-width:760px){.nav-tz-pop{display:none!important;}}
+
+.sw-group{margin-bottom:13px;}
+.sw-group-h{font-family:var(--m);font-size:9px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text3);margin-bottom:7px;}
+.sw-grid{display:grid;grid-template-columns:1fr;gap:6px;}
+.sw-card{border:1px solid var(--border);border-radius:8px;background:var(--bg2);
+  padding:7px 9px;display:flex;flex-direction:column;gap:5px;}
+.sw-card.solo{cursor:pointer;}
+.sw-card.solo:hover,.sw-card:hover{border-color:var(--border2);}
+.sw-card.sel{border-color:var(--text3);box-shadow:inset 0 0 0 1px var(--text3);}
+.sw-card.sel-de{border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green);}
+.sw-card.sel-re{border-color:var(--red);box-shadow:inset 0 0 0 1px var(--red);}
+.sw-card-top{display:flex;align-items:center;gap:7px;}
+.sw-card-site{font-size:12px;font-weight:700;color:var(--text);flex:1;line-height:1.3;}
+.sw-card-sub{font-size:11px;color:var(--text3);margin-top:-3px;}
+.sw-card-pills{display:flex;gap:5px;}
+.sw-pill{flex:1;border:1px solid var(--border);background:var(--bg3);border-radius:5px;
+  padding:4px 6px;font-family:var(--f);font-size:10.5px;font-weight:600;color:var(--text2);
+  cursor:pointer;white-space:nowrap;}
+.sw-pill:hover{border-color:var(--border2);}
+.sw-pill.de.on{background:var(--gbg);border-color:var(--green);color:var(--green);}
+.sw-pill.re.on{background:var(--rbg);border-color:var(--red);color:var(--red);}
+.sw-card .sw-tpl-actions{opacity:0;}
+.sw-card:hover .sw-tpl-actions{opacity:1;}
+
+
+#curr-ind-body td.is-off{opacity:.3;}
+#curr-ind-body td.is-off .rbadge.off{background:transparent;border:0;color:var(--text3);
+  font-size:13px;letter-spacing:.1em;box-shadow:none;}
+#curr-ind-body tr.is-today{box-shadow:inset 3px 0 0 var(--green);}
+#curr-ind-body tr.is-today .wk-lbl{color:var(--green);font-weight:700;}
+#curr-ind-summary{font-size:12.5px;color:var(--text2);margin:4px 0 10px;display:flex;align-items:center;flex-wrap:wrap;gap:3px;}
+.ind-sum-n{font-family:var(--m);font-weight:700;color:var(--text);}
+.ind-sum-btn{margin-left:10px;background:var(--bg3);border:1px solid var(--border);
+  border-radius:6px;padding:3px 10px;font-family:var(--f);font-size:11.5px;
+  color:var(--text2);cursor:pointer;}
+.ind-sum-btn:hover{border-color:var(--border2);color:var(--text);}
+
+.curr-now{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;
+  padding:9px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);
+  font-size:13px;color:var(--text);box-shadow:var(--shs);}
+.cn-tag{font-family:var(--m);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text3);background:var(--bg3);border-radius:4px;padding:2px 7px;}
+.cn-tag.on{color:var(--green);background:var(--gbg);}
+.cn-names{font-weight:600;margin-right:6px;}
+.cn-me{margin-left:auto;font-size:12px;color:var(--text2);}
+.cn-me strong{color:var(--text);}
+
+.cn-lbl{font-family:var(--m);font-size:9px;font-weight:700;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--text3);margin-right:4px;}
+
+.as-duty-div{display:inline-block;width:1px;align-self:stretch;background:var(--border2);margin:0 4px;}
+.as-duty-sel{background:var(--bg2);border:1px solid var(--border);border-radius:7px;
+  padding:5px 9px;font-family:var(--m);font-size:11.5px;color:var(--text2);cursor:pointer;}
+.as-duty-sel:hover{border-color:var(--border2);}
+.as-duty-sel.on{background:var(--bbg);border-color:var(--blue);color:var(--blue);font-weight:700;}
 </style>
 </head>
 <body>
@@ -3049,7 +3282,6 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   </div>
   <button class="nav-tab" onclick="switchView('ops',this)">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this)">Log Builder</button>
-  <button class="nav-tab" id="nav-tab-chron" onclick="switchView('chron',this)">Passdown</button>
   <button class="nav-tab" onclick="switchView('schedule',this)">Schedule</button>
   <div class="nav-dropdown" id="navdd-site-conditions">
     <button class="nav-tab nav-dropdown-trigger" id="navdd-trigger-site-conditions" onclick="navDropdownToggle('site-conditions', event)" aria-haspopup="true">Site Conditions <span class="nav-dropdown-caret">▾</span></button>
@@ -3080,7 +3312,6 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   <button class="nav-tab" onclick="switchView('intel',this); toggleMobileMenu()">Weather</button>
   <button class="nav-tab" onclick="switchView('ops',this); toggleMobileMenu()">Toolbox</button>
   <button class="nav-tab" onclick="switchView('swbuilder',this); toggleMobileMenu()">Log Builder</button>
-  <button class="nav-tab" onclick="switchView('chron',this); toggleMobileMenu()">Passdown</button>
   <button class="nav-tab" onclick="navDropdownSelectSchedule('curr'); toggleMobileMenu()">Schedule</button>
   <button class="nav-tab" onclick="switchView('timezones',this); toggleMobileMenu()">Timezones</button>
   <button class="nav-tab" onclick="switchView('sitemap',this); toggleMobileMenu()">Map</button>
@@ -3192,8 +3423,8 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <button class="tmr-seg-btn" data-hfc="temp" onclick="hfcTab('temp',this)">Temp</button>
     </span>
   </div>
-  <div class="fc-alert-strip" style="display:none;"></div>
   <div class="fc-grid" id="hfc-grid"></div>
+    <div class="fc-alert-strip" style="display:none;"></div>
 </div>
 
 <div class="view" id="view-scans">
@@ -3619,22 +3850,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     </div>
   </div>
 
-  <!-- Fleet Snapshot -->
-  <div class="wx-fleet-section">
-    <div class="wx-fleet-hdr">
-      <div>
-        <div class="wx-fleet-title">🌐 Fleet Snapshot</div>
-        <div style="font-size:12px;color:var(--text3);margin-top:2px;">Pin up to 12 sites · blue tag ≤ 4 m/s (low wind) · amber tag ≥ 13 m/s (high wind)</div>
-      </div>
-      <button class="ibtn ibtn-p" onclick="wxFetchAll()">↻ Refresh All</button>
-    </div>
-    <div class="wx-pin-row">
-      <input id="wx-pin-inp" placeholder="Search site to pin…" oninput="wxPinFilter()" autocomplete="off">
-      <div class="wx-pin-matches" id="wx-pin-matches"></div>
-    </div>
-    <div class="wx-pins-list" id="wx-pins-list"></div>
-    <div class="wx-fleet-grid" id="wx-fleet-grid"></div>
-  </div>
+  
   <!-- FLEET CONDITIONS — every site in one batched call. Open-Meteo takes
        comma-separated coordinate lists, so 33 sites costs one request, fewer
        than the pinned snapshot's one-per-site. -->
@@ -3651,8 +3867,8 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       </div>
       <button class="ibtn ibtn-p" onclick="fcFetch()">↻ Refresh</button>
     </div>
-    <div class="fc-alert-strip" style="display:none;"></div>
     <div class="fc-grid" id="fc-grid"></div>
+    <div class="fc-alert-strip" style="display:none;"></div>
     <div class="fc-foot" id="fc-foot"></div>
   </div>
 
@@ -3849,8 +4065,12 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <button class="as-type-btn bess" onclick="asSetTypeFilter('BESS',this)">🔋 BESS</button>
     <button class="as-type-btn solar" onclick="asSetTypeFilter('Solar',this)">☀️ Solar</button>
     <button class="as-type-btn wind" onclick="asSetTypeFilter('Wind',this)">💨 Wind</button>
+    <span class="as-duty-div"></span>
+    <select id="as-duty-sel" class="as-duty-sel" onchange="asSetDuty(this.value)"><option value="">Responsibility …</option><option value="D1">D1</option><option value="D2">D2</option><option value="D3">D3</option><option value="N1">N1</option><option value="N2">N2</option></select>
   </div>
-  <div id="as-form-wrap"></div>
+  <div id="as-form-wrap">
+    
+  </div>
 </div>
 
 <!-- NERC STUDY -->
@@ -4071,6 +4291,11 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <span class="roc-topic-name">SCADA / Alarms</span>
         <span class="roc-topic-count" id="roc-tc-scada"></span>
       </button>
+      <button class="roc-topic-card" data-filter="procedures" onclick="rocSetFilter('procedures',this)">
+        <span class="roc-topic-icon">⚙️</span>
+        <span class="roc-topic-name">Procedures</span>
+        <span class="roc-topic-count" id="roc-tc-procedures"></span>
+      </button>
       <button class="roc-topic-card" data-filter="operations" onclick="rocSetFilter('operations',this)">
         <span class="roc-topic-icon">🔧</span>
         <span class="roc-topic-name">Operations</span>
@@ -4086,11 +4311,6 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <span class="roc-topic-name">Plant Architecture</span>
         <span class="roc-topic-count" id="roc-tc-plant"></span>
       </button>
-      <button class="roc-topic-card" data-filter="rapid" onclick="rocSetFilter('rapid',this)" style="border-color:var(--amber);">
-        <span class="roc-topic-icon">⚡</span>
-        <span class="roc-topic-name" style="color:var(--amber);">Rapid Fire</span>
-        <span class="roc-topic-count" id="roc-tc-rapid"></span>
-      </button>
     </div>
 
     <div class="roc-stats-compact">
@@ -4104,12 +4324,65 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <!-- ── SINGLE LINE DIAGRAM WIDGET ──────────────────────────────────── -->
     <!-- DIAGRAM PICKER — three views of the same plant, one persistent header.
          Each was its own collapsible block; as a set they are a section. -->
-    <div id="dia-picker" style="display:none;margin-bottom:18px;">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:9px;">
-        <span style="font-size:15px;">📐</span>
-        <span style="font-size:13px;font-weight:700;color:var(--text);">Diagrams</span>
-        <span style="font-size:11px;color:var(--text3);font-family:var(--m);">pick a view</span>
+
+    <!-- NERC STANDARD PREFIXES — the three letters in front of every standard
+         number. Reading BAL-003 or VAR-002 in a document is a lot easier when
+         you know what the family is. -->
+
+
+    <!-- DAILY CHECKLIST — from the playbook, the only part of the shift that
+         is actually fixed. -->
+    <!-- SCADA SCENARIOS — a mock screen with the tells already on it. The
+         judgement questions ask what you would check; this shows what it
+         looks like when you are checking. -->
+    <div id="scadasim" class="roc-widget" style="display:none;">
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">🖥️</span>
+        <span class="roc-w-t">What Does It Look Like?</span>
+        <span class="roc-w-s">four screens · tap anything that looks wrong</span><span class="roc-w-car">▾</span></div>
+      <div style="padding:14px 16px;">
+        <div class="tmr-seg" style="margin-bottom:12px;" id="ss-tabs"></div>
+        <div id="ss-screen"></div>
+        <div id="ss-detail" class="ss-detail" style="display:none;"></div>
+        <div id="ss-answer" class="ss-answer"></div>
       </div>
+    </div>
+
+    <div id="shiftline" class="roc-widget" style="display:none;">
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">🕒</span>
+        <span class="roc-w-t">The Daily Checklist</span>
+        <span class="roc-w-s">as written in the playbook</span><span class="roc-w-car">▾</span></div>
+      <div style="padding:14px 16px;" id="sl-body"></div>
+    </div>
+
+    <div id="vladder" class="roc-widget" style="display:none;">
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">⚡</span>
+        <span class="roc-w-t">The Voltage Band</span>
+        <span class="roc-w-s">one answer when you leave it</span><span class="roc-w-car">▾</span></div>
+      <div style="padding:16px;" id="vb-body"></div>
+    </div>
+
+    <!-- DISPATCH TIMELINE -->
+    <div id="dtimeline" class="roc-widget" style="display:none;">
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">📡</span>
+        <span class="roc-w-t">ADS vs AGC on the Clock</span>
+        <span class="roc-w-s">same 15 minutes, two very different signals</span><span class="roc-w-car">▾</span></div>
+      <div style="padding:14px 16px;" id="dt-body"></div>
+    </div>
+
+    <!-- ALARM TRIAGE -->
+    <div id="atriage" class="roc-widget" style="display:none;">
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">🚨</span>
+        <span class="roc-w-t">Alarm Triage</span>
+        <span class="roc-w-s">none of these is a no-action alarm</span><span class="roc-w-car">▾</span></div>
+      <div style="padding:14px 16px;" id="at-body"></div>
+    </div>
+    <div id="stdref" class="roc-widget" style="display:none;">
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">📘</span><span class="roc-w-t">NERC Standard Prefixes</span><span class="roc-w-s">tap a family for its standards</span><span class="roc-w-car">▾</span></div>
+      <div class="std-grid" id="std-grid"></div>
+      <div id="std-detail" style="display:none;"></div>
+    </div>
+    <div id="dia-picker" class="roc-widget" style="display:none;">
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">📐</span><span class="roc-w-t">Diagrams</span><span class="roc-w-s">pick a view</span><span class="roc-w-car">▾</span></div>
       <div class="tmr-seg" style="margin-bottom:0;">
         <button class="tmr-seg-btn active" data-dia="build" onclick="diaTab('build',this)">Energy build-up</button>
         <button class="tmr-seg-btn" data-dia="sld"   onclick="diaTab('sld',this)">Single line</button>
@@ -4242,15 +4515,10 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       </div>
     </div>
     <!-- ── GRID HIERARCHY WIDGET ─────────────────────────────────────────── -->
-    <div id="gh-widget-container" style="margin-bottom:18px;border:1px solid var(--border);border-radius:var(--rl);background:var(--bg2);overflow:hidden;box-shadow:var(--shs);">
-      <div style="padding:12px 16px;border-bottom:1px solid var(--border);" id="gh-widget-hdr">
-        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;" onclick="ghToggleWidget()">
-          <span style="font-size:15px;">🗺️</span>
-          <span style="font-size:13px;font-weight:700;color:var(--text);">Grid Entity Hierarchy</span>
-          <span style="font-size:11px;color:var(--text3);font-family:var(--m);">GOP → NERC · Tap an entity</span>
-          <span id="gh-chevron" style="margin-left:auto;font-size:11px;color:var(--text3);">▾</span>
-        </div>
-        <div id="gh-widget-body">
+    <div id="gh-widget-container" class="roc-widget">
+      <div id="gh-widget-hdr">
+        <div class="roc-w-hdr" onclick="ghToggleWidget()"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">🗺️</span><span class="roc-w-t">Grid Entity Hierarchy</span><span class="roc-w-s">GOP → NERC · tap an entity</span><span id="gh-chevron" class="roc-w-car">▾</span></div>
+        <div id="gh-widget-body" style="padding:14px 16px;">
           <div class="gh-wrap">
             <div class="tmr-seg" style="margin-bottom:12px;"><button class="tmr-seg-btn active" onclick="ghTab(&quot;hierarchy&quot;,this)">Chain of authority</button><button class="tmr-seg-btn" onclick="ghTab(&quot;chains&quot;,this)">Reliability vs commercial</button></div>
 
@@ -4463,34 +4731,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 </div>
 
 <!-- SITE HISTORY (manager report) ────────────────────────────────────────── -->
-<div class="view" id="view-sitehistory">
-  <button class="tbtn" onclick="switchView('chron', null)" style="margin-bottom:14px;">&larr; Back to ROC Passdown</button>
-  <div class="page-header">
-    <div>
-      <div class="page-title">Site history</div>
-      <div class="page-subtitle">Every status change, timestamped — pulled straight from the board, not a separate log</div>
-    </div>
-  </div>
 
-  <div class="sh-filters">
-    <div class="sh-field">
-      <label>From</label>
-      <input type="date" id="sh-from">
-    </div>
-    <div class="sh-field">
-      <label>To</label>
-      <input type="date" id="sh-to">
-    </div>
-    <div class="sh-field">
-      <label>Site</label>
-      <select id="sh-site"><option value="">All sites</option></select>
-    </div>
-    <button class="tbtn" onclick="shRunQuery()">Run report</button>
-    <button class="tbtn" onclick="shDownloadExcel()">↓ Download as Excel</button>
-  </div>
-
-  <div id="sh-results"></div>
-</div>
 
 <!-- Log BUILDER ─────────────────────────────────────────────────────────────── -->
 <div class="view" id="view-swbuilder">
@@ -4508,13 +4749,20 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <div id="sw-tpls-list"></div>
         <button class="sw-new-tpl-btn" onclick="swOpenNewTpl()">＋ New template</button>
       </div>
+
       <div class="sw-history-box">
         <div class="sw-history-header">
           <div class="sw-history-title">Recent Entries</div>
           <button class="tbtn" style="font-size:11px;padding:2px 8px;" onclick="swClearHistory()">Clear</button>
         </div>
-        <div id="sw-hist-wrap"><div class="empty-state compact"><div class="empty-state-icon">🕓</div><div class="empty-state-title">No history yet</div><div class="empty-state-sub">Generated logs will appear here.</div></div></div>
+        
       </div>
+      <div id="sw-hist-wrap"><div class="empty-state compact"><div class="empty-state-icon">🕓</div><div class="empty-state-title">No history yet</div><div class="empty-state-sub">Generated logs will appear here.</div></div></div>
+
+      
+
+      
+      
     </div>
 
     <!-- RIGHT: Fields + Output -->
@@ -4556,25 +4804,11 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     </div>
 
   </div>
+  
 </div>
 
 <!-- HANDOFF ─────────────────────────────────────────────────────────────── -->
-<div class="view" id="view-chron">
 
-  <div class="page-header">
-    <div>
-      <div class="page-title">ROC Passdown</div>
-      <div class="page-subtitle">Everything the next operator needs to know, site by site</div>
-    </div>
-    <div class="page-header-actions">
-      <button class="tbtn" title="Copy current passdown as text — paste into Teams" onclick="copyRocPassdownText()" style="font-size:11px;color:var(--text3);"><i class="ti ti-copy" aria-hidden="true"></i> Copy</button>
-      <button class="tbtn" onclick="switchView('sitehistory',null)" style="font-size:11px;color:var(--text3);">History</button>
-    </div>
-  </div>
-
-  <div id="fleet-overview-wrap"></div>
-
-</div>
 
 <!-- SCHEDULE COMPARE ───────────────────────────────────────────────────────── -->
 <div class="view" id="view-schedule">
@@ -4597,12 +4831,12 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 
   
 
+  <div id="curr-now" class="curr-now"></div>
   <!-- Date controls -->
   <div class="start-date-control" id="split-date-ctrl" style="justify-content:flex-start;margin-bottom:14px;">
-    <label class="start-date-lbl">Schedule start</label>
-    <input type="date" id="start-date-input" onchange="onStartDateChange(this.value)">
-    <button class="this-week-btn" onclick="setStartToThisWeek()">This week</button>
+    <button class="this-week-btn" onclick="setStartToThisWeek()">← This week</button>
     <span class="week-indicator" id="week-indicator"></span>
+    <input type="date" id="start-date-input" style="display:none;" onchange="onStartDateChange(this.value)">
   </div>
   <div class="start-date-control" id="pit-date-ctrl" style="display:none;justify-content:flex-start;margin-bottom:14px;">
     <label class="start-date-lbl">Schedule start</label>
@@ -4611,10 +4845,9 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <span class="week-indicator" id="pit-day-indicator"></span>
   </div>
   <div class="start-date-control" id="curr-date-ctrl" style="display:none;justify-content:flex-start;margin-bottom:14px;">
-    <label class="start-date-lbl">Schedule start</label>
-    <input type="date" id="curr-date-input" onchange="applyCurrStart(this.value)">
-    <button class="this-week-btn" onclick="setCurrToThisWeek()">This week</button>
-    <span class="week-indicator" id="curr-day-indicator"></span>
+    <button class="this-week-btn" id="curr-jump-today" onclick="setCurrToThisWeek()" style="display:none;">Jump to today</button>
+    <span class="week-indicator" id="curr-day-indicator" style="display:none;"></span>
+    <input type="date" id="curr-date-input" style="display:none;" onchange="applyCurrStart(this.value)">
   </div>
 
 <div class="intro" id="split-intro">
@@ -4717,7 +4950,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <span class="lbadge n2">N2 · 6pm–6am</span>
       <span class="lbadge off">off</span>
     </div>
-    <div class="scroll-note">52 weeks · starting Aug 2, 2026</div>
+    <div class="scroll-note"></div>
     <div class="week-grid">
       <table>
         <thead>
@@ -4823,7 +5056,6 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <div class="tabs" id="curr-tabs">
       <button class="tab-btn curr-tab active" data-ctab="curr-calendar">Calendar</button>
       <button class="tab-btn curr-tab" data-ctab="curr-individual">Individual view</button>
-      <button class="tab-btn curr-tab" data-ctab="curr-crew">Crew by Day</button>
     </div>
 
     <!-- Reference · Individual -->
@@ -4836,8 +5068,9 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <span class="lbadge d1">Day &middot; 6am&ndash;6pm</span>
         <span class="lbadge n1">Night &middot; 6pm&ndash;6am</span>
       </div>
-      <div class="scroll-note" id="curr-ind-note">52 weeks &middot; your real schedule, same source as Who's on Shift</div>
+      <div class="scroll-note" id="curr-ind-note"><span id="curr-ind-summary"></span></div>
       <div class="week-grid">
+      <div id="curr-ind-summary"></div>
         <table>
           <thead><tr><th>Wk</th><th>Dates</th><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>
           <tbody id="curr-ind-body"><tr><td colspan="9" class="empty-state">Pick an operator above to see their full schedule.</td></tr></tbody>
@@ -4846,16 +5079,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     </div>
 
     <!-- Reference · Crew by Day -->
-    <div class="tab-panel" id="curr-crew">
-      <div class="crew-controls">
-        <button onclick="currNavDay(-1)">&#8592; Prev day</button>
-        <button onclick="currNavDay(1)">Next day &#8594;</button>
-        <input type="date" id="curr-crew-date" onchange="currCrewRender()">
-        <button onclick="currGoToday()" style="background:var(--blue-text);color:#fff;border-color:var(--blue-text);">Today</button>
-      </div>
-      <div class="scroll-note" id="curr-crew-label"></div>
-      <div id="curr-crew-card"></div>
-    </div>
+    
 
     <!-- Reference · Calendar -->
     <div class="tab-panel active" id="curr-calendar">
@@ -5315,7 +5539,6 @@ async function load() {
   asInit();
   swInit();
   clInit();
-  wxFleetInit();
   dmInit();
   // Restore escalation contacts
   const rows = document.querySelectorAll('#esc-tbody tr');
@@ -5332,7 +5555,7 @@ async function load() {
   // Toolbox, etc.) keeps that choice. After this one-time migration, normal
   // restoration behavior resumes — including going back to Scans if that's
   // where someone deliberately navigates.
-  const TAB_VIEWS = ['home','scans','asset','nerc','roc','intel','ops','swbuilder','chron','timezones','schedule','sitemap'];
+  const TAB_VIEWS = ['home','scans','asset','nerc','roc','intel','ops','swbuilder','timezones','schedule','sitemap'];
   let savedTab = 'home';
   try {
     const migrated = localStorage.getItem('rnwbl_home_migration_v1');
@@ -5395,8 +5618,67 @@ async function load() {
 
     item.appendChild(key);
     item.appendChild(time);
+
+    // Hover shows which sites sit in that zone — the question you actually
+    // have when glancing at a clock. Click opens the full Timezones page.
+    item.style.cursor = 'pointer';
+    item.addEventListener('mouseleave', () => {
+      const pop = document.getElementById('nav-tz-pop');
+      if (pop) pop.dataset.hide = '1';
+      setTimeout(() => { if (pop && pop.dataset.hide === '1') pop.style.display = 'none'; }, 120);
+    });
+    item.addEventListener('mouseenter', () => {
+      let pop = document.getElementById('nav-tz-pop');
+      if (!pop) {
+        pop = document.createElement('div');
+        pop.id = 'nav-tz-pop'; pop.className = 'nav-tz-pop';
+        pop.addEventListener('mouseenter', () => { pop.dataset.hide = ''; });
+        pop.addEventListener('mouseleave', () => { pop.style.display = 'none'; });
+        document.body.appendChild(pop);
+      }
+      pop.dataset.hide = '';
+      const r = item.getBoundingClientRect();
+      pop.style.top = (r.bottom + 7) + 'px';
+      pop.style.left = Math.max(8, Math.min(r.left - 40, window.innerWidth - 320)) + 'px';
+      pop.style.display = 'block';
+      {
+        let names = [];
+        try {
+          names = (typeof SITES !== 'undefined' ? SITES : [])
+            .filter(s => s.lat != null && s.tz === z.tz)
+            .map(s => s.name);
+          if (!names.length) names = navTzSitesFor(z.tz);
+        } catch (e) {}
+        names = [...new Set(names)].sort();
+        pop.innerHTML = '<div class="nav-tz-pop-h">' + z.key + ' \u00b7 ' + z.tz.split('/')[1].replace('_', ' ')
+          + '<span>' + names.length + ' site' + (names.length === 1 ? '' : 's') + '</span></div>'
+          + (names.length
+              ? '<div class="nav-tz-pop-l">' + names.map(n => '<span>' + n + '</span>').join('') + '</div>'
+              : '<div class="nav-tz-pop-e">No sites in this zone</div>')
+          + '<div class="nav-tz-pop-f">Click for the full Timezones page</div>';
+      }
+    });
+    item.addEventListener('click', () => { try { switchView('timezones', null); } catch (e) {} });
+
     bar.appendChild(item);
   });
+
+  // Longitude is a good enough proxy when a site has no tz field, but the
+  // bands overlap — Arizona sits inside Mountain's longitudes while keeping
+  // its own time. Assign each site to exactly one zone, Arizona first.
+  function navTzZoneOf(s){
+    if (s.lng == null || s.lat == null) return null;
+    // Arizona: roughly the state box, and it does not observe DST
+    if (s.lng >= -115 && s.lng < -109 && s.lat >= 31 && s.lat < 37.1) return 'America/Phoenix';
+    if (s.lng < -114.5) return 'America/Los_Angeles';
+    if (s.lng < -102)   return 'America/Denver';
+    if (s.lng < -87)    return 'America/Chicago';
+    return 'America/New_York';
+  }
+  function navTzSitesFor(tz){
+    if (typeof SITES === 'undefined') return [];
+    return SITES.filter(s => navTzZoneOf(s) === tz).map(s => s.name);
+  }
 
   function tickNavTz() {
     const now = new Date();
@@ -5455,6 +5737,7 @@ function ltToggle(){
 function ltInitOnce(){ try { ltRender(); } catch(e) {} }
 
 function switchView(v, el) {
+  if (arguments[0] === 'intel') setTimeout(()=>{ try{ alertInit(); }catch(e){} }, 80);
   if (arguments[0] === 'home') setTimeout(()=>{ try{ hfcInit(); }catch(e){} }, 0);
   document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
@@ -5474,11 +5757,9 @@ function switchView(v, el) {
   if(v==='home') homeRenderGlance();
   if(v==='scans') { refreshScanStatuses(); renderSites(); }
   if(v==='playbooks') pbShowList();
-  if(v==='sitehistory') shInit();
+  if(v==='schedule') { try{ currNowRender(); currJumpVis(); }catch(e){} }
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
   if(v==='timezones') initTimeZones();
-  if(v==='chron') { renderFleetOverview(); fleetLoadDigest(); }
-  if(v==='intel') wxFleetInit();
   if(v==='roc') { rocLoad(); rocRender(); }
   if(v==='schedule') {
     // navDropdownSelectSchedule() sets this right before calling switchView so a specific
@@ -7242,44 +7523,7 @@ function fmtLightTs(ts){
   return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
 }
 
-function statusEntryRow(boardKey, e, labelEsc){
-  const editKey = boardKey+'|'+e.id;
-  if (siteStatusEntryEditingId === editKey) {
-    return `<div class="status-entry-row editing" data-entry-zone="${editKey}">
-      <textarea id="status-edit-${boardKey}-${e.id}">${esc(e.text)}</textarea>
-      <div class="board-status-editor-actions">
-        <button class="save" onclick="saveEditedStatusEntry('${boardKey}','${e.id}','${labelEsc}')">Save</button>
-      </div>
-    </div>`;
-  }
-  return `<div class="status-entry-row">
-    <div class="status-entry-main">
-      <span class="status-entry-text" title="Click to edit" onclick="event.stopPropagation();editSiteStatusEntry('${boardKey}','${e.id}')">${esc(e.text)}</span>
-      <span class="status-entry-ts">${fmtLightTs(e.ts)}</span>
-    </div>
-    <button class="status-entry-resolve" title="Resolve this note only" onclick="removeSiteStatusEntry('${boardKey}','${e.id}','${labelEsc}')">Resolve</button>
-  </div>`;
-}
 
-function fleetFlaggedCard(item){
-  const entries=siteStatusEntries(item.boardKey);
-  const adding=siteStatusEditingKey===item.boardKey;
-  const labelEsc=esc(item.label).replace(/'/g,"\\'");
-  const entryRows=entries.map(e=>statusEntryRow(item.boardKey,e,labelEsc)).join('');
-  return `<div class="board-flagged-card${item.pinned?' advisory':''}">
-    <div class="board-flagged-hdr">
-      <span class="board-site-name">${esc(item.label)}</span>
-      <button class="board-status-addbtn" title="Add a note" onclick="event.stopPropagation();toggleStatusEditor('${item.boardKey}')">+</button>
-    </div>
-    <div class="board-flagged-body">
-      ${entryRows}
-      ${adding ? `<div class="board-status-editor-zone" data-status-zone="${item.boardKey}">
-        <textarea id="status-new-${item.boardKey}" placeholder="Add a new note about ${esc(item.label)}..."></textarea>
-        <div class="board-status-editor-actions"><button class="save" onclick="addSiteStatusEntry('${item.boardKey}','${labelEsc}')">Add note</button></div>
-      </div>` : ''}
-    </div>
-  </div>`;
-}
 
 // Not real scan sites — always available in the search below, never part
 // of the Scans checklist (getBoardItems), only shown here on ROC Passdown.
@@ -7291,31 +7535,12 @@ const FLEET_EXTRA_ITEMS=[
   {boardKey:'x_ALLBESS', label:'All BESS', fleetCategory:'BESS', pinned:true}
 ];
 
-function fleetAllItems(){
-  return [...getBoardItems(), ...FLEET_EXTRA_ITEMS];
-}
 
 let fleetAddOpen = false;
 let fleetAddQuery = '';
 let fleetAddSelected = null; // boardKey once a site is chosen from search
 
-function toggleFleetAddBox(){
-  fleetAddOpen = !fleetAddOpen;
-  fleetAddQuery = '';
-  fleetAddSelected = null;
-  renderFleetOverview();
-  if (fleetAddOpen) {
-    const inp = document.getElementById('fleet-add-search');
-    if (inp) inp.focus();
-  }
-}
 
-function selectFleetAddSite(boardKey){
-  fleetAddSelected = boardKey;
-  renderFleetOverview();
-  const ta = document.getElementById('status-new-' + boardKey);
-  if (ta) ta.focus();
-}
 
 function fleetAddResultsHtml(matches){
   if (!matches.length) return `<div class="fleet-add-empty">No matches</div>`;
@@ -7336,30 +7561,6 @@ function renderFleetAddResultsOnly(){
   if (resultsEl) resultsEl.innerHTML = fleetAddResultsHtml(matches);
 }
 
-function renderFleetAddBox(){
-  if (!fleetAddOpen) {
-    return `<div class="fleet-add-box closed" onclick="event.stopPropagation();toggleFleetAddBox()">+ Add to handoff</div>`;
-  }
-  if (fleetAddSelected) {
-    const item = fleetAllItems().find(i => i.boardKey === fleetAddSelected);
-    if (item) {
-      const labelEsc = esc(item.label).replace(/'/g,"\\'");
-      return `<div class="fleet-add-box open" data-status-zone="fleet-add">
-        <div class="fleet-add-selected-hdr">
-          <span class="board-site-name">${esc(item.label)}</span>
-          <button class="board-status-addbtn" title="Choose a different site" onclick="event.stopPropagation();fleetAddSelected=null;renderFleetOverview();">↺</button>
-        </div>
-        <textarea id="status-new-${item.boardKey}" placeholder="What's going on at ${esc(item.label)}..."></textarea>
-        <div class="board-status-editor-actions"><button class="save" onclick="addSiteStatusEntry('${item.boardKey}','${labelEsc}')">Add note</button></div>
-      </div>`;
-    }
-  }
-  const matches = fleetAllItems().sort((a,b) => a.label.localeCompare(b.label)).slice(0, 8);
-  return `<div class="fleet-add-box open" data-status-zone="fleet-add">
-    <input id="fleet-add-search" type="text" placeholder="Search a site..." oninput="renderFleetAddResultsOnly()">
-    <div class="fleet-add-results" id="fleet-add-results">${fleetAddResultsHtml(matches)}</div>
-  </div>`;
-}
 
 // Same categorization already used on the Log Builder tab, reused here so
 // 20+ flagged cards land in stable, evenly-sized columns instead of one
@@ -7382,35 +7583,6 @@ function fleetItemCategory(item){
 }
 const FLEET_CAT_ORDER=['BESS','Solar','Wind','Other'];
 
-function renderFleetOverview(){
-  const wrap=document.getElementById('fleet-overview-wrap');
-  if(!wrap) return;
-  const flagged=fleetAllItems()
-    .filter(i=>siteStatusEntries(i.boardKey).length>0)
-    .sort((a,b)=>{
-      if(a.pinned && !b.pinned) return -1;
-      if(b.pinned && !a.pinned) return 1;
-      return a.label.localeCompare(b.label);
-    });
-
-  const byCat={};
-  flagged.forEach(item=>{
-    const cat=fleetItemCategory(item);
-    (byCat[cat]=byCat[cat]||[]).push(item);
-  });
-  const colsHtml=FLEET_CAT_ORDER.filter(cat=>byCat[cat]&&byCat[cat].length).map(cat=>`
-    <div class="board-flagged-col">
-      <div class="board-flagged-col-hdr">${cat} <span class="board-col-count">${byCat[cat].length}</span></div>
-      ${byCat[cat].map(fleetFlaggedCard).join('')}
-    </div>`).join('');
-
-  const flaggedHtml = flagged.length
-    ? `<div class="board-flagged-columns">${colsHtml}</div>`
-    : '';
-
-  wrap.innerHTML=`${renderFleetDigestBanner()}${renderFleetAddBox()}
-  ${flaggedHtml}`;
-}
 
 // Interim bridge while the team transitions to actually using this page —
 // reads whatever's currently flagged and formats it site-by-site, ready to
@@ -7445,50 +7617,11 @@ function copyRocPassdownText(){
 let fleetDigestRows = null; // null = nothing to show; array = has entries
 let fleetDigestOpen = false;
 
-async function fleetLoadDigest(){
-  const prevViewed = S.fleetLastViewed || 0;
-  S.fleetLastViewed = Date.now();
-  save();
-  fleetDigestOpen = false;
-  if (!prevViewed || !window.db) { fleetDigestRows=null; return; } // first-ever visit — nothing to compare against
-  try {
-    const snap = await window.db.collection('siteStatusHistory').where('ts','>',prevViewed).get();
-    const rows = snap.docs.map(d=>d.data()).sort((a,b)=>a.ts-b.ts);
-    fleetDigestRows = rows.length ? rows : null;
-  } catch(e) {
-    fleetDigestRows = null;
-  }
-  renderFleetOverview();
-}
 
-function toggleFleetDigestDetail(){
-  fleetDigestOpen = !fleetDigestOpen;
-  renderFleetOverview();
-}
 
 // Same brief line as before by default — the detail underneath only
 // exists in the DOM when actually opened, so the common case (glance and
 // move on) stays exactly as light as it already was.
-function renderFleetDigestBanner(){
-  if (!fleetDigestRows) return '';
-  const newSites = [...new Set(fleetDigestRows.filter(r=>r.action==='set').map(r=>r.siteLabel))];
-  const resolvedSites = [...new Set(fleetDigestRows.filter(r=>r.action==='clear').map(r=>r.siteLabel))];
-  const parts=[];
-  if (newSites.length) parts.push(`<span style="color:var(--amber);font-weight:600;">${newSites.length} new</span> (${esc(newSites.join(', '))})`);
-  if (resolvedSites.length) parts.push(`<span style="color:var(--green);font-weight:600;">${resolvedSites.length} resolved</span> (${esc(resolvedSites.join(', '))})`);
-  const detail = fleetDigestOpen ? `<div class="fleet-digest-detail">${fleetDigestRows.map(r=>`
-    <div class="fleet-digest-row">
-      <div class="fleet-digest-row-hdr">
-        <span class="fleet-digest-site">${esc(r.siteLabel||'')}</span>
-        <span class="${r.action==='clear'?'sh-action-clear':r.action==='edit'?'sh-action-edit':'sh-action-set'}">${r.action==='clear'?'Resolved':r.action==='edit'?'Updated':'Reported'}</span>
-      </div>
-      <div class="fleet-digest-text">${esc(r.text||'')}</div>
-    </div>`).join('')}</div>` : '';
-  return `<div class="fleet-digest">
-    <div>Since you were last here: ${parts.join(' · ')} <span class="fleet-digest-toggle" onclick="toggleFleetDigestDetail()">${fleetDigestOpen?'Hide details ▲':'See details ▼'}</span></div>
-    ${detail}
-  </div>`;
-}
 
 // Click anywhere outside an open note editor closes it — no Cancel/Close
 // button needed, one fewer thing on screen. Open-triggers (+ buttons, click
@@ -7508,7 +7641,6 @@ document.addEventListener('click', function(ev){
     const zone = document.querySelector('[data-status-zone="fleet-add"]');
     if (!zone || !zone.contains(ev.target)) { fleetAddOpen=false; fleetAddSelected=null; fleetAddQuery=''; changed=true; }
   }
-  if (changed) renderFleetOverview();
 });
 
 // ── SITE STATUS ───────────────────────────────────────────────────────────
@@ -7537,15 +7669,6 @@ document.addEventListener('click', function(ev){
 let siteStatuses = {}; // boardKey -> {siteLabel, entries:[{id,text,ts}], updatedAt}
 let siteStatusEditingKey = null;
 
-function initSiteStatusListener() {
-  if (!window.db) return;
-  window.db.collection('siteStatus').onSnapshot(snap => {
-    const next = {};
-    snap.forEach(doc => { next[doc.id] = doc.data(); });
-    siteStatuses = next;
-    renderFleetOverview();
-  }, err => fsListenerError('siteStatus', err));
-}
 
 // Defensive against older saved docs from before entries existed — treated
 // as having no open notes rather than crashing the render.
@@ -7554,89 +7677,10 @@ function siteStatusEntries(boardKey) {
   return (s && Array.isArray(s.entries)) ? s.entries : [];
 }
 
-function toggleStatusEditor(boardKey) {
-  siteStatusEditingKey = siteStatusEditingKey === boardKey ? null : boardKey;
-  renderFleetOverview();
-  if (siteStatusEditingKey) {
-    const ta = document.getElementById('status-new-' + boardKey);
-    if (ta) ta.focus();
-  }
-}
 
-async function addSiteStatusEntry(boardKey, label) {
-  if (!window.db) { showToast('Offline — open this file directly in a browser to update status'); return; }
-  const ta = document.getElementById('status-new-' + boardKey);
-  const text = ta ? ta.value.trim() : '';
-  if (!text) { showToast('Nothing to add'); return; }
-  const entry = { id: 'e' + Date.now(), text, ts: Date.now() };
-  try {
-    const entries = siteStatusEntries(boardKey).concat([entry]);
-    await window.db.collection('siteStatus').doc(boardKey).set({
-      siteLabel: label, entries, updatedAt: Date.now()
-    });
-    await window.db.collection('siteStatusHistory').add({
-      boardKey, siteLabel: label, action: 'set', text, ts: Date.now()
-    });
-    siteStatuses[boardKey] = { siteLabel: label, entries, updatedAt: Date.now() };
-    siteStatusEditingKey = null;
-    fleetAddOpen = false; fleetAddSelected = null; fleetAddQuery = '';
-    renderFleetOverview();
-    showToast('Note added');
-  } catch (e) { showToast('Could not add note: ' + e.message); }
-}
 
-function editSiteStatusEntry(boardKey, entryId) {
-  const key = boardKey + '|' + entryId;
-  siteStatusEntryEditingId = siteStatusEntryEditingId === key ? null : key;
-  renderFleetOverview();
-  if (siteStatusEntryEditingId) {
-    const ta = document.getElementById('status-edit-' + boardKey + '-' + entryId);
-    if (ta) ta.focus();
-  }
-}
 
-async function saveEditedStatusEntry(boardKey, entryId, label) {
-  if (!window.db) { showToast('Offline — open this file directly in a browser to update status'); return; }
-  const ta = document.getElementById('status-edit-' + boardKey + '-' + entryId);
-  const newText = ta ? ta.value.trim() : '';
-  if (!newText) { showToast('Nothing to save'); return; }
-  const entries = siteStatusEntries(boardKey);
-  const updated = entries.map(e => e.id === entryId ? { ...e, text: newText } : e);
-  try {
-    await window.db.collection('siteStatus').doc(boardKey).set({
-      siteLabel: label, entries: updated, updatedAt: Date.now()
-    });
-    await window.db.collection('siteStatusHistory').add({
-      boardKey, siteLabel: label, action: 'edit', text: newText, ts: Date.now()
-    });
-    siteStatuses[boardKey] = { siteLabel: label, entries: updated, updatedAt: Date.now() };
-    siteStatusEntryEditingId = null;
-    renderFleetOverview();
-    showToast('Note updated');
-  } catch (e) { showToast('Could not update note: ' + e.message); }
-}
 
-async function removeSiteStatusEntry(boardKey, entryId, label) {
-  if (!window.db) { showToast('Offline — open this file directly in a browser to update status'); return; }
-  const entries = siteStatusEntries(boardKey);
-  const entry = entries.find(e => e.id === entryId);
-  if (!entry) return;
-  const resolutionNote = prompt('Optional — what fixed it? (Leave blank to skip)') || '';
-  try {
-    const remaining = entries.filter(e => e.id !== entryId);
-    await window.db.collection('siteStatus').doc(boardKey).set({
-      siteLabel: label, entries: remaining, updatedAt: Date.now()
-    });
-    await window.db.collection('siteStatusHistory').add({
-      boardKey, siteLabel: label, action: 'clear',
-      text: resolutionNote ? (entry.text + ' — fixed by: ' + resolutionNote) : entry.text,
-      ts: Date.now()
-    });
-    siteStatuses[boardKey] = { siteLabel: label, entries: remaining, updatedAt: Date.now() };
-    renderFleetOverview();
-    showToast('Note resolved');
-  } catch (e) { showToast('Could not resolve note: ' + e.message); }
-}
 
 // ── SITE HISTORY (manager report) ───────────────────────────────────────────
 // Reads siteStatusHistory — never writes. A generated view of the same data
@@ -7660,63 +7704,12 @@ function shIsoDate(d){
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
 
-function shInit(){
-  const fromEl=document.getElementById('sh-from');
-  const toEl=document.getElementById('sh-to');
-  if(!fromEl.value){
-    const from=new Date(); from.setDate(from.getDate()-SH_DEFAULT_DAYS);
-    fromEl.value=shIsoDate(from);
-  }
-  if(!toEl.value) toEl.value=shIsoDate(new Date());
-  const siteSel=document.getElementById('sh-site');
-  if(siteSel && siteSel.options.length<=1){
-    const labels=[...new Set(getBoardItems().map(i=>i.label))].sort();
-    labels.forEach(l=>{
-      const opt=document.createElement('option'); opt.value=l; opt.textContent=l;
-      siteSel.appendChild(opt);
-    });
-  }
-  shRunQuery();
-}
 
 // Default window kept small on purpose — most of what's in this collection
 // right now is test data from building this feature. Widen with the date
 // pickers any time a real wider pull is actually needed.
 const SH_DEFAULT_DAYS = 7;
 
-async function shRunQuery(){
-  const resultsEl=document.getElementById('sh-results');
-  if(!resultsEl) return;
-  if(!window.db){
-    resultsEl.innerHTML='<div class="empty-state compact"><div class="empty-state-title">Offline</div><div class="empty-state-sub">Open this file directly in a browser to pull history.</div></div>';
-    return;
-  }
-  const fromEl=document.getElementById('sh-from');
-  const toEl=document.getElementById('sh-to');
-  const siteVal=document.getElementById('sh-site').value;
-  // An empty field never means "no lower bound" — that would silently pull
-  // the entire collection. Falls back to the same default window instead.
-  const fromTs = fromEl.value ? new Date(fromEl.value+'T00:00:00').getTime() : (Date.now() - SH_DEFAULT_DAYS*24*60*60*1000);
-  const toTs = toEl.value ? new Date(toEl.value+'T23:59:59').getTime() : Date.now();
-  // Whatever actually gets queried gets written back into the visible
-  // fields — the boxes on screen can never silently disagree with the data
-  // below them, regardless of how this got triggered.
-  fromEl.value = shIsoDate(new Date(fromTs));
-  toEl.value = shIsoDate(new Date(toTs));
-  resultsEl.innerHTML='<div class="empty-state compact"><div class="empty-state-title">Loading…</div></div>';
-  try{
-    const snap=await window.db.collection('siteStatusHistory')
-      .where('ts','>=',fromTs).where('ts','<=',toTs).orderBy('ts','desc').get();
-    let rows=snap.docs.map(d=>d.data());
-    if(siteVal) rows=rows.filter(r=>r.siteLabel===siteVal);
-    shLastRows=rows;
-    shFilterText='';
-    const qEl=document.getElementById('sh-quickfilter'); if(qEl) qEl.value='';
-    shRenderTable();
-  }catch(e){
-    resultsEl.innerHTML=`<div class="empty-state compact"><div class="empty-state-title">Could not load history</div><div class="empty-state-sub">${esc(e.message)}</div></div>`;
-  }
-}
 
 function shSetSort(key){
   if (shSortKey===key) { shSortDir = shSortDir==='asc' ? 'desc' : 'asc'; }
@@ -7798,24 +7791,6 @@ function shRenderTableContainer(){
   </tbody></table>`;
 }
 
-function shDownloadExcel(){
-  const rows=shGetDisplayRows();
-  if(!rows.length){ showToast('Run a report first'); return; }
-  if(typeof XLSX==='undefined'){ showToast('Excel library not loaded'); return; }
-  const data=rows.map(r=>({
-    Site: r.siteLabel||'',
-    When: new Date(r.ts).toLocaleString(),
-    Action: r.action==='clear'?'Resolved':r.action==='edit'?'Updated':'Reported',
-    Text: r.text||''
-  }));
-  const ws=XLSX.utils.json_to_sheet(data);
-  ws['!cols']=[{wch:12},{wch:20},{wch:10},{wch:60}];
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,ws,'Site history');
-  const from=document.getElementById('sh-from').value||'start';
-  const to=document.getElementById('sh-to').value||'end';
-  XLSX.writeFile(wb,`site-history_${from}_to_${to}.xlsx`);
-}
 
 function saveSite(){
   const name=document.getElementById('site-name').value.trim(); if(!name)return;
@@ -8045,35 +8020,6 @@ const WX_LOCS = [
   {name:'PRSE1', location:'Hardwick, MN',      lat:43.7742, lng:-96.1975,   notes:'NERC Wind | 200MW'},
 ];
 
-function wxFilter(){
-  const q=document.getElementById('wx-site-inp').value.toLowerCase().trim();
-  const box=document.getElementById('wx-matches');
-  if(!q){ box.style.display='none'; return; }
-  const siteHits=SITES.filter(s=>spSiteMatchesQuery(s.name,q)||(s.location||'').toLowerCase().includes(q));
-  // Keep the actual WX_LOCS index so wxPickWx resolves correctly
-  const wxHitsWithIdx=WX_LOCS.map((s,i)=>({...s,_wxIdx:i}))
-    .filter(s=>spSiteMatchesQuery(s.name,q)||(s.location||'').toLowerCase().includes(q));
-  const allHits=[
-    ...siteHits.map(s=>({...s,_src:'site'})),
-    ...wxHitsWithIdx.map(s=>({...s,_src:'wx'}))
-  ].slice(0,8);
-  if(!allHits.length){ box.style.display='none'; return; }
-  box.style.display='block';
-  box.innerHTML=allHits.map(s=>{
-    const onclick=s._src==='site'?`wxPick(${s.id})`:`wxPickWx(${s._wxIdx})`;
-    return `<div class="wx-match-item" onclick="${onclick}">
-    <strong>${esc(s.name)}</strong>${s.location?' — <span style="color:var(--text3);font-size:11px;">'+esc(s.location)+'</span>':''}
-    </div>`;
-  }).join('');
-}
-function wxCloseMatches(){ document.getElementById('wx-matches').style.display='none'; }
-function wxPick(id){
-  const s=SITES.find(x=>x.id===id); if(!s)return;
-  document.getElementById('wx-site-inp').value=s.name;
-  document.getElementById('wx-location').value=s.location||s.name;
-  wxCloseMatches();
-  document.getElementById('wx-location').focus();
-}
 function wxPickWx(i){
   const s=WX_LOCS[i]; if(!s)return;
   document.getElementById('wx-site-inp').value=s.name;
@@ -9087,47 +9033,6 @@ function wxResolveCoords(name) {
   return s && s.lat != null && s.lng != null ? { lat: s.lat, lng: s.lng } : null;
 }
 
-function wxFleetInit() {
-  if (!wxFleetInited) {
-    try { wxPins = JSON.parse(localStorage.getItem(WX_PINS_KEY) || '[]'); } catch(e) { wxPins = []; }
-    // Wind fleet is the standard default set, in this order, whenever
-    // storage is empty for this browser/device.
-    if (!wxPins.length) {
-      wxPins = [
-        {name:'PRSE1', location:'Hardwick, MN',      lat:43.7742,  lng:-96.1975},
-        {name:'RKRG1', location:'Hobart, OK',        lat:35.095959,lng:-98.990771},
-        {name:'ORGN1', location:'Hennepin, OK',      lat:34.490682,lng:-97.334319},
-        {name:'LNDL1', location:'Tioga, ND',         lat:48.397,   lng:-102.938},
-        {name:'DFRN1', location:'Dufferin, Ontario', lat:44.152,   lng:-80.109},
-        {name:'MCLM1', location:'Little Current, ON',lat:45.9331,  lng:-81.9855},
-        {name:'GDWL1', location:'Goodwell, OK',      lat:36.600,   lng:-101.630},
-        {name:'DBLO1', location:'Little Lake, CA',   lat:36.0059762,lng:-117.8083968}
-      ];
-      try { localStorage.setItem(WX_PINS_KEY, JSON.stringify(wxPins)); } catch(e) {}
-    } else {
-      // Patch any pins that are missing coordinates (e.g. carried over
-      // from an older save) rather than letting them fetch undefined.
-      let patched = false;
-      wxPins = wxPins.map(p => {
-        if (p.lat != null && p.lng != null) return p;
-        const coords = wxResolveCoords(p.name);
-        if (coords) { patched = true; return { ...p, ...coords }; }
-        return p;
-      });
-      if (patched) { try { localStorage.setItem(WX_PINS_KEY, JSON.stringify(wxPins)); } catch(e) {} }
-    }
-    wxFleetInited = true;
-  }
-  wxRenderPins();
-  wxRenderFleetGrid();
-  // Auto-fetch weather for pinned sites — runs on page load (this function
-  // is called once during global init regardless of active tab) and again
-  // every time the operator switches into the Weather tab.
-  if (wxPins.length) {
-    wxFetchAll();
-  }
-  wxStartAutoRefresh();
-}
 
 // Keeps Fleet Snapshot current while the page just sits open, rather than
 // only updating on page load or a manual "Refresh All" click. 30 minutes
@@ -9140,60 +9045,10 @@ function wxFleetInit() {
 // tabs back and forth never stacks up duplicate intervals.
 const WX_AUTOREFRESH_MS = 30 * 60 * 1000;
 let wxAutoRefreshTimer = null;
-function wxStartAutoRefresh() {
-  if (wxAutoRefreshTimer) return;
-  wxAutoRefreshTimer = setInterval(() => {
-    if (wxPins.length) wxFetchAll();
-  }, WX_AUTOREFRESH_MS);
-}
 
-function wxPinFilter() {
-  const q = document.getElementById('wx-pin-inp').value.toLowerCase().trim();
-  const box = document.getElementById('wx-pin-matches');
-  if (!q) { box.style.display = 'none'; return; }
-  const siteHits = SITES.filter(s => spSiteMatchesQuery(s.name,q) || (s.location||'').toLowerCase().includes(q));
-  const wxHits   = WX_LOCS.filter(s => spSiteMatchesQuery(s.name,q) || (s.location||'').toLowerCase().includes(q));
-  const all = [
-    ...siteHits.map(s => ({name:s.name, location:s.location||s.name, lat:s.lat, lng:s.lng})),
-    ...wxHits.map(s   => ({name:s.name, location:s.location||s.name, lat:s.lat, lng:s.lng}))
-  ].slice(0, 8);
-  // Remove already-pinned
-  const filtered = all.filter(s => !wxPins.some(p => p.name === s.name));
-  if (!filtered.length) { box.style.display = 'none'; return; }
-  box.style.display = 'block';
-  box.innerHTML = filtered.map(s =>
-    `<div class="wx-pin-match-item" onclick="wxAddPin('${esc(s.name)}','${esc(s.location)}',${s.lat},${s.lng})">
-      <strong>${esc(s.name)}</strong> — <span style="color:var(--text3);font-size:11px;">${esc(s.location)}</span>
-    </div>`
-  ).join('');
-}
 
-function wxAddPin(name, location, lat, lng) {
-  if (wxPins.length >= 12) { showToast('Max 12 pinned sites'); return; }
-  if (wxPins.some(p => p.name === name)) return;
-  wxPins.push({name, location, lat, lng});
-  try { localStorage.setItem(WX_PINS_KEY, JSON.stringify(wxPins)); } catch(e) {}
-  document.getElementById('wx-pin-inp').value = '';
-  document.getElementById('wx-pin-matches').style.display = 'none';
-  wxRenderPins();
-  wxRenderFleetGrid();
-}
 
-function wxRemovePin(name) {
-  wxPins = wxPins.filter(p => p.name !== name);
-  delete wxFleetData[name];
-  try { localStorage.setItem(WX_PINS_KEY, JSON.stringify(wxPins)); } catch(e) {}
-  wxRenderPins();
-  wxRenderFleetGrid();
-}
 
-function wxRenderPins() {
-  const el = document.getElementById('wx-pins-list'); if (!el) return;
-  if (!wxPins.length) { el.innerHTML = '<div class="empty-state compact"><div class="empty-state-icon">🌤️</div><div class="empty-state-title">No sites pinned</div><div class="empty-state-sub">Search above to add up to 12 sites.</div></div>'; return; }
-  el.innerHTML = wxPins.map(p =>
-    `<div class="wx-pin-chip">${esc(p.name)}<button class="wx-pin-chip-del" onclick="wxRemovePin('${esc(p.name)}')">✕</button></div>`
-  ).join('');
-}
 
 function wxWeatherIcon(desc) {
   const d = desc.toLowerCase();
@@ -9312,7 +9167,9 @@ function fcSites() {
 
 // Each metric shows only the sites it actually means something for. Wind speed
 // on a solar site is noise; temperature matters everywhere.
+
 function fcRelevant(sites, metric) {
+
   if (metric === 'wind') return sites.filter(s => s.kind === 'wind');
   if (metric === 'ghi')  return sites.filter(s => s.kind === 'solar');
   return sites;
@@ -9502,7 +9359,9 @@ function alertRender(){
     const ids = Object.keys(alertData || {});
     if (!ids.length) { el.style.display = 'none'; el.innerHTML = ''; return; }
     el.style.display = '';
-    el.innerHTML = ids.map(id => {
+    const head = '<div class="fc-alert-head"><span>\u26A0\uFE0F Active advisories</span>'
+      + '<span class="fc-alert-n">' + ids.length + ' site' + (ids.length === 1 ? '' : 's') + '</span></div>';
+    el.innerHTML = head + ids.map(id => {
       const list = alertData[id];
       const a = list[0];
       const sev = (a.severity || '').toLowerCase();
@@ -9598,44 +9457,7 @@ function fcRender() {
   }
 }
 
-async function wxFetchAll() {
-  if (!wxPins.length) { showToast('Pin at least one site first'); return; }
-  // Show loading state
-  wxRenderFleetGrid(true);
-  await Promise.all(wxPins.map(p => wxFetchOne(p)));
-  wxRenderFleetGrid(false);
-}
 
-function wxRenderFleetGrid(loading) {
-  const grid = document.getElementById('wx-fleet-grid'); if (!grid) return;
-  if (!wxPins.length) { grid.innerHTML = ''; return; }
-  if (loading) {
-    grid.innerHTML = wxPins.map(p =>
-      `<div class="wx-fleet-card"><div class="wx-fc-site">${esc(p.name)}</div><div class="wx-fc-loc">${esc(p.location)}</div><div class="wx-fc-loading">Fetching…</div></div>`
-    ).join('');
-    return;
-  }
-  grid.innerHTML = wxPins.map(p => {
-    const d = wxFleetData[p.name];
-    if (!d) return `<div class="wx-fleet-card"><div class="wx-fc-site">${esc(p.name)}</div><div class="wx-fc-loc">${esc(p.location)}</div><div style="font-size:11px;color:var(--text3);padding-top:6px;">Not yet fetched</div></div>`;
-    if (!d.ok) return `<div class="wx-fleet-card"><div class="wx-fc-site">${esc(p.name)}</div><div class="wx-fc-loc">${esc(p.location)}</div><div class="wx-fc-err">Could not fetch</div></div>`;
-    const isLow = d.wind <= 4;
-    const isHigh = d.wind >= 13;
-    const alertCls = isHigh ? 'wind-high' : isLow ? 'wind-low' : '';
-    const tag = isHigh ? '<span class="wx-fc-tag tag-high">High Wind</span>' : isLow ? '<span class="wx-fc-tag tag-low">Low Wind</span>' : '';
-    return `<div class="wx-fleet-card ${alertCls}">
-      <div class="wx-fc-site">${esc(p.name)}${tag}</div>
-      <div class="wx-fc-loc">${esc(p.location)}</div>
-      <div class="wx-fc-main">
-        <span class="wx-fc-icon">${wxWeatherIcon(d.desc)}</span>
-        <span class="wx-fc-temp">${esc(d.temp)}°F</span>
-      </div>
-      <div class="wx-fc-wind">💨 ${esc(d.wind.toFixed(1))} m/s ${esc(d.windDir)} <span style="color:var(--text3);">@${esc(d.windHeight)}</span></div>
-      <div class="wx-fc-hum">💧 Humidity ${esc(d.hum)}%</div>
-      <div class="wx-fc-ts">Updated ${esc(d.ts)}</div>
-    </div>`;
-  }).join('');
-}
 // ─── SAFETY CHECK ─────────────────────────────────────────────────────────────
 const SAFETY=['Hard hat worn','High-vis vest on','Safety glasses','Steel-toe boots','Gloves available','First aid kit accessible','Buddy check complete','Radio/comms operational','Weather conditions acceptable','Site hazards reviewed'];
 let safetyS={};
@@ -9715,6 +9537,85 @@ function renderAll(){ renderRec(); renderAdhoc(); renderCl(); renderNotes(); ren
 // alert: value that triggers a red alert pill (case-insensitive match)
 // unit:  appended on blur for numeric text fields
 // kvMin/kvMax: triggers in-band / out-of-band indicator
+
+// Duty-position site lists from the ROC duty sheet. Filters the same grid
+// rather than adding a second one: pick your position, see your sites.
+const AS_DUTY = {
+  "D1": [
+    "HARQ1",
+    "HARQ2",
+    "ORGN1",
+    "NCLS1",
+    "TRPC1",
+    "AVLN1",
+    "GLTA1",
+    "DLBO1",
+    "DFRN1",
+    "LNDL1",
+    "MCLM1",
+    "GDWL1"
+  ],
+  "D2": [
+    "BLKW1",
+    "LSTH2",
+    "NSTR1",
+    "COSO1",
+    "FRMV1",
+    "HNFD1",
+    "LSTH1",
+    "PRTV1",
+    "TLRE1",
+    "PRSE1",
+    "RKRG1",
+    "MRCP",
+    "ANGF1",
+    "TSMS1"
+  ],
+  "D3": [
+    "CTFL",
+    "FRDN1",
+    "KUNA1",
+    "PDMT1",
+    "BYPS1",
+    "PRGN1"
+  ],
+  "N1": [
+    "ANGF1",
+    "TSMS1",
+    "CTFL",
+    "MRCP",
+    "NCLS1",
+    "TRPC1",
+    "AVLN1",
+    "GLTA1",
+    "FRMV1",
+    "HNFD1",
+    "LSTH1",
+    "PRTV1",
+    "TLRE1",
+    "DLBO1",
+    "DFRN1",
+    "MCLM1"
+  ],
+  "N2": [
+    "BYPS1",
+    "COSO1",
+    "FRDN1",
+    "KUNA1",
+    "PDMT1",
+    "PRGN1",
+    "HARQ1",
+    "HARQ2",
+    "BLKW1",
+    "LSTH2",
+    "NSTR1",
+    "GDWL1",
+    "LNDL1",
+    "ORGN1",
+    "PRSE1",
+    "RKRG1"
+  ]
+};
 
 const AS_SITES = [{"id": "ROCC1", "label": "ROCC1", "stats": "", "sections": [{"title": "", "fields": [{"n": "CAISO ADS Accessible", "t": "select", "opts": ["", "Accessible", "Unaccessible"], "alert": ""}, {"n": "Indji Watch Accessible", "t": "select", "opts": ["", "Accessible", "Unaccessible"], "alert": ""}, {"n": "TV Monitor Volume High [Min. Lvl. 40]", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "Stay Safe Accessible", "t": "select", "opts": ["", "Accessible", "Unaccessible"], "alert": ""}, {"n": "Abnormal Conditions", "t": "text", "unit": ""}, {"n": "Notes", "t": "textarea"}]}]}, {"id": "ANGF1", "label": "ANGF1-Angel Fire[PV-BESS]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "MWh", "t": "text", "unit": "MWh"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 12.16, "kvMax": 13.44, "kvSp": "12.8kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers [3]", "t": "text", "unit": "/3 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters [3]", "t": "text", "unit": "/3 Online"}, {"n": "BESS [3]", "t": "text", "unit": "/3 Available"}]}]}, {"id": "AVLN1", "label": "AVLN1-Avalon[PV]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 46.8, "kvMax": 49.2, "tip": "Band moves with system demand — still flag if out of band. See plant info for detail.", "kvSp": "48kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers [2]", "t": "text", "unit": "/2 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters [29]", "t": "text", "unit": "/29 Online"}]}]}, {"id": "BLKW1", "label": "BLKW1-Blackwell[PV]", "stats": "NP: 12MW<br />V SET POINT: 12kV<br />BAND: 11.4kV-12.6kV", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "Plant Status[Local & Auto]", "t": "select", "opts": ["", "Remote/Auto", "Remote/Manual", "Local/Auto", "Local/Manual"], "alert": ""}, {"n": "Control Mode[Voltage]", "t": "select", "opts": ["", "Voltage", "Reactive Power", "Power Factor"], "alert": ""}, {"n": "Voltage Limit [ON]", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 11.4, "kvMax": 12.6, "kvSp": "12kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers [1]", "t": "text", "unit": "/1 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters[15]", "t": "text", "unit": "/15 Online"}]}]}, {"id": "BYPS1", "label": "BYPS1-Bypass[BESS]", "stats": "NP: 400MWh / 200MW<br />Voltage SP: Per SCADA<br />BAND: ±4kV", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "AVR State[Enabled]", "t": "select", "opts": ["", "Enabled", "Disabled"], "alert": ""}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "MWh", "t": "text", "unit": "MWh"}, {"n": "kV Setpoint", "t": "text", "unit": "kV"}, {"n": "kV", "t": "text", "unit": "kV", "kvRefField": "kV Setpoint", "kvTolerance": 4}, {"n": "MVAR", "t": "text", "unit": "MVAR"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "CAPACITY", "fields": [{"n": "MW[200+]", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "MWh[400+]", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers[9]", "t": "text", "unit": "/9 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "BESS Online[106]", "t": "text", "unit": "/106 Available"}, {"n": "Inverters Online[65]", "t": "text", "unit": "/65 Available"}]}]}, {"id": "COSO1", "label": "COSO1", "stats": "NP: 240MWh / 60MW<br />V SET POINT: 235kV<br />BAND:230.3kV-239.7kV", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "PF Limiter[ON]", "t": "select", "opts": ["", "On", "Off"], "alert": "Off"}, {"n": "PPC Voltage[Voltage]", "t": "select", "opts": ["", "Voltage", "Var"], "alert": ""}, {"n": "PPC Setpoints[ON]", "t": "select", "opts": ["", "On", "Off"], "alert": "Off"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}, {"n": "MWh", "t": "text", "unit": "MWh"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 230.3, "kvMax": 239.7, "kvSp": "235kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "CAPACITY", "fields": [{"n": "Charge/Discharge at 60 MW", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "Max Energy at 240 MWh", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers [3]", "t": "text", "unit": "/3 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Nodes Available", "t": "text", "unit": " Online"}, {"n": "Nodes Connected", "t": "text", "unit": "Nodes"}]}]}, {"id": "CTFL", "label": "CTFL-Centennial Flats[PV-BESS]", "stats": "NP: 1069 MWh ±267 MW <br />V SET POINT: 525kV<br />BAND: 521kV-540kV", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "PV AVR Status[Enabled]", "t": "select", "opts": ["", "Enabled", "Disabled"], "alert": ""}, {"n": "BESS AVR Status[Enabled]", "t": "select", "opts": ["", "Enabled", "Disabled"], "alert": ""}]}, {"title": "OUTPUT: HS", "fields": [{"n": "HS MW", "t": "text", "unit": "MW"}, {"n": "HS kV", "t": "text", "unit": "kV", "kvMin": 521, "kvMax": 540, "kvSp": "525kV"}, {"n": "HS MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "OUTPUT: PV1 & BESS1", "fields": [{"n": "PV1 MW", "t": "text", "unit": "MW"}, {"n": "PV1 kV", "t": "text", "unit": "kV"}, {"n": "PV1 MVAR", "t": "text", "unit": "MVAR"}, {"n": "PV1 Inverters [43]", "t": "text", "unit": "/43 Online"}, {"n": "BESS1 MW", "t": "text", "unit": "MW"}, {"n": "BESS1 MWh", "t": "text", "unit": "MWh"}, {"n": "BESS1 kV", "t": "text", "unit": "kV"}, {"n": "BESS1 MVAR", "t": "text", "unit": "MVAR"}, {"n": "Megapacks available [106]", "t": "text", "unit": "/106 Available"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "OUTPUT: PV2 & BESS2", "fields": [{"n": "PV2 MW", "t": "text", "unit": "MW"}, {"n": "PV2 kV", "t": "text", "unit": "kV"}, {"n": "PV2 MVAR", "t": "text", "unit": "MVAR"}, {"n": "PV2 Inverters [43]", "t": "text", "unit": "/43 Online"}, {"n": "BESS2 MW", "t": "text", "unit": "MW"}, {"n": "BESS2 MWh", "t": "text", "unit": "MWh"}, {"n": "BESS2 kV", "t": "text", "unit": "kV"}, {"n": "BESS2 MVAR", "t": "text", "unit": "MVAR"}, {"n": "Megapacks available [106]", "t": "text", "unit": "/106 Available"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "OUTPUT: PV3 & BESS3", "fields": [{"n": "PV3 MW", "t": "text", "unit": "MW"}, {"n": "PV3 kV", "t": "text", "unit": "kV"}, {"n": "PV3 MVAR", "t": "text", "unit": "MVAR"}, {"n": "PV3 Inverters [43]", "t": "text", "unit": "/43 Online"}, {"n": "BESS3 MW", "t": "text", "unit": "MW"}, {"n": "BESS3 MWh", "t": "text", "unit": "MWh"}, {"n": "BESS3 kV", "t": "text", "unit": "kV"}, {"n": "BESS3 MVAR", "t": "text", "unit": "MVAR"}, {"n": "Megapacks available [106]", "t": "text", "unit": "/106 Available"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers [15]", "t": "text", "unit": "/15 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}]}, {"id": "DLBO1", "label": "DLBO1-Diablo[WIND]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 228, "kvMax": 232, "kvSp": "230kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Turbines Online", "t": "text", "unit": " Online"}, {"n": "Turbines Communicating", "t": "text", "unit": ""}]}]}, {"id": "DFRN1", "label": "DFRN1-Dufferin[WIND]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Turbines Online", "t": "text", "unit": " Online"}, {"n": "Turbines Communicating", "t": "text", "unit": ""}]}]}, {"id": "FRMV1", "label": "FRMV1-Farmersville[PV]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV", "hint": "Link"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters[3]", "t": "text", "unit": "/3 Online"}]}]}, {"id": "GDWL1", "label": "GDWL1-Goodwell[WIND]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Bluence Accessible / RDP Open", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}, {"n": "Bluence Receiving Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "Site Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}, {"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 109.25, "kvMax": 120.75, "kvSp": "115kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR", "hint": "WindCONTROL - WCS-001- Power Control"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Turbines Online", "t": "text", "unit": " Online"}, {"n": "Turbines Communicating", "t": "text", "unit": ""}]}]}, {"id": "GLTA1", "label": "GLTA1-Goleta[BESS]", "stats": "NP: 160MWh / 60MW<br />V SET POINT: 66.00kV<br />BAND:63.17kV-69.83kV", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "System Mode[Remote]", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "Voltage Control[On]", "t": "select", "opts": ["", "On", "Off"], "alert": "Off"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "MWh", "t": "text", "unit": "MWh"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 63.17, "kvMax": 69.83, "kvSp": "66kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "CAPACITY", "fields": [{"n": "Charge/Discharge ≥ 60 MW", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "Max Energy ≥ 160 MWh", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers [4]", "t": "text", "unit": "/4 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "BESS[44]", "t": "text", "unit": "/44 Available"}]}]}, {"id": "HARQ1", "label": "HARQ1-Harquahala 1[PV]", "stats": "NP: +150MW", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "PV AVR Status[Enabled]", "t": "select", "opts": ["", "Enabled", "Disabled"], "alert": ""}]}, {"title": "OUTPUT", "fields": [{"n": "MW[COMP]", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 499, "kvMax": 551, "kvSp": "525kV"}, {"n": "MVAR[COMP]", "t": "text", "unit": "MVAR"}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers [4]", "t": "text", "unit": "/4 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters[47]", "t": "text", "unit": "/47 Online"}]}]}, {"id": "HARQ2", "label": "HARQ2-Harquahala 2[PV-BESS]", "stats": "NP: 1200MWh / 300MW<br />V SET POINT: 525kV<br />BAND:498.75kV-551.25kV", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "PV AVR Status[Enabled]", "t": "select", "opts": ["", "Enabled", "Disabled"], "alert": ""}, {"n": "BESS AVR Status[Enabled]", "t": "select", "opts": ["", "Enabled", "Disabled"], "alert": ""}]}, {"title": "OUTPUT", "fields": [{"n": "HS MW", "t": "text", "unit": "MW"}, {"n": "HS kV", "t": "text", "unit": "kV", "kvMin": 498.75, "kvMax": 551.25, "kvSp": "525kV"}, {"n": "HS MVAR", "t": "text", "unit": "MVAR"}, {"n": "PV LS MW", "t": "text", "unit": "MW"}, {"n": "PV LS MVAR", "t": "text", "unit": "MVAR"}, {"n": "BESS LS MW", "t": "text", "unit": "MW"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "BESS LS MWh", "t": "text", "unit": "MWh"}, {"n": "BESS LS MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "CAPACITY", "fields": [{"n": "Charge/Discharge ≥ 300 MW", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "Max Energy ≥ 1200 MWh", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers [17]", "t": "text", "unit": "/17 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters[94]", "t": "text", "unit": "/94 Online"}, {"n": "BESS[354]", "t": "text", "unit": "/354 Available"}]}]}, {"id": "HNFD1", "label": "HNFD1-Handford[PV]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV", "hint": "Data Studio → Select→ Meter → Voltage"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters[2]", "t": "text", "unit": "/2 Online"}]}]}, {"id": "KUNA1", "label": "KUNA1-Kuna[BESS]", "stats": "NP: 600MWh / 150MW<br />V SET POINT:142kV<br />BAND: 138kV-144.9kV", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "AVR State", "t": "select", "opts": ["", "Enabled", "Disabled"], "alert": ""}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "MWh", "t": "text", "unit": "MWh"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 138, "kvMax": 144.9, "kvSp": "142kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "CAPACITY", "fields": [{"n": "Charge/Discharge ≥ 150 MW", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "Max Energy ≥ 600 MWh", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers[4]", "t": "text", "unit": "/4 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "BESS[174]", "t": "text", "unit": "/174 Available"}]}]}, {"id": "LNDL1", "label": "LNDL1-Lindal", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Bluence Accessible / RDP Open", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}, {"n": "Bluence Receiving Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "Site Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}, {"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 109, "kvMax": 121, "kvSp": "115kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Turbines Online", "t": "text", "unit": " Online"}, {"n": "Turbines Communicating", "t": "text", "unit": ""}]}]}, {"id": "LSTH1", "label": "LSTH1-Lost Hills 1[PV]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV", "hint": "Data Studio → Select→ Meter → Voltage (line-to-line)"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters[12]", "t": "text", "unit": "/12 Closed"}]}]}, {"id": "LSTH2", "label": "LSTH2-Lost Hills 2[PV]", "stats": "NP: 20MW<br />V SET POINT: 71kV<br />BAND: 70.29kV-71.71kV", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "Plant Status[Local & Auto]", "t": "select", "opts": ["", "Remote/Auto", "Remote/Manual", "Local/Auto", "Local/Manual"], "alert": ""}, {"n": "Control Mode[Voltage]", "t": "select", "opts": ["", "Voltage", "Reactive Power", "Power Factor"], "alert": ""}, {"n": "Voltage Limit [ON]", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 70.29, "kvMax": 71.71, "kvSp": "71kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers [3]", "t": "text", "unit": "/3 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters[25]", "t": "text", "unit": "/25 Online"}]}]}, {"id": "MCLM1", "label": "MCLM1-McLeans Mountain[WIND]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Turbines Online", "t": "text", "unit": " Online"}, {"n": "Turbines Communicating", "t": "text", "unit": ""}]}]}, {"id": "NCLS1", "label": "NCLS1", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters[10]", "t": "text", "unit": "/10 Online"}]}]}, {"id": "NSTR1", "label": "NSTR1-Northstar Solar", "stats": "NP: 60MW<br />Voltage SP: 119kV<br />Voltage Band: 117.81kV-120.19kV", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "Plant Status[Local & Auto]", "t": "select", "opts": ["", "Remote/Auto", "Remote/Manual", "Local/Auto", "Local/Manual"], "alert": ""}, {"n": "Control Mode[Voltage]", "t": "select", "opts": ["", "Voltage", "Reactive Power", "Power Factor"], "alert": ""}, {"n": "Voltage Limit [ON]", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 117.81, "kvMax": 120.19, "kvSp": "119kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers[5]", "t": "text", "unit": "/5 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters[77]", "t": "text", "unit": "/77 Online"}]}]}, {"id": "ORGN1", "label": "ORGN1-Origin[WIND]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 138.8, "kvMax": 142.8, "kvSp": "140.8kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR", "hint": "WindCONTROL - WCS-001- Power Control"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Turbines Online", "t": "text", "unit": " Online"}, {"n": "Turbines Communicating", "t": "text", "unit": ""}]}]}, {"id": "PDMT1", "label": "PDMT1-Pediment[BESS]", "stats": "NP: 1000MWh / 250MW<br />V SET POINT:236kV<br />BAND: 226kV-241kV", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "AVR State[Active]", "t": "select", "opts": ["", "Active", "Disabled"], "alert": ""}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "MWh", "t": "text", "unit": "MWh"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 226, "kvMax": 241, "kvSp": "236kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "CAPACITY", "fields": [{"n": "Charge/Discharge ≥ 250 MW", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "Max Energy ≥ 1000 MWh", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers[7]", "t": "text", "unit": "/7 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "BESS Available[308]", "t": "text", "unit": "/308 Available"}]}]}, {"id": "PRGN1", "label": "PRGN1-Peregrine[BESS]", "stats": "NP: 430MWh / 200MW<br />V SET POINT: 231.3kV<br />BAND: 228kV-234kV", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "PPC Control Location[Local]", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "PPC Control[AVR]", "t": "select", "opts": ["", "AVR", "AVG"], "alert": ""}, {"n": "Pri. Freq. Respones[Enabled]", "t": "select", "opts": ["", "Enabled", "Disabled"], "alert": ""}, {"n": "PPC Status[Online]", "t": "select", "opts": ["", "Online", "Offline"], "alert": ""}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "MWh", "t": "text", "unit": "MWh"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 228, "kvMax": 234, "kvSp": "231.3kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "CAPACITY", "fields": [{"n": "Charge/Discharge ≥ 200 MW", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "Max Energy ≥ 430 MWh", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers[6]", "t": "text", "unit": "/6 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "BESS[112]", "t": "text", "unit": "/112 Available"}]}]}, {"id": "PRSE1", "label": "PRSE1-Prairie Rose[WIND]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Bluence Open & RDP Open", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}, {"n": "Bluence Receiving Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Turbines Online", "t": "text", "unit": " Online"}, {"n": "Turbines Communicating", "t": "text", "unit": ""}]}]}, {"id": "PRTV1", "label": "PRTV1-Porterville[PV]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV", "hint": "LINK Coming"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters[2]", "t": "text", "unit": "/2 Online"}]}]}, {"id": "RKRG1", "label": "RKRG1-Rocky Ridge[WIND]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Bluence Open & RDP Open", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}, {"n": "Bluence Receiving Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "Site Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": "No"}, {"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 139.2, "kvMax": 143.4, "kvSp": "141.3kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Turbines Online", "t": "text", "unit": " Online"}, {"n": "Turbines Communicating", "t": "text", "unit": ""}]}]}, {"id": "TLRE1", "label": "TLRE1", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters[4]", "t": "text", "unit": "/4 Online"}]}]}, {"id": "TRPC1", "label": "TRPC1-Tropico[PV]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "kV", "t": "text", "unit": "kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters[7]", "t": "text", "unit": "/7 Online"}]}]}, {"id": "TSMS1", "label": "TSMS1-Taos Mesa[PV-BESS]", "stats": "", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "MWh", "t": "text", "unit": "MWh"}, {"n": "kV", "t": "text", "unit": "kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers[3]", "t": "text", "unit": "/3 Closed"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "Inverters[6]", "t": "text", "unit": "/6 Online"}, {"n": "BESS[5]", "t": "text", "unit": "/5 Available"}]}]}, {"id": "FRDN1", "label": "FRDN1-Ferdinand[BESS]", "stats": "NP: 800MWh / 200MW<br />V SET POINT:142kV<br />BAND: ±2kV", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "AVR State[Active]", "t": "select", "opts": ["", "Active", "Disabled"], "alert": ""}]}, {"title": "OUTPUT", "fields": [{"n": "MW", "t": "text", "unit": "MW"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "MWh", "t": "text", "unit": "MWh"}, {"n": "kV", "t": "text", "unit": "kV", "kvMin": 140, "kvMax": 144, "kvSp": "142kV"}, {"n": "MVAR", "t": "text", "unit": "MVAR"}]}, {"title": "CAPACITY", "fields": [{"n": "Charge/Discharge ≥ 200 MW", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}, {"n": "Max Energy ≥ 800 MWh", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "SUBSTATION EQUIPMENT", "fields": [{"n": "Breakers[6]", "t": "text", "unit": "/6 Closed"}, {"n": "TO/SC Notified", "t": "select", "opts": ["N/A", "Yes", "No"], "alert": "No"}]}, {"title": "FIELD EQUIPMENT", "fields": [{"n": "BESS Available[264]", "t": "text", "unit": "/264 Available"}, {"n": "Units Available[66]", "t": "text", "unit": "/66 Available"}]}]}, {"id": "MRCP", "label": "MRCP", "stats": "NP: XX / XX<br />V SET POINT: 525kV<br />BAND:498.75kV-551.25kV", "sections": [{"title": "STATUS", "fields": [{"n": "Site Status", "t": "select", "opts": ["", "Normal", "Abnormal", "De-rated", "Outage in place"], "alert": ["Abnormal", "De-rated", "Outage in place"], "autoNotes": {"De-rated": "De-rated", "Outage in place": "Outage in place"}}, {"n": "Notes", "t": "textarea"}]}, {"title": "CONTROL", "fields": [{"n": "PV AVR Status[Enabled]", "t": "select", "opts": ["", "Enabled", "Disabled"], "alert": ""}, {"n": "BESS AVR Status[Enabled]", "t": "select", "opts": ["", "Enabled", "Disabled"], "alert": ""}]}, {"title": "OUTPUT: HS", "fields": [{"n": "HS MW", "t": "text", "unit": "MW"}, {"n": "HS kV", "t": "text", "unit": "kV", "kvMin": 498.75, "kvMax": 551.25, "kvSp": "525kV"}, {"n": "HS MVAR", "t": "text", "unit": "MVAR"}, {"n": "Breakers [28]", "t": "text", "unit": "/28 Closed"}]}, {"title": "OUTPUT: MECC1", "fields": [{"n": "MECC1 PV MW", "t": "text", "unit": "MW"}, {"n": "MECC1 PV kV", "t": "text", "unit": "kV"}, {"n": "MECC1 PV MVAR", "t": "text", "unit": "MVAR"}, {"n": "MECC1 PV Inverters [48]", "t": "text", "unit": "/48 Online"}, {"n": "MECC1 BESS MW", "t": "text", "unit": "MW"}, {"n": "MECC1 BESS MWh", "t": "text", "unit": "MWh"}, {"n": "MECC1 BESS kV", "t": "text", "unit": "kV"}, {"n": "MECC1 BESS MVAR", "t": "text", "unit": "MVAR"}, {"n": "MECC1 BESS available [218]", "t": "text", "unit": "/218 Available"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "OUTPUT: MECC2A", "fields": [{"n": "MECC2A PV MW", "t": "text", "unit": "MW"}, {"n": "MECC2A PV kV", "t": "text", "unit": "kV"}, {"n": "MECC2A PV MVAR", "t": "text", "unit": "MVAR"}, {"n": "MECC2A PV Inverters [48]", "t": "text", "unit": "/48 Online"}, {"n": "MECC2A BESS MW", "t": "text", "unit": "MW"}, {"n": "MECC2A BESS MWh", "t": "text", "unit": "MWh"}, {"n": "MECC2A BESS kV", "t": "text", "unit": "kV"}, {"n": "MECC2A BESS MVAR", "t": "text", "unit": "MVAR"}, {"n": "MECC2A BESS available [218]", "t": "text", "unit": "/218 Available"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}, {"title": "OUTPUT: MECC2B", "fields": [{"n": "MECC2B PV MW", "t": "text", "unit": "MW"}, {"n": "MECC2B PV kV", "t": "text", "unit": "kV"}, {"n": "MECC2B PV MVAR", "t": "text", "unit": "MVAR"}, {"n": "MECC2B PV Inverters [48]", "t": "text", "unit": "/48 Online"}, {"n": "MECC2B BESS MW", "t": "text", "unit": "MW"}, {"n": "MECC2B BESS MWh", "t": "text", "unit": "MWh"}, {"n": "MECC2B BESS kV", "t": "text", "unit": "kV"}, {"n": "MECC2B BESS MVAR", "t": "text", "unit": "MVAR"}, {"n": "MECC2B BESS available [218]", "t": "text", "unit": "/218 Available"}, {"n": "Following Setpoint", "t": "select", "opts": ["", "Yes", "No"], "alert": ""}]}]}];
 
@@ -10126,6 +10027,9 @@ function asSaveOperator() {
 
 // ── init & render ──────────────────────────────────────────────────────────────
 function asInit() {
+  try { const d=localStorage.getItem('asDuty');
+    if (d && AS_DUTY[d]) { asDutyFilter=d;
+      const s=document.getElementById('as-duty-sel'); if(s){ s.value=d; s.classList.add('on'); } } } catch(e) {}
   document.getElementById('as-date').valueAsDate = new Date();
   // Operator persists locally — the same desktop is almost always run by
   // the same person, so re-typing a name every round was friction for no
@@ -10236,7 +10140,28 @@ function asGetSiteType(site) {
   return 'General';
 }
 
+// A duty position is a different axis from asset type, so picking one clears
+// the type chips rather than combining into an empty set.
+let asDutyFilter = null;
+function asSetDuty(pos){
+  asDutyFilter = pos || null;
+  const sel = document.getElementById('as-duty-sel');
+  if (sel) sel.classList.toggle('on', !!asDutyFilter);
+  try { localStorage.setItem('asDuty', asDutyFilter || ''); } catch(e) {}
+  // Clear the type chips entirely — leaving "All" lit would say "no filter"
+  // while a responsibility is in fact filtering the list.
+  asTypeFilter = ['all'];
+  document.querySelectorAll('#as-type-filters .as-type-btn').forEach(b => b.classList.remove('active'));
+  if (!asDutyFilter) {
+    const allBtn = document.querySelector('#as-type-filters .as-type-btn');
+    if (allBtn) allBtn.classList.add('active');
+  }
+  try { asRenderTabs(); } catch(e) {}
+}
+
 function asSetTypeFilter(type, el) {
+  asDutyFilter = null;
+  { const s=document.getElementById('as-duty-sel'); if(s){ s.value=''; s.classList.remove('on'); } }
   // Handle 'all' button - clears other selections
   if (type === 'all') {
     asTypeFilter = ['all'];
@@ -10286,13 +10211,18 @@ function asSetTypeFilter(type, el) {
 }
 
 function asRenderTabs() {
+  // duty filter narrows to that position's sites
   // Sort alphabetically by id, but keep ROCC1 pinned first
   let sites = [...asSites()];
   const rocc = sites.filter(s => s.id === 'ROCC1');
   const rest = sites.filter(s => s.id !== 'ROCC1').sort((a, b) => a.id.localeCompare(b.id));
   sites = [...rocc, ...rest];
 
-  // Apply type filter
+  // Duty position first — it is a different axis from asset type. ROCC1 stays
+  // pinned because it is the operator log, not a site on anyone's round.
+  if (asDutyFilter) {
+    sites = sites.filter(s => s.id === 'ROCC1' || AS_DUTY[asDutyFilter].includes(s.id));
+  }
   const filtered = asTypeFilter.includes('all')
     ? sites
     : sites.filter(s => s.id === 'ROCC1' || asTypeFilter.includes(asGetSiteType(s)));
@@ -10649,6 +10579,7 @@ function asExportCSV() {
   let csv='Date,Operator,Shift,Site,Section,Field,Value,Field Last Edited\n';
   // Only export sites matching the currently selected type filter (mirrors what's shown in the tabs)
   let sites=[...asSites()];
+  if(asDutyFilter){ sites=sites.filter(s=>s.id==='ROCC1'||AS_DUTY[asDutyFilter].includes(s.id)); }
   if(!asTypeFilter.includes('all')){
     sites=sites.filter(s=>s.id==='ROCC1'||asTypeFilter.includes(asGetSiteType(s)));
   }
@@ -10678,7 +10609,10 @@ function asExportCSV() {
   });
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  const types = asTypeFilter.includes('all') ? 'All' : asTypeFilter.join(' & ');
+  // Name the scope the same way the type filters do, so a D1 round is
+  // obvious from the file name.
+  const types = asDutyFilter ? asDutyFilter
+    : asTypeFilter.includes('all') ? 'All' : asTypeFilter.join(' & ');
   const dateSuffix = date ? (()=>{ const [y,m,d]=date.split('-'); return `${parseInt(m)}${parseInt(d)}${y.slice(-2)}`; })() : '';
   a.download=`${shift||'Shift'} Asset Scan ${types} ${op||'Name'}${dateSuffix?' '+dateSuffix:''}.csv`;
   document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(a.href);
@@ -10909,47 +10843,78 @@ function swRenderTpls() {
   const wrap = document.getElementById('sw-tpls-list');
   if (!wrap) return;
   if (q && !all.length) {
-    wrap.innerHTML = `<div class="empty-state compact"><div class="empty-state-icon">🔍</div><div class="empty-state-title">No templates match "${esc(q)}"</div></div>`;
+    wrap.innerHTML = `<div class="empty-state compact"><div class="empty-state-icon">\u{1F50D}</div><div class="empty-state-title">No templates match "${esc(q)}"</div></div>`;
     return;
   }
-  wrap.innerHTML = all.map(tpl => {
+
+  // Most templates are the same thing in two directions — de-energize and
+  // re-energize the same equipment. Showing both as separate rows doubled the
+  // list and made near-identical entries you had to read carefully. Pair them
+  // on their site and put the direction on a pill.
+  const bySite = new Map(), singles = [];
+  all.forEach(tpl => {
+    if (tpl.site && (tpl.cls === 'de' || tpl.cls === 're')) {
+      const g = bySite.get(tpl.site) || { site: tpl.site, de: [], re: [] };
+      g[tpl.cls].push(tpl);
+      bySite.set(tpl.site, g);
+    } else singles.push(tpl);
+  });
+  const paired = [];
+  bySite.forEach(g => {
+    if (g.de.length === 1 && g.re.length === 1) paired.push({ site: g.site, de: g.de[0], re: g.re[0] });
+    else [...g.de, ...g.re].forEach(t => singles.push(t));   // not a pair — keep every one
+  });
+
+  const outage  = singles.filter(t => /outage|trip/i.test(t.site + ' ' + t.action));
+  const other   = singles.filter(t => !outage.includes(t));
+
+  const actionsFor = tpl => {
     const isHard = SW_HARDCODED.some(h => h.id === tpl.id);
     const isShared = !isHard && swSharedTpls.some(s => s.id === tpl.id);
-    const selCls = swActive === tpl.id ? 'sel-'+tpl.cls : '';
-    let actions;
-    if (isHard) {
-      actions = `<span class="sw-tpl-lock" title="Built-in">🔒</span>`;
-    } else if (isShared) {
-      actions = `<span class="sw-tpl-shared-badge" title="${tpl.sharedBy ? 'Shared by ' + esc(tpl.sharedBy) : 'Shared with the team'}">🌐</span>
-         <span class="sw-tpl-actions">
-           <button class="sw-tpl-act-btn" title="Duplicate as your own draft" onclick="event.stopPropagation();swDupeTpl('${tpl.id}')">⧉</button>
-           <button class="sw-tpl-act-btn" title="Edit (changes for everyone)" onclick="event.stopPropagation();swOpenEditTpl('${tpl.id}','shared')">✎</button>
-           <button class="sw-tpl-act-btn" title="Delete (removes for everyone)" onclick="event.stopPropagation();swDeleteSharedTpl('${tpl.id}')">✕</button>
-         </span>`;
-    } else {
-      actions = `<span class="sw-tpl-actions">
-           <button class="sw-tpl-act-btn" title="Share with the team" onclick="event.stopPropagation();swShareTpl('${tpl.id}')">📤</button>
-           <button class="sw-tpl-act-btn" title="Duplicate" onclick="event.stopPropagation();swDupeTpl('${tpl.id}')">⧉</button>
-           <button class="sw-tpl-act-btn" title="Edit" onclick="event.stopPropagation();swOpenEditTpl('${tpl.id}')">✎</button>
-           <button class="sw-tpl-act-btn" title="Delete" onclick="event.stopPropagation();swDelTpl('${tpl.id}')">✕</button>
-         </span>`;
-    }
-    const displayLabel = tpl.displayName || `${tpl.action} ${tpl.site}`;
-    const shortLabel = displayLabel.length > 35 ? displayLabel.slice(0, 35) + '…' : displayLabel;
-    return `<button class="sw-tpl ${selCls}" id="swtpl-${tpl.id}" onclick="swSelect('${tpl.id}',this)">
-      <span class="sw-tpl-stripe ${tpl.cls}"></span>
-      <span class="sw-tpl-body">${tpl.site ? `<span class="sw-tpl-site">${esc(tpl.site)}</span>` : ''}${esc(shortLabel)}</span>
-      ${actions}
-    </button>`;
-  }).join('');
+    if (isHard) return `<span class="sw-tpl-lock" title="Built-in">\u{1F512}</span>`;
+    if (isShared) return `<span class="sw-tpl-shared-badge" title="${tpl.sharedBy ? 'Shared by ' + esc(tpl.sharedBy) : 'Shared with the team'}">\u{1F310}</span>`
+      + `<span class="sw-tpl-actions">`
+      + `<button class="sw-tpl-act-btn" title="Duplicate as your own draft" onclick="event.stopPropagation();swDupeTpl('${tpl.id}')">\u29C9</button>`
+      + `<button class="sw-tpl-act-btn" title="Edit (changes for everyone)" onclick="event.stopPropagation();swOpenEditTpl('${tpl.id}','shared')">\u270E</button>`
+      + `<button class="sw-tpl-act-btn" title="Delete (removes for everyone)" onclick="event.stopPropagation();swDeleteSharedTpl('${tpl.id}')">\u2715</button></span>`;
+    return `<span class="sw-tpl-actions">`
+      + `<button class="sw-tpl-act-btn" title="Share with the team" onclick="event.stopPropagation();swShareTpl('${tpl.id}')">\u{1F4E4}</button>`
+      + `<button class="sw-tpl-act-btn" title="Duplicate" onclick="event.stopPropagation();swDupeTpl('${tpl.id}')">\u29C9</button>`
+      + `<button class="sw-tpl-act-btn" title="Edit" onclick="event.stopPropagation();swOpenEditTpl('${tpl.id}')">\u270E</button>`
+      + `<button class="sw-tpl-act-btn" title="Delete" onclick="event.stopPropagation();swDelTpl('${tpl.id}')">\u2715</button></span>`;
+  };
+
+  const pairCard = g => {
+    const on = swActive === g.de.id ? 'de' : swActive === g.re.id ? 're' : '';
+    return `<div class="sw-card ${on ? 'sel sel-' + on : ''}">
+      <div class="sw-card-top"><span class="sw-card-site">${esc(g.site)}</span>${actionsFor(g.de)}</div>
+      <div class="sw-card-pills">
+        <button class="sw-pill de ${on === 'de' ? 'on' : ''}" onclick="swSelect('${g.de.id}',this)">De-energize</button>
+        <button class="sw-pill re ${on === 're' ? 'on' : ''}" onclick="swSelect('${g.re.id}',this)">${esc(g.re.action).replace('Re-Energize','Re-energize')}</button>
+      </div></div>`;
+  };
+  const soloCard = tpl => {
+    const label = tpl.displayName || tpl.action;
+    return `<div class="sw-card solo ${swActive === tpl.id ? 'sel sel-' + tpl.cls : ''}"
+        onclick="swSelect('${tpl.id}',this)">
+      <div class="sw-card-top"><span class="sw-card-site">${esc(tpl.site || label)}</span>${actionsFor(tpl)}</div>
+      ${tpl.site ? `<div class="sw-card-sub">${esc(label)}</div>` : ''}</div>`;
+  };
+  const group = (title, html) => html ? `<div class="sw-group"><div class="sw-group-h">${title}</div>
+      <div class="sw-grid">${html}</div></div>` : '';
+
+  wrap.innerHTML =
+      group('Switching', paired.map(pairCard).join(''))
+    + group('Outages',   outage.map(soloCard).join(''))
+    + group('Other',     other.map(soloCard).join(''));
 }
 
 function swSelect(id, el) {
   swActive = id;
   const tpl = swGetAllTpls().find(t => t.id === id);
   if (!tpl) return;
-  document.querySelectorAll('.sw-tpl').forEach(b => b.classList.remove('sel-de','sel-re','sel-other'));
-  el.classList.add('sel-' + tpl.cls);
+  // the card grid shows selection on the pill and the card, so redraw it
+  try { swRenderTpls(); } catch (e) {}
   document.getElementById('sw-num-lbl').textContent = tpl.numLbl || 'Number';
   document.getElementById('sw-num').placeholder = tpl.numPh || '';
   const tl = document.getElementById('sw-tech-lbl');
@@ -13696,45 +13661,37 @@ const ROC_QUESTIONS = [
 
   // ══ OPERATIONS: SOLAR, WIND, BESS, SWITCHING ════════════════════════════
 
-  {id:'op1', pb:'daily-checklist', stepwise:true, lvl:1, cat:'operations', type:'application',
+  {id:'op1', pb:'daily-checklist', stepwise:true, lvl:1, cat:'procedures', type:'application',
    q:'Walk through the solar monitoring procedure: what are the 4 steps and what is each looking for?',
    a:'Per the competency framework:<ol style="margin-left:14px;"><li><strong>Identify each inverter\'s status</strong> — Online, Offline, or Comms Loss. A comms loss is not the same as an offline inverter.</li><li><strong>Locate current irradiance</strong> — what is the available sunlight? This is the benchmark for expected output.</li><li><strong>Identify each inverter\'s output and site total</strong> — actual MW vs. expected given irradiance.</li><li><strong>Identify any derated inverters</strong> — is the underperformance due to a derate (intentional) or a fault (unintentional)?</li></ol>If irradiance is high and output is low with no derate active → investigate. Check inverter alarms, then check AGC setpoint, then notify SC if unexplained.'},
 
-  {id:'op2', pb:'units-off', stepwise:true, lvl:1, cat:'operations', type:'application',
+  {id:'op2', pb:'units-off', stepwise:true, lvl:1, cat:'procedures', type:'application',
    q:'A tripped wind turbine needs to be reset. Walk through the steps and when you escalate.',
    a:'<ol style="margin-left:14px;"><li><strong>Identify the tripped turbine</strong> on SCADA — confirm it\'s a genuine trip vs. a comms loss or planned outage</li><li><strong>Reset the turbine per SOP</strong> — follow the site-specific reset procedure exactly</li><li><strong>Notify site team if needed</strong> — if the turbine trips again after reset, or if the trip reason is unclear, escalate to field team</li><li><strong>Create or update the operator log</strong> — document the trip time, reset time, cause if known, and any escalation</li></ol>Repeated trips on the same turbine = do not keep resetting. Escalate to maintenance and log accordingly.'},
 
-  {id:'op3', lvl:2, cat:'operations', type:'application',
-   q:'Solar site is underperforming with high irradiance. How do you determine if it\'s an asset issue vs. a curtailment order?',
-   a:'Cross-reference these four data points:<ul><li><strong>Inverter status</strong> — are they online, faulted, or showing comms loss?</li><li><strong>Current irradiance</strong> — is there actually enough sun to justify higher output?</li><li><strong>ADS setpoint</strong> — is there an active curtailment or derate reducing the setpoint?</li><li><strong>Active alarms</strong> — any inverter trips, thermal limits, or protection flags?</li></ul><strong>If inverters show faults with good irradiance</strong> → asset issue (inverter trip, string problem). Investigate, log, notify SC.<br><strong>If inverters show normal but setpoint is low</strong> → curtailment is the cause. Confirm it\'s logged as a valid order.<br><strong>If other nearby sites are also low</strong> → likely a grid curtailment affecting the area.'},
-
-  {id:'op4', pb:'hail-stow', stepwise:true, lvl:1, cat:'operations', type:'application',
+  {id:'op4', pb:'hail-stow', stepwise:true, lvl:1, cat:'procedures', type:'application',
    q:'Hail stow procedure for HARQ 1/2 or C-Flats: what are the 7 steps and what is the trigger?',
    a:'<strong>Trigger:</strong> Damaging hail alert — hail ≥ 1 inch in diameter forecasted or active.<ol style="margin-left:14px;"><li>Identify the alert</li><li>Log into NXNavigator</li><li>Stow the site (panels rotate to protective angle)</li><li>Notify Site Owner, Field team, and SC</li><li>Initiate Auto Tracking <strong>once the all clear is received</strong> (text or email)</li><li>Notify Site Owner, Field team, and SC again</li><li>Log all steps with timestamps</li></ol><strong>Common gap:</strong> Auto Tracking is never re-initiated after the storm. Panels will show low output with good irradiance and no alarm will fire — it\'s a "normal" stow state. Always verify Auto Tracking is running post-event.'},
 
-  {id:'op5', pb:'site-de-rated', stepwise:true, lvl:1, cat:'operations', type:'procedure',
+  {id:'op5', pb:'site-de-rated', stepwise:true, lvl:1, cat:'procedures', type:'procedure',
    q:'Walk through the BESS identify/derate procedure. What are the 6 steps?',
    a:'<ol style="margin-left:14px;"><li><strong>Identify BESS nameplate info</strong> — MW capacity, MWh capacity, voltage setpoint, operating band</li><li><strong>Determine if BESS is Fully Available or Derated</strong> — check SCADA for actual capability vs. nameplate</li><li><strong>Submit derate/outage to QSE and notify Owner Contacts</strong> — use the proper template/email; this goes to the SC</li><li><strong>Update the Outage Board and create an Operator Log</strong> — document start time, cause, expected duration</li><li><strong>Update/End Outage</strong> when the condition clears</li><li><strong>Update Outage Board, Operator Log, and notify Owner Contacts</strong> again at close-out</li></ol>'},
 
-  {id:'op6', lvl:1, cat:'operations', type:'procedure',
+  {id:'op6', lvl:1, cat:'procedures', type:'procedure',
    q:'Walk through feeder switching — what are the 15 steps and what is the critical step that requires TOP permission?',
    a:'<ol style="margin-left:14px;"><li>Receive switching procedures</li><li>Ensure proper outage/derate is in place</li><li>Follow along with tech confirming all pre-deenergization steps are complete</li><li>Confirm field is clear</li><li>Disable Megapack / Sole Bank → Standby Mode</li><li>Open AC Breakers / Shutdown PE inverters</li><li>Open Feeder/MV Breakers</li><li><strong>Request permission from TOP to open HV Breaker</strong> ← critical step</li><li>Open/Close HV Breaker</li><li>Close MV/Feeder Breakers (allow MVARs to stabilize)</li><li>Close AC Breakers / Turn on PE Inverters</li><li>Enable Megapacks / Sole Bank → "BESS On"</li><li>Follow along with tech confirming all energization steps complete</li><li>End Outage/Derate</li><li>Notify Owner Contacts and log accordingly</li></ol><strong>Step 8 is the critical gate: no HV breaker operation without TOP permission.</strong>'},
 
   // ── SHIFT PROCEDURES ──────────────────────────────────────────────────────
 
-  {id:'pr1', lvl:1, cat:'operations', type:'procedure',
+  {id:'pr1', lvl:1, cat:'procedures', type:'procedure',
    q:'Walk through the start-of-shift turnover — 12 steps in order.',
    a:'<ol style="margin-left:14px;"><li>Notify ROC in Teams chat that you are on the way</li><li>Clock in at the office door (DSPTCH)</li><li>Check the dry-erase / outage board</li><li>Receive instructions from offgoing operator (Teams or in person)</li><li>Log into D1/D2 duty site SCADAs</li><li>Fill out (ROCC1) Operator Log — Onsite</li><li>Complete Asset Scanning Tool and upload</li><li>Leave instructions for oncoming operator in Teams/turnover</li><li>Fill out (ROCC1) Operator Log — Offsite</li><li>Ensure you log out of all sites directly</li><li>Leave the ROCC only after relief is logged into their sites</li><li>Clock out (DSPTCH)</li></ol><strong>Step 11 is non-negotiable:</strong> the ROCC cannot be without coverage. Your accountability doesn\'t end until relief is confirmed online.'},
 
-  {id:'pr2', pb:'staysafe', stepwise:true, lvl:1, cat:'operations', type:'procedure',
+  {id:'pr2', pb:'staysafe', stepwise:true, lvl:1, cat:'procedures', type:'procedure',
    q:'What is the StaySafe Lone Worker protocol? Walk through the 4 steps.',
    a:'<ol style="margin-left:14px;"><li><strong>Alarm received via StaySafe</strong> — a lone worker check-in was missed</li><li><strong>Operator makes a single attempt to reach the tech</strong> — call or message once</li><li><strong>Attempt to reach Supervisor or a nearby employee</strong> — escalate immediately if tech is unreachable</li><li><strong>Once 10 minutes have passed without contact — call local emergency authorities</strong> and request a well-being check</li></ol>Do not delay past 10 minutes waiting for a callback. The protocol exists because a worker may be incapacitated. Err on the side of the well-being check.'},
 
-  {id:'pr3', lvl:1, cat:'operations', type:'procedure',
-   q:'What information is required when creating an Operator Log, and what extra fields are required for a Visitor Log?',
-   a:'<strong>Standard Operator Log fields:</strong><ul><li>Select Site / Equipment</li><li>Log Type</li><li>GADS Code</li><li>Start and Forecast Dates</li><li>Sub-log (details of why the log was created)</li></ul><strong>Visitor Log — additional required fields:</strong><ul><li>Visitor First and Last Name</li><li>Company they work for</li><li>Cell phone number</li><li>Nature of work</li></ul>Incomplete logs are a compliance gap. If it wasn\'t logged, it didn\'t happen.'},
-
-  {id:'pr4', pb:'operating-instruction', stepwise:true, lvl:1, cat:'operations', type:'procedure',
+  {id:'pr4', pb:'operating-instruction', stepwise:true, lvl:1, cat:'procedures', type:'procedure',
    q:'Walk through the Operating Instruction procedure under COM-002 — 5 steps.',
    a:'<ol style="margin-left:14px;"><li><strong>Receive</strong> the Operating Instruction from the issuing authority (ISO, TOP, SC)</li><li><strong>Repeat the instruction back correctly</strong> — verbatim repeat-back confirms both parties have the same understanding</li><li><strong>Execute</strong> the Operating Instruction</li><li><strong>Respond to the authority</strong> — confirm success or failure of execution</li><li><strong>Log in accordance</strong> \u2014 document instruction received, time, who issued it, action taken, outcome. Attach a picture if received and confirmed on the ADS board, along with all call logs if received by phone.</li></ol>COM-002 makes the repeat-back mandatory — it is not optional. A missed readback is a standard violation even if the instruction was executed correctly.'},
 
@@ -13768,41 +13725,19 @@ const ROC_QUESTIONS = [
 
   // ══ RAPID FIRE ════════════════════════════════════════════════════════════
 
-  {id:'rf1', lvl:1, cat:'rapid', type:'rapid',
+  {id:'rf1', lvl:1, cat:'dispatch', type:'rapid',
    q:'What is HE 12?',
    a:'<strong>Hour Ending 12</strong> — the hour from 11:00 to 12:00 (noon). Power schedules use hour-ending notation. HE 1 = midnight to 1 AM. HE 24 = 11 PM to midnight.'},
 
-  {id:'rf2', lvl:1, cat:'rapid', type:'rapid',
+  {id:'rf2', lvl:1, cat:'grid', type:'rapid',
    q:'In CAISO\'s market, who is performing the function of balancing load in real time?',
    a:'<strong>CAISO</strong> (the ISO) — acting as the Balancing Authority for the grid. They issue dispatch signals and AGC instructions that the GOP executes.'},
 
-  {id:'rf3', lvl:1, cat:'rapid', type:'rapid',
+  {id:'rf3', lvl:1, cat:'voltage', type:'rapid',
    q:'AVR vs AGC — one line each on what each controls.',
    a:'<strong>AVR → Voltage</strong> (adjusts excitation to hold terminal voltage / reactive power)<br><strong>AGC → MW</strong> (adjusts real power output per ISO dispatch signal)'},
 
-  {id:'rf4', lvl:1, cat:'rapid', type:'rapid',
-   q:'Who submits the energy schedule to CAISO — the GO, the GOP, or the SC?',
-   a:'The <strong>SC (Scheduling Coordinator)</strong> submits schedules to CAISO. The GO/GOP provides the capability data and outage information; the SC handles the market-facing submission.'},
-
-  {id:'rf5', lvl:1, cat:'rapid', type:'rapid',
-   q:'What happens to frequency when load exceeds generation?',
-   a:'<strong>Frequency drops.</strong> More demand than supply = generators slow down under the drag = frequency decreases below 60 Hz. The ISO responds with AGC dispatch to increase generation.'},
-
-  {id:'rf6', lvl:1, cat:'rapid', type:'rapid',
-   q:'MW vs MWh — one line each.',
-   a:'<strong>MW</strong> = power rate right now (dispatch setpoint, real-time output)<br><strong>MWh</strong> = energy over time (BESS state of charge, schedule settlement, production totals)'},
-
-  {id:'rf7', lvl:1, cat:'rapid', type:'rapid',
-   q:'ANSI 86 fires — what does the operator do first?',
-   a:'<strong>Do not reset it.</strong> ANSI 86 is the Lockout Relay — it fired because a serious fault was detected. Log the event, notify supervision and SC, follow outage procedures. Investigation must happen before the 86 is reset and equipment is re-energized.'},
-
-  {id:'rf8', lvl:1, cat:'rapid', type:'rapid',
-   q:'You receive an Operating Instruction from CAISO. What must you do before executing it?',
-   a:'<strong>Repeat it back verbatim</strong> and wait for confirmation from the issuing authority. COM-002 requirement. No execution until the loop is closed.'},
-
-  // ══ FULL SIMULATION SCENARIO ══════════════════════════════════════════════
-
-  {id:'ord1', pb:'bess-oscillation', lvl:3, cat:'operations', type:'ordering',
+  {id:'ord1', pb:'bess-oscillation', lvl:3, cat:'procedures', type:'ordering',
    q:'All of this is on your screen at once: BESS HVAC alarm with container temperature climbing, Inverter Unit 3 tripped, CAISO curtailment active. Put these actions in the order you would take them.',
    order:[
      'Assess the BESS thermal condition \u2014 is it still climbing, and is it approaching a trip?',
@@ -13818,7 +13753,7 @@ const ROC_QUESTIONS = [
   {id:'s5', lvl:3, cat:'scada', type:'conceptual',
    q:'What is a PPC, and what is it doing between the ISO setpoint and the equipment?',
    a:'The <strong>Plant Power Controller</strong> takes a plant-wide setpoint and distributes it across the individual inverters, turbines or PCS units, then trims continuously to hold the plant at that target at the point of interconnection.<ul><li>Receives the setpoint from SCADA / ADS / AGC</li><li>Splits it across available equipment, accounting for whatever is derated or offline</li><li>Regulates to the <strong>POI</strong>, not the sum of the equipment</li><li>Runs the control mode the TOP schedule requires</li></ul><strong>Why it matters:</strong> when a site is not following dispatch, the PPC is the layer between \u201cthe setpoint arrived\u201d and \u201cthe equipment moved.\u201d A setpoint visible in SCADA with no MW response usually means the PPC is in the wrong mode, has a limit applied, or has lost communication with the equipment beneath it.<br><br><strong>Modes to recognise:</strong> active power control, voltage control, power factor control, and manual/local \u2014 where the PPC stops regulating and holds whatever it was last given.'},
-  {id:'op7', pb:'site-de-rated', stepwise:true, lvl:1, cat:'operations', type:'procedure',
+  {id:'op7', pb:'site-de-rated', stepwise:true, lvl:1, cat:'procedures', type:'procedure',
    q:'Walk through the outage ticket procedure \u2014 what are the 4 steps?',
    a:'<ol style="margin-left:14px;"><li><strong>Identify the outage</strong> \u2014 what is out, when it started, and whether it is forced or planned</li><li><strong>Submit the ticket</strong> \u2014 as required and as prescribed by the SC</li><li><strong>Update as conditions change</strong> \u2014 revise the end time or capacity as better information arrives</li><li><strong>File with the CPUC</strong> for Peregrine or Northstar if the outage is \u226550MW</li><li><strong>Close the ticket</strong> \u2014 once the equipment is returned and output is confirmed recovered</li></ol>The step most often missed is the last one. A ticket left open after the equipment is back keeps the site showing derated to the SC and the market, with nothing alarming to tell you.'},
   {id:'s6', pb:'comms-loss', lvl:2, cat:'scada', type:'application',
@@ -13860,30 +13795,15 @@ const ROC_QUESTIONS = [
   {id:'pr6', lvl:2, cat:'operations', type:'scenario',
    q:'During shift turnover you discover a critical alarm was never escalated by the previous operator. What do you do?',
    a:'<ul><li>Assess the current condition immediately</li><li>Determine whether the issue is still active</li><li>Perform any required notifications immediately</li><li>Begin troubleshooting or restoration if appropriate</li><li>Document all actions</li><li>Inform supervision that the event was missed or not escalated properly</li><li>Ensure complete turnover documentation so the issue is fully understood</li></ul>'},
-  {id:'pr7', lvl:3, cat:'operations', type:'scenario',
-   q:'What would you do if you observed another operator taking shortcuts with procedures?',
-   a:'<ul><li>Address the concern professionally</li><li>Ensure safe operation immediately</li><li>Correct the issue if possible</li><li>Discuss the procedure with the operator</li><li>Escalate to supervision if the behavior continues or presents significant risk</li><li>Document concerns appropriately if required</li></ul><strong>See something, say something.</strong>'},
-  {id:'pr8', lvl:2, cat:'operations', type:'application',
-   q:'What information is most important when escalating an issue to management?',
-   a:'<ul><li>Site name</li><li>Time of event</li><li>Equipment affected</li><li>Current plant status</li><li>Safety concerns (if any)</li><li>Actions already taken and who has been contacted</li><li>Current suspected cause</li><li>Assistance requested</li><li>Estimated restoration time (if known)</li><li>Planned next steps</li></ul><strong>For a major generation loss, also include:</strong> MW lost, percentage of site affected, utility notifications completed, site personnel status, and restoration efforts underway.<br><br><em>“If I’m waking up to a call when I’m away, I need as much information as possible to help diagnose.”</em>'},
   {id:'pr9', lvl:3, cat:'operations', type:'scenario',
    q:'How would you coordinate field personnel, management and external stakeholders during a critical event?',
    a:'<ul><li>Establish current plant status</li><li>Communicate with grid entities as required</li><li>Coordinate with field personnel</li><li>Notify required contacts such as site owners and asset managers</li><li>Provide concise, factual updates</li><li>Maintain awareness of changing conditions</li><li>Continue documenting all actions</li><li>Provide final restoration update</li></ul>'},
   {id:'g11', lvl:1, cat:'grid', type:'conceptual',
    q:'What are the three fundamental responsibilities of the ROC?',
    a:'Monitoring and reporting the following:<ol style="margin-left:14px;"><li><strong>AVR status, voltage schedule, capacitor and reactor banks</strong></li><li><strong>Site following ADS / AGC</strong></li><li><strong>Site fully available</strong> — MWh, MW and ancillary services</li></ol>Everything else the ROC does follows from these three. If you are not sure whether something matters, ask which of the three it affects.'},
-  {id:'op15', lvl:2, cat:'operations', type:'application',
-   q:'What information would you review first when investigating a plant performance issue?',
-   a:'<ul><li>SCADA alarms and notifications</li><li>Power production trends (MW/MWh)</li><li>Equipment status — inverters, turbines, battery containers, breakers</li><li>Site availability and capability</li><li>Voltage, current, frequency and power factor data</li><li>Weather and environmental conditions</li><li>Communications status (SCADA / network health)</li><li>Active outages or work orders</li><li>Previous operator logs and shift turnover notes</li></ul>'},
-  {id:'pr10', lvl:2, cat:'operations', type:'procedure',
+  {id:'pr10', lvl:2, cat:'procedures', type:'procedure',
    q:'What should a clear log or report on an event contain?',
-   a:'<ul><li>Record the <strong>exact time</strong> of the event</li><li>Describe what occurred factually, without assumptions</li><li>Document alarms, equipment affected and MW impact</li><li>Record all troubleshooting steps performed</li><li>Document communications with field personnel, grid entities and management</li><li>Record restoration actions and current plant status</li><li>Include any follow-up actions or outstanding issues</li></ul>'},
-  {id:'op16', lvl:2, cat:'operations', type:'application',
-   q:'You identify an issue at a site. How do you troubleshoot it and lead the restoration attempt?',
-   a:'<ul><li>Verify the issue through SCADA and alarms</li><li>Identify the equipment affected</li><li>Review recent events, switching, weather and maintenance activities</li><li>Determine if the issue appears to be communications, SCADA controls or equipment related</li><li>Coordinate with the site team to gather additional information</li><li>Attempt approved restoration procedures when appropriate</li><li>Continue monitoring and escalate if restoration is unsuccessful</li></ul>'},
-  {id:'pr11', lvl:2, cat:'operations', type:'application',
-   q:'What does it mean to operate and make decisions independently, without supervisor or manager support?',
-   a:'<ul><li>Assess the issue and determine safety and impact</li><li>Review alarms, SCADA, event logs and current operating conditions</li><li><strong>Follow applicable procedures without waiting for direction</strong></li><li>Coordinate with field personnel or third parties as required</li><li>Make operational decisions within your authority</li><li>Escalate only when required by procedure, or when operational limits are exceeded</li><li>Document actions taken and reasoning in the operating log</li></ul>'},
+   a:'A log or report has to let someone who was not there reconstruct what happened.<br><br><strong>Always:</strong> time, site, what was observed, what you did, who you spoke to and when, and the current state.<br><br><strong>Escalating adds:</strong> what you have already tried, MW impact, whether it is still degrading, and what you need from them. Managers do not need the full history, they need the decision in front of them.<br><br><strong>Switching or outage logs add:</strong> equipment identifier, who authorised it, and the outage ticket number.'},
   {id:'op17', lvl:3, cat:'operations', type:'scenario',
    q:'SCENARIO: Harquahala 2 PV suddenly drops to 60 MW output. How would you investigate?',
    a:'<ul><li>Verify actual production loss</li><li>Check irradiance and weather conditions</li><li>Determine if the reduction is site-wide or limited to specific equipment</li><li>Review inverter availability</li><li>Check tracker status</li><li>Review alarms and event history</li><li><strong>Verify no curtailment or dispatch instructions are active</strong></li><li>Identify whether production loss matches unavailable equipment</li><li>Coordinate with field personnel if equipment issues are suspected</li></ul>'},
@@ -13934,7 +13854,7 @@ const ROC_QUESTIONS = [
    choices:['The ISO','The Scheduling Coordinator','The Transmission Operator','The site owner'],
    answer:2,
    a:'<strong>VAR-002 puts the obligation between the GOP and its associated TOP.</strong> Not the ISO, not the SC. NERC enforcement actions under VAR-002 are consistently for failing to notify the TOP.<br><br>Notify immediately, every occurrence, however brief.'},
-  {id:'pk2', lvl:2, cat:'operations', type:'pick-one',
+  {id:'pk2', lvl:2, cat:'procedures', type:'pick-one',
    q:'An outage of 50MW or more at Peregrine or Northstar requires an extra filing. With whom?',
    choices:['NERC','WECC','CPUC','The Balancing Authority'],
    answer:2,
@@ -13992,10 +13912,9 @@ const ROC_CATEGORIES = [
   {key:'voltage',    label:'Voltage, Reactive Power & AVR', icon:'⚡'},
   {key:'dispatch',   label:'Dispatch: ADS / AGC',          icon:'📡'},
   {key:'scada',      label:'SCADA, Alarms & Recognition',  icon:'🖥️'},
-  {key:'operations', label:'Operations & Procedures',      icon:'📋'},
+  {key:'procedures', label:'Procedures & Checklists',      icon:'⚙️'}, {key:'operations', label:'Operations & Judgement',      icon:'📋'},
   {key:'standards',  label:'NERC Standards',               icon:'📜'},
   {key:'plant',      label:'Plant Architecture',           icon:'🏭'},
-  {key:'rapid',      label:'Rapid Fire',                   icon:'🎯'},
 ];
 
 let rocProgress = {};
@@ -14206,6 +14125,442 @@ function ebPick(k){
   box.style.display=""; box.innerHTML='<div class="eb-d-t">'+d[0]+'</div><div class="eb-d-b">'+d[1]+'</div>';
 }
 
+// The three-letter family in front of every NERC standard number. Worth having
+// to hand: a document citing VAR-002 means nothing until you know VAR is the
+// voltage family.
+const STD_PREFIXES = [
+  ['BAL', 'Balancing'],
+  ['COM', 'Communications'],
+  ['EOP', 'Emergency Preparedness and Operations'],
+  ['FAC', 'Facilities'],
+  ['INT', 'Interchange'],
+  ['IRO', 'Interconnection Reliability Operations'],
+  ['MOD', 'Modeling'],
+  ['PER', 'Personnel'],
+  ['PRC', 'Protection and Control'],
+  ['TOP', 'Transmission Operations'],
+  ['TPL', 'Transmission Planning'],
+  ['VAR', 'Voltage and Reactive'],
+  ['CIP', 'Critical Infrastructure Protection'],
+];
+// The standards under each family that a GOP operator is most likely to meet,
+// either on the exam or in a compliance conversation. Not the full catalogue —
+// NERC has hundreds and most are planner or owner obligations. Version numbers
+// are deliberately left off because they change; the library link has current.
+const STD_DETAIL = {
+  BAL: [['BAL-001','Control ACE and keep it inside the balancing limits','ACE is the gap between what your Balancing Authority is generating and what it owes. The standard sets how far it can drift and for how long.'],
+        ['BAL-002','Carry and deploy contingency reserve after a disturbance','When a generator trips, the BA has to replace that MW from reserve within a set recovery window and then restore the reserve itself.'],
+        ['BAL-003','Meet your share of frequency response','When frequency falls, resources are expected to arrive without being asked. Each BA is measured against its own obligation after real events.'],
+        ['BAL-005','Metering and data that feed ACE must be accurate','ACE is only as good as the telemetry behind it. Bad metering can push a whole area into an apparent imbalance that is not real.']],
+  COM: [['COM-001','Have working voice and data paths, plus backups','You must be able to reach the RC, the BA and your TOP, and keep reaching them when the primary path fails. This is why backup numbers matter.'],
+        ['COM-002','Three-part communication on operating instructions','The issuer states the instruction, the receiver repeats it back, the issuer confirms. The most visible standard day to day.']],
+  EOP: [['EOP-004','Report defined events to NERC and your region','Certain events must be reported whether or not anything was damaged. Loss of monitoring, loss of comms and unplanned load loss all have thresholds.'],
+        ['EOP-005','System restoration from blackstart resources','Blackstart units must start without the grid and be tested on a schedule. Restoration follows a written plan, not improvisation.'],
+        ['EOP-008','A working backup control centre','If the primary control centre is lost, operations continue elsewhere within a defined time, with the data and comms to actually run the system.'],
+        ['EOP-011','Emergency operations plans, including load shedding','Covers capacity and energy emergencies, including the authority to shed load and the obligation to notify before you get there.']],
+  FAC: [['FAC-001','Interconnection requirements for new facilities','Sets what a new generator or line must satisfy before it can connect. The standard behind the studies in an interconnection agreement.'],
+        ['FAC-003','Vegetation management on transmission lines','Trees into lines caused the 2003 blackout. Sets clearance and inspection obligations on transmission owners.'],
+        ['FAC-008','Establish and document facility ratings','Every facility needs a documented rating with the assumptions behind it. Your nameplate and seasonal limits come from this work.'],
+        ['FAC-011','The methodology used to set SOLs','The method used to calculate a limit, not the limit itself. Documented and shared so everyone derives them the same way.'],
+        ['FAC-014','Establish the SOLs themselves','The actual SOLs and IROLs the system is operated to, produced using the FAC-011 methodology.']],
+  INT: [['INT-004','Dynamic interchange transaction modifications','Covers changes to a transaction already running, so the energy accounting stays correct on both sides.'],
+        ['INT-006','Evaluate interchange before it is implemented','Before interchange is implemented someone confirms it is deliverable and does not break a limit.'],
+        ['INT-009','Implement interchange as confirmed','What was confirmed is what actually flows. Deviations have to be accounted for.']],
+  IRO: [['IRO-001','RC authority \u2014 its directives are followed','The RC can tell a BA or TOP what to do in real time and they are obliged to act. The backbone of the authority chain.'],
+        ['IRO-002','RC monitoring and analysis tools','The RC must have the tools and visibility to see a developing problem, including monitoring and alarming that works.'],
+        ['IRO-008','Operational planning and real-time analyses','Studies run ahead of time and again in real time, to see what the next contingency would do before it happens.'],
+        ['IRO-009','Act to prevent or mitigate an IROL exceedance','If an IROL is exceeded the RC must act within 30 minutes. Curtailing generation is one lever, which is where a GOP feels it.'],
+        ['IRO-010','RC data specification \u2014 what you must provide','The RC publishes the data it needs and you must provide it. Telemetry gaps at your site become a compliance matter here.'],
+        ['IRO-014','Coordination between Reliability Coordinators','Neighbouring RCs coordinate so a fix in one footprint does not create a problem in the next.']],
+  MOD: [['MOD-025','Verify real and reactive power capability','Periodic verification that the plant can actually produce the real and reactive power the model claims. Usually a staged test.'],
+        ['MOD-026','Verify generator excitation and voltage control models','The excitation and voltage control model has to match how the plant really behaves, verified by test.'],
+        ['MOD-027','Verify turbine and governor models','Same idea for turbine and governor response, so frequency studies are built on real behaviour.'],
+        ['MOD-032','Supply data for system modelling','Owners supply the data used to build the interconnection-wide model. Bad data here shows up as bad study results everywhere.']],
+  PER: [['PER-003','Operators on the BES must hold NERC certification','Operators with real-time BES authority must hold a current NERC certification. The standard behind the exam you are studying for.'],
+        ['PER-005','Training programmes for operating personnel','Training built from an analysis of what the job actually requires, not generic material, and refreshed on a cycle.'],
+        ['PER-006','Specific training on protection systems and RAS','Specific training so operators understand how protection systems and RAS behave, and what a trip actually means.']],
+  PRC: [['PRC-001','Know your protection systems and coordinate them','Operators need to know what protection is in service, how it is coordinated, and be told when it changes.'],
+        ['PRC-004','Identify and correct protection misoperations','When a relay operates wrongly it has to be investigated and corrected, not just reset.'],
+        ['PRC-005','Maintain and test protection systems','Maintenance and testing on a defined interval, with records. A relay nobody has tested is a relay nobody can rely on.'],
+        ['PRC-019','Coordinate generator controls with its protection','Plant controls and plant protection must not fight each other. Limiters should act before protection trips the unit.'],
+        ['PRC-024','Generators must ride through defined frequency and voltage excursions','A generator must not trip within defined frequency and voltage envelopes. Tripping early turns a disturbance into a bigger one.'],
+        ['PRC-027','Coordinate protection across the interconnected system','Protection across the wider system is coordinated so the closest device clears the fault, not one further upstream.']],
+  TOP: [['TOP-001','TOP authority and responsibility in real time','Defines TOP authority over switching and real-time operation. When the TOP directs you, this is why.'],
+        ['TOP-002','Operations planning for next day and current day','Planning for next day and today, including outages and expected limits.'],
+        ['TOP-003','Data specification \u2014 what the TOP requires from you','The TOP publishes the data it requires from you and how often. Your scan values and telemetry obligations sit here.']],
+  TPL: [['TPL-001','Transmission planning performance requirements','How the system must perform under defined contingencies in planning studies, years ahead of operation.'],
+        ['TPL-007','Planning for geomagnetic disturbance events','Planning for a severe geomagnetic disturbance, which affects transformers in ways normal contingencies do not.']],
+  VAR: [['VAR-001','Voltage and reactive control, including schedules','The TOP sets voltage schedules and someone has to maintain them. This is where your setpoint originates.'],
+        ['VAR-002','Generators run in automatic voltage control at the scheduled setpoint','Run in automatic voltage control at the scheduled setpoint unless the TOP says otherwise, and tell them when you cannot.']],
+  CIP: [['CIP-002','Identify and categorise BES cyber systems','Work out which cyber systems matter and categorise them high, medium or low. Everything else in CIP follows from this.'],
+        ['CIP-003','Security management controls','The policies and accountability behind the programme, including who owns it.'],
+        ['CIP-004','Personnel training and access management','Background checks, training, and removing access promptly when someone leaves or changes role.'],
+        ['CIP-007','System security management, including patching','Patching, malware protection, logging and ports. The day-to-day hygiene of the systems themselves.'],
+        ['CIP-008','Cyber security incident reporting','A plan for identifying and reporting cyber incidents, including attempts, with defined timelines.'],
+        ['CIP-011','Protect BES cyber system information','BES cyber system information must be protected and disposed of properly. Governs what you can put in a document or email.'],
+        ['CIP-014','Physical security of critical substations','Physical protection of substations whose loss would cause instability, including risk assessment and response plans.']],
+};
+
+let stdOpen = null;
+function stdPick(p){
+  stdOpen = (stdOpen === p) ? null : p;
+  document.querySelectorAll('.std-row').forEach(r => r.classList.toggle('on', r.dataset.p === stdOpen));
+  const box = document.getElementById('std-detail');
+  if (!box) return;
+  if (!stdOpen) { box.style.display = 'none'; return; }
+  const list = STD_DETAIL[stdOpen] || [];
+  const name = (STD_PREFIXES.find(x => x[0] === stdOpen) || [])[1] || stdOpen;
+  box.style.display = '';
+  box.innerHTML = `<div class="std-d-h">${stdOpen} \u00b7 ${esc(name)}</div>`
+    + (list.length
+        ? list.map(([n, d, long]) => `<div class="std-d-row"><span class="std-d-n">${n}</span>`
+            + `<span class="std-d-t">${esc(d)}`
+            + (long ? `<span class="std-d-more">${esc(long)}</span>` : '')
+            + `</span></div>`).join('')
+        : '<div class="std-d-row">No common standards listed for this family.</div>')
+    + '<div class="std-d-foot">Most-encountered standards, not the full catalogue. '
+    + 'Version numbers change \u2014 <a href="https://www.nerc.com/pa/Stand/Pages/ReliabilityStandards.aspx" '
+    + 'target="_blank" rel="noopener">NERC Reliability Standards library \u2197</a></div>';
+}
+
+// ── Section widgets ────────────────────────────────────────
+// Voltage: the order things respond in is what new operators get wrong, and
+// prose does not convey an order the way a ladder does.
+// Procedures make more sense positioned in the shift than listed alphabetically.
+// Each stage names the procedures you would reach for at that point.
+const SHIFT_STAGES = [
+  ['Take over', '\u{1F91D}', [
+    ['Start-of-shift turnover', '12 steps. Nothing is yours until you have read the passdown and walked the open items.'],
+    ['StaySafe check-in', 'Lone worker protocol starts here, before anyone is in the field.']]],
+  ['Walk the fleet', '\u{1F50D}', [
+    ['Solar monitoring', 'Four checks, each looking for a different kind of wrong.'],
+    ['Asset scan', 'Status, voltage, AVR and nameplate for every site on your round.']]],
+  ['Something happens', '\u26A0\uFE0F', [
+    ['Triage the alarms', 'What drops everything versus what works the normal process.'],
+    ['Turbine reset', 'Steps, and the point where you stop and escalate.'],
+    ['BESS derate', 'Six steps to identify and derate rather than guess.'],
+    ['Hail stow', 'Seven steps, and the trigger that starts them.'],
+    ['Oscillation event', 'A BESS fighting itself needs the plant off AGC, not a reset.']]],
+  ['Switch or isolate', '\u26A1', [
+    ['Feeder switching', '15 steps, and the one that cannot be skipped.'],
+    ['Operating Instruction', 'Repeat it back, comply, log it. COM-002 is why.'],
+    ['Combiner box local work', 'Tech calls, ROC grants, ROC logs. Nothing operated remotely.']]],
+  ['Account for it', '\u{1F4DD}', [
+    ['Outage ticket', 'Four steps. Submitted while the event is live, not after.'],
+    ['Operator log', 'Time, site, what you saw, who you called, current state.'],
+    ['Notify ownership', 'Who hears about it, and the 50 MW filing threshold.']]],
+  ['Hand over', '\u{1F504}', [
+    ['Shift handoff', 'What is still open, what you tried, what the next operator must watch.']]],
+];
+let slOpen = 0;
+// ── Mock SCADA scenarios ────────────────────────────────────
+// The judgement questions ask what you would check. This shows the screen you
+// would be checking, with the tells sitting on it. Ok tiles are there so the
+// bad ones have to be found rather than being the only thing drawn.
+const SS_SCENARIOS = [
+  { name: 'Not following setpoint', site: 'HARQ1 · Solar',
+    tiles: [
+      ['ADS setpoint', '85 MW', 'ok',  'The market asked for 85 MW six minutes ago. That part is working.'],
+      ['Actual output', '48 MW', 'bad','37 MW short and not climbing. A ramping site would be rising; this is flat.'],
+      ['Ramp rate', '0.0 MW/min', 'bad','Nothing is moving. If this read 8 MW/min the site would just be on its way.'],
+      ['Mode', 'Remote / Auto', 'ok', 'It is accepting remote control, so this is not a local-mode problem.'],
+      ['Inverters online', '18 of 24', 'bad','Six units down. That is roughly the missing MW — the site is not refusing the setpoint, it cannot reach it.'],
+      ['Irradiance', '910 W/m²', 'ok','Plenty of sun. The shortfall is not weather.'],
+      ['Comms', 'Good', 'ok',  'Data is live, so what you are seeing is real.'],
+      ['Curtailment', 'None active', 'ok','Nobody is holding it down on purpose.'],
+    ],
+    answer: 'Six inverters offline, full sun, no curtailment — the site is <strong>incapable</strong>, not disobedient. Derate to what it can actually make, tell the SC so the schedule matches reality, and get field on the units. Telling CAISO "not following" would be wrong: it is following as far as it can.' },
+
+  { name: 'BESS oscillating', site: 'BYPS1 · BESS',
+    tiles: [
+      ['AGC signal', 'Steady ± 2 MW', 'ok','The signal coming in is calm. The movement is ours, not theirs.'],
+      ['Actual output', '+38 / −41 MW', 'bad','Swinging hard between charge and discharge every few seconds.'],
+      ['Swing period', '≈ 6 sec', 'bad','Fast and regular. A plant chasing a real signal does not do this.'],
+      ['State of charge', '54%', 'ok','Mid-range, so it is not hitting a limit and bouncing off it.'],
+      ['Mode', 'AGC', 'bad','Coming off AGC is what stops the hunting \u2014 but that is the SC call to make, not ours.'],
+      ['Cell temps', 'Rising', 'bad','Cycling this hard heats the pack. This is the clock you are working against.'],
+      ['Comms', 'Good', 'ok','Not a telemetry artefact — the plant really is doing this.'],
+      ['Alarms', '2 active', 'bad','Converter alarms, consistent with hunting.'],
+    ],
+    answer: 'Steady signal in, violent swing out, temperatures climbing: the plant is <strong>hunting</strong>.<br><br><strong>Confirm it is real first.</strong> Check telemetry quality \u2014 a laggy or dropping link can draw a swing that is not happening.<br><br><strong>Then call the SC.</strong> Coming off AGC is what stops it, but that is <strong>their decision, not ours</strong>. Tell them what you are seeing and that temperatures are climbing, and ask for direction. Notify ownership as well.<br><br>Do not reset and walk away \u2014 it will start again, and the heat is cumulative.' },
+
+  { name: 'Wind \u2014 low output', site: 'PRSE1 \u00b7 Wind',
+    tiles: [
+      ['Site wind speed', '12.5 m/s', 'ok','Strong wind \u2014 at or near where turbines reach rated output.'],
+      ['Met masts', '15.2 / 15.2 m/s', 'ok','Both masts agree, so the wind reading is trustworthy.'],
+      ['Site power', '10.2 MW', 'bad','Far below what 119 turbines should make in this wind.'],
+      ['Turbines online', '117 of 119', 'ok','Almost everything is running. This is not units down.'],
+      ['Capacity factor', '18.5%', 'bad','Very low for this wind. The number that makes you look.'],
+      ['WindCONTROL setpoint', '10.1 MW', 'bad','There it is. Site power is tracking the setpoint almost exactly.'],
+      ['Alarms / warnings', '7 / 14', 'ok','Background noise for a fleet this size, and none of it explains the MW.'],
+      ['Comms', 'Good', 'ok','The numbers are real.'],
+    ],
+    answer: 'Strong wind, almost every turbine online, and site power sitting within 0.1 MW of the WindCONTROL setpoint: the plant is <strong>doing exactly what it was told</strong>. This is curtailment, not underperformance.<br><br>Find where the setpoint came from \u2014 a curtailment instruction, a grid limit, or an operator entry \u2014 and confirm with the SC before reporting a problem that is not one. Capacity factor looks alarming here but it is just the arithmetic of being held down.<br><br>The tell worth carrying: <strong>output tracking a setpoint is compliance; output drifting below it is a fault.</strong>' },
+
+  { name: 'Output not matching', site: 'LSTH1 · Solar',
+    tiles: [
+      ['Irradiance', '880 W/m²', 'ok','Strong sun. Expected output should be near nameplate.'],
+      ['Expected', '≈ 92 MW', 'ok','What this irradiance should produce.'],
+      ['Actual output', '71 MW', 'bad','21 MW missing with no alarm raised.'],
+      ['Inverters online', '24 of 24', 'ok','Every unit reporting. Not a tripped inverter.'],
+      ['Alarms', 'None', 'bad','The absence is the tell. Something is reducing output quietly.'],
+      ['Combiner 7', 'No current', 'bad','One combiner contributing nothing. A fuse takes out several strings at once.'],
+      ['Curtailment', 'None active', 'ok','Not being held down from outside.'],
+      ['Comms', 'Good', 'ok','The numbers are real.'],
+    ],
+    answer: 'All inverters up, no alarms, and a combiner reading zero: a <strong>fuse or a tripped combiner</strong> takes out several strings quietly, which is why MW drops in a step with nothing in the alarm list. Field dispatch, log it, and tell the SC if the shortfall is material. The lesson: high irradiance with low output means look at the plant, not the weather.' },
+];
+let ssPick = 0;
+function ssRender(){
+  const tabs = document.getElementById('ss-tabs'); if (!tabs) return;
+  tabs.innerHTML = SS_SCENARIOS.map((s, i) =>
+    `<button class="tmr-seg-btn ${i === ssPick ? 'active' : ''}" onclick="ssGo(${i})">${s.name}</button>`).join('');
+  const sc = SS_SCENARIOS[ssPick];
+  document.getElementById('ss-screen').innerHTML =
+    `<div class="ss-bar"><span class="ss-site">${sc.site}</span><span class="ss-live">● LIVE</span></div>`
+    + '<div class="ss-grid">' + sc.tiles.map(([k, v, st], n) =>
+        `<div class="ss-tile ${st}" onclick="ssTell(${n})">`
+        + `<span class="ss-k">${k}</span><span class="ss-v">${v}</span></div>`).join('') + '</div>';
+  document.getElementById('ss-detail').style.display = 'none';
+  document.getElementById('ss-answer').innerHTML =
+    `<button class="ss-reveal" onclick="ssReveal()">What is going on here?</button>`;
+}
+function ssGo(i){ ssPick = i; ssRender(); }
+function ssTell(n){
+  const t = SS_SCENARIOS[ssPick].tiles[n];
+  document.querySelectorAll('.ss-tile').forEach((e, i) => e.classList.toggle('sel', i === n));
+  const box = document.getElementById('ss-detail');
+  box.style.display = '';
+  box.innerHTML = `<div class="ss-d-h">${t[0]} — ${t[1]}</div><div class="ss-d-b">${t[3]}</div>`;
+}
+function ssReveal(){
+  document.getElementById('ss-answer').innerHTML =
+    `<div class="ss-ans">${SS_SCENARIOS[ssPick].answer}</div>`;
+}
+
+function slRender(){
+  const t = document.getElementById('sl-track'); if (!t) return;
+  t.innerHTML = SHIFT_STAGES.map(([name, icon], i) =>
+    `<div class="sl-stage ${i === slOpen ? 'on' : ''}" onclick="slPick(${i})">`
+    + `<span class="sl-ico">${icon}</span><span class="sl-name">${name}</span>`
+    + `<span class="sl-n">${SHIFT_STAGES[i][2].length}</span></div>`).join('<div class="sl-arrow">\u203A</div>');
+  const [name, , items] = SHIFT_STAGES[slOpen];
+  document.getElementById('sl-detail').innerHTML =
+    `<div class="sl-d-h">${name}</div>`
+    + items.map(([n, d]) => `<div class="sl-d-row"><strong>${n}</strong><span>${d}</span></div>`).join('');
+}
+function slPick(i){ slOpen = i; slRender(); }
+
+// Voltage: there is no ladder. The plant trims inside the band on its own, and
+// the moment it leaves, the response is identical whichever way it went.
+// Voltage: the band is only half of it. The other half is why anyone cares —
+// system voltage is set upstream, the plant controls only its own reactive
+// contribution, and AVR is what delivers that minute to minute.
+const VB_INFO = {
+  sys:  ['System voltage', 'Set by the whole interconnection, not by us. Load, generation and the network between them decide what turns up at our POI. We are one contributor among hundreds.'],
+  top:  ['The TOP and the schedule', 'The Transmission Operator sets the voltage schedule for our POI and owns every reactive switching decision. VAR-001 is where that authority comes from.'],
+  poi:  ['Our POI', 'The one voltage we are measured on. Inside the band nobody calls. Outside it we call \u2014 whichever direction it went.'],
+  avr:  ['AVR \u2014 the thing actually working', 'Automatic Voltage Regulation trims our reactive output continuously to hold the setpoint. In automatic it corrects small excursions before anyone notices. Out of automatic nothing is holding voltage, and the first you hear is a phone call. VAR-002 requires it in automatic unless the TOP says otherwise.'],
+  mvar: ['Reactive power', 'MVARs are what move voltage. Injecting raises it, absorbing lowers it. The plant has a reactive capability curve \u2014 at full MW output there is less headroom left for MVARs.'],
+  caps: ['Caps and reactors', 'Coarser correction than AVR can make. Capacitors inject and raise voltage; reactors absorb and lower it. TOP-directed every time \u2014 we never switch these on our own initiative.'],
+};
+function vbPick(k){
+  const d = VB_INFO[k]; const box = document.getElementById('vb-detail'); if (!d || !box) return;
+  document.querySelectorAll('.vb-hit').forEach(e => e.classList.toggle('on', e.dataset.k === k));
+  box.style.display = '';
+  box.innerHTML = '<div class="vb-d-h">' + d[0] + '</div><div class="vb-d-b">' + d[1] + '</div>';
+}
+function vbRender(){
+  const el = document.getElementById('vb-body'); if (!el || el.childElementCount) return;
+  const tower = x => '<g stroke="#4a7fb5" stroke-width="1.6" fill="none">'
+    + '<path d="M' + (x+10) + ',96 L' + (x+16) + ',46 L' + (x+22) + ',96"/>'
+    + '<path d="M' + (x+12) + ',76 h8"/><path d="M' + (x+6) + ',58 h20"/></g>';
+  el.innerHTML = `
+    <div class="vb-sub">Tap any part. We sit on the left; the system we feed into is on the right.</div>
+    <svg viewBox="0 0 640 142" style="width:100%;height:auto;">
+      <defs><marker id="vbA2" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+        <path d="M0,0 L7,3.5 L0,7 z" fill="#8b93a1"/></marker></defs>
+      <rect x="6" y="18" width="286" height="104" rx="8" fill="#2e7d5b" opacity=".07"/>
+      <rect x="306" y="18" width="328" height="104" rx="8" fill="#2a6ba8" opacity=".06"/>
+      <text x="14" y="12" style="font:700 9.5px var(--m);fill:#2e7d5b;letter-spacing:.08em">OURS</text>
+      <text x="314" y="12" style="font:700 9.5px var(--m);fill:#2a6ba8;letter-spacing:.08em">NOT OURS</text>
+
+      <g class="vb-hit" data-k="mvar" onclick="vbPick('mvar')">
+        <rect x="22" y="52" width="48" height="38" rx="5" fill="#24405e" stroke="#4a6fa0"/>
+        <g stroke="#7f9dc4" stroke-width=".6" opacity=".7"><path d="M34,53 v36 M46,53 v36 M58,53 v36 M23,71 h46"/></g>
+        <text x="46" y="110" style="font:700 11px var(--f);fill:var(--text)" text-anchor="middle">Plant</text>
+      </g>
+      <g class="vb-hit" data-k="avr" onclick="vbPick('avr')">
+        <rect x="100" y="48" width="64" height="46" rx="6" fill="#e8f3ed" stroke="#2e7d5b" stroke-width="2.2"/>
+        <text x="132" y="76" style="font:700 13px var(--f);fill:#1a7f52" text-anchor="middle">AVR</text>
+        <text x="132" y="110" style="font:700 11px var(--f);fill:var(--text)" text-anchor="middle">Holds setpoint</text>
+      </g>
+      <g class="vb-hit" data-k="caps" onclick="vbPick('caps')">
+        <g stroke="var(--text3)" stroke-width="1.7" fill="none"><path d="M206,50 v10"/><path d="M198,60 h16"/><path d="M198,67 h16"/><path d="M206,67 v10"/></g>
+        <path d="M242,50 v27 M236,55 h12 M236,61 h12 M236,67 h12" stroke="var(--text3)" stroke-width="1.6" fill="none"/>
+        <text x="224" y="110" style="font:700 11px var(--f);fill:var(--text)" text-anchor="middle">Caps / reactors</text>
+      </g>
+
+      <g class="vb-hit" data-k="poi" onclick="vbPick('poi')">
+        <circle cx="300" cy="70" r="13" fill="var(--bg2)" stroke="#b4650f" stroke-width="2.4"/>
+        <text x="300" y="75" style="font:700 11px var(--m);fill:#b4650f" text-anchor="middle">P</text>
+        <text x="300" y="110" style="font:700 11px var(--f);fill:#b4650f" text-anchor="middle">POI</text>
+      </g>
+
+      <g class="vb-hit" data-k="top" onclick="vbPick('top')">
+        <rect x="346" y="52" width="76" height="38" rx="5" fill="var(--bg2)" stroke="#2a6ba8" stroke-width="1.7"/>
+        <text x="384" y="75" style="font:700 12px var(--f);fill:#2a6ba8" text-anchor="middle">TOP</text>
+        <text x="384" y="110" style="font:700 11px var(--f);fill:var(--text)" text-anchor="middle">Sets the schedule</text>
+      </g>
+      <g class="vb-hit" data-k="sys" onclick="vbPick('sys')">
+        ${tower(470)}${tower(528)}${tower(586)}
+        <g stroke="#4a7fb5" stroke-width="1" fill="none"><path d="M492,58 q29,10 58,0"/><path d="M550,58 q29,10 58,0"/></g>
+        <text x="554" y="110" style="font:700 11px var(--f);fill:var(--text)" text-anchor="middle">Interconnection</text>
+      </g>
+
+      <path d="M250,70 L284,70" stroke="#2e7d5b" stroke-width="1.6" marker-end="url(#vbA2)"/>
+      <path d="M340,70 L318,70" stroke="#8b93a1" stroke-width="1.6" marker-end="url(#vbA2)"/>
+      <path d="M460,70 L430,70" stroke="#8b93a1" stroke-width="1.6" marker-end="url(#vbA2)"/>
+    </svg>
+    <div id="vb-detail" style="display:none;"></div>
+    <div class="vb-grid">
+      <div class="vb-card in"><div class="vb-h">In band</div>
+        <div>AVR is doing the work. Confirm it is in automatic on the right setpoint \u2014 that is the check, not the voltage number.</div></div>
+      <div class="vb-card out"><div class="vb-h">Out of band \u2014 either direction</div>
+        <div><strong>Call the TOP</strong>, <strong>do what they direct</strong>, <strong>log it</strong>. Same three steps high or low.
+        <span class="vb-note">No email for routine out of band \u2014 the log is the record.</span></div></div>
+    </div>
+    <div class="vl-foot">We cannot move system voltage, only our share of it \u2014 and AVR in automatic is what delivers that share without anyone touching it.</div>`;
+}
+
+// Dispatch: show the MW shape each signal produces, not just when it arrives.
+// A staircase against a jitter line is the whole lesson in one picture.
+function dtRender(){
+  const el = document.getElementById('dt-body'); if (!el || el.childElementCount) return;
+  const lv = [34, 20, 20, 13, 13, 28, 28, 34];
+  let stair = '';
+  for (let k = 0; k < 8; k++) stair += `${k ? 'L' : 'M'}${k * 75},${lv[k]} L${(k + 1) * 75},${lv[k]} `;
+  let jit = 'M0,20 ';
+  for (let k = 1; k <= 120; k++)
+    jit += `L${k * 5},${(19 + Math.sin(k / 9) * 6 + (k % 3 - 1) * 2.4).toFixed(1)} `;
+  el.innerHTML = `
+    <svg viewBox="0 0 620 138" style="width:100%;height:auto;">
+      <text x="0" y="11" style="font:700 10px var(--m);fill:#b4650f">ADS \u2014 a new target every ~5 min, then it holds</text>
+      <g transform="translate(10,20)">
+        <rect width="600" height="44" rx="5" fill="var(--bg3)"/>
+        ${[0,150,300,450,600].map(x=>`<line x1="${x}" y1="0" x2="${x}" y2="44" stroke="#d98c1f" stroke-width="1" stroke-dasharray="3 3" opacity=".5"/>`).join('')}
+        <path d="${stair}" fill="none" stroke="#d98c1f" stroke-width="2.4"/><text x="0" y="58" style="font:9px var(--m);fill:var(--text3)">0 min</text><text x="600" y="58" style="font:9px var(--m);fill:var(--text3)" text-anchor="end">20 min</text>
+        ${[0,150,300,450].map(x=>`<circle cx="${x}" cy="${lv[x/75]}" r="3.6" fill="#d98c1f"/>`).join('')}
+        
+        
+      </g>
+      <text x="0" y="90" style="font:700 10px var(--m);fill:#2a6ba8">AGC \u2014 moving every few seconds, chasing frequency</text>
+      <g transform="translate(10,96)">
+        <rect width="600" height="36" rx="5" fill="var(--bg3)"/>
+        <path d="${jit}" fill="none" stroke="#2a6ba8" stroke-width="1.6"/>
+      </g>
+    </svg>
+    <div class="dt-cards">
+      <div class="dt-card ads"><div class="dt-c-h">ADS</div>
+        <div>Economic. Holds for the interval, so there is a stable number \u2014 which is why the CAISO board can show it.</div></div>
+      <div class="dt-card agc"><div class="dt-c-h">AGC</div>
+        <div>Reliability. Never settles, so there is nothing stable to display \u2014 the board shows a site is on AGC, not its setpoint.</div></div>
+    </div>
+    <div class="dt-why"><div><strong>Why it matters on shift.</strong></div>
+      <div>A site that has not reached a new ADS target yet is <em>ramping</em>, not failing \u2014 give it the interval before chasing it.</div>
+      <div>A site on AGC that stops moving is a real problem, because the signal never stops.</div>
+      <div>The board shows the ADS value and the AGC <em>mode</em>. If you need an AGC setpoint, the board cannot give it to you.</div></div>
+    <div class="dt-sum">ADS is economics on a five-minute clock. AGC is reliability on a few-second clock.</div>`;
+}
+
+const AT_ROWS = [
+  ['drop', 'Unit or site trip', 'MW is gone. Work the Site Trip playbook.'],
+  ['drop', 'Fire, smoke or gas alarm', 'Life safety. Notify immediately, nobody dispatched until cleared.'],
+  ['drop', 'BESS thermal or HVAC alarm', 'Temperature runs away fast. Treat as urgent.'],
+  ['drop', 'Comms loss to a site', 'You are blind. Confirm it is comms, not the plant.'],
+  ['work', 'Transformer alarm', 'Notify the site lead and raise a work order.'],
+  ['drop', 'Intrusion or forced entry', 'Someone is on site who should not be. Notify immediately; CIP and REGEV apply.'],
+  ['work', 'Single inverter fault', 'Attempt a reset per playbook, then dispatch field if it will not clear.'],
+];
+function atRender(){
+  const el = document.getElementById('at-body'); if (!el || el.childElementCount) return;
+  const col = (k, title, sub) => `<div class="at-col ${k}">`
+    + `<div class="at-banner ${k}">${title}<span>${sub}</span></div>`
+    + AT_ROWS.filter(r => r[0] === k).map(r =>
+        `<div class="at-item"><strong>${r[1]}</strong><span>${r[2]}</span></div>`).join('')
+    + '</div>';
+  el.innerHTML = '<div class="at-grid">'
+    + col('drop', '\u{1F6D1} Drop what you are doing', 'safety or MW at stake')
+    + col('work', '\u{1F527} Work the normal process', 'real, but not this second')
+    + '</div><div class="vl-foot">Never silence an alarm you have not acknowledged and understood.</div>';
+}
+
+// Procedures: the daily checklist is the one part of the shift that is written
+// down and fixed, so show that rather than an invented shape for the day.
+const SHIFT_PHASES = [
+  ['Start of shift', '\u{1F6AA}', [
+    'Notify the ROC in the Teams chat that you are on the way',
+    'Clock in at the office door (DSPTCH)',
+    'Check the dry-erase and outage board',
+    'Take instructions from the offgoing operator',
+    'Log into D1 and D2 duty site SCADAs',
+    'Fill out the ROCC1 Operator Log (onsite)',
+    'Complete the Asset Scanning Tool and upload']],
+  ['End of shift', '\u{1F3C1}', [
+    'Leave instructions for the oncoming operator in Teams',
+    'Fill out the ROCC1 Operator Log (offsite)',
+    'Log out of all sites directly',
+    'Leave the ROCC only once relief is logged into their sites',
+    'Clock out (DSPTCH)']],
+];
+function slRender(){
+  const el = document.getElementById('sl-body'); if (!el || el.childElementCount) return;
+  el.innerHTML = '<div class="sl-cols">' + SHIFT_PHASES.map(([name, icon, steps]) =>
+    `<div class="sl-col"><div class="sl-col-h">${icon} ${name}<span>${steps.length} steps</span></div>`
+    + steps.map((s, n) => `<div class="sl-s"><span class="sl-s-n">${n + 1}</span><span>${s}</span></div>`).join('')
+    + '</div>').join('') + '</div>'
+    + '<div class="vl-foot">Straight from the Daily Checklist playbook. Everything else here is a procedure for a situation, not a fixed point in the shift.</div>';
+}
+
+// Collapse a reference widget — useful the first few times, noise after that.
+function rocWToggle(hdr){
+  const w = hdr.parentElement;
+  const open = !w.classList.toggle('collapsed');
+  const car = hdr.querySelector('.roc-w-car');
+  if (car) car.textContent = open ? '\u25BE' : '\u25B8';
+  try { localStorage.setItem('rocW_' + w.id, open ? '1' : '0'); } catch(e) {}
+}
+function rocWRestore(id){
+  try {
+    if (localStorage.getItem('rocW_' + id) === '0') {
+      const w = document.getElementById(id);
+      if (w) { w.classList.add('collapsed');
+        const car = w.querySelector('.roc-w-car'); if (car) car.textContent = '\u25B8'; }
+    }
+  } catch(e) {}
+}
+
+function rocWidgets(f){
+  const show = (id, on, fn) => { const el = document.getElementById(id); if (!el) return;
+    el.style.display = on ? '' : 'none'; if (on && fn) { fn(); rocWRestore(id); } };
+  show('scadasim',  f === 'operations', ssRender);
+  show('shiftline', f === 'procedures', slRender);
+  show('vladder',   f === 'voltage',  vbRender);
+  show('dtimeline', f === 'dispatch', dtRender);
+  show('atriage',   f === 'scada',    atRender);
+}
+
+function stdShow(on){
+  const w = document.getElementById('stdref'); if (!w) return;
+  w.style.display = on ? '' : 'none';
+  if (!on) return;
+  const g = document.getElementById('std-grid'); if (!g || g.childElementCount) return;
+  g.innerHTML = STD_PREFIXES.map(([p, n]) =>
+    `<div class="std-row" data-p="${p}" onclick="stdPick('${p}')">`
+    + `<span class="std-p">${p}</span><span class="std-n">${esc(n)}</span>`
+    + `<span class="std-c">${(STD_DETAIL[p] || []).length}</span></div>`).join('');
+}
+
 function diaTab(which, btn){
   const map = { build:'dia-pane-build', sld:'sld-widget-container', pmap:'pmap-widget-container' };
   Object.entries(map).forEach(([k,id])=>{
@@ -14314,10 +14669,12 @@ function rocSetFilter(f, btn) {
 
   rocRender();
   try { diaShow(f === 'plant'); } catch(e) {}
+  try { stdShow(f === 'standards'); } catch(e) {}
+  try { rocWidgets(f); } catch(e) {}
 }
 
 function rocPopulateTopicCounts() {
-  const cats = ['all','grid','voltage','dispatch','scada','operations','standards','plant','rapid'];
+  const cats = ['all','grid','voltage','dispatch','scada','procedures','operations','standards','plant'];
   cats.forEach(c => {
     const el = document.getElementById('roc-tc-' + c);
     if (!el) return;
@@ -14816,9 +15173,10 @@ function rocRender() {
     const isOpen = openCats.size ? openCats.has(catKey) : ci===0;
     html += `<div class="roc-section${isOpen?' open':''}" data-cat="${catKey}">
       <div class="roc-section-hdr" onclick="rocToggleSection(this.parentElement)">
+        <span class="roc-w-eyebrow prac">PRACTICE</span>
         <span class="roc-section-icon">${catDef.icon}</span>
-        <span class="roc-section-name">${catDef.label}</span>
-        <span class="roc-section-count">${catQs.length} questions</span>
+        <span class="roc-section-name">${usedCats.length > 1 ? catDef.label : 'Practice Questions'}</span>
+        <span class="roc-section-count">${catQs.length}</span>
         <div class="roc-section-prog"><div class="roc-section-prog-fill" data-sect-fill="${catKey}" style="width:${pct}%"></div></div>
         <span class="roc-section-chevron">▼</span>
       </div>
@@ -15529,6 +15887,20 @@ function wosRowForDate(d) {
 // it, so the tile can show "who's on" prominently and "who's next" faded
 // beneath it — no persistent state to track, this is recomputed fresh
 // every render from whatever time it is right now.
+// How a given date's row splits between days and nights. The old pattern ran
+// 2 day + 1 night; the new one runs 3 + 2, so position alone is not enough.
+function wosSplit(d, row){
+  if (!row) return null;
+  const key = wosDateKey(d);
+  if (key >= SCHED_CUTOVER) {
+    try {
+      const r = window.r27RowForDate(d);
+      if (r && r.day.length) return { day: r.day, night: r.night };
+    } catch (e) {}
+  }
+  return { day: row.slice(0, 2), night: row.slice(2) };
+}
+
 function wosCurrentAndNext() {
   const now = new Date();
   const hour = now.getHours();
@@ -15537,17 +15909,19 @@ function wosCurrentAndNext() {
   if (hour >= 6 && hour < 18) {
     // Currently day shift — nights tonight (same date) are next.
     const row = wosRowForDate(today);
-    if (!row) return null;
-    current = { label: 'Day Shift', names: [row[0], row[1]] };
-    next = { label: 'Nights', names: [row[2]] };
+    const sp = wosSplit(today, row);
+    if (!sp) return null;
+    current = { label: 'Day Shift', names: sp.day };
+    next = { label: 'Nights', names: sp.night };
   } else if (hour >= 18) {
     // Currently night shift, started this evening — tomorrow's days are next.
     const row = wosRowForDate(today);
     const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
     const nextRow = wosRowForDate(tomorrow);
-    if (!row || !nextRow) return null;
-    current = { label: 'Night Shift', names: [row[2]] };
-    next = { label: 'Days', names: [nextRow[0], nextRow[1]] };
+    const sp = wosSplit(today, row), spN = wosSplit(tomorrow, nextRow);
+    if (!sp || !spN) return null;
+    current = { label: 'Night Shift', names: sp.night };
+    next = { label: 'Days', names: spN.day };
   } else {
     // Before 6am — still last night's shift (row lives on yesterday's
     // date), today's days start soon and are next.
@@ -15555,8 +15929,8 @@ function wosCurrentAndNext() {
     const row = wosRowForDate(yesterday);
     const todayRow = wosRowForDate(today);
     if (!row || !todayRow) return null;
-    current = { label: 'Night Shift', names: [row[2]] };
-    next = { label: 'Days', names: [todayRow[0], todayRow[1]] };
+    current = { label: 'Night Shift', names: (wosSplit(yesterday, row)||{night:[]}).night };
+    next = { label: 'Days', names: (wosSplit(today, todayRow)||{day:[]}).day };
   }
   return { current, next };
 }
@@ -15809,10 +16183,13 @@ function homeRenderGlance() {
 
   const windRowsEl = document.getElementById('glance-wind-rows');
   if (windRowsEl) {
-    if (!wxPins.length) {
+    const windSites = (typeof SITES !== 'undefined' ? SITES : [])
+        .filter(s => s.lat != null && /wind/i.test(s.notes || ''))
+        .filter((s, n, a) => a.findIndex(x => x.name === s.name) === n);
+      if (!windSites.length) {
       windRowsEl.innerHTML = '<div class="glance-tile-sub">No sites pinned</div>';
     } else {
-      windRowsEl.innerHTML = '<div class="wind-mini-grid">' + wxPins.map(p => {
+      windRowsEl.innerHTML = '<div class="wind-mini-grid">' + windSites.map(p => {
         const d = wxFleetData[p.name];
         const go = `onclick="event.stopPropagation();homeOpenSiteWx('${esc(p.name)}')"`;
         if (!d || !d.ok) return `<div class="wind-mini-cell" ${go}><span class="wm-site">${esc(p.name)}</span><span class="wm-val">—</span></div>`;
@@ -17326,20 +17703,78 @@ function currInitOnce(){
   });
   const dateInp=document.getElementById('curr-date-input');
   if(dateInp) dateInp.value=isoDate(currStart);
-  document.getElementById('curr-crew-date').value=isoDate(currStart);
+  (document.getElementById('curr-crew-date')||{}).value=isoDate(currStart);
   updateCurrIndicator();
   currCrewRender();
+}
+
+// 52 rows where "off" shouted as loudly as the shifts made the pattern
+// invisible. Mute the off days, anchor on this week, and show a quarter by
+// default — the 7-day night blocks then read as solid runs.
+let currIndAll = false;
+function currIndToggleAll(btn){
+  currIndAll = !currIndAll;
+  if (btn) btn.textContent = currIndAll ? 'Show 12 weeks' : 'Show all 52 weeks';
+  currIndRender();
+}
+// The most common question on this page is "who is on right now", and the
+// month grid does not answer it without reading. One line, at the top.
+// Only worth showing when you have navigated away from the current week.
+function currJumpVis(){
+  const b = document.getElementById('curr-jump-today'); if (!b) return;
+  let away = false;
+  try {
+    const here = snapToSunday(new Date()).getTime();
+    away = snapToSunday(new Date(currStart)).getTime() !== here;
+  } catch(e) {}
+  b.style.display = away ? '' : 'none';
+}
+
+function currNowRender(){
+  const el = document.getElementById('curr-now'); if (!el) return;
+  const today = new Date(), iso = isoDate(today);
+  let row = null;
+  try {
+    if (iso >= SCHED_CUTOVER) row = window.r27RowForDate(today);   // same source as the calendar
+  } catch(e) {}
+  if (!row) { try { row = currGetDay(iso); } catch(e) {} }
+  if (!row || !row.day) { el.innerHTML = ''; return; }
+  const hr = today.getHours();
+  const onDays = hr >= 6 && hr < 18;
+
+  el.innerHTML =
+      `<span class="cn-lbl">On shift today</span>`
+    + `<span class="cn-tag ${onDays ? 'on' : ''}">Days</span>`
+    + `<span class="cn-names">${row.day.map(esc).join(', ') || '\u2014'}</span>`
+    + `<span class="cn-tag ${onDays ? '' : 'on'}">Nights</span>`
+    + `<span class="cn-names">${row.night.map(esc).join(', ') || '\u2014'}</span>`
+    ;
 }
 
 function currIndRender(){
   const name=document.getElementById('curr-op-select').value;
   const tbody=document.getElementById('curr-ind-body');
-  if(!name){tbody.innerHTML='<tr><td colspan="9" class="empty-state">Pick an operator above to see their full schedule.</td></tr>';return;}
+  const sumEl=document.getElementById('curr-ind-summary');
+  if(!name){
+    tbody.innerHTML='<tr><td colspan="9" class="empty-state">Pick an operator above to see their full schedule.</td></tr>';
+    if(sumEl) sumEl.innerHTML=''; return;
+  }
   const td=isoDate(new Date());
-  const offBadge=`<span class="rbadge off">off</span>`;
+  const offBadge=`<span class="rbadge off">\u00b7</span>`;
 
+  // start at the current week when we can, so you are looking at now
+  let startWeek = 0;
+  if (!currIndAll) {
+    for (let w=0; w<52; w++){
+      const ws=new Date(currStart.getTime()+w*7*86400000);
+      if (td <= isoDate(new Date(ws.getTime()+6*86400000))) { startWeek=w; break; }
+    }
+  }
+  const endWeek = currIndAll ? 52 : Math.min(52, startWeek+12);
+
+  let worked=0, nights=0, firstNight=null;
   tbody.innerHTML='';
-  for(let w=0;w<52;w++){
+  for(let w=startWeek;w<endWeek;w++){
     const weekStart=new Date(currStart.getTime()+w*7*86400000);
     const weekEnd=new Date(weekStart.getTime()+6*86400000);
     const f=dt=>`${dt.getMonth()+1}/${dt.getDate()}`;
@@ -17354,8 +17789,9 @@ function currIndRender(){
       const e=currGetDay(iso);
       let role=null;
       if(e.day.includes(name))role='Day';else if(e.night.includes(name))role='Night';
+      if(role && iso>=td){ worked++; if(role==='Night'){ nights++; if(!firstNight) firstNight=dObj; } }
       const isToday=iso===td;
-      const wrap=cnt=>`<td${isToday?' class="today-cell"':''}>${cnt}</td>`;
+      const wrap=cnt=>`<td class="${isToday?'today-cell ':''}${role?'':'is-off'}">${cnt}</td>`;
       const _oi = role ? offInfo(name, iso) : null;
       cells.push(wrap(
         !role ? offBadge
@@ -17371,10 +17807,22 @@ function currIndRender(){
     tr.innerHTML=`<td class="wk-lbl">Wk ${w+1}</td><td class="date-lbl">${dateRange}</td>${cells.join('')}`;
     tbody.appendChild(tr);
   }
+
+  if (sumEl) {
+    const span = currIndAll ? 'the next 52 weeks' : 'the next 12 weeks';
+    const fn = firstNight ? `${firstNight.getMonth()+1}/${firstNight.getDate()}` : null;
+    sumEl.innerHTML =
+        `<span class="ind-sum-n">${worked}</span> shifts in ${span}`
+      + ` \u00b7 <span class="ind-sum-n">${nights}</span> of them nights`
+      + (fn ? ` \u00b7 next nights start <span class="ind-sum-n">${fn}</span>` : '')
+      + ` <button class="ind-sum-btn" onclick="currIndToggleAll(this)">`
+      + (currIndAll ? 'Show 12 weeks' : 'Show all 52 weeks') + '</button>';
+  }
 }
 
 function currCrewRender(){
-  const iso=document.getElementById('curr-crew-date').value;
+  if (!document.getElementById('curr-crew-date')) return;   // view removed
+  const iso=(document.getElementById('curr-crew-date')||{}).value;
   const el=document.getElementById('curr-crew-card');
   const lbl=document.getElementById('curr-crew-label');
   if(!iso){
@@ -17412,7 +17860,7 @@ function currNavDay(dir){
   const d=inp.value?new Date(inp.value+'T00:00:00'):new Date();
   d.setDate(d.getDate()+dir); inp.value=isoDate(d); currCrewRender();
 }
-function currGoToday(){document.getElementById('curr-crew-date').value=isoDate(new Date());currCrewRender();}
+function currGoToday(){(document.getElementById('curr-crew-date')||{}).value=isoDate(new Date());currCrewRender();}
 
 function currCalNav(dir){
   currCalState.month+=dir;
@@ -17892,13 +18340,14 @@ function currGetDay(iso){ return activeModel().getDay(iso); }
 
 
 function applyCurrStart(val){
+  setTimeout(()=>{ try{ currJumpVis(); }catch(e){} }, 0);
   if(!val) return;
   currStart = snapToSunday(new Date(val+'T00:00:00'));
   const inp = document.getElementById('curr-date-input');
   if(inp) inp.value = isoDate(currStart);
   updateCurrIndicator();
   currIndRender();
-  document.getElementById('curr-crew-date').value = isoDate(currStart);
+  (document.getElementById('curr-crew-date')||{}).value = isoDate(currStart);
   currCrewRender();
   currCalState.year = currStart.getFullYear();
   currCalState.month = currStart.getMonth();
@@ -17906,6 +18355,7 @@ function applyCurrStart(val){
 }
 
 function setCurrToThisWeek(){
+  setTimeout(()=>{ try{ currJumpVis(); }catch(e){} }, 0);
   applyCurrStart(isoDate(new Date()));
 }
 
@@ -18071,7 +18521,6 @@ renderChips();
 updateSelect();
 initTimeOffListener();
 initSharedRemindersListener();
-initSiteStatusListener();
 homeInit();
 initPbSuggestionsListener();
 initSwSharedTplsListener();
@@ -18122,6 +18571,16 @@ setTimeout(() => {
   window.toShowAdd=toShowAdd;
   window.alertToggle=alertToggle;
   window.hfcForce=hfcForce;
+  window.asSetDuty=asSetDuty;
+  window.currIndToggleAll=currIndToggleAll;
+  window.currNowRender=currNowRender;
+  window.currJumpVis=currJumpVis;
+  window.stdPick=stdPick;
+  window.vbPick=vbPick;
+  window.ssGo=ssGo;
+  window.ssTell=ssTell;
+  window.ssReveal=ssReveal;
+  window.rocWToggle=rocWToggle;
   window.copyVidal=copyVidal;
   window.clearVidal=clearVidal;
   window.processVidal=processVidal;
@@ -18164,7 +18623,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.12';
+const APP_VERSION = 'v3.86';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18343,10 +18802,10 @@ function kbClose(){ document.getElementById('kb-modal').classList.remove('open')
   let awaitingGo = false, goTimer = null;
   const SEARCH_BY_VIEW = {
     'view-playbooks': 'pb-search-inp',
-    'view-intel': 'wx-pin-inp',
+    'view-intel': 'wx-site-inp',
     'view-tools': 'sw-tpl-search',
   };
-  const GO = { h:'home', p:'playbooks', a:'asset', t:'ops', l:'swbuilder', c:'chron', s:'schedule' };
+  const GO = { h:'home', p:'playbooks', a:'asset', t:'ops', l:'swbuilder', s:'schedule' };
 
   function typing(e){
     const t = e.target;
@@ -18406,7 +18865,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.12</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.86</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
@@ -18429,7 +18888,6 @@ load();
       <tr><td><kbd>g</kbd> <kbd>a</kbd></td><td>Go to Asset Scan</td></tr>
       <tr><td><kbd>g</kbd> <kbd>t</kbd></td><td>Go to Toolbox</td></tr>
       <tr><td><kbd>g</kbd> <kbd>l</kbd></td><td>Go to Log Builder</td></tr>
-      <tr><td><kbd>g</kbd> <kbd>c</kbd></td><td>Go to Passdown</td></tr>
       <tr><td><kbd>g</kbd> <kbd>s</kbd></td><td>Go to Schedule</td></tr>
       <tr><td><kbd>Esc</kbd></td><td>Close a dialog or clear a search</td></tr>
       <tr><td><kbd>?</kbd></td><td>Show this list</td></tr>
