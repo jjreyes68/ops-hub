@@ -13787,6 +13787,12 @@ const ROC_QUESTIONS = [
   {id:'pa5', lvl:2, cat:'plant', type:'conceptual',
    q:'What is a single line diagram?',
    a:'A single line diagram (SLD), also called a one-line diagram, is a simplified electrical schematic that represents a three-phase power system using a single line to represent all three phases. It shows:<ul><li><strong>Generation sources</strong> — utility interconnect, generators, inverters</li><li><strong>Transformers</strong> — step-up / step-down, with voltage ratings on each side</li><li><strong>Switchgear and breakers</strong> — with voltage, current and interrupting ratings</li><li><strong>Busbars</strong> — the nodes where multiple circuits connect</li><li><strong>Metering and protection devices</strong> — CTs, PTs, relays</li><li><strong>Cables / feeders</strong> — with size and ratings noted</li><li><strong>Utility POI</strong> (point of interconnection) at the top</li></ul>'},
+  {id:'pa6', lvl:2, cat:'plant', type:'terminology',
+   q:'What is the MSUT or GSU, and where does it sit?',
+   a:'<strong>Main Step-Up Transformer</strong>, also called the <strong>Generator Step-Up</strong>. It raises the collected MV from the substation bus up to HV for the grid.<br><br>On a single line it is the large transformer symbol between the MV bus and the HV bus \u2014 the dividing line on the drawing. Below it is the plant\'s collection system; above it is the HV bus and the POI.<br><br>Two names, one piece of equipment. MSUT is the more common term on renewables, GSU is the older thermal-plant term, and you will see both in drawings and in TOP conversations.'},
+  {id:'pa7', lvl:2, cat:'plant', type:'terminology',
+   q:'What is a PCS, and what is a Block?',
+   a:'<strong>PCS \u2014 Power Conversion Station.</strong> The skid or concrete pad holding the inverter and its step-up transformer. Where LV becomes MV.<br><br><strong>Block.</strong> The section of the plant fed by a single feeder. When a tech asks to take down Block 3, they mean everything on that feeder, not the whole site.<br><br>The relationship: several PCS skids collect onto one feeder, and that feeder\'s worth of plant is a Block.'},
   {id:'op8', lvl:2, cat:'operations', type:'conceptual',
    q:'Explain the difference between availability and production.',
    a:'<ul><li><strong>Availability</strong> refers to whether a plant, inverter or asset is capable of operating when it is needed. It measures readiness — the equipment is online, healthy, and not forced out of service due to faults, maintenance or restrictions.</li><li><strong>Production</strong> refers to the actual amount of energy being generated and delivered over time, typically measured in MWh.</li></ul>A site can be fully available and producing very little (no sun, no wind), or producing well while partially unavailable.'},
@@ -18643,7 +18649,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.88';
+const APP_VERSION = 'v3.89';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18885,7 +18891,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.88</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.89</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
