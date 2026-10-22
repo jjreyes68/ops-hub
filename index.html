@@ -3235,6 +3235,10 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   padding:5px 9px;font-family:var(--m);font-size:11.5px;color:var(--text2);cursor:pointer;}
 .as-duty-sel:hover{border-color:var(--border2);}
 .as-duty-sel.on{background:var(--bbg);border-color:var(--blue);color:var(--blue);font-weight:700;}
+
+.qotd-items{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 2px;}
+.qotd-items span{font-size:11.5px;color:var(--text2);background:var(--bg3);
+  border:1px solid var(--border);border-radius:5px;padding:3px 9px;}
 </style>
 </head>
 <body>
@@ -15859,7 +15863,28 @@ function homeRenderQOTD() {
   if (!q) return;
   const catDef = ROC_CATEGORIES.find(c => c.key === q.cat) || { label: q.cat, icon: '📋' };
   document.getElementById('qotd-cat').textContent = catDef.label;
-  document.getElementById('qotd-q').textContent = q.q;
+  // Sorting, ordering, matching and pick-one questions carry the items in
+  // separate fields. Without them the prompt says "sort them" with nothing to
+  // sort, so render them under the question.
+  const qEl = document.getElementById('qotd-q');
+  qEl.textContent = q.q;
+  // buckets are { names:[...], items:[[label, bucketIndex], ...] } — take the
+  // labels only, never the bucket names or the answer index
+  const items =
+      q.buckets ? (q.buckets.items || []).map(it => Array.isArray(it) ? it[0] : it)
+    : q.order   ? q.order
+    : q.match   ? q.match.map(m => Array.isArray(m) ? m[0] : (m.l || m.left || m.a))
+    : q.choices ? q.choices.map(x => typeof x === 'string' ? x : (x.t || x.text))
+    : null;
+  const old = document.getElementById('qotd-items');
+  if (old) old.remove();
+  if (items && items.length) {
+    const box = document.createElement('div');
+    box.id = 'qotd-items';
+    box.className = 'qotd-items';
+    box.innerHTML = [...items].sort().map(t => '<span>' + esc(String(t)) + '</span>').join('');
+    qEl.insertAdjacentElement('afterend', box);
+  }
   document.getElementById('qotd-answer').innerHTML = q.a +
     `<br><a class="qotd-card-link" onclick="homeGoToStudy('${q.cat}')">Part of ROC Study: ${esc(catDef.label)} →</a>`;
   document.getElementById('qotd-answer').classList.remove('show');
@@ -18663,7 +18688,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.91';
+const APP_VERSION = 'v3.93';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18905,7 +18930,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.91</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.93</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
