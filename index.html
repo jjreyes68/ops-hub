@@ -10083,7 +10083,15 @@ function asInit() {
 }
 
 function asUpdateProgress() {
-  const sites = asSites();
+  // Mirror whatever the tabs are showing — a D1 round is done at 12 of 12,
+  // not stuck at 12 of 33.
+  let sites = asSites();
+  if (asDutyFilter) {
+    sites = sites.filter(s => s.id === 'ROCC1' || AS_DUTY[asDutyFilter].includes(s.id));
+  }
+  if (!asTypeFilter.includes('all')) {
+    sites = sites.filter(s => s.id === 'ROCC1' || asTypeFilter.includes(asGetSiteType(s)));
+  }
   const total = sites.length;
   const done  = sites.filter(s => asSiteComplete(s.id)).length;
   const pct   = total === 0 ? 0 : Math.round(done / total * 100);
@@ -10176,6 +10184,7 @@ function asSetDuty(pos){
     if (allBtn) allBtn.classList.add('active');
   }
   try { asRenderTabs(); } catch(e) {}
+  try { asUpdateProgress(); } catch(e) {}
 }
 
 function asSetTypeFilter(type, el) {
@@ -10227,6 +10236,7 @@ function asSetTypeFilter(type, el) {
 
   asRenderTabs();
   asRenderForm();
+  try { asUpdateProgress(); } catch(e) {}
 }
 
 function asRenderTabs() {
@@ -18649,7 +18659,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.89';
+const APP_VERSION = 'v3.90';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18891,7 +18901,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.89</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.90</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
