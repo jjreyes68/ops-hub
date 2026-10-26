@@ -3239,6 +3239,10 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .qotd-items{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 2px;}
 .qotd-items span{font-size:11.5px;color:var(--text2);background:var(--bg3);
   border:1px solid var(--border);border-radius:5px;padding:3px 9px;}
+
+.wos-pos{font-family:var(--m);font-size:9px;font-weight:700;letter-spacing:.06em;
+  color:var(--text3);background:var(--bg3);border-radius:4px;padding:1px 5px;margin-right:4px;
+  vertical-align:middle;}
 </style>
 </head>
 <body>
@@ -16200,7 +16204,12 @@ function homeRenderWhosOnShift() {
   const result = wosCurrentAndNext();
   if (!result) { mainEl.textContent = 'No schedule data'; return; }
   const { current, next } = result;
-  mainEl.textContent = current.names.join(' \u00b7 ');
+  // Tag each name with its duty position — the row order from the rotation is
+  // D1 D2 D3 for days and N1 N2 for nights, which is what the duty sheet uses.
+  const pos = (names, night) => names.map((n, i) =>
+    '<span class="wos-pos">' + (night ? 'N' : 'D') + (i + 1) + '</span>' + esc(n)).join(' \u00b7 ');
+  const isNight = /night/i.test(current.label);
+  mainEl.innerHTML = pos(current.names, isNight);
   document.getElementById('glance-shift-sub').innerHTML =
     esc(current.label) + ' <span style="opacity:.55;">\u00b7 Next: ' + esc(next.names.join(', ')) + ' (' + esc(next.label) + ')</span>';
 }
@@ -18688,7 +18697,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.93';
+const APP_VERSION = 'v3.94';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18930,7 +18939,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.93</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.94</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
