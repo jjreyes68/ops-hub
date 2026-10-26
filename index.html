@@ -2319,7 +2319,7 @@ body.dark #view-schedule .chip-del{ background: rgba(255,255,255,0.08); border-c
 .qotd-card-link{display:inline-block;margin-top:9px;font-size:11.5px;color:var(--blue);font-weight:600;text-decoration:none;cursor:pointer;}
 
 .glance-label{font-size:10.5px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
-.glance-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:8px;}
+.glance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px;align-items:stretch;}
 #glance-wind{grid-column:1 / -1;}
 @media(max-width:1100px){.glance-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:620px){.glance-grid{grid-template-columns:1fr;}}
@@ -3409,10 +3409,6 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <div class="glance-tile-main" id="glance-rem-main">—</div>
       <div class="glance-tile-sub" id="glance-rem-sub"></div>
     </div>
-    <div class="glance-tile" id="glance-ascan" onclick="switchView('asset', null)">
-      <div class="glance-tile-top"><span class="glance-icon">📋</span><span class="glance-tile-label">Asset Scan</span></div>
-      <div id="glance-ascan-rows"></div>
-    </div>
     <div class="glance-tile" id="glance-wind" onclick="switchView('intel', null)">
       <div class="glance-tile-top"><span class="glance-icon">💨</span><span class="glance-tile-label">Wind Fleet</span></div>
       <div id="glance-wind-rows"><div class="glance-tile-sub">—</div></div>
@@ -4068,7 +4064,6 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     </div>
   </div>
   <!-- Claim strip — who's doing which fleet this round, nothing below this changes -->
-  <div class="claim-strip" id="claim-strip"></div>
   <!-- overall progress meter -->
   <div class="as-prog-wrap" id="as-prog-wrap">
     <span class="as-prog-bolt" id="as-prog-bolt">⚡</span>
@@ -16054,93 +16049,16 @@ function wosCurrentShiftKey() {
 }
 
 const ASC_TYPES = ['BESS', 'Solar', 'Wind'];
-const ASC_TYPE_ICON = { BESS: '\ud83d\udd0b', Solar: '\u2600\ufe0f', Wind: '\ud83d\udca8' };
-let ascClaims = {};
 
-function initAscClaimsListener() {
-  if (!window.db) return;
-  window.db.collection('assetScanClaims').onSnapshot(snap => {
-    ascClaims = {};
-    snap.docs.forEach(doc => { ascClaims[doc.id] = doc.data(); });
-    ascRenderHomeTile();
-    ascRenderClaimStrip();
-  }, err => fsListenerError('assetScanClaims', err));
-}
 
 // A claim only counts if it's from the current shift — anything else is
 // stale and treated as unclaimed regardless of what's still sitting in
 // Firestore, so nothing has to actively expire it.
-function ascActiveClaim(type) {
-  const c = ascClaims[type];
-  if (!c || c.shiftKey !== wosCurrentShiftKey()) return null;
-  return c;
-}
 
-function ascRenderHomeTile() {
-  const wrap = document.getElementById('glance-ascan-rows');
-  if (!wrap) return;
-  wrap.innerHTML = ASC_TYPES.map(type => {
-    const c = ascActiveClaim(type);
-    return `<div class="asp-row">
-      <span class="asp-type">${ASC_TYPE_ICON[type]} ${type}</span>
-      <span class="asp-status ${c ? 'claimed' : 'unclaimed'}">${c ? esc(c.claimedBy) : 'Unclaimed'}</span>
-    </div>`;
-  }).join('');
-}
 
-function ascRenderClaimStrip() {
-  const wrap = document.getElementById('claim-strip');
-  if (!wrap) return;
-  wrap.innerHTML = ASC_TYPES.map(type => {
-    const c = ascActiveClaim(type);
-    return `<div class="claim-seg" id="claim-seg-${type}">
-      <div>
-        <div class="claim-seg-type">${ASC_TYPE_ICON[type]} ${type}</div>
-        <div class="claim-seg-who ${c ? 'claimed' : ''}">${c ? esc(c.claimedBy) : 'Unclaimed'}</div>
-      </div>
-      ${c
-        ? `<button class="claim-btn release" onclick="ascRelease('${type}')">Release</button>`
-        : `<button class="claim-btn claim" onclick="ascShowClaimForm('${type}')">Claim</button>`}
-    </div>`;
-  }).join('');
-}
 
-function ascShowClaimForm(type) {
-  const seg = document.getElementById('claim-seg-' + type);
-  if (!seg) return;
-  seg.innerHTML = `<div class="claim-inline-form">
-    <input type="text" id="claim-name-${type}" placeholder="Your name" onkeydown="if(event.key==='Enter')ascClaim('${type}')">
-    <button class="claim-btn claim" onclick="ascClaim('${type}')">Go</button>
-  </div>`;
-  document.getElementById('claim-name-' + type).focus();
-}
 
-async function ascClaim(type) {
-  const inp = document.getElementById('claim-name-' + type);
-  const name = inp ? inp.value.trim() : '';
-  if (!name) { showToast('Add a name first'); return; }
-  if (!window.db) { showToast('Firebase not connected'); return; }
-  try {
-    await window.db.collection('assetScanClaims').doc(type).set({
-      claimedBy: name,
-      shiftKey: wosCurrentShiftKey(),
-      claimedAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    showToast(`${type} claimed by ${name}`);
-  } catch (e) {
-    showToast('Could not claim: ' + e.message);
-  }
-}
 
-async function ascRelease(type) {
-  if (!window.db) return;
-  try {
-    await window.db.collection('assetScanClaims').doc(type).delete();
-    showToast(`${type} released`);
-  } catch (e) {
-    showToast('Could not release: ' + e.message);
-  }
-}
 
 // Home tile -> the calendar view of the current schedule. Clicking through
 // to the right sub-tab matters here: landing on Individual view with nobody
@@ -18696,7 +18614,6 @@ initSharedRemindersListener();
 homeInit();
 initPbSuggestionsListener();
 initSwSharedTplsListener();
-initAscClaimsListener();
 // #to-operator lives after this script tag, so re-run after full DOM parse
 setTimeout(() => {
   updateSelect();
@@ -18796,7 +18713,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v4.04';
+const APP_VERSION = 'v4.08';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19038,7 +18955,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v4.04</span>
+    RNWBL Ops Hub <span class="app-footer-v">v4.08</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
