@@ -3247,6 +3247,13 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .vid-parsed-note{font-family:var(--m);font-size:10.5px;font-weight:700;letter-spacing:.06em;
   color:var(--blue);background:var(--bbg);border-radius:5px;padding:3px 9px;
   display:inline-block;margin:10px 0 0;}
+
+.wos-duty{cursor:pointer;border-radius:6px;padding:1px 4px 1px 1px;
+  transition:background .12s,color .12s;}
+.wos-duty:hover{background:var(--bbg);}
+.wos-duty:hover .wos-name,.wos-duty:hover .wos-pos{color:var(--blue);}
+.wos-duty:hover .wos-pos{background:var(--bg2);}
+.wos-sep{opacity:.4;}
 </style>
 </head>
 <body>
@@ -16222,6 +16229,60 @@ function homeOpenChecklist() {
   pbOpenPlaybook('daily-checklist');
 }
 
+// Hover a duty tag to see what that position covers, and click through to the
+// scan already filtered. Built on the body so the card cannot clip it.
+function wosDutyPop(hostId){
+  const host = document.getElementById(hostId || 'glance-shift-main');
+  if (!host || host.dataset.popBound) return;
+  host.dataset.popBound = '1';
+  let pop = null;
+  const hide = () => { const e = document.getElementById('wos-duty-pop'); if (e) e.style.display = 'none'; };
+  host.addEventListener('mouseover', ev => {
+    const tag = ev.target.closest('.wos-duty'); if (!tag) return;
+    const code = tag.dataset.duty;
+    const sites = (typeof AS_DUTY !== 'undefined' && AS_DUTY[code]) || [];
+    // one popover shared by every host — two hosts each making their own
+    // would collide on the id and only the first would ever be found
+    pop = document.getElementById('wos-duty-pop');
+    if (!pop) {
+      pop = document.createElement('div');
+      pop.id = 'wos-duty-pop'; pop.className = 'nav-tz-pop';
+      pop.addEventListener('mouseleave', () => { pop.style.display = 'none'; });
+      document.body.appendChild(pop);
+    }
+    const r = tag.getBoundingClientRect();
+    pop.style.top = (r.bottom + window.scrollY + 7) + 'px';
+    pop.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 320)) + 'px';
+    pop.style.position = 'absolute';
+    pop.style.display = 'block';
+    pop.innerHTML = `<div class="nav-tz-pop-h">${code} \u00b7 scan round<span>${sites.length} sites</span></div>`
+      + (sites.length
+          ? `<div class="nav-tz-pop-l">${sites.slice().sort().map(s => '<span>' + esc(s) + '</span>').join('')}</div>`
+          : '<div class="nav-tz-pop-e">No sites listed for this position</div>')
+      + '<div class="nav-tz-pop-f">Click to open the scan for ' + code + '</div>';
+  });
+  host.addEventListener('mouseout', ev => {
+    const tag = ev.target.closest('.wos-duty'); if (!tag) return;
+    // moving between the code and the name stays inside the same pairing —
+    // only hide when the cursor actually leaves it
+    const to = ev.relatedTarget;
+    if (to && (tag.contains(to) || to.closest?.('#wos-duty-pop'))) return;
+    setTimeout(hide, 140);
+  });
+  host.addEventListener('click', ev => {
+    const tag = ev.target.closest('.wos-duty'); if (!tag) return;
+    // the card itself opens the schedule — the tag means something else
+    ev.stopPropagation(); ev.preventDefault();
+    hide();
+    try {
+      localStorage.setItem('asDuty', tag.dataset.duty);
+      switchView('asset', null);
+      setTimeout(() => { try { asSetDuty(tag.dataset.duty);
+        const s = document.getElementById('as-duty-sel'); if (s) s.value = tag.dataset.duty; } catch(e) {} }, 120);
+    } catch(e) {}
+  });
+}
+
 function homeRenderWhosOnShift() {
   const mainEl = document.getElementById('glance-shift-main');
   if (!mainEl) return;
@@ -16230,10 +16291,15 @@ function homeRenderWhosOnShift() {
   const { current, next } = result;
   // Tag each name with its duty position — the row order from the rotation is
   // D1 D2 D3 for days and N1 N2 for nights, which is what the duty sheet uses.
-  const pos = (names, night) => names.map((n, i) =>
-    '<span class="wos-pos">' + (night ? 'N' : 'D') + (i + 1) + '</span>' + esc(n)).join(' \u00b7 ');
+  const pos = (names, night) => names.map((n, i) => {
+    const code = (night ? 'N' : 'D') + (i + 1);
+    return '<span class="wos-duty" data-duty="' + code + '">'
+      + '<span class="wos-pos">' + code + '</span>'
+      + '<span class="wos-name">' + esc(n) + '</span></span>';
+  }).join('<span class="wos-sep"> \u00b7 </span>');
   const isNight = /night/i.test(current.label);
   mainEl.innerHTML = pos(current.names, isNight);
+  try { wosDutyPop('glance-shift-main'); } catch(e) {}
   document.getElementById('glance-shift-sub').innerHTML =
     esc(current.label) + ' <span style="opacity:.55;">\u00b7 Next: ' + esc(next.names.join(', ')) + ' (' + esc(next.label) + ')</span>';
 }
@@ -17839,13 +17905,22 @@ function currNowRender(){
   const hr = today.getHours();
   const onDays = hr >= 6 && hr < 18;
 
+  const tag = (names, night) => names.length
+    ? names.map((n, i) => {
+        const code = (night ? 'N' : 'D') + (i + 1);
+        return `<span class="wos-duty" data-duty="${code}">`
+             + `<span class="wos-pos">${code}</span>`
+             + `<span class="wos-name">${esc(n)}</span></span>`;
+      }).join('<span class="wos-sep"> \u00b7 </span>')
+    : '\u2014';
   el.innerHTML =
       `<span class="cn-lbl">On shift today</span>`
     + `<span class="cn-tag ${onDays ? 'on' : ''}">Days</span>`
-    + `<span class="cn-names">${row.day.map(esc).join(', ') || '\u2014'}</span>`
+    + `<span class="cn-names">${tag(row.day, false)}</span>`
     + `<span class="cn-tag ${onDays ? '' : 'on'}">Nights</span>`
-    + `<span class="cn-names">${row.night.map(esc).join(', ') || '\u2014'}</span>`
+    + `<span class="cn-names">${tag(row.night, true)}</span>`
     ;
+  try { wosDutyPop('curr-now'); } catch(e) {}
 }
 
 function currIndRender(){
@@ -18721,7 +18796,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.98';
+const APP_VERSION = 'v4.04';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18963,7 +19038,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.98</span>
+    RNWBL Ops Hub <span class="app-footer-v">v4.04</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
