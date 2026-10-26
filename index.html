@@ -12787,9 +12787,13 @@ function vidalChecks(data, capMW){
   const flags = [];
   data.forEach(h => {
     if (h.full) {
+      // The plant can only ever push its POI limit to the grid — anything the
+      // legs make beyond that charges our own banks. So a sum above POI is
+      // normal operation, not an error. A sum BELOW POI is still impossible:
+      // the site cannot deliver more than it is making.
       const sum = (h.pv || 0) + (h.bess || 0);
-      if (Math.abs(sum - h.mw) > 0.01)
-        flags.push(`${h.time}  POI ${h.mw} MW, but PV ${h.pv} + BESS ${h.bess} = ${sum}`);
+      if (sum - h.mw < -0.01)
+        flags.push(`${h.time}  POI ${h.mw} MW exceeds what the plant is making — PV ${h.pv} + BESS ${h.bess} = ${sum}`);
       if (h.pvState === 'GENERATION' && (h.pv || 0) === 0)
         flags.push(`${h.time}  PV says GENERATION at 0 MW`);
       if (h.pvState === 'IDLE' && (h.pv || 0) !== 0)
@@ -12801,8 +12805,7 @@ function vidalChecks(data, capMW){
       if (h.bessState === 'IDLE' && (h.bess || 0) !== 0)
         flags.push(`${h.time}  BESS says IDLE at ${h.bess} MW`);
     }
-    if (capMW && Math.abs(h.mw) > capMW)
-      flags.push(`${h.time}  POI ${h.mw} MW exceeds site capacity of ${capMW} MW`);
+
   });
   return flags;
 }
@@ -12814,64 +12817,79 @@ function processVidal(){
   const data = parseVidal(txt);
   if (!data) { outEl.textContent = 'Could not parse data. Please check the format.'; return; }
 
-  // consecutive hours with identical values collapse into one line
-  const groups = [];
-  let g = { start: data[0].time, startHour: data[0].hour, endHour: data[0].hour,
-            mw: data[0].mw, mvar: data[0].mvar, status: data[0].status, note: data[0].note };
-  for (let i = 1; i < data.length; i++) {
-    const h = data[i];
-    // a differing note breaks the group too, or it would be lost
-    if (h.mw === g.mw && h.mvar === g.mvar && h.status === g.status
-        && (h.note || '') === (g.note || '')) { g.endHour = h.hour; }
-    else { groups.push(g);
-           g = { start: h.time, startHour: h.hour, endHour: h.hour,
-                 mw: h.mw, mvar: h.mvar, status: h.status, note: h.note }; }
-  }
-  groups.push(g);
+  // A portal export can run several days. Split on the pasted date so each day
+  // gets its own header, grouping and checks, rather than 48 hours collapsing
+  // into one run.
+  const days = [];
+  data.forEach(h => {
+    const key = h.pdate || '';
+    let dayRec = days.find(x => x.key === key);
+    if (!dayRec) { dayRec = { key, rows: [] }; days.push(dayRec); }
+    dayRec.rows.push(h);
+  });
+  // hour numbering restarts per day for a short paste with no dates
+  days.forEach(dayRec => dayRec.rows.forEach((h, n) => { h.hour = n + 1;
+    h.time = String(n).padStart(2,'0') + ':00'; }));
 
-  // adopt the pasted date, or flag a disagreement
-  const pasted = data.map(h => h.pdate).find(Boolean);
   const dateEl = document.getElementById('vid-date');
   vidDateWarn('');
-  if (pasted) {
-    if (!dateEl.value) { dateEl.value = pasted; }
-    else if (dateEl.value !== pasted) {
-      vidDateWarn(`Pasted data is for ${pasted}, but the date above says ${dateEl.value}.`);
+  const firstDated = days.map(x => x.key).find(Boolean);
+  if (firstDated) {
+    if (!dateEl.value) { dateEl.value = firstDated; }
+    else if (dateEl.value !== firstDated && days.length === 1) {
+      vidDateWarn(`Pasted data is for ${firstDated}, but the date above says ${dateEl.value}.`);
     }
   }
 
-  let output = '';
-  const dateInput = document.getElementById('vid-date').value;
-  if (dateInput) {
-    const [year, month, day] = dateInput.split('-');
-    const date = new Date(year, month - 1, day);
-    output += `Date: ${date.toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}\n\n`;
-  }
-
-  // Capacity comes from the nameplate register so there is nothing to type
-  // and nothing to get wrong. VDSSB1 is not in there yet; it will pick up
-  // automatically once it is.
   const cap = (typeof NPCHK_SITES !== 'undefined' && NPCHK_SITES.VDSSB1 && NPCHK_SITES.VDSSB1.mw) || 0;
-  const flags = vidalChecks(data, cap);
-  if (flags.length) {
-    output += `\u26A0\uFE0F ${flags.length} issue(s) found in the submitted data:\n`;
-    flags.forEach(f => { output += '   ' + f + '\n'; });
-    output += '   Check with the scheduler before using these numbers.\n\n';
-  }
-  if (data.length !== 24) {
-    output += `\u26A0\uFE0F ${data.length} hours parsed, expected 24.\n\n`;
-  }
+  let output = '';
 
-  // Notes column only when the submission actually carries notes.
-  const anyNote = groups.some(x => x.note);
-  output += 'Time  |  POI MW  |  POI MVAR  |  Status' + (anyNote ? '  |  Notes' : '') + '\n';
-  output += '------------------------------------------------\n';
-  groups.forEach(x => {
-    const endDisplay = (x.endHour - 1).toString().padStart(2, '0') + ':59';
-    output += `${x.start} \u2013 ${endDisplay}    ${x.mw} MW    ${x.mvar} MVAR    (${x.status})`
-            + (anyNote && x.note ? `    ${x.note}` : '') + '\n';
+  days.forEach((dayRec, di) => {
+    const rows = dayRec.rows;
+    const groups = [];
+    let g = { start: rows[0].time, startHour: rows[0].hour, endHour: rows[0].hour,
+              mw: rows[0].mw, mvar: rows[0].mvar, status: rows[0].status, note: rows[0].note };
+    for (let n = 1; n < rows.length; n++) {
+      const h = rows[n];
+      if (h.mw === g.mw && h.mvar === g.mvar && h.status === g.status
+          && (h.note || '') === (g.note || '')) { g.endHour = h.hour; }
+      else { groups.push(g);
+             g = { start: h.time, startHour: h.hour, endHour: h.hour,
+                   mw: h.mw, mvar: h.mvar, status: h.status, note: h.note }; }
+    }
+    groups.push(g);
+
+    if (di) output += '\n';
+    const useDate = dayRec.key || (days.length === 1 ? dateEl.value : '');
+    if (useDate) {
+      const [year, month, day] = useDate.split('-');
+      const dt = new Date(year, month - 1, day);
+      output += `Date: ${dt.toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}\n\n`;
+    }
+
+    const flags = vidalChecks(rows, cap);
+    if (flags.length) {
+      output += `\u26A0\uFE0F ${flags.length} issue(s) found in the submitted data:\n`;
+      flags.forEach(f => { output += '   ' + f + '\n'; });
+      output += '   Check with the scheduler before using these numbers.\n\n';
+    }
+    if (rows.length !== 24) {
+      output += `\u26A0\uFE0F ${rows.length} hours parsed for this day, expected 24.\n\n`;
+    }
+
+    const anyNote = groups.some(x => x.note);
+    output += 'Time  |  POI MW  |  POI MVAR  |  Status' + (anyNote ? '  |  Notes' : '') + '\n';
+    output += '------------------------------------------------\n';
+    groups.forEach(x => {
+      const endDisplay = (x.endHour - 1).toString().padStart(2, '0') + ':59';
+      output += `${x.start} \u2013 ${endDisplay}    ${x.mw} MW    ${x.mvar} MVAR    (${x.status})`
+              + (anyNote && x.note ? `    ${x.note}` : '') + '\n';
+    });
   });
 
+  if (days.length > 1) {
+    output = `${days.length} days parsed\n\n` + output;
+  }
   outEl.textContent = output;
 }
 
@@ -18697,7 +18715,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v3.94';
+const APP_VERSION = 'v3.96';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18939,7 +18957,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v3.94</span>
+    RNWBL Ops Hub <span class="app-footer-v">v3.96</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
