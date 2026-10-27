@@ -5680,7 +5680,7 @@ async function load() {
           // navTzSitesFor already rolls Boise into Mountain and Toronto into
           // Eastern; an exact match first would hide them whenever the clock
           // zone has any sites of its own.
-          names = navTzSitesFor(z.tz);
+          names = navTzSitesFor(z.key);
         } catch (e) {}
         names = [...new Set(names)].sort();
         pop.innerHTML = '<div class="nav-tz-pop-h">' + z.key + ' \u00b7 ' + z.tz.split('/')[1].replace('_', ' ')
@@ -5699,20 +5699,13 @@ async function load() {
   // Longitude is a good enough proxy when a site has no tz field, but the
   // bands overlap — Arizona sits inside Mountain's longitudes while keeping
   // its own time. Assign each site to exactly one zone, Arizona first.
-  // Each site carries its own IANA zone. Deriving it from longitude kept
-  // getting edge cases wrong \u2014 Arizona, then southern Idaho \u2014 because the
-  // real boundaries do not follow meridians.
-  const NAV_TZ_GROUP = {
-    'America/Boise':   'America/Denver',     // southern Idaho keeps Mountain time
-    'America/Toronto': 'America/New_York',   // Ontario keeps Eastern time
-  };   // same clock
-  function navTzZoneOf(s){
-    if (!s.tz) return null;
-    return NAV_TZ_GROUP[s.tz] || s.tz;
-  }
-  function navTzSitesFor(tz){
-    if (typeof SITES === 'undefined') return [];
-    return SITES.filter(s => navTzZoneOf(s) === tz).map(s => s.name);
+  // Use the Timezones page's own per-zone lists so the hover and the page can
+  // never disagree. TZ_ZONES is the single source for both.
+  function navTzSitesFor(key){
+    try {
+      const z = (window.TZ_ZONE_SITES || []).find(x => x.key === key);
+      return z ? z.sites.map(s => s.name) : [];
+    } catch (e) { return []; }
   }
 
   function tickNavTz() {
@@ -5884,6 +5877,7 @@ const TZ_ZONES=[
   {key:'ET',label:'Eastern Time',tz:'America/Toronto',accent:['#3b82f6','#2563eb'],sites:[
     {name:'Dufferin',location:'Shelburne, ON'},{name:'McLeans Mt',location:'Little Current, ON'}]}
 ];
+window.TZ_ZONE_SITES = TZ_ZONES;   // the nav bar has its own TZ_ZONES; this is the one with site lists
 let tzHour12=false, tzInterval=null;
 function fmtTzTime(d,tz){return new Intl.DateTimeFormat(undefined,{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:tzHour12}).format(d)}
 function fmtTzDate(d,tz){return new Intl.DateTimeFormat(undefined,{timeZone:tz,weekday:'short',month:'short',day:'2-digit'}).format(d)}
@@ -18725,7 +18719,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v4.23';
+const APP_VERSION = 'v4.26';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18967,7 +18961,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v4.23</span>
+    RNWBL Ops Hub <span class="app-footer-v">v4.26</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
