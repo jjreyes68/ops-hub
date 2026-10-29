@@ -3308,6 +3308,24 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .dc-result{margin-top:11px;padding:13px 14px;background:var(--bg3);border-radius:9px;text-align:center;}
 .dc-bigs{display:flex;justify-content:center;gap:26px;}
 .dc-meta{justify-content:center;margin-top:7px;}
+
+/* The calculator carries far more than the other tiles, so it earns two
+   columns — inputs on the left, result and submission on the right. */
+.tool-card.dc-wide{grid-column:span 2;}
+.dc-wide .tool-card-body{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;align-items:start;}
+.dc-wide .dc-left,.dc-wide .dc-right{min-width:0;}
+.dc-wide .dc-right{border-left:1px solid var(--border);padding-left:22px;}
+@media(max-width:900px){.dc-wide .dc-right{border-left:none;padding-left:0;
+  border-top:1px solid var(--border);padding-top:14px;margin-top:4px;}}
+@media(max-width:900px){
+  .tool-card.dc-wide{grid-column:span 1;}
+  .dc-wide .tool-card-body{grid-template-columns:1fr;}
+}
+
+.tool-card.tool-strip{margin-top:12px;}
+.cols3.tool-2up{grid-template-columns:repeat(2,1fr);}
+.tool-2up .tool-card.dc-wide{grid-column:span 1;}
+@media(max-width:900px){.cols3.tool-2up{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -3543,7 +3561,9 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <div class="page-subtitle">Quick-access utilities for shift operations</div>
     </div>
   </div>
-  <div class="cols3">
+  
+
+    <div class="cols3 tool-2up">
 
 
     <!-- TIMERS & REMINDERS — three tools, one tile. Quick, recurring and
@@ -3673,70 +3693,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     </div>
 
     <!-- SITE CHECK -->
-    <div class="tool-card">
-      <div class="tool-card-header">
-        <div class="tool-card-icon" style="background:#fff3e0;">📡</div>
-        <div class="tool-card-meta">
-          <div class="tool-card-name">Site Check</div>
-          <div class="tool-card-desc">Verify voltage bands and nameplate ratings</div>
-        </div>
-      </div>
-      <div class="tool-card-body">
-        <input id="npchk-site-inp" type="hidden">
-        <div style="margin-bottom:10px;position:relative;">
-          <input id="vchk-site-inp" placeholder="Type site name or code..." oninput="vchkFilter()" onblur="setTimeout(vchkCloseMatches,180)" autocomplete="off"
-            style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;">
-          <div class="wx-matches" id="vchk-site-matches"></div>
-        </div>
-        <div class="section-divider" id="sc-band-hdr" style="margin-top:0;display:none;">
-          <span class="section-divider-lbl">Voltage band</span>
-          <div class="section-divider-line"></div>
-        </div>
-        <div id="vchk-band-row" style="display:none;margin-bottom:8px;">
-          <div id="vchk-band-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:6px;"></div>
-          <div style="display:flex;gap:6px;align-items:center;">
-            <input id="vchk-inp" type="number" step="0.01" placeholder="Enter kV…" oninput="vchkCheck()"
-              style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
-            <span style="font-size:12px;color:var(--text3);">kV</span>
-          </div>
-        </div>
-        <div id="vchk-result" style="display:none;border-radius:7px;padding:9px 12px;text-align:center;margin-bottom:4px;">
-          <div id="vchk-verdict" style="font-size:16px;font-weight:700;letter-spacing:-.01em;"></div>
-          <div id="vchk-detail" style="font-size:11px;margin-top:3px;opacity:.8;font-family:var(--m);"></div>
-        </div>
-        <div class="section-divider" id="sc-np-hdr" style="display:none;">
-          <span class="section-divider-lbl">Nameplate</span>
-          <div class="section-divider-line"></div>
-        </div>
-        <div id="npchk-body" style="display:none;">
-          <div id="npchk-np-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:8px;"></div>
-          <div id="npchk-mw-row" style="display:none;margin-bottom:6px;">
-            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">MW</div>
-            <div style="display:flex;gap:6px;align-items:center;">
-              <input id="npchk-mw-inp" type="number" step="0.1" placeholder="Enter MW…" oninput="npchkEval()"
-                style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
-              <span style="font-size:12px;color:var(--text3);">MW</span>
-            </div>
-            <div id="npchk-mw-result" style="display:none;border-radius:6px;padding:7px 10px;margin-top:4px;text-align:center;">
-              <div id="npchk-mw-verdict" style="font-size:15px;font-weight:700;"></div>
-              <div id="npchk-mw-detail" style="font-size:11px;margin-top:2px;opacity:.8;font-family:var(--m);"></div>
-            </div>
-          </div>
-          <div id="npchk-mwh-row" style="display:none;">
-            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">MWh</div>
-            <div style="display:flex;gap:6px;align-items:center;">
-              <input id="npchk-mwh-inp" type="number" step="1" placeholder="Enter MWh…" oninput="npchkEval()"
-                style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
-              <span style="font-size:12px;color:var(--text3);">MWh</span>
-            </div>
-            <div id="npchk-mwh-result" style="display:none;border-radius:6px;padding:7px 10px;margin-top:4px;text-align:center;">
-              <div id="npchk-mwh-verdict" style="font-size:15px;font-weight:700;"></div>
-              <div id="npchk-mwh-detail" style="font-size:11px;margin-top:2px;opacity:.8;font-family:var(--m);"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    
 
     <!-- PORTAL CONVERTERS — both take an owner's raw export and reshape it for
          the desk, so they share a tile. Hour Ending and Phonetic are converters
@@ -3812,7 +3769,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       </div>
     </div>
 
-    <div class="tool-card">
+    <div class="tool-card dc-wide">
       <div class="tool-card-header">
         <div class="tool-card-icon" style="background:#eafaf1;">🔋</div>
         <div class="tool-card-meta">
@@ -3821,7 +3778,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         </div>
       </div>
       <div class="tool-card-body">
-        <div class="dc-row"><span></span><span class="dc-h">TSC1</span><span class="dc-h">TSC2</span></div>
+        <div class="dc-left"><div class="dc-row"><span></span><span class="dc-h">TSC1</span><span class="dc-h">TSC2</span></div>
         <div class="dc-row"><label>Packs online</label>
           <input id="dc-on-TSC1" type="number" min="0" max="176" value="164" oninput="dcRender()">
           <input id="dc-on-TSC2" type="number" min="0" max="178" value="168" oninput="dcRender()"></div>
@@ -3840,20 +3797,15 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 
         <div class="dc-row"><label>Extra packs out</label>
           <input id="dc-xp-TSC1" type="number" min="0" placeholder="TSC1" oninput="dcRender()">
-          <input id="dc-xp-TSC2" type="number" min="0" placeholder="TSC2" oninput="dcRender()"></div>
-
-        <div id="dc-out-outage"></div>
-
-        <div class="dc-sep"></div>
-
-        <div class="dc-row dc-fr"><label>Date</label><input id="dc-date" type="date" oninput="dcRender()"></div>
+          <input id="dc-xp-TSC2" type="number" min="0" placeholder="TSC2" oninput="dcRender()"></div><div id="dc-out-outage"></div></div>
+        <div class="dc-right"><div class="dc-row dc-fr"><label>Date</label><input id="dc-date" type="date" oninput="dcRender()"></div>
         <div class="dc-row dc-fr"><label>Start / End</label>
           <input id="dc-start" type="time" value="07:15" oninput="dcRender()">
           <input id="dc-end" type="time" value="16:00" oninput="dcRender()"></div>
         <div class="dc-row dc-fr"><label>Reason</label>
           <input id="dc-reason" value="Megapack Preventative Maintenance" oninput="dcRender()"></div>
         <pre id="dc-sched-out" class="dc-sched"></pre>
-        <button class="tbtn" onclick="dcCopySched()">Copy submission</button>
+        <button class="tbtn" onclick="dcCopySched()">Copy submission</button></div>
       </div>
     </div>
 
@@ -3863,24 +3815,6 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     
 
     <!-- OPERATOR LOG TYPE REFERENCE — collapsed; reference only, writes nothing -->
-    <div class="tool-card">
-      <div class="tool-card-header">
-        <div class="tool-card-icon" style="background:#e8eefc;">📒</div>
-        <div class="tool-card-meta">
-          <div class="tool-card-name">Operator Log Types</div>
-          <div class="tool-card-desc">Reference only — which code to use and when</div>
-        </div>
-      </div>
-      <div class="tool-card-body">
-        <input id="lt-search" class="lt-search" placeholder="Search code, name or example&hellip;" oninput="ltSearchInput()" autocomplete="off">
-        <div id="lt-hits"></div>
-        <div id="lt-body" style="display:none;"><div id="lt-list"></div></div>
-        <div class="lt-foot">
-          <button class="lt-more" onclick="ltToggle()"><span id="lt-chev2">&#9656;</span> All 16 codes</button>
-          <button class="lt-pb" onclick="ltGoPlaybook()">Playbook &rarr;</button>
-        </div>
-      </div>
-    </div>
 
     <!-- PHONETIC CONVERTER -->
     
@@ -3889,6 +3823,71 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   
 
 </div>
+
+    <div class="tool-card tool-strip">
+      <div class="tool-card-header">
+        <div class="tool-card-icon" style="background:#fff3e0;">📡</div>
+        <div class="tool-card-meta">
+          <div class="tool-card-name">Site Check</div>
+          <div class="tool-card-desc">Verify voltage bands and nameplate ratings</div>
+        </div>
+      </div>
+      <div class="tool-card-body">
+        <input id="npchk-site-inp" type="hidden">
+        <div style="margin-bottom:10px;position:relative;">
+          <input id="vchk-site-inp" placeholder="Type site name or code..." oninput="vchkFilter()" onblur="setTimeout(vchkCloseMatches,180)" autocomplete="off"
+            style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--f);font-size:13px;">
+          <div class="wx-matches" id="vchk-site-matches"></div>
+        </div>
+        <div class="section-divider" id="sc-band-hdr" style="margin-top:0;display:none;">
+          <span class="section-divider-lbl">Voltage band</span>
+          <div class="section-divider-line"></div>
+        </div>
+        <div id="vchk-band-row" style="display:none;margin-bottom:8px;">
+          <div id="vchk-band-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:6px;"></div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <input id="vchk-inp" type="number" step="0.01" placeholder="Enter kV…" oninput="vchkCheck()"
+              style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
+            <span style="font-size:12px;color:var(--text3);">kV</span>
+          </div>
+        </div>
+        <div id="vchk-result" style="display:none;border-radius:7px;padding:9px 12px;text-align:center;margin-bottom:4px;">
+          <div id="vchk-verdict" style="font-size:16px;font-weight:700;letter-spacing:-.01em;"></div>
+          <div id="vchk-detail" style="font-size:11px;margin-top:3px;opacity:.8;font-family:var(--m);"></div>
+        </div>
+        <div class="section-divider" id="sc-np-hdr" style="display:none;">
+          <span class="section-divider-lbl">Nameplate</span>
+          <div class="section-divider-line"></div>
+        </div>
+        <div id="npchk-body" style="display:none;">
+          <div id="npchk-np-lbl" style="font-family:var(--m);font-size:11px;color:var(--text3);margin-bottom:8px;"></div>
+          <div id="npchk-mw-row" style="display:none;margin-bottom:6px;">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">MW</div>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <input id="npchk-mw-inp" type="number" step="0.1" placeholder="Enter MW…" oninput="npchkEval()"
+                style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
+              <span style="font-size:12px;color:var(--text3);">MW</span>
+            </div>
+            <div id="npchk-mw-result" style="display:none;border-radius:6px;padding:7px 10px;margin-top:4px;text-align:center;">
+              <div id="npchk-mw-verdict" style="font-size:15px;font-weight:700;"></div>
+              <div id="npchk-mw-detail" style="font-size:11px;margin-top:2px;opacity:.8;font-family:var(--m);"></div>
+            </div>
+          </div>
+          <div id="npchk-mwh-row" style="display:none;">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">MWh</div>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <input id="npchk-mwh-inp" type="number" step="1" placeholder="Enter MWh…" oninput="npchkEval()"
+                style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--m);font-size:14px;">
+              <span style="font-size:12px;color:var(--text3);">MWh</span>
+            </div>
+            <div id="npchk-mwh-result" style="display:none;border-radius:6px;padding:7px 10px;margin-top:4px;text-align:center;">
+              <div id="npchk-mwh-verdict" style="font-size:15px;font-weight:700;"></div>
+              <div id="npchk-mwh-detail" style="font-size:11px;margin-top:2px;opacity:.8;font-family:var(--m);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
 
 <!-- LOG -->
@@ -18925,7 +18924,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v4.33';
+const APP_VERSION = 'v4.39';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19167,7 +19166,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v4.33</span>
+    RNWBL Ops Hub <span class="app-footer-v">v4.39</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
