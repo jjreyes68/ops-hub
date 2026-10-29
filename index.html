@@ -3312,20 +3312,23 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 /* The calculator carries far more than the other tiles, so it earns two
    columns — inputs on the left, result and submission on the right. */
 .tool-card.dc-wide{grid-column:span 2;}
-.dc-wide .tool-card-body{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;align-items:start;}
+.dc-split{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;align-items:start;}
+.dc-unit{font-family:var(--m);font-size:10px;color:var(--text3);}
+@media(max-width:900px){.dc-split{grid-template-columns:1fr;}}
 .dc-wide .dc-left,.dc-wide .dc-right{min-width:0;}
 .dc-wide .dc-right{border-left:1px solid var(--border);padding-left:22px;}
 @media(max-width:900px){.dc-wide .dc-right{border-left:none;padding-left:0;
   border-top:1px solid var(--border);padding-top:14px;margin-top:4px;}}
 @media(max-width:900px){
   .tool-card.dc-wide{grid-column:span 1;}
-  .dc-wide .tool-card-body{grid-template-columns:1fr;}
+  .dc-split{grid-template-columns:1fr;}
 }
 
 .tool-card.tool-strip{margin-top:12px;}
 .cols3.tool-2up{grid-template-columns:repeat(2,1fr);}
 .tool-2up .tool-card.dc-wide{grid-column:span 1;}
 @media(max-width:900px){.cols3.tool-2up{grid-template-columns:1fr;}}
+
 </style>
 </head>
 <body>
@@ -3777,7 +3780,13 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
           <div class="tool-card-desc">Planned outage → site capacity and a scheduler line</div>
         </div>
       </div>
-      <div class="tool-card-body">
+      <div class="tool-card-body" style="display:block;">
+        <div class="tmr-seg" style="margin-bottom:12px;">
+          <button class="tmr-seg-btn active" data-dcsite="bess" onclick="dcSite('bess',this)">HARQ2 · BESS</button>
+          <button class="tmr-seg-btn" data-dcsite="harq2-pv" onclick="dcSite('harq2-pv',this)">HARQ2 · PV</button>
+          <button class="tmr-seg-btn" data-dcsite="harq1-pv" onclick="dcSite('harq1-pv',this)">HARQ1 · PV</button>
+        </div>
+        <div id="dc-body-bess" class="dc-split">
         <div class="dc-left"><div class="dc-row"><span></span><span class="dc-h">TSC1</span><span class="dc-h">TSC2</span></div>
         <div class="dc-row"><label>Packs online</label>
           <input id="dc-on-TSC1" type="number" min="0" max="176" value="164" oninput="dcRender()">
@@ -3806,6 +3815,33 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
           <input id="dc-reason" value="Megapack Preventative Maintenance" oninput="dcRender()"></div>
         <pre id="dc-sched-out" class="dc-sched"></pre>
         <button class="tbtn" onclick="dcCopySched()">Copy submission</button></div>
+      </div>
+        <div id="dc-body-pv" class="dc-split" style="display:none;">
+          <div class="dc-left">
+            <div class="dc-row dc-fr"><label>Inverters online</label>
+              <input id="pv-online" type="number" min="0" max="94" value="94" oninput="dcPvRender()"><span class="dc-unit" id="pv-cap">of 94</span></div>
+            <div class="dc-sep"></div>
+            <div class="dc-row dc-fr"><label>Feeder out</label>
+              <select id="pv-f1" onchange="dcPvRender()"></select>
+              <input id="pv-ao1" type="number" min="0" placeholder="already out" oninput="dcPvRender()"></div>
+            <div class="dc-row dc-fr"><label>Second feeder</label>
+              <select id="pv-f2" onchange="dcPvRender()"></select>
+              <input id="pv-ao2" type="number" min="0" placeholder="already out" oninput="dcPvRender()"></div>
+            <div class="dc-row dc-fr"><label>Extra inverters out</label>
+              <input id="pv-off" type="number" min="0" placeholder="0" oninput="dcPvRender()"><span></span></div>
+            <div id="pv-out"></div>
+          </div>
+          <div class="dc-right">
+            <div class="dc-row dc-fr"><label>Date</label><input id="pv-date" type="date" oninput="dcPvRender()"></div>
+            <div class="dc-row dc-fr"><label>Start / End</label>
+              <input id="pv-start" type="time" value="07:15" oninput="dcPvRender()">
+              <input id="pv-end" type="time" value="16:00" oninput="dcPvRender()"></div>
+            <div class="dc-row dc-fr"><label>Reason</label>
+              <input id="pv-reason" value="Inverter Preventative Maintenance" oninput="dcPvRender()"></div>
+            <pre id="pv-sched-out" class="dc-sched"></pre>
+            <button class="tbtn" onclick="dcPvCopy()">Copy submission</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -6288,6 +6324,119 @@ function dcPill(s){
 }
 // Outage work is nearly always scheduled for the next day, and an empty date
 // left the submission block showing an error on load.
+// PV output is not proportional to inverter count \u2014 both sites are overbuilt — more
+// inverter capacity than the AC limit — so they still make full MW until enough
+// inverters drop to fall under it. HARQ2 holds 300 MW down to 74 of 94,
+// HARQ1 holds 150 MW down to 36 of 47. These are the site tables, indexed
+// by inverters online, rather than a fitted curve.
+const DC_PV_TABLE = {
+HARQ2: [0,4,8.1,12.1,16.2,20.2,24.3,28.3,32.4,36.4,40.5,44.5,48.6,52.6,56.7,60.7,64.8,68.8,72.9,76.9,81,85,89.1,93.1,97.2,101.2,105.3,109.3,113.4,117.4,121.5,125.5,129.6,133.6,137.7,141.7,145.8,149.8,153.9,157.9,162,166,170.1,174.1,178.2,182.2,186.3,190.3,194.4,198.4,202.5,206.5,210.6,214.6,218.7,222.7,226.8,230.8,234.9,238.9,243,247,251.1,255.1,259.2,263.2,267.3,271.3,275.4,279.4,283.5,287.5,291.6,295.6,299.7,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300],
+  HARQ1: [0,4.1,8.2,12.3,16.5,20.6,24.7,28.8,33,37.1,41.2,45.3,49.5,53.6,57.7,61.9,66,70.1,74.2,78.4,82.5,86.6,90.7,94.9,99,103.1,107.3,111.4,115.5,119.6,123.8,127.9,132,136.1,140.3,144.4,148.5,150,150,150,150,150,150,150,150,150,150,150],
+};
+const DC_PV_SITES = {
+  'harq2-pv': { label:'HARQ2 \u00b7 PV', total:94, table:'HARQ2',
+                feeders:{ 11:16, 12:16, 13:15, 26:16, 27:16, 28:15 } },
+  'harq1-pv': { label:'HARQ1 \u00b7 PV', total:47, table:'HARQ1',
+                feeders:{ 31:15, 32:16, 33:16 } },
+};
+let dcPvSite = 'harq2-pv';
+
+function dcPvModel(){
+  const S = DC_PV_SITES[dcPvSite];
+  const tbl = DC_PV_TABLE[S.table];
+  const online = dcNum('pv-online');
+  if (!dcInt(online) || online < 0 || online > S.total) return { ok:false };
+
+  // A feeder takes out its inverters less whatever SCADA already shows down,
+  // so already-out ones are never subtracted twice.
+  let taken = 0, reason = '';
+  [1,2].forEach(n => {
+    const f = (document.getElementById('pv-f'+n)||{}).value || '';
+    const already = dcNum('pv-ao'+n);
+    if (!f) { if (already) reason = 'Already-out needs a feeder'; return; }
+    const packs = S.feeders[Number(f)];
+    if (packs == null) { reason = 'Unknown feeder'; return; }
+    const a = already == null ? 0 : already;
+    if (!dcInt(a) || a < 0 || a > packs) { reason = 'Already-out must fit the feeder'; return; }
+    if (n === 2 && f === ((document.getElementById('pv-f1')||{}).value || '')) { reason = 'Second feeder must differ'; return; }
+    taken += Math.max(0, packs - a);
+  });
+  const loose = dcNum('pv-off') || 0;
+  if (!dcInt(loose) || loose < 0) reason = 'Extra inverters must be a whole number';
+  taken += loose;
+  if (reason || taken > online) return { ok:false, reason: reason || 'Outage exceeds inverters online' };
+
+  const remaining = Math.max(0, online - taken);
+  const full = tbl[S.total];
+  return { ok:true, remaining, total:S.total, full,
+           now: tbl[online], after: tbl[remaining], lost: full - tbl[remaining] };
+}
+function dcPvRender(){
+  const el = document.getElementById('pv-out'); if (!el) return;
+  const m = dcPvModel();
+  if (!m.ok) { el.innerHTML = `<div class="dc-bad">Check input</div>`; return; }
+  const status = m.lost > 0 ? 'Derated' : 'No derate';
+  el.innerHTML = `<div class="dc-result">
+      <div class="dc-bigs">
+        <div class="dc-big"><span>${m.after.toFixed(1)}</span><em>MW available</em></div>
+        <div class="dc-big"><span>\u2212${m.lost.toFixed(1)}</span><em>MW derated</em></div>
+      </div>
+      <div class="dc-meta">${m.remaining} of ${m.total} inverters online ${dcPill(status)}</div>
+    </div>`;
+  dcPvSched(m);
+}
+
+function dcPvSched(m){
+  const el = document.getElementById('pv-sched-out'); if (!el) return;
+  if (!m || !m.ok) { el.textContent = 'Fix outage inputs first'; return; }
+  const d = (document.getElementById('pv-date')||{}).value;
+  const s = (document.getElementById('pv-start')||{}).value;
+  const e = (document.getElementById('pv-end')||{}).value;
+  if (!d || !s || !e || e <= s) { el.textContent = 'Check date and times'; return; }
+  const [Y,M,D] = d.split('-').map(Number);
+  const hm = v => { const [h,mm] = v.split(':'); return Number(h) + ':' + mm; };
+  const reason = (document.getElementById('pv-reason')||{}).value || 'Inverter Preventative Maintenance';
+  el.textContent =
+      `${M}/${D}/${String(Y).slice(-2)}\n`
+    + `Start time : ${hm(s)}\n`
+    + `End time : ${hm(e)}\n\n`
+    + `Max Output: ${Math.floor(m.after)}MW\n`
+    + `Reason: ${reason}`;
+}
+function dcPvCopy(){
+  const t = (document.getElementById('pv-sched-out')||{}).textContent || '';
+  if (t && !/^Fix |^Check /.test(t)) navigator.clipboard.writeText(t).then(()=>showToast('Copied'));
+  else showToast('Nothing to copy yet');
+}
+function dcSite(which, btn){
+  document.querySelectorAll('[data-dcsite]').forEach(b => b.classList.toggle('active', b === btn));
+  const bess = document.getElementById('dc-body-bess'), pv = document.getElementById('dc-body-pv');
+  const isPv = which !== 'bess';
+  if (bess) bess.style.display = isPv ? 'none' : '';
+  if (pv) pv.style.display = isPv ? '' : 'none';
+  if (isPv) {
+    dcPvSite = which;
+    const S = DC_PV_SITES[which];
+    const on = document.getElementById('pv-online');
+    if (on) { on.max = S.total; if (Number(on.value) > S.total) on.value = S.total; }
+    const cap = document.getElementById('pv-cap');
+    if (cap) cap.textContent = 'of ' + S.total;
+    // each site has its own feeders, so repopulate and clear any stale pick
+    [1,2].forEach(n => {
+      const sel = document.getElementById('pv-f'+n); if (!sel) return;
+      sel.innerHTML = '<option value="">None</option>' + Object.keys(S.feeders)
+        .map(f => `<option value="${f}">Feeder ${f} (${S.feeders[f]})</option>`).join('');
+      sel.value = '';
+      const ao = document.getElementById('pv-ao'+n); if (ao) ao.value = '';
+    });
+    const dt = document.getElementById('pv-date');
+    if (dt && !dt.value) { const d = new Date(); d.setDate(d.getDate()+1);
+      const p = x => String(x).padStart(2,'0');
+      dt.value = `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`; }
+    dcPvRender();
+  } else dcRender();
+}
+
 function dcPrefillDate(){
   const el = document.getElementById('dc-date');
   if (!el || el.value) return;
@@ -18870,6 +19019,9 @@ setTimeout(() => {
   window.asSetDuty=asSetDuty;
   window.qcTab=qcTab;
   window.dcRender=dcRender;
+  window.dcPvRender=dcPvRender;
+  window.dcPvCopy=dcPvCopy;
+  window.dcSite=dcSite;
   window.dcCopySched=dcCopySched;
   window.srPrefillToday=srPrefillToday;
   window.asAutoDateShift=asAutoDateShift;
@@ -18924,7 +19076,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v4.39';
+const APP_VERSION = 'v4.46';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19166,7 +19318,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v4.39</span>
+    RNWBL Ops Hub <span class="app-footer-v">v4.46</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
