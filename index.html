@@ -3272,6 +3272,42 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   font-size:12.5px;font-weight:600;color:var(--text);}
 .dt-sum span{display:block;font-weight:400;font-size:11.5px;color:var(--text3);margin-top:3px;}
 @media(max-width:640px){.dt-spark{width:110px;}}
+
+.dc-inputs{margin-bottom:10px;}
+.dc-hint{font-size:11px;color:var(--text3);margin-bottom:6px;}
+.dc-row{display:grid;grid-template-columns:116px 1fr 1fr;gap:6px;align-items:center;margin-bottom:5px;}
+.dc-row.dc-fr{grid-template-columns:116px 1fr 1fr;}
+.dc-row label{font-size:12px;color:var(--text2);}
+.dc-row .dc-h{font-family:var(--m);font-size:10px;font-weight:700;color:var(--text3);text-align:center;}
+.dc-row input,.dc-row select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;
+  padding:5px 8px;font-size:12.5px;color:var(--text);width:100%;}
+.dc-tbl{width:100%;border-collapse:collapse;margin-top:8px;font-size:12.5px;}
+.dc-tbl th{font-family:var(--m);font-size:10px;font-weight:700;color:var(--text3);
+  text-align:right;padding:3px 6px;border-bottom:1px solid var(--border);}
+.dc-tbl th:first-child{text-align:left;}
+.dc-tbl td{padding:4px 6px;text-align:right;border-bottom:1px solid var(--border);}
+.dc-tbl td:first-child{text-align:left;color:var(--text2);}
+.dc-tbl .dc-site{font-weight:700;color:var(--text);}
+.dc-pill{font-family:var(--m);font-size:9.5px;font-weight:700;border-radius:4px;padding:2px 6px;}
+.dc-pill.ok{color:var(--green);background:var(--gbg);}
+.dc-pill.warn{color:var(--amber);background:var(--abg);}
+.dc-pill.bad{color:var(--red);background:var(--rbg);}
+.dc-pill.na{color:var(--text3);background:var(--bg3);}
+.dc-bad{font-size:12.5px;color:var(--red);background:var(--rbg);border-radius:6px;padding:8px 10px;margin-top:8px;}
+.dc-note{font-size:11.5px;color:var(--amber);margin-top:5px;}
+.dc-sched{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:9px 11px;
+  font-family:var(--m);font-size:12px;color:var(--text);white-space:pre-wrap;margin:9px 0;}
+
+
+.dc-big span{font-size:26px;font-weight:700;color:var(--text);letter-spacing:-.5px;}
+.dc-big em{font-style:normal;font-family:var(--m);font-size:11px;font-weight:700;
+  color:var(--text3);margin-left:4px;}
+.dc-meta{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--text3);}
+
+.dc-sep{height:1px;background:var(--border);margin:11px 0;}
+.dc-result{margin-top:11px;padding:13px 14px;background:var(--bg3);border-radius:9px;text-align:center;}
+.dc-bigs{display:flex;justify-content:center;gap:26px;}
+.dc-meta{justify-content:center;margin-top:7px;}
 </style>
 </head>
 <body>
@@ -3571,13 +3607,18 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <!-- HOUR ENDING CONVERTER -->
     <div class="tool-card">
       <div class="tool-card-header">
-        <div class="tool-card-icon" style="background:#f3e8ff;">🕐</div>
+        <div class="tool-card-icon" style="background:#eef4ff;">🔀</div>
         <div class="tool-card-meta">
-          <div class="tool-card-name">Hour Ending Converter</div>
-          <div class="tool-card-desc">HE notation ↔ clock time, both directions</div>
+          <div class="tool-card-name">Quick Converters</div>
+          <div class="tool-card-desc">Hour ending and NATO phonetic</div>
         </div>
       </div>
       <div class="tool-card-body">
+        <div class="tmr-seg" style="margin-bottom:10px;">
+          <button class="tmr-seg-btn active" data-qc="he" onclick="qcTab('he',this)">Hour Ending</button>
+          <button class="tmr-seg-btn" data-qc="ph" onclick="qcTab('ph',this)">Phonetic</button>
+        </div>
+        <div id="qc-pane-he">
         <input id="he-conv-inp" placeholder="Type HE14, 1:30pm, HE9 to HE17..." oninput="heConvert()" autocomplete="off"
           style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;margin-bottom:10px;">
         <div id="he-conv-result"></div>
@@ -3586,6 +3627,18 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
           <div class="section-divider-line"></div>
         </div>
         <div id="he-conv-table" style="max-height:170px;overflow-y:auto;"></div>
+      </div>
+        <div id="qc-pane-ph" style="display:none;">
+        <div class="phonetic-wrap">
+          <input id="phonetic-inp" placeholder="Type text to convert..." oninput="convertPhonetic()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;margin-bottom:8px;">
+          <div id="phonetic-out" style="font-family:var(--m);font-size:14px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:40px;word-break:break-all;"></div>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <button class="tbtn" onclick="copyPhonetic()">Copy</button>
+            <button class="tbtn" id="phonetic-speak-btn" onclick="speakPhonetic()" title="Read aloud">🔊 Speak</button>
+            <button class="tbtn" onclick="clearPhonetic()">Clear</button>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
 
@@ -3759,6 +3812,51 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       </div>
     </div>
 
+    <div class="tool-card">
+      <div class="tool-card-header">
+        <div class="tool-card-icon" style="background:#eafaf1;">🔋</div>
+        <div class="tool-card-meta">
+          <div class="tool-card-name">Derate Calculator</div>
+          <div class="tool-card-desc">Planned outage → site capacity and a scheduler line</div>
+        </div>
+      </div>
+      <div class="tool-card-body">
+        <div class="dc-row"><span></span><span class="dc-h">TSC1</span><span class="dc-h">TSC2</span></div>
+        <div class="dc-row"><label>Packs online</label>
+          <input id="dc-on-TSC1" type="number" min="0" max="176" value="164" oninput="dcRender()">
+          <input id="dc-on-TSC2" type="number" min="0" max="178" value="168" oninput="dcRender()"></div>
+        <div class="dc-row"><label>Packs available</label>
+          <input id="dc-av-TSC1" type="number" min="0" max="176" value="143" oninput="dcRender()">
+          <input id="dc-av-TSC2" type="number" min="0" max="178" value="168" oninput="dcRender()"></div>
+
+        <div class="dc-sep"></div>
+
+        <div class="dc-row dc-fr"><label>Feeder out</label>
+          <select id="dc-f1" onchange="dcRender()"><option value="">None</option><option value="15">Feeder 15 (TSC1)</option><option value="16">Feeder 16 (TSC1)</option><option value="17">Feeder 17 (TSC1)</option><option value="18">Feeder 18 (TSC1)</option><option value="21">Feeder 21 (TSC2)</option><option value="22">Feeder 22 (TSC2)</option><option value="23">Feeder 23 (TSC2)</option><option value="24">Feeder 24 (TSC2)</option></select>
+          <input id="dc-ao1" type="number" min="0" placeholder="already out" oninput="dcRender()"></div>
+        <div class="dc-row dc-fr"><label>Second feeder</label>
+          <select id="dc-f2" onchange="dcRender()"><option value="">None</option><option value="15">Feeder 15 (TSC1)</option><option value="16">Feeder 16 (TSC1)</option><option value="17">Feeder 17 (TSC1)</option><option value="18">Feeder 18 (TSC1)</option><option value="21">Feeder 21 (TSC2)</option><option value="22">Feeder 22 (TSC2)</option><option value="23">Feeder 23 (TSC2)</option><option value="24">Feeder 24 (TSC2)</option></select>
+          <input id="dc-ao2" type="number" min="0" placeholder="already out" oninput="dcRender()"></div>
+
+        <div class="dc-row"><label>Extra packs out</label>
+          <input id="dc-xp-TSC1" type="number" min="0" placeholder="TSC1" oninput="dcRender()">
+          <input id="dc-xp-TSC2" type="number" min="0" placeholder="TSC2" oninput="dcRender()"></div>
+
+        <div id="dc-out-outage"></div>
+
+        <div class="dc-sep"></div>
+
+        <div class="dc-row dc-fr"><label>Date</label><input id="dc-date" type="date" oninput="dcRender()"></div>
+        <div class="dc-row dc-fr"><label>Start / End</label>
+          <input id="dc-start" type="time" value="07:15" oninput="dcRender()">
+          <input id="dc-end" type="time" value="16:00" oninput="dcRender()"></div>
+        <div class="dc-row dc-fr"><label>Reason</label>
+          <input id="dc-reason" value="Megapack Preventative Maintenance" oninput="dcRender()"></div>
+        <pre id="dc-sched-out" class="dc-sched"></pre>
+        <button class="tbtn" onclick="dcCopySched()">Copy submission</button>
+      </div>
+    </div>
+
 
 
     <!-- Example popup for Buyers Curtailment Converter -->
@@ -3785,26 +3883,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     </div>
 
     <!-- PHONETIC CONVERTER -->
-    <div class="tool-card">
-      <div class="tool-card-header">
-        <div class="tool-card-icon" style="background:#e8f4fd;">🔤</div>
-        <div class="tool-card-meta">
-          <div class="tool-card-name">Phonetic Converter</div>
-          <div class="tool-card-desc">Type text → NATO phonetic alphabet</div>
-        </div>
-      </div>
-      <div class="tool-card-body">
-        <div class="phonetic-wrap">
-          <input id="phonetic-inp" placeholder="Type text to convert..." oninput="convertPhonetic()" style="width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:var(--f);font-size:13px;margin-bottom:8px;">
-          <div id="phonetic-out" style="font-family:var(--m);font-size:14px;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:40px;word-break:break-all;"></div>
-          <div style="display:flex;gap:6px;margin-top:8px;">
-            <button class="tbtn" onclick="copyPhonetic()">Copy</button>
-            <button class="tbtn" id="phonetic-speak-btn" onclick="speakPhonetic()" title="Read aloud">🔊 Speak</button>
-            <button class="tbtn" onclick="clearPhonetic()">Clear</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    
 
 
   
@@ -5785,6 +5864,7 @@ function switchView(v, el) {
   if(v==='home') homeRenderGlance();
   if(v==='scans') { refreshScanStatuses(); renderSites(); }
   if(v==='playbooks') pbShowList();
+  if(v==='ops') { try{ dcRender(); }catch(e){} }
   if(v==='schedule') { try{ currNowRender(); currJumpVis(); }catch(e){} }
   if(v==='asset') { asRenderTabs(); asRenderForm(); }
   if(v==='timezones') initTimeZones();
@@ -6114,6 +6194,160 @@ function restoreRecurringTimers(){
 
 // One tile, three panes. The old cards each had their own header and padding
 // for what is really the same job: something should happen later.
+// Two small converters in one tile, so the toolbox stays at six.
+// ─── DERATE CALCULATOR ────────────────────────────────────────────────────────
+// Site constants from the SCADA readings on the calibration date. MWh per pack
+// drifts as packs age, so re-read Full Battery Energy about once a year.
+const DC_CAL_DATE = '2026-10-29';
+const DC_TSC = {
+  TSC1: { mwPerPack:0.9792, installed:176, limitMW:150.33,  nominalMWh:601.32,  fullBattkWh:479148, calPacks:125 },
+  TSC2: { mwPerPack:0.9792, installed:178, limitMW:152.038, nominalMWh:608.153, fullBattkWh:642065, calPacks:168 },
+};
+Object.values(DC_TSC).forEach(t => {
+  t.mwhPerPack = t.fullBattkWh / 1000 / t.calPacks;
+  // enough packs to hit both the MW limit and nominal energy
+  t.packsNeeded = Math.max(Math.ceil(t.limitMW / t.mwPerPack), Math.ceil(t.nominalMWh / t.mwhPerPack));
+});
+const DC_FEEDERS = { 15:['TSC1',48], 16:['TSC1',40], 17:['TSC1',40], 18:['TSC1',48],
+                     21:['TSC2',48], 22:['TSC2',40], 23:['TSC2',40], 24:['TSC2',50] };
+const DC_AT_EDGE = 2;
+const dcF1 = x => Math.floor(x * 10) / 10;
+const dcNum = id => { const v = (document.getElementById(id)||{}).value; return v === '' || v == null ? null : Number(v); };
+const dcInt = v => v != null && Number.isFinite(v) && v === Math.trunc(v);
+
+
+// Reads both panes at once: the outage numbers are the current state minus
+// whatever the planned feeders take out, so they share one calculation.
+function dcModel(){
+  const out = { ok:true, reason:'', tsc:{}, site:{} };
+  const rows = [1,2].map(n => ({
+    feeder: (document.getElementById('dc-f'+n)||{}).value || '',
+    already: dcNum('dc-ao'+n),
+  }));
+
+  ['TSC1','TSC2'].forEach(t => {
+    const online = dcNum('dc-on-' + t), avail = dcNum('dc-av-' + t), S = DC_TSC[t];
+    const valid = dcInt(online) && dcInt(avail) && online >= 0 && online <= S.installed && avail >= 0 && avail <= online;
+    out.tsc[t] = { online, avail, valid, S, takenOut:0, alreadyOut:0 };
+    if (!valid) out.ok = false;
+  });
+
+  rows.forEach((r, i) => {
+    const already = r.already == null ? 0 : r.already;
+    if (!r.feeder) { if (already !== 0) { out.ok = false; out.reason = 'Already-out needs a feeder'; } return; }
+    const def = DC_FEEDERS[Number(r.feeder)];
+    if (!def) { out.ok = false; return; }
+    const [t, packs] = def;
+    if (!dcInt(already) || already < 0 || already > packs) { out.ok = false; out.reason = 'Already-out must fit the feeder'; return; }
+    if (i === 1 && r.feeder === rows[0].feeder) { out.ok = false; out.reason = 'Second feeder must differ'; return; }
+    out.tsc[t].takenOut += Math.max(0, packs - already);
+    out.tsc[t].alreadyOut += already;
+  });
+
+  // Not every job drops a whole feeder — PM on individual packs is common, so
+  // allow a loose count per TSC on top of the feeder rows.
+  ['TSC1','TSC2'].forEach(t => {
+    const extra = dcNum('dc-xp-' + t);
+    if (extra != null) {
+      if (!dcInt(extra) || extra < 0) { out.ok = false; out.reason = 'Extra packs must be a whole number'; }
+      else out.tsc[t].takenOut += extra;
+    }
+  });
+
+  ['TSC1','TSC2'].forEach(t => {
+    const x = out.tsc[t], S = x.S;
+    if (!x.valid) return;
+    if (x.takenOut > x.avail || x.alreadyOut > S.installed - x.avail) { out.ok = false; out.reason = 'Outage exceeds what is available'; }
+    x.availAfter = x.avail - x.takenOut;
+    const calc = n => ({ mw: Math.min(S.limitMW, dcF1(n * S.mwPerPack)), mwh: dcF1(n * S.mwhPerPack) });
+    x.now = calc(x.avail);
+    x.after = calc(x.availAfter);
+    x.now.derateMW = S.limitMW - x.now.mw;
+    x.after.derateMW = S.limitMW - x.after.mw;
+    x.after.derateMWh = Math.max(0, S.nominalMWh - x.after.mwh);
+    x.packsBefore = Math.max(0, x.avail - S.packsNeeded);
+    const st = n => n < S.packsNeeded ? 'Derated' : (n - S.packsNeeded <= DC_AT_EDGE ? 'At edge' : 'Full');
+    x.nowStatus = st(x.avail);
+    x.afterStatus = st(x.availAfter);
+  });
+
+  if (out.ok) {
+    const a = out.tsc.TSC1, b = out.tsc.TSC2;
+    const sum = k => ({ mw: a[k].mw + b[k].mw, mwh: a[k].mwh + b[k].mwh });
+    out.site.now = sum('now'); out.site.after = sum('after');
+    const roll = (p, q) => (p === 'Derated' || q === 'Derated') ? 'Derated'
+                        : (p === 'At edge' || q === 'At edge') ? 'At edge' : 'No derate';
+    out.site.nowStatus = (a.nowStatus === 'Derated' || b.nowStatus === 'Derated') ? 'Derated' : 'No derate';
+    out.site.afterStatus = roll(a.afterStatus, b.afterStatus);
+  }
+  return out;
+}
+
+function dcPill(s){
+  const cls = s === 'Full' || s === 'No derate' ? 'ok' : s === 'At edge' ? 'warn' : s === 'Derated' ? 'bad' : 'na';
+  return `<span class="dc-pill ${cls}">${s}</span>`;
+}
+// Outage work is nearly always scheduled for the next day, and an empty date
+// left the submission block showing an error on load.
+function dcPrefillDate(){
+  const el = document.getElementById('dc-date');
+  if (!el || el.value) return;
+  const d = new Date(); d.setDate(d.getDate() + 1);
+  const p = n => String(n).padStart(2, '0');
+  el.value = `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;
+}
+
+function dcRender(){
+  try { dcPrefillDate(); } catch(e) {}
+  const m = dcModel();
+  const el = document.getElementById('dc-out-outage');
+  if (el) {
+    if (!m.ok) el.innerHTML = `<div class="dc-bad">Check input</div>`;
+    else {
+      const a = m.tsc.TSC1, b = m.tsc.TSC2, s = m.site.after;
+      el.innerHTML = `<div class="dc-result">
+          <div class="dc-bigs">
+            <div class="dc-big"><span>${s.mw.toFixed(1)}</span><em>MW</em></div>
+            <div class="dc-big"><span>${s.mwh.toFixed(1)}</span><em>MWh</em></div>
+          </div>
+          <div class="dc-meta">${a.availAfter + b.availAfter} packs available ${dcPill(m.site.afterStatus)}</div>
+        </div>` + (m.reason ? `<div class="dc-note">${esc(m.reason)}</div>` : '');
+    }
+  }
+  dcRenderSched(m);
+}
+
+function dcRenderSched(m){
+  const el = document.getElementById('dc-sched-out'); if (!el) return;
+  if (!m || !m.ok) { el.textContent = 'Fix outage inputs first'; return; }
+  const d = (document.getElementById('dc-date')||{}).value;
+  const s = (document.getElementById('dc-start')||{}).value;
+  const e = (document.getElementById('dc-end')||{}).value;
+  if (!d || !s || !e || e <= s) { el.textContent = 'Check date and times'; return; }
+  const [Y,M,D] = d.split('-').map(Number);
+  const hm = v => { const [h,mm] = v.split(':'); return Number(h) + ':' + mm; };   // no leading zero
+  const reason = (document.getElementById('dc-reason')||{}).value || 'Megapack Preventative Maintenance';
+  el.textContent =
+      `${M}/${D}/${String(Y).slice(-2)}\n`
+    + `Start time : ${hm(s)}\n`
+    + `End time : ${hm(e)}\n\n`
+    + `Max Charge/Discharge: +/-${Math.floor(m.site.after.mw)}MW\n`
+    + `Max Energy: ${Math.floor(m.site.after.mwh)} MWh\n`
+    + `Reason: ${reason}`;
+}
+function dcCopySched(){
+  const t = (document.getElementById('dc-sched-out')||{}).textContent || '';
+  if (t && !/^Fix |^Check /.test(t)) navigator.clipboard.writeText(t).then(()=>showToast('Copied'));
+  else showToast('Nothing to copy yet');
+}
+
+function qcTab(which, btn){
+  document.querySelectorAll('[data-qc]').forEach(b => b.classList.toggle('active', b === btn));
+  const he = document.getElementById('qc-pane-he'), ph = document.getElementById('qc-pane-ph');
+  if (he) he.style.display = which === 'he' ? '' : 'none';
+  if (ph) ph.style.display = which === 'ph' ? '' : 'none';
+}
+
 function convTab(which, btn){
   ['ten','vid','buy'].forEach(k=>{
     const el=document.getElementById('conv-pane-'+k); if(el) el.style.display = (k===which)?'':'none';
@@ -18635,6 +18869,9 @@ setTimeout(() => {
   window.alertToggle=alertToggle;
   window.hfcForce=hfcForce;
   window.asSetDuty=asSetDuty;
+  window.qcTab=qcTab;
+  window.dcRender=dcRender;
+  window.dcCopySched=dcCopySched;
   window.srPrefillToday=srPrefillToday;
   window.asAutoDateShift=asAutoDateShift;
   window.currIndToggleAll=currIndToggleAll;
@@ -18688,7 +18925,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v4.27';
+const APP_VERSION = 'v4.33';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -18930,7 +19167,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v4.27</span>
+    RNWBL Ops Hub <span class="app-footer-v">v4.33</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
