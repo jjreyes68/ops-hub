@@ -4667,12 +4667,12 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <span class="roc-w-s">pick a drill</span><span class="roc-w-car">▾</span></div>
       <div style="padding:14px 16px 0;">
         <div class="tmr-seg">
-          <button class="tmr-seg-btn active" data-at="triage" onclick="atTab('triage',this)">Alarm Triage</button>
-          <button class="tmr-seg-btn" data-at="find" onclick="atTab('find',this)">Find It on SCADA</button>
+          <button class="tmr-seg-btn active" data-at="find" onclick="atTab('find',this)">Find It on SCADA</button>
+          <button class="tmr-seg-btn" data-at="triage" onclick="atTab('triage',this)">Alarm Triage</button>
         </div>
       </div>
-      <div style="padding:14px 16px;" id="at-body"></div>
-      <div style="padding:14px 16px;display:none;" id="fs-body"></div>
+      <div style="padding:14px 16px;" id="fs-body"></div>
+      <div style="padding:14px 16px;display:none;" id="at-body"></div>
     </div>
     <div id="stdref" class="roc-widget" style="display:none;">
       <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">📘</span><span class="roc-w-t">NERC Standard Prefixes</span><span class="roc-w-s">tap a family for its standards</span><span class="roc-w-car">▾</span></div>
@@ -15179,11 +15179,13 @@ function atTab(which, btn){
   if (t) t.style.display = which === 'triage' ? '' : 'none';
   if (f) f.style.display = which === 'find' ? '' : 'none';
   if (which === 'find' && f && !f.childElementCount) fsStart();
+  if (which === 'triage' && t && !t.childElementCount) atStart();
 }
+// Find It leads; triage waits behind its tab.
 function atRender(){
-  const f = document.getElementById('fs-body'); if (f && !f.childElementCount) f.style.display = 'none';
-  const el = document.getElementById('at-body'); if (!el || el.childElementCount) return;
-  atStart();
+  const t = document.getElementById('at-body'); if (t && !t.childElementCount) t.style.display = 'none';
+  const el = document.getElementById('fs-body'); if (!el || el.childElementCount) return;
+  fsStart();
 }
 function atRef(){
   const col = (k, title, sub) => `<div class="at-col ${k}">`
@@ -19510,7 +19512,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v4.67';
+const APP_VERSION = 'v4.68';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19752,7 +19754,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v4.67</span>
+    RNWBL Ops Hub <span class="app-footer-v">v4.68</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
