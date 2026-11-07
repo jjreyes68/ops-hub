@@ -3151,7 +3151,65 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .fs-btns{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;}
 .fs-btns i{font-style:normal;font-size:10.5px;background:#4a4f56;border:1px solid #5b616a;border-radius:3px;padding:2px 7px;color:#e6e9ec;}
 @media(max-width:700px){.atd-btns{grid-template-columns:1fr;}.fs-grid{grid-template-columns:1fr 1fr;}}
-@media(max-width:420px){.fs-grid{grid-template-columns:1fr;}}
+@media(max-width:420px){.fs-grid{grid-template-columns:1fr;}.fs-card.wide{grid-column:auto;}}
+/* site monitoring: same frame as Find It, three skins so no one vendor is "the" screen */
+.sm-step{font-size:10.5px;color:var(--text3);}
+.sm-dots{display:flex;gap:4px;margin:0 0 10px;}
+.sm-dots i{flex:1;height:4px;border-radius:2px;background:var(--border);}
+.sm-dots i.done{background:var(--green);} .sm-dots i.now{background:var(--blue);}
+.sm-opts{display:grid;gap:8px;margin-top:10px;}
+.sm-opt{border:1px solid var(--border2);background:var(--bg2);border-radius:8px;padding:9px 12px;cursor:pointer;
+  font-family:var(--f);font-size:12.5px;color:var(--text);text-align:left;}
+.sm-opt:hover:not(:disabled){border-color:var(--blue);}
+.sm-opt:disabled{cursor:default;opacity:.55;}
+.sm-opt.ok{opacity:1;border-color:var(--green);background:var(--gbg);}
+.sm-opt.no{opacity:1;border-color:var(--red);background:var(--rbg);}
+.sm-opt.part{opacity:1;border-color:var(--amber);background:var(--abg);}
+.sm-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(13px,1fr));gap:3px;margin:4px 0 6px;}
+.sm-tiles s{height:13px;border-radius:2px;background:#4caf6e;text-decoration:none;}
+.sm-tiles.lb{grid-template-columns:repeat(auto-fill,minmax(34px,1fr));}
+.sm-tiles.lb s{height:20px;font-size:9.5px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;}
+.fs-card.wide{grid-column:span 2;}
+.fs-card.full{grid-column:1/-1;}
+.sm-pic{width:100%;max-width:580px;height:auto;display:block;margin:2px 0 4px;}
+.sm-tbl{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1.6fr;font-size:11px;line-height:1.9;}
+.sm-tbl span{color:#a9b1ba;border-bottom:1px solid #42474e;}
+.sm-tbl b{font-weight:600;border-bottom:1px solid #3a3e44;}
+.sm-tbl b.a{color:#f0c24f;} .sm-tbl b.r{color:#ff8a7a;} .sm-tbl b.g{color:#7fd79a;}
+.sm-blk{display:flex;align-items:center;gap:8px;margin:3px 0;}
+.sm-blk em{font-style:normal;font-size:10.5px;color:#a9b1ba;width:46px;flex-shrink:0;}
+.sm-blk .sm-tiles{flex:1;margin:0;grid-template-columns:repeat(80,1fr);gap:2px;}
+.sm-blk .sm-tiles s{min-width:0;}
+.sm-blk .sm-tiles s{height:9px;}
+@media(max-width:560px){.fs-card.full{overflow-x:auto;}.sm-pic{min-width:500px;}.sm-tbl{font-size:10px;grid-template-columns:1fr .9fr .9fr .9fr 1.4fr;}}
+.sm-tiles s.r{background:#e0675a;} .sm-tiles s.c{background:#8a9099;} .sm-tiles s.m{background:#4f8fd8;}
+.sm-leg{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:10.5px;color:#a9b1ba;}
+.sm-leg b{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:-1px;}
+/* wind skin: light grey panels, underlined tabs */
+.fs-hmi.sk-lt{background:#d9dcdf;border-color:#b9bec4;color:#22262b;}
+.sk-lt .fs-crumb{background:#eef0f2;color:#5a6470;border-bottom:1px solid #c5cad0;}
+.sk-lt .fs-crumb u{color:#2a64b0;} .sk-lt .fs-crumb .fs-run{color:#2e8b4f;}
+.sk-lt .fs-tabs{background:#eef0f2;padding:0 8px;gap:0;}
+.sk-lt .fs-tab{background:none;color:#4b5560;border-radius:0;border-bottom:3px solid transparent;padding:8px 13px 6px;}
+.sk-lt .fs-tab:hover{background:#e2e5e8;}
+.sk-lt .fs-tab.on{background:none;color:#1d5fae;border-bottom-color:#1d5fae;}
+.sk-lt .fs-grid{border-top:1px solid #c5cad0;}
+.sk-lt .fs-card{background:#f6f7f8;border-color:#c3c8ce;color:#22262b;}
+.sk-lt .fs-ch{border-bottom-color:#d3d7dc;}
+.sk-lt .fs-r span{color:#5d6670;} .sk-lt .fs-r b{color:#1e2226;}
+.sk-lt .fs-r b.g{color:#23824a;} .sk-lt .fs-r b.a{color:#a86d00;} .sk-lt .fs-r b.r{color:#c23b2c;}
+.sk-lt .fs-btns i{background:#e3e6e9;border-color:#b5bbc2;color:#2b3036;}
+.sk-lt .sm-leg{color:#5d6670;}
+.sk-lt .fs-card:hover{border-color:#2a64b0;}
+/* bess skin: near-black tiles, pill tabs */
+.fs-hmi.sk-bx{background:#18191b;border-color:#2c2e31;}
+.sk-bx .fs-crumb{background:#18191b;}
+.sk-bx .fs-tabs{background:#18191b;padding:4px 10px 8px;gap:6px;}
+.sk-bx .fs-tab{background:#2a2c30;color:#c9ced4;border-radius:14px;padding:5px 13px;font-weight:600;}
+.sk-bx .fs-tab:hover{background:#34373c;}
+.sk-bx .fs-tab.on{background:#e8eaed;color:#18191b;}
+.sk-bx .fs-grid{border-top:1px solid #2c2e31;}
+.sk-bx .fs-card{background:#232528;border-color:#2f3236;border-radius:10px;}
 .sl-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .sl-col-h{font-size:12.5px;font-weight:700;color:var(--text);margin-bottom:7px;padding-bottom:6px;border-bottom:2px solid var(--border2);}
 .sl-col-h span{float:right;font-family:var(--m);font-size:9.5px;font-weight:400;color:var(--text3);}
@@ -4587,11 +4645,20 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       </div>
     </div>
 
-    <div id="shiftline" class="roc-widget" style="display:none;">
-      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">🕒</span>
-        <span class="roc-w-t">The Daily Checklist</span>
-        <span class="roc-w-s">as written in the playbook</span><span class="roc-w-car">▾</span></div>
-      <div style="padding:14px 16px;" id="sl-body"></div>
+    <div id="smon" class="roc-widget" style="display:none;">
+      <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">🔍</span>
+        <span class="roc-w-t">Site Monitoring</span>
+        <span class="roc-w-s">pick an asset</span><span class="roc-w-car">▾</span></div>
+      <div style="padding:14px 16px 0;">
+        <div class="tmr-seg">
+          <button class="tmr-seg-btn active" data-sm="solar" onclick="smTab('solar',this)">☀️ Solar</button>
+          <button class="tmr-seg-btn" data-sm="wind" onclick="smTab('wind',this)">🌬️ Wind</button>
+          <button class="tmr-seg-btn" data-sm="bess" onclick="smTab('bess',this)">🔋 BESS</button>
+        </div>
+      </div>
+      <div style="padding:14px 16px;" id="sm-solar"></div>
+      <div style="padding:14px 16px;display:none;" id="sm-wind"></div>
+      <div style="padding:14px 16px;display:none;" id="sm-bess"></div>
     </div>
 
     <div id="vladder" class="roc-widget" style="display:none;">
@@ -14243,7 +14310,7 @@ const ROC_QUESTIONS = [
 
   {id:'op2', pb:'units-off', stepwise:true, lvl:1, cat:'procedures', type:'application',
    q:'A tripped wind turbine needs to be reset. Walk through the steps and when you escalate.',
-   a:'<ol style="margin-left:14px;"><li><strong>Identify the tripped turbine</strong> on SCADA — confirm it\'s a genuine trip vs. a comms loss or planned outage</li><li><strong>Reset the turbine per SOP</strong> — follow the site-specific reset procedure exactly</li><li><strong>Notify site team if needed</strong> — if the turbine trips again after reset, or if the trip reason is unclear, escalate to field team</li><li><strong>Create or update the operator log</strong> — document the trip time, reset time, cause if known, and any escalation</li></ol>Repeated trips on the same turbine = do not keep resetting. Escalate to maintenance and log accordingly.'},
+   a:'<ol style="margin-left:14px;"><li><strong>Identify the tripped turbine</strong> on SCADA — confirm it\'s a genuine trip vs. a comms loss or planned outage</li><li><strong>Reset the turbine per SOP</strong> — follow the site-specific reset procedure exactly</li><li><strong>Notify site team if needed</strong> — if the turbine trips again after reset, or if the trip reason is unclear, escalate to field team. Keep resetting per the site SOP to keep it online while you escalate</li><li><strong>Create or update the operator log</strong> — document the trip time, reset time, cause if known, and any escalation</li></ol>Repeated trips on the same turbine: the rule of thumb is to keep it online, so reset again if the site SOP allows it, but always escalate to the site team. The SOP for that site sets the reset limit.'},
 
   {id:'op4', pb:'hail-stow', stepwise:true, lvl:1, cat:'procedures', type:'application',
    q:'Hail stow procedure for HARQ 1/2 or C-Flats: what are the 7 steps and what is the trigger?',
@@ -15348,32 +15415,300 @@ function fsCard(key){
 }
 function fsNext(){ fsI++; fbTried = false; fsShow(); }
 
-// Procedures: the daily checklist is the one part of the shift that is written
-// down and fixed, so show that rather than an invented shape for the day.
-const SHIFT_PHASES = [
-  ['Start of shift', '\u{1F6AA}', [
-    'Notify the ROC in the Teams chat that you are on the way',
-    'Clock in at the office door (DSPTCH)',
-    'Check the dry-erase and outage board',
-    'Take instructions from the offgoing operator',
-    'Log into D1 and D2 duty site SCADAs',
-    'Fill out the ROCC1 Operator Log (onsite)',
-    'Complete the Asset Scanning Tool and upload']],
-  ['End of shift', '\u{1F3C1}', [
-    'Leave instructions for the oncoming operator in Teams',
-    'Fill out the ROCC1 Operator Log (offsite)',
-    'Log out of all sites directly',
-    'Leave the ROCC only once relief is logged into their sites',
-    'Clock out (DSPTCH)']],
-];
-function slRender(){
-  const el = document.getElementById('sl-body'); if (!el || el.childElementCount) return;
-  el.innerHTML = '<div class="sl-cols">' + SHIFT_PHASES.map(([name, icon, steps]) =>
-    `<div class="sl-col"><div class="sl-col-h">${icon} ${name}<span>${steps.length} steps</span></div>`
-    + steps.map((s, n) => `<div class="sl-s"><span class="sl-s-n">${n + 1}</span><span>${s}</span></div>`).join('')
-    + '</div>').join('') + '</div>'
-    + '<div class="vl-foot">Straight from the Daily Checklist playbook. Everything else here is a procedure for a situation, not a fixed point in the shift.</div>';
+// Procedures: walk the Q1, Q2 and Q4 monitoring procedures on a made-up SCADA,
+// one asset at a time. Find steps happen on the screen; call steps are the
+// parts of the procedure that happen off it (notify, log, QSE).
+const tl = (n, marks) => { const a = Array(n).fill(''); Object.entries(marks).forEach(([i, c]) => a[i] = c); return a; };
+// Pictorials: simple shapes with readings on each part, the way most SCADAs
+// draw a unit. Static on purpose.
+const PIC = {
+ inverter: () => `<svg class="sm-pic" viewBox="0 0 620 180" font-family="sans-serif" font-size="11">
+  <g fill="#3b5a8c" stroke="#8fb0e0" stroke-width="1">
+   <path d="M20 30 h80 l-14 30 h-80z"/><path d="M20 105 h80 l-14 30 h-80z"/></g>
+  <g stroke="#8fb0e0" stroke-width=".6"><path d="M38 30 l-14 30 M58 30 l-14 30 M78 30 l-14 30 M14 45 h80"/><path d="M38 105 l-14 30 M58 105 l-14 30 M78 105 l-14 30 M14 120 h80"/></g>
+  <text x="14" y="22" fill="#a9b1ba">Array 1</text><text x="14" y="97" fill="#a9b1ba">Array 2</text>
+  <path d="M100 45 H270 V80" stroke="#5fc17e" stroke-width="3" fill="none"/>
+  <path d="M100 120 H270 V96" stroke="#e0675a" stroke-width="3" stroke-dasharray="7 5" fill="none"/>
+  <text x="150" y="38" fill="#7fd79a" font-weight="700">DC in 1: 612 A</text>
+  <text x="150" y="140" fill="#ff8a7a" font-weight="700">DC in 2: 0 A</text>
+  <rect x="245" y="70" width="70" height="40" rx="4" fill="#2b4a2f" stroke="#5fc17e"/>
+  <text x="280" y="88" fill="#eef1f4" text-anchor="middle" font-weight="700">INV-27</text>
+  <text x="280" y="102" fill="#a9b1ba" text-anchor="middle" font-size="10">DC → AC</text>
+  <path d="M315 90 H420" stroke="#5fc17e" stroke-width="3"/>
+  <g fill="none" stroke="#c9ced4" stroke-width="2"><circle cx="432" cy="90" r="12"/><circle cx="450" cy="90" r="12"/></g>
+  <path d="M462 90 H600" stroke="#5fc17e" stroke-width="3"/>
+  <text x="250" y="132" fill="#dfe3e8">AC 610 kW</text><text x="250" y="147" fill="#dfe3e8">DC 1,182 V</text><text x="250" y="162" fill="#dfe3e8">Temp 48 °C</text>
+  <text x="412" y="122" fill="#dfe3e8">MV xfmr</text><text x="412" y="137" fill="#a9b1ba">34.5 kV</text>
+  <text x="540" y="80" fill="#a9b1ba">to feeder</text></svg>`,
+ turbine: () => `<svg class="sm-pic" viewBox="0 0 620 230" font-family="sans-serif" font-size="11">
+  <path d="M300 70 L292 214 H308 Z" fill="#c3c8ce" stroke="#8a9099"/>
+  <rect x="280" y="208" width="40" height="8" fill="#8a9099"/>
+  <rect x="298" y="52" width="66" height="22" rx="6" fill="#e9ecef" stroke="#6c757d"/>
+  <circle cx="298" cy="63" r="8" fill="#e9ecef" stroke="#6c757d"/>
+  <g stroke="#6c757d" fill="#f8f9fa"><path d="M296 57 L286 6 L302 56Z"/><path d="M292 66 L246 92 L296 70Z"/><path d="M304 67 L336 104 L300 70Z" fill="#f6d2cd" stroke="#c23b2c"/></g>
+  <path d="M352 52 v-10 M346 42 h12" stroke="#6c757d" stroke-width="2"/>
+  <g stroke="#9aa3ad" stroke-width="1" fill="none"><path d="M330 98 L392 128 H420"/><path d="M290 20 H210"/><path d="M290 63 H200 V96 H170"/><path d="M364 60 H440"/><path d="M352 40 V22 H440"/><path d="M308 170 H440"/><path d="M296 120 H200"/></g>
+  <text x="110" y="16" fill="#1e2226" font-weight="700">Blades / pitch</text>
+  <text x="110" y="30" fill="#1e2226">B1 89° · B2 89°</text><text x="110" y="44" fill="#c23b2c" font-weight="700">B3 62° (did not feather)</text>
+  <text x="80" y="92" fill="#1e2226" font-weight="700">Hub / rotor</text><text x="80" y="106" fill="#1e2226">0 rpm</text>
+  <text x="110" y="124" fill="#1e2226" font-weight="700">Tower</text><text x="110" y="138" fill="#1e2226">Vibration normal</text>
+  <text x="424" y="132" fill="#c23b2c" font-weight="700">Pitch system</text><text x="424" y="146" fill="#c23b2c">Fault 1047, axis 3</text>
+  <text x="446" y="18" fill="#1e2226" font-weight="700">Anemometer</text><text x="446" y="32" fill="#1e2226">9.1 m/s</text>
+  <text x="446" y="56" fill="#1e2226" font-weight="700">Nacelle</text><text x="446" y="70" fill="#1e2226">Gen 0 rpm · Gearbox 46 °C</text><text x="446" y="84" fill="#1e2226">Yaw aligned 294°</text>
+  <text x="446" y="166" fill="#1e2226" font-weight="700">Base / converter</text><text x="446" y="180" fill="#1e2226">Converter OK · 0 kW</text></svg>`,
+ megapack: () => `<svg class="sm-pic" viewBox="0 0 620 170" font-family="sans-serif" font-size="11">
+  <rect x="20" y="20" width="420" height="110" rx="6" fill="#2a2c30" stroke="#5b616a"/>
+  <text x="30" y="14" fill="#a9b1ba">B4-MP07 enclosure</text>
+  <g fill="#3b4a5c" stroke="#6f89a8">${[0,1,2,3,4].map(i => `<rect x="32" y="${28 + i*16}" width="150" height="12" rx="2"/>`).join('')}</g>
+  <rect x="200" y="30" width="100" height="90" rx="4" fill="#2f3a2f" stroke="#7d8a7d"/>
+  <text x="250" y="72" fill="#eef1f4" text-anchor="middle" font-weight="700">Inverter</text><text x="107" y="120" fill="#a9b1ba" text-anchor="middle" font-size="10">Battery modules</text><text x="250" y="87" fill="#a9b1ba" text-anchor="middle" font-size="10">DC ↔ AC</text>
+  <rect x="318" y="30" width="110" height="90" rx="4" fill="#2a3540" stroke="#6f89a8"/>
+  <circle cx="373" cy="62" r="18" fill="none" stroke="#8fb0e0" stroke-width="2"/><path d="M373 44 v36 M355 62 h36" stroke="#8fb0e0"/><text x="373" y="108" fill="#a9b1ba" text-anchor="middle" font-size="10">HVAC</text>
+  <path d="M440 75 H480" stroke="#c9ced4" stroke-width="3"/>
+  <rect x="480" y="63" width="26" height="24" fill="#5fc17e"/><text x="493" y="79" fill="#18191b" text-anchor="middle" font-weight="700" font-size="10">52</text>
+  <path d="M506 75 H600" stroke="#8a9099" stroke-width="3" stroke-dasharray="6 5"/>
+  <text x="32" y="148" fill="#dfe3e8">Modules: 48 % · 26 °C</text>
+  <text x="200" y="148" fill="#dfe3e8">Inverter: 0 MW, ready</text>
+  <text x="318" y="148" fill="#dfe3e8">Thermal: normal</text>
+  <text x="470" y="110" fill="#7fd79a" font-weight="700">AC breaker</text><text x="470" y="124" fill="#7fd79a">Open</text>
+  <text x="530" y="66" fill="#a9b1ba">to Block 4 feeder</text></svg>`,
+};
+const SOLAR_TBL = [['INV-25','1,511','1,180','1,309','Running','g'],['INV-26','1,506','1,181','1,305','Running','g'],
+  ['INV-27','610','1,182','612','Running','g'],['INV-28','1,509','1,179','1,308','Running','g'],
+  ['INV-44','800','1,176','690','Power limit 50 % (temp)','a'],['INV-63','1,509','1,179','1,305','Fan fault','a']];
+const solarTbl = () => '<div class="sm-tbl"><span>Inverter</span><span>AC kW</span><span>DC V</span><span>DC A</span><span>State</span>'
+  + SOLAR_TBL.map(r => `<b>${r[0]}</b><b class="${r[0] === 'INV-27' || r[0] === 'INV-44' ? 'a' : ''}">${r[1]}</b><b>${r[2]}</b><b class="${r[0] === 'INV-27' ? 'a' : ''}">${r[3]}</b><b class="${r[5]}">${r[4]}</b>`).join('')
+  + '</div><div class="sm-leg" style="margin-top:5px;">86 more within 2 % of each other. INV-31 and INV-58 not shown.</div>';
+const BESS_BLOCKS = [['Block 1',80,''],['Block 2',79,''],['Block 3',79,''],['Block 4',37,'r'],['Block 5',79,'']];
+const bessPacks = () => BESS_BLOCKS.map(([n, c, s]) =>
+  `<div class="sm-blk"><em>${n}</em><div class="sm-tiles">${Array(c).fill(`<s class="${s}"></s>`).join('')}</div></div>`).join('')
+  + '<div class="sm-leg" style="margin-top:5px;"><span><b style="background:#4caf6e"></b>Online 317</span><span><b style="background:#e0675a"></b>Offline 37</span></div>';
+const SM = {
+ solar: { skin:'', crumb:['Solar','DEMO-S'], status:'Running', ts:'13:05',
+  intro:'150 MW AC solar site, early afternoon, clear sky. Walk the four-step solar monitoring procedure, then dig in.',
+  tabs: [
+   ['overview','Overview',[
+     ['summary','Site Summary',[['Status','Running','g'],['Net output','136.4 MW'],['Inverters online','92 / 94','a'],['Nameplate','150 MW AC']]],
+     ['comms','Comm Status',[['RTU','Online','g'],['Last poll','13:05:02']]]]],
+   ['inv','Inverters',[
+     ['status','Inverter Status',[], null, {n:94, name:i=>'INV-'+String(i+1).padStart(2,'0'), marks:{30:'r',57:'c'}, leg:[['#4caf6e','Online 92'],['#e0675a','Faulted 1'],['#8a9099','Comm loss 1']]}],
+     ['limits','Derates & Limits',[['Derated inverters','0'],['Active limits','None'],['Max per inverter','1.6 MW']]],
+     ['ialarms','Inverter Alarms',[['INV-31','Ground fault','r'],['INV-58','No response','a'],['INV-63','Fan fault','a']]]]],
+   ['detail','Inverter Detail',[
+     ['table','Inverter Comparison',[], null, null, {html:solarTbl, full:1}],
+     ['chain','INV-27 Single Line',[], null, null, {html:PIC.inverter, full:1}]]],
+   ['weather','Weather',[
+     ['met','MET Station',[['POA irradiance','812 W/m²'],['GHI','790 W/m²'],['Panel temp','41 °C'],['Ambient','24 °C']]],
+     ['fc','Forecast',[['Next hour','Clear'],['Cloud cover','2 %']]]]],
+   ['power','Power',[
+     ['output','Site Output',[['Actual','136.4 MW'],['Expected for irradiance','~141 MW'],['Gap','-4.6 MW','a']]],
+     ['sp','Plant Setpoint',[['SP source','HMI'],['Active power SP','150.0 MW'],['Buyer curtailment','None']]],
+     ['poi','POI Meter',[['MW','136.4'],['MVAR','-6.1'],['kV','236.0']]]]],
+   ['alarms','Alarms',[
+     ['active','Active Alarms',[['Unacknowledged','3','r'],['Newest','INV-63 fan fault']]]]]],
+  steps: [
+   {f:1, ask:'Step 1. Identify each inverter’s status: online, offline or comm loss.',
+    right:{'inv.status':'92 online, INV-31 faulted (offline), INV-58 comm loss. Comm loss means you cannot see it, not that it is down. It may still be producing.'},
+    part:{'overview.summary':'92 / 94 tells you two are out, not which or why. Open the inverter view.','inv.ialarms':'Good next stop, but first see every inverter’s state at once.'}},
+   {f:1, ask:'Step 2. Locate current irradiance. What sunlight is available?',
+    right:{'weather.met':'812 W/m² POA is strong sun. That is your benchmark: the site should be near full output.'},
+    part:{'weather.fc':'Forecast is what is coming. You want what is hitting the panels now.'}},
+   {f:1, ask:'Step 3. Compare actual output and site total against what the irradiance should give.',
+    right:{'power.output':'136.4 MW against about 141 expected. The two down inverters explain about 3 MW, so about 1.6 MW is still missing.'},
+    part:{'power.poi':'That is actual MW at the POI, but no expected number to compare it with.','overview.summary':'Actual is there, expected is not. Use Site Output.'}},
+   {f:1, ask:'Step 4. Identify any derated inverters. Intentional derate or a fault?',
+    right:{'inv.limits':'Site level says 0 derated, no limits. Site level is not the whole story, and you still have 1.6 MW unexplained.'},
+    part:{'power.sp':'That is a site setpoint, not an inverter derate.'}},
+   {f:1, ask:'Nothing flagged at site level. Dive deeper: which inverters are low against their peers?',
+    right:{'detail.table':'INV-27 at 610 kW and INV-44 at 800 kW while peers make about 1,500. INV-44 limited itself on temperature. INV-63 has a fan fault but is at full power: a fault is not always lost production.'},
+    part:{'detail.chain':'That is one inverter. Compare them all first to find which ones to open.','inv.status':'Status says Running for all of them. You need output against peers.'}},
+   {f:1, ask:'INV-27 is at 610 kW with normal DC voltage. Find why.',
+    right:{'detail.chain':'DC input 2 reads 0 A. Half its DC never reaches the inverter: think fuse, combiner or string. A real derate the site screen never flagged.'},
+    part:{'detail.table':'The table shows it is low. The single line shows where the power is going missing.','inv.ialarms':'No alarm for INV-27. That is the point: you only find it by looking.'}},
+   {f:1, ask:'Check the plant setpoint. Is the site being curtailed?',
+    right:{'power.sp':'150 MW from the HMI, no buyer curtailment. The shortfall is equipment, not dispatch.'},
+    part:{'overview.summary':'Output is there, not the setpoint or curtailment.'}},
+   {f:0, ask:'Two inverters down, two producing low, no curtailment. What now?',
+    opts:[['Notify the site team and owner, log it, and check whether capability drops enough to move to Site De-Rate','ok','That is the Units Offline flow: identify, compare against peers, check for a derate, notify, log.'],
+          ['Notify the SC that the site is not following dispatch','no','It is following dispatch. Nothing curtailed it. This is equipment.'],
+          ['Reset INV-63 for its fan fault','no','INV-63 is at full power. Report it, do not take it offline.']]},
+  ]},
+ wind: { skin:'sk-lt', crumb:['Wind','DEMO-W'], status:'Running', ts:'09:34',
+  intro:'30-turbine wind site, 9 m/s. One turbine has dropped out. Walk the trip and reset procedure.',
+  tabs: [
+   ['overview','Overview',[
+     ['plant','Plant',[['Active power','41.6 MW'],['Turbines operating','27 / 30','a'],['Avg wind','9.1 m/s']]],
+     ['ctrl','Plant Control',[['SCADA control','Remote','g'],['Curtailment','None']]]]],
+   ['turbines','Turbines',[
+     ['grid','Turbine Grid',[], null, {n:30, lb:1, name:i=>'ABC'[Math.floor(i/10)]+String(i%10+1).padStart(2,'0'), marks:{2:'m',18:'r',24:'c'}, leg:[['#4caf6e','Running'],['#e0675a','Tripped'],['#8a9099','No comm'],['#4f8fd8','Maintenance']]}],
+     ['avail','Availability',[['Operating','27'],['Tripped','1','r'],['No comm','1','a'],['Maintenance','1']]]]],
+   ['detail','Turbine Detail',[
+     ['fault','WT-B09 Status',[['State','Tripped','r'],['Fault code','1047 Pitch fault'],['Comms','OK','g'],['Maintenance flag','No']]],
+     ['reset','WT-B09 Reset',[['Remote reset','Permitted by site SOP','g'],['Resets today','1']], ['Reset','Stop','Pause']],
+     ['history','WT-B09 Trip History',[['09:14','Pitch fault 1047','r'],['09:20','Reset by ROC'],['09:31','Pitch fault 1047','r']]],
+     ['tower','WT-B09 Turbine View',[], null, null, {html:PIC.turbine, full:1}]]],
+   ['met','Met Towers',[
+     ['tower','Met Tower 1',[['Wind speed','9.1 m/s'],['Direction','294°'],['Temp','12 °C']]]]],
+   ['sub','Substation',[
+     ['bkr','Main Breaker',[['52-L1','Closed','r'],['POI kV','117.9']]]]]],
+  steps: [
+   {f:1, ask:'Step 1. Identify the tripped turbine on SCADA.',
+    right:{'turbines.grid':'B09 is red: tripped. C05 (grey) is comm loss and A03 (blue) is in maintenance. Neither of those is a trip.'},
+    part:{'turbines.avail':'The count says one is tripped, not which one.','overview.plant':'27 of 30 tells you three are out, not why.'}},
+   {f:1, ask:'Confirm it is a genuine trip, not a comm loss or planned outage.',
+    right:{'detail.fault':'Real fault code, comms OK, no maintenance flag. Genuine trip.'},
+    part:{'detail.history':'History helps later. First confirm what state it is in right now.','detail.tower':'Good detail, but start with its state, comms and maintenance flag.'}},
+   {f:1, ask:'Which part of the turbine faulted?',
+    right:{'detail.tower':'Blade 3 sits at 62° while the others feathered to 89°. That matches pitch fault 1047 on axis 3. Give the site team exactly that.'},
+    part:{'detail.fault':'The code says pitch. The turbine view shows which blade.'}},
+   {f:0, ask:'Step 2. How do you reset it?',
+    opts:[['Per the site-specific SOP, and only if the SOP permits it','ok','Every site’s SOP is different. Follow it exactly.'],
+          ['Any way the HMI allows','no','The button being there does not make it allowed. The SOP decides.'],
+          ['Do not reset, dispatch field straight away','part','Not first. If the SOP permits a remote reset, that is the first move.']]},
+   {f:1, ask:'Find where you would reset WT-B09.',
+    right:{'detail.reset':'Reset sits with the turbine, and this card shows the SOP permits it remotely.'}},
+   {f:1, ask:'Step 3. WT-B09 is red again. Where do you confirm whether this is a repeat?',
+    right:{'detail.history':'Tripped 09:14, reset 09:20, tripped again 09:31 on the same code. That is a repeat trip.'},
+    part:{'detail.fault':'That shows it is tripped now, not that it already tripped once today.'}},
+   {f:0, ask:'Same fault, twice in twenty minutes. What now?',
+    opts:[['Reset again per the site SOP to keep it online, and escalate to the site team because it is repeating','ok','Rule of thumb: keep it online, but a repeat trip always gets escalated. The SOP for that site sets how many resets are allowed and when to stop.'],
+          ['Stop resetting and wait for the site team','part','Escalating is right, but the rule of thumb is to keep it online if the site SOP allows another reset.'],
+          ['Keep resetting, trips happen','no','Keep it online, yes, but a repeat trip always gets escalated.']]},
+   {f:0, ask:'Step 4. Where does it get logged?',
+    opts:[['Softwrench and the Turbine Trip Logs','ok','Trip time, reset time, cause if known, and the escalation.'],
+          ['Softwrench only','part','Close. Wind trips also go in the Turbine Trip Logs.'],
+          ['The Teams chat','no','Teams is for the crew. The record lives in Softwrench and the trip logs.']]},
+  ]},
+ bess: { skin:'sk-bx', crumb:['BESS','DEMO-B'], status:'Running Auto', ts:'15:42',
+  intro:'BESS site, one block of Megapacks went offline this afternoon. Walk the identify and derate procedure.',
+  tabs: [
+   ['overview','Overview',[
+     ['status','Site Status',[['Mode','Running Auto','g'],['SOC','48 %'],['Active power','-120 MW'],['Setpoint','-120 MW']]],
+     ['volt','Voltage',[['POI','236.1 kV'],['Setpoint','236.0 kV'],['Band','226–241 kV']]]]],
+   ['info','Plant Info',[
+     ['nameplate','Nameplate',[['Rating','300 MW'],['Energy','1200 MWh'],['Voltage SP','236.0 kV'],['Operating band','226–241 kV'],['Megapacks','354']]],
+     ['ic','Interconnection',[['POI','DEMO 230 kV'],['Resource ID','DEMO_B_1']]]]],
+   ['bess','BESS',[
+     ['avail','Availability',[['Units online','2 / 2','g'],['Megapacks available','317 / 354','a'],['Offline','Block 4 (37)','r']]],
+     ['cap','Capability',[['Discharge capability','268 MW','a'],['Charge capability','-268 MW','a'],['SOE max online','1075 MWh']]],
+     ['therm','Thermal',[['Avg cell temp','26 °C'],['HVAC','Normal','g']]],
+     ['packs','Per Pack',[], null, null, {html:bessPacks, full:1}],
+     ['unit','Megapack B4-MP07',[], null, null, {html:PIC.megapack, full:1}]]],
+   ['controls','Controls',[
+     ['sp','Setpoints',[['Active power SP','-120 MW'],['Voltage SP','236.0 kV']], ['Set MW','Set kV']],
+     ['src','Control Source',[['Real power','ADS'],['Reactive','Voltage schedule']]]]],
+   ['alarms','Alarms',[
+     ['active','Active Alarms',[['Block 4','Offline','r'],['Since','14:58']]]]]],
+  steps: [
+   {f:1, ask:'Step 1. Identify BESS nameplate info: MW, MWh, voltage setpoint and operating band.',
+    right:{'info.nameplate':'300 MW, 1200 MWh, 236 kV setpoint, 226–241 kV band. This is what you compare everything else against.'},
+    part:{'overview.volt':'Voltage setpoint and band are there, but not MW and MWh nameplate.'}},
+   {f:1, ask:'Step 2. Check actual capability against nameplate.',
+    right:{'bess.cap':'268 MW discharge against 300 MW nameplate, 1075 MWh against 1200.','bess.avail':'317 of 354 Megapacks explains it. Capability shows the MW: 268.'},
+    part:{'overview.status':'That is what it is doing, not what it can do.','bess.packs':'That shows which packs are out. Capability turns it into MW.'}},
+   {f:1, ask:'Every Block 4 pack is offline. Open one and find out why.',
+    right:{'bess.unit':'Modules, inverter and thermal all normal, AC breaker open. That points to the Block 4 feeder or breaker, not the batteries. Tell the site team that.'},
+    part:{'bess.packs':'That shows the whole block is out. Open a unit to see why.','alarms.active':'The alarm says offline, not why.'}},
+   {f:0, ask:'Fully available or derated?',
+    opts:[['Derated, about 268 MW / 1075 MWh','ok','317 of 354 Megapacks is about 89.5 %. The site can no longer give its full 300 MW.'],
+          ['Fully available, both units are online','no','2 / 2 counts the controllers, not the Megapacks behind them.'],
+          ['Out of service, 0 MW','no','It is still running and following dispatch, just with less to give.']]},
+   {f:0, ask:'Step 3. Next move?',
+    opts:[['Submit the derate to the QSE and notify Owner contacts','ok','The SC needs the real capability before the next dispatch. Use the proper template and call to confirm.'],
+          ['Update the Outage Board first, QSE later','no','The board is internal. The market needs the right number first.'],
+          ['Wait to see if Block 4 comes back','no','Derates go in when they happen, not when they end.']]},
+   {f:0, ask:'Step 4. After the QSE and owner are told?',
+    opts:[['Update the Outage Board and create an Operator Log','ok','Start time, cause and expected duration.'],
+          ['Nothing else until it is fixed','no','The board and the log are how the next shift knows.'],
+          ['Teams message to the crew','part','Good to do, but it does not replace the board and the log.']]},
+   {f:0, ask:'Step 5. Block 4 comes back online. Now?',
+    opts:[['End the outage with the QSE, update the Outage Board and Operator Log, notify Owner','ok','Close out the same chain you opened.'],
+          ['Nothing, the QSE sees it automatically','no','The derate stays in until you end it.'],
+          ['Update the Outage Board only','part','Board yes, but the QSE and owner need to hear it too.']]},
+  ]},
+};
+const smSt = {};
+const smKey = (a, k) => k.split('.');
+function smTab(which, btn){
+  document.querySelectorAll('[data-sm]').forEach(b => b.classList.toggle('active', b === btn));
+  ['solar','wind','bess'].forEach(a => { const el = document.getElementById('sm-' + a); if (el) el.style.display = a === which ? '' : 'none'; });
+  if (!smSt[which]) smStart(which);
 }
+function smRender(){
+  ['wind','bess'].forEach(a => { const el = document.getElementById('sm-' + a); if (el && !el.childElementCount) el.style.display = 'none'; });
+  if (!smSt.solar) smStart('solar');
+}
+function smStart(a){ smSt[a] = {i:0, score:0, tried:false, done:false, tab:'overview'}; smShow(a); }
+function smName(a, key){ const [t, c] = key.split('.'); const tab = SM[a].tabs.find(x => x[0] === t);
+  return tab[1] + ' \u203A ' + tab[2].find(x => x[0] === c)[1]; }
+function smShow(a){
+  const el = document.getElementById('sm-' + a), d = SM[a], s = smSt[a]; if (!el) return;
+  const N = d.steps.length;
+  if (s.i >= N) {
+    el.innerHTML = `<div class="at-done"><b>${s.score} / ${N}</b> on the first try.</div>`
+      + '<div class="at-fb part">Same procedure on any SCADA: know what each step is looking for, and the screen is just where you go to read it.</div>'
+      + `<button class="at-next" onclick="smStart('${a}')">Run it again</button>`;
+    return;
+  }
+  const st = d.steps[s.i]; s.tried = false; s.done = false;
+  el.innerHTML = `<div class="sm-dots">${d.steps.map((_, n) => `<i class="${n < s.i ? 'done' : n === s.i ? 'now' : ''}"></i>`).join('')}</div>`
+    + (s.i === 0 ? `<div class="sm-step" style="margin-bottom:8px;">${d.intro}</div>` : '')
+    + `<div class="fs-ask"><div><small>${st.f ? 'Find it' : 'Make the call'}</small><b>${st.ask}</b></div><span class="fs-n" id="sm-n-${a}">${s.i + 1} / ${N} · ${s.score} right</span></div>`
+    + (st.f ? '' : '<div class="sm-opts">' + st.opts.map((o, n) => `<button class="sm-opt" data-o="${n}" onclick="smOpt('${a}',${n})">${o[0]}</button>`).join('') + '</div><div id="sm-fb-' + a + '"></div>')
+    + `<div class="fs-hmi ${d.skin}" style="margin-top:${st.f ? 0 : 12}px;"><div class="fs-crumb"><u>${d.crumb[0]}</u> / <u>${d.crumb[1]}</u><span class="fs-run">${d.status}</span><span class="fs-ts">Last update ${d.ts}</span></div>`
+    + '<div class="fs-tabs">' + d.tabs.map(([k, n]) => `<button class="fs-tab${k === s.tab ? ' on' : ''}" data-t="${k}" onclick="smTabIn('${a}','${k}')">${n}</button>`).join('') + '</div>'
+    + `<div class="fs-grid" id="sm-grid-${a}"></div></div>`
+    + (st.f ? `<div id="sm-fb-${a}"></div>` : '');
+  smGrid(a);
+}
+function smGrid(a){
+  const g = document.getElementById('sm-grid-' + a), d = SM[a], s = smSt[a]; if (!g) return;
+  const tab = d.tabs.find(t => t[0] === s.tab);
+  g.innerHTML = tab[2].map(([k, title, rows, btns, tiles, ext]) =>
+    `<button class="fs-card${ext && ext.full ? ' full' : tiles ? ' wide' : ''}" data-c="${s.tab}.${k}" onclick="smCard('${a}','${s.tab}.${k}')"><div class="fs-ch">${title}</div>`
+    + (tiles ? `<div class="sm-tiles${tiles.lb ? ' lb' : ''}">` + tl(tiles.n, tiles.marks).map((c, i) =>
+        `<s class="${c}" title="${tiles.name(i)}">${tiles.lb ? tiles.name(i) : ''}</s>`).join('') + '</div>'
+        + '<div class="sm-leg">' + tiles.leg.map(([c, t]) => `<span><b style="background:${c}"></b>${t}</span>`).join('') + '</div>' : '')
+    + (ext && ext.html ? ext.html() : '')
+    + rows.map(([x, y, c]) => `<div class="fs-r"><span>${x}</span><b class="${c || ''}">${y}</b></div>`).join('')
+    + (btns ? '<div class="fs-btns">' + btns.map(x => `<i>${x}</i>`).join('') + '</div>' : '')
+    + '</button>').join('');
+}
+function smTabIn(a, k){
+  smSt[a].tab = k;
+  document.querySelectorAll(`#sm-${a} .fs-tab`).forEach(b => b.classList.toggle('on', b.dataset.t === k));
+  smGrid(a);
+}
+function smCount(a){ const s = smSt[a], n = document.getElementById('sm-n-' + a);
+  if (n) n.textContent = `${s.i + 1} / ${SM[a].steps.length} · ${s.score} right`; }
+function smNextBtn(a){ const last = smSt[a].i + 1 >= SM[a].steps.length;
+  return `<button class="at-next" onclick="smNext('${a}')">${last ? 'See results' : 'Next step'}</button>`; }
+function smCard(a, key){
+  const s = smSt[a], st = SM[a].steps[s.i]; if (!st || !st.f || s.done) return;
+  const card = document.querySelector(`#sm-${a} .fs-card[data-c="${key}"]`), fb = document.getElementById('sm-fb-' + a);
+  const first = Object.keys(st.right)[0], ft = first.split('.')[0];
+  let cls, msg;
+  if (st.right[key]) { cls = 'ok'; msg = `<b>Right. ${smName(a, key)}.</b> ${st.right[key]}`; }
+  else if (st.part && st.part[key]) { cls = 'part'; msg = `<b>Close.</b> ${st.part[key]} <b>Look in ${smName(a, first)}.</b>`; }
+  else { cls = 'no'; msg = ft === s.tab ? '<b>Right tab, wrong card.</b> Read the card titles again.'
+      : `<b>Not here.</b> Try the <b>${SM[a].tabs.find(x => x[0] === ft)[1]}</b> tab.`; }
+  if (card) { card.classList.remove('ok','no','part'); card.classList.add(cls); }
+  if (cls === 'ok') { if (!s.tried) s.score++; s.done = true; smCount(a);
+    fb.innerHTML = `<div class="at-fb ok">${msg}</div>` + smNextBtn(a); }
+  else { s.tried = true; fb.innerHTML = `<div class="at-fb ${cls}">${msg}</div>`; }
+}
+function smOpt(a, n){
+  const s = smSt[a], st = SM[a].steps[s.i]; if (!st || st.f || s.done) return;
+  const [txt, cls, why] = st.opts[n], fb = document.getElementById('sm-fb-' + a);
+  const b = document.querySelector(`#sm-${a} .sm-opt[data-o="${n}"]`);
+  if (b) { b.classList.add(cls); b.disabled = true; }
+  if (cls === 'ok') {
+    if (!s.tried) s.score++; s.done = true; smCount(a);
+    document.querySelectorAll(`#sm-${a} .sm-opt`).forEach(x => x.disabled = true);
+    fb.innerHTML = `<div class="at-fb ok"><b>Right.</b> ${why}</div>` + smNextBtn(a);
+  } else { s.tried = true; fb.innerHTML = `<div class="at-fb ${cls}"><b>${cls === 'part' ? 'Close.' : 'Not this one.'}</b> ${why}</div>`; }
+}
+function smNext(a){ const s = smSt[a]; s.i++; s.tab = 'overview'; smShow(a); }
 
 // Collapse a reference widget — useful the first few times, noise after that.
 function rocWToggle(hdr){
@@ -15397,7 +15732,7 @@ function rocWidgets(f){
   const show = (id, on, fn) => { const el = document.getElementById(id); if (!el) return;
     el.style.display = on ? '' : 'none'; if (on && fn) { fn(); rocWRestore(id); } };
   show('scadasim',  f === 'operations', ssRender);
-  show('shiftline', f === 'procedures', slRender);
+  show('smon',      f === 'procedures', smRender);
   show('vladder',   f === 'voltage',  vbRender);
   show('dtimeline', f === 'dispatch', dtRender);
   show('atriage',   f === 'scada',    atRender);
@@ -19457,6 +19792,12 @@ setTimeout(() => {
   window.fsCard=fsCard;
   window.fsNext=fsNext;
   window.fsStart=fsStart;
+  window.smTab=smTab;
+  window.smTabIn=smTabIn;
+  window.smCard=smCard;
+  window.smOpt=smOpt;
+  window.smNext=smNext;
+  window.smStart=smStart;
   window.dcSite=dcSite;
   window.dcCopySched=dcCopySched;
   window.srPrefillToday=srPrefillToday;
@@ -19512,7 +19853,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v4.68';
+const APP_VERSION = 'v4.70';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -19754,7 +20095,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v4.68</span>
+    RNWBL Ops Hub <span class="app-footer-v">v4.70</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
