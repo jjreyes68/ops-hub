@@ -3171,6 +3171,24 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .sm-tiles.lb s{height:20px;font-size:9.5px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;}
 .fs-card.wide{grid-column:span 2;}
 .fs-card.full{grid-column:1/-1;}
+/* At the Desk: top-down operator scene */
+.ad-subs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;}
+.ad-sub{border:1px solid var(--border2);background:var(--bg2);color:var(--text2);border-radius:16px;padding:6px 16px;
+  font-family:var(--f);font-size:13px;font-weight:600;cursor:pointer;}
+.ad-sub.on{background:var(--text);color:var(--bg);border-color:var(--text);}
+.ad-intro{max-width:620px;margin:0 auto 12px;text-align:center;font-size:13.5px;color:var(--text2);line-height:1.55;}
+.ad-stage{position:relative;overflow:hidden;border-radius:10px;background:#24272b;max-width:720px;margin:0 auto;aspect-ratio:640/380;}
+.ad-stage svg{position:absolute;inset:0;width:100%;height:100%;transform-origin:0 0;transition:transform .55s ease;}
+.ad-cap{max-width:720px;margin:10px auto 0;padding:10px 13px;border-radius:8px;background:var(--bg3);border-left:3px solid var(--blue);min-height:58px;}
+.ad-cap small{display:block;font-size:10.5px;color:var(--text3);margin-bottom:2px;}
+.ad-cap b{display:block;font-size:14px;color:var(--text);}
+.ad-cap span{display:block;font-size:12px;color:var(--text2);margin-top:3px;line-height:1.5;}
+.ad-ctl{max-width:720px;margin:10px auto 0;display:flex;align-items:center;gap:8px;}
+.ad-ctl .at-next{margin-top:0;}
+.ad-dots{flex:1;display:flex;gap:4px;}
+.ad-dots i{flex:1;height:6px;border-radius:3px;background:var(--border);cursor:pointer;}
+.ad-dots i.done{background:var(--green);} .ad-dots i.now{background:var(--blue);}
+@media (prefers-reduced-motion: reduce){.ad-stage svg{transition:none;}}
 .sm-pic{width:100%;max-width:580px;height:auto;display:block;margin:2px 0 4px;}
 .sm-tbl{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1.6fr;font-size:11px;line-height:1.9;}
 .sm-tbl span{color:#a9b1ba;border-bottom:1px solid #42474e;}
@@ -4635,14 +4653,21 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
          looks like when you are checking. -->
     <div id="scadasim" class="roc-widget" style="display:none;">
       <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">🖥️</span>
-        <span class="roc-w-t">What Does It Look Like?</span>
-        <span class="roc-w-s">four screens · tap anything that looks wrong</span><span class="roc-w-car">▾</span></div>
-      <div style="padding:14px 16px;">
+        <span class="roc-w-t">Watch &amp; Learn</span>
+        <span class="roc-w-s">see it on the screen, then at the desk</span><span class="roc-w-car">▾</span></div>
+      <div style="padding:14px 16px 0;">
+        <div class="tmr-seg">
+          <button class="tmr-seg-btn active" data-wl="ss" onclick="wlTab('ss',this)">What Does It Look Like?</button>
+          <button class="tmr-seg-btn" data-wl="ad" onclick="wlTab('ad',this)">At the Desk</button>
+        </div>
+      </div>
+      <div style="padding:14px 16px;" id="ss-pane">
         <div class="tmr-seg" style="margin-bottom:12px;" id="ss-tabs"></div>
         <div id="ss-screen"></div>
         <div id="ss-detail" class="ss-detail" style="display:none;"></div>
         <div id="ss-answer" class="ss-answer"></div>
       </div>
+      <div style="padding:14px 16px;display:none;" id="ad-pane"></div>
     </div>
 
     <div id="smon" class="roc-widget" style="display:none;">
@@ -6717,7 +6742,8 @@ function tmrTab(which, btn){
   ['quick','rec','shared'].forEach(k=>{
     const el=document.getElementById('tmr-pane-'+k); if(el) el.style.display = (k===which)?'':'none';
   });
-  document.querySelectorAll('.tmr-seg-btn').forEach(b=>b.classList.remove('active'));
+  const seg = btn ? btn.closest('.tmr-seg') : document.getElementById('tmr-pane-quick')?.closest('.view');
+  (seg || document).querySelectorAll('.tmr-seg-btn').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
   if(which==='rec'){ try{ renderRecurring(); }catch(e){} }
   if(which==='shared'){ try{ renderSharedReminders(); }catch(e){} }
@@ -14380,16 +14406,6 @@ const ROC_QUESTIONS = [
    q:'AVR vs AGC — one line each on what each controls.',
    a:'<strong>AVR → Voltage</strong> (adjusts excitation to hold terminal voltage / reactive power)<br><strong>AGC → MW</strong> (adjusts real power output per ISO dispatch signal)'},
 
-  {id:'ord1', pb:'bess-oscillation', lvl:3, cat:'procedures', type:'ordering',
-   q:'All of this is on your screen at once: BESS HVAC alarm with container temperature climbing, Inverter Unit 3 tripped, CAISO curtailment active. Put these actions in the order you would take them.',
-   order:[
-     'Assess the BESS thermal condition — is it still climbing, and is it approaching a trip?',
-     'Notify the SC and TO of the BESS condition and likely capacity impact',
-     'Dispatch field to the BESS for the HVAC failure',
-     'Investigate the Inverter 3 trip'
-   ],
-   a:'<strong>Safety first, then grid, then production.</strong> The thermal condition leads because it is the only one that can hurt someone. Notification follows immediately — the SC and TO need to know before capacity moves, not after. Field goes next because they are the only ones who can fix the cause.<br><br>Inverter 3 waits. It costs MW and nothing else, and working it first is the classic mistake — the newest alarm feels most urgent. <strong>Order of arrival is not the rule</strong> — what can hurt someone comes first regardless of when it landed.<br><br><strong>This is the order you start things in, not finish them.</strong> Field is driving out while you are already working the inverter, and the outage ticket and the log are written alongside everything else rather than at the end.<br><br>Keep reassessing as conditions change — if the container temperature stabilises, or the inverter turns out to have tripped on something that affects the whole block, the order changes with it.'},
-
   {id:'r3', lvl:3, cat:'scada', type:'rapid',
    q:'State the one-line diagram symbol for: Breaker, Transformer, Switch.',
    a:'<div style="display:flex;gap:26px;flex-wrap:wrap;margin:10px 0 12px;"><div style="text-align:center;"><svg width="86" height="46" viewBox="0 0 86 46" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="23" x2="30" y2="23"/><rect x="30" y="12" width="26" height="22"/><line x1="56" y1="23" x2="84" y2="23"/></svg><div style="font-size:11px;opacity:.75;margin-top:2px;">Breaker</div></div><div style="text-align:center;"><svg width="86" height="46" viewBox="0 0 86 46" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="23" x2="26" y2="23"/><circle cx="36" cy="23" r="11"/><circle cx="50" cy="23" r="11"/><line x1="60" y1="23" x2="84" y2="23"/></svg><div style="font-size:11px;opacity:.75;margin-top:2px;">Transformer</div></div><div style="text-align:center;"><svg width="86" height="46" viewBox="0 0 86 46" fill="none" stroke="currentColor" stroke-width="2"><line x1="2" y1="30" x2="30" y2="30"/><circle cx="30" cy="30" r="2.5" fill="currentColor"/><line x1="30" y1="30" x2="55" y2="14"/><circle cx="57" cy="30" r="2.5" fill="currentColor"/><line x1="57" y1="30" x2="84" y2="30"/></svg><div style="font-size:11px;opacity:.75;margin-top:2px;">Switch (open)</div></div></div><ul><li><strong>Breaker</strong> — a box (or an arc) drawn across the circuit line</li><li><strong>Transformer</strong> — two interlocking circles, or two opposing arcs</li><li><strong>Switch</strong> — a line with a break in it, hinged open like a door</li></ul>The break in a switch symbol shows position: <strong>closed</strong> sits flush with the line, <strong>open</strong> swings away from it. This matters when you are following a switching order against a one-line and the SCADA graphic does not match the print.'},
@@ -14640,7 +14656,7 @@ const GH_DATA = {
 
 function ghTab(id, btn) {
   document.querySelectorAll('.gh-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tmr-seg-btn').forEach(b=>b.classList.remove('active'));
+  (btn.closest('.tmr-seg') || document).querySelectorAll('.tmr-seg-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('gh-panel-'+id).classList.add('active');
   btn.classList.add('active');
 }
@@ -14980,6 +14996,213 @@ function ssRender(){
     `<button class="ss-reveal" onclick="ssReveal()">What is going on here?</button>`;
 }
 function ssGo(i){ ssPick = i; ssRender(); }
+
+// Watch & Learn: What Does It Look Like? + At the Desk (Ops Q9 pr9, Q10 op17).
+function wlTab(which, btn){
+  document.querySelectorAll('[data-wl]').forEach(b => b.classList.toggle('active', b === btn));
+  document.getElementById('ss-pane').style.display = which === 'ss' ? '' : 'none';
+  document.getElementById('ad-pane').style.display = which === 'ad' ? '' : 'none';
+  if (which === 'ad') { if (!adBuilt) adStart('event'); } else adStop();
+}
+// Monitors: L log / Teams, C SCADA, R weather / market. Beats act out each bullet
+// of the bank answer, word for word, so the scene and the answer cannot drift.
+const AD_MON = {L:[60,38,160,96], C:[240,22,160,96], R:[420,38,160,96]};
+const AD = {
+ event: { name:'Critical Event', q:'pr9',
+  intro:'Q9. 16:42, a 300 MW BESS site trips offline at peak. Watch how the operator coordinates field, management and outside parties.',
+  beats:[
+   {t:'Establish current plant status', d:'Before anyone is called: what is actually open, what is producing, are comms up.', mon:'C',
+    scr:['DEMO-B · TRIPPED',[['52-L1','OPEN',1],['Output','0 MW'],['Units online','0 / 2'],['Comms','OK']]]},
+   {t:'Communicate with grid entities as required', d:'“DEMO-B tripped at 16:42, 300 MW lost, main breaker open, cause unknown. I will update you.”', call:'Grid desk (BA / TOP)'},
+   {t:'Coordinate with field personnel', d:'“Can you get eyes on the yard and the relay targets? Do not reclose, call me when you are there.”', call:'Site lead'},
+   {t:'Notify required contacts such as site owners and asset managers', d:'Same facts, same order. Owner and asset manager hear it from you, not from the market.', call:'Owner / asset mgr'},
+   {t:'Provide concise, factual updates', d:'Time, what changed, what is next. No guessing at cause.', mon:'R', type:1,
+    scr:['Teams · Site Updates',[['16:58','DEMO-B still offline'],['','Field on site 17:05'],['','Relay targets pending',1],['','Next update 17:30']]]},
+   {t:'Maintain awareness of changing conditions', d:'Every other site is still yours. Keep scanning while this one plays out.', sweep:1},
+   {t:'Continue documenting all actions', d:'Every call, every time, as it happens. The log is the timeline afterwards.', mon:'L', type:1,
+    scr:['Operator Log',[['16:42','Trip, 52-L1 open'],['16:44','Grid desk notified'],['16:46','Site lead dispatched'],['16:49','Owner notified',1]]]},
+   {t:'Provide final restoration update', d:'“DEMO-B restored 18:10, both units online, 52-L1 closed by field. Cause and follow-up in the log.”', call:'Grid desk, owner, field'},
+  ]},
+ drop: { name:'60 MW Drop', q:'op17',
+  intro:'Q10. Harquahala 2 PV suddenly drops to 60 MW output at midday. Watch the operator work out why before calling anyone.',
+  beats:[
+   {t:'Verify actual production loss', d:'Check the meter, not the summary tile. It is real: 148 MW to 60 MW in a minute.', mon:'C',
+    scr:['POI Meter',[['Now','60.2 MW',1],['12:15','148.4 MW'],['kV','236.0'],['Hz','59.99']]]},
+   {t:'Check irradiance and weather conditions', d:'Clear sky, strong sun. Weather does not explain it.', mon:'R',
+    scr:['MET Station',[['POA','905 W/m²',1],['Cloud cover','0 %'],['Wind','3 m/s'],['Forecast','Clear']]]},
+   {t:'Determine if the reduction is site-wide or limited to specific equipment', d:'Two feeders at zero, one low. Specific equipment, not the whole site.', mon:'C',
+    scr:['Feeders',[['F1','36.9 MW'],['F2','23.3 MW'],['F3','0.0 MW',1],['F4','0.0 MW',1]]]},
+   {t:'Review inverter availability', d:'Everything on F3 and F4 is offline, plus six on F2.', mon:'C',
+    scr:['Inverters',[['Online','41 / 94',1],['F3, F4','0 of 47'],['F2','18 of 24'],['F1','23 of 23']]]},
+   {t:'Check tracker status', d:'Trackers are tracking. Not a stow, not a tracker fault.', mon:'C',
+    scr:['Trackers',[['Tracking','93 / 94'],['Stowed','0'],['Faulted','1'],['Mode','Auto',1]]]},
+   {t:'Review alarms and event history', d:'Both feeder breakers tripped at the same second. That is the event.', mon:'L',
+    scr:['Alarms · Events',[['12:19:42','52-F3 TRIP',1],['12:19:42','52-F4 TRIP',1],['12:19:44','47 INV comm loss'],['12:21','F2 6 INV fault']]]},
+   {t:'Verify no curtailment or dispatch instructions are active', d:'No curtailment, setpoint at 150. Not dispatch.', mon:'R',
+    scr:['Setpoint / Curtailment',[['Active SP','150 MW'],['Curtailment','None',1],['Dispatch','None'],['Source','HMI']]]},
+   {t:'Identify whether production loss matches unavailable equipment', d:'53 inverters down at about 1.6 MW is about 85 MW. The 88 MW gap matches.', mon:'C',
+    scr:['Loss Check',[['Gap','88 MW'],['Down inverters','53 × 1.6'],['Explained','~85 MW'],['Matches','Yes',1]]]},
+   {t:'Coordinate with field personnel if equipment issues are suspected', d:'“52-F3 and 52-F4 tripped at 12:19, six inverters faulted on F2. Can you check the relays before anyone recloses?”', call:'Site lead'},
+  ]},
+};
+let adBuilt = false, adK = 'event', adI = 0, adTok = 0, adPlay = null, adPose = null, adTyping = null, adMons = {};
+const adRM = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+const AD_POSE = {
+  rest:  {b:[0,0,0],   lh:[290,200], rh:[352,200], hs:[505,176,0], hr:0},
+  L:     {b:[-26,-12,-6], lh:[290,200], rh:[410,192], hs:[505,176,0], hr:-18},
+  C:     {b:[0,-16,0],  lh:[290,200], rh:[410,192], hs:[505,176,0], hr:0},
+  R:     {b:[26,-12,6], lh:[290,200], rh:[410,192], hs:[505,176,0], hr:18},
+  reach: {b:[60,-20,12], lh:[290,200], rh:[505,180], hs:[505,176,0], hr:20},
+  call:  {b:[10,-4,4],  lh:[290,200], rh:[356,280], hs:[352,282,-70], hr:8},
+};
+function adIK(s, h, a, b, side){
+  let dx = h[0]-s[0], dy = h[1]-s[1], d = Math.hypot(dx, dy);
+  d = Math.max(Math.abs(a-b)+1, Math.min(a+b-.5, d));
+  const ang = Math.atan2(dy, dx), al = Math.acos((a*a + d*d - b*b) / (2*a*d)) * side;
+  return [s[0] + a*Math.cos(ang+al), s[1] + a*Math.sin(ang+al)];
+}
+function adDraw(p){
+  const svg = document.getElementById('ad-svg'); if (!svg) return;
+  const [bx, by, br] = p.b;
+  const rot = (x, y, cx, cy, deg) => { const r = deg*Math.PI/180, c = Math.cos(r), s = Math.sin(r);
+    return [cx + (x-cx)*c - (y-cy)*s, cy + (x-cx)*s + (y-cy)*c]; };
+  const LS = rot(272+bx, 296+by, 320+bx, 300+by, br), RS = rot(368+bx, 296+by, 320+bx, 300+by, br);
+  const le = adIK(LS, p.lh, 64, 62, -1), re = adIK(RS, p.rh, 64, 62, 1);
+  svg.querySelector('#ad-body').setAttribute('transform', `translate(${bx} ${by}) rotate(${br} 320 300)`);
+  svg.querySelector('#ad-head').setAttribute('transform', `translate(${bx} ${by}) rotate(${p.hr} 320 292)`);
+  svg.querySelector('#ad-la').setAttribute('d', `M${LS} L${le} L${p.lh}`);
+  svg.querySelector('#ad-ra').setAttribute('d', `M${RS} L${re} L${p.rh}`);
+  svg.querySelector('#ad-lh').setAttribute('transform', `translate(${p.lh})`);
+  svg.querySelector('#ad-rh').setAttribute('transform', `translate(${p.rh})`);
+  svg.querySelector('#ad-hs').setAttribute('transform', `translate(${p.hs[0]} ${p.hs[1]}) rotate(${p.hs[2]})`);
+}
+const adLerp = (a, b, t) => Array.isArray(a) ? a.map((v, i) => adLerp(v, b[i], t)) : a + (b - a) * t;
+function adTween(to, ms, tok){
+  return new Promise(res => {
+    const from = adPose || AD_POSE.rest, t0 = performance.now(), dur = adRM() ? 0 : ms;
+    const step = now => {
+      if (tok !== adTok) return res(false);
+      const k = dur ? Math.min(1, (now - t0) / dur) : 1, e = k < .5 ? 2*k*k : 1 - Math.pow(-2*k + 2, 2) / 2;
+      const p = {}; Object.keys(to).forEach(key => p[key] = adLerp(from[key], to[key], e));
+      adDraw(p);
+      if (k < 1) requestAnimationFrame(step); else { adPose = JSON.parse(JSON.stringify(to)); res(true); }
+    };
+    requestAnimationFrame(step);
+  });
+}
+const adWait = (ms, tok) => new Promise(r => setTimeout(() => r(tok === adTok), adRM() ? 0 : ms));
+function adZoom(m){
+  const svg = document.getElementById('ad-svg'); if (!svg) return;
+  if (!m) { svg.style.transform = ''; return; }
+  const [x, y, w, h] = AD_MON[m], s = 2.9, px = (x + w/2) / 640, py = (y + h/2) / 380;
+  svg.style.transform = `translate(${(0.5 - px*s)*100}%, ${(0.5 - py*s)*100}%) scale(${s})`;
+}
+function adMonHTML(m){
+  const [x, y, w, h] = AD_MON[m], c = adMons[m];
+  let inner;
+  if (!c) inner = [0,1,2,3].map(i => `<rect x="${x+12}" y="${y+16+i*17}" width="${[120,96,110,70][i]}" height="6" rx="3" fill="#2c3a48"/>`).join('');
+  else inner = `<text x="${x+10}" y="${y+16}" fill="#7fb2ff" font-size="9" font-weight="700">${c[0]}</text>`
+    + c[1].map(([k, v, hl], i) => {
+        const yy = y + 34 + i*15;
+        return (hl ? `<rect x="${x+5}" y="${yy-10}" width="${w-10}" height="14" rx="2" fill="#f0c24f" opacity=".2"/>` : '')
+          + `<text x="${x+10}" y="${yy}" fill="#a9b1ba" font-size="8.5">${k}</text>`
+          + `<text x="${x+w-10}" y="${yy}" fill="${hl ? '#f0c24f' : '#eef1f4'}" font-size="8.5" font-weight="700" text-anchor="end">${v}</text>`;
+      }).join('');
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="5" fill="#111417" stroke="#3a3f46" stroke-width="3" id="ad-m${m}"/>`
+    + `<rect x="${x+4}" y="${y+4}" width="${w-8}" height="${h-8}" rx="2" fill="#0f1a24"/>` + inner;
+}
+function adMonitors(glow){
+  const g = document.getElementById('ad-mons'); if (!g) return;
+  g.innerHTML = Object.keys(AD_MON).map(adMonHTML).join('');
+  if (glow) { const r = document.getElementById('ad-m' + glow); if (r) r.setAttribute('stroke', '#7fb2ff'); }
+}
+function adSceneSVG(){
+  const keys = []; for (let r = 0; r < 3; r++) for (let c = 0; c < 11; c++) keys.push(`<rect x="${260+c*11}" y="${180+r*9}" width="9" height="7" rx="1.5" fill="#3d4249"/>`);
+  return `<svg id="ad-svg" viewBox="0 0 640 380" font-family="sans-serif" aria-label="Top-down view of an operator at a desk">
+  <rect width="640" height="380" fill="#2b2e33"/>
+  <rect x="30" y="12" width="580" height="250" rx="14" fill="#6b5847"/><rect x="30" y="12" width="580" height="250" rx="14" fill="none" stroke="#584737" stroke-width="4"/>
+  ${[140,320,500].map(x => `<rect x="${x-14}" y="${x === 320 ? 118 : 134}" width="28" height="16" rx="3" fill="#1c1e21"/>`).join('')}
+  <g id="ad-mons"></g>
+  <rect x="112" y="166" width="78" height="66" rx="3" fill="#ebe6d6" transform="rotate(-6 151 199)"/>
+  <g stroke="#b9b29c" stroke-width="1.4" transform="rotate(-6 151 199)">${[180,190,200,210,220].map(y => `<path d="M120 ${y} H182"/>`).join('')}</g>
+  <rect x="252" y="172" width="136" height="40" rx="5" fill="#25282c"/>${keys.join('')}
+  <ellipse cx="412" cy="196" rx="10" ry="15" fill="#25282c"/>
+  <rect x="478" y="158" width="58" height="46" rx="7" fill="#25282c"/><g fill="#3d4249">${[0,1,2].map(r => [0,1,2].map(c => `<rect x="${511+c*8}" y="${184+r*6}" width="5" height="4" rx="1"/>`).join('')).join('')}</g>
+  <circle cx="570" cy="186" r="15" fill="#e9ecef"/><circle cx="570" cy="186" r="11" fill="#5a3b24"/>
+  <path d="M585 182 h7 v8 h-7" fill="none" stroke="#e9ecef" stroke-width="3"/>
+  <circle cx="320" cy="345" r="54" fill="#33373d"/>
+  <g id="ad-call" style="display:none;"><rect x="430" y="222" width="180" height="30" rx="15" fill="#e8eaed"/><path d="M500 222 l7 -10 l7 10z" fill="#e8eaed"/>
+   <text x="520" y="241" fill="#18191b" font-size="12" font-weight="700" text-anchor="middle" id="ad-call-t"></text></g>
+  <g id="ad-body"><ellipse cx="320" cy="302" rx="64" ry="25" fill="#3e6fa8"/></g>
+  <path id="ad-la" fill="none" stroke="#3e6fa8" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <path id="ad-ra" fill="none" stroke="#3e6fa8" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <g id="ad-hs"><rect x="-26" y="-8" width="52" height="16" rx="8" fill="#4a5058" stroke="#7a818a"/><circle cx="-18" r="5" fill="#5b616a"/><circle cx="18" r="5" fill="#5b616a"/></g>
+  <g id="ad-lh"><circle r="8.5" fill="#d9a886"/></g><g id="ad-rh"><circle r="8.5" fill="#d9a886"/></g>
+  <g id="ad-headwrap"><g id="ad-head"><circle cx="298" cy="294" r="5" fill="#d9a886"/><circle cx="342" cy="294" r="5" fill="#d9a886"/>
+   <circle cx="320" cy="292" r="22" fill="#4a3628"/><path d="M312 271 q8 -5 16 0" stroke="#d9a886" stroke-width="5" fill="none" stroke-linecap="round"/></g></g>
+  </svg>`;
+}
+function adStart(k){
+  adStop(); adK = k; adI = 0; adPose = null; adMons = {};
+  const el = document.getElementById('ad-pane'); if (!el) return;
+  const d = AD[k];
+  el.innerHTML = '<div class="ad-subs">' + Object.keys(AD).map(x => `<button class="ad-sub${x === k ? ' on' : ''}" onclick="adStart('${x}')">${AD[x].name}</button>`).join('') + '</div>'
+    + `<div class="ad-intro">${d.intro}</div>`
+    + `<div class="ad-stage">${adSceneSVG()}</div>`
+    + '<div class="ad-cap" id="ad-cap"></div>'
+    + '<div class="ad-ctl"><button class="at-next" onclick="adStep(-1)">Back</button>'
+    + `<div class="ad-dots" id="ad-dots">${d.beats.map((_, i) => `<i onclick="adGo(${i})"></i>`).join('')}</div>`
+    + '<button class="at-next" id="ad-play" onclick="adToggle()">▶ Play</button>'
+    + '<button class="at-next" onclick="adStep(1)">Next</button></div>';
+  adBuilt = true;
+  adMonitors(); adDraw(AD_POSE.rest); adPose = JSON.parse(JSON.stringify(AD_POSE.rest));
+  adGo(0);
+}
+function adStop(){ adTok++; if (adPlay) { clearTimeout(adPlay); adPlay = null; }
+  if (adTyping) { clearInterval(adTyping); adTyping = null; }
+  const b = document.getElementById('ad-play'); if (b) b.textContent = '▶ Play'; }
+function adToggle(){
+  if (adPlay) { adStop(); adGo(adI); return; }
+  const b = document.getElementById('ad-play'); if (b) b.textContent = '❚❚ Pause';
+  if (adI >= AD[adK].beats.length - 1) adI = -1;
+  const tick = () => { if (adI >= AD[adK].beats.length - 1) { adStop(); return; } adGo(adI + 1, true); adPlay = setTimeout(tick, 3600); };
+  tick();
+}
+function adStep(n){ const N = AD[adK].beats.length; adGo(Math.max(0, Math.min(N - 1, adI + n))); }
+async function adGo(i, auto){
+  if (!auto && adPlay) { clearTimeout(adPlay); adPlay = null; const b = document.getElementById('ad-play'); if (b) b.textContent = '▶ Play'; }
+  const tok = ++adTok, d = AD[adK], bt = d.beats[i]; adI = i;
+  if (adTyping) { clearInterval(adTyping); adTyping = null; }
+  const cap = document.getElementById('ad-cap');
+  if (cap) cap.innerHTML = `<small>Step ${i + 1} of ${d.beats.length}${bt.call ? ' · phone' : bt.mon ? ' · screen' : ''}</small><b>${bt.t}</b><span>${bt.d}</span>`;
+  document.querySelectorAll('#ad-dots i').forEach((x, n) => x.className = n < i ? 'done' : n === i ? 'now' : '');
+  const call = document.getElementById('ad-call');
+  if (call) call.style.display = 'none';
+  const svg = document.getElementById('ad-svg');
+  if (svg && svg.style.transform) { adZoom(null); if (!await adWait(550, tok)) return; }
+  if (bt.call) {
+    adMonitors();
+    if (!await adTween(AD_POSE.reach, 520, tok)) return;
+    if (!await adTween({...AD_POSE.reach, hs:[505,180,0]}, 60, tok)) return;
+    if (!await adTween(AD_POSE.call, 620, tok)) return;
+    document.getElementById('ad-call-t').textContent = '📞 ' + bt.call;
+    if (call) call.style.display = '';
+  } else if (bt.sweep) {
+    adMonitors();
+    for (const m of ['L','C','R','C']) { adMonitors(m === 'C' ? null : m); if (!await adTween(AD_POSE[m], 520, tok)) return; if (!await adWait(260, tok)) return; }
+    adMonitors();
+  } else if (bt.mon) {
+    adMons[bt.mon] = bt.scr; adMonitors(bt.mon);
+    if (!await adTween(bt.type ? {...AD_POSE[bt.mon], rh:[352,200]} : AD_POSE[bt.mon], 520, tok)) return;
+    if (bt.type && !adRM()) {
+      let f = 0; adTyping = setInterval(() => { if (tok !== adTok) return clearInterval(adTyping);
+        f ^= 1; const p = JSON.parse(JSON.stringify(adPose)); p.lh[1] += f ? 3 : 0; p.rh[1] += f ? 0 : 3; adDraw(p); }, 140);
+    }
+    if (!await adWait(200, tok)) return;
+    adZoom(bt.mon);
+  }
+}
+
 function ssTell(n){
   const t = SS_SCENARIOS[ssPick].tiles[n];
   document.querySelectorAll('.ss-tile').forEach((e, i) => e.classList.toggle('sel', i === n));
@@ -19798,6 +20021,11 @@ setTimeout(() => {
   window.smOpt=smOpt;
   window.smNext=smNext;
   window.smStart=smStart;
+  window.wlTab=wlTab;
+  window.adStart=adStart;
+  window.adStep=adStep;
+  window.adGo=adGo;
+  window.adToggle=adToggle;
   window.dcSite=dcSite;
   window.dcCopySched=dcCopySched;
   window.srPrefillToday=srPrefillToday;
@@ -19853,7 +20081,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v4.70';
+const APP_VERSION = 'v4.72';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -20095,7 +20323,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v4.70</span>
+    RNWBL Ops Hub <span class="app-footer-v">v4.72</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
