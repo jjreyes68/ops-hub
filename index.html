@@ -4654,20 +4654,21 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <div id="scadasim" class="roc-widget" style="display:none;">
       <div class="roc-w-hdr" onclick="rocWToggle(this)"><span class="roc-w-eyebrow">LEARN</span><span style="font-size:15px;">🖥️</span>
         <span class="roc-w-t">Watch &amp; Learn</span>
-        <span class="roc-w-s">see it on the screen, then at the desk</span><span class="roc-w-car">▾</span></div>
+        <span class="roc-w-s">see it at the desk, then on the screen</span><span class="roc-w-car">▾</span></div>
       <div style="padding:14px 16px 0;">
         <div class="tmr-seg">
-          <button class="tmr-seg-btn active" data-wl="ss" onclick="wlTab('ss',this)">What Does It Look Like?</button>
-          <button class="tmr-seg-btn" data-wl="ad" onclick="wlTab('ad',this)">At the Desk</button>
+          <button class="tmr-seg-btn active" data-wl="ad" onclick="wlTab('ad',this)">At the Desk</button>
+          <button class="tmr-seg-btn" data-wl="ss" onclick="wlTab('ss',this)">What Does It Look Like?</button>
         </div>
       </div>
-      <div style="padding:14px 16px;" id="ss-pane">
+      <div style="padding:14px 16px;" id="ad-pane"></div>
+      <div style="padding:14px 16px;display:none;" id="ss-pane">
         <div class="tmr-seg" style="margin-bottom:12px;" id="ss-tabs"></div>
         <div id="ss-screen"></div>
         <div id="ss-detail" class="ss-detail" style="display:none;"></div>
         <div id="ss-answer" class="ss-answer"></div>
       </div>
-      <div style="padding:14px 16px;display:none;" id="ad-pane"></div>
+
     </div>
 
     <div id="smon" class="roc-widget" style="display:none;">
@@ -14998,6 +14999,12 @@ function ssRender(){
 function ssGo(i){ ssPick = i; ssRender(); }
 
 // Watch & Learn: What Does It Look Like? + At the Desk (Ops Q9 pr9, Q10 op17).
+// At the Desk leads; What Does It Look Like? renders behind its tab.
+function wlRender(){
+  ssRender();
+  const ad = document.getElementById('ad-pane');
+  if (!adBuilt && ad && ad.style.display !== 'none') adStart('event');
+}
 function wlTab(which, btn){
   document.querySelectorAll('[data-wl]').forEach(b => b.classList.toggle('active', b === btn));
   document.getElementById('ss-pane').style.display = which === 'ss' ? '' : 'none';
@@ -15954,7 +15961,7 @@ function rocWRestore(id){
 function rocWidgets(f){
   const show = (id, on, fn) => { const el = document.getElementById(id); if (!el) return;
     el.style.display = on ? '' : 'none'; if (on && fn) { fn(); rocWRestore(id); } };
-  show('scadasim',  f === 'operations', ssRender);
+  show('scadasim',  f === 'operations', wlRender);
   show('smon',      f === 'procedures', smRender);
   show('vladder',   f === 'voltage',  vbRender);
   show('dtimeline', f === 'dispatch', dtRender);
@@ -20081,7 +20088,7 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v4.72';
+const APP_VERSION = 'v4.73';
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -20323,7 +20330,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v4.72</span>
+    RNWBL Ops Hub <span class="app-footer-v">v4.73</span>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
