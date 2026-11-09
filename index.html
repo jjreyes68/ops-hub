@@ -136,6 +136,32 @@ body{background:var(--bg);color:var(--text);font-family:var(--f);font-size:14px;
 .app-footer-mid{display:flex;align-items:center;justify-content:center;gap:5px;}
 .app-footer-left{justify-self:start;}
 .app-footer-right{justify-self:end;}
+/* What's new: tooltip on hover, popover on click, dot when unread */
+.wn-btn{position:relative;background:none;border:0;padding:2px 4px;margin:-2px -4px;border-radius:4px;cursor:pointer;font:inherit;color:inherit;display:inline-flex;align-items:center;gap:4px;}
+.wn-btn:hover .app-footer-v,.wn-btn:focus-visible .app-footer-v{opacity:1;color:var(--text);}
+.wn-btn:hover{background:var(--bg3);}
+.wn-dot{display:none;width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.wn-btn.unread .wn-dot{display:inline-block;}
+.wn-tip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);white-space:nowrap;max-width:min(460px,90vw);overflow:hidden;text-overflow:ellipsis;
+  background:var(--text);color:var(--bg);font-family:var(--f);font-size:11px;font-weight:500;letter-spacing:0;padding:5px 9px;border-radius:6px;
+  opacity:0;pointer-events:none;transition:opacity .15s .25s;}
+@media (hover:hover){.wn-btn:hover:not(.open) .wn-tip{opacity:1;}}
+.wn-pop{position:fixed;bottom:36px;left:50%;transform:translateX(-50%);width:min(440px,94vw);max-height:min(70vh,560px);overflow:auto;z-index:60;
+  background:var(--bg2);border:1px solid var(--border2);border-radius:12px;box-shadow:0 14px 40px rgba(0,0,0,.22);font-family:var(--f);letter-spacing:0;}
+.wn-hd{position:sticky;top:0;display:flex;align-items:center;gap:8px;padding:11px 14px;background:var(--bg2);border-bottom:1px solid var(--border);}
+.wn-hd b{font-size:13.5px;color:var(--text);} .wn-hd span{font-family:var(--m);font-size:10.5px;color:var(--text3);}
+.wn-x{margin-left:auto;background:none;border:0;font-size:16px;line-height:1;color:var(--text3);cursor:pointer;padding:2px 4px;}
+.wn-rel{padding:11px 14px 6px;border-bottom:1px solid var(--border);}
+.wn-rel:last-child{border-bottom:0;}
+.wn-rh{display:flex;align-items:baseline;gap:8px;margin-bottom:6px;}
+.wn-rh b{font-size:12.5px;color:var(--text);} .wn-rh span{font-family:var(--m);font-size:10px;color:var(--text3);margin-left:auto;white-space:nowrap;}
+.wn-new{font-size:9px;font-weight:700;color:var(--accent);letter-spacing:.06em;}
+.wn-it{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--text2);line-height:1.45;margin-bottom:6px;}
+.wn-tag{flex-shrink:0;font-size:9px;font-weight:700;letter-spacing:.04em;padding:2px 6px;border-radius:8px;margin-top:1px;}
+.wn-tag.Changed{background:var(--abg);color:var(--amber);} .wn-tag.New{background:var(--gbg);color:var(--green);} .wn-tag.Fixed{background:var(--bbg);color:var(--blue);}
+.wn-go{flex-shrink:0;margin-left:auto;background:none;border:0;color:var(--blue);font-size:11px;font-weight:600;cursor:pointer;padding:1px 0;white-space:nowrap;}
+.wn-go:hover{text-decoration:underline;}
+.wn-ft{padding:8px 14px 10px;font-size:10.5px;color:var(--text3);}
 .footer-link{background:none;border:none;color:var(--text3);font-family:var(--m);font-size:10px;cursor:pointer;padding:2px 0;letter-spacing:.04em;}
 .footer-link:hover{color:var(--text2);}
 body{padding-bottom:28px;}
@@ -2494,8 +2520,8 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 
 @media(max-width:560px){
   .app-footer{padding:0 10px;}
-  .app-footer-mid{display:none;}
-  .app-footer{grid-template-columns:1fr auto;}
+  .app-footer-brand{display:none;}
+  .app-footer{grid-template-columns:1fr auto auto;gap:10px;}
 }
 
 /* ── Single line diagram explorer ─────────────────────────────────────── */
@@ -20475,8 +20501,70 @@ setTimeout(() => {
 // serving an old copy after a push — which reads as "the fix didn't work"
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
-// Bump APP_VERSION and the footer <span class="app-footer-v"> together.
-const APP_VERSION = 'v4.81';
+// Bump APP_VERSION, the footer <span class="app-footer-v"> and WHATS_NEW together.
+const APP_VERSION = 'v4.82';
+// What's new. Bump APP_VERSION, the footer and add a line here together.
+// Written for the operator, one line each; Changed first, since that is what catches people out.
+// Group a batch of versions into one entry; keep about the last six.
+// go: an ROC Study filter to jump to (scada, procedures, operations, standards, plant), or null.
+const WHATS_NEW = [
+  {id:'2026-11-08c', v:'v4.77–4.82', date:'Nov 8', title:'Live SCADA screens', items:[
+    ['Changed','Energy build-up diagram is centered and fills its box','plant'],
+    ['New','What Does It Look Like?, Find It, Site Monitoring and Alarm Triage now run on live monitor screens','operations'],
+    ['New','Alarm Triage: FACP trouble vs FACP fire alarm, same panel, different bucket','scada'],
+    ['New','Single line now shows ANSI 89, 27/59, 86, 87T and 50/51 with trip paths','plant'],
+    ['New','What’s new: hover or tap the version number down here',null]]},
+  {id:'2026-11-08b', v:'v4.74–4.76', date:'Nov 8', title:'Study content', items:[
+    ['Changed','Log and site trip answers updated to match the Op 2 / Op 3 qualifications','procedures'],
+    ['New','Every NERC standard now has an “At a GOP” line on how it touches us','standards'],
+    ['New','Op 2 / Op 3 questions: Megapack offline with no alarms, escalating to management, major generation loss, operator shortcuts','operations'],
+    ['New','RNWBL tag marks company practice versus industry-wide rule','procedures'],
+    ['New','At the Desk: Four at Once scenario','operations']]},
+  {id:'2026-11-08a', v:'v4.66–4.73', date:'Nov 8', title:'Interactive learn cards', items:[
+    ['Changed','Daily Checklist card replaced by Site Monitoring; Procedures Q9 removed','procedures'],
+    ['New','Find It on SCADA and the Alarm Triage drill','scada'],
+    ['New','Site Monitoring walks for Solar, Wind and BESS','procedures'],
+    ['New','Watch & Learn: At the Desk with Critical Event and 60 MW Drop','operations']]},
+];
+const WN_KEY = 'wn-seen';
+const wnSeen = () => { try { return localStorage.getItem(WN_KEY); } catch(e) { return null; } };
+function wnInit(){
+  const b = document.getElementById('wn-btn'), t = document.getElementById('wn-tip'), top = WHATS_NEW[0];
+  if (!b || !top) return;
+  if (t) t.textContent = `${APP_VERSION} · What’s new: ${top.title} (${top.items.length} changes)`;
+  b.classList.toggle('unread', wnSeen() !== top.id);
+}
+function wnClose(){
+  const p = document.getElementById('wn-pop'); if (p) p.remove();
+  const ob = document.getElementById('wn-btn'); if (ob) ob.classList.remove('open');
+  document.removeEventListener('keydown', wnKey); document.removeEventListener('click', wnOut, true);
+}
+function wnKey(e){ if (e.key === 'Escape') wnClose(); }
+function wnOut(e){ const p = document.getElementById('wn-pop'), b = document.getElementById('wn-btn');
+  if (p && !p.contains(e.target) && !(b && b.contains(e.target))) wnClose(); }
+function wnGo(f){
+  wnClose();
+  try { navDropdownSelect('roc','study'); rocSetFilter(f, document.querySelector(`[data-filter=${f}]`)); window.scrollTo({top:0}); } catch(e) {}
+}
+function wnToggle(e){
+  if (e) e.stopPropagation();
+  if (document.getElementById('wn-pop')) { wnClose(); return; }
+  const seen = wnSeen();
+  const p = document.createElement('div'); p.id = 'wn-pop'; p.className = 'wn-pop'; p.setAttribute('role', 'dialog'); p.setAttribute('aria-label', 'What’s new');
+  const idx = WHATS_NEW.findIndex(r => r.id === seen);
+  p.innerHTML = `<div class="wn-hd"><b>What’s new</b><span>running ${APP_VERSION}</span><button class="wn-x" onclick="wnClose()" aria-label="Close">×</button></div>`
+    + WHATS_NEW.slice(0, 6).map((r, n) => `<div class="wn-rel"><div class="wn-rh"><b>${r.title}</b>${idx === -1 || n < idx ? '<i class="wn-new">NEW</i>' : ''}<span>${r.v} · ${r.date}</span></div>`
+      + r.items.map(([tag, txt, go]) => `<div class="wn-it"><span class="wn-tag ${tag}">${tag}</span><span>${txt}</span>${go ? `<button class="wn-go" onclick="wnGo('${go}')">Show me</button>` : ''}</div>`).join('')
+      + '</div>').join('')
+    + '<div class="wn-ft">Looks wrong or still old? Hard refresh: Ctrl+Shift+R / Cmd+Shift+R.</div>';
+  document.body.appendChild(p);
+  const ob = document.getElementById('wn-btn'); if (ob) ob.classList.add('open');
+  try { localStorage.setItem(WN_KEY, WHATS_NEW[0].id); } catch(err) {}
+  const b = document.getElementById('wn-btn'); if (b) b.classList.remove('unread');
+  document.addEventListener('keydown', wnKey); document.addEventListener('click', wnOut, true);
+}
+window.wnToggle = wnToggle; window.wnClose = wnClose; window.wnGo = wnGo;
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wnInit); else wnInit();
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -20718,7 +20806,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    RNWBL Ops Hub <span class="app-footer-v">v4.81</span>
+    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v4.82</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
