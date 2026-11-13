@@ -3788,7 +3788,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
        becomes one line on the shift card, so there is never an empty box. -->
   <div class="home-top">
     <div class="glance-tile home-lead" id="glance-shift" onclick="homeOpenShiftCalendar()">
-      <div class="glance-tile-top"><span class="glance-icon">👥</span><span class="glance-tile-label">Who's on Shift</span></div>
+      <div class="glance-tile-top"><span class="glance-icon">👥</span><span class="glance-tile-label" id="glance-shift-label">Who's on Shift</span></div>
       <div class="glance-tile-main" id="glance-shift-main">—</div>
       <div class="glance-tile-sub" id="glance-shift-sub"></div>
       <div class="home-rem-line" id="home-rem-line" onclick="event.stopPropagation();switchView('ops', null)"></div>
@@ -17962,8 +17962,14 @@ function homeRenderWhosOnShift() {
   const isNight = /night/i.test(current.label);
   mainEl.innerHTML = pos(current.names, isNight);
   try { wosDutyPop('glance-shift-main'); } catch(e) {}
+  // The label says which shift the names belong to; the sub line is only
+  // about the next crew and when they take over. Changeovers are 06:00 / 18:00.
+  const lbl = document.getElementById('glance-shift-label');
+  if (lbl) lbl.textContent = "Who's on Shift \u00b7 " + (isNight ? 'Night 18:00\u201306:00' : 'Day 06:00\u201318:00');
+  const nextKind = /night/i.test(next.label) ? 'Night' : 'Day';
   document.getElementById('glance-shift-sub').innerHTML =
-    esc(current.label) + ' <span style="opacity:.55;">\u00b7 Next: ' + esc(next.names.join(', ')) + ' (' + esc(next.label) + ')</span>';
+    'Up next at ' + (isNight ? '06:00' : '18:00') + ' \u00b7 ' + nextKind
+    + ' \u00b7 <span style="color:var(--text);">' + esc(next.names.join(', ')) + '</span>';
 }
 
 function homeRenderGlance() {
@@ -20429,13 +20435,14 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION, the footer <span class="app-footer-v"> and WHATS_NEW together.
-const APP_VERSION = 'v4.90';
+const APP_VERSION = 'v4.91';
 // What's new. Bump APP_VERSION, the footer and add a line here together.
 // Written for the operator, one line each; Changed first, since that is what catches people out.
 // Group a batch of versions into one entry; keep about the last six.
 // go: an ROC Study filter to jump to (scada, procedures, operations, standards, plant), or null.
 const WHATS_NEW = [
-  {id:'2026-11-09e', v:'v4.90', date:'Nov 9', title:'Wind strip fixed', items:[
+  {id:'2026-11-09e', v:'v4.90–4.91', date:'Nov 9', title:'Wind strip fixed', items:[
+    ['Changed','Who’s on shift names the current shift in its label, and the line below only covers who’s up next and when',null],
     ['Fixed','Wind fleet strip on Home fills again and refreshes with Fleet Conditions',null],
     ['Changed','Wind now reads at hub height (80 m) in the strip and the Fleet Conditions wind tab',null]]},
   {id:'2026-11-09d', v:'v4.88–4.89', date:'Nov 9', title:'For the curious', items:[
@@ -20921,7 +20928,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v4.90</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
+    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v4.91</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
