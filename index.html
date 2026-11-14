@@ -2403,6 +2403,11 @@ body.dark #view-schedule .chip-del{ background: rgba(255,255,255,0.08); border-c
 .home-lead .wos-duty:hover .wos-pos{background:var(--blue);color:#fff;}
 .home-lead .wos-sep{display:none;}
 .home-lead .glance-tile-sub{font-size:13px;color:var(--text2);}
+.home-lead #glance-shift-sub .wos-next{display:inline-flex;flex-wrap:wrap;align-items:center;gap:2px 6px;vertical-align:middle;}
+.home-lead #glance-shift-sub .wos-duty{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;letter-spacing:0;line-height:1.4;padding:1px 6px 1px 1px;color:var(--text);}
+.home-lead #glance-shift-sub .wos-pos{font-size:9px;padding:2px 5px;border-radius:5px;background:var(--bg4);color:var(--text2);}
+.home-lead #glance-shift-sub .wos-duty:hover .wos-pos{background:var(--blue);color:#fff;}
+.home-lead #glance-shift-sub .wos-sep{display:none;}
 .home-rem-line{margin-top:auto;padding-top:12px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text2);}
 .home-lead .glance-tile-sub{margin-bottom:14px;}
 .home-rem-line::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;}
@@ -17903,7 +17908,8 @@ function wosDutyPop(hostId){
     // name down — the big lead card stacks N1 over N2.
     // Try below, then beside, then above: first spot that does not cover
     // another name, so you can always move straight to the next one.
-    const others = [...host.querySelectorAll('.wos-duty')].filter(t => t !== tag).map(t => t.getBoundingClientRect());
+    // every name on the card counts, current crew and up next, so the popover never covers one you may move to
+    const others = [...(host.closest('.glance-tile') || host).querySelectorAll('.wos-duty')].filter(t => t !== tag).map(t => t.getBoundingClientRect());
     const pw = 320, ph = pop.offsetHeight || 130;
     const hits = (x, y) => others.some(o => x < o.right && x + pw > o.left && y < o.bottom && y + ph > o.top);
     const spots = [
@@ -17967,9 +17973,12 @@ function homeRenderWhosOnShift() {
   const lbl = document.getElementById('glance-shift-label');
   if (lbl) lbl.textContent = "Who's on Shift \u00b7 " + (isNight ? 'Night 18:00\u201306:00' : 'Day 06:00\u201318:00');
   const nextKind = /night/i.test(next.label) ? 'Night' : 'Day';
-  document.getElementById('glance-shift-sub').innerHTML =
-    'Up next at ' + (isNight ? '06:00' : '18:00') + ' \u00b7 ' + nextKind
-    + ' \u00b7 <span style="color:var(--text);">' + esc(next.names.join(', ')) + '</span>';
+  // The next crew gets the same duty tags, so someone logging in early can
+  // hover their position and see their scan round before they take over.
+  const sub = document.getElementById('glance-shift-sub');
+  sub.innerHTML = 'Up next at ' + (isNight ? '06:00' : '18:00') + ' \u00b7 ' + nextKind
+    + ' \u00b7 <span class="wos-next">' + pos(next.names, nextKind === 'Night') + '</span>';
+  try { wosDutyPop('glance-shift-sub'); } catch(e) {}
 }
 
 function homeRenderGlance() {
@@ -20435,12 +20444,14 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION, the footer <span class="app-footer-v"> and WHATS_NEW together.
-const APP_VERSION = 'v4.91';
+const APP_VERSION = 'v4.92';
 // What's new. Bump APP_VERSION, the footer and add a line here together.
 // Written for the operator, one line each; Changed first, since that is what catches people out.
 // Group a batch of versions into one entry; keep about the last six.
 // go: an ROC Study filter to jump to (scada, procedures, operations, standards, plant), or null.
 const WHATS_NEW = [
+  {id:'2026-11-13a', v:'v4.92', date:'Nov 13', title:'Duties for the next crew', items:[
+    ['New','Shift Overview: hover a name in “Up next” to see that position’s scan round before you take over',null]]},
   {id:'2026-11-09e', v:'v4.90–4.91', date:'Nov 9', title:'Wind strip fixed', items:[
     ['Changed','Who’s on shift names the current shift in its label, and the line below only covers who’s up next and when',null],
     ['Fixed','Wind fleet strip on Home fills again and refreshes with Fleet Conditions',null],
@@ -20928,7 +20939,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v4.91</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
+    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v4.92</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
