@@ -1067,11 +1067,29 @@ body.dark .cl-time{color:var(--text2);}
 .sm-pulse{position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;border:3px solid var(--blue);animation:smPulse 1.1s ease-out 3;pointer-events:none;}
 @keyframes smPulse{from{transform:scale(1);opacity:1}to{transform:scale(3.2);opacity:0}}
 @media (prefers-reduced-motion: reduce){.sm-pulse{animation:none;}}
+.sm-tzchip{display:inline-block;margin-left:4px;font-size:11px;padding:1px 7px;border-radius:9px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);white-space:nowrap;}
+.sm-also{flex-basis:100%;font-size:11.5px;color:var(--text2);display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:2px;}
+.sm-also button{font:inherit;font-family:var(--m);font-size:11px;padding:1px 6px;border-radius:5px;border:1px solid var(--border2);background:var(--bg2);color:var(--blue);cursor:pointer;}
+.sm-spark{display:flex;flex-direction:column;gap:3px;}
+.sm-spark:empty{display:none;}
+.sm-spark-hd{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);}
+.sm-spark svg{width:100%;height:64px;display:block;}
+.sm-spark .ln{fill:none;stroke:var(--blue);stroke-width:2;vector-effect:non-scaling-stroke;}
+.sm-spark .area{fill:var(--blue);fill-opacity:.12;stroke:none;}
+.sm-spark .pk{fill:var(--blue);}
+.sm-spark .ref{stroke:var(--text3);stroke-dasharray:3 3;stroke-width:1;vector-effect:non-scaling-stroke;opacity:.6;}
+.sm-spark .reft{font-size:9px;fill:var(--text3);font-family:var(--m);}
+.sm-spark-ax{display:flex;justify-content:space-between;font-family:var(--m);font-size:10px;color:var(--text3);}
+.sm-sun{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--text2);align-items:baseline;}
+.sm-sun:empty{display:none;}
+.sm-sun b{color:var(--text);font-family:var(--m);font-weight:600;}
+.sm-sun small{color:var(--text3);font-size:11px;}
 .sm-p-note{font-size:11.5px;color:var(--text3);font-style:italic;}
 @media (max-width:760px){ .sm-find{order:-1;flex-basis:100%;} .sm-find input{width:100%;box-sizing:border-box;} .sm-find-list{right:0;min-width:0;} .sm-type{padding:4px 7px;} .sm-type small{display:none;} }
 .sm-chk{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);cursor:pointer;user-select:none;}
 .sm-chk input{margin:0;accent-color:var(--blue);}
-.sm-age{font-family:var(--m);font-size:11px;color:var(--text3);}
+.sm-age{font-family:var(--m);font-size:11px;color:var(--text3);background:none;border:0;padding:3px 4px;cursor:pointer;border-radius:5px;}
+.sm-age:hover{background:var(--bg3);color:var(--text);}
 .sm-age.fresh{color:var(--green);}
 .sm-gm{font-size:11px;padding:4px 10px;text-decoration:none;}
 .sm-body{position:relative;flex:1;min-height:0;display:flex;}
@@ -1094,7 +1112,7 @@ body.dark .cl-time{color:var(--text2);}
 .sm-p-sum{font-size:12.5px;line-height:1.45;}
 .sm-p-sum .hot{color:var(--amber);font-weight:600;} .sm-p-sum .bad{color:#dc2626;font-weight:600;}
 .sm-p-muted{font-size:12px;color:var(--text3);}
-.sm-p-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px;}
+.sm-p-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;padding-top:12px;border-top:1px solid var(--border);}
 .sm-p-btns button,.sm-p-btns a{font:inherit;font-size:12px;padding:6px 10px;border-radius:7px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);cursor:pointer;text-decoration:none;}
 .sm-p-btns .p{border-color:var(--green);color:var(--green);background:var(--gbg);}
 .sm-pin{position:relative;}
@@ -1156,8 +1174,9 @@ body.dark #view-sitemap .leaflet-bar a{background:#151d27;color:#cbd5e1;border-c
 .tz-divider{height:1px;width:100%;background:var(--border)}
 @media (max-width:500px){.tz-divider{display:none}}
 .tz-sites-hdr{color:var(--text2);font-size:11px;text-transform:uppercase;margin-bottom:8px}
-.tz-sites{}
-.tz-sites li{display:flex;justify-content:space-between;gap:10px;padding:3px 0;font-size:13px}
+.tz-sites{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:18px;}
+@media (max-width:420px){.tz-sites{grid-template-columns:minmax(0,1fr);}}
+.tz-sites li{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:3px 0;font-size:13px;min-width:0}
 .tz-sites li > :first-child{white-space:nowrap}
 .tz-sites .tz-loc{text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .tz-sites .tz-loc{color:var(--text2);font-size:12px}
@@ -5961,10 +5980,10 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <div class="sm-find-list" id="sm-find-list" role="listbox"></div>
     </div>
     <label class="sm-chk"><input type="checkbox" id="sm-adv" checked onchange="smRefresh()"> Advisories</label>
-    <label class="sm-chk"><input type="checkbox" id="sm-radar" onchange="smRadar(this.checked)"> Radar</label>
-    <label class="sm-chk"><input type="checkbox" id="sm-labels" onchange="smRefresh()"> Labels</label>
+    <label class="sm-chk"><input type="checkbox" id="sm-radar" checked onchange="smRadar(this.checked)"> Radar</label>
+    <label class="sm-chk"><input type="checkbox" id="sm-labels" checked onchange="smRefresh()"> Labels</label>
     <div class="nav-spacer"></div>
-    <span class="sm-age" id="sm-age"></span>
+    <button class="sm-age" id="sm-age" onclick="smRefreshNow()" title="Refresh readings, alerts and radar now"></button>
     <a href="https://www.google.com/maps/d/u/0/viewer?mid=14GNXruAbp2_YUo3YPIXjMnO7d_k7LcQ" target="_blank" rel="noopener" class="tbtn sm-gm" title="The hand-kept Google My Maps version">Google map &#8599;</a>
   </div>
   <div class="sm-body">
@@ -6255,7 +6274,9 @@ function smSites(){
   const seen = new Set(), out = [];
   (typeof SITES !== 'undefined' ? SITES : []).forEach(x => {
     if (x.lat == null || x.lng == null || seen.has(x.name)) return; seen.add(x.name);
+    const wxn = ((typeof WX_LOCS !== 'undefined' ? WX_LOCS : []).find(w => w.name === x.name) || {}).notes || '';
     out.push({ id:x.name, lat:x.lat, lng:x.lng, location:x.location || '', tz:x.tz || '', notes:x.notes || '', kind:smKind(x),
+               pv: /\bpv\b/i.test((x.notes || '') + ' ' + wxn),     // PV-BESS hybrids trend irradiance, plain BESS trends temperature
                friendly: (typeof wxFriendly === 'function' ? wxFriendly(x.name) : '') });
   });
   return out;
@@ -6326,16 +6347,37 @@ async function smInit(){
   sm.map.on('click', () => smSelect(null));
   try { new MutationObserver(smTiles).observe(document.body, { attributes:true, attributeFilter:['class'] }); } catch(e) {}
   smRefresh();
+  if (document.getElementById('sm-radar').checked) smRadar(true);
   // same caches Home and Weather use; repaint as they land
   try { const p = hfcInit(); if (p && p.then) p.then(smRefresh); } catch(e) {}
   try { const p = alertInit(); if (p && p.then) p.then(smRefresh); } catch(e) {}
-  if (!window.__smTick) window.__smTick = setInterval(() => { if (document.getElementById('view-sitemap').classList.contains('active')) smAge(); }, 60000);
+  // While the map is on screen: readings when they pass 10 min old (same rule as
+  // Home), NWS alerts when they pass 30, radar every 10 min (RainViewer's own
+  // cadence). Nothing runs while the map is not showing.
+  if (!window.__smTick) { window.__smTick = setInterval(smTick, 60000); document.addEventListener('visibilitychange', () => { if (!document.hidden) smTick(); }); }
+}
+let smRadarAt = 0;
+async function smTick(){
+  if (!document.getElementById('view-sitemap').classList.contains('active') || !sm.map) return;
+  smAge();
+  if (document.hidden) return;              // minimised or another tab: no pulls, catch up when looked at again
+  try { if (!fcAt || Date.now() - fcAt > HFC_TTL) { await hfcInit(); smRefresh(); } } catch(e) {}
+  try { const before = JSON.stringify(alertData || {}); await alertInit(); if (JSON.stringify(alertData || {}) !== before) smRefresh(); } catch(e) {}
+  if (document.getElementById('sm-radar').checked && Date.now() - smRadarAt > 10 * 60000) smRadar(true);
+}
+async function smRefreshNow(){
+  const el = document.getElementById('sm-age'); if (el) { el.textContent = '\u25CF refreshing\u2026'; el.className = 'sm-age fresh'; }
+  try { await hfcForce(); } catch(e) {}
+  try { await alertFetch(); } catch(e) {}
+  if (document.getElementById('sm-radar').checked) await smRadar(true);
+  smRefresh();
+  if (sm.sel) smSelect(sm.sel);
 }
 function smAge(){
   const el = document.getElementById('sm-age'); if (!el) return;
   if (typeof fcAt === 'undefined' || !fcAt) { el.textContent = ''; return; }
   const m = Math.round((Date.now() - fcAt) / 60000);
-  el.textContent = '\u25CF updated ' + (m < 1 ? 'just now' : m + ' min ago'); el.className = 'sm-age' + (m < 20 ? ' fresh' : '');
+  el.textContent = '\u25CF updated ' + (m < 1 ? 'just now' : m + ' min ago') + ' \u21bb'; el.className = 'sm-age' + (m < 20 ? ' fresh' : '');
 }
 function smRefresh(){
   if (!sm.map || !window.L) return;
@@ -6371,6 +6413,7 @@ async function smRadar(on){
     const f = j.radar && j.radar.past && j.radar.past[j.radar.past.length - 1]; if (!f) throw new Error('no frame');
     sm.radar = L.tileLayer(j.host + f.path + '/256/{z}/{x}/{y}/2/1_1.png', { pane:'radar', opacity:.6, maxNativeZoom:7, maxZoom:19,
       attribution:'Radar <a href="https://www.rainviewer.com" target="_blank" rel="noopener">RainViewer</a>' }).addTo(sm.map);
+    smRadarAt = Date.now();
   } catch(e) { showToast('Could not load radar just now', 'warn'); const c = document.getElementById('sm-radar'); if (c) c.checked = false; }
 }
 // Asset Scan cards: one per site, except Centennial Flats and Maricopa, whose cards cover the group.
@@ -6389,21 +6432,25 @@ async function smSelect(id){
   const local = s.tz ? new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', hour12:false, timeZone:s.tz }) : '';
   const zone = s.tz ? (new Date().toLocaleTimeString('en-US', { timeZoneName:'short', timeZone:s.tz }).split(' ').pop()) : '';
   const card = smAsCard(id);
-  const kindName = { wind:'Wind', solar:'Solar', bess:'BESS', other:'Site' }[s.kind];
+  const kindName = s.kind === 'bess' && s.pv ? 'BESS + PV' : { wind:'Wind', solar:'Solar', bess:'BESS', other:'Site' }[s.kind];
   const al = smAlertsFor(id);
   const canada = /(,\s*ON\b)|ontario|canada/i.test(s.location);
   const t = iso => iso ? new Date(iso).toLocaleString('en-US', { weekday:'short', hour:'numeric', minute:'2-digit', timeZone:'America/Phoenix' }) : '';
   const alerts = al.length
-    ? al.map(a => '<div class="wx-alert' + (/Severe|Extreme/.test(a.severity || '') ? ' sev' : '') + '"><b>' + esc(a.event || 'Alert') + '</b>' + (a.ends ? '<span>until ' + esc(t(a.ends)) + ' AZ</span>' : '') + '</div>').join('')
+    ? al.map(a => { const also = smAlsoUnder(id, a);
+        return '<div class="wx-alert' + (/Severe|Extreme/.test(a.severity || '') ? ' sev' : '') + '"><b>' + esc(a.event || 'Alert') + '</b>' + (a.ends ? '<span>until ' + esc(t(a.ends)) + ' AZ</span>' : '')
+          + (also.length ? '<div class="sm-also">Also on ' + also.map(x => '<button onclick="smFindGo(\'' + esc(x) + '\')">' + esc(x) + '</button>').join('') + '</div>' : '') + '</div>'; }).join('')
     : '<div class="wx-alert-none">' + (canada ? 'NWS alerts cover US sites only; for Ontario check Environment Canada.' : '\u2713 No active NWS alerts here.') + '</div>';
   panel.innerHTML =
     '<div class="sm-p-hd"><div><div class="sm-p-code">' + esc(s.id) + ' \u00b7 ' + kindName + '</div><div class="sm-p-name">' + esc(s.friendly || s.id) + '</div>'
-    + '<div class="sm-p-sub">' + esc(s.location) + (local ? ' \u00b7 ' + local + ' ' + esc(zone) + ' local' : '') + '</div></div>'
+    + '<div class="sm-p-sub">' + esc(s.location) + (local ? ' \u00b7 ' + local + ' ' + esc(zone) + ' local' : '') + smTzChip(s.tz) + '</div></div>'
     + '<button class="x" onclick="smSelect(null)" aria-label="Close">\u00d7</button></div>'
-    + (sm.force === s.id ? '<div class="sm-p-note">' + kindName + ' sites are hidden; showing this one anyway.</div>' : '')
-    + '<div class="sm-p-big" id="sm-p-big"><div><small>' + (s.kind === 'wind' ? 'Hub 80 m' : s.kind === 'other' ? 'Wind' : 'Sun') + '</small><b>\u2026</b></div><div><small>Gusts</small><b>\u2026</b></div><div><small>Temp</small><b>\u2026</b></div></div>'
+    + (sm.force === s.id ? '<div class="sm-p-note">' + { wind:'Wind', solar:'Solar', bess:'BESS', other:'Other' }[s.kind] + ' sites are hidden; showing this one anyway.</div>' : '')
+    + '<div class="sm-p-big" id="sm-p-big"><div><small>' + (s.kind === 'wind' ? 'Hub 80 m' : smTrendOf(s) === 'sun' ? 'Sun' : 'Wind') + '</small><b>\u2026</b></div><div><small>Gusts</small><b>\u2026</b></div><div><small>Temp</small><b>\u2026</b></div></div>'
     + '<div class="wx-alerts">' + alerts + '</div>'
     + '<div class="sm-p-sum" id="sm-p-sum"><span class="sm-p-muted">Loading the next 12 hours\u2026</span></div>'
+    + '<div class="sm-spark" id="sm-spark"></div>'
+    + '<div class="sm-sun" id="sm-sun"></div>'
     + '<div class="sm-p-btns"><button class="p" onclick="smGoWeather(\'' + s.id + '\')">Full weather</button>'
     + (card ? '<button onclick="switchView(\'asset\',null); asSwitch(\'' + card + '\')">Asset Scan</button>' : '')
     + '<button onclick="switchView(\'playbooks\',null)">Playbooks</button>'
@@ -6414,22 +6461,82 @@ async function smSelect(id){
     const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + s.lat + '&longitude=' + s.lng
       + '&current=temperature_2m,wind_speed_10m,wind_gusts_10m,shortwave_radiation'
       + '&hourly=wind_speed_80m,wind_speed_10m,wind_gusts_10m,precipitation_probability,temperature_2m,shortwave_radiation,weather_code'
+      + '&daily=sunrise,sunset&forecast_days=2'
       + '&forecast_hours=14&wind_speed_unit=mph&temperature_unit=fahrenheit&timezone=auto';
     const j = await (await fetch(url)).json();
     if (sm.sel !== id) return;                                   // user moved on
+    try { smSpark(j, s); } catch(e) {}
+    try { smSun(j, s); } catch(e) {}
     const c = j.current || {}, h80 = j.hourly && j.hourly.wind_speed_80m ? j.hourly.wind_speed_80m[0] : null;
     const first = s.kind === 'wind' ? (h80 != null ? '<b>' + (h80 * 0.44704).toFixed(1) + '</b> <span>m/s</span>' : '<b>\u2014</b>')
-               : s.kind === 'other' ? '<b>' + Math.round(c.wind_speed_10m) + '</b> <span>mph</span>'
+               : smTrendOf(s) !== 'sun' ? '<b>' + Math.round(c.wind_speed_10m) + '</b> <span>mph</span>'
                : '<b>' + Math.round(c.shortwave_radiation || 0) + '</b> <span>W/m\u00b2</span>';
     document.getElementById('sm-p-big').innerHTML =
-      '<div><small>' + (s.kind === 'wind' ? 'Hub 80 m' : s.kind === 'other' ? 'Wind' : 'Sun') + '</small>' + first + '</div>'
+      '<div><small>' + (s.kind === 'wind' ? 'Hub 80 m' : smTrendOf(s) === 'sun' ? 'Sun' : 'Wind') + '</small>' + first + '</div>'
       + '<div><small>Gusts</small><b>' + Math.round(c.wind_gusts_10m) + '</b> <span>mph</span></div>'
       + '<div><small>Temp</small><b>' + Math.round(c.temperature_2m) + '</b><span>\u00b0F</span></div>';
-    const M = wxOutlookModel(j, { wind: s.kind === 'wind' });
+    const M = wxOutlookModel(j, { wind: s.kind === 'wind', sun: smTrendOf(s) === 'sun' });
     document.getElementById('sm-p-sum').innerHTML = M ? '<b>Next 12 h:</b> ' + M.S.join(' \u00b7 ') : '<span class="sm-p-muted">No outlook available.</span>';
   } catch(e) {
     if (sm.sel === id) document.getElementById('sm-p-sum').innerHTML = '<span class="sm-p-muted">Could not reach the forecast just now.</span>';
   }
+}
+// "PT · 1 h behind AZ": the clock maths done for you.
+function smTzChip(tz){
+  if (!tz) return '';
+  try {
+    const off = z => { const d = new Date(); const p = new Date(d.toLocaleString('en-US', { timeZone:z })); return Math.round((p - new Date(d.toLocaleString('en-US', { timeZone:'UTC' }))) / 3600000); };
+    const diff = off(tz) - off('America/Phoenix');
+    const abbr = { 'America/Los_Angeles':'PT', 'America/Phoenix':'AZ', 'America/Denver':'MT', 'America/Boise':'MT', 'America/Chicago':'CT', 'America/New_York':'ET', 'America/Toronto':'ET' }[tz] || '';
+    if (tz === 'America/Phoenix') return ' <span class="sm-tzchip">AZ time</span>';
+    const txt = diff === 0 ? 'same as AZ' : Math.abs(diff) + ' h ' + (diff > 0 ? 'ahead of' : 'behind') + ' AZ';
+    return ' <span class="sm-tzchip">' + (abbr ? abbr + ' \u00b7 ' : '') + txt + '</span>';
+  } catch(e) { return ''; }
+}
+// Other sites under the same NWS alert (same event, same end time).
+function smAlsoUnder(id, a){
+  const d = (typeof alertData !== 'undefined' && alertData) || {};
+  return Object.keys(d).filter(k => k !== id && d[k].some(x => x.event === a.event && (x.ends || '') === (a.ends || ''))).sort();
+}
+// 12-hour trend: hub wind for wind sites, sun for solar and BESS, temperature otherwise.
+function smTrendOf(s){ return s.kind === 'wind' ? 'wind' : (s.kind === 'solar' || (s.kind === 'bess' && s.pv)) ? 'sun' : 'temp'; }
+function smSpark(j, s){
+  const el = document.getElementById('sm-spark'); if (!el) return;
+  const M = wxOutlookModel(j, { wind: s.kind === 'wind' }); if (!M) { el.innerHTML = ''; return; }
+  const H = M.H, idx = M.idx;
+  let vals, unit, lbl, lines = [];
+  const tr = smTrendOf(s);
+  if (tr === 'wind') { vals = idx.map(i => H.wind_speed_80m[i] * 0.44704); unit = 'm/s'; lbl = 'Hub wind'; lines = [[4,'cut-in'],[22,'cut-out']]; }
+  else if (tr === 'temp') { vals = idx.map(i => H.temperature_2m[i]); unit = '\u00b0F'; lbl = 'Temp'; }
+  else { vals = idx.map(i => H.shortwave_radiation[i]); unit = 'W/m\u00b2'; lbl = 'Irradiance'; }
+  const W = 300, Hh = 64, pad = 4;
+  // temperature gets a range around its own values; wind and sun start at zero
+  const lo = tr === 'temp' ? Math.floor(Math.min(...vals) - 3) : Math.min(0, ...vals);
+  const hi = tr === 'temp' ? Math.ceil(Math.max(...vals) + 3) : Math.max(...vals, ...(tr === 'wind' ? [24] : [1]));
+  const x = i => pad + i * (W - 2 * pad) / (vals.length - 1), y = v => Hh - pad - (v - lo) * (Hh - 2 * pad) / ((hi - lo) || 1);
+  const pts = vals.map((v, i) => x(i).toFixed(1) + ',' + y(v).toFixed(1)).join(' ');
+  const iMax = vals.indexOf(Math.max(...vals));
+  const ref = lines.filter(([v]) => v <= hi).map(([v, t]) => '<line x1="0" x2="' + W + '" y1="' + y(v) + '" y2="' + y(v) + '" class="ref"/><text x="' + (W - 2) + '" y="' + (y(v) - 3) + '" text-anchor="end" class="reft">' + t + '</text>').join('');
+  el.innerHTML = '<div class="sm-spark-hd"><span>' + lbl + ', next 12 h</span><span>peak ' + (unit === 'W/m\u00b2' || unit === '\u00b0F' ? Math.round(vals[iMax]) : vals[iMax].toFixed(1)) + ' ' + unit + ' at ' + M.azH(H.time[idx[iMax]]) + '</span></div>'
+    + '<svg viewBox="0 0 ' + W + ' ' + Hh + '" preserveAspectRatio="none" role="img" aria-label="' + lbl + ' trend">' + ref
+    + '<polyline points="' + pad + ',' + (Hh - pad) + ' ' + pts + ' ' + (W - pad) + ',' + (Hh - pad) + '" class="area"/>'
+    + '<polyline points="' + pts + '" class="ln"/><circle cx="' + x(iMax) + '" cy="' + y(vals[iMax]) + '" r="3" class="pk"/></svg>'
+    + '<div class="sm-spark-ax"><span>' + M.azH(H.time[idx[0]]) + '</span><span>' + M.azH(H.time[idx[Math.floor(idx.length / 2)]]) + '</span><span>' + M.azH(H.time[idx[idx.length - 1]]) + ' AZ</span></div>';
+}
+// Next sunrise and sunset, in site time and AZ time.
+function smSun(j, s){
+  const el = document.getElementById('sm-sun'); if (!el) return;
+  const D = j.daily; if (!D || !D.sunrise) { el.innerHTML = ''; return; }
+  const off = (j.utc_offset_seconds || 0) * 1000;
+  const ep = t => Date.UTC(+t.slice(0,4), +t.slice(5,7)-1, +t.slice(8,10), +t.slice(11,13), +t.slice(14,16)) - off;
+  const now = Date.now();
+  const next = arr => arr.map(ep).find(v => v > now);
+  const fmt = (v, z) => new Date(v).toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', timeZone:z });
+  const z = s.tz || 'America/Phoenix', sameAz = !s.tz || smTzChip(s.tz).includes('same as AZ');
+  const row = (icon, name, v) => v ? '<span>' + icon + ' ' + name + ' <b>' + fmt(v, z) + '</b>' + (sameAz ? '' : ' <small>(' + fmt(v, 'America/Phoenix') + ' AZ)</small>') + '</span>' : '';
+  const rise = next(D.sunrise), set = next(D.sunset);
+  const first = rise < set ? [row('\u2600\ufe0f', 'Sunrise', rise), row('\ud83c\udf05', 'Sunset', set)] : [row('\ud83c\udf05', 'Sunset', set), row('\u2600\ufe0f', 'Sunrise', rise)];
+  el.innerHTML = first.join('') + (sameAz ? '' : '<small class="sm-sun-note">site time</small>');
 }
 document.addEventListener('keydown', e => {
   if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) return;
@@ -6859,7 +6966,7 @@ function fmtTzTime(d,tz){return new Intl.DateTimeFormat(undefined,{timeZone:tz,h
 function fmtTzDate(d,tz){return new Intl.DateTimeFormat(undefined,{timeZone:tz,weekday:'short',month:'short',day:'2-digit'}).format(d)}
 function tzOffset(d,tz){const p=new Intl.DateTimeFormat('en-US',{timeZone:tz,timeZoneName:'shortOffset'}).formatToParts(d).find(x=>x.type==='timeZoneName');return p?.value||''}
 function renderTzStrip(now){const el=document.getElementById('tz-strip');if(!el)return;el.innerHTML=TZ_ZONES.map(z=>`<div class="tz-strip-item"><span class="tz-strip-key">${z.key}</span><span class="tz-strip-time">${new Intl.DateTimeFormat(undefined,{timeZone:z.tz,hour:'2-digit',minute:'2-digit',hour12:tzHour12}).format(now)}</span></div>`).join('')}
-function renderTzCards(now){const q=(document.getElementById('tz-search')?.value||'').toLowerCase();const grid=document.getElementById('tz-grid');if(!grid)return;grid.innerHTML='';TZ_ZONES.forEach(z=>{const filtered=q?z.sites.filter(s=>s.name.toLowerCase().includes(q)||s.location.toLowerCase().includes(q)||z.label.toLowerCase().includes(q)):z.sites;if(q&&filtered.length===0)return;const card=document.createElement('div');card.className='tz-card';card.innerHTML=`<div class="tz-card-header"><div class="tz-card-left"><div class="tz-icon" style="background:linear-gradient(135deg,${z.accent[0]},${z.accent[1]})"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><div><div class="tz-card-title">${z.label}</div><div style="display:flex;gap:6px;margin-top:2px"><span class="tz-badge">${z.tz}</span>${tzOffset(now,z.tz)?`<span class="tz-badge">${tzOffset(now,z.tz)}</span>`:''}</div></div></div></div><div class="tz-card-content"><div><div class="tz-clock" data-tz="${z.tz}">${fmtTzTime(now,z.tz)}</div><div class="tz-date">${fmtTzDate(now,z.tz)}</div></div><div class="tz-divider"></div><div><div class="tz-sites-hdr">Sites (${filtered.length})</div><ul class="tz-sites">${filtered.map(s=>`<li><span>${s.name}</span><span class="tz-loc">${s.location}</span></li>`).join('')}</ul></div></div>`;grid.appendChild(card)})}
+function renderTzCards(now){const q=(document.getElementById('tz-search')?.value||'').toLowerCase();const grid=document.getElementById('tz-grid');if(!grid)return;grid.innerHTML='';TZ_ZONES.forEach(z=>{const filtered=q?z.sites.filter(s=>s.name.toLowerCase().includes(q)||s.location.toLowerCase().includes(q)||z.label.toLowerCase().includes(q)):z.sites;if(q&&filtered.length===0)return;const card=document.createElement('div');card.className='tz-card';card.innerHTML=`<div class="tz-card-header"><div class="tz-card-left"><div class="tz-icon" style="background:linear-gradient(135deg,${z.accent[0]},${z.accent[1]})"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div><div><div class="tz-card-title">${z.label}</div><div style="display:flex;gap:6px;margin-top:2px"><span class="tz-badge">${z.tz}</span>${tzOffset(now,z.tz)?`<span class="tz-badge">${tzOffset(now,z.tz)}</span>`:''}</div></div></div></div><div class="tz-card-content"><div><div class="tz-clock" data-tz="${z.tz}">${fmtTzTime(now,z.tz)}</div><div class="tz-date">${fmtTzDate(now,z.tz)}</div></div><div class="tz-divider"></div><div>${(()=>{const st=filtered.map(s=>(s.location.split(',')[1]||'').trim());const one=st.length&&st.every(x=>x&&x===st[0])?st[0]:'';return `<div class="tz-sites-hdr">Sites (${filtered.length})${one?' \u00b7 all '+one:''}</div><ul class="tz-sites">${filtered.map(s=>`<li title="${s.name} \u00b7 ${s.location}"><span>${s.name}</span><span class="tz-loc">${one?s.location.split(',')[0]:s.location}</span></li>`).join('')}</ul>`})()}</div></div>`;grid.appendChild(card)})}
 function updateTzAll(){const now=new Date();renderTzStrip(now);const clocks=document.querySelectorAll('.tz-clock');if(clocks.length){clocks.forEach(c=>c.textContent=fmtTzTime(now,c.dataset.tz))}else{renderTzCards(now)}document.getElementById('tz-lastUpdate').textContent=new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(now)}
 function initTimeZones(){if(tzInterval)return;document.getElementById('tz-btn24').onclick=()=>{tzHour12=false;document.getElementById('tz-btn24').classList.add('active');document.getElementById('tz-btn12').classList.remove('active');updateTzAll()};document.getElementById('tz-btn12').onclick=()=>{tzHour12=true;document.getElementById('tz-btn12').classList.add('active');document.getElementById('tz-btn24').classList.remove('active');updateTzAll()};document.getElementById('tz-search').oninput=()=>{renderTzCards(new Date())};updateTzAll();tzInterval=setInterval(updateTzAll,1000)}
 
@@ -9237,7 +9344,7 @@ function wxOutlookModel(j, p){
   const azH=t=>new Date(epoch(t)).toLocaleTimeString('en-US',{hour:'numeric',timeZone:'America/Phoenix'}).replace(' ','').replace(':00','');
   const isWind=!!p.wind;
   const hub=i=>H.wind_speed_80m&&H.wind_speed_80m[i]!=null?H.wind_speed_80m[i]*0.44704:null;   // mph -> m/s
-  const solar=!isWind && idx.some(i=>(H.shortwave_radiation||[])[i]>0);
+  const solar=!isWind && p.sun!==false && idx.some(i=>(H.shortwave_radiation||[])[i]>0);
   const storm=c=>c>=95, hail=c=>c===96||c===99;
   // one-line summary of what matters
   const S=[], at=i=>azH(H.time[i]);
@@ -21325,7 +21432,7 @@ setTimeout(() => {
   window.setSchedMe=setSchedMe;
   window.schedOnlyMeSet=schedOnlyMeSet;
   window.schedOnlyMe=schedOnlyMe;
-  window.smTypeToggle=smTypeToggle; window.smFindInput=smFindInput; window.smFindKey=smFindKey; window.smFindClose=smFindClose; window.smFindGo=smFindGo; window.smSetMetric=smSetMetric; window.smRefresh=smRefresh; window.smRadar=smRadar; window.smSelect=smSelect; window.smGoWeather=smGoWeather; window.smInit=smInit;
+  window.smRefreshNow=smRefreshNow; window.smTypeToggle=smTypeToggle; window.smFindInput=smFindInput; window.smFindKey=smFindKey; window.smFindClose=smFindClose; window.smFindGo=smFindGo; window.smSetMetric=smSetMetric; window.smRefresh=smRefresh; window.smRadar=smRadar; window.smSelect=smSelect; window.smGoWeather=smGoWeather; window.smInit=smInit;
   window.pwaInstall=pwaInstall; window.pwaTipHide=pwaTipHide; window.pwaTipRender=pwaTipRender; window.pwaStartView=pwaStartView; window.pwaInstalled=pwaInstalled;
   window.meIcsDownload=meIcsDownload; window.swapOpen=swapOpen; window.swapClose=swapClose; window.swapAsk=swapAsk;
   window.schedMe=schedMe;
@@ -21415,13 +21522,20 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION, the footer <span class="app-footer-v"> and WHATS_NEW together.
-const APP_VERSION = 'v5.15';
+const APP_VERSION = 'v5.21';
 // What's new. Bump APP_VERSION, the footer and add a line here together.
 // Written for the operator, one line each; Changed first, since that is what catches people out.
 // Group a batch of versions into one entry; keep about the last six.
 // go: an ROC Study filter to jump to (scada, procedures, operations, standards, plant), or null.
 const WHATS_NEW = [
-  {id:'2026-11-19c', v:'v5.15', date:'Nov 19', title:'Filter and find on the map', items:[
+  {id:'2026-11-19d', v:'v5.17–5.18', date:'Nov 19', title:'A richer site panel', items:[
+    ['Changed','Trend line by site type: wind for wind, irradiance for solar and PV+BESS hybrids, temperature for BESS',null],
+    ['New','Site Map panel: a 12-hour trend line (hub wind with cut-in and cut-out, or sun), and next sunrise and sunset',null],
+    ['New','Each alert lists the other sites under it, one tap to jump there',null],
+    ['New','A time-zone chip, e.g. PT \u00b7 1 h behind AZ',null]]},
+  {id:'2026-11-19c', v:'v5.15–5.16, 5.20–5.21', date:'Nov 19', title:'Filter and find on the map', items:[
+    ['Changed','Site Map opens with advisories, radar and labels on, and keeps itself current while open; tap the updated time to refresh now',null],
+    ['Changed','Site panel buttons sit right under the details instead of at the bottom of the panel',null],
     ['New','Site Map: show or hide Wind, Solar and BESS sites',null],
     ['New','Find a site by code, name or town; the map flies to it and opens its panel. Press / to search',null]]},
   {id:'2026-11-19b', v:'v5.12–5.14', date:'Nov 19', title:'A live Site Map', items:[
@@ -21429,7 +21543,8 @@ const WHATS_NEW = [
     ['New','Site Map is drawn from our own site list: pins by type, live wind, irradiance or temperature, and rings on sites under NWS alerts',null],
     ['New','Click a site for its conditions, alerts and next 12 hours, with links to weather, Asset Scan and directions',null],
     ['New','Radar and name labels on demand; the Google map is one click away',null]]},
-  {id:'2026-11-19a', v:'v5.10–5.11', date:'Nov 19', title:'Site weather looks ahead', items:[
+  {id:'2026-11-19a', v:'v5.10–5.11, 5.19', date:'Nov 19', title:'Site weather looks ahead', items:[
+    ['Changed','Timezones: sites list in two columns, and a zone whose sites share a state shows it once',null],
     ['Fixed','Timezones: the clock sits on top of every card with the sites listed underneath, so clocks line up and nothing wraps; Kiosk still fits one screen',null],
     ['New','Site Weather & Wind shows the next 12 hours (wind, gusts, rain, storms, temperature, sun) with a one-line summary',null],
     ['New','Active NWS alerts for the picked site, and both go into Copy for log',null],
@@ -22101,7 +22216,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.15</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
+    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.21</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
