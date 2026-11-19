@@ -1512,6 +1512,65 @@ body.dark .nerc-study-container{
 .roc-wrap{padding:4px 0 60px;}
 /* ROC Study, one page: topic rail | header, Learn/Practice tabs, quiet question list */
 .rs-old{display:none!important;}
+/* NERC Study in the same shell: rail of sections, main area holds the setup, the exam, results and review */
+.ns-layout .nerc-resources-hdr{display:none!important;}
+.ns-layout #ns-cov,.ns-layout #ns-res{display:block!important;}
+.ns-sec-exam #ns-cov,.ns-sec-exam #ns-res,.ns-sec-cov .ns-exam-only,.ns-sec-cov #ns-res,.ns-sec-res .ns-exam-only,.ns-sec-res #ns-cov{display:none!important;}
+.ns-layout .nerc-resources{margin-top:0;}
+.ns-layout:not(.ns-st-setup) #ns-head{display:none;}
+.ns-layout .rs-head{margin-bottom:18px;}
+.ns-layout .nerc-study-container #nerc-screen-results{padding:8px 0 40px;}
+.ns-layout .nerc-study-container .nerc-exam-body{padding:28px 8px 40px;}
+.ns-layout .nerc-study-container .nerc-exam-navbar{position:sticky;bottom:28px;left:auto;right:auto;border:1px solid var(--nerc-border);border-radius:10px;margin-top:8px;}
+.ns-layout .nerc-study-container .nerc-exam-topbar{border:1px solid var(--nerc-border);border-radius:10px;}
+@media (min-width:861px){ .ns-layout .nerc-study-container .nerc-qgrid-wrap{visibility:hidden;} }
+.ns-layout .nerc-study-container .nerc-setup-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:18px 20px;margin-bottom:12px;box-shadow:var(--shs);}
+.ns-layout .nerc-study-container .nerc-setup-card-label{font-family:var(--m);font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--text3);margin-bottom:12px;}
+.ns-layout .nerc-study-container .nerc-setup-opt{font-family:var(--f);background:var(--bg);border:1px solid var(--border2);border-radius:9px;padding:10px 12px;color:var(--text2);box-shadow:none;}
+.ns-layout .nerc-study-container .nerc-setup-opt .nerc-opt-main{font-family:var(--f);font-size:19px;font-weight:700;color:var(--text);}
+.ns-layout .nerc-study-container .nerc-setup-opt .nerc-opt-sub{font-family:var(--m);font-size:11px;color:var(--text3);opacity:1;}
+.ns-layout .nerc-study-container .nerc-setup-opt:hover{border-color:var(--blue);color:var(--text);}
+.ns-layout .nerc-study-container .nerc-setup-opt.sel{background:var(--bbg);border-color:var(--blue);box-shadow:0 0 0 1px var(--blue) inset;}
+.ns-layout .nerc-study-container .nerc-setup-opt.sel .nerc-opt-main{color:var(--blue);}
+.ns-layout .nerc-study-container .nerc-mode-opt{background:var(--bg);border:1px solid var(--border2);border-radius:9px;padding:13px 14px;}
+.ns-layout .nerc-study-container .nerc-mode-opt:hover{border-color:var(--blue);}
+.ns-layout .nerc-study-container .nerc-mode-opt.sel{background:var(--bbg);border-color:var(--blue);box-shadow:0 0 0 1px var(--blue) inset;}
+.ns-layout .nerc-study-container .nerc-mode-opt-name{font-family:var(--f);font-size:14.5px;font-weight:700;letter-spacing:0;text-transform:none;color:var(--text);}
+.ns-layout .nerc-study-container .nerc-mode-opt.sel .nerc-mode-opt-name{color:var(--blue);}
+.ns-layout .nerc-study-container .nerc-mode-opt-desc{font-family:var(--f);font-size:12.5px;color:var(--text2);}
+.ns-go{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;margin-top:4px;padding:14px 20px;border:1px solid var(--border);border-radius:var(--rl);background:var(--bg2);box-shadow:var(--shs);}
+.ns-go span{font-size:13.5px;color:var(--text2);} .ns-go b{color:var(--text);font-weight:700;}
+.ns-layout .nerc-study-container .ns-go .nerc-setup-start{width:auto;padding:10px 22px;border-radius:9px;background:var(--green);color:#fff;font-family:var(--f);font-size:14.5px;font-weight:700;letter-spacing:0;text-transform:none;box-shadow:none;}
+.ns-layout .nerc-study-container .ns-go .nerc-setup-start:hover{transform:none;box-shadow:none;filter:brightness(1.08);}
+@media (max-width:600px){ .ns-go{flex-direction:column;align-items:stretch;} .ns-layout .nerc-study-container .ns-go .nerc-setup-start{width:100%;} .ns-layout .nerc-study-container .nerc-mode-opts{flex-direction:column;} }
+.ns-stats{display:grid;gap:6px;padding:4px 10px 0;}
+.ns-stats div{display:flex;justify-content:space-between;font-size:12px;color:var(--text3);}
+.ns-stats b{font-family:var(--m);color:var(--text);font-weight:600;}
+.ns-last{margin:2px 10px 0;padding:9px 10px;border-radius:8px;background:var(--bg3);font-size:12px;color:var(--text2);}
+.ns-last b{font-family:var(--m);}
+.ns-last .p{color:var(--green);} .ns-last .f{color:var(--red);}
+.ns-ex{display:flex;flex-direction:column;gap:8px;padding:0 4px;}
+.ns-ex .tm{font-family:var(--m);font-size:26px;font-weight:700;color:var(--green);letter-spacing:.04em;padding:0 6px;}
+.ns-ex .tm.warn{color:var(--amber);} .ns-ex .tm.danger{color:var(--red);}
+.ns-ex .ct{font-size:12px;color:var(--text3);padding:0 6px;line-height:1.5;}
+.ns-ex .ct b{color:var(--text);font-family:var(--m);}
+.ns-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:4px 6px;max-height:46vh;overflow:auto;}
+.ns-grid button{font:inherit;font-family:var(--m);font-size:11px;height:28px;border-radius:6px;border:1px solid var(--border2);background:var(--bg2);color:var(--text3);cursor:pointer;}
+.ns-grid button.a{background:var(--bg3);color:var(--text);}
+.ns-grid button.f{border-color:var(--amber);color:var(--amber);}
+.ns-grid button.c{border-color:var(--blue);color:var(--blue);background:var(--bbg);font-weight:700;}
+.ns-fin{font:inherit;font-size:13px;font-weight:700;margin:4px 6px 0;padding:9px;border-radius:8px;border:0;background:var(--amber);color:#111;cursor:pointer;}
+.ns-quit{font:inherit;font-size:12px;margin:0 6px;padding:6px;border:0;background:none;color:var(--text3);cursor:pointer;text-align:left;}
+@media (max-width:860px){
+  .ns-stats,.ns-last,.ns-ex .tm{display:none;}
+  .ns-ex{flex-direction:row;flex-wrap:wrap;align-items:center;width:100%;}
+  .ns-ex .ct{flex:1;}
+  .ns-grid{order:5;flex-basis:100%;display:flex;overflow-x:auto;max-height:none;padding:2px 0 4px;-webkit-overflow-scrolling:touch;}
+  .ns-grid button{min-width:32px;flex-shrink:0;}
+  .ns-layout .nerc-study-container .nerc-qgrid-wrap{display:none;}
+  .ns-layout .nerc-study-container .nerc-exam-navbar{gap:8px;padding:10px;}
+  .ns-layout .nerc-study-container .nerc-nav-btn{padding:9px 12px;}
+}
 .rs-layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:start;}
 .rs-rail{position:sticky;top:64px;display:flex;flex-direction:column;gap:2px;padding-right:14px;border-right:1px solid var(--border);}
 .rs-eyebrow{font-family:var(--m);font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--accent);padding:2px 10px 10px;}
@@ -4774,9 +4833,13 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 
 <!-- NERC STUDY -->
 <div class="view" id="view-nerc">
+  <div class="rs-layout ns-layout ns-sec-exam ns-st-setup" id="ns-wrap">
+  <aside class="rs-rail" id="ns-rail" aria-label="NERC study"></aside>
+  <div class="rs-main">
+  <div class="rs-head" id="ns-head"></div>
 
-  <!-- PAGE HEADER (always visible) -->
-  <div class="page-header">
+  <!-- PAGE HEADER (kept for the stats it holds; the shell above replaces it) -->
+  <div class="page-header rs-old">
     <div>
       <div class="page-title">NERC Simulator</div>
       <div class="page-subtitle">Scenario-based exam training — TO, BA, RC/SC certification</div>
@@ -4794,8 +4857,8 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <div class="nerc-setup-wrap">
 
         <!-- setup options cards -->
-        <div class="nerc-setup-card">
-          <div class="nerc-setup-card-label">▸ Question Count</div>
+        <div class="nerc-setup-card ns-exam-only">
+          <div class="nerc-setup-card-label">Question count</div>
           <div class="nerc-setup-opts" id="nerc-qcount-opts">
             <div class="nerc-setup-opt" data-val="25" onclick="nercExamSelOpt('qcount',25,this)"><span class="nerc-opt-main">25</span><span class="nerc-opt-sub">38 min</span></div>
             <div class="nerc-setup-opt sel" data-val="50" onclick="nercExamSelOpt('qcount',50,this)"><span class="nerc-opt-main">50</span><span class="nerc-opt-sub">75 min</span></div>
@@ -4804,23 +4867,23 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
             <div class="nerc-setup-opt" data-val="120" onclick="nercExamSelOpt('qcount',120,this)"><span class="nerc-opt-main">120</span><span class="nerc-opt-sub">Full · 3h</span></div>
           </div>
         </div>
-        <div class="nerc-setup-card">
-          <div class="nerc-setup-card-label">▸ Mode</div>
+        <div class="nerc-setup-card ns-exam-only">
+          <div class="nerc-setup-card-label">Mode</div>
           <div class="nerc-mode-opts" id="nerc-mode-opts">
             <div class="nerc-mode-opt sel" data-val="exam" onclick="nercExamSelOpt('mode','exam',this)">
-              <div class="nerc-mode-opt-name">EXAM MODE</div>
+              <div class="nerc-mode-opt-name">Exam mode</div>
               <div class="nerc-mode-opt-desc">Timed at the real NERC rate. No feedback until the end.</div>
             </div>
             <div class="nerc-mode-opt" data-val="practice" onclick="nercExamSelOpt('mode','practice',this)">
-              <div class="nerc-mode-opt-name">PRACTICE MODE</div>
+              <div class="nerc-mode-opt-name">Practice mode</div>
               <div class="nerc-mode-opt-desc">Untimed. Explanation after every answer.</div>
             </div>
           </div>
         </div>
-        <button class="nerc-setup-start" onclick="nercExamStartExam()">▶ BEGIN EXAM</button>
+        <div class="ns-go ns-exam-only"><span id="ns-go-sum"></span><button class="nerc-setup-start" id="ns-go-btn" onclick="nercExamStartExam()">Begin exam</button></div>
 
         <div class="nerc-resources">
-          <div class="nerc-resources-hdr nerc-fold" onclick="nercFold(this)"><span class="nerc-fold-arrow">&#9662;</span> Exam Coverage by Role</div><div class="nerc-foldable">
+          <div class="nerc-resources-hdr nerc-fold" onclick="nercFold(this)"><span class="nerc-fold-arrow">&#9662;</span> Exam Coverage by Role</div><div class="nerc-foldable" id="ns-cov">
           <div class="nerc-coverage-grid">
             <div class="nerc-cov-card">
               <div class="nerc-cov-role to">TO &#8212; Transmission Operator</div>
@@ -4840,7 +4903,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
             </div>
           </div>
           
-          </div><div class="nerc-resources-hdr nerc-fold" onclick="nercFold(this)"><span class="nerc-fold-arrow">&#9662;</span> Free Study Resources</div><div class="nerc-foldable">
+          </div><div class="nerc-resources-hdr nerc-fold" onclick="nercFold(this)"><span class="nerc-fold-arrow">&#9662;</span> Free Study Resources</div><div class="nerc-foldable" id="ns-res">
           <div class="nerc-links">
             <a class="nerc-link-item" href="https://www.nerc.com/globalassets/programs/system-operator-certification--continuing-education/exam_resource_materials.pdf" target="_blank" rel="noopener">
               <span class="nerc-link-icon">&#128196;</span>
@@ -4946,6 +5009,8 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       </div>
       <div class="nerc-review-body" id="nerc-review-body"></div>
     </div>
+  </div>
+  </div>
   </div>
 </div>
 
@@ -6929,6 +6994,7 @@ function ltInitOnce(){ try { ltRender(); } catch(e) {} }
 function switchView(v, el) {
   if (arguments[0] === 'intel') setTimeout(()=>{ try{ alertInit(); }catch(e){} }, 80);
   if (arguments[0] === 'sitemap') setTimeout(()=>{ try{ smInit(); }catch(e){ console.warn('map', e); } }, 30);
+  if (arguments[0] === 'nerc') setTimeout(()=>{ try{ nsShell(); }catch(e){} }, 0);
   if (arguments[0] === 'home') setTimeout(()=>{ try{ hfcInit(); }catch(e){} }, 0);
   // Weather shares Home's cached fleet request: paint from it at once, refetch only if stale
   if (arguments[0] === 'intel') setTimeout(()=>{ try{ const p = hfcInit(); fcRender(); if (p && p.then) p.then(() => { try { fcRender(); } catch(e){} }); }catch(e){} }, 0);
@@ -13595,6 +13661,14 @@ function nercExamSelOpt(group, val, el){
     document.querySelectorAll('#nerc-mode-opts .nerc-mode-opt').forEach(e=>e.classList.remove('sel'));
   }
   el.classList.add('sel');
+  try { nsGoSum(); } catch(e) {}
+}
+function nsGoSum(){
+  const sum = document.getElementById('ns-go-sum'), btn = document.getElementById('ns-go-btn'); if (!sum || !btn) return;
+  const n = nercCFG.qcount, m = nercExamMinutes(n), t = m >= 60 ? Math.floor(m / 60) + ' h ' + (m % 60 ? m % 60 + ' min' : '') : m + ' min';
+  const practice = nercCFG.mode === 'practice';
+  sum.innerHTML = '<b>' + n + '</b> questions \u00b7 ' + (practice ? 'untimed, explanation after each answer' : '<b>' + t.trim() + '</b> on the clock, scored at the end');
+  btn.textContent = practice ? 'Begin practice' : 'Begin exam';
 }
 
 
@@ -13609,6 +13683,7 @@ function nercExamShuffle(arr){
 // the real pace; practice mode is never timed, because pausing to read an
 // explanation is the point of it.
 const NERC_MIN_PER_Q = 1.5;
+const NERC_PASS = 80;   // the pass mark results grade against; the rail shows the same number
 function nercExamMinutes(n){ return Math.round(n * NERC_MIN_PER_Q); }
 
 function nercExamStartExam(isMissed){
@@ -13668,6 +13743,8 @@ function nercExamStartTimer(){
 }
 
 function nercUpdateTimerDisplay(){
+  setTimeout(() => { const a = document.getElementById('nerc-timer-val'), b = document.getElementById('ns-tm');
+    if (a && b && nercCFG.mode !== 'practice') { b.textContent = a.textContent; b.className = 'tm' + (a.classList.contains('danger') ? ' danger' : a.classList.contains('warn') ? ' warn' : ''); } }, 0);
   if(nercExamS.timeLeft < 0) return;
   const el = document.getElementById('nerc-timer-val');
   const m = Math.floor(nercExamS.timeLeft/60);
@@ -13716,7 +13793,7 @@ function nercRenderQuestion(){
       else if(opt === q.ans){ cls += ' show-correct'; icon='<span class="nerc-opt-icon">✓</span>'; }
       else if(opt === userAns){ cls += ' wrong'; icon='<span class="nerc-opt-icon">✗</span>'; }
     } else if(userAns === opt){ cls += ' selected'; }
-    qHtml += `<div class="${cls}" onclick="nercExamSelectAns('${nercEscQ(opt)}')">
+    qHtml += `<div class="${cls}" onclick="nercExamSelectIdx(${i})">
       <span class="nerc-opt-letter">${letters[i]}</span>
       <span class="nerc-opt-text">${opt}</span>
       ${icon}
@@ -13737,11 +13814,13 @@ function nercRenderQuestion(){
   document.getElementById('nerc-btn-prev').disabled = nercExamS.current === 0;
   document.getElementById('nerc-btn-next').disabled = nercExamS.current === n-1;
   nercRenderQGrid();
+  try { if (nsScreen() === 'exam') nsShell(); } catch(e) {}
   window.scrollTo(0,0);
 }
 
 function nercEscQ(s){ return s.replace(/'/g,"\\x27"); }
 
+function nercExamSelectIdx(i){ const q = nercExamS.questions[nercExamS.current]; if (q && q.shuffOpts) nercExamSelectAns(q.shuffOpts[i]); }
 function nercExamSelectAns(opt){
   const userAns = nercExamS.answers[nercExamS.current];
   if(nercCFG.mode==='practice' && userAns !== null) return;
@@ -13808,7 +13887,7 @@ function nercRenderResults(){
   });
 
   const pct = Math.round(correct/n*100);
-  const pass = pct >= 80;
+  const pass = pct >= NERC_PASS;
 
   const r = 66; const circ = 2*Math.PI*r;
   const fill = document.getElementById('nerc-rsr-fill');
@@ -13822,11 +13901,13 @@ function nercRenderResults(){
 
   document.getElementById('nerc-res-verdict').textContent = pass ? '✓ PASS' : '✗ FAIL';
   document.getElementById('nerc-res-verdict').className = 'nerc-results-verdict '+(pass?'pass':'fail');
-  document.getElementById('nerc-res-summary').textContent = `${correct} correct of ${n} · ${pct}% · Pass mark: 80%`;
+  document.getElementById('nerc-res-summary').textContent = `${correct} correct of ${n} · ${pct}% · Pass mark: ${NERC_PASS}%`;
   document.getElementById('nerc-rs-correct').textContent = correct;
   document.getElementById('nerc-rs-wrong').textContent = wrong;
   document.getElementById('nerc-rs-skip').textContent = skipped;
   document.getElementById('nerc-rs-pct').textContent = pct+'%';
+  try { localStorage.setItem('nercLast', JSON.stringify({ pct, pass, n, mode: nercCFG.mode,
+    when: new Date().toLocaleDateString('en-US', { month:'short', day:'numeric' }) })); } catch(e) {}
   document.getElementById('nerc-rs-pct').style.color = pass ? 'var(--nerc-green)' : 'var(--nerc-red)';
 
   const elapsed = nercExamS.endTime - nercExamS.startTime;
@@ -13907,10 +13988,52 @@ function nercRenderReview(){
   body.innerHTML = items.length ? items.join('') : '<div style="text-align:center;padding:60px;color:var(--nerc-text3);font-family:var(--nerc-mono)">No questions match this filter.</div>';
 }
 
+// ── NERC Study shell ───────────────────────────────────────────────────
+let nsSec = 'exam';
+function nsGo(sec){ nsSec = sec; nercExamShowScreen('setup'); }
+function nsScreen(){ const a = document.querySelector('#view-nerc .nerc-screen.active'); return a ? a.id.replace('nerc-screen-','') : 'setup'; }
+function nsLast(){ try { return JSON.parse(localStorage.getItem('nercLast') || 'null'); } catch(e) { return null; } }
+function nsShell(){
+  const wrap = document.getElementById('ns-wrap'), rail = document.getElementById('ns-rail'), head = document.getElementById('ns-head');
+  if (!wrap || !rail) return;
+  const st = nsScreen();
+  ['setup','exam','results','review'].forEach(x => wrap.classList.toggle('ns-st-' + x, st === x));
+  ['exam','cov','res'].forEach(x => wrap.classList.toggle('ns-sec-' + x, nsSec === x));
+  const qn = (typeof nercQB !== 'undefined') ? nercQB.length : 0, cats = (typeof nercQB !== 'undefined') ? new Set(nercQB.map(x => x.cat)).size : 0;
+  const item = (key, label, icon, on, click) => '<button class="rs-ri' + (on ? ' on' : '') + '" onclick="' + click + '">' + rsIco(icon) + '<span>' + label + '</span></button>';
+  if (st === 'exam') {
+    const S = nercExamS, n = S.questions.length, ans = S.answers.filter(a => a !== null).length, fl = S.flagged.filter(Boolean).length;
+    const t = document.getElementById('nerc-timer-val'), timer = nercCFG.mode === 'practice' ? 'Practice' : (t ? t.textContent : '');
+    rail.innerHTML = '<div class="rs-eyebrow">' + (nercCFG.mode === 'practice' ? 'PRACTICE' : 'EXAM') + ' IN PROGRESS</div><div class="ns-ex">'
+      + '<div class="tm" id="ns-tm">' + esc(timer) + '</div>'
+      + '<div class="ct">Question <b>' + (S.current + 1) + '</b> of <b>' + n + '</b><br><b>' + ans + '</b> answered' + (fl ? ' \u00b7 <b style="color:var(--amber)">' + fl + '</b> flagged' : '') + '</div>'
+      + '<div class="ns-grid">' + S.questions.map((_, i) => '<button class="' + (i === S.current ? 'c ' : '') + (S.answers[i] !== null ? 'a ' : '') + (S.flagged[i] ? 'f' : '') + '" onclick="nercJumpQ(' + i + ')">' + (i + 1) + '</button>').join('') + '</div>'
+      + '<button class="ns-fin" onclick="nercConfirmFinish()">Finish exam</button>'
+      + '<button class="ns-quit" onclick="if(confirm(\'Leave this exam? Your answers will not be scored.\')) nercExamShowSetup()">Leave exam</button></div>';
+    return;
+  }
+  const last = nsLast();
+  rail.innerHTML = '<div class="rs-eyebrow">NERC STUDY</div>'
+    + item('exam', 'Exam simulator', 'scada', st === 'setup' && nsSec === 'exam', "nsGo('exam')")
+    + (st === 'results' || st === 'review' ? item('r', 'Results', 'standards', st === 'results', "nercExamShowResults()") + item('v', 'Review answers', 'procedures', st === 'review', "nercExamShowReview()") : '')
+    + item('cov', 'Coverage by role', 'grid', st === 'setup' && nsSec === 'cov', "nsGo('cov')")
+    + item('res', 'Study resources', 'plant', st === 'setup' && nsSec === 'res', "nsGo('res')")
+    + '<div class="rs-rail-sep"></div>'
+    + '<div class="ns-stats"><div>Questions<b>' + qn + '</b></div><div>Categories<b>' + cats + '</b></div><div>Pass mark<b>' + NERC_PASS + '%</b></div></div>'
+    + (last ? '<div class="ns-last">Last ' + (last.mode === 'practice' ? 'practice' : 'exam') + ': <b class="' + (last.pass ? 'p' : 'f') + '">' + last.pct + '%</b> ' + (last.pass ? 'pass' : 'below the mark') + '<br><span style="color:var(--text3)">' + last.n + ' questions \u00b7 ' + esc(last.when) + '</span></div>' : '')
+    + '<div class="rs-rail-sep"></div><button class="rs-rail-x" onclick="navDropdownSelect(\'roc\',\'study\')">ROC Study \u2192</button>';
+  const H = { exam:['Exam simulator','Scenario-based exam training for TO, BA and RC/SC certification. Pick a length and a mode.'],
+              cov:['Coverage by role','What the certification exams draw on, role by role.'],
+              res:['Study resources','The official NERC material the questions trace back to.'] }[nsSec];
+  if (head) head.innerHTML = '<div><div class="ey">NERC STUDY</div><h1>' + H[0] + '</h1><p>' + H[1] + '</p></div>';
+  try { nsGoSum(); } catch(e) {}
+}
+
 function nercExamShowScreen(id){
   document.querySelectorAll('.nerc-screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('nerc-screen-'+id).classList.add('active');
   window.scrollTo(0,0);
+  try { nsShell(); } catch(e) { console.warn('nerc shell', e); }
 }
 
 
@@ -21571,7 +21694,7 @@ setTimeout(() => {
   window.setSchedMe=setSchedMe;
   window.schedOnlyMeSet=schedOnlyMeSet;
   window.schedOnlyMe=schedOnlyMe;
-  window.rsTab=rsTab; window.rsShell=rsShell; window.smRefreshNow=smRefreshNow; window.smTypeToggle=smTypeToggle; window.smFindInput=smFindInput; window.smFindKey=smFindKey; window.smFindClose=smFindClose; window.smFindGo=smFindGo; window.smSetMetric=smSetMetric; window.smRefresh=smRefresh; window.smRadar=smRadar; window.smSelect=smSelect; window.smGoWeather=smGoWeather; window.smInit=smInit;
+  window.nsGo=nsGo; window.nsGoSum=nsGoSum; window.nsShell=nsShell; window.rsTab=rsTab; window.rsShell=rsShell; window.smRefreshNow=smRefreshNow; window.smTypeToggle=smTypeToggle; window.smFindInput=smFindInput; window.smFindKey=smFindKey; window.smFindClose=smFindClose; window.smFindGo=smFindGo; window.smSetMetric=smSetMetric; window.smRefresh=smRefresh; window.smRadar=smRadar; window.smSelect=smSelect; window.smGoWeather=smGoWeather; window.smInit=smInit;
   window.pwaInstall=pwaInstall; window.pwaTipHide=pwaTipHide; window.pwaTipRender=pwaTipRender; window.pwaStartView=pwaStartView; window.pwaInstalled=pwaInstalled;
   window.meIcsDownload=meIcsDownload; window.swapOpen=swapOpen; window.swapClose=swapClose; window.swapAsk=swapAsk;
   window.schedMe=schedMe;
@@ -21661,13 +21784,15 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION, the footer <span class="app-footer-v"> and WHATS_NEW together.
-const APP_VERSION = 'v5.23';
+const APP_VERSION = 'v5.25';
 // What's new. Bump APP_VERSION, the footer and add a line here together.
 // Written for the operator, one line each; Changed first, since that is what catches people out.
 // Group a batch of versions into one entry; keep about the last six.
 // go: an ROC Study filter to jump to (scada, procedures, operations, standards, plant), or null.
 const WHATS_NEW = [
-  {id:'2026-11-19e', v:'v5.22–5.23', date:'Nov 19', title:'A calmer ROC Study', items:[
+  {id:'2026-11-19e', v:'v5.22–5.25', date:'Nov 19', title:'A calmer ROC Study', items:[
+    ['Changed','NERC exam setup in the app\u2019s own style, with a one-line summary before you begin',null],
+    ['Changed','NERC Study uses the same layout: a side rail of sections, and during an exam the rail holds the timer, question map and Finish',null],
     ['Fixed','Plant Architecture: the diagram stays in Learn, out of Practice','plant'],
     ['Changed','Topics in a side rail with progress, one topic at a time with Learn and Practice tabs','grid'],
     ['Changed','Questions are a clean list: open one to see the answer, then grade it. Status shows as a dot','grid'],
@@ -22360,7 +22485,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.23</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
+    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.25</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
