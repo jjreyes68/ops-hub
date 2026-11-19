@@ -657,6 +657,8 @@ body.dark .card-title{color:var(--text2);}
 .wx-match-item{padding:7px 10px;cursor:pointer;background:var(--bg2);font-size:13px;border-bottom:1px solid var(--border);}
 .wx-match-item:last-child{border-bottom:none;}
 .wx-match-item:hover{background:var(--bbg);}
+.wx-match-item.wx-match-none{cursor:default;color:var(--text3);}
+.wx-match-item.wx-match-none:hover{background:var(--bg2);}
 
 /* Escalation table */
 .esc-table{width:100%;border-collapse:collapse;}
@@ -3074,6 +3076,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   border-top:1px solid var(--border);font-size:12px;color:var(--green);font-weight:600;}
 .to-seg-more{margin-left:auto;font-weight:400;}
 
+.to-seg-wait{margin-top:7px;padding:6px 9px;border-left:3px solid var(--border2);font-size:12px;color:var(--text2);}
 .to-seg-gap{margin-top:7px;padding:6px 9px;border-left:3px solid var(--amber);background:var(--abg);
   border-radius:0 5px 5px 0;font-size:11.5px;color:var(--amber);font-weight:600;}
 .fc-good{color:var(--green);}
@@ -4356,7 +4359,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <div class="intel-content">
         <div class="ifield">
           <label>Search site name</label>
-          <input id="wx-site-inp" placeholder="Type site name..." oninput="wxFilter()" onblur="setTimeout(wxCloseMatches,180)" autocomplete="off">
+          <input id="wx-site-inp" placeholder="Type site name or code..." oninput="wxFilter()" onfocus="wxFilter()" onblur="setTimeout(wxCloseMatches,180)" onkeydown="if(event.key==='Enter'){const f=document.querySelector('#wx-matches .wx-match-item[onclick]'); if(f){event.preventDefault(); f.click();}}" autocomplete="off">
           <div class="wx-matches" id="wx-matches"></div>
         </div>
         <div class="ifield">
@@ -5893,14 +5896,14 @@ function defaultSites() {
     {id:107,name:'COSO1', tz:'America/Los_Angeles',nerc:true,interval:30,threshold:5,lastScan:null,location:'Little Lake, CA',
      lat:36.0059762,lng:-117.8083968,
      notes:'NP: 240MWh / 60MW\nV SET: 235kV\nBAND: 230.3kV–239.7kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
-    {id:108,name:'BYPS1', tz:'America/Los_Angeles',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
-     lat:35.0,lng:-118.0,
+    {id:108,name:'BYPS1', tz:'America/Chicago',nerc:true,interval:30,threshold:5,lastScan:null,location:'Richmond, TX',
+     lat:29.76,lng:-95.37,
      notes:'NP: 400MWh / 200MW\nV SET: Per SCADA\nBAND: ±4kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
-    {id:109,name:'PDMT1', tz:'America/Los_Angeles',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
-     lat:35.5,lng:-118.5,
+    {id:109,name:'PDMT1', tz:'America/Phoenix',nerc:true,interval:30,threshold:5,lastScan:null,location:'Mesa, AZ',
+     lat:33.386,lng:-111.631,
      notes:'NP: 1000MWh / 250MW\nV SET: 236kV\nBAND: 226kV–241kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
-    {id:110,name:'FRDN1', tz:'America/Los_Angeles',nerc:true,interval:30,threshold:5,lastScan:null,location:'California',
-     lat:35.2,lng:-118.3,
+    {id:110,name:'FRDN1', tz:'America/Chicago',nerc:true,interval:30,threshold:5,lastScan:null,location:'San Antonio, TX',
+     lat:29.348914,lng:-98.571445,
      notes:'NP: 800MWh / 200MW\nV SET: 142kV\nBAND: ±2kV\nAVR/Voltage · Receive/Follow Dispatch · Nameplate'},
     {id:111,name:'CTLF1', tz:'America/Phoenix',nerc:true,interval:30,threshold:5,lastScan:null,location:'Salome, AZ 85348',
      lat:33.58983,lng:-113.5300,
@@ -5924,8 +5927,8 @@ function defaultSites() {
     {id:204,name:'NCLS1', tz:'America/Los_Angeles',nerc:true,interval:30,threshold:5,lastScan:null,location:'Delano, CA',
      lat:35.834064,lng:-119.051559,
      notes:'PV 26MW\nInverters inverting?\nRates about the same?'},
-    {id:211,name:'AVLN1', tz:'America/Los_Angeles',nerc:true,interval:30,threshold:5,lastScan:null,location:'Avalon, CA',
-     lat:33.343,lng:-118.328,
+    {id:211,name:'AVLN1', tz:'America/Phoenix',nerc:true,interval:30,threshold:5,lastScan:null,location:'Sahuarita, AZ',
+     lat:32.0015,lng:-110.9606,
      notes:'PV 25MW\nInverters inverting?\nRates about the same?'},
     {id:213,name:'LSTH2', tz:'America/Los_Angeles',nerc:true,interval:30,threshold:5,lastScan:null,location:'Lost Hills, CA',
      lat:35.615,lng:-119.692,
@@ -5973,11 +5976,11 @@ function defaultSites() {
     {id:308,name:'DBLO1', tz:'America/Los_Angeles',nerc:true,interval:30,threshold:5,lastScan:null,location:'Little Lake, CA',
      lat:36.0059762,lng:-117.8083968,
      notes:'Wind 16.68MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    {id:310,name:'PRSE1', tz:'America/Chicago',nerc:true,interval:30,threshold:5,lastScan:null,location:'Elk County, KS',
-     lat:37.363,lng:-96.252,
+    {id:310,name:'PRSE1', tz:'America/Chicago',nerc:true,interval:30,threshold:5,lastScan:null,location:'Hardwick, MN',
+     lat:43.7742,lng:-96.1975,
      notes:'Wind 200MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
-    {id:311,name:'RKRG1', tz:'America/Los_Angeles',nerc:true,interval:30,threshold:5,lastScan:null,location:'Kern County, CA',
-     lat:35.480,lng:-118.840,
+    {id:311,name:'RKRG1', tz:'America/Chicago',nerc:true,interval:30,threshold:5,lastScan:null,location:'Hobart, OK',
+     lat:35.095959,lng:-98.990771,
      notes:'Wind 149MW\nInverters inverting?\nRates about the same?\nCheck for Trips'},
     // New sites — placeholder entries, not yet in the portfolio config -----
     // Coordinates are town-center approximations. Confirm exact site specs
@@ -6018,6 +6021,9 @@ function resetSitesToDefaults() {
 // Site names retired from the portfolio config — filtered out of any
 // already-saved browser data so they disappear without a manual reset.
 const RETIRED_SITE_NAMES=['DLBO1']; // duplicate of DBLO1 (Diablo)
+const SITE_PLACEHOLDER_LOCS={ BYPS1:'California', PDMT1:'California', FRDN1:'California', AVLN1:'Avalon, CA', PRSE1:'Elk County, KS', RKRG1:'Kern County, CA' };
+// Shipped as Pacific by mistake; the Time Zones page already had them right.
+const SITE_OLD_PACIFIC_TZ=['BYPS1','FRDN1','RKRG1','AVLN1','PDMT1'];
 const RENAMED_SITES={ FRMS1:'FRMV1' }; // corrected to the real site code (Farmersville)
 
 async function loadSitesAsync() {
@@ -6040,7 +6046,12 @@ async function loadSitesAsync() {
       .map(s => {
         const name = RENAMED_SITES[s.name] || s.name;
         const def = defaults.find(d => d.id === s.id);
-        return def ? { ...s, name, lat: def.lat, lng: def.lng } : { ...s, name };
+        // Six sites shipped with placeholder towns (e.g. Rocky Ridge in Kern
+        // County). Coordinates always come from the defaults; the town text is
+        // stored per browser, so swap it only where it is still the placeholder.
+        const loc = (def && SITE_PLACEHOLDER_LOCS[s.name] === s.location) ? def.location : s.location;
+        const tz = (def && SITE_OLD_PACIFIC_TZ.includes(s.name) && s.tz === 'America/Los_Angeles') ? def.tz : s.tz;
+        return def ? { ...s, name, location: loc, tz, lat: def.lat, lng: def.lng } : { ...s, name };
       });
     // Pick up any sites added to defaultSites() since this browser last saved,
     // without touching existing customizations or scan history.
@@ -8715,16 +8726,16 @@ function closeModal(id){ document.getElementById(id).classList.add('hidden'); }
 const WX_LOCS = [
   // ── Special / ROC ──────────────────────────────────────────────────────────
   {name:'ROCC1', location:'Tempe, AZ',         lat:33.425,  lng:-111.940,  notes:'ROC Control Center | CAISO ADS / Indji Watch'},
-  {name:'PDMT1', tz:'America/Los_Angeles', location:'Mesa, AZ',          lat:33.386,  lng:-111.631,  notes:'Pediment'},
+  {name:'PDMT1', tz:'America/Phoenix', location:'Mesa, AZ',          lat:33.386,  lng:-111.631,  notes:'Pediment'},
   {name:'MRCP1', tz:'America/Phoenix', location:'Maricopa County, AZ',lat:33.400, lng:-112.000,  notes:''},
   // ── BESS ───────────────────────────────────────────────────────────────────
   {name:'ANGF1', location:'Angel Fire, NM',    lat:36.41411,lng:-105.2826,  notes:''},
-  {name:'AVLN1', tz:'America/Los_Angeles', location:'Sahuarita, AZ',     lat:32.0015, lng:-110.9606,  notes:''},
+  {name:'AVLN1', tz:'America/Phoenix', location:'Sahuarita, AZ',     lat:32.0015, lng:-110.9606,  notes:''},
   {name:'TSMS1', tz:'America/Denver', location:'El Prado, NM',        lat:36.448,  lng:-105.6317,  notes:'NERC Solar+BESS | PV 19.7MW / BESS 12MW / 24MWh'},
   {name:'CTLF1', location:'Salome, AZ',        lat:33.58983,lng:-113.5300,  notes:'Centennial Flats | 1200MWh / 400MW'},
   {name:'CTLF',  location:'Salome, AZ',        lat:33.5735, lng:-113.516,   notes:'Centennial Flats | 1200MWh / 400MW'},
-  {name:'BYPS1', tz:'America/Los_Angeles', location:'Richmond, TX',      lat:29.76,   lng:-95.37,     notes:'Bypass BESS | 400MWh / 200MW | ERCOT'},
-  {name:'FRDN1', tz:'America/Los_Angeles', location:'San Antonio, TX',   lat:29.348914,lng:-98.571445,notes:''},
+  {name:'BYPS1', tz:'America/Chicago', location:'Richmond, TX',      lat:29.76,   lng:-95.37,     notes:'Bypass BESS | 400MWh / 200MW | ERCOT'},
+  {name:'FRDN1', tz:'America/Chicago', location:'San Antonio, TX',   lat:29.348914,lng:-98.571445,notes:''},
   // ── Solar ──────────────────────────────────────────────────────────────────
   {name:'FRMV1', location:'Farmersville, CA',  lat:36.3,    lng:-119.21,    notes:'Farmersville Solar | PV 5.4MW'},
   {name:'HNFD1', location:'Hanford, CA',       lat:36.33,   lng:-119.65,    notes:'Hanford Solar | PV 3.6MW'},
@@ -8733,20 +8744,101 @@ const WX_LOCS = [
   {name:'TLRE1', location:'Tulare, CA',        lat:36.203682,lng:-119.4188,    notes:'Tulare Solar | PV 5.4MW'},
   {name:'TRPC1', tz:'America/Los_Angeles', location:'Delano, CA',        lat:35.78,   lng:-119.24,    notes:'Tropico Solar | PV 60MW'},
   // ── Wind ───────────────────────────────────────────────────────────────────
-  {name:'RKRG1', tz:'America/Los_Angeles', location:'Hobart, OK',        lat:35.095959,lng:-98.990771, notes:'NERC Wind | 149MW'},
+  {name:'RKRG1', tz:'America/Chicago', location:'Hobart, OK',        lat:35.095959,lng:-98.990771, notes:'NERC Wind | 149MW'},
   {name:'PRSE1', tz:'America/Chicago', location:'Hardwick, MN',      lat:43.7742, lng:-96.1975,   notes:'NERC Wind | 200MW'},
 ];
 
-function wxPickWx(i){
-  const s=WX_LOCS[i]; if(!s)return;
-  document.getElementById('wx-site-inp').value=s.name;
-  document.getElementById('wx-location').value=s.location||s.name;
+// ── Site Weather & Wind search ─────────────────────────────────────────
+// The box called wxFilter()/wxCloseMatches(), which did not exist, so typing
+// threw and no list ever showed. It now searches the same site list as Fleet
+// Conditions (SITES), plus the few extra places in WX_LOCS such as the ROC,
+// by code, friendly name, alias or town. Picking a site fetches straight away
+// from Open-Meteo by its coordinates, the source Fleet Conditions already uses.
+let wxPicked = null;     // { name, location, lat, lng, wind } once a site is picked
+function wxSiteList(){
+  const seen = new Set(), out = [];
+  const add = x => { if (!x || !x.name || seen.has(x.name)) return; seen.add(x.name); out.push(x); };
+  (typeof SITES !== 'undefined' ? SITES : []).forEach(add);
+  (typeof WX_LOCS !== 'undefined' ? WX_LOCS : []).forEach(add);
+  return out;
+}
+function wxFriendly(code){
+  const e = (typeof SP_SITE_TABLE !== 'undefined' ? SP_SITE_TABLE : []).find(x => x.code === code);
+  return e && e.friendly ? e.friendly : '';
+}
+function wxFilter(){
+  const inp = document.getElementById('wx-site-inp'), box = document.getElementById('wx-matches');
+  const q = inp.value.trim().toLowerCase();
+  wxPicked = null;
+  if (!q) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  const list = wxSiteList();
+  const hits = list.filter(x => {
+    const e = (typeof SP_SITE_TABLE !== 'undefined' ? SP_SITE_TABLE : []).find(t => t.code === x.name);
+    const hay = [x.name, x.location || '', wxFriendly(x.name), ...(e ? e.aliases : [])].join(' ').toLowerCase();
+    return hay.includes(q);
+  }).sort((a, b) => wxRank(a, q) - wxRank(b, q) || a.name.localeCompare(b.name))
+    .slice(0, 8);
+  if (!hits.length) { box.innerHTML = '<div class="wx-match-item wx-match-none">No site matches \u201c' + esc(inp.value.trim()) + '\u201d. Type a town in Location instead.</div>'; box.style.display = 'block'; return; }
+  box.innerHTML = hits.map(x => {
+    const f = wxFriendly(x.name);
+    return '<div class="wx-match-item" onmousedown="event.preventDefault()" onclick="wxPickSite(\'' + esc(x.name) + '\')"><strong>' + esc(x.name) + '</strong>'
+      + (f ? ' \u2014 ' + esc(f) : '') + (x.location ? ' <span style="color:var(--text3);font-size:11px;">' + esc(x.location) + '</span>' : '') + '</div>';
+  }).join('');
+  box.style.display = 'block';
+}
+// Code or site name first, aliases next, town last: "lost hills" should land
+// on Lost Hills Solar before another site that happens to sit in Lost Hills.
+function wxRank(x, q){
+  if (x.name.toLowerCase().startsWith(q)) return 0;
+  if (wxFriendly(x.name).toLowerCase().startsWith(q)) return 1;
+  const e = (typeof SP_SITE_TABLE !== 'undefined' ? SP_SITE_TABLE : []).find(t => t.code === x.name);
+  if (e && e.aliases.some(al => al.toLowerCase().includes(q))) return 2;
+  return 3;
+}
+function wxCloseMatches(){ const b = document.getElementById('wx-matches'); if (b) b.style.display = 'none'; }
+function wxPickSite(name){
+  const x = wxSiteList().find(s => s.name === name); if (!x) return;
+  document.getElementById('wx-site-inp').value = x.name;
+  document.getElementById('wx-location').value = x.location || x.name;
   wxCloseMatches();
-  document.getElementById('wx-location').focus();
+  const isWind = /wind/i.test(x.notes || '') || (typeof fcKind === 'function' && fcKind(x) === 'wind');
+  wxPicked = (x.lat != null && x.lng != null) ? { name:x.name, location:x.location || x.name, lat:x.lat, lng:x.lng, wind:isWind } : null;
+  fetchWeather();
+}
+function wxPickWx(i){ const s = WX_LOCS[i]; if (s) wxPickSite(s.name); }
+// WMO weather codes (Open-Meteo) to words
+function wxCodeText(c){
+  const M = {0:'Clear',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Freezing fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',
+    56:'Freezing drizzle',57:'Freezing drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Freezing rain',71:'Light snow',73:'Snow',75:'Heavy snow',
+    77:'Snow grains',80:'Rain showers',81:'Rain showers',82:'Violent rain showers',85:'Snow showers',86:'Snow showers',95:'Thunderstorm',96:'Thunderstorm with hail',99:'Thunderstorm with hail'};
+  return M[c] || 'Conditions';
+}
+function wxCompass(deg){ return ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'][Math.round(((deg % 360) / 22.5)) % 16]; }
+async function wxFetchCoords(p){
+  const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + p.lat + '&longitude=' + p.lng
+    + '&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,visibility'
+    + '&hourly=wind_speed_80m&forecast_hours=1&wind_speed_unit=mph&temperature_unit=fahrenheit&timezone=auto';
+  const j = await (await fetch(url)).json();
+  const c = j && j.current; if (!c) throw new Error('no data');
+  const h80 = j.hourly && j.hourly.wind_speed_80m ? j.hourly.wind_speed_80m[0] : null;
+  const desc = wxCodeText(c.weather_code);
+  document.getElementById('wx-temp').textContent = Math.round(c.temperature_2m) + '\u00b0F';
+  document.getElementById('wx-desc').textContent = desc + ' \u00b7 Humidity ' + Math.round(c.relative_humidity_2m) + '%';
+  document.getElementById('wx-wind').textContent = 'Wind: ' + Math.round(c.wind_speed_10m) + 'mph ' + wxCompass(c.wind_direction_10m)
+    + (c.wind_gusts_10m != null ? ', gusts ' + Math.round(c.wind_gusts_10m) : '')
+    + (p.wind && h80 != null ? ' \u00b7 80 m: ' + (h80 * 0.44704).toFixed(1) + ' m/s' : '');
+  document.getElementById('wx-vis').textContent = 'Vis: ' + (c.visibility != null ? Math.round(c.visibility / 1609.34) + 'mi' : '\u2014');
+  document.getElementById('wx-icon').textContent = wxWeatherIcon(desc);
 }
 async function fetchWeather(){
   const loc=document.getElementById('wx-location').value.trim(); if(!loc){showToast('Enter a location first');return;}
   document.getElementById('wx-desc').textContent='Fetching...';
+  // A picked site whose location has not been edited goes by its coordinates.
+  if (wxPicked && loc === wxPicked.location) {
+    try { await wxFetchCoords(wxPicked); }
+    catch(e){ document.getElementById('wx-desc').textContent='Could not fetch conditions for ' + wxPicked.name + ', try again in a minute'; }
+    return;
+  }
   try{
     const d=(await(await fetch(`https://wttr.in/${encodeURIComponent(loc)}?format=j1`)).json()).current_condition[0];
     document.getElementById('wx-temp').textContent=d.temp_F+'°F';
@@ -19252,8 +19344,17 @@ function toRenderBand() {
       const gapDays = toUncoveredDays(t);
       const allCovered = segs.length > 0 && segs.every(s => s.status === 'covered') && !gapDays.length;
       detail = '<div class="to-detail">' + (segHtml || '<div class="to-seg-none">No coverage arranged yet.</div>')
-        + (!allCovered && gapDays.length ? '<div class="to-seg-gap">\u26A0 Still uncovered: '
-            + gapDays.map(d => fmtDisp(d)).join(', ') + '</div>' : '')
+        + (!allCovered && gapDays.length ? (function(){
+            // A day with a pending cover is not uncovered, it is waiting on
+            // that person. Say so, and keep the amber for days nobody has.
+            const pend = segs.filter(s => s.status === 'pending' && s.coveredBy);
+            const waitBy = d => { const s = pend.find(s => d >= s.startDate && d <= s.endDate); return s ? s.coveredBy : null; };
+            const waiting = {}, none = [];
+            gapDays.forEach(d => { const w = waitBy(d); if (w) (waiting[w] = waiting[w] || []).push(d); else none.push(d); });
+            return Object.keys(waiting).map(w => '<div class="to-seg-wait">\u23F3 Awaiting ' + esc(w) + ': '
+                     + waiting[w].map(d => fmtDisp(d)).join(', ') + '</div>').join('')
+                 + (none.length ? '<div class="to-seg-gap">\u26A0 Still uncovered: ' + none.map(d => fmtDisp(d)).join(', ') + '</div>' : '');
+          })() : '')
         + (allCovered ? '<div class="to-seg-done">\u2713 Fully covered — nothing outstanding.'
             + '<button class="to-mini to-seg-more" onclick="toShowAdd(\'' + t.id + '\')">Add another</button></div>'
             + '<div class="to-seg-add" id="sfb-wrap-' + t.id + '" style="display:none;">'
@@ -20794,13 +20895,19 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION, the footer <span class="app-footer-v"> and WHATS_NEW together.
-const APP_VERSION = 'v5.05';
+const APP_VERSION = 'v5.07';
 // What's new. Bump APP_VERSION, the footer and add a line here together.
 // Written for the operator, one line each; Changed first, since that is what catches people out.
 // Group a batch of versions into one entry; keep about the last six.
 // go: an ROC Study filter to jump to (scada, procedures, operations, standards, plant), or null.
 const WHATS_NEW = [
-  {id:'2026-11-18f', v:'v5.05', date:'Nov 18', title:'See the impact of a cover', items:[
+  {id:'2026-11-18g', v:'v5.07', date:'Nov 18', title:'Site weather search works', items:[
+    ['Fixed','Site Weather & Wind: searching a site now lists matches from all our sites, by code, name or town',null],
+    ['Changed','Picking a site fetches its weather right away from its coordinates, with gusts, and hub-height wind for wind sites',null],
+    ['Fixed','Bypass, Ferdinand and Rocky Ridge are on Central time, Avalon and Pediment on Arizona time, not Pacific',null],
+    ['Fixed','Six sites had placeholder locations, so their weather, wind and advisories were for the wrong place (Rocky Ridge read Kern County, CA; Prairie Rose read Kansas)',null]]},
+  {id:'2026-11-18f', v:'v5.05–5.06', date:'Nov 18', title:'See the impact of a cover', items:[
+    ['Changed','Time Off says Awaiting Christian on days with a pending cover, and keeps Still uncovered for days nobody has',null],
     ['New','Finding cover shows each person’s week with your shift outlined: last and next shift, days off around it, shifts in a row',null],
     ['New','Time Off: a pending cover shows the same impact, and if it is asking you it opens by itself with Confirm and Decline',null]]},
   {id:'2026-11-18e', v:'v5.04', date:'Nov 18', title:'Ops Hub on your phone', items:[
@@ -21329,7 +21436,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.05</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
+    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.07</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
