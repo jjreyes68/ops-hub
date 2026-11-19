@@ -2370,6 +2370,8 @@ body.dark #view-schedule .chip-del{ background: rgba(255,255,255,0.08); border-c
 .qotd-card-answer ul,.qotd-card-answer ol{padding-left:20px;margin:8px 0;}
 .qotd-card-answer li{margin-bottom:4px;}
 .qotd-card-answer.show{display:block;}
+.qotd-play .mt-lead,.qotd-play .bk-lead,.qotd-play .ord-lead{margin-top:0;}
+.qotd-play .ord-actions{margin-bottom:0;}
 .qotd-card-link{display:inline-block;margin-top:9px;font-size:11.5px;color:var(--blue);font-weight:600;text-decoration:none;cursor:pointer;}
 
 .glance-label{font-size:10.5px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
@@ -2728,7 +2730,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .bk-btn{padding:4px 11px;border-radius:5px;border:1px solid var(--border2);background:var(--bg3);
   color:var(--text3);font-family:var(--f);font-size:11px;cursor:pointer;white-space:nowrap;transition:all .12s;}
 .bk-btn:hover{border-color:var(--blue);color:var(--blue);}
-.bk-on{background:var(--blue);border-color:var(--blue);color:#fff;}
+.bk-on,.bk-btn.bk-on:hover{background:var(--blue);border-color:var(--blue);color:#fff;}
 .bk-answer{box-shadow:inset 0 0 0 2px var(--green);}
 @media(max-width:640px){.bk-row{flex-direction:column;align-items:flex-start;gap:7px;}}
 
@@ -3798,6 +3800,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <span class="qotd-card-cat" id="qotd-cat"></span>
       </div>
       <div class="qotd-card-q" id="qotd-q"></div>
+      <div class="qotd-play" id="qotd-play"></div>
       <button class="qotd-card-reveal-btn" onclick="homeToggleAnswer()" id="qotd-reveal-btn">Reveal answer</button>
       <div class="qotd-card-answer" id="qotd-answer"></div>
     </div>
@@ -16670,10 +16673,7 @@ function rocOrderReset(qid){
   if (rocOrderShuffle.cache) delete rocOrderShuffle.cache[qid];
   rocOrderPaint(qid);
 }
-function rocOrderPaint(qid){
-  const el = document.getElementById('roc-ans-' + qid);
-  if (el) el.innerHTML = '<span class="roc-a-label">Your order</span>' + rocOrderHtml(qid);
-}
+function rocOrderPaint(qid){ rocPaintAll(qid, 'Your order', rocOrderHtml); }
 
 // ── Matching questions ───────────────────────────────────────────────────
 // Tap a term, then tap its pair. Fixed choices on both sides, so it grades
@@ -16770,10 +16770,7 @@ function rocMatchReset(qid){
   if (rocMatchOrder.cache) { delete rocMatchOrder.cache[qid + 'R']; }
   rocMatchPaint(qid);
 }
-function rocMatchPaint(qid){
-  const el = document.getElementById('roc-ans-' + qid);
-  if (el) el.innerHTML = '<span class="roc-a-label">Your matches</span>' + rocMatchHtml(qid);
-}
+function rocMatchPaint(qid){ rocPaintAll(qid, 'Your matches', rocMatchHtml); }
 
 // ── Bucket questions ─────────────────────────────────────────────────────
 // Sort items into two or three named buckets. Fixed choices, so it grades
@@ -16828,10 +16825,7 @@ function rocBucketTap(qid, i, bi){
 }
 function rocBucketCheck(qid){ rocBucketDone[qid] = true; rocBucketPaint(qid); }
 function rocBucketReset(qid){ rocBucketPick[qid] = {}; rocBucketDone[qid] = false; rocBucketPaint(qid); }
-function rocBucketPaint(qid){
-  const el = document.getElementById('roc-ans-' + qid);
-  if (el) el.innerHTML = '<span class="roc-a-label">Your sort</span>' + rocBucketHtml(qid);
-}
+function rocBucketPaint(qid){ rocPaintAll(qid, 'Your sort', rocBucketHtml); }
 
 // ── Pick-one questions ───────────────────────────────────────────────────
 // Deliberately narrow: only used where the wrong answer is a real mistake with
@@ -16863,9 +16857,15 @@ function rocPickHtml(qid) {
 }
 function rocPickTap(qid, i){ rocPickSel[qid] = i; rocPickPaint(qid); }
 function rocPickReset(qid){ rocPickSel[qid] = undefined; rocPickPaint(qid); }
-function rocPickPaint(qid){
+function rocPickPaint(qid){ rocPaintAll(qid, 'Your answer', rocPickHtml); }
+
+// Interactive questions can be on screen twice: in ROC Study and on the Home
+// card as Question of the Day. Both share one state, so paint both.
+function rocPaintAll(qid, label, fn){
   const el = document.getElementById('roc-ans-' + qid);
-  if (el) el.innerHTML = '<span class="roc-a-label">Your answer</span>' + rocPickHtml(qid);
+  if (el) el.innerHTML = '<span class="roc-a-label">' + label + '</span>' + fn(qid);
+  const hp = document.getElementById('qotd-play');
+  if (hp && hp.dataset.qid === qid) hp.innerHTML = qotdPlayHtml(qid);
 }
 
 let rocRevealed = {};
@@ -17574,6 +17574,19 @@ function homeRenderQOTD() {
     : null;
   const old = document.getElementById('qotd-items');
   if (old) old.remove();
+  // Matching, sorting and pick-one questions are worked right on the card,
+  // same exercise and state as in ROC Study. Everything else keeps Reveal.
+  const play = document.getElementById('qotd-play');
+  const interactive = !!(q.order || q.match || q.buckets || q.choices);
+  play.dataset.qid = interactive ? q.id : '';
+  play.innerHTML = interactive ? qotdPlayHtml(q.id) : '';
+  play.style.display = interactive ? '' : 'none';
+  document.getElementById('qotd-reveal-btn').style.display = interactive ? 'none' : '';
+  if (interactive) {
+    document.getElementById('qotd-answer').innerHTML = '';
+    document.getElementById('qotd-answer').classList.remove('show');
+    return;
+  }
   if (items && items.length) {
     const box = document.createElement('div');
     box.id = 'qotd-items';
@@ -17585,6 +17598,13 @@ function homeRenderQOTD() {
     `<br><a class="qotd-card-link" onclick="homeGoToStudy('${q.cat}')">Part of ROC Study: ${esc(catDef.label)} →</a>`;
   document.getElementById('qotd-answer').classList.remove('show');
   document.getElementById('qotd-reveal-btn').textContent = 'Reveal answer';
+}
+function qotdPlayHtml(qid) {
+  const q = ROC_QUESTIONS.find(x => x.id === qid);
+  if (!q) return '';
+  const catDef = ROC_CATEGORIES.find(c => c.key === q.cat) || { label: q.cat };
+  const body = q.order ? rocOrderHtml(qid) : q.match ? rocMatchHtml(qid) : q.buckets ? rocBucketHtml(qid) : rocPickHtml(qid);
+  return body + `<a class="qotd-card-link" onclick="homeGoToStudy('${q.cat}')">Part of ROC Study: ${esc(catDef.label)} →</a>`;
 }
 function homeToggleAnswer() {
   const ans = document.getElementById('qotd-answer');
@@ -20402,12 +20422,15 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION, the footer <span class="app-footer-v"> and WHATS_NEW together.
-const APP_VERSION = 'v5.01';
+const APP_VERSION = 'v5.02';
 // What's new. Bump APP_VERSION, the footer and add a line here together.
 // Written for the operator, one line each; Changed first, since that is what catches people out.
 // Group a batch of versions into one entry; keep about the last six.
 // go: an ROC Study filter to jump to (scada, procedures, operations, standards, plant), or null.
 const WHATS_NEW = [
+  {id:'2026-11-18c', v:'v5.02', date:'Nov 18', title:'Do the Question of the Day', items:[
+    ['Changed','Matching, sorting and pick-one questions of the day are worked right on the Home card, then checked',null],
+    ['Fixed','Sorting questions: the button you picked no longer goes blank when the mouse is over it',null]]},
   {id:'2026-11-18b', v:'v5.00–5.01', date:'Nov 18', title:'Only me on the calendar', items:[
     ['Changed','Calendar holidays are amber text with a thin top line instead of a filled box; today is a light blue',null],
     ['New','Schedule calendar: pick your name, tick Only me, and the month shows just your shifts',null]]},
@@ -20921,7 +20944,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.01</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
+    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.02</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
