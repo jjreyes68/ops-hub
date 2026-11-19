@@ -4,6 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RNWBL — Ops Hub</title>
+<!-- Add to Home Screen. Everything inline to keep this a single file: the
+     iPhone icon is a data URL, and the manifest is built at load (below) with
+     absolute URLs, since a data-URL manifest cannot resolve relative ones. -->
+<meta name="theme-color" content="#1a1917">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ops Hub">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<script>
+(function(){
+  try {
+    var base = location.href.split('#')[0].split('?')[0];
+    var m = { name:'RNWBL Ops Hub', short_name:'Ops Hub', id: base,
+      start_url: base + '?app=1', scope: base.replace(/[^/]*$/, ''), display:'standalone',
+      background_color:'#1a1917', theme_color:'#1a1917',
+      icons:[{ src:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAAPl0lEQVR42u3cP49c93XH4e+9Mzv7h9RytSuE4nLlRJEdwVYgxIDTJUWQ9CqCWEpcpXHnKk1SKLA7yzbiJn4BeQvpWaVNkRQBVEgW4IBWZJGMuaSYnZl77y9FXAiBJa5JFpo5z/MOOADnc+ece7Y7vXE9ANTT+wgABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAAAQBAAAAQAAAEAAABAEAAABAAAAQAAAEAQAAAEAAABAAAAQBAAAAQAPgi65KWNB8EAgDVvv3HZL/v9/quiQACAIUC0HXLafrTFw4P57Ohtc4nggBAkcf/i3H6nf3dPzq5evtiveg7vwEQAKjx36brPhnHt06Pr81nF9PUef5HAKDI4/9qmk73Fn95dvzv54+mli4KgABAjcf/h8P05unx6e7izmroffkjAFDn8f9sf/HmzeP7w/jBo+Ws65p3QREAKPL4/83T51/aWzwYxoux+QWAAEChx/+/OD1eTtODYfzZxWrRuQNAAKDK4//xzb3FurVH4zRMLgAQACjz+P/N0+cfDuNe39++WN1bD3NHAAgAFHn8P9tfLKfWJ+fD5GNBAKDU4//Ud5n13fufLNdTcwSAAECVx//VNHXJ1PJwGN0AIwBQ6vG/69KNrb33iSMABACKPf53XZZTezROjgAQACj0+N+SedfdXw//6QgAAYBSj/9J+i6fOAJAAKDU43+S1rLoOkcACACUe/z/vzA4AkAAoNbjf5KWNncEgABAwcf/JKMjAAQAqj3+J3EEgABA0cd/RwAIAFR8/HcEgABA0cd/RwAIAFR8/HcEgABA3cd/RwAIAGzz4//NvV//+O8IAAGArTXrugfD9K2zk5uf8fgfRwAIAGyfedf993r4sxcOv/3bL9xfjbNf9x3vCAABgO179s/DcXzlYO+d187Gls+a7jgCQAAgWzf6b/v97IevnZ3szJef8YqnIwAEALawAMupvf17N75xdOV8GGfd57wj5AgAAYBsz/Dn/nr865deeOvm8d3VMP/s9a4jAAQAsk2L31+uxz85Ofzbr9y4txrnj3u5xxEAAgBbtfj9wWtnq6k99s1ORwAIAGT7Fr+ry431HQEgAFBo8esIAAGAFFz8OgJAACBlF79xBIAAQMHFryMABABSdvHrCAABgIqLX0cACACk5uLXEQACACm4+I0jAAQAyi5+4wgAAYDUW/w6AkAAoO7iN44AEABIvcWvIwAEAFJ28esIAAGAiovfOAJAACAlF7+OABAAqLj4jSMABABSdfHrCAABgBRc/DoCQACg7uI3jgAQAEi9xa8jAAQA6i5+HQEgAJCCi19HAAgApObi1xEAAgAVF79xBIAAQKoufh0BIABQcfHrCAABgJRd/MYRAAIAqbf4dQSAAEDdxa8jAAQAUnDx6wgAAYCii19HAAgApODiN44AEABI1cWvIwAEACoufh0BIACQsovfOAJAAKDg4tcRAAIAKbv4dQSAAEAKLn4dASAAUHTx6wgAAYAUXPzGEQACAGUXv44AEABIwcWvIwAEAFJ28RtHAAgAFFz8OgJAACBlF7+OABAAqLj4dQSAAEBqLn4dASAAkIKL3zgCQACg7OI3jgAQACi4+HUEgABA3cVvHAEgAJB6i19HAAgApOzi1xEAAgAVF79xBIAAQM3FryMABAAqLn7jCAABgFRd/DoCQAAgBRe/jgAQAKi7+I0jAAQACi5+HQEgAFB38esIAAGAFFz8OgJAACDPfPF7fxMWv44AEAB4xs/+D4bxd7/wi984AkAAIM90kLKc2tHO/EebsPh1BIAAwLN8m341te++evqHX/jFryMABADyDEf/91bjd16+/saLRx8vN2DxG0cACAA8k2//u6vhjRePvvPyb91bjfONepZ2BIAAQJ508dudD+Prhwffe/XmcnMWv44AEADIU1/8Tkc78+9/7exoZ7aapm4D/wmOABAAeMIN6vdePX39cP98GGeb9iqlIwAEAPKUi9+NuPiNIwAEAJ794nczv0EdASAAkDqLX0cACADUXfzGEQACAAUXv44AqGnu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', sizes:'512x512', type:'image/png', purpose:'any maskable' },
+             { src:'data:image/png;base64,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', sizes:'180x180', type:'image/png' }] };
+    var l = document.createElement('link'); l.rel = 'manifest';
+    l.href = 'data:application/manifest+json,' + encodeURIComponent(JSON.stringify(m));
+    document.head.appendChild(l);
+  } catch (e) {}
+  window.__pwaPrompt = null;
+  window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); window.__pwaPrompt = e; });
+})();
+</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Crect width='24' height='24' rx='5' fill='%231a1917'/%3E%3Cpath d='M13 3L5 13h7l-1 8 9-12h-7l1-8z' fill='%23e05540' stroke='%23e05540' stroke-width='1' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -1977,9 +2003,89 @@ body.dark .sp-tag-similar{background:#2a1f3d;color:#c4b5fd;}
   }
 #view-schedule .cal-cell:nth-child(7n){ border-right: none; }
 #view-schedule .cal-cell.empty{ background: var(--bg); }
-#view-schedule .cal-cell.today{ background: #fffbeb; box-shadow: inset 0 0 0 2px var(--blue); }
+#view-schedule .cal-cell.today{ background: #f2f7ff; box-shadow: inset 0 0 0 2px var(--blue); }
 #view-schedule .cal-cell.today .cal-day-num{ color: var(--blue-text); font-weight: 800; font-size: 15px; }
 #view-schedule .cal-cell.has-focus{ background: #f6f9ff; }
+#view-schedule .cal-onlyme{ display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:500; color:var(--text); cursor:pointer; user-select:none; }
+#view-schedule .cal-onlyme input{ width:16px; height:16px; accent-color:var(--blue); cursor:pointer; margin:0; }
+#view-schedule .cal-onlyme.disabled{ opacity:.45; cursor:not-allowed; }
+#view-schedule .cal-onlyme.disabled input{ cursor:not-allowed; }
+#view-schedule .cal-cell.me-day{ background:#eaf2fe; }
+#view-schedule .cal-cell.me-night{ background:#eeeafb; }
+#view-schedule .cal-cell.me-off{ background:#fdf0ef; }
+#view-schedule .cal-cell.today.me-day,#view-schedule .cal-cell.today.me-night{ box-shadow: inset 0 0 0 2px var(--blue); }
+#view-schedule .cal-person.me-chip{ font-weight:600; font-size:13px; }
+#view-schedule .cal-cell{ min-width:0; }
+#view-schedule .me-with{ font-size:11px; color:var(--text-muted); padding:0 6px 0 5px; line-height:1.3; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#view-schedule .cal-cell.me-tap{ cursor:pointer; }
+#view-schedule .cal-cell.me-tap:hover{ box-shadow: inset 0 0 0 1px var(--blue); }
+#view-schedule .cal-cell.me-picked{ box-shadow: inset 0 0 0 2px var(--blue) !important; }
+#view-schedule .pwa-tip{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:0 0 12px; padding:9px 12px; border:1px dashed var(--border); border-radius:var(--radius-sm); font-size:13px; color:var(--text); }
+#view-schedule .pwa-tip b{ font-weight:600; }
+#view-schedule .pwa-tip .pwa-go{ font-family:inherit; font-size:12.5px; font-weight:600; padding:5px 10px; border-radius:6px; border:1px solid var(--blue); background:transparent; color:var(--blue-text); cursor:pointer; }
+#view-schedule .pwa-tip .pwa-x{ margin-left:auto; background:none; border:0; font-size:15px; color:var(--text-muted); cursor:pointer; }
+#view-schedule .pwa-steps{ flex-basis:100%; font-size:12.5px; color:var(--text-muted); line-height:1.5; }
+#view-schedule .me-bar{ display:flex; align-items:center; gap:10px 18px; flex-wrap:wrap; margin:-6px 0 14px; padding:10px 14px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); font-size:13px; }
+#view-schedule .me-wk{ display:flex; flex-direction:column; gap:1px; }
+#view-schedule .me-wk-lbl{ font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text-muted); }
+#view-schedule .me-wk-val{ font-weight:700; color:var(--text); }
+#view-schedule .me-wk-val small{ font-weight:500; color:var(--text-muted); font-size:12px; }
+#view-schedule .me-flag{ font-size:11px; font-weight:700; padding:1px 7px; border-radius:9px; margin-left:4px; }
+#view-schedule .me-flag.up{ background:#fef3c7; color:#92400e; }
+#view-schedule .me-flag.down{ background:#e0f2fe; color:#075985; }
+#view-schedule .me-hint{ font-size:12px; color:var(--text-muted); }
+#view-schedule .me-ics{ margin-left:auto; font-family:inherit; font-size:13px; font-weight:600; padding:7px 12px; border-radius:var(--radius-sm); border:1px solid var(--border); background:var(--surface); color:var(--text); cursor:pointer; white-space:nowrap; }
+#view-schedule .me-ics:hover{ border-color:var(--blue); color:var(--blue-text); }
+#view-schedule .imp{ display:flex; flex-direction:column; gap:5px; margin:6px 0 2px; }
+#view-schedule .imp-strip{ display:inline-grid; grid-auto-flow:column; grid-auto-columns:38px; gap:3px; }
+#view-schedule .imp-d{ display:flex; flex-direction:column; align-items:center; gap:2px; padding:3px 0 4px; border-radius:5px; border:1px solid var(--border); background:var(--bg); font-size:10px; color:var(--text-muted); line-height:1.1; }
+#view-schedule .imp-d b{ font-size:12px; font-weight:700; color:var(--text-muted); }
+#view-schedule .imp-d.on-d{ background:#eaf2fe; } #view-schedule .imp-d.on-d b{ color:#1d4ed8; }
+#view-schedule .imp-d.on-n{ background:#eeeafb; } #view-schedule .imp-d.on-n b{ color:#6d28d9; }
+#view-schedule .imp-d.ask{ border:2px solid var(--blue); padding:2px 0 3px; }
+#view-schedule .imp-d.ask b{ color:var(--blue-text); }
+#view-schedule .imp-lines{ display:flex; flex-wrap:wrap; gap:2px 14px; font-size:12px; color:var(--text-muted); }
+#view-schedule .imp-lines b{ color:var(--text); font-weight:600; }
+#view-schedule .imp-lines .warn{ color:#b45309; font-weight:600; }
+body.dark #view-schedule .imp-d.on-d{ background:rgba(59,130,246,.16); } body.dark #view-schedule .imp-d.on-d b{ color:#93c5fd; }
+body.dark #view-schedule .imp-d.on-n{ background:rgba(139,92,246,.18); } body.dark #view-schedule .imp-d.on-n b{ color:#c4b5fd; }
+body.dark #view-schedule .imp-lines .warn{ color:var(--amber); }
+#view-schedule .swap-row{ align-items:flex-start; }
+#view-schedule .swap-row .imp{ flex-basis:100%; margin-top:0; }
+#view-schedule .swap-row .swap-btn{ margin-left:auto; }
+#view-schedule .to-you{ font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:9px; background:var(--blue); color:#fff; letter-spacing:.02em; }
+#view-schedule .to-imp-link{ font-size:11.5px; color:var(--blue-text); font-weight:600; white-space:nowrap; }
+#view-schedule .to-seg-imp{ flex-basis:100%; padding:2px 0 4px; }
+#view-schedule .to-seg-imp .imp-hd{ font-size:11.5px; color:var(--text-muted); }
+#view-schedule .to-decline{ font-family:inherit; font-size:11.5px; font-weight:600; padding:3px 9px; border-radius:5px; border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer; }
+@media (max-width:600px){ #view-schedule .imp-strip{ grid-auto-columns:33px; } }
+#view-schedule .swap-panel{ margin-top:14px; padding:14px 16px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); }
+#view-schedule .swap-hd{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+#view-schedule .swap-hd b{ font-size:15px; }
+#view-schedule .swap-x{ margin-left:auto; background:none; border:0; font-size:16px; color:var(--text-muted); cursor:pointer; }
+#view-schedule .swap-sub{ font-size:12.5px; color:var(--text-muted); margin-bottom:10px; }
+#view-schedule .swap-row{ display:flex; align-items:center; gap:10px; padding:8px 0; border-top:1px solid var(--border); flex-wrap:wrap; }
+#view-schedule .swap-name{ font-weight:600; min-width:80px; }
+#view-schedule .swap-meta{ font-size:12px; color:var(--text-muted); flex:1; min-width:140px; }
+#view-schedule .swap-meta .warn{ color:#b45309; font-weight:600; }
+#view-schedule .swap-btn{ font-family:inherit; font-size:12.5px; font-weight:600; padding:6px 11px; border-radius:6px; border:1px solid var(--blue); background:transparent; color:var(--blue-text); cursor:pointer; }
+#view-schedule .swap-btn:hover{ background:var(--blue); color:#fff; }
+#view-schedule .swap-btn[disabled]{ opacity:.6; cursor:default; background:transparent; color:var(--text-muted); border-color:var(--border); }
+#view-schedule .swap-none{ font-size:13px; color:var(--text-muted); padding:8px 0; border-top:1px solid var(--border); }
+#view-schedule .swap-msg{ font-size:12.5px; margin-top:8px; }
+body.dark #view-schedule .me-flag.up{ background:var(--abg); color:var(--amber); }
+body.dark #view-schedule .me-flag.down{ background:rgba(56,189,248,.14); color:#7dd3fc; }
+body.dark #view-schedule .swap-meta .warn{ color:var(--amber); }
+@media (max-width:600px){
+  #view-schedule .me-with{ font-size:8.5px; padding:0 2px; white-space:normal; word-break:break-word; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  #view-schedule .me-ics{ margin-left:0; }
+}
+@media (max-width:600px){ #view-schedule .cal-person.me-chip{ font-size:11px; padding:1px 2px; } }
+body.dark #view-schedule .cal-cell.me-day{ background:rgba(59,130,246,.16); }
+body.dark #view-schedule .cal-cell.me-night{ background:rgba(139,92,246,.18); }
+body.dark #view-schedule .cal-cell.me-off{ background:rgba(229,57,53,.12); }
+body.dark #view-schedule .cal-cell.today.me-day{ background:rgba(59,130,246,.16); }
+body.dark #view-schedule .cal-cell.today.me-night{ background:rgba(139,92,246,.18); }
 #view-schedule .cal-day-num{
     font-size: 13px; font-weight: 500; color: var(--text-muted);
     margin-bottom: 2px; line-height: 1;
@@ -2197,7 +2303,7 @@ body.dark #view-schedule .chip-del:hover{ background:var(--rbg); border-color:va
 body.dark #view-schedule th{ background: var(--bg3); }
 body.dark #view-schedule tr.alt td{ background: var(--bg3); }
 body.dark #view-schedule tr:hover td{ background: var(--bg4); }
-body.dark #view-schedule .cal-cell.today{ background: var(--abg); box-shadow: inset 0 0 0 2px var(--blue); }
+body.dark #view-schedule .cal-cell.today{ background: rgba(59,130,246,.10); box-shadow: inset 0 0 0 2px var(--blue); }
 body.dark #view-schedule .cal-cell.has-focus{ background: var(--bg4); }
 /* Time Off tab */
 body.dark #view-schedule .to-fb-status{ color: var(--red); }
@@ -2355,6 +2461,8 @@ body.dark #view-schedule .chip-del{ background: rgba(255,255,255,0.08); border-c
 .qotd-card-answer ul,.qotd-card-answer ol{padding-left:20px;margin:8px 0;}
 .qotd-card-answer li{margin-bottom:4px;}
 .qotd-card-answer.show{display:block;}
+.qotd-play .mt-lead,.qotd-play .bk-lead,.qotd-play .ord-lead{margin-top:0;}
+.qotd-play .ord-actions{margin-bottom:0;}
 .qotd-card-link{display:inline-block;margin-top:9px;font-size:11.5px;color:var(--blue);font-weight:600;text-decoration:none;cursor:pointer;}
 
 .glance-label{font-size:10.5px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
@@ -2713,7 +2821,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 .bk-btn{padding:4px 11px;border-radius:5px;border:1px solid var(--border2);background:var(--bg3);
   color:var(--text3);font-family:var(--f);font-size:11px;cursor:pointer;white-space:nowrap;transition:all .12s;}
 .bk-btn:hover{border-color:var(--blue);color:var(--blue);}
-.bk-on{background:var(--blue);border-color:var(--blue);color:#fff;}
+.bk-on,.bk-btn.bk-on:hover{background:var(--blue);border-color:var(--blue);color:#fff;}
 .bk-answer{box-shadow:inset 0 0 0 2px var(--green);}
 @media(max-width:640px){.bk-row{flex-direction:column;align-items:flex-start;gap:7px;}}
 
@@ -2986,13 +3094,15 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   #view-schedule .cal-cell{min-height:66px;padding:2px 1px;}
 }
 
+/* Holidays: amber text and a thin top rule only, no fill, so they sit quietly beside shift tints */
 #view-schedule .cal-cell.holiday,
-#view-pitman .cal-cell.holiday{background:var(--abg);}
-#view-schedule .cal-cell.holiday.today{background:#fff4d6;}
-.cal-hol{font-size:9.5px;font-weight:700;color:var(--amber);background:rgba(180,101,15,.13);
-  border-radius:3px;padding:1px 4px;margin-bottom:2px;white-space:nowrap;overflow:hidden;
-  text-overflow:ellipsis;}
-@media (max-width:760px){ .cal-hol{font-size:7px;padding:0 2px;} }
+#view-pitman .cal-cell.holiday{box-shadow:inset 0 2px 0 color-mix(in srgb,var(--amber) 55%,transparent);}
+#view-schedule .cal-cell.holiday .cal-day-num{color:var(--amber);}
+#view-schedule .cal-cell.holiday.today{box-shadow:inset 0 0 0 2px var(--blue);}
+#view-schedule .cal-cell.holiday.today .cal-day-num{color:var(--blue-text);}
+.cal-hol{font-size:9.5px;font-weight:600;color:var(--amber);opacity:.85;
+  padding:0;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+@media (max-width:760px){ .cal-hol{font-size:7px;} }
 
 .sch-off{text-decoration:line-through;opacity:.55;}
 .sch-cov{color:var(--green);font-weight:700;}
@@ -3781,6 +3891,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         <span class="qotd-card-cat" id="qotd-cat"></span>
       </div>
       <div class="qotd-card-q" id="qotd-q"></div>
+      <div class="qotd-play" id="qotd-play"></div>
       <button class="qotd-card-reveal-btn" onclick="homeToggleAnswer()" id="qotd-reveal-btn">Reveal answer</button>
       <div class="qotd-card-answer" id="qotd-answer"></div>
     </div>
@@ -5000,7 +5111,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
               <div style="margin:0 0 12px;padding:8px 11px;border-left:3px solid var(--blue);background:var(--bbg);border-radius:0 7px 7px 0;font-size:11.5px;color:var(--text2);line-height:1.6;"><strong style="color:var(--text);">Boxes are roles, not companies.</strong> One company can hold several roles, and which one holds them <strong>depends on the site</strong>. For most of our CAISO sites the same organisation is the RC (as RC West), the ISO and the BA — three boxes, one phone number — but that is not a rule, and our SPP and ERCOT sites differ. The ranking below holds either way: ask which <em>role</em> an instruction comes from, not which company.</div>
               <div class="gh-tier"><button class="gh-node ghn-nerc" onclick="ghDetail('nerc')"><div class="gh-node-lbl">NERC</div><div class="gh-node-sub">North American regulator</div></button></div>
               <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
-              <div class="gh-tier"><button class="gh-node ghn-wecc" onclick="ghDetail('wecc')"><div class="gh-node-lbl">Regional Entity</div><div class="gh-node-sub">WECC in the West · Texas RE in ERCOT</div></button></div>
+              <div class="gh-tier"><button class="gh-node ghn-wecc" onclick="ghDetail('wecc')"><div class="gh-node-lbl">Regional Entity</div><div class="gh-node-sub">WECC · Texas RE · MRO · NPCC for our sites</div></button></div>
               <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
               <div class="gh-tier"><button class="gh-node ghn-rc" onclick="ghDetail('rc')"><div class="gh-node-lbl">RC</div><div class="gh-node-sub">Reliability Coordinator · RC West for us</div></button></div>
               <div class="gh-conn"><svg width="12" height="16" viewBox="0 0 12 16"><line x1="6" y1="0" x2="6" y2="16" stroke="var(--border2)" stroke-width="1"/></svg></div>
@@ -5273,6 +5384,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 
 <!-- SCHEDULE COMPARE ───────────────────────────────────────────────────────── -->
 <div class="view" id="view-schedule">
+  <div class="pwa-tip" id="pwa-tip" style="display:none;"></div>
 
   <div class="page-header">
     <div>
@@ -5547,12 +5659,14 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       <div class="cal-controls">
         <label style="font-size:14px;color:var(--text-muted)">Highlight</label>
         <select id="curr-cal-focus" onchange="setSchedMe(this.value);currCalRender()"><option value="">Everyone</option></select>
+        <label class="cal-onlyme" id="curr-cal-onlyme-wrap" title="Pick a name to use this"><input type="checkbox" id="curr-cal-onlyme" onchange="schedOnlyMeSet(this.checked);currCalRender()"> Only me</label>
         <div class="cal-nav">
           <button onclick="currCalNav(-1)">&#8592;</button>
           <span class="cal-month-label" id="curr-cal-label"></span>
           <button onclick="currCalNav(1)">&#8594;</button>
         </div>
       </div>
+      <div class="me-bar" id="curr-me-bar" style="display:none;"></div>
       <div class="cal-grid-wrap">
         <div class="cal-dow-headers">
           <div class="cal-dow">Sun</div><div class="cal-dow">Mon</div><div class="cal-dow">Tue</div>
@@ -5560,6 +5674,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
         </div>
         <div class="cal-days" id="curr-cal-grid"></div>
       </div>
+      <div class="swap-panel" id="curr-swap" style="display:none;"></div>
     </div>
 
   </div><!-- /#curr-view -->
@@ -14181,6 +14296,21 @@ const ROC_QUESTIONS = [
    q:'What is the purpose of AVR, and what does the voltage setpoint/band mean in practice?',
    a:'<strong>AVR (Automatic Voltage Regulator)</strong> automatically adjusts the generator\'s excitation to hold the terminal voltage at a defined setpoint. Without it, voltage would drift with every load change and the operator would have to manually adjust excitation constantly.<br><br><strong>Voltage Setpoint</strong>: the target voltage the AVR is trying to maintain (e.g., 115 kV, 525 kV — set per the interconnection agreement).<br><strong>Voltage Band</strong>: the acceptable operating range around that setpoint (e.g., 498.75 kV–551.25 kV for a 525 kV system). The plant must stay within this band. Exceedance triggers notification to the ISO/TOP and may require action.<br><br>NERC <strong>VAR-002</strong> requires AVR to remain in automatic mode.'},
 
+  {id:'re1', lvl:2, cat:'grid', type:'conceptual',
+   q:'What is a Regional Entity, and which ones cover our sites?',
+   a:'<strong>NERC writes the standards; the six Regional Entities enforce them.</strong> NERC delegates compliance to them: audits, spot checks, self-reports, Notices of Alleged Violation and proposed penalties, plus regional standards and reliability assessments. They work after the fact. In real time you deal with the RC, TOP and BA, never the Regional Entity.<br><br>'
+   + '<strong>The six:</strong> MRO, NPCC, ReliabilityFirst, SERC, Texas RE, WECC.<br><br>'
+   + '<strong>Ours, by region:</strong><ul><li><strong>WECC:</strong> California, Arizona, New Mexico and Idaho sites</li>'
+   + '<li><strong>Texas RE:</strong> ERCOT sites (Bypass, Ferdinand)</li>'
+   + '<li><strong>MRO:</strong> SPP and MISO sites (Goodwell, Origin, Rocky Ridge, Lindahl, Prairie Rose)</li>'
+   + '<li><strong>NPCC:</strong> Ontario (Dufferin, McLeans Mountain)</li></ul>'
+   + '<strong>Older names you may still see:</strong> SPP’s Regional Entity dissolved in 2018 and its members moved to MRO (a few to SERC). FRCC dissolved in 2019 and merged into SERC.<br><br>'
+   + '<em>Mapped by geography and market. The final word is the company’s NERC registration, so confirm against it.</em>'},
+  {id:'pk3', lvl:2, cat:'grid', type:'pick-one',
+   q:'A possible VAR-002 miss at a California site gets self-reported. Which Regional Entity receives it?',
+   choices:['NERC','CAISO','WECC','Texas RE'],
+   answer:2,
+   a:'<strong>WECC.</strong> Self-reports go to the Regional Entity for the site’s region, and California is in the Western Interconnection. NERC sets the standard but delegates enforcement; CAISO is the market, BA and RC West, not an enforcer; Texas RE covers ERCOT.'},
   {id:'v2', lvl:1, cat:'voltage', type:'conceptual',
    q:'Why does injecting MVARs raise voltage? Why does light load cause high voltage?',
    a:'<strong>MVARs and voltage:</strong> Reactive power (MVARs) sustains the electromagnetic field that maintains voltage magnitude. Capacitor banks inject MVARs → voltage rises. Reactors absorb MVARs → voltage drops. The rule: <strong>Voltage follows VARs.</strong><br><br><strong>Light load and high voltage:</strong> Transmission lines have natural capacitance that generates MVARs constantly. At light load, there\'s little inductive demand to consume those VARs — they accumulate and push voltage up. Heavy load is the opposite: high inductive demand pulls voltage down.<br><ul><li>Light load → capacitive system → high voltage → switch in reactor or switch off caps</li><li>Heavy load → inductive system → low voltage → switch in caps or switch off reactor</li></ul>'},
@@ -14573,9 +14703,9 @@ const GH_DATA = {
     auth:'Can issue fines up to $1M/day per violation. Requires corrective action plans. No day-to-day dispatch authority.',
     signal:'Rules only. No real-time instructions. You\'ll see them in audit findings and violation notices — not on your phone during a shift.',
     mental:'"NERC is the rulebook. You never talk to them in real time — but their standards live in every SOP you follow."'},
-  wecc:{name:'WECC',full:'Western Electricity Coordinating Council',
-    what:'The Regional Entity for the Western Interconnection. Enforces NERC standards through audits, spot checks, and self-reports. Also does long-term reliability assessments for the West.',
-    auth:'Conducts compliance audits. Issues Notices of Alleged Violation (NAVs). Delegates enforcement to NERC.',
+  wecc:{name:'Regional Entity',full:'NERC’s six regional enforcers · ours are WECC, Texas RE, MRO and NPCC',
+    what:'Enforce NERC standards in their region through audits, spot checks and self-reports, and run regional reliability assessments. The six: <strong>WECC</strong> (the West: our California, Arizona, New Mexico and Idaho sites), <strong>Texas RE</strong> (ERCOT), <strong>MRO</strong> (the middle of the continent, including SPP and much of MISO: our Oklahoma, North Dakota and Minnesota sites), <strong>NPCC</strong> (the Northeast and Ontario: our Ontario sites), ReliabilityFirst and SERC.',
+    auth:'NERC delegates enforcement to them. They audit, issue Notices of Alleged Violation and propose penalties, which NERC and FERC approve. No real-time authority over the plant.',
     signal:'Audit requests, compliance questionnaires, self-report forms. Not calling you during a shift.',
     mental:'"WECC is the referee for the West. They watch the film after the game, not during it."'},
   rc:{name:'RC',full:'Reliability Coordinator — RC West, operated by CAISO',
@@ -16637,10 +16767,7 @@ function rocOrderReset(qid){
   if (rocOrderShuffle.cache) delete rocOrderShuffle.cache[qid];
   rocOrderPaint(qid);
 }
-function rocOrderPaint(qid){
-  const el = document.getElementById('roc-ans-' + qid);
-  if (el) el.innerHTML = '<span class="roc-a-label">Your order</span>' + rocOrderHtml(qid);
-}
+function rocOrderPaint(qid){ rocPaintAll(qid, 'Your order', rocOrderHtml); }
 
 // ── Matching questions ───────────────────────────────────────────────────
 // Tap a term, then tap its pair. Fixed choices on both sides, so it grades
@@ -16737,10 +16864,7 @@ function rocMatchReset(qid){
   if (rocMatchOrder.cache) { delete rocMatchOrder.cache[qid + 'R']; }
   rocMatchPaint(qid);
 }
-function rocMatchPaint(qid){
-  const el = document.getElementById('roc-ans-' + qid);
-  if (el) el.innerHTML = '<span class="roc-a-label">Your matches</span>' + rocMatchHtml(qid);
-}
+function rocMatchPaint(qid){ rocPaintAll(qid, 'Your matches', rocMatchHtml); }
 
 // ── Bucket questions ─────────────────────────────────────────────────────
 // Sort items into two or three named buckets. Fixed choices, so it grades
@@ -16795,10 +16919,7 @@ function rocBucketTap(qid, i, bi){
 }
 function rocBucketCheck(qid){ rocBucketDone[qid] = true; rocBucketPaint(qid); }
 function rocBucketReset(qid){ rocBucketPick[qid] = {}; rocBucketDone[qid] = false; rocBucketPaint(qid); }
-function rocBucketPaint(qid){
-  const el = document.getElementById('roc-ans-' + qid);
-  if (el) el.innerHTML = '<span class="roc-a-label">Your sort</span>' + rocBucketHtml(qid);
-}
+function rocBucketPaint(qid){ rocPaintAll(qid, 'Your sort', rocBucketHtml); }
 
 // ── Pick-one questions ───────────────────────────────────────────────────
 // Deliberately narrow: only used where the wrong answer is a real mistake with
@@ -16830,9 +16951,15 @@ function rocPickHtml(qid) {
 }
 function rocPickTap(qid, i){ rocPickSel[qid] = i; rocPickPaint(qid); }
 function rocPickReset(qid){ rocPickSel[qid] = undefined; rocPickPaint(qid); }
-function rocPickPaint(qid){
+function rocPickPaint(qid){ rocPaintAll(qid, 'Your answer', rocPickHtml); }
+
+// Interactive questions can be on screen twice: in ROC Study and on the Home
+// card as Question of the Day. Both share one state, so paint both.
+function rocPaintAll(qid, label, fn){
   const el = document.getElementById('roc-ans-' + qid);
-  if (el) el.innerHTML = '<span class="roc-a-label">Your answer</span>' + rocPickHtml(qid);
+  if (el) el.innerHTML = '<span class="roc-a-label">' + label + '</span>' + fn(qid);
+  const hp = document.getElementById('qotd-play');
+  if (hp && hp.dataset.qid === qid) hp.innerHTML = qotdPlayHtml(qid);
 }
 
 let rocRevealed = {};
@@ -17541,6 +17668,19 @@ function homeRenderQOTD() {
     : null;
   const old = document.getElementById('qotd-items');
   if (old) old.remove();
+  // Matching, sorting and pick-one questions are worked right on the card,
+  // same exercise and state as in ROC Study. Everything else keeps Reveal.
+  const play = document.getElementById('qotd-play');
+  const interactive = !!(q.order || q.match || q.buckets || q.choices);
+  play.dataset.qid = interactive ? q.id : '';
+  play.innerHTML = interactive ? qotdPlayHtml(q.id) : '';
+  play.style.display = interactive ? '' : 'none';
+  document.getElementById('qotd-reveal-btn').style.display = interactive ? 'none' : '';
+  if (interactive) {
+    document.getElementById('qotd-answer').innerHTML = '';
+    document.getElementById('qotd-answer').classList.remove('show');
+    return;
+  }
   if (items && items.length) {
     const box = document.createElement('div');
     box.id = 'qotd-items';
@@ -17552,6 +17692,13 @@ function homeRenderQOTD() {
     `<br><a class="qotd-card-link" onclick="homeGoToStudy('${q.cat}')">Part of ROC Study: ${esc(catDef.label)} →</a>`;
   document.getElementById('qotd-answer').classList.remove('show');
   document.getElementById('qotd-reveal-btn').textContent = 'Reveal answer';
+}
+function qotdPlayHtml(qid) {
+  const q = ROC_QUESTIONS.find(x => x.id === qid);
+  if (!q) return '';
+  const catDef = ROC_CATEGORIES.find(c => c.key === q.cat) || { label: q.cat };
+  const body = q.order ? rocOrderHtml(qid) : q.match ? rocMatchHtml(qid) : q.buckets ? rocBucketHtml(qid) : rocPickHtml(qid);
+  return body + `<a class="qotd-card-link" onclick="homeGoToStudy('${q.cat}')">Part of ROC Study: ${esc(catDef.label)} →</a>`;
 }
 function homeToggleAnswer() {
   const ans = document.getElementById('qotd-answer');
@@ -19067,14 +19214,22 @@ function toRenderBand() {
     else                                              { cover = 'Partly covered'; cls = 'pend'; }
     const dates = t.startDate === t.endDate ? fmtDisp(t.startDate)
       : fmtDisp(t.startDate) + ' \u2192 ' + fmtDisp(t.endDate);
+    const me = (typeof schedMe === 'function') ? schedMe() : '';
+    const askingMe = !!me && segs.some(s => s.status === 'pending' && s.coveredBy === me);
+    const hasPending = segs.some(s => s.status === 'pending' && s.coveredBy);
+    // A request asking the person picked on this device opens on its own,
+    // until they close it.
+    if (askingMe && toOpenRow === null && !toUserClosed.has(t.id)) toOpenRow = t.id;
     const open = toOpenRow === t.id;
 
     let detail = '';
     if (open) {
       const segHtml = segs.filter(s => s.id !== 'legacy' || s.coveredBy).map(s => {
+        const mine = s.status === 'pending' && s.coveredBy && s.coveredBy === me;
         const act = s.status === 'pending'
           ? '<button class="to-mini ok" onclick="confirmSegment(\'' + t.id + '\',\'' + s.id + '\')">\u2713 Confirm</button>'
-            + '<button class="to-mini" onclick="removeSegment(\'' + t.id + '\',\'' + s.id + '\')">\u2715</button>'
+            + (mine ? '<button class="to-decline" onclick="removeSegment(\'' + t.id + '\',\'' + s.id + '\')">Decline</button>'
+                    : '<button class="to-mini" onclick="removeSegment(\'' + t.id + '\',\'' + s.id + '\')">\u2715</button>')
           : s.status === 'covered'
           ? '<button class="to-mini" onclick="removeSegment(\'' + t.id + '\',\'' + s.id + '\')">Revoke</button>' : '';
         const appr = s.approvedBy ? '<span class="to-seg-appr">approved by ' + esc(s.approvedBy)
@@ -19084,7 +19239,12 @@ function toRenderBand() {
           + (_sl.length ? '<span class="to-slot">' + _sl.join(' \u00b7 ') + '</span>' : '')
           + '<span class="to-seg-when">' + esc(fmtDisp(s.startDate)) + ' \u2192 ' + esc(fmtDisp(s.endDate)) + '</span>'
           + '<span class="to-band-cov ' + (s.status === 'covered' ? 'ok' : s.status === 'pending' ? 'pend' : 'un') + '">'
-          + esc(s.status) + '</span>' + appr + act + '</div>';
+          + esc(s.status) + '</span>' + appr + act
+          + (s.status === 'pending' && s.coveredBy
+              ? '<div class="to-seg-imp"><div class="imp-hd">' + (mine ? 'How this changes your schedule' : 'How this changes ' + esc(s.coveredBy) + '\u2019s schedule') + '</div>'
+                + impactHtml(s.coveredBy, t.operator, rosteredIsos(t.operator, s.startDate, s.endDate)) + '</div>'
+              : '')
+          + '</div>';
       }).join('');
       const opts = toAllOperators().filter(n => n !== t.operator)
         .map(n => '<option>' + esc(n) + '</option>').join('');
@@ -19112,7 +19272,9 @@ function toRenderBand() {
       + '<span class="to-band-when">' + esc(dates) + '</span>'
       + (function(){ const sl = slotsAcross(t.operator, t.startDate, t.endDate);
           return sl.length ? '<span class="to-slot">' + sl.join(' \u00b7 ') + '</span>' : ''; })()
+      + (askingMe ? '<span class="to-you">Asking you</span>' : '')
       + '<span class="to-band-cov ' + cls + '">' + esc(cover) + '</span>'
+      + (hasPending && !open ? '<span class="to-imp-link">view impact \u25B8</span>' : '')
       + (t.reason ? '<span class="to-band-why">' + esc(t.reason) + '</span>' : '')
       + '<button class="to-band-del" onclick="event.stopPropagation();deleteTimeOff(\'' + t.id + '\')" title="Delete">\u2715</button>'
       + '</div>' + detail + '</div>';
@@ -19120,7 +19282,11 @@ function toRenderBand() {
 }
 
 let toOpenRow = null;
-function toToggleRow(id){ toOpenRow = (toOpenRow === id) ? null : id; toRenderBand(); }
+const toUserClosed = new Set();
+function toToggleRow(id){
+  if (toOpenRow === id) { toUserClosed.add(id); toOpenRow = null; } else { toOpenRow = id; }
+  toRenderBand();
+}
 function toShowAdd(id){
   const w = document.getElementById('sfb-wrap-' + id);
   if (w) w.style.display = '';
@@ -19679,10 +19845,263 @@ function offLabel(operator, iso, role){
   return `<span class="sch-off">${operator}</span> <span class="sch-unc">OFF</span>${r}`;
 }
 
+// ── Me tools (Only me) ───────────────────────────────────────────────────
+// Who is really on a shift: the rostered names, with anyone off swapped for
+// whoever covers them. Same rule actuallyWorking() uses, kept per shift.
+function crewOn(iso){
+  const e=currGetDay(iso);
+  const sub=n=>{ const o=offInfo(n, iso); return !o ? n : (o.by||null); };
+  return { Day:e.day.map(sub).filter(Boolean), Night:e.night.map(sub).filter(Boolean) };
+}
+// What one person actually works on a date: {r, cover} or null.
+function myShiftOn(name, iso){
+  const e=currGetDay(iso);
+  for(const [r,list] of [['Day',e.day],['Night',e.night]]){
+    for(const n of list){
+      const o=offInfo(n, iso);
+      if(n===name && !o) return { r, cover:null };
+      if(o && o.by===name) return { r, cover:n };
+    }
+  }
+  return null;
+}
+function meWithHtml(name, iso, r){
+  const w=(crewOn(iso)[r]||[]).filter(n=>n!==name);
+  return w.length ? `<div class="me-with" title="On with you: ${esc(w.join(', '))}">w/ ${esc(w.join(', '))}</div>` : '';
+}
+// Pay weeks run Monday to Sunday; a night counts in the week it starts.
+function payWeekStart(d){ const x=new Date(d); x.setHours(0,0,0,0); x.setDate(x.getDate()-((x.getDay()+6)%7)); return x; }
+function payWeekFor(name, monday){
+  let rostered=0, actual=0, covering=0, off=0;
+  for(let i=0;i<7;i++){
+    const iso=isoDate(addDays(monday,i)), e=currGetDay(iso);
+    const onRoster=e.day.includes(name)||e.night.includes(name);
+    if(onRoster){ rostered++; if(offInfo(name, iso)) off++; }
+    const m=myShiftOn(name, iso);
+    if(m){ actual++; if(m.cover) covering++; }
+  }
+  return { rostered, actual, covering, off };
+}
+function meWeekHtml(label, name, monday){
+  const w=payWeekFor(name, monday), sun=addDays(monday,6);
+  const md=d=>(d.getMonth()+1)+'/'+d.getDate();
+  let flag='';
+  if(w.actual>w.rostered) flag=`<span class="me-flag up" title="More than your rostered ${w.rostered} because of coverage">+${w.actual-w.rostered} covering</span>`;
+  else if(w.actual<w.rostered) flag=`<span class="me-flag down" title="Fewer than your rostered ${w.rostered} because of time off">−${w.rostered-w.actual} off</span>`;
+  return `<div class="me-wk"><span class="me-wk-lbl">${label} · ${md(monday)}–${md(sun)}</span>`+
+         `<span class="me-wk-val">${w.actual} shift${w.actual===1?'':'s'} <small>· ${w.actual*12} h</small>${flag}</span></div>`;
+}
+function meBarRender(focus, onlyMe){
+  const bar=document.getElementById('curr-me-bar'); if(!bar) return;
+  if(!focus){ bar.style.display='none'; bar.innerHTML=''; return; }
+  const mon=payWeekStart(new Date());
+  bar.innerHTML = meWeekHtml('This pay week', focus, mon) + meWeekHtml('Next', focus, addDays(mon,7)) +
+    '<span class="me-hint">Tap one of your shifts to see who could cover it.</span>' +
+    `<button class="me-ics" onclick="meIcsDownload()" title="Your next 6 months as a file Google, Apple or Outlook calendar can import">📅 Add to my calendar</button>`;
+  bar.style.display='';
+}
+
+// Calendar export. A one-off file, not a live feed (no server to host one),
+// so after a change you download it again. Stable UIDs mean most calendars
+// update the existing events on re-import instead of doubling them.
+function meIcsDownload(){
+  const name=document.getElementById('curr-cal-focus').value; if(!name) return;
+  const pad=n=>String(n).padStart(2,'0');
+  // Arizona has no DST, so 06:00/18:00 local are always 13:00/01:00 UTC.
+  const utc=(iso,h)=>{ const d=new Date(Date.UTC(+iso.slice(0,4), +iso.slice(5,7)-1, +iso.slice(8,10), h+7)); return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+'0000Z'; };
+  const escI=t=>String(t).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
+  const now=new Date(), stamp=now.getUTCFullYear()+pad(now.getUTCMonth()+1)+pad(now.getUTCDate())+'T'+pad(now.getUTCHours())+pad(now.getUTCMinutes())+'00Z';
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//RNWBL//Ops Hub//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:ROC shifts \u00b7 '+escI(name)];
+  let n=0;
+  const start=new Date(); start.setHours(0,0,0,0);
+  const end=new Date(start); end.setMonth(end.getMonth()+6);
+  for(let d=new Date(start); d<end; d.setDate(d.getDate()+1)){
+    const iso=isoDate(d), m=myShiftOn(name, iso); if(!m) continue;
+    const w=(crewOn(iso)[m.r]||[]).filter(x=>x!==name);
+    const day=m.r==='Day';
+    const endIso=day?iso:isoDate(addDays(d,1));
+    const title='ROC '+m.r+' shift'+(m.cover?' (covering '+m.cover+')':'');
+    const desc=(w.length?'On with: '+w.join(', ')+'\n':'')+'From RNWBL Ops Hub. Re-download after schedule changes.';
+    L.push('BEGIN:VEVENT','UID:roc-'+name.toLowerCase()+'-'+iso+'@rnwbl-opshub','DTSTAMP:'+stamp,
+      'DTSTART:'+utc(iso, day?6:18),'DTEND:'+utc(endIso, day?18:6),
+      'SUMMARY:'+escI(title),'DESCRIPTION:'+escI(desc),'LOCATION:ROC','TRANSP:OPAQUE','END:VEVENT');
+    n++;
+  }
+  L.push('END:VCALENDAR');
+  const blob=new Blob([L.join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='roc-shifts-'+name.toLowerCase()+'.ics';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+  if(typeof showToast==='function') showToast(n+' shifts saved. Open the file to add them to your calendar.');
+  return n;
+}
+
+// Swap helper. Tap one of your shifts: who is free that day and rested for it.
+// Rest rule: nobody goes straight from a night into that morning's day shift,
+// or from a night into the next morning's day.
+// Impact of covering: the asked days among the person's own shifts. Works
+// before the ask exists (swap helper) and after (a pending row in Time Off),
+// so a pending cover that already shows in the data is treated as the ask,
+// not as one of their own shifts.
+function impactInfo(x, requester, askIsos){
+  const askSet=new Set(askIsos);
+  const roleOf=iso=>{ const e=currGetDay(iso); return e.day.includes(requester)?'Day':e.night.includes(requester)?'Night':null; };
+  const own=iso=>{ const m=myShiftOn(x, iso); if(!m) return null; if(askSet.has(iso) && m.cover===requester) return null; return m.r; };
+  const D=iso=>new Date(iso+'T00:00:00');
+  const first=askIsos[0], last=askIsos[askIsos.length-1];
+  // nearest own shift either side
+  let prev=null, next=null;
+  for(let i=1;i<=30 && !prev;i++){ const iso=isoDate(addDays(D(first),-i)); const r=own(iso); if(r) prev={iso,r,gap:i-1}; }
+  for(let i=1;i<=30 && !next;i++){ const iso=isoDate(addDays(D(last),i)); const r=own(iso); if(r) next={iso,r,gap:i-1}; }
+  // run of consecutive working days through the ask
+  const works=iso=>askSet.has(iso)||!!own(iso);
+  let run=askIsos.length;
+  for(let i=1;i<30 && works(isoDate(addDays(D(first),-i)));i++) run++;
+  for(let i=1;i<30 && works(isoDate(addDays(D(last),i)));i++) run++;
+  // pay week of the first asked day
+  const mon=payWeekStart(D(first)); let before=0, added=0;
+  for(let i=0;i<7;i++){ const iso=isoDate(addDays(mon,i)); if(own(iso)) before++; if(askSet.has(iso)) added++; }
+  // strip: 3 days either side, at most 11 cells
+  const cells=[]; const span=Math.min(askIsos.length,5);
+  for(let i=-3;i<span+3;i++){
+    const iso=isoDate(addDays(D(first),i));
+    const ask=askSet.has(iso);
+    cells.push({ iso, ask, r: ask ? roleOf(iso) : own(iso) });
+  }
+  const askRole=roleOf(first);
+  const tight = (prev && prev.gap===0 && prev.r==='Night' && askRole==='Day') || (next && next.gap===0 && askRole==='Night' && next.r==='Day');
+  return { prev, next, run, before, after:before+added, cells, tight };
+}
+function impactHtml(x, requester, askIsos){
+  if(!askIsos.length) return '';
+  const I=impactInfo(x, requester, askIsos);
+  const dow=iso=>new Date(iso+'T00:00:00').toLocaleDateString('en-US',{weekday:'short'});
+  const md=iso=>{ const d=new Date(iso+'T00:00:00'); return (d.getMonth()+1)+'/'+d.getDate(); };
+  const strip='<div class="imp-strip">'+I.cells.map(c=>
+    `<span class="imp-d${c.r==='Day'?' on-d':c.r==='Night'?' on-n':''}${c.ask?' ask':''}" title="${md(c.iso)}${c.ask?' \u00b7 the ask':''}">${dow(c.iso)}<b>${c.r==='Day'?'D':c.r==='Night'?'N':'\u00b7'}</b></span>`).join('')+'</div>';
+  const gap=n=>n===0?'<span class="warn">no day off</span>':n+' day'+(n===1?'':'s')+' off';
+  const L=[];
+  L.push(I.prev?`Last <b>${dow(I.prev.iso)} ${md(I.prev.iso)} ${I.prev.r}</b> \u00b7 ${gap(I.prev.gap)} before`:'No shift in the 30 days before');
+  L.push(I.next?`Next <b>${dow(I.next.iso)} ${md(I.next.iso)} ${I.next.r}</b> \u00b7 ${gap(I.next.gap)} after`:'No shift in the 30 days after');
+  L.push(`Pay week <b>${I.before} \u2192 ${I.after}</b> shifts`+(I.after>=5?' <span class="warn">heavy week</span>':''));
+  if(I.run>1) L.push(I.run>=5?`<span class="warn">makes ${I.run} in a row</span>`:`makes ${I.run} in a row`);
+  if(I.tight) L.push('<span class="warn">runs straight into another shift</span>');
+  return `<div class="imp">${strip}<div class="imp-lines">${L.map(x=>'<span>'+x+'</span>').join('')}</div></div>`;
+}
+// Days in a range that someone is actually rostered for (the ones that need cover).
+function rosteredIsos(op, start, end){
+  const out=[]; for(let d=new Date(start+'T00:00:00'); isoDate(d)<=end; d.setDate(d.getDate()+1)){
+    const iso=isoDate(d), e=currGetDay(iso); if(e.day.includes(op)||e.night.includes(op)) out.push(iso); }
+  return out;
+}
+
+let swapState={ iso:null, who:null };
+function swapCandidates(name, iso, r){
+  const crew=crewOn(iso), working=new Set([...crew.Day, ...crew.Night]);
+  const prev=crewOn(isoDate(addDays(new Date(iso+'T00:00:00'),-1)));
+  const next=crewOn(isoDate(addDays(new Date(iso+'T00:00:00'), 1)));
+  const mon=payWeekStart(new Date(iso+'T00:00:00'));
+  const all=(typeof toAllOperators==='function'?toAllOperators():[]).filter(n=>n && n!==name);
+  return all.filter(x=>{
+    if(working.has(x) || offInfo(x, iso)) return false;
+    if(r==='Day' && prev.Night.includes(x)) return false;     // came off a night that morning
+    if(r==='Night' && next.Day.includes(x)) return false;     // would run straight into a day
+    return true;
+  }).map(x=>{
+    const w=payWeekFor(x, mon);
+    const notes=[];
+    if(r==='Night' && prev.Night.includes(x)) notes.push('on nights already');
+    if(r==='Day' && next.Day.includes(x)) notes.push('on days the next day');
+    return { name:x, week:w.actual, after:w.actual+1, notes };
+  }).sort((a,b)=>a.week-b.week || a.name.localeCompare(b.name));
+}
+function swapOpen(iso){
+  const name=document.getElementById('curr-cal-focus').value; if(!name) return;
+  if(swapState.iso===iso){ swapClose(); return; }
+  swapState={ iso, who:name, sent:null, msg:'' };
+  swapRender(); currCalRender();
+  const p=document.getElementById('curr-swap'); if(p && p.scrollIntoView) p.scrollIntoView({block:'nearest', behavior:'smooth'});
+}
+function swapClose(silent){
+  const had=swapState.iso;
+  swapState={ iso:null, who:null };
+  const p=document.getElementById('curr-swap'); if(p){ p.style.display='none'; p.innerHTML=''; }
+  if(had && !silent) currCalRender();
+}
+function swapRender(){
+  const p=document.getElementById('curr-swap'); if(!p) return;
+  const { iso, who }=swapState; if(!iso){ p.style.display='none'; return; }
+  const m=myShiftOn(who, iso); if(!m){ swapClose(true); return; }
+  const d=new Date(iso+'T00:00:00');
+  const when=d.toLocaleDateString('en-US',{weekday:'short', month:'short', day:'numeric'});
+  const list=swapCandidates(who, iso, m.r);
+  let h=`<div class="swap-hd"><b>Need ${esc(when)} off?</b><span class="me-hint">${m.r} shift · ${m.r==='Day'?'06:00–18:00':'18:00–06:00'}</span><button class="swap-x" onclick="swapClose()" aria-label="Close">✕</button></div>`;
+  h+=`<div class="swap-sub">Free that day and rested for it, fewest shifts that pay week first. The strip is their week with your shift outlined. Asking sends a time-off request with them as pending cover; it shows for them in Time Off.</div>`;
+  if(!list.length) h+='<div class="swap-none">Nobody is free and rested for this one. Ask your supervisor.</div>';
+  list.forEach(c=>{
+    const sent=swapState.sent===c.name;
+    const heavy=c.after>=5;
+    h+=`<div class="swap-row"><span class="swap-name">${esc(c.name)}</span>`+
+       `<button class="swap-btn" ${swapState.sent?'disabled':''} onclick="swapAsk('${esc(c.name)}')">${sent?'Request sent \u2713':'Ask '+esc(c.name)}</button>`+
+       impactHtml(c.name, who, [iso])+`</div>`;
+  });
+  if(swapState.msg) h+=`<div class="swap-msg">${swapState.msg}</div>`;
+  p.innerHTML=h; p.style.display='';
+}
+async function swapAsk(coverer){
+  const { iso, who }=swapState; if(!iso||!who) return;
+  if(typeof db==='undefined' || !db){ swapState.msg='Not connected, so nothing was sent. Try again once you are online.'; swapRender(); return; }
+  try{
+    await db.collection('timeoff').add({ operator:who, startDate:iso, endDate:iso, reason:'Swap request from the calendar',
+      coverage:[{ id:makeSegId(), coveredBy:coverer, startDate:iso, endDate:iso, status:'pending', note:'' }],
+      submittedAt: firebase.firestore.FieldValue.serverTimestamp() });
+    swapState.sent=coverer; swapState.msg='Sent. It shows in Time Off as pending until '+esc(coverer)+' confirms.';
+  }catch(e){ swapState.msg='Could not send: '+esc(e.message||String(e)); }
+  swapRender();
+}
+
+// ── Installed app (Add to Home Screen) ──────────────────────────────────
+function pwaInstalled(){ try { return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; } catch(e){ return false; } }
+function pwaIsIOS(){ return /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1); }
+function pwaTipRender(){
+  const el=document.getElementById('pwa-tip'); if(!el) return;
+  let hidden=false; try { hidden = localStorage.getItem('pwaTipHidden')==='1'; } catch(e){}
+  const phone = matchMedia('(pointer:coarse)').matches && innerWidth < 900;
+  if(pwaInstalled() || hidden || !phone){ el.style.display='none'; return; }
+  el.innerHTML='\ud83d\udcf2 <b>Put Ops Hub on your phone</b> <span class="me-hint">opens straight to your schedule</span>'+
+    '<button class="pwa-go" onclick="pwaInstall()">How</button><button class="pwa-x" onclick="pwaTipHide()" aria-label="Dismiss">\u2715</button>';
+  el.style.display='';
+}
+function pwaTipHide(){ try { localStorage.setItem('pwaTipHidden','1'); } catch(e){} pwaTipRender(); }
+async function pwaInstall(){
+  const el=document.getElementById('pwa-tip'); if(!el) return;
+  if(window.__pwaPrompt){ const ev=window.__pwaPrompt; window.__pwaPrompt=null; try { ev.prompt(); await ev.userChoice; } catch(e){} pwaTipRender(); return; }
+  if(el.querySelector('.pwa-steps')) return;
+  const steps = pwaIsIOS()
+    ? 'In Safari: tap <b>Share</b> (the square with the arrow), then <b>Add to Home Screen</b>. You sign in once inside the new app.'
+    : 'In Chrome: tap the <b>\u22ee</b> menu, then <b>Install app</b> or <b>Add to Home screen</b>.';
+  el.insertAdjacentHTML('beforeend','<div class="pwa-steps">'+steps+'</div>');
+}
+// The installed app opens on Schedule; the browser keeps opening on Home.
+function pwaStartView(){
+  if(!pwaInstalled() && !/[?&]app=1\b/.test(location.search)) return;
+  const tab=[...document.querySelectorAll('.nav-tab')].find(b=>/switchView\('schedule'/.test(b.getAttribute('onclick')||''));
+  try { switchView('schedule', tab||null); } catch(e){}
+}
+
+const SCHED_ONLYME_KEY='schedOnlyMe';
+function schedOnlyMe(){ try { return localStorage.getItem(SCHED_ONLYME_KEY)==='1'; } catch(e){ return false; } }
+function schedOnlyMeSet(on){ try { localStorage.setItem(SCHED_ONLYME_KEY, on?'1':'0'); } catch(e){} }
 function currCalRender(){
   const{year,month}=currCalState;
   document.getElementById('curr-cal-label').textContent=CURR_MONTHS[month]+' '+year;
   const focus=document.getElementById('curr-cal-focus').value;
+  const omBox=document.getElementById('curr-cal-onlyme'), omWrap=document.getElementById('curr-cal-onlyme-wrap');
+  if(omBox){ omBox.disabled=!focus; omBox.checked=!!focus&&schedOnlyMe(); omWrap.classList.toggle('disabled',!focus); omWrap.title=focus?'Show only '+focus+'’s shifts':'Pick a name to use this'; }
+  const onlyMe=!!focus&&schedOnlyMe();
+  meBarRender(focus, onlyMe);
+  if(!focus || swapState.who!==focus) swapClose(true);
   const grid=document.getElementById('curr-cal-grid');
   const first=new Date(year,month,1).getDay();
   const days=new Date(year,month+1,0).getDate();
@@ -19694,12 +20113,38 @@ function currCalRender(){
     const e=currGetDay(iso);
     const cell=document.createElement('div');
     const hasFocus=focus&&actuallyWorking(e, iso).has(focus);
-    cell.className='cal-cell'+(iso===td?' today':'')+(hasFocus?' has-focus':'');
+    cell.className='cal-cell'+(iso===td?' today':'')+(hasFocus&&!onlyMe?' has-focus':'');
     let inner=`<div class="cal-day-num">${d}</div>`+holBadge(iso, cell);
+    if(onlyMe){
+      // Just you: your own slot (with any time off shown as today), or the shift you cover.
+      const slots=[...e.day.map(n=>({r:'Day',n})), ...e.night.map(n=>({r:'Night',n}))];
+      const mine=slots.find(s=>s.n===focus);
+      const cov=slots.find(s=>{const o=offInfo(s.n, iso);return o&&o.by===focus;});
+      if(mine){
+        const o=offInfo(focus, iso);
+        cell.classList.add(o?'me-off':(mine.r==='Day'?'me-day':'me-night'));
+        inner+=`<div class="cal-person me-chip"><span class="cal-dot ${mine.r==='Day'?'d1':'n1'}"></span><span>${o?offLabel(focus, iso, mine.r):mine.r}</span></div>`;
+        if(!o){
+          inner+=meWithHtml(focus, iso, mine.r);
+          if(iso>=td){ cell.classList.add('me-tap'); cell.dataset.iso=iso; cell.title='Need this one off? Tap to see who could cover'; cell.onclick=()=>swapOpen(iso); }
+          if(swapState.iso===iso) cell.classList.add('me-picked');
+        }
+      } else if(cov){
+        cell.classList.add(cov.r==='Day'?'me-day':'me-night');
+        inner+=`<div class="cal-person me-chip"><span class="cal-dot ${cov.r==='Day'?'d1':'n1'}"></span><span>${cov.r} <span style="opacity:.6;font-size:10.5px;">covering ${cov.n}</span></span></div>`;
+        inner+=meWithHtml(focus, iso, cov.r);
+      }
+      cell.innerHTML=inner; grid.appendChild(cell);
+      continue;
+    }
     [...e.day.map(n=>({r:'Day',n})), ...e.night.map(n=>({r:'Night',n}))].forEach(s=>{
       const isFoc=focus&&s.n===focus;
       inner+=`<div class="cal-person${isFoc?' highlighted':''}${focus&&!isFoc?' faded':''}"><span class="cal-dot ${s.r==='Day'?'d1':'n1'}"></span><span>${offLabel(s.n, iso, s.r)}</span></div>`;
     });
+    // Same swap helper as Only me: tap a day you are rostered and not off.
+    if(focus && iso>=td){ const m=myShiftOn(focus, iso);
+      if(m && !m.cover){ cell.classList.add('me-tap'); cell.title='Need this one off? Tap to see who could cover'; cell.onclick=()=>swapOpen(iso);
+        if(swapState.iso===iso) cell.classList.add('me-picked'); } }
     cell.innerHTML=inner; grid.appendChild(cell);
   }
 }
@@ -20258,6 +20703,10 @@ setTimeout(() => {
   window.toBandSubmit=toBandSubmit;
   window.toToggleRow=toToggleRow;
   window.setSchedMe=setSchedMe;
+  window.schedOnlyMeSet=schedOnlyMeSet;
+  window.schedOnlyMe=schedOnlyMe;
+  window.pwaInstall=pwaInstall; window.pwaTipHide=pwaTipHide; window.pwaTipRender=pwaTipRender; window.pwaStartView=pwaStartView; window.pwaInstalled=pwaInstalled;
+  window.meIcsDownload=meIcsDownload; window.swapOpen=swapOpen; window.swapClose=swapClose; window.swapAsk=swapAsk;
   window.schedMe=schedMe;
   window.toAddCover=toAddCover;
   window.toShowAdd=toShowAdd;
@@ -20345,12 +20794,33 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION, the footer <span class="app-footer-v"> and WHATS_NEW together.
-const APP_VERSION = 'v4.98';
+const APP_VERSION = 'v5.05';
 // What's new. Bump APP_VERSION, the footer and add a line here together.
 // Written for the operator, one line each; Changed first, since that is what catches people out.
 // Group a batch of versions into one entry; keep about the last six.
 // go: an ROC Study filter to jump to (scada, procedures, operations, standards, plant), or null.
 const WHATS_NEW = [
+  {id:'2026-11-18f', v:'v5.05', date:'Nov 18', title:'See the impact of a cover', items:[
+    ['New','Finding cover shows each person’s week with your shift outlined: last and next shift, days off around it, shifts in a row',null],
+    ['New','Time Off: a pending cover shows the same impact, and if it is asking you it opens by itself with Confirm and Decline',null]]},
+  {id:'2026-11-18e', v:'v5.04', date:'Nov 18', title:'Ops Hub on your phone', items:[
+    ['New','Add Ops Hub to your home screen: its own icon, full screen, opens straight to your schedule',null],
+    ['Changed','Find cover works in the team calendar too: highlight your name and tap one of your shifts',null]]},
+  {id:'2026-11-18d', v:'v5.03', date:'Nov 18', title:'Your schedule, your way', items:[
+    ['New','Schedule: Add to my calendar saves your next 6 months for Google, Apple or Outlook',null],
+    ['New','Only me shows who you are on with under each shift',null],
+    ['New','Tap one of your shifts to see who is free and rested to cover it, then ask them in one tap',null],
+    ['New','Shifts and hours for this pay week and next, flagged when coverage or time off changes them',null]]},
+  {id:'2026-11-18c', v:'v5.02', date:'Nov 18', title:'Do the Question of the Day', items:[
+    ['Changed','Matching, sorting and pick-one questions of the day are worked right on the Home card, then checked',null],
+    ['Fixed','Sorting questions: the button you picked no longer goes blank when the mouse is over it',null]]},
+  {id:'2026-11-18b', v:'v5.00–5.01', date:'Nov 18', title:'Only me on the calendar', items:[
+    ['Changed','Calendar holidays are amber text with a thin top line instead of a filled box; today is a light blue',null],
+    ['New','Schedule calendar: pick your name, tick Only me, and the month shows just your shifts',null]]},
+  {id:'2026-11-18a', v:'v4.99', date:'Nov 18', title:'Regional Entities', items:[
+    ['New','ROC Study: what a Regional Entity is, all six, and which ones cover our sites','grid'],
+    ['New','Pick-one: who receives a VAR-002 self-report from a California site','grid'],
+    ['Changed','Chain of authority: the Regional Entity card now covers all six, not just WECC','grid']]},
   {id:'2026-11-16d', v:'v4.97–4.98', date:'Nov 16', title:'Buyers curtailment in Arizona time', items:[
     ['Fixed','Buyers Curtailment converts the site’s Pacific time to Arizona, so winter reminders no longer fire an hour early',null],
     ['Changed','Schedule, copy and reminders show Arizona time with the site’s time beside it',null]]},
@@ -20615,6 +21085,8 @@ function eggInit(){
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', eggInit); else eggInit();
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wnInit); else wnInit();
+function pwaBoot(){ try { pwaTipRender(); setTimeout(pwaStartView, 0); } catch(e){} }
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pwaBoot); else pwaBoot();
 console.log('%cRNWBL Ops Hub ' + APP_VERSION, 'font-weight:bold;font-size:13px');
 console.log('If this does not match what you just deployed, you are on a cached copy — hard refresh (Ctrl+Shift+R / Cmd+Shift+R).');
 
@@ -20857,7 +21329,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v4.98</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
+    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.05</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
