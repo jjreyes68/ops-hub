@@ -1510,6 +1510,80 @@ body.dark .nerc-study-container{
 .roc-topic-card::after{content:'';position:absolute;left:0;bottom:0;height:2px;width:var(--tc-pct,0%);background:var(--green);opacity:.75;transition:width .2s;}
 .roc-topic-card.active .roc-topic-count{color:var(--blue);background:var(--bbg);border:1px solid var(--blue);opacity:.8;}
 .roc-wrap{padding:4px 0 60px;}
+/* ROC Study, one page: topic rail | header, Learn/Practice tabs, quiet question list */
+.rs-old{display:none!important;}
+.rs-layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:start;}
+.rs-rail{position:sticky;top:64px;display:flex;flex-direction:column;gap:2px;padding-right:14px;border-right:1px solid var(--border);}
+.rs-eyebrow{font-family:var(--m);font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--accent);padding:2px 10px 10px;}
+.rs-ri{font:inherit;display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:8px 10px;border-radius:8px;border:0;background:none;color:var(--text2);font-size:13px;cursor:pointer;}
+.rs-ri:hover{background:var(--bg3);color:var(--text);}
+.rs-ri svg{flex-shrink:0;opacity:.75;}
+.rs-ri em{margin-left:auto;font-style:normal;font-family:var(--m);font-size:11px;color:var(--text3);}
+.rs-ri.on{background:var(--bbg);color:var(--text);font-weight:600;}
+.rs-ri.on svg{opacity:1;color:var(--blue);}
+.rs-ri.done em{color:var(--green);}
+.rs-rail-sep{height:1px;background:var(--border);margin:8px 10px;}
+.rs-rail-x{font:inherit;font-size:12px;text-align:left;padding:6px 10px;border:0;background:none;color:var(--text3);cursor:pointer;border-radius:6px;}
+.rs-rail-x:hover{color:var(--text);background:var(--bg3);}
+.rs-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;}
+.rs-head .ey{font-family:var(--m);font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--accent);}
+.rs-head h1{font-size:28px;font-weight:800;letter-spacing:-.02em;margin:4px 0 4px;line-height:1.15;}
+.rs-head p{margin:0;font-size:13.5px;color:var(--text2);}
+.rs-head .act{display:flex;gap:8px;}
+.rs-prog{margin:16px 0 4px;display:flex;flex-direction:column;gap:7px;}
+.rs-bar{height:6px;border-radius:4px;background:var(--bg3);display:flex;overflow:hidden;}
+.rs-bar i{display:block;height:100%;}
+.rs-bar .g{background:var(--green);} .rs-bar .r{background:var(--amber);} .rs-bar .m{background:var(--red);}
+.rs-prog span{font-size:12.5px;color:var(--text3);}
+.rs-prog b{font-weight:700;} .rs-prog .g{color:var(--green);} .rs-prog .r{color:var(--amber);} .rs-prog .m{color:var(--red);}
+.rs-tabs{display:flex;gap:24px;border-bottom:1px solid var(--border);margin:14px 0 14px;}
+.rs-tabs button{font:inherit;font-size:14px;padding:10px 0;border:0;border-bottom:2px solid transparent;background:none;color:var(--text3);cursor:pointer;margin-bottom:-1px;}
+.rs-tabs button.on{color:var(--text);font-weight:600;border-bottom-color:var(--accent);}
+.rs-tabs em{font-style:normal;font-family:var(--m);font-size:11px;color:var(--text3);margin-left:3px;}
+.rs-tab-practice .rs-main > .roc-widget,.rs-tab-practice .rs-main .roc-widget,
+.rs-tab-practice #dia-pane-build,.rs-tab-practice #sld-widget-container,.rs-tab-practice #pmap-widget-container{display:none!important;}
+.rs-tab-learn #roc-sections{display:none;}
+.rs-all .rs-tabs{display:none;}
+.rs-tab-learn .roc-w-eyebrow{display:none;}
+/* question list */
+#roc-sections .roc-section{border:0;background:none;box-shadow:none;margin:0 0 6px;overflow:visible;}
+#roc-sections .roc-section.rs-one > .roc-section-hdr{display:none;}
+#roc-sections .roc-section.rs-one .roc-questions{display:block!important;}
+#roc-sections .roc-section:not(.rs-one) > .roc-section-hdr{background:none;border:0;border-bottom:1px solid var(--border);border-radius:0;padding:12px 2px;}
+#roc-sections .roc-section-hdr .roc-w-eyebrow{display:none;}
+#roc-sections .roc-q.rq{padding:0;border-bottom:1px solid var(--border);}
+.rq-head{font:inherit;display:grid;grid-template-columns:10px 28px minmax(0,1fr) 14px;gap:10px;align-items:start;width:100%;text-align:left;padding:14px 4px;border:0;background:none;color:var(--text);cursor:pointer;}
+.rq-head:hover .rq-t{color:var(--blue);}
+.rq-dot{width:8px;height:8px;border-radius:50%;margin-top:7px;background:var(--border2);}
+.rq-dot.got-it{background:var(--green);} .rq-dot.review-it{background:var(--amber);} .rq-dot.missed{background:var(--red);}
+.rq-n{font-family:var(--m);font-size:12px;color:var(--text3);padding-top:2px;}
+.rq-t{font-size:14.5px;line-height:1.45;}
+.rq-m{display:flex;align-items:center;gap:8px;margin-top:3px;font-size:11.5px;color:var(--text3);}
+.rq-m .roc-co{margin:0;}
+.rq-c{color:var(--text3);font-size:11px;padding-top:4px;transition:transform .15s;}
+.roc-q.rq.open{background:var(--bg2);border-radius:10px;border-bottom-color:transparent;margin:4px 0;box-shadow:var(--shs);}
+.roc-q.rq.open .rq-c{transform:rotate(180deg);}
+.roc-q.rq .roc-answer{margin:0 14px 0 52px;}
+.rq-grade{display:none;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 14px 14px 52px;}
+.roc-answer.show + .rq-grade{display:flex;}
+.rq-grade > span{font-size:12px;color:var(--text3);margin-right:2px;}
+.rq-grade .roc-confidence{display:flex;gap:6px;}
+.rq-grade .roc-conf-btn{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:7px;background:transparent;opacity:1;}
+.rq-grade .roc-conf-btn:nth-child(1){color:var(--green);border:1px solid color-mix(in srgb,var(--green) 55%,transparent);}
+.rq-grade .roc-conf-btn:nth-child(2){color:var(--amber);border:1px solid color-mix(in srgb,var(--amber) 55%,transparent);}
+.rq-grade .roc-conf-btn:nth-child(3){color:var(--red);border:1px solid color-mix(in srgb,var(--red) 55%,transparent);}
+.rq-grade .roc-conf-btn.got-it{background:var(--green);color:#fff;border-color:var(--green);}
+.rq-grade .roc-conf-btn.review-it{background:var(--amber);color:#fff;border-color:var(--amber);}
+.rq-grade .roc-conf-btn.missed{background:var(--red);color:#fff;border-color:var(--red);}
+@media (max-width:860px){
+  .rs-layout{grid-template-columns:minmax(0,1fr);gap:12px;}
+  .rs-rail{position:static;flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--border);padding:0 0 8px;gap:4px;-webkit-overflow-scrolling:touch;}
+  .rs-eyebrow,.rs-rail-sep{display:none;}
+  .rs-ri{width:auto;white-space:nowrap;flex-shrink:0;padding:6px 10px;border:1px solid var(--border);border-radius:16px;}
+  .rs-rail-x{white-space:nowrap;flex-shrink:0;}
+  .rs-head h1{font-size:23px;}
+  .roc-q.rq .roc-answer,.rq-grade{margin-left:14px;}
+}
 .roc-topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--shs);}
 .roc-title{font-size:19px;font-weight:600;color:var(--text);letter-spacing:-.01em;flex:1;display:flex;flex-direction:column;gap:2px;}
 .roc-title-sub{font-size:12.5px;font-weight:400;color:var(--text3);letter-spacing:0;font-family:var(--f);}
@@ -4877,8 +4951,15 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
 
 <!-- ROC STUDY GUIDE -->
 <div class="view" id="view-roc">
-  <div class="roc-wrap">
-    <div class="page-header">
+  <div class="roc-wrap rs-layout rs-tab-practice" id="roc-wrap">
+    <aside class="rs-rail" id="rs-rail" aria-label="Study topics"></aside>
+    <div class="rs-main" id="rs-main">
+    <div class="rs-head" id="rs-head"></div>
+    <div class="rs-tabs" id="rs-tabs" role="tablist">
+      <button role="tab" data-rt="learn" onclick="rsTab('learn')">Learn</button>
+      <button role="tab" data-rt="practice" class="on" onclick="rsTab('practice')">Practice <em id="rs-tab-n"></em></button>
+    </div>
+    <div class="page-header rs-old">
       <div>
         <div class="page-title">ROC Study</div>
         <div class="page-subtitle">GOP-scoped questions, SOPs &amp; simulation scenarios</div>
@@ -4890,7 +4971,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     </div>
 
     <!-- TOPIC PICKER -->
-    <div class="roc-topic-grid" id="roc-topic-grid">
+    <div class="roc-topic-grid rs-old" id="roc-topic-grid">
       <button class="roc-topic-card" data-filter="all" onclick="rocSetFilter('all',this)">
         <span class="roc-topic-icon">📚</span>
         <span class="roc-topic-name">All Topics</span>
@@ -4938,7 +5019,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
       </button>
     </div>
 
-    <div class="roc-stats-compact">
+    <div class="roc-stats-compact rs-old">
       <span class="roc-stat-badge" id="roc-stat-total">0 questions</span>
       <span class="roc-stat-badge" style="color:var(--green);" id="roc-stat-done">0 got it</span>
       <span class="roc-stat-badge" style="color:var(--amber);" id="roc-stat-review">0 review</span>
@@ -5307,6 +5388,7 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
     <!-- ── END GRID HIERARCHY WIDGET ─────────────────────────────────────── -->
 
     <div id="roc-sections"></div>
+    </div>
   </div>
 </div>
 
@@ -17200,6 +17282,59 @@ function rocResetProgress() {
   rocRender();
 }
 
+// ── Study page shell ───────────────────────────────────────────────────
+const RS_SHORT = { grid:'Grid Entities', voltage:'Voltage & AVR', dispatch:'Dispatch', scada:'SCADA & Alarms', procedures:'Procedures', operations:'Operations', standards:'NERC Standards', plant:'Plant Architecture' };
+const RS_DESC = {
+  grid:'Who has authority over the plant, and who you call',
+  voltage:'Holding the voltage schedule, VARs and AVR (VAR-002)',
+  dispatch:'Following ADS and AGC instructions, and when you cannot',
+  scada:'Reading the screen: alarms, comms and what they mean',
+  procedures:'The shift routine and the playbook steps, in order',
+  operations:'Judgement calls at the desk, and who to tell',
+  standards:'The NERC families behind what we do, and why',
+  plant:'From the inverter to the POI: what is on the one-line' };
+const RS_ICON = { grid:'M4 6h16M4 12h16M4 18h16', voltage:'M13 2L4 14h7l-1 8 9-12h-7z', dispatch:'M3 12h4l3-8 4 16 3-8h4', scada:'M3 4h18v12H3zM8 20h8M12 16v4',
+  procedures:'M9 5h11M9 12h11M9 19h11M4 5h.01M4 12h.01M4 19h.01', operations:'M12 8a4 4 0 100 8 4 4 0 000-8zM12 2v3M12 19v3M2 12h3M19 12h3', standards:'M6 2h9l5 5v15H6zM14 2v6h6', plant:'M3 21V10l6 4V10l6 4V4h6v17z' };
+function rsIco(k, n){ return '<svg width="' + (n||16) + '" height="' + (n||16) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="' + (RS_ICON[k] || RS_ICON.grid) + '"/></svg>'; }
+let rsTabNow = (() => { try { return localStorage.getItem('rsTab') || 'practice'; } catch(e) { return 'practice'; } })();
+function rsTab(t){
+  rsTabNow = t; try { localStorage.setItem('rsTab', t); } catch(e) {}
+  const w = document.getElementById('roc-wrap'); if (!w) return;
+  w.classList.toggle('rs-tab-learn', t === 'learn'); w.classList.toggle('rs-tab-practice', t !== 'learn');
+  document.querySelectorAll('#rs-tabs button').forEach(b => b.classList.toggle('on', b.dataset.rt === t));
+}
+function rsCounts(qs){
+  let g = 0, r = 0, m = 0; qs.forEach(q => { const p = rocProgress[q.id]; if (p === 'got-it') g++; else if (p === 'review-it') r++; else if (p === 'missed') m++; });
+  return { g, r, m, n: qs.length, left: qs.length - g - r - m };
+}
+function rsShell(){
+  const rail = document.getElementById('rs-rail'), head = document.getElementById('rs-head'); if (!rail || !head) return;
+  rail.innerHTML = '<div class="rs-eyebrow">ROC STUDY</div>' + ROC_CATEGORIES.map(c => {
+      const k = rsCounts(ROC_QUESTIONS.filter(q => q.cat === c.key)), done = k.g + k.r + k.m;
+      return '<button class="rs-ri' + (rocFilter === c.key ? ' on' : '') + (k.g === k.n ? ' done' : '') + '" onclick="rocSetFilter(\'' + c.key + '\')">' + rsIco(c.key) + '<span>' + esc(RS_SHORT[c.key] || c.label) + '</span><em>' + done + '/' + k.n + '</em></button>';
+    }).join('')
+    + '<div class="rs-rail-sep"></div>'
+    + '<button class="rs-ri' + (rocFilter === 'all' ? ' on' : '') + '" onclick="rocSetFilter(\'all\')"><span>All questions</span><em>' + ROC_QUESTIONS.length + '</em></button>'
+    + '<button class="rs-rail-x" onclick="rocOpenScope()">Mixed quiz\u2026</button>'
+    + '<button class="rs-rail-x" onclick="rocResetProgress()">Reset progress</button>';
+  const all = rocFilter === 'all';
+  const cat = ROC_CATEGORIES.find(c => c.key === rocFilter);
+  const qs = all ? ROC_QUESTIONS : ROC_QUESTIONS.filter(q => q.cat === rocFilter);
+  // due = graded before and now back for review; brand-new questions are counted as new, not due
+  const k = rsCounts(qs), due = qs.filter(q => rocSched[q.id] && rocIsDue(q.id)).length;
+  const pct = v => (v / (k.n || 1) * 100).toFixed(2) + '%';
+  head.innerHTML = '<div><div class="ey">' + (all ? 'EVERYTHING' : 'TOPIC') + '</div><h1>' + esc(all ? 'All questions' : (cat ? cat.label : rocFilter)) + '</h1><p>'
+      + esc(all ? ROC_QUESTIONS.length + ' questions across ' + ROC_CATEGORIES.length + ' topics' : (RS_DESC[rocFilter] || '')) + '</p></div>'
+    + '<div class="act">' + (all ? '<button class="btn-p" onclick="rocOpenScope()">Start quiz</button>'
+        : '<button class="btn-p" onclick="rocStartDrill({kind:\'cat\', value:\'' + rocFilter + '\'})">Quiz this topic</button>') + '</div>'
+    + '<div class="rs-prog" style="flex-basis:100%"><div class="rs-bar"><i class="g" style="width:' + pct(k.g) + '"></i><i class="r" style="width:' + pct(k.r) + '"></i><i class="m" style="width:' + pct(k.m) + '"></i></div>'
+    + '<span><b class="g">' + k.g + '</b> got it \u00b7 <b class="r">' + k.r + '</b> review \u00b7 <b class="m">' + k.m + '</b> missed \u00b7 ' + k.left + ' new'
+    + (due ? ' \u00b7 <b class="r">' + due + ' due</b> for review' : '') + '</span></div>';
+  const n = document.getElementById('rs-tab-n'); if (n) n.textContent = qs.length;
+  const w = document.getElementById('roc-wrap'); if (w) w.classList.toggle('rs-all', all);
+  rsTab(all ? 'practice' : rsTabNow);
+}
+
 function rocSetFilter(f, btn) {
   rocFilter = f;
   document.querySelectorAll('.roc-topic-card,.roc-ftag-dropdown').forEach(b => b.classList.remove('active'));
@@ -17225,6 +17360,8 @@ function rocSetFilter(f, btn) {
   try { diaShow(f === 'plant'); } catch(e) {}
   try { stdShow(f === 'standards'); } catch(e) {}
   try { rocWidgets(f); } catch(e) {}
+  try { rsShell(); } catch(e) { console.warn('study shell', e); }
+  const v = document.getElementById('view-roc'); if (v && v.classList.contains('active') && btn !== 'keep') window.scrollTo({ top: 0 });
 }
 
 function rocPopulateTopicCounts() {
@@ -17349,6 +17486,8 @@ function rocMark(qid, val) {
     if (fill) fill.style.width = Math.round(done/catQs.length*100)+'%';
   }
   rocUpdateStats();
+  const dot = document.querySelector('[data-qid="' + qid + '"] .rq-dot'); if (dot) dot.className = 'rq-dot ' + val;
+  try { rsShell(); } catch(e) {}
 }
 
 // ── Step-at-a-time reveal ────────────────────────────────────────────────
@@ -17689,6 +17828,7 @@ function rocToggleAnswer(qid) {
   const showing = el.classList.contains('show');
   el.classList.toggle('show');
   rocRevealed[qid] = !showing;
+  const row = el.closest('.roc-q'); if (row) row.classList.toggle('open', !showing);
   if (showing) {                       // collapsing: restart the walk-through
     const q = ROC_QUESTIONS.find(x => x.id === qid);
     if (q && q.stepwise) {
@@ -17727,7 +17867,7 @@ function rocRender() {
     const doneCount = catQs.filter(q=>rocProgress[q.id]).length;
     const pct = catQs.length ? Math.round(doneCount/catQs.length*100) : 0;
     const isOpen = openCats.size ? openCats.has(catKey) : ci===0;
-    html += `<div class="roc-section${isOpen?' open':''}" data-cat="${catKey}">
+    html += `<div class="roc-section${isOpen?' open':''}${usedCats.length === 1 ? ' rs-one' : ''}" data-cat="${catKey}">
       <div class="roc-section-hdr" onclick="rocToggleSection(this.parentElement)">
         <span class="roc-w-eyebrow prac">PRACTICE</span>
         <span class="roc-section-icon">${catDef.icon}</span>
@@ -17763,25 +17903,24 @@ function rocRender() {
           <div class="roc-confidence" data-conf="${q.id}" style="padding:12px 0 4px 0;">${rocConfButtons(q.id)}</div>
         </div>`;
       } else {
-        html += `<div class="roc-q" data-qid="${q.id}">
-          <div class="roc-q-top">
-            <span class="roc-q-num">Q${qi+1}</span>
-            ${rocTypeBadge(q.type)}${rocCoBadge(q)}
-            <div class="roc-q-text">${q.q}</div>
-          </div>
+        const tl = String((rocTypeBadge(q.type).match(/>([^<]+)<\/span>$/) || [,''])[1]).replace(/-/g,' ').replace(/^./, c => c.toUpperCase());
+        html += `<div class="roc-q rq${rocRevealed[q.id] ? ' open' : ''}" data-qid="${q.id}">
+          <button class="rq-head" onclick="rocToggleAnswer('${q.id}')" aria-expanded="${rocRevealed[q.id] ? 'true' : 'false'}">
+            <span class="rq-dot ${rocProgress[q.id] || ''}"></span>
+            <span class="rq-n">${String(qi+1).padStart(2,'0')}</span>
+            <span><span class="rq-t roc-q-text">${q.q}</span><span class="rq-m">${tl}${rocCoBadge(q)}</span></span>
+            <span class="rq-c">\u25BE</span>
+          </button>
           <div class="roc-answer${rocRevealed[q.id] ? ' show' : ''}" id="roc-ans-${q.id}">
             <span class="roc-a-label">${q.order ? 'Your order' : q.match ? 'Your matches' : q.buckets ? 'Your sort' : q.choices ? 'Your answer' : 'Answer'}</span>${q.order ? rocOrderHtml(q.id) : q.match ? rocMatchHtml(q.id) : q.buckets ? rocBucketHtml(q.id) : q.choices ? rocPickHtml(q.id) : q.stepwise ? rocStepHtml(q.id) : q.a}${rocPbLink(q)}
           </div>
-          <div class="roc-q-actions">
-            <button class="roc-show-btn" id="roc-show-${q.id}" onclick="rocToggleAnswer('${q.id}')">${rocRevealed[q.id] ? 'Hide' : 'Show'} Answer</button>
-            <div class="roc-confidence" data-conf="${q.id}">${rocConfButtons(q.id)}</div>
-          </div>
+          <div class="rq-grade"><span>How did you do?</span><div class="roc-confidence" data-conf="${q.id}">${rocConfButtons(q.id)}</div></div>
         </div>`;
       }
     });
     html += `</div></div>`;
   });
-  container.innerHTML = html;
+  container.innerHTML = html;  try { rsShell(); } catch(e) {}
 }
 
 // ── DAILY DRILL ────────────────────────────────────────────────────────────
@@ -21432,7 +21571,7 @@ setTimeout(() => {
   window.setSchedMe=setSchedMe;
   window.schedOnlyMeSet=schedOnlyMeSet;
   window.schedOnlyMe=schedOnlyMe;
-  window.smRefreshNow=smRefreshNow; window.smTypeToggle=smTypeToggle; window.smFindInput=smFindInput; window.smFindKey=smFindKey; window.smFindClose=smFindClose; window.smFindGo=smFindGo; window.smSetMetric=smSetMetric; window.smRefresh=smRefresh; window.smRadar=smRadar; window.smSelect=smSelect; window.smGoWeather=smGoWeather; window.smInit=smInit;
+  window.rsTab=rsTab; window.rsShell=rsShell; window.smRefreshNow=smRefreshNow; window.smTypeToggle=smTypeToggle; window.smFindInput=smFindInput; window.smFindKey=smFindKey; window.smFindClose=smFindClose; window.smFindGo=smFindGo; window.smSetMetric=smSetMetric; window.smRefresh=smRefresh; window.smRadar=smRadar; window.smSelect=smSelect; window.smGoWeather=smGoWeather; window.smInit=smInit;
   window.pwaInstall=pwaInstall; window.pwaTipHide=pwaTipHide; window.pwaTipRender=pwaTipRender; window.pwaStartView=pwaStartView; window.pwaInstalled=pwaInstalled;
   window.meIcsDownload=meIcsDownload; window.swapOpen=swapOpen; window.swapClose=swapClose; window.swapAsk=swapAsk;
   window.schedMe=schedMe;
@@ -21522,12 +21661,17 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION, the footer <span class="app-footer-v"> and WHATS_NEW together.
-const APP_VERSION = 'v5.21';
+const APP_VERSION = 'v5.23';
 // What's new. Bump APP_VERSION, the footer and add a line here together.
 // Written for the operator, one line each; Changed first, since that is what catches people out.
 // Group a batch of versions into one entry; keep about the last six.
 // go: an ROC Study filter to jump to (scada, procedures, operations, standards, plant), or null.
 const WHATS_NEW = [
+  {id:'2026-11-19e', v:'v5.22–5.23', date:'Nov 19', title:'A calmer ROC Study', items:[
+    ['Fixed','Plant Architecture: the diagram stays in Learn, out of Practice','plant'],
+    ['Changed','Topics in a side rail with progress, one topic at a time with Learn and Practice tabs','grid'],
+    ['Changed','Questions are a clean list: open one to see the answer, then grade it. Status shows as a dot','grid'],
+    ['New','Quiz this topic, straight from its page','grid']]},
   {id:'2026-11-19d', v:'v5.17–5.18', date:'Nov 19', title:'A richer site panel', items:[
     ['Changed','Trend line by site type: wind for wind, irradiance for solar and PV+BESS hybrids, temperature for BESS',null],
     ['New','Site Map panel: a 12-hour trend line (hub wind with cut-in and cut-out, or sun), and next sunrise and sunset',null],
@@ -22000,7 +22144,7 @@ function gsIndex() {
       out.push({ kind:'Study', label:q.q, sub:cat,
                  text:(q.q+' '+(q.a||'')).toLowerCase().replace(/<[^>]+>/g,' '),
                  go:()=>{ switchView('roc',null);
-                          rocSetFilter(q.cat, document.querySelector('[data-filter="'+q.cat+'"]'));
+                          rocSetFilter(q.cat, 'keep'); rsTab('practice');
                           setTimeout(()=>{ const r=document.querySelector('[data-qid="'+q.id+'"]');
                             if(r){ r.scrollIntoView({behavior:'smooth',block:'center'});
                                    r.style.outline='2px solid var(--blue)'; r.style.outlineOffset='3px';
@@ -22216,7 +22360,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.21</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
+    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.23</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
