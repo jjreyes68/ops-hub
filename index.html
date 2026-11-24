@@ -3910,6 +3910,9 @@ kbd{display:inline-block;font-family:var(--m);font-size:11px;background:var(--bg
   transition:background .12s,color .12s;}
 .wos-duty:hover{background:var(--bbg);}
 .wos-duty:hover .wos-name,.wos-duty:hover .wos-pos{color:var(--blue);}
+.wos-for{font-size:.45em;font-weight:500;color:var(--text3);margin-left:.4em;letter-spacing:0;white-space:nowrap;}
+.wos-next .wos-for{font-size:.85em;}
+.wos-unc{color:var(--amber);}
 .wos-duty:hover .wos-pos{background:var(--bg2);}
 .wos-sep{opacity:.4;}
 
@@ -19176,14 +19179,22 @@ function homeRenderWhosOnShift() {
   const { current, next } = result;
   // Tag each name with its duty position — the row order from the rotation is
   // D1 D2 D3 for days and N1 N2 for nights, which is what the duty sheet uses.
-  const pos = (names, night) => names.map((n, i) => {
+  // Time off, same as the Schedule page and the Asset Scan chips: someone off
+  // shows their cover (with who they're covering), or Uncovered.
+  const isNight = /night/i.test(current.label);
+  let curISO = null, nextISO = null;
+  try { const c = asrShiftAt(); curISO = c.key.slice(0, 10); nextISO = asrNextShift(c).key.slice(0, 10); } catch(e) {}
+  const pos = (names, night, iso) => names.map((n, i) => {
     const code = (night ? 'N' : 'D') + (i + 1);
+    let o = null; try { o = iso && typeof offInfo === 'function' ? offInfo(String(n).trim(), iso) : null; } catch(e) {}
+    const nm = !o ? esc(n)
+      : o.by ? esc(o.by) + '<span class="wos-for" title="' + esc(n) + ' is off">for ' + esc(n) + '</span>'
+      : '<span class="wos-unc" title="' + esc(n) + ' is off, no cover listed">Uncovered</span><span class="wos-for">' + esc(n) + ' off</span>';
     return '<span class="wos-duty" data-duty="' + code + '">'
       + '<span class="wos-pos">' + code + '</span>'
-      + '<span class="wos-name">' + esc(n) + '</span></span>';
+      + '<span class="wos-name">' + nm + '</span></span>';
   }).join('<span class="wos-sep"> \u00b7 </span>');
-  const isNight = /night/i.test(current.label);
-  mainEl.innerHTML = pos(current.names, isNight);
+  mainEl.innerHTML = pos(current.names, isNight, curISO);
   try { wosDutyPop('glance-shift-main'); } catch(e) {}
   // The label says which shift the names belong to; the sub line is only
   // about the next crew and when they take over. Changeovers are 06:00 / 18:00.
@@ -19194,7 +19205,7 @@ function homeRenderWhosOnShift() {
   // hover their position and see their scan round before they take over.
   const sub = document.getElementById('glance-shift-sub');
   sub.innerHTML = 'Up next at ' + (isNight ? '06:00' : '18:00') + ' \u00b7 ' + nextKind
-    + ' \u00b7 <span class="wos-next">' + pos(next.names, nextKind === 'Night') + '</span>';
+    + ' \u00b7 <span class="wos-next">' + pos(next.names, nextKind === 'Night', nextISO) + '</span>';
   try { wosDutyPop('glance-shift-sub'); } catch(e) {}
 }
 
@@ -20153,6 +20164,9 @@ function initTimeOffListener(){
     try { currCalRender(); } catch(e) {}
     try { currIndRender(); } catch(e) {}
     try { currCrewRender(); } catch(e) {}
+    // Home: Who's on Shift and the Asset Scan chips follow time off too
+    try { homeRenderWhosOnShift(); } catch(e) {}
+    try { asrRender(); } catch(e) {}
     // Re-render all views with updated time-off data
     renderTable();
     renderCrewGrid();
@@ -21978,13 +21992,14 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION, the footer <span class="app-footer-v"> and WHATS_NEW together.
-const APP_VERSION = 'v5.29';
+const APP_VERSION = 'v5.30';
 // What's new. Bump APP_VERSION, the footer and add a line here together.
 // Written for the operator, one line each; Changed first, since that is what catches people out.
 // Group a batch of versions into one entry; keep about the last six.
 // go: an ROC Study filter to jump to (scada, procedures, operations, standards, plant), or null.
 const WHATS_NEW = [
-  {id:'2026-11-23c', v:'v5.29', date:'Nov 23', title:'Asset Scan reminder follows time off', items:[
+  {id:'2026-11-23c', v:'v5.29–5.30', date:'Nov 23', title:'Asset Scan reminder follows time off', items:[
+    ['Changed','Who\u2019s on Shift follows time off: a cover shows with who they\u2019re covering for, or Uncovered',null],
     ['Changed','Someone off? Their seat shows their cover, or \u201cuncovered\u201d. A cover\u2019s export counts for that seat',null],
     ['Changed','The red bar lists only who still needs to export',null],
     ['New','A reminder email goes out at 11:05 / 23:05 to anyone not exported, and a card posts in Operator Passdown',null]]},
@@ -22691,7 +22706,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.29</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
+    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.30</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
