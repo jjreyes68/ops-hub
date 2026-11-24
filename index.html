@@ -2786,6 +2786,8 @@ body.dark #view-schedule .chip-del{ background: rgba(255,255,255,0.08); border-c
 .asr-chip.ok .t{color:#16a34a;}
 .asr-chip.late{border-color:rgba(220,38,38,.55);background:rgba(220,38,38,.10);}
 .asr-chip.late .t{color:#ef4444;}
+.asr-chip.saving{border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.10);}
+.asr-chip.saving .t{color:#d97706;}
 .asr-go{color:var(--blue);font-weight:600;cursor:pointer;white-space:nowrap;}
 .asr-go:hover{text-decoration:underline;}
 .asr-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:9px 18px;background:#b91c1c;color:#fff;font-size:14px;}
@@ -11630,7 +11632,7 @@ function asApplyOperatorDuty(announce) {
   if (announce) showToast(name.split(/\s+/)[0] + ' → ' + d.code + (d.when === 'next' ? ' (next shift)' : ' (on shift now)'), 'ok');
 }
 function asSaveOperator() {
-  try { localStorage.setItem('rnwbl_as_operator', document.getElementById('as-operator').value); } catch(e) {}
+  try { localStorage.setItem('rnwbl_as_operator', document.getElementById('as-operator').value); localStorage.setItem('rnwbl_as_operator_at', String(Date.now())); } catch(e) {}
 }
 
 // ── init & render ──────────────────────────────────────────────────────────────
@@ -12216,6 +12218,11 @@ function asExportCSV() {
   const date=document.getElementById('as-date').value, op=document.getElementById('as-operator').value, shift=document.getElementById('as-shift').value;
   const missing=[]; if(!date) missing.push('Date'); if(!op) missing.push('Operator'); if(!shift) missing.push('Shift');
   if(missing.length && !confirm(`${missing.join(', ')} not filled in — the file name will be generic. Export anyway?`)) return;
+  if(!asPreExportChecks()) return;
+  return asExportCSVGo();
+}
+function asExportCSVGo() {
+  const date=document.getElementById('as-date').value, op=document.getElementById('as-operator').value, shift=document.getElementById('as-shift').value;
   let csv='Date,Operator,Shift,Site,Section,Field,Value,Field Last Edited\n';
   // Only export sites matching the currently selected type filter (mirrors what's shown in the tabs)
   let sites=[...asSites()];
@@ -12259,6 +12266,58 @@ function asExportCSV() {
   try { asrRecordExport(op, sites.filter(x=>x.id!=='ROCC1').length); } catch(e) { console.warn('[Asset Scan reminder]', e); }
 }
 
+// ─── Export guards ────────────────────────────────────────────────────────────
+// People make mistakes, and a missed-scan email they didn't earn reads as a
+// gotcha. Catch the usual ones before the file is made: a stale date or shift
+// from a tab left open, or yesterday's name still in the Operator box on a
+// shared desk. Each asks once, with the fix as the default (OK).
+function asFmtMD(iso){ const [y,m,d] = String(iso).split('-'); return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m-1] + ' ' + (+d); }
+function asPreExportChecks(){
+  const dEl = document.getElementById('as-date'), sEl = document.getElementById('as-shift'), oEl = document.getElementById('as-operator');
+  const now = new Date(), cur = asrShiftAt(now);
+  const today = asrYmd(now), shiftDate = cur.key.slice(0, 10);
+  const hoursIn = (now.getTime() - cur.start) / 3600000;
+  const nearChange = hoursIn < 2 || hoursIn > 11;   // late or early exports around 06:00 / 18:00 are normal
+  // Just after a changeover, the shift that just ended still counts as "now".
+  const prev = asrShiftAt(new Date(cur.start - 60000));
+  const okDates = [today, shiftDate].concat(hoursIn < 2 ? [prev.key.slice(0, 10)] : []);
+  const since = hoursIn < 2 ? prev.start : cur.start;
+  // 1. Date
+  if (dEl && dEl.value && !okDates.includes(dEl.value)) {
+    if (confirm('The Date says ' + asFmtMD(dEl.value) + ', but today is ' + asFmtMD(today) + '.\n\nOK: change it to ' + asFmtMD(today) + '\nCancel: keep ' + asFmtMD(dEl.value))) { dEl.value = today; dEl.dataset.auto = '1'; }
+  }
+  // 2. Shift
+  const want = cur.letter === 'D' ? 'Day' : 'Night';
+  if (sEl && sEl.value && sEl.value !== want && !nearChange) {
+    if (confirm('Shift says ' + sEl.value + ', but it\u2019s the ' + want.toLowerCase() + ' shift now.\n\nOK: change it to ' + want + '\nCancel: keep ' + sEl.value)) { sEl.value = want; sEl.dataset.auto = '1'; }
+  }
+  // 3. A name carried over from an earlier shift on this computer
+  const op = (oEl && oEl.value || '').trim();
+  let at = 0; try { at = +localStorage.getItem('rnwbl_as_operator_at') || 0; } catch(e) {}
+  if (op && at < since) {
+    if (!confirm('Exporting as ' + op + '.\n\nThat name was entered on an earlier shift on this computer. Is it you?\n\nOK: yes, export\nCancel: let me change the name')) {
+      if (oEl) { oEl.focus(); oEl.select(); }
+      showToast('Type your name in Operator, then Export again', 'info'); return false;
+    }
+    try { localStorage.setItem('rnwbl_as_operator_at', String(Date.now())); } catch(e) {}
+  }
+  return true;
+}
+// Keep auto-filled Date / Shift current on a tab left open across shifts.
+// Anything the operator typed themselves is left alone.
+function asKeepHeaderFresh(){
+  const dEl = document.getElementById('as-date'), sEl = document.getElementById('as-shift');
+  const now = new Date(), cur = asrShiftAt(now);
+  if (dEl && dEl.dataset.auto === '1' && dEl.value !== asrYmd(now)) dEl.value = asrYmd(now);
+  const want = cur.letter === 'D' ? 'Day' : 'Night';
+  if (sEl && sEl.dataset.auto === '1' && sEl.value !== want) sEl.value = want;
+}
+function asHeaderGuardInit(){
+  const dEl = document.getElementById('as-date'), sEl = document.getElementById('as-shift');
+  [dEl, sEl].forEach(el => { if (!el) return; el.dataset.auto = '1'; el.addEventListener('input', () => { el.dataset.auto = '0'; }); el.addEventListener('change', e => { if (e.isTrusted) el.dataset.auto = '0'; }); });
+  asKeepHeaderFresh();
+}
+
 // ─── Asset Scan reminder ──────────────────────────────────────────────────────
 // Each position on shift (D1–D3 / N1–N2) is tracked on its own: an export
 // marks only the exporter's position done, so one operator's All scan never
@@ -12280,7 +12339,18 @@ function asrShiftAt(now){
 }
 function asrNextShift(cur){ return asrShiftAt(new Date(cur.start + 12 * 3600000 + 60000)); }
 function asrLocal(){ try { return JSON.parse(localStorage.getItem('asrDone_v1') || '{}'); } catch(e) { return {}; } }
-function asrDoneFor(key){ return Object.assign({}, asrLocal()[key] || {}, asrShared[key] || {}); }
+// Green only when the shared record (the one the email check reads) has it.
+// This browser's own copy shows "saving" for up to 90 s, then "not saved".
+function asrDoneFor(key){
+  const loc = asrLocal()[key] || {}, sh = asrShared[key] || {}, out = {};
+  Object.keys(loc).forEach(c => {
+    const r = loc[c]; if (!r || typeof r !== 'object' || c[0] === '_') return;
+    const age = Date.now() - Date.parse(r.at || 0);
+    out[c] = { ...r, state: r.saved ? 'ok' : (!r.failed && age < 90000) ? 'saving' : 'failed' };
+  });
+  Object.keys(sh).forEach(c => { if (c[0] !== '_' && sh[c] && typeof sh[c] === 'object') out[c] = { ...sh[c], state: 'ok' }; });
+  return out;
+}
 function asrRecordExport(op, siteCount){
   // A partial type-only export (say Solar only, no position) isn't a round. Say so.
   if (!asDutyFilter && !(asTypeFilter || []).includes('all')) {
@@ -12307,24 +12377,30 @@ function asrRecordExport(op, siteCount){
   if (!code || !/^[DN]\d$/.test(code)) {
     showToast('Exported. Pick a Responsibility so the scan reminder knows which position this was', 'info'); return;
   }
-  const cur = asrShiftAt();
-  const key = code[0] === cur.letter ? cur.key : asrNextShift(cur).key;
+  // One rule: an export counts only for the shift that's on when you click
+  // Export (06:00–18:00 Day, 18:00–06:00 Night). Never for a shift already
+  // closed or one not started, so it can't pre-mark tonight's seat done.
+  const cur = asrShiftAt(), key = cur.key;
+  if (code[0] !== cur.letter) {
+    showToast('Exported, but not counted for the reminder: ' + code + ' is a ' + (code[0] === 'D' ? 'day' : 'night') + ' position and it\u2019s the ' + (cur.letter === 'D' ? 'day' : 'night') + ' shift now', 'warn'); return;
+  }
   const rec = { op: String(op || '').trim() || 'Unknown', at: new Date().toISOString(), sites: siteCount || 0 };
-  const all = asrLocal(); all[key] = Object.assign(all[key] || {}, { [code]: rec });
-  // Keep a week of local history, no more.
-  Object.keys(all).sort().slice(0, -14).forEach(k => delete all[k]);
-  try { localStorage.setItem('asrDone_v1', JSON.stringify(all)); } catch(e) {}
+  const setLocal = extra => {
+    const all = asrLocal(); all[key] = Object.assign(all[key] || {}, { [code]: { ...rec, ...extra } });
+    Object.keys(all).sort().slice(0, -14).forEach(k => delete all[k]);   // a week of history, no more
+    try { localStorage.setItem('asrDone_v1', JSON.stringify(all)); } catch(e) {}
+  };
+  setLocal({});   // "saving" until the shared save confirms
   // Confirm the shared save; retry once, then say plainly that it didn't count.
-  const label = code + (key === cur.key ? '' : ' (next shift)') + note;
+  const label = code + note;
+  const ok = () => { setLocal({ saved: true }); asrShared[key] = Object.assign(asrShared[key] || {}, { [code]: rec }); asrRender(); showToast('\u2713 Asset Scan recorded for ' + label, 'ok'); };
+  const bad = () => { setLocal({ failed: true }); asrRender(); showToast('Asset Scan NOT recorded for the reminder. Check your connection, refresh, and export again', 'err'); };
   const save = () => window.db.collection('assetScanDone').doc(key).set({ [code]: rec }, { merge: true });
-  if (!window.db) showToast('Asset Scan not recorded for the reminder: not connected. Refresh and export again', 'err');
-  else save().then(() => showToast('\u2713 Asset Scan recorded for ' + label, 'ok'))
-    .catch(err => {
-      console.warn('[assetScanDone]', err && err.message);
-      setTimeout(() => save().then(() => showToast('\u2713 Asset Scan recorded for ' + label, 'ok'))
-        .catch(e2 => { console.warn('[assetScanDone retry]', e2 && e2.message);
-          showToast('Asset Scan NOT recorded for the reminder. Check your connection, refresh, and export again', 'err'); }), 3000);
-    });
+  if (!window.db) bad();
+  else save().then(ok).catch(err => {
+    console.warn('[assetScanDone]', err && err.message);
+    setTimeout(() => save().then(ok).catch(e2 => { console.warn('[assetScanDone retry]', e2 && e2.message); bad(); }), 3000);
+  });
   asrRender();
 }
 function asrInitListener(){
@@ -12356,6 +12432,7 @@ function asrState(){
     if (o) return { code, name: '', rostered, uncovered: true, rec };
     return { code, name: rostered.split(/\s+/)[0], rostered, rec };
   });
+  rows.forEach(x => { if (x.rec && x.rec.state !== 'ok') { x.pend = x.rec.state; x.rec = null; } });
   return { cur, due, late, rows, open: rows.filter(x => !x.rec) };
 }
 function asrRender(){
@@ -12372,6 +12449,8 @@ function asrRender(){
           return `<span class="asr-chip ok" title="${x.rec.sites || ''} sites exported"><b class="p">${x.code}</b>${x.name ? `<b class="n">${esc(x.name)}</b>` : ''}<span class="t">\u2713 ${asrFmt(x.rec.at)}${by}</span></span>`;
         }
         const nm = x.uncovered ? '' : `<b class="n"${x.cover ? ` title="Covering for ${esc(x.rostered)}"` : ''}>${esc(x.name)}</b>`;
+        if (x.pend === 'saving') return `<span class="asr-chip saving"><b class="p">${x.code}</b>${nm}<span class="t">saving\u2026</span></span>`;
+        if (x.pend === 'failed') return `<span class="asr-chip late" title="The export didn\u2019t save to the shared record, so it doesn\u2019t count yet"><b class="p">${x.code}</b>${nm}<span class="t">not saved \u00b7 export again</span></span>`;
         const tail = x.uncovered ? 'uncovered \u00b7 ' : '';
         return `<span class="asr-chip${st.late ? ' late' : ''}"><b class="p">${x.code}</b>${nm}<span class="t">${tail}${st.late ? 'not exported' : 'due ' + dueTxt}</span></span>`;
       }).join('') + (st.open.length ? `<a class="asr-go" onclick="switchView('asset',null)">Open Asset Scan \u2192</a>` : '');
@@ -12400,7 +12479,7 @@ function asrRender(){
   } catch(e) {}
 }
 function asrSnooze(){ try { localStorage.setItem('asrSnooze', String(Date.now() + ASR_SNOOZE_MS)); } catch(e) {} asrRender(); }
-function asrInit(){ asrInitListener(); asrRender(); setInterval(asrRender, 30000); try { verInit(); } catch(e) {} }
+function asrInit(){ asrInitListener(); asrRender(); setInterval(() => { asrRender(); try { asKeepHeaderFresh(); } catch(e) {} }, 30000); try { verInit(); } catch(e) {} try { asHeaderGuardInit(); } catch(e) {} }
 
 // ─── New version notice ───────────────────────────────────────────────────────
 // Tabs stay open for days on the ROC workstations, so a published update can
@@ -22055,13 +22134,18 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION, the footer <span class="app-footer-v"> and WHATS_NEW together.
-const APP_VERSION = 'v5.31';
+const APP_VERSION = 'v5.33';
 // What's new. Bump APP_VERSION, the footer and add a line here together.
 // Written for the operator, one line each; Changed first, since that is what catches people out.
 // Group a batch of versions into one entry; keep about the last six.
 // go: an ROC Study filter to jump to (scada, procedures, operations, standards, plant), or null.
 const WHATS_NEW = [
-  {id:'2026-11-24a', v:'v5.31', date:'Nov 24', title:'Asset Scan exports you can trust', items:[
+  {id:'2026-11-24a', v:'v5.31–5.33', date:'Nov 24', title:'Asset Scan exports you can trust', items:[
+    ['New','Export checks the Date and Shift, and offers a one-click fix if they\u2019re off',null],
+    ['New','If the Operator name was left from an earlier shift on this computer, Export asks if it\u2019s you',null],
+    ['Changed','Date and Shift keep themselves current on a tab left open across shifts, unless you typed them',null],
+    ['Changed','Green on Home means the shared record has it: if you\u2019re green, you\u2019re good. Saving shows amber; a failed save shows red',null],
+    ['Changed','An export counts only for the shift that\u2019s on when you click Export',null],
     ['New','After an export you\u2019ll see \u201cAsset Scan recorded for N2\u201d. If it didn\u2019t save, a red message says to export again',null],
     ['New','A blue bar tells you when a newer Ops Hub is published. Click Refresh; your scan entries are kept',null],
     ['Changed','A filtered export (one type only) warns that it won\u2019t count for the reminder',null],
@@ -22774,7 +22858,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.31</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
+    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.33</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
