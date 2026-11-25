@@ -1618,6 +1618,15 @@ body.dark .nerc-study-container{
 .ot-nudge{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding:10px 14px;border-radius:10px;border:1px solid rgba(245,158,11,.45);background:rgba(245,158,11,.08);font-size:13.5px;color:var(--text2);}
 .ot-nudge b{color:var(--text);} .ot-nudge a{margin-left:auto;color:var(--blue);font-weight:600;cursor:pointer;white-space:nowrap;}
 .ot-tag{font-size:11px;font-weight:700;color:#d97706;background:rgba(245,158,11,.14);border:1px solid rgba(245,158,11,.45);border-radius:10px;padding:1px 8px;margin-left:8px;white-space:nowrap;}
+.unc-open{background:rgba(239,68,68,.10);color:#ef4444;border-color:rgba(239,68,68,.40);cursor:default;}
+.unc-me{background:rgba(34,197,94,.12);color:#16a34a;border-color:rgba(34,197,94,.45);}
+.fit-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px dashed var(--border2);font-size:13px;color:var(--text2);}
+.fit-row .lbl{font-weight:600;color:var(--text);}
+.fit-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:14px;border:1px solid var(--border2);background:var(--bg);color:var(--text);font:inherit;font-size:12.5px;cursor:pointer;}
+.fit-pill.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+.fit-pill .ot{color:#d97706;} .fit-pill.on .ot{color:#fff;}
+.fit-row .more{margin-left:auto;color:var(--blue);cursor:pointer;font-weight:600;white-space:nowrap;}
+.fit-note{width:100%;font-size:11.5px;color:var(--text3);line-height:1.45;}
 .ot-pop{position:absolute;z-index:1000;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;box-shadow:var(--shs);padding:10px;font-size:13px;color:var(--text2);min-width:190px;}
 .ot-pop b{display:block;color:var(--text);margin-bottom:6px;}
 .ot-pop .row{display:flex;gap:6px;flex-wrap:wrap;}
@@ -20760,10 +20769,15 @@ function toToggleForm() {
       + '<input type="text" id="curr-to-reason" placeholder="Reason (optional)">'
       + '<button class="to-band-submit" onclick="toBandSubmit()">Submit</button>'
       + '<button class="to-band-cancel" onclick="toToggleForm()">Cancel</button>'
-      + '</div>';
+      + '</div><div class="fit-row" id="curr-to-fits" style="display:none;"></div>';
     const sel = document.getElementById('curr-to-op');
     sel.innerHTML = '<option value="">— operator —</option>'
       + toAllOperators().map(n => '<option>' + esc(n) + '</option>').join('');
+    toFitPick = null;
+    ['curr-to-op','curr-to-start','curr-to-end'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.addEventListener('change', () => { toFitPick = null; toFitsRender(); }); el.addEventListener('input', () => toFitsRender()); }
+    });
   }
   f.style.display = open ? '' : 'none';
   document.getElementById('curr-to-add').textContent = open ? '\u2715 Close' : '+ Request';
@@ -20778,9 +20792,59 @@ async function toBandSubmit() {
   if (!end) end = start;
   if (end < start) { alert('End date is before the start date.'); return; }
   if (!db) { alert('Not connected.'); return; }
+  const coverage = toFitPick ? [{ id: makeSegId(), coveredBy: toFitPick, startDate: start, endDate: end, status: 'pending', note: '' }] : [];
   await db.collection('timeoff').add({ operator: op, startDate: start, endDate: end,
-    reason, coverage: [], submittedAt: firebase.firestore.FieldValue.serverTimestamp() });
+    reason, coverage, submittedAt: firebase.firestore.FieldValue.serverTimestamp() });
+  if (toFitPick) showToast('Sent. ' + toFitPick + ' shows as pending cover until a supervisor approves', 'ok');
+  toFitPick = null;
   toToggleForm();
+}
+
+// Good fits for a request: free and rested for every rostered day in the
+// range, OT volunteers (for every one of those shifts) first. Same rules as
+// Find cover. Picking one sends the request with them as pending cover.
+let toFitPick = null;
+function toFitsList(op, start, end){
+  const days = rosteredIsos(op, start, end).map(iso => ({ iso, m: myShiftOn(op, iso) })).filter(x => x.m && !x.m.cover);
+  if (!days.length) return { days, list: [] };
+  let pool = null;
+  days.forEach(({ iso, m }) => {
+    const c = swapCandidates(op, iso, m.r);
+    const here = new Map(c.map(x => [x.name, x]));
+    if (!pool) pool = new Map(c.map(x => [x.name, { name: x.name, ot: x.ot, week: x.week }]));
+    else [...pool.keys()].forEach(n => { if (!here.has(n)) pool.delete(n); else pool.get(n).ot = pool.get(n).ot && here.get(n).ot; });
+  });
+  const list = [...pool.values()].sort((a, b) => (b.ot - a.ot) || a.week - b.week || a.name.localeCompare(b.name));
+  return { days, list };
+}
+function toFitsRender(){
+  const box = document.getElementById('curr-to-fits'); if (!box) return;
+  const op = (document.getElementById('curr-to-op') || {}).value;
+  const start = (document.getElementById('curr-to-start') || {}).value;
+  let end = (document.getElementById('curr-to-end') || {}).value || start;
+  if (!op || !start || end < start) { box.style.display = 'none'; return; }
+  const { days, list } = toFitsList(op, start, end);
+  const md = iso => { const d = new Date(iso + 'T00:00:00'); return d.toLocaleDateString('en-US', { weekday: 'short' }) + ' ' + (d.getMonth() + 1) + '/' + d.getDate(); };
+  if (!days.length) { box.innerHTML = '<span class="fit-note">' + esc(op) + ' isn\u2019t rostered on those days, so nothing needs cover.</span>'; box.style.display = ''; return; }
+  const what = days.length === 1 ? md(days[0].iso) + ' (' + days[0].m.r + ')' : 'all ' + days.length + ' shifts, ' + md(days[0].iso) + '\u2013' + md(days[days.length - 1].iso);
+  if (toFitPick && !list.some(x => x.name === toFitPick)) toFitPick = null;
+  let h = '<span class="lbl">Good fits for ' + esc(what) + ':</span>';
+  if (!list.length) h += '<span>Nobody is free and rested for ' + (days.length === 1 ? 'it' : 'every one') + '.</span>';
+  list.slice(0, 6).forEach(x => {
+    h += `<button class="fit-pill${toFitPick === x.name ? ' on' : ''}" onclick="toFitToggle('${esc(x.name)}')">${x.ot ? '<span class="ot">\u270b</span>' : ''}${esc(x.name)}</button>`;
+  });
+  h += `<a class="more" onclick="toFitsCompare('${days[0].iso}','${esc(op)}')">${days.length > 1 && !list.length ? 'Day by day' : 'Compare'} \u2192</a>`;
+  h += '<div class="fit-note">' + (list.some(x => x.ot) ? '\u270b wants OT. ' : '') + 'Free and rested only. Pick one to send it with them as pending cover; a supervisor approves. Leave none picked to request it uncovered.</div>';
+  box.innerHTML = h; box.style.display = '';
+}
+function toFitToggle(name){ toFitPick = toFitPick === name ? null : name; toFitsRender(); }
+function toFitsCompare(iso, op){
+  const f = document.getElementById('curr-cal-focus');
+  if (f && f.value !== op) { f.value = op; f.dispatchEvent(new Event('change')); }
+  const d = new Date(iso + 'T00:00:00');
+  try { currCalState.year = d.getFullYear(); currCalState.month = d.getMonth(); } catch(e) {}
+  try { currCalRender(); } catch(e) {}
+  if (swapState.iso !== iso) swapOpen(iso);
 }
 
 function toRoleFor(operator, iso) {
@@ -21486,6 +21550,45 @@ function otCellHtml(focus, iso){
     : '<span class="l">+ I\u2019d take OT</span><span class="s">+OT</span>';
   return `<div class="ot-corner"><button class="ot-chip ${w ? 'ot-me' : 'ot-add'}" onclick="event.stopPropagation();otPick(this,'${iso}')">${label}</button></div>`;
 }
+// Open shifts: someone is off with no cover. Everyone sees "○ D2 open"; the
+// highlighted person sees "🤝 Cover D2?" instead when they are free and rested for it.
+function openSlots(iso){
+  if (iso < isoDate(new Date())) return [];
+  const e = currGetDay(iso), out = [];
+  [['Day', e.day, 'D'], ['Night', e.night, 'N']].forEach(([r, list, L]) => list.forEach((n, i) => {
+    const o = offInfo(n, iso); if (o && !o.by) out.push({ r, n, code: L + (i + 1) });
+  }));
+  return out;
+}
+function openCellHtml(focus, iso, coverOnly){
+  return openSlots(iso).map(sl => {
+    const can = focus && focus !== sl.n && swapCandidates(sl.n, iso, sl.r).some(c => c.name === focus);
+    if (can) return `<div><button class="ot-chip unc-me" title="${esc(sl.n)} is off with no cover. ${esc(focus)} is free and rested for it" onclick="event.stopPropagation();openCoverPick(this,'${iso}','${esc(sl.n)}','${sl.code}')"><span class="l">\ud83e\udd1d Cover ${sl.code}?</span><span class="s">\ud83e\udd1d${sl.code}</span></button></div>`;
+    if (coverOnly) return '';
+    return `<div><span class="ot-chip unc-open" title="${esc(sl.n)} is off with no cover"><span class="l">\u25cb ${sl.code} open</span><span class="s">\u25cb${sl.code}</span></span></div>`;
+  }).join('');
+}
+function openCoverPick(btn, iso, who, code){
+  otPopClose();
+  const focus = document.getElementById('curr-cal-focus').value; if (!focus) return;
+  const when = new Date(iso + 'T00:00:00').toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
+  const pop = document.createElement('div'); pop.id = 'ot-pop'; pop.className = 'ot-pop';
+  pop.innerHTML = `<b>${esc(focus)} covers ${esc(who)}\u2019s ${code}, ${esc(when)}?</b><div class="row"><button class="on" onclick="openCoverGo('${iso}','${esc(who)}')">Offer to cover</button><button onclick="otPopClose()">Cancel</button></div>`
+    + `<div style="font-size:11.5px;color:var(--text3);margin-top:8px;line-height:1.45;">Adds ${esc(focus)} as pending cover. A supervisor approves it in Time Off.</div>`;
+  document.body.appendChild(pop);
+  const r = btn.getBoundingClientRect();
+  pop.style.top = (r.bottom + scrollY + 4) + 'px';
+  pop.style.left = Math.max(8, Math.min(r.left + scrollX, scrollX + innerWidth - pop.offsetWidth - 8)) + 'px';
+  setTimeout(() => document.addEventListener('click', otPopOutside, true), 0);
+}
+async function openCoverGo(iso, who){
+  const focus = document.getElementById('curr-cal-focus').value; otPopClose();
+  const to = (timeOffData || []).find(t => t.operator === who && iso >= t.startDate && iso <= (t.endDate || t.startDate));
+  if (!focus || !to) return;
+  if (!db) { showToast('Not connected, so nothing was sent', 'err'); return; }
+  try { await proposeSegment(to.id, focus, iso, iso, ''); showToast('Sent. ' + focus + ' shows as pending cover for ' + who + ' until a supervisor approves', 'ok'); }
+  catch(e) { showToast('Could not send. Check your connection and try again', 'err'); }
+}
 function otPopClose(){ const p = document.getElementById('ot-pop'); if (p) p.remove(); document.removeEventListener('click', otPopOutside, true); }
 function otPopOutside(e){ const p = document.getElementById('ot-pop'); if (p && !p.contains(e.target)) otPopClose(); }
 function otPick(btn, iso){
@@ -21673,6 +21776,7 @@ function currCalRender(){
           if(swapState.iso===iso) cell.classList.add('me-picked');
         }
       } else if(!cov){
+        inner+=openCellHtml(focus, iso, true);
         inner+=otCellHtml(focus, iso);
       } else if(cov){
         cell.classList.add(cov.r==='Day'?'me-day':'me-night');
@@ -21683,6 +21787,7 @@ function currCalRender(){
       cell.innerHTML=inner; grid.appendChild(cell);
       continue;
     }
+    inner+=openCellHtml(focus, iso, false);
     if(focus) inner+=otCellHtml(focus, iso);
     [...e.day.map(n=>({r:'Day',n})), ...e.night.map(n=>({r:'Night',n}))].forEach(s=>{
       const isFoc=focus&&s.n===focus;
@@ -22241,7 +22346,7 @@ setTimeout(() => {
   window.showSchedule=showSchedule;
   window.r27RowForDate=r27RowForDate;
   window.offInfo=offInfo;
-  window.otPick=otPick; window.otSet=otSet;   // Asset Scan reminder: who's off and who covers
+  window.otPick=otPick; window.otSet=otSet; window.openCoverPick=openCoverPick; window.openCoverGo=openCoverGo; window.toFitToggle=toFitToggle; window.toFitsCompare=toFitsCompare;   // Asset Scan reminder: who's off and who covers
   window.onStartDateChange=onStartDateChange;
   window.setStartToThisWeek=setStartToThisWeek;
   window.applyPitStart=applyPitStart;
@@ -22349,12 +22454,15 @@ setTimeout(() => {
 // rather than "you're running yesterday's code." This prints the build the
 // page is actually running, so that question takes one glance to answer.
 // Bump APP_VERSION, the footer <span class="app-footer-v"> and WHATS_NEW together.
-const APP_VERSION = 'v5.36';
+const APP_VERSION = 'v5.37';
 // What's new. Bump APP_VERSION, the footer and add a line here together.
 // Written for the operator, one line each; Changed first, since that is what catches people out.
 // Group a batch of versions into one entry; keep about the last six.
 // go: an ROC Study filter to jump to (scada, procedures, operations, standards, plant), or null.
 const WHATS_NEW = [
+  {id:'2026-11-25b', v:'v5.37', date:'Nov 25', title:'Who\u2019s a good fit, and open shifts', items:[
+    ['New','Time Off + Request shows good fits once you pick a name and dates. Tap one to send it with them as pending cover',null],
+    ['New','Calendar marks a shift nobody is covering with \u25cb D2 open. If you\u2019re free and rested for it, it reads \ud83e\udd1d Cover D2? instead',null]]},
   {id:'2026-11-25a', v:'v5.36', date:'Nov 25', title:'Want OT? Raise your hand', items:[
     ['New','Schedule: pick your name, then tap + I\u2019d take OT on a day off to say you\u2019d work it (Day, Night or either)',null],
     ['New','Your shifts show \u270b want OT when someone rested would take them, and holidays get a heads-up above the calendar',null],
@@ -23081,7 +23189,7 @@ load();
   </span>
   <span class="app-footer-mid">
     <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h8l-1 8 9-12h-8l1-8z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1" stroke-linejoin="round"/></svg>
-    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.36</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
+    <span class="app-footer-brand">RNWBL Ops Hub</span> <button class="wn-btn" id="wn-btn" onclick="wnToggle(event)" aria-haspopup="dialog" aria-label="What's new in this version"><span class="app-footer-v">v5.37</span><i class="wn-dot"></i><span class="wn-tip" id="wn-tip"></span></button>
   </span>
   <button class="footer-link app-footer-right" onclick="authSignOut()" title="Sign out on this device">sign out</button>
 </footer>
